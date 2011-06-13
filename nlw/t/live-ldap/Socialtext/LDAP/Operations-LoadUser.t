@@ -24,6 +24,12 @@ unlink Socialtext::LDAP::Config->config_filename();
 # Sets up OpenLDAP, adds some test data, and adds the OpenLDAP server to our
 # list of user factories.
 sub set_up_openldap {
+
+    for my $user (Socialtext::User->All->all()) {
+        next if $user->is_system_created;
+        Test::Socialtext::User->delete_recklessly($user);
+    }
+
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     $openldap->add_ldif('t/test-data/ldap/base_dn.ldif');
     $openldap->add_ldif('t/test-data/ldap/people.ldif');

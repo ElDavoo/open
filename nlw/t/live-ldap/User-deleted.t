@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext::User;
-use Test::Socialtext tests => 21;
+use Test::Socialtext tests => 22;
 
 ###############################################################################
 # FIXTURE:  db
@@ -49,6 +49,11 @@ ldap_user_removed: {
         '... ... which has "last cached" last_name';
     is $refreshed->email_address, $user->email_address,
         '... ... which has "last cached" email_address';
+
+    Socialtext::User::Cache->Remove(user_id => $refreshed->user_id);
+    $refreshed = Socialtext::User->new( username => 'John Doe' );
+    is $refreshed->username, $user->username,
+        're-fetching the user still has "last cached" username';
 }
 
 ###############################################################################

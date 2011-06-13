@@ -7,6 +7,7 @@ use Socialtext::LDAP;
 use Socialtext::User;
 use Socialtext::User::Default::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
+use Socialtext::SQL qw/sql_execute/;
 use Test::Warn;
 use Test::Socialtext tests => 41;
 
@@ -18,12 +19,13 @@ fixtures( 'db' );
 ### Create a test user in the Default user store (Pg) that conflicts with one
 ### of the users in our LDAP test data.
 ###############################################################################
-my $default_user = Socialtext::User::Default::Factory->new->create(
+my $default_user = Socialtext::User->create(
     username         => 'John Doe',
     email_address    => 'john.doe@example.com',
     password         => 'pg-password',
 );
-isa_ok $default_user, 'Socialtext::User::Default', 'added Pg data; people';
+is $default_user->homunculus->driver_key, 'Default',
+    'user created in Default store';
 
 sub bootstrap_tests {
     my $filter = shift;
@@ -56,9 +58,7 @@ instantiate_user_from_ldap_even_when_exists_in_postgresql: {
     my $refs = bootstrap_tests();
 
     # instantiate user; should get from LDAP, not Pg
-    my $user = Socialtext::User->new(
-        username => 'John Doe',
-        );
+    my $user = Socialtext::User->new(username => 'John Doe');
     isa_ok $user, 'Socialtext::User', 'instantiated user';
     is $user->driver_name(), 'LDAP', '... with LDAP driver';
     isa_ok $user->homunculus(), 'Socialtext::User::LDAP', '... and LDAP homunculus';
@@ -71,10 +71,19 @@ instantiate_user_from_ldap_even_when_exists_in_postgresql: {
 instantiate_user_from_postgresql_when_only_contact_in_ldap: {
     my $refs = bootstrap_tests('(objectClass=inetOrgPerson)', 'contacts');
 
+    # Forcefully convert back to a default user.
+    my $user = Socialtext::User->new(username => 'John Doe');
+    sql_execute(qq{
+        UPDATE users
+           SET driver_key = ?,
+               driver_unique_id = ?,
+               missing = ?
+         WHERE user_id = ?
+    }, 'Default', $user->user_id, '0', $user->user_id);
+    Socialtext::User::Cache->Remove(user_id => $user->user_id);
+
+    $user = Socialtext::User->new(username => 'John Doe');
     # instantiate user; should get from Pg, not LDAP
-    my $user = Socialtext::User->new(
-        username => 'John Doe',
-        );
     isa_ok $user, 'Socialtext::User', 'instantiated user';
     is $user->driver_name(), 'Default', '... with Default driver';
     isa_ok $user->homunculus(), 'Socialtext::User::Default', '... and Default homunculus';
