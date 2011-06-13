@@ -478,7 +478,6 @@ sub _getCurrentTagsJSON {
 sub display_html {
     my $self = shift;
     my $page = $self->hub->pages->current;
-    $page->load;
     my $html = $page->to_html;
     my $title = $page->name;
 
