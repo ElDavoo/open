@@ -23,7 +23,6 @@ Person.prototype = {
     },
 
     isSelf: function() {
-        console.log(this);
         return this.self || (Socialtext.real_user_id == this.id);
     },
 
