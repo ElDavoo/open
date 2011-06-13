@@ -71,11 +71,23 @@ CREATE RULE users_insert
              NEW.first_name,
              NEW.middle_name,
              NEW.last_name,
-             NEW.cached_at,
-             NEW.last_profile_update,
-             NEW.is_profile_hidden,
+             CASE WHEN NEW.cached_at IS NOT NULL 
+                 THEN NEW.cached_at
+                 ELSE '-infinity'::timestamptz
+             END,
+             CASE WHEN NEW.last_profile_update IS NOT NULL
+                 THEN NEW.last_profile_update
+                 ELSE '-infinity'::timestamptz
+             END,
+             CASE WHEN NEW.is_profile_hidden IS NOT NULL
+                 THEN NEW.is_profile_hidden
+                 ELSE false
+             END,
              NEW.display_name,
-             NEW.missing,
+             CASE WHEN NEW.missing IS NOT NULL
+                 THEN NEW.missing
+                 ELSE false
+             END,
              NEW.private_external_id,
              false 
            );
