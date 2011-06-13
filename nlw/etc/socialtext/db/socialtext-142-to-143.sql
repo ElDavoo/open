@@ -17,7 +17,7 @@ ALTER TABLE ONLY user_pref
             REFERENCES users(user_id) ON DELETE CASCADE;
 
 UPDATE "System"
-   SET value = '141'
+   SET value = '143'
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
