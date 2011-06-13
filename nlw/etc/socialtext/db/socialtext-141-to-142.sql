@@ -15,7 +15,7 @@ CREATE TABLE user_like (
 );
 
 UPDATE "System"
-   SET value = '141'
+   SET value = '142'
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
