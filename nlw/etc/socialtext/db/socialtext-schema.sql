@@ -2837,7 +2837,7 @@ ALTER TABLE ONLY user_plugin_pref
 ALTER TABLE ONLY user_pref
     ADD CONSTRAINT user_pref_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_restrictions
     ADD CONSTRAINT user_restrictions_user_id_fkey
