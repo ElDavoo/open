@@ -924,8 +924,10 @@ sub default_role {
 sub is_deactivated {
     my $self = shift;
     require Socialtext::Account;
-    return $self->primary_account_id
-        == Socialtext::Account->Deleted()->account_id;
+    my $accts_match = 
+        $self->primary_account_id == Socialtext::Account->Deleted()->account_id;
+
+    return $accts_match || $self->is_deleted;
 }
 
 # is User data sourced internally (eg. Default), or externally (eg. LDAP)
