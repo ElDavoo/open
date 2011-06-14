@@ -35,7 +35,7 @@
 | st-admin | add-member --workspace %%wiki%% --email %%user5%% | now has the role |
 | st-admin | add-member --workspace %%wiki%% --email %%user6%% | now has the role |
 | st-admin | add-member --workspace %%wiki%% --email %%user7%% | now has the role |
-| st-admin | enable-plugin --all-accounts --p like |  |
+| st-admin | enable-plugin --account %%acct%% --p like |  |
 | st-admin | update-page --email %%user1%% --workspace %%wiki%% --page "%%wiki%%" < %%wikitest_client_files%%wikitest.txt | created |
 
 | *Comment* | Test Case: User Likes a Page first user likes the page, sees the proper icons |  |
@@ -47,6 +47,15 @@
 | wait_for_text_present_ok | Unlike | 30000 |
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me'] | 30000 |
+
+| *Comment* | Test Case: User Likes a Page first user sees self in Like Bubble |  |
+| *Comment* | FAILING TEST FOR {bz: 5351} |  |
+| mouse_over_ok | //a[@class='like-indicator me'] |  |
+| wait_for_text_present_ok | You have liked this page. | 10000 |
+| wait_for_element_visible_ok | link=All People | 10000 |
+| click_ok | link=All People |  |
+| wait_for_text_present_ok | You have liked this page. | 10000 |
+| is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
 
 | *Comment* | Test Case: User Likes a Page second user likes the page, sees the proper icons |  |
 | st-logoutin | %%user2%% | %%password%% |
@@ -67,9 +76,9 @@
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
-| MouseOver | //a[@class='like-indicator me others'] |  |
+| mouse_over_ok | //a[@class='like-indicator me others'] |  |
 | wait_for_text_present_ok | You and 1 person you follow have liked this page. | 30000 |
-| wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
+| is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
 
 | *Comment* | Test Case: User Likes a Page edit the page so it will have multiple revisions to like |  |
 | open_ok | /%%wiki%% |  |
@@ -143,7 +152,7 @@
 | *Comment* | Test Case: User Likes a Page check the mouseover bubble of likes, including pagination |  |
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
-| MouseOver | //a[@class='like-indicator me others'] |  |
+| mouse_over_ok | //a[@class='like-indicator me others'] |  |
 | wait_for_text_present_ok | None of the people you follow have liked this page. | 30000 |
 | wait_for_element_visible_ok | link=All People | 30000 |
 | click_ok | link=All People |  |
