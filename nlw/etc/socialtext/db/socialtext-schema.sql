@@ -2343,6 +2343,18 @@ CREATE INDEX recent_signal_hidden
 CREATE INDEX signal_hidden
 	    ON signal (hidden);
 
+CREATE INDEX user_like_likers_idx
+	    ON user_like (workspace_id, page_id, revision_id, signal_id);
+
+CREATE INDEX user_like_likes_idx
+	    ON user_like (liker_user_id);
+
+CREATE INDEX user_like_unlike_idx
+	    ON user_like (liker_user_id, workspace_id, page_id, revision_id, signal_id);
+
+CREATE INDEX user_like_workspace_id_idx
+	    ON user_like (workspace_id);
+
 CREATE INDEX user_plugin_pref_idx
 	    ON user_plugin_pref (user_id, plugin);
 
@@ -2814,6 +2826,31 @@ ALTER TABLE ONLY topic_signal_user
             FOREIGN KEY (user_id)
             REFERENCES all_users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY user_like
+    ADD CONSTRAINT user_like_liker_fk
+            FOREIGN KEY (liker_user_id)
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_like
+    ADD CONSTRAINT user_like_page_id_fk
+            FOREIGN KEY (workspace_id, page_id)
+            REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_like
+    ADD CONSTRAINT user_like_revision_id_fk
+            FOREIGN KEY (workspace_id, page_id, revision_id)
+            REFERENCES page_revision(workspace_id, page_id, revision_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_like
+    ADD CONSTRAINT user_like_signal_id_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_like
+    ADD CONSTRAINT user_like_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY user_mapping
     ADD CONSTRAINT user_mapping_actor_id_fk
             FOREIGN KEY (original_user_id)
@@ -2920,4 +2957,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '143');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '144');
