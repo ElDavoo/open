@@ -143,32 +143,17 @@ LikeIndicator.prototype = {
             ? this.likers.totalResults - 1
             : this.likers.totalResults;
 
-        if (others) {
-            if (this.isLikedByMe) {
-                if (this.onlyFollows) {
-                    return loc('like.you-liked-this-page=followed', others);
-                }
-                else {
-                    return loc('like.you-liked-this-page=others', others);
-                }
-            }
-            else {
-                if (this.onlyFollows) {
-                    return loc('like.person-count=followed', others);
-                }
-                else {
-                    return loc('like.person-count=others', others);
-                }
-            }
-        }
-        else {
-            if (this.onlyFollows) {
-                return loc('like.no-followed-users-like-this-page');
-            }
-            else {
-                return loc('like.no-other-users-like-this-page');
-            }
-        }
+        // Possibilities:
+        //  like.liked-this.(page|revision).(you|not-you)=(followed|others)
+        var what = 'page';
+
+        var loc_string = [
+            'like.liked-this', what, this.isLikedByMe ? 'you' : 'not-you'
+        ].join('.');
+
+        loc_string += this.onlyFollows ? '=followed' : '=others'; 
+
+        return loc(loc_string, others);
     },
 
     likersPercentage: function() {
