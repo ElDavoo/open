@@ -5,9 +5,10 @@ use warnings;
 use Socialtext::SQL qw/sql_singlevalue/;
 
 my $got_it = sql_singlevalue(q{
-    SELECT COUNT(1)
-    FROM "System"
-    WHERE field = 'like-enabled-all' AND value = 1
+    SELECT TRUE
+      FROM "System"
+     WHERE field = 'like-enabled-all'
+       AND value = '1'
 });
 
 unless ($got_it) {
