@@ -9463,12 +9463,12 @@ msgstr "我的讚"
 msgid "like.no-followed-users-like-this-page"
 msgstr "目前還沒有您關注的人覺得這頁面很讚。"
 
+msgid "like.no-other-users-like-this-page"
+msgstr "目前還沒有其他人覺得這頁面很讚。"
+
 #: share/plugin/like/template/like/listview-no-results.tt2:2
 msgid "like.no-pages-liked"
 msgstr "您目前還沒有覺得哪個頁面很讚。"
-
-msgid "like.no-users-liked-this-page"
-msgstr "目前還沒有人覺得這頁面很讚。"
 
 msgid "like.page:"
 msgstr "頁數："

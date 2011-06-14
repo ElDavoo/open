@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 03:27-0700\n"
+"PO-Revision-Date: 2011-06-14 12:35-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10009,13 +10009,13 @@ msgstr "My likes"
 msgid "like.no-followed-users-like-this-page"
 msgstr "None of the people you follow have liked this page."
 
+#: share/skin/s3/javascript/like-indicator.js:169
+msgid "like.no-other-users-like-this-page"
+msgstr "Nobody else has liked this page yet."
+
 #: share/plugin/like/template/like/listview-no-results.tt2:2
 msgid "like.no-pages-liked"
 msgstr "You don't like any pages yet."
-
-#: share/skin/s3/javascript/like-indicator.js:169
-msgid "like.no-users-liked-this-page"
-msgstr "Nobody has liked this page yet."
 
 #: share/skin/s3/javascript/template/like-indicator.tt2:30
 msgid "like.page:"

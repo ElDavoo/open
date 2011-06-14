@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 03:27-0700\n"
+"PO-Revision-Date: 2011-06-14 12:35-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10009,13 +10009,13 @@ msgstr "Zz zzzzz"
 msgid "like.no-followed-users-like-this-page"
 msgstr "Zzzz zz zzz zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz."
 
+#: share/skin/s3/javascript/like-indicator.js:169
+msgid "like.no-other-users-like-this-page"
+msgstr "Zzzzzz zzzz zzz zzzzz zzzz zzzz zzz."
+
 #: share/plugin/like/template/like/listview-no-results.tt2:2
 msgid "like.no-pages-liked"
 msgstr "Zzz zzz'z zzzz zzz zzzzz zzz."
-
-#: share/skin/s3/javascript/like-indicator.js:169
-msgid "like.no-users-liked-this-page"
-msgstr "Zzzzzz zzz zzzzz zzzz zzzz zzz."
 
 #: share/skin/s3/javascript/template/like-indicator.tt2:30
 msgid "like.page:"

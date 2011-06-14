@@ -166,7 +166,7 @@ LikeIndicator.prototype = {
                 return loc('like.no-followed-users-like-this-page');
             }
             else {
-                return loc('like.no-users-liked-this-page');
+                return loc('like.no-other-users-like-this-page');
             }
         }
     },
