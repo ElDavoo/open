@@ -836,10 +836,16 @@ msgstr "从组 %2 中移除 %1。"
 msgid "event.leave=user,wiki"
 msgstr "从工作区 %2 中移除 %1。"
 
+msgid "event.like=page,wiki"
+msgstr "说 %2 里的 %1 很赞。"
+
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23
 msgid "event.unfollow=person"
 msgstr "停止关注 %1。"
+
+msgid "event.unlike=page,wiki"
+msgstr "取消对 %2 里的 %1 说赞。"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))

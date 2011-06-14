@@ -578,6 +578,7 @@ use constant CN2TW => {qw(
     卷動         捲動
 
     里           裡
+    贊           讚
 )};
 
 use constant CN2TW_ExactMatch => {qw(

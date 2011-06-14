@@ -4089,9 +4089,8 @@ msgstr "加入以編輯"
 msgid "do.leave"
 msgstr "離開"
 
-#: share/skin/s3/javascript/like-indicator.js:134
 msgid "do.like"
-msgstr "Like"
+msgstr "讚"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64
 msgid "do.next"
@@ -4164,9 +4163,8 @@ msgstr "項目符號列表"
 msgid "do.unfollow"
 msgstr "停止關注此人"
 
-#: share/skin/s3/javascript/like-indicator.js:134
 msgid "do.unlike"
-msgstr "Unlike"
+msgstr "取消讚"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -6161,9 +6159,8 @@ msgstr "%1 不是 %3 的『%2』"
 msgid "error.no-role=name,role,container,type"
 msgstr "%1 不是 %3 %4 的『%2』。"
 
-#: share/skin/s3/template/view/listview:40
 msgid "error.no-search-results"
-msgstr "Your search returned 0 results."
+msgstr "您的搜尋沒有找到任何結果。"
 
 #: share/plugin/people/template/lite/profile.html:72
 msgid "error.no-signals"
@@ -6860,6 +6857,11 @@ msgstr "parseWidget：小工具 >>%1<< 無效"
 msgid "error.unknown"
 msgstr "未知錯誤"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "未知的類型：%1"
+
 msgid "error.unknown-report=type"
 msgstr "未知的報表（%1）"
 
@@ -7248,15 +7250,11 @@ msgstr "從組 %2 中移除 %1。"
 msgid "event.leave=user,wiki"
 msgstr "從工作區 %2 中移除 %1。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:27
 msgid "event.like=page"
-msgstr "liked %1"
+msgstr "說 %1 很讚。"
 
-#. (page, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
 msgid "event.like=page,wiki"
-msgstr "liked %1 in %2"
+msgstr "說 %2 裡的 %1 很讚。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:13
@@ -7283,15 +7281,11 @@ msgstr "停止關注 %1。"
 msgid "event.unknown=event-class"
 msgstr "未知分類的事件：%1"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:29
 msgid "event.unlike=page"
-msgstr "unliked %1"
+msgstr "取消對 %1 說讚。"
 
-#. (page, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:24
 msgid "event.unlike=page,wiki"
-msgstr "unliked %1 in %2"
+msgstr "取消對 %2 裡的 %1 說讚。"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -8562,9 +8556,8 @@ msgstr "為您的頁面輸入一個有意義與獨特的標題。"
 msgid "info.new-page-title"
 msgstr "提示：您稍後可以使用您選擇的標題來查找本頁面。"
 
-#: share/skin/s3/template/view/listview:43
 msgid "info.no-search-results"
-msgstr "Please make sure your query is spelled correctly and try again:"
+msgstr "請檢查搜尋拼字是否正確，然後再試一次："
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37
 msgid "info.normal-view"
@@ -9445,49 +9438,55 @@ msgstr "上個月"
 msgid "last.week"
 msgstr "上周"
 
-#: share/skin/s3/javascript/template/like-indicator.tt2:7
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "所有的讚"
+
 msgid "like.all-people"
-msgstr "All People"
+msgstr "所有人"
 
-#: share/skin/s3/javascript/like-indicator.js:137
 msgid "like.like=count"
-msgstr "%quant(%1,like)"
+msgstr "%1 個讚"
 
-#: share/skin/s3/javascript/like-indicator.js:166
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "哪些讚"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "請在您覺得讚的頁面上按<span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">讚</span>，即可將它加到『我的讚』清單中。"
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "我的讚"
+
 msgid "like.no-followed-users-like-this-page"
-msgstr "None of the people you follow have liked this page."
+msgstr "目前還沒有您關注的人覺得這頁面很讚。"
 
-#: share/skin/s3/javascript/like-indicator.js:169
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "您目前還沒有覺得哪個頁面很讚。"
+
 msgid "like.no-users-liked-this-page"
-msgstr "Nobody has liked this page yet."
+msgstr "目前還沒有人覺得這頁面很讚。"
 
-#: share/skin/s3/javascript/template/like-indicator.tt2:30
 msgid "like.page:"
-msgstr "page:"
+msgstr "頁數："
 
-#: share/skin/s3/javascript/template/like-indicator.tt2:6
 msgid "like.people-i-follow"
-msgstr "People I Follow"
+msgstr "我關注的人"
 
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:157
 msgid "like.person-count=followed"
-msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page)."
+msgstr "%1 位您關注的人覺得這頁面很讚。"
 
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:160
 msgid "like.person-count=others"
-msgstr "%quant(%1,person has liked this page,people have liked this page)."
+msgstr "%1 個人覺得這頁面很讚。"
 
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:149
 msgid "like.you-liked-this-page=followed"
-msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
+msgstr "您和 %1 位您關注的人都覺得這頁面很讚。"
 
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:152
 msgid "like.you-liked-this-page=others"
-msgstr "You and %quant(%1,other person,other people) have liked this page."
+msgstr "您和 %1 位其他人都覺得這頁面很讚。"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"
