@@ -150,7 +150,12 @@ sub new_homunculus {
 
     # The user_id key does not exist in LDAP, so map to username
     if ($key eq 'user_id') {
-        return unless $proto_user;
+        unless ($proto_user) {
+            $proto_user = $class->GetProtoUser(
+                $key=>$val, collection=>'deleted') or return undef;
+
+            $proto_user->{missing} = 1;
+        }
         $key = 'username';
         $val = $proto_user->{driver_username};
     }
