@@ -1175,7 +1175,7 @@
 "groups.next-step":"Zzzz",
 "groups.no-other-members-use-form-below-to-invite":"Zzzzzzzzz, zzz zzz zzz zzzz zzzzzz zz zzzz zzzzz.<br/>Zzz zzz zzzz zzzzz zz zzzzzz zzzz zzzzzzzzzz.",
 "groups.no-wikis-use-form-below-to-select":"Zzzzzzzzz, zzzzz zzz zz zzzzzzzzzz zzzzzzzzzz zzzz zzzz zzzzz. Zzz zzz zzzz zzzzz zz zzzzzz zzzzzzzzzz.",
-"groups.note-click-at-bottom-of-screen-to-save-changes=button":"ZZZZ: Zzzzz <b>[_1]</b> zz zzzz zzzzzzz.",
+"groups.note-click-this-to-save-changes=button":"ZZZZ: Zzzzz <b>[_1]</b> zz zzzz zzzzzzz.",
 "groups.note-message-sent-to-added-members-only":"ZZZZ: zzzzzzz zzzz zz zzzzz zzzzzzz zzzz",
 "groups.personal-message-optional:":"Zzzzzzzz zzzzzzz (zzzzzzzz):",
 "groups.previous":"zzzzzzzz",

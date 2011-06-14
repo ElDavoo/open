@@ -1175,7 +1175,7 @@
 "groups.next-step":"Next",
 "groups.no-other-members-use-form-below-to-invite":"Currently, you are the only member of this group.<br/>Use the form below to invite your colleagues.",
 "groups.no-wikis-use-form-below-to-select":"Currently, there are no workspaces associated with this group. Use the form below to select workspaces.",
-"groups.note-click-at-bottom-of-screen-to-save-changes=button":"NOTE: Click <b>[_1]</b> to save changes.",
+"groups.note-click-this-to-save-changes=button":"NOTE: Click <b>[_1]</b> to save changes.",
 "groups.note-message-sent-to-added-members-only":"NOTE: message sent to added members only",
 "groups.personal-message-optional:":"Personal message (optional):",
 "groups.previous":"previous",

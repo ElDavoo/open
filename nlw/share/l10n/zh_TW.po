@@ -8066,8 +8066,8 @@ msgstr "目前，沒有任何工作區關聯至本群組。請在下方選擇工
 
 #. (button)
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
-msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
-msgstr "提示：點選螢幕底端的<b>%1</b>來儲存所做的更改。"
+msgid "groups.note-click-this-to-save-changes=button"
+msgstr "提示：點選<b>%1</b>來儲存所做的更改。"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
 msgid "groups.note-message-sent-to-added-members-only"
