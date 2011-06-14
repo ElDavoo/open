@@ -39,9 +39,11 @@
             <p style="margin:10px 0">
               [% loc('error.no-search-results') %]
             </p>
+            [% IF action == 'search_workspace' %]
             <p style="margin:8px 0">
               [% loc('info.no-search-results') %]
             </p>
+            [% END %]
           [% END %]
         [% IF action == 'search_workspace' %]
           <div id="inlineSearch">
