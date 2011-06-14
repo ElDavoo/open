@@ -145,10 +145,8 @@ LikeIndicator.prototype = {
 
         // Possibilities:
         //  like.liked-this.(page|revision).(you|not-you)=(followed|others)
-        var what = 'page';
-
         var loc_string = [
-            'like.liked-this', what, this.isLikedByMe ? 'you' : 'not-you'
+            'like.liked-this', this.type, this.isLikedByMe ? 'you' : 'not-you'
         ].join('.');
 
         loc_string += this.onlyFollows ? '=followed' : '=others'; 
@@ -162,7 +160,8 @@ LikeIndicator.prototype = {
 };
 
 $.fn.likeIndicator = function(opts) {
-    if (!opts.url) throw new Error('opts required');
+    if (!opts.url) throw new Error('url required');
+    if (!opts.type) throw new Error('type required');
     $.each(this, function(_, node) {
         var indicator = new LikeIndicator(opts);
         indicator.render($(node));

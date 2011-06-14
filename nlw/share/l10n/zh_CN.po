@@ -9441,7 +9441,7 @@ msgstr "%1 个赞"
 
 #: share/skin/s3/javascript/like-indicator.js:157
 msgid "like.liked-this.page.not-you=followed"
-msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page.)."
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page)."
 
 #: share/skin/s3/javascript/like-indicator.js:160
 msgid "like.liked-this.page.not-you=others"
@@ -9449,11 +9449,27 @@ msgstr "%quant(%1,person has liked this page,people have liked this page,Nobody 
 
 #: share/skin/s3/javascript/like-indicator.js:149
 msgid "like.liked-this.page.you=followed"
-msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
+msgstr "You and %quant(%1,person you follow,people you follow,none of the people you follow) have liked this page."
 
 #: share/skin/s3/javascript/like-indicator.js:152
 msgid "like.liked-this.page.you=others"
 msgstr "You and %quant(%1,other person,other people) have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this revision,people you follow have liked this revision,None of the people you follow have liked this revision)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,person has liked this revision,people have liked this revision,Nobody has liked this revision yet)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow,none of the people you follow) have liked this revision."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.revision.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this revision."
 
 msgid "like.page:"
 msgstr "页数："
