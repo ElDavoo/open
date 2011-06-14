@@ -2914,6 +2914,9 @@ msgstr "活动"
 msgid "nav.groups"
 msgstr "群组"
 
+msgid "nav.my-likes"
+msgstr "我的赞"
+
 #: lib/Socialtext/RecentChangesPlugin.pm:268
 msgid "nav.news"
 msgstr "最新更动"

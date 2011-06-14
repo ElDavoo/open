@@ -9919,6 +9919,9 @@ msgstr "我的"
 msgid "nav.mobile"
 msgstr "移动版"
 
+msgid "nav.my-likes"
+msgstr "我的赞"
+
 #: share/plugin/people/template/lite/people.html:11
 msgid "nav.my-profile"
 msgstr "我的个人资料"
