@@ -11499,7 +11499,7 @@ msgstr "我的同事"
 
 #: lib/Socialtext/Rest/Events/Conversations.pm:9
 msgid "rest.my-conversations"
-msgstr "聊天记录"
+msgstr "对话记录"
 
 #. ($signaler->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:116
