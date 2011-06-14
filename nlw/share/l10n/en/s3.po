@@ -336,6 +336,10 @@ msgstr "Join"
 msgid "do.join-to-edit"
 msgstr "Join To Edit"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like"
+msgstr "Like"
+
 #: share/skin/s3/javascript/lightbox/comment.tt2:12
 msgid "do.ol"
 msgstr "Numbered List"
@@ -387,6 +391,10 @@ msgstr "Bulleted List"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "Stop following this person"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike"
+msgstr "Unlike"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -640,6 +648,10 @@ msgstr "No %1 pages tagged '%2' could be found"
 #: share/skin/s3/javascript/lightbox/email.js:126
 msgid "error.no-recipient"
 msgstr "Error: To send email, you must specify a recipient."
+
+#: share/skin/s3/template/view/listview:40
+msgid "error.no-search-results"
+msgstr "Your search returned 0 results."
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:23
 msgid "error.non-admin-create-group"
@@ -995,6 +1007,10 @@ msgstr "Use the form below to invite users to one of this workspace's groups. An
 msgid "info.logged-in=name"
 msgstr "You are logged in as %1"
 
+#: share/skin/s3/template/view/listview:43
+msgid "info.no-search-results"
+msgstr "Please make sure your query is spelled correctly and try again:"
+
 #: share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "Return edit area to normal view"
@@ -1209,6 +1225,50 @@ msgstr "your"
 #: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "invite.your-personal-message"
 msgstr "<Your personal message goes here.>"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:7
+msgid "like.all-people"
+msgstr "All People"
+
+#: share/skin/s3/javascript/like-indicator.js:137
+msgid "like.like=count"
+msgstr "%quant(%1,like)"
+
+#: share/skin/s3/javascript/like-indicator.js:166
+msgid "like.no-followed-users-like-this-page"
+msgstr "None of the people you follow have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:169
+msgid "like.no-users-liked-this-page"
+msgstr "Nobody has liked this page yet."
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:30
+msgid "like.page:"
+msgstr "page:"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:6
+msgid "like.people-i-follow"
+msgstr "People I Follow"
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.person-count=followed"
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page)."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.person-count=others"
+msgstr "%quant(%1,person has liked this page,people have liked this page)."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.you-liked-this-page=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.you-liked-this-page=others"
+msgstr "You and %quant(%1,other person,other people) have liked this page."
 
 #: share/skin/s3/template/lite/paging.html:4 share/skin/s3/template/lite/paging.html:6 share/skin/s3/template/lite/paging.html:8
 msgid "lite.first-page"

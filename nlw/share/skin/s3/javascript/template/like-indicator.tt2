@@ -3,8 +3,8 @@
 [% BLOCK 'like-bubble' %]
     <div class="like-bubble">
         <div class="like-filter [% onlyFollows ? 'colleagues' : 'all' %]">
-            <a class="colleagues" href="#">[% loc('People I Follow') %]</a>
-            <a class="all" href="#">[% loc('All People') %]</a>
+            <a class="colleagues" href="#">[% loc('like.people-i-follow') %]</a>
+            <a class="all" href="#">[% loc('like.all-people') %]</a>
         </div>
         <div class="like-count">
             [% likeText %]
@@ -27,7 +27,7 @@
 
         [% IF pages.size > 1 %]
             <div class="paging">
-                [% loc('page:') %]
+                [% loc('like.page:') %]
                 [% FOR page IN pages %] 
                     [% IF page.current %]
                         <span>[% page.num %]</span>

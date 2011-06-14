@@ -37,10 +37,10 @@
       <div style="font-size:110%" id="tooManyResults">
           [% IF empty_message; empty_message; ELSE %]
             <p style="margin:10px 0">
-              [% loc('Your search returned 0 results.') %]
+              [% loc('error.no-search-results') %]
             </p>
             <p style="margin:8px 0">
-              [% loc('Please make sure your query is spelled correctly and try again:') %]
+              [% loc('info.no-search-results') %]
             </p>
           [% END %]
         [% IF action == 'search_workspace' %]

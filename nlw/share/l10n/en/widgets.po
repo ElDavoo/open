@@ -838,10 +838,20 @@ msgstr "removed %1 from the group %2."
 msgid "event.leave=user,wiki"
 msgstr "removed %1 from the workspace %2."
 
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "event.like=page,wiki"
+msgstr "liked %1 in %2"
+
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23
 msgid "event.unfollow=person"
 msgstr "stopped following %1."
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:24
+msgid "event.unlike=page,wiki"
+msgstr "unliked %1 in %2"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))

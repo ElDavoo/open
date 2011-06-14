@@ -4471,6 +4471,10 @@ msgstr "Zzzz Zz Zzzz"
 msgid "do.leave"
 msgstr "Zzzzz"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like"
+msgstr "Zzzz"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "Zzzz"
@@ -4542,6 +4546,10 @@ msgstr "Zzzzzzzz Zzzz"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "Zzzz zzzzzzzzz zzzz zzzzzz"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike"
+msgstr "Zzzzzz"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -6568,6 +6576,10 @@ msgstr "%1 zzzz zzz zzzz zzz zzzz zz '%2' zz %3"
 msgid "error.no-role=name,role,container,type"
 msgstr "%1 zzzz zzz zzzz zzz zzzz zz '%2' zz zzz %3 %4."
 
+#: share/skin/s3/template/view/listview:40
+msgid "error.no-search-results"
+msgstr "Zzzz zzzzzz zzzzzzzz 0 zzzzzzz."
+
 #: share/plugin/people/template/lite/profile.html:72 lib/Socialtext/Lite/People.pm:78
 msgid "error.no-signals"
 msgstr "Zz zzzzzzz zz zzzzzzz."
@@ -7700,6 +7712,16 @@ msgid "event.leave=user,wiki"
 msgstr "zzzzzzz %1 zzzz zzz zzzzzzzzz %2."
 
 #. (page_in_workspace)
+#: share/template/data/events/page:27
+msgid "event.like=page"
+msgstr "zzzzz %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "event.like=page,wiki"
+msgstr "zzzzz %1 zz %2"
+
+#. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
 msgstr "zzzzzzz %1."
@@ -7723,6 +7745,16 @@ msgstr "zzzzzzz zzzzzzzzz %1."
 #: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
 msgstr "Zzzzzzz zzzzz zzzzz: %1"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:29
+msgid "event.unlike=page"
+msgstr "zzzzzzz %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:24
+msgid "event.unlike=page,wiki"
+msgstr "zzzzzzz %1 zz %2"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -9039,6 +9071,10 @@ msgstr "Zzzzz z zzzzzzzzzz zzz zzzzzzzzzzz zzzzz zzz zzzz zzzz."
 msgid "info.new-page-title"
 msgstr "Zzz: Zzz'zz zz zzzz zz zzzz zzzz zzzz zzzzz zz zzzzz zzz zzzzz zzz zzzzzz."
 
+#: share/skin/s3/template/view/listview:43
+msgid "info.no-search-results"
+msgstr "Zzzzzz zzzz zzzz zzzz zzzzz zz zzzzzzz zzzzzzzzz zzz zzz zzzzz:"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "Zzzzzz zzzz zzzz zz zzzzzz zzzz"
@@ -9929,6 +9965,50 @@ msgstr "Zzzz Zzzzz"
 #: lib/Socialtext/RecentChangesPlugin.pm:45
 msgid "last.week"
 msgstr "Zzzz Zzzz"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:7
+msgid "like.all-people"
+msgstr "Zzz Zzzzzz"
+
+#: share/skin/s3/javascript/like-indicator.js:137
+msgid "like.like=count"
+msgstr "%quant(%1,zzzz)"
+
+#: share/skin/s3/javascript/like-indicator.js:166
+msgid "like.no-followed-users-like-this-page"
+msgstr "Zzzz zz zzz zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz."
+
+#: share/skin/s3/javascript/like-indicator.js:169
+msgid "like.no-users-liked-this-page"
+msgstr "Zzzzzz zzz zzzzz zzzz zzzz zzz."
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:30
+msgid "like.page:"
+msgstr "zzzz:"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:6
+msgid "like.people-i-follow"
+msgstr "Zzzzzz Z Zzzzzz"
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.person-count=followed"
+msgstr "%quant(%1,zzzzzz zzz zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz)."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.person-count=others"
+msgstr "%quant(%1,zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzzz zzzzz zzzz zzzz)."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.you-liked-this-page=followed"
+msgstr "Zzz zzz %quant(%1,zzzzzz zzz zzzzzz,zzzzzz zzz zzzzzz) zzzz zzzzz zzzz zzzz."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.you-liked-this-page=others"
+msgstr "Zzz zzz %quant(%1,zzzzz zzzzzz,zzzzz zzzzzz) zzzz zzzzz zzzz zzzz."
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"

@@ -131,10 +131,10 @@ LikeIndicator.prototype = {
 
     text: function(extended) {
         if (this.mutable) {
-            return this.isLikedByMe ? loc('Unlike') : loc('Like')
+            return this.isLikedByMe ? loc('do.unlike') : loc('do.like')
         }
         else {
-            return loc('[quant,_1,like]', this.count);
+            return loc('like.like=count', this.count);
         }
     },
 
@@ -146,27 +146,27 @@ LikeIndicator.prototype = {
         if (others) {
             if (this.isLikedByMe) {
                 if (this.onlyFollows) {
-                    return loc('You and [quant,_1,person you follow,people you follow] have liked this page.', others);
+                    return loc('like.you-liked-this-page=followed', others);
                 }
                 else {
-                    return loc('You and [quant,_1,other person,other people] have liked this page.', others);
+                    return loc('like.you-liked-this-page=others', others);
                 }
             }
             else {
                 if (this.onlyFollows) {
-                    return loc('[quant,_1,person you follow has liked this page,people you follow have liked this page].', others);
+                    return loc('like.person-count=followed', others);
                 }
                 else {
-                    return loc('[quant,_1,person has liked this page,people have liked this page].', others);
+                    return loc('like.person-count=others', others);
                 }
             }
         }
         else {
             if (this.onlyFollows) {
-                return loc('None of the people you follow have liked this page.');
+                return loc('like.no-followed-users-like-this-page');
             }
             else {
-                return loc('Nobody has liked this page yet.');
+                return loc('like.no-users-liked-this-page');
             }
         }
     },

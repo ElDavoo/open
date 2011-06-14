@@ -4089,6 +4089,10 @@ msgstr "加入以編輯"
 msgid "do.leave"
 msgstr "離開"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like"
+msgstr "Like"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64
 msgid "do.next"
 msgstr "下一步"
@@ -4159,6 +4163,10 @@ msgstr "項目符號列表"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "停止關注此人"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike"
+msgstr "Unlike"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -6153,6 +6161,10 @@ msgstr "%1 不是 %3 的『%2』"
 msgid "error.no-role=name,role,container,type"
 msgstr "%1 不是 %3 %4 的『%2』。"
 
+#: share/skin/s3/template/view/listview:40
+msgid "error.no-search-results"
+msgstr "Your search returned 0 results."
+
 #: share/plugin/people/template/lite/profile.html:72
 msgid "error.no-signals"
 msgstr "沒有人註冊。"
@@ -7237,6 +7249,16 @@ msgid "event.leave=user,wiki"
 msgstr "從工作區 %2 中移除 %1。"
 
 #. (page_in_workspace)
+#: share/template/data/events/page:27
+msgid "event.like=page"
+msgstr "liked %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "event.like=page,wiki"
+msgstr "liked %1 in %2"
+
+#. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
 msgstr "重新命名了 %1。"
@@ -7260,6 +7282,16 @@ msgstr "停止關注 %1。"
 #: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
 msgstr "未知分類的事件：%1"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:29
+msgid "event.unlike=page"
+msgstr "unliked %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:24
+msgid "event.unlike=page,wiki"
+msgstr "unliked %1 in %2"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -8530,6 +8562,10 @@ msgstr "為您的頁面輸入一個有意義與獨特的標題。"
 msgid "info.new-page-title"
 msgstr "提示：您稍後可以使用您選擇的標題來查找本頁面。"
 
+#: share/skin/s3/template/view/listview:43
+msgid "info.no-search-results"
+msgstr "Please make sure your query is spelled correctly and try again:"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37
 msgid "info.normal-view"
 msgstr "使編輯區域回到正常視圖"
@@ -9408,6 +9444,50 @@ msgstr "上個月"
 #: lib/Socialtext/RecentChangesPlugin.pm:45
 msgid "last.week"
 msgstr "上周"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:7
+msgid "like.all-people"
+msgstr "All People"
+
+#: share/skin/s3/javascript/like-indicator.js:137
+msgid "like.like=count"
+msgstr "%quant(%1,like)"
+
+#: share/skin/s3/javascript/like-indicator.js:166
+msgid "like.no-followed-users-like-this-page"
+msgstr "None of the people you follow have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:169
+msgid "like.no-users-liked-this-page"
+msgstr "Nobody has liked this page yet."
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:30
+msgid "like.page:"
+msgstr "page:"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:6
+msgid "like.people-i-follow"
+msgstr "People I Follow"
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.person-count=followed"
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page)."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.person-count=others"
+msgstr "%quant(%1,person has liked this page,people have liked this page)."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.you-liked-this-page=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
+
+#. (others)
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.you-liked-this-page=others"
+msgstr "You and %quant(%1,other person,other people) have liked this page."
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"
