@@ -1421,10 +1421,11 @@ sub _build_convos_sql {
         }
 
         # If we are showing page events off the main events table, make sure we
-        # don't accidentally display the edit_start and edit_cancel events.
+        # don't accidentally display the edit_start, edit_cancel, watch_add or
+        # watch_delete events.
         if (!@classes or grep { $_ eq 'page' } @classes) {
             $self->add_outer_condition(
-                "evt.action NOT IN ('edit_start', 'edit_cancel')"
+                "evt.action NOT IN ('edit_start', 'edit_cancel', 'watch_add', 'watch_delete')"
             );
         }
     }
