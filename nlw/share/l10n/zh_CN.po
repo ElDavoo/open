@@ -6857,11 +6857,6 @@ msgstr "parseWidget：小工具 >>%1<< 无效"
 msgid "error.unknown"
 msgstr "未知错误"
 
-#. (type)
-#: share/plugin/like/template/like/indicator.tt2:9
-msgid "error.unknown-like=type"
-msgstr "未知的类型：%1"
-
 msgid "error.unknown-report=type"
 msgstr "未知的报表（%1）"
 
@@ -9438,55 +9433,33 @@ msgstr "上个月"
 msgid "last.week"
 msgstr "上周"
 
-#: share/plugin/like/template/like/listview-tab.tt2:2
-msgid "like.all-likes"
-msgstr "所有的赞"
-
 msgid "like.all-people"
 msgstr "所有人"
 
 msgid "like.like=count"
 msgstr "%1 个赞"
 
-#: share/plugin/like/template/like/listview-sortby.tt2:1
-msgid "like.likes"
-msgstr "哪些赞"
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page.)."
 
-#: share/plugin/like/template/like/listview-no-results.tt2:6
-msgid "like.look-for-like-on-page-you-like-and-click-it"
-msgstr "请在您觉得赞的页面上按<span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">赞</span>，即可将它加到“我的赞”清单中。"
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,person has liked this page,people have liked this page,Nobody has liked this page yet)."
 
-#: share/plugin/like/template/like/listview-tab.tt2:1
-msgid "like.my-likes"
-msgstr "我的赞"
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
 
-msgid "like.no-followed-users-like-this-page"
-msgstr "目前还没有您关注的人觉得这页面很赞。"
-
-msgid "like.no-other-users-like-this-page"
-msgstr "目前还没有其他人觉得这页面很赞。"
-
-#: share/plugin/like/template/like/listview-no-results.tt2:2
-msgid "like.no-pages-liked"
-msgstr "您目前还没有觉得哪个页面很赞。"
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.page.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this page."
 
 msgid "like.page:"
 msgstr "页数："
 
 msgid "like.people-i-follow"
 msgstr "我关注的人"
-
-msgid "like.person-count=followed"
-msgstr "%1 位您关注的人觉得这页面很赞。"
-
-msgid "like.person-count=others"
-msgstr "%1 个人觉得这页面很赞。"
-
-msgid "like.you-liked-this-page=followed"
-msgstr "您和 %1 位您关注的人都觉得这页面很赞。"
-
-msgid "like.you-liked-this-page=others"
-msgstr "您和 %1 位其他人都觉得这页面很赞。"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"

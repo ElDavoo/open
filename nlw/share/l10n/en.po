@@ -16,8 +16,6 @@
 # @COPYRIGHT@
 # #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
-# #-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#
-# @COPYRIGHT@
 # #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
@@ -87,7 +85,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 12:35-0700\n"
+"PO-Revision-Date: 2011-06-14 14:50-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -114,14 +112,6 @@ msgstr ""
 "PO-Revision-Date: 2011-02-20 10:33+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#\n"
-"Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 10:10-0700\n"
-"Last-Translator: Socialtext i18n team\n"
-"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7317,11 +7307,6 @@ msgstr "Unexpected Widget >>%1<< in parseWidget"
 msgid "error.unknown"
 msgstr "Unknown error"
 
-#. (type)
-#: share/plugin/like/template/like/indicator.tt2:9
-msgid "error.unknown-like=type"
-msgstr "Unknown type: %1"
-
 #. ($type)
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
 msgid "error.unknown-report=type"
@@ -9981,10 +9966,6 @@ msgstr "Last Month"
 msgid "last.week"
 msgstr "Last Week"
 
-#: share/plugin/like/template/like/listview-tab.tt2:2
-msgid "like.all-likes"
-msgstr "All likes"
-
 #: share/skin/s3/javascript/template/like-indicator.tt2:7
 msgid "like.all-people"
 msgstr "All People"
@@ -9993,29 +9974,21 @@ msgstr "All People"
 msgid "like.like=count"
 msgstr "%quant(%1,like)"
 
-#: share/plugin/like/template/like/listview-sortby.tt2:1
-msgid "like.likes"
-msgstr "Likes"
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page.)."
 
-#: share/plugin/like/template/like/listview-no-results.tt2:6
-msgid "like.look-for-like-on-page-you-like-and-click-it"
-msgstr "Look for <span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">Like</span> on a page you like and then click on it to add the page to your list of liked items."
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,person has liked this page,people have liked this page,Nobody has liked this page yet)."
 
-#: share/plugin/like/template/like/listview-tab.tt2:1
-msgid "like.my-likes"
-msgstr "My likes"
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
 
-#: share/skin/s3/javascript/like-indicator.js:166
-msgid "like.no-followed-users-like-this-page"
-msgstr "None of the people you follow have liked this page."
-
-#: share/skin/s3/javascript/like-indicator.js:169
-msgid "like.no-other-users-like-this-page"
-msgstr "Nobody else has liked this page yet."
-
-#: share/plugin/like/template/like/listview-no-results.tt2:2
-msgid "like.no-pages-liked"
-msgstr "You don't like any pages yet."
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.page.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this page."
 
 #: share/skin/s3/javascript/template/like-indicator.tt2:30
 msgid "like.page:"
@@ -10024,26 +9997,6 @@ msgstr "page:"
 #: share/skin/s3/javascript/template/like-indicator.tt2:6
 msgid "like.people-i-follow"
 msgstr "People I Follow"
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:157
-msgid "like.person-count=followed"
-msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page)."
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:160
-msgid "like.person-count=others"
-msgstr "%quant(%1,person has liked this page,people have liked this page)."
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:149
-msgid "like.you-liked-this-page=followed"
-msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:152
-msgid "like.you-liked-this-page=others"
-msgstr "You and %quant(%1,other person,other people) have liked this page."
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"
