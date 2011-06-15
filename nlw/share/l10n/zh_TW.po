@@ -9449,34 +9449,34 @@ msgid "like.like=count"
 msgstr "%1 個讚"
 
 msgid "like.liked-this.page.not-you=followed"
-msgstr "%quant(%1,%1 位,%1 位,目前沒有)您關注的人說這頁面讚。"
+msgstr "%quant(%1,位,位,目前沒有)您關注的人說這頁面讚。"
 
 msgid "like.liked-this.page.not-you=others"
-msgstr "%quant(%1,%1 個,%1 個,目前沒有)人說這頁面讚。"
+msgstr "%quant(%1,個,個,目前沒有)人說這頁面讚。"
 
 msgid "like.liked-this.page.only-you"
 msgstr "只有您說這頁面讚。"
 
 msgid "like.liked-this.page.you=followed"
-msgstr "%quant(%1,您和 %1 位您關注的人都說,和 %1 位您關注的人都說,您說)這頁面讚。"
+msgstr "您和 %1 位您關注的人都說這頁面讚。"
 
 msgid "like.liked-this.page.you=others"
-msgstr "%quant(%1,您和其他 %1 個人都說,和其他 %1 個人都說,您說)這頁面讚。"
+msgstr "您和其他 %1 個人都說這頁面讚。"
 
 msgid "like.liked-this.revision.not-you=followed"
-msgstr "%quant(%1,%1 位,%1 位,目前沒有)您關注的人說這版本讚。"
+msgstr "%quant(%1,位,位,目前沒有)您關注的人說這版本讚。"
 
 msgid "like.liked-this.revision.not-you=others"
-msgstr "%quant(%1,%1 個,%1 個,目前沒有)人說這版本讚。"
+msgstr "%quant(%1,個,個,目前沒有)人說這版本讚。"
 
 msgid "like.liked-this.revision.only-you"
 msgstr "只有您說這版本讚。"
 
 msgid "like.liked-this.revision.you=followed"
-msgstr "%quant(%1,您和 %1 位您關注的人都說,和 %1 位您關注的人都說,您說)這版本讚。"
+msgstr "您和 %1 位您關注的人都說這版本讚。"
 
 msgid "like.liked-this.revision.you=others"
-msgstr "%quant(%1,您和其他 %1 個人都說,和其他 %1 個人都說,您說)這版本讚。"
+msgstr "您和其他 %1 個人都說這版本讚。"
 
 #: share/plugin/like/template/like/listview-sortby.tt2:1
 msgid "like.likes"
