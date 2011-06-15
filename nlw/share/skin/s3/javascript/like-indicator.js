@@ -144,12 +144,21 @@ LikeIndicator.prototype = {
             : this.likers.totalResults;
 
         // Possibilities:
-        //  like.liked-this.(page|revision).(you|not-you)=(followed|others)
+        //  like.liked-this.(page|revision).(only-you|(you|not-you)=(followed|others))
+        var you_suffix = (
+            this.isLikedByMe
+                ? ( (others == 0) ? 'only-you' : 'you' )
+                : 'not-you'
+        );
         var loc_string = [
-            'like.liked-this', this.type, this.isLikedByMe ? 'you' : 'not-you'
+            'like.liked-this',
+            this.type,
+            you_suffix
         ].join('.');
 
-        loc_string += this.onlyFollows ? '=followed' : '=others'; 
+        if (you_suffix != 'only-you') {
+            loc_string += this.onlyFollows ? '=followed' : '=others'; 
+        }
 
         return loc(loc_string, others);
     },
