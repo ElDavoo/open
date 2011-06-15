@@ -16,8 +16,6 @@
 # @COPYRIGHT@
 # #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
-# #-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#
-# @COPYRIGHT@
 # #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
@@ -87,7 +85,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 12:35-0700\n"
+"PO-Revision-Date: 2011-06-14 15:18-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -114,14 +112,6 @@ msgstr ""
 "PO-Revision-Date: 2011-02-20 10:33+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#\n"
-"Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 10:10-0700\n"
-"Last-Translator: Socialtext i18n team\n"
-"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7317,11 +7307,6 @@ msgstr "Zzzzzzzzzz Zzzzzz >>%1<< in parseWidget"
 msgid "error.unknown"
 msgstr "Zzzzzzz zzzzz"
 
-#. (type)
-#: share/plugin/like/template/like/indicator.tt2:9
-msgid "error.unknown-like=type"
-msgstr "Zzzzzzz zzzz: %1"
-
 #. ($type)
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
 msgid "error.unknown-report=type"
@@ -9981,10 +9966,6 @@ msgstr "Zzzz Zzzzz"
 msgid "last.week"
 msgstr "Zzzz Zzzz"
 
-#: share/plugin/like/template/like/listview-tab.tt2:2
-msgid "like.all-likes"
-msgstr "Zzz zzzzz"
-
 #: share/skin/s3/javascript/template/like-indicator.tt2:7
 msgid "like.all-people"
 msgstr "Zzz Zzzzzz"
@@ -9993,29 +9974,37 @@ msgstr "Zzz Zzzzzz"
 msgid "like.like=count"
 msgstr "%quant(%1,zzzz)"
 
-#: share/plugin/like/template/like/listview-sortby.tt2:1
-msgid "like.likes"
-msgstr "Zzzzz"
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,zzzzzz zzz zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz,Zzzz zz zzz zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz)."
 
-#: share/plugin/like/template/like/listview-no-results.tt2:6
-msgid "like.look-for-like-on-page-you-like-and-click-it"
-msgstr "Zzzz zzz <span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">Zzzz</span> zz z zzzz zzz zzzz zzz zzzz zzzzz zz zz zz zzz zzz zzzz zz zzzz zzzz zz zzzzz zzzzz."
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzzz zzzzz zzzz zzzz,Zzzzzz zzz zzzzz zzzz zzzz zzz)."
 
-#: share/plugin/like/template/like/listview-tab.tt2:1
-msgid "like.my-likes"
-msgstr "Zz zzzzz"
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.you=followed"
+msgstr "Zzz zzz %quant(%1,zzzzzz zzz zzzzzz,zzzzzz zzz zzzzzz,zzzz zz zzz zzzzzz zzz zzzzzz) zzzz zzzzz zzzz zzzz."
 
-#: share/skin/s3/javascript/like-indicator.js:166
-msgid "like.no-followed-users-like-this-page"
-msgstr "Zzzz zz zzz zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz."
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.page.you=others"
+msgstr "Zzz zzz %quant(%1,zzzzz zzzzzz,zzzzz zzzzzz) zzzz zzzzz zzzz zzzz."
 
-#: share/skin/s3/javascript/like-indicator.js:169
-msgid "like.no-other-users-like-this-page"
-msgstr "Zzzzzz zzzz zzz zzzzz zzzz zzzz zzz."
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,zzzzzz zzz zzzzzz zzz zzzzz zzzz zzzzzzzz,zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzzzzzz,Zzzz zz zzz zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzzzzzz)."
 
-#: share/plugin/like/template/like/listview-no-results.tt2:2
-msgid "like.no-pages-liked"
-msgstr "Zzz zzz'z zzzz zzz zzzzz zzz."
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,zzzzzz zzz zzzzz zzzz zzzzzzzz,zzzzzz zzzz zzzzz zzzz zzzzzzzz,Zzzzzz zzz zzzzz zzzz zzzzzzzz zzz)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.you=followed"
+msgstr "Zzz zzz %quant(%1,zzzzzz zzz zzzzzz,zzzzzz zzz zzzzzz,zzzz zz zzz zzzzzz zzz zzzzzz) zzzz zzzzz zzzz zzzzzzzz."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.revision.you=others"
+msgstr "Zzz zzz %quant(%1,zzzzz zzzzzz,zzzzz zzzzzz) zzzz zzzzz zzzz zzzzzzzz."
 
 #: share/skin/s3/javascript/template/like-indicator.tt2:30
 msgid "like.page:"
@@ -10024,26 +10013,6 @@ msgstr "zzzz:"
 #: share/skin/s3/javascript/template/like-indicator.tt2:6
 msgid "like.people-i-follow"
 msgstr "Zzzzzz Z Zzzzzz"
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:157
-msgid "like.person-count=followed"
-msgstr "%quant(%1,zzzzzz zzz zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz)."
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:160
-msgid "like.person-count=others"
-msgstr "%quant(%1,zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzzz zzzzz zzzz zzzz)."
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:149
-msgid "like.you-liked-this-page=followed"
-msgstr "Zzz zzz %quant(%1,zzzzzz zzz zzzzzz,zzzzzz zzz zzzzzz) zzzz zzzzz zzzz zzzz."
-
-#. (others)
-#: share/skin/s3/javascript/like-indicator.js:152
-msgid "like.you-liked-this-page=others"
-msgstr "Zzz zzz %quant(%1,zzzzz zzzzzz,zzzzz zzzzzz) zzzz zzzzz zzzz zzzz."
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"

@@ -90,7 +90,7 @@ Note: Depends on the content of the test-data workspace, most notably the pages 
 | st-result | Kinosearch test page: strategy |  |
 | *Comment* | Test case: Phrase Search {bz: 4327} |  |
 | st-search | ":Sir John A. MacDonald" AND ":Publius Syrus" | Pages matching '":Sir John A. MacDonald" AND ":Publius Syrus"' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | *Comment* | confusing / incorrect search result page title -- already reported as {rt: 22619} |  |
 | st-search | ="Kinosearch test page:" AND =": truth" | Pages matching 'title:"Kinosearch test page:" AND title:": truth"' |
 | st-result | 1 total |  |

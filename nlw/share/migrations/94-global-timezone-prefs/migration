@@ -71,7 +71,7 @@ sub set_global_prefs {
     sql_execute(qq{
         INSERT INTO user_pref (user_id, pref_blob)
              VALUES (?, ?)
-    }, $row->{user_id}, encode_json($timezone));
+    }, $row->{user_id}, encode_json({timezone=>$timezone}));
 
     return;
 }

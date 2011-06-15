@@ -13,6 +13,10 @@ test('quant', function() {
     equals(loc("[quant,_1,goose,geese]", 2), "2 geese", "2 geese");
     equals(loc("[quant,_1,goose,geese]", 3), "3 geese", "3 geese");
 
+    equals(loc("[quant,_1,person,people,nobody]", 0), "nobody", "nobody");
+    equals(loc("[quant,_1,person,people,nobody]", 1), "1 person", "1 person");
+    equals(loc("[quant,_1,person,people,nobody]", 2), "2 people", "2 people");
+
     equals(loc("[*,_1,frog]", 1), "1 frog", "1 frog");
     equals(loc("[*,_1,frog]", 2), "2 frogs", "2 frogs");
     equals(loc("[*,_1,frog]", 3), "3 frogs", "3 frogs");
@@ -20,6 +24,10 @@ test('quant', function() {
     equals(loc("[*,_1,goose,geese]", 1), "1 goose", "1 goose");
     equals(loc("[*,_1,goose,geese]", 2), "2 geese", "2 geese");
     equals(loc("[*,_1,goose,geese]", 3), "3 geese", "3 geese");
+
+    equals(loc("[*,_1,person,people,nobody]", 0), "nobody", "nobody");
+    equals(loc("[*,_1,person,people,nobody]", 1), "1 person", "1 person");
+    equals(loc("[*,_1,person,people,nobody]", 2), "2 people", "2 people");
 });
 
 test('en locale', function() {

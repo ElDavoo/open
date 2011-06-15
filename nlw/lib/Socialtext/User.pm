@@ -150,7 +150,12 @@ sub new_homunculus {
 
     # The user_id key does not exist in LDAP, so map to username
     if ($key eq 'user_id') {
-        return unless $proto_user;
+        unless ($proto_user) {
+            $proto_user = $class->GetProtoUser(
+                $key=>$val, collection=>'deleted') or return undef;
+
+            $proto_user->{missing} = 1;
+        }
         $key = 'username';
         $val = $proto_user->{driver_username};
     }
@@ -919,8 +924,10 @@ sub default_role {
 sub is_deactivated {
     my $self = shift;
     require Socialtext::Account;
-    return $self->primary_account_id
-        == Socialtext::Account->Deleted()->account_id;
+    my $accts_match = 
+        $self->primary_account_id == Socialtext::Account->Deleted()->account_id;
+
+    return $accts_match || $self->is_deleted;
 }
 
 # is User data sourced internally (eg. Default), or externally (eg. LDAP)

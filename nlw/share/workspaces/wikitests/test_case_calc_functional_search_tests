@@ -23,13 +23,13 @@ Note: Heavily dependent on the default content of current test-data workspace
 
 | *Comment* | Test case: Calc Functional Search partial match |  |
 | st-search | sala | Pages matching 'sala' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-search | sala* | Pages matching 'sala*' |
 | st-result | 2 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
 | st-search | mont | Pages matching 'mont' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-search | mont* | Pages matching 'mont*' |
 | st-result | 3 total |  |
 | st-result | House Payment |  |
@@ -46,7 +46,7 @@ Note: Heavily dependent on the default content of current test-data workspace
 
 | *Comment* | Test case: Calc Functional Search tag match and partial |  |
 | st-search | tag:calc | Pages matching 'tag:calc' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | *Comment* | Test case: Calc Functional Search tag match and partial |  |
 | st-search | tag:calc* | Pages matching 'tag:calc*' |
 | st-result | 5 total |  |
@@ -58,7 +58,7 @@ Note: Heavily dependent on the default content of current test-data workspace
 
 | *Comment* | Test case: Calc Functional Search title match and partial |  |
 | st-search | title:Sal | Pages matching 'title:Sal' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | *Comment* | Test case: Calc Functional Search tag match and partial |  |
 | st-search | title:Sal* | Pages matching 'title:Sal*' |
 | st-result | 2 total |  |
@@ -74,15 +74,15 @@ Title searches
 | st-result | 1 total |  |
 | st-result | Credit Card Payment |  |
 | st-search | =Credit* AND NOT amou* | Pages matching 'title:Credit* AND NOT amou*' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-search | =Sala* AND tag:retirement | Pages matching 'title:Sala* AND tag:retirement' |
 | st-result | 2 total |  |
 | st-result | Salary |  |
 | st-result | Another Salary |  |
 | st-search | =Sala* AND NOT tag:retirement | Pages matching 'title:Sala* AND NOT tag:retirement' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-search | =Sala* AND -tag:retirement | Pages matching 'title:Sala* AND -tag:retirement' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-search | ="Another Salary" AND tag:"Bob The Bellhop" | Pages matching 'title:"Another Salary" AND tag:"Bob The Bellhop"' |
 | st-result | 1 total |  |
 | st-result | Another Salary |  |
@@ -105,9 +105,9 @@ Title searches
 | st-result | Salary |  |
 | st-result | Another Salary |  |
 | st-search | tag:retirement AND tag:foobar | Pages matching 'tag:retirement AND tag:foobar' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-search | tag:retirement AND tag:calculator AND tag:foobar | Pages matching 'tag:retirement AND tag:calculator AND tag:foobar' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-search | tag:"Bob The Bellhop" AND tag:retirement | Pages matching 'tag:"Bob The Bellhop" AND tag:retirement' |
 | st-result | 1 total |  |
 | st-result | Another Salary |  |
@@ -204,7 +204,7 @@ Title searches
 | st-result | Another Salary |  |
 | st-result | Kinosearch test page: truth & falsity |  |
 | st-search | salary NOT title:salary | Pages matching 'salary NOT title:salary' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | st-search | ="Another Salary" NOT tag:"foo" | Pages matching 'title:"Another Salary" NOT tag:"foo"' |
 | st-result | 1 total |  |
@@ -225,10 +225,10 @@ Title searches
 | st-result | Salary |  |
 
 | st-search | Salary -tag:calculator | Pages matching 'Salary -tag:calculator' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | st-search | Salary NOT tag:calculator | Pages matching 'Salary NOT tag:calculator | ' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | st-search | tag:"my next thirty years" NOT tag:BMAC | Pages matching 'tag:"my next thirty years" NOT tag:BMAC' |
 | st-result | 1 total |  |
@@ -248,7 +248,7 @@ Title searches
 | st-result | Credit Card Payment |  |
 
 | st-search | tag:"my next thirty years" NOT 600 | Pages matching 'tag:"my next thirty years" NOT 600' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | *Comment* | Test case: Calc Functional Search Tests Phrase token searches |  |
 | st-search | "Biggie Motors" | Pages matching '"Biggie Motors"' |
