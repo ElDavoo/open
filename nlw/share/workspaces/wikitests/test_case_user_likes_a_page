@@ -49,12 +49,11 @@
 | wait_for_element_visible_ok | //a[@class='like-indicator me'] | 30000 |
 
 | *Comment* | Test Case: User Likes a Page first user sees self in Like Bubble |  |
-| *Comment* | FAILING TEST FOR {bz: 5351} |  |
 | mouse_over_ok | //a[@class='like-indicator me'] |  |
-| wait_for_text_present_ok | You have liked this page. | 10000 |
+| wait_for_text_present_ok | Only you have liked this page. | 10000 |
 | wait_for_element_visible_ok | link=All People | 10000 |
 | click_ok | link=All People |  |
-| wait_for_text_present_ok | You have liked this page. | 10000 |
+| wait_for_text_present_ok | Only you have liked this page. | 10000 |
 | is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
 
 | *Comment* | Test Case: User Likes a Page second user likes the page, sees the proper icons |  |
@@ -68,7 +67,6 @@
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
 
 | *Comment* | Test Case: User Likes a Page follow user 1, then check mouseover bubble for colleague list |  |
-| open_ok | /st/dashboard |  |
 | open_ok | /st/profile/%%user1_id%% |  |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 | pause | 5000 | needed for IE7 |
@@ -153,7 +151,7 @@
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
 | mouse_over_ok | //a[@class='like-indicator me others'] |  |
-| wait_for_text_present_ok | None of the people you follow have liked this page. | 30000 |
+| wait_for_text_present_ok | Only you have liked this page. | 30000 |
 | wait_for_element_visible_ok | link=All People | 30000 |
 | click_ok | link=All People |  |
 | wait_for_text_present_ok | You and 6 other people have liked this page. | 30000 |
