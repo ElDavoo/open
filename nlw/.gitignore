@@ -642,3 +642,4 @@ t/Socialtext/Pluggable/Plugin/Like.t
 lib/Socialtext/Pluggable/Plugin/Kanban.pm
 lib/Socialtext/Gadgets/Container/Group.pm.orig
 t/Socialtext/People/Profile-listing.t
+t/wikitests/signals/data_signals_at.wiki
