@@ -6857,6 +6857,11 @@ msgstr "parseWidget：小工具 >>%1<< 无效"
 msgid "error.unknown"
 msgstr "未知错误"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "未知的类型：%1"
+
 msgid "error.unknown-report=type"
 msgstr "未知的报表（%1）"
 
@@ -9433,6 +9438,10 @@ msgstr "上个月"
 msgid "last.week"
 msgstr "上周"
 
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "所有的赞"
+
 msgid "like.all-people"
 msgstr "所有人"
 
@@ -9462,6 +9471,22 @@ msgstr "%quant(%1,您和 %1 位您关注的人都说,和 %1 位您关注的人�
 
 msgid "like.liked-this.revision.you=others"
 msgstr "%quant(%1,您和其他 %1 个人都说,和其他 %1 个人都说,您说)这版本赞。"
+
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "哪些赞"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "请在您觉得赞的页面上按<span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">赞</span>，即可将它加到“我的赞”清单中。"
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "我的赞"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "您目前还没有觉得哪个页面很赞。"
 
 msgid "like.page:"
 msgstr "页数："

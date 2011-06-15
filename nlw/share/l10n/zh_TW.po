@@ -6857,6 +6857,11 @@ msgstr "parseWidget：小工具 >>%1<< 無效"
 msgid "error.unknown"
 msgstr "未知錯誤"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "未知的類型：%1"
+
 msgid "error.unknown-report=type"
 msgstr "未知的報表（%1）"
 
@@ -9433,6 +9438,10 @@ msgstr "上個月"
 msgid "last.week"
 msgstr "上周"
 
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "所有的讚"
+
 msgid "like.all-people"
 msgstr "所有人"
 
@@ -9462,6 +9471,22 @@ msgstr "%quant(%1,您和 %1 位您關注的人都說,和 %1 位您關注的人�
 
 msgid "like.liked-this.revision.you=others"
 msgstr "%quant(%1,您和其他 %1 個人都說,和其他 %1 個人都說,您說)這版本讚。"
+
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "哪些讚"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "請在您覺得讚的頁面上按<span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">讚</span>，即可將它加到『我的讚』清單中。"
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "我的讚"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "您目前還沒有覺得哪個頁面很讚。"
 
 msgid "like.page:"
 msgstr "頁數："

@@ -16,6 +16,8 @@
 # @COPYRIGHT@
 # #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
+# #-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
 # #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
@@ -112,6 +114,14 @@ msgstr ""
 "PO-Revision-Date: 2011-02-20 10:33+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-06-14 10:10-0700\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -7307,6 +7317,11 @@ msgstr "Unexpected Widget >>%1<< in parseWidget"
 msgid "error.unknown"
 msgstr "Unknown error"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "Unknown type: %1"
+
 #. ($type)
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
 msgid "error.unknown-report=type"
@@ -9966,6 +9981,10 @@ msgstr "Last Month"
 msgid "last.week"
 msgstr "Last Week"
 
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "All likes"
+
 #: share/skin/s3/javascript/template/like-indicator.tt2:7
 msgid "like.all-people"
 msgstr "All People"
@@ -10005,6 +10024,22 @@ msgstr "You and %quant(%1,person you follow,people you follow,none of the people
 #: share/skin/s3/javascript/like-indicator.js:152
 msgid "like.liked-this.revision.you=others"
 msgstr "You and %quant(%1,other person,other people) have liked this revision."
+
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "Likes"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "Look for <span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">Like</span> on a page you like and then click on it to add the page to your list of liked items."
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "My likes"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "You don't like any pages yet."
 
 #: share/skin/s3/javascript/template/like-indicator.tt2:30
 msgid "like.page:"
