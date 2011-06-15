@@ -1,3 +1,5 @@
+[% USE decorate %]
+[% USE label_ellipsis %]
 <td><input onclick="preventSameRevisionCompare()" name="old_revision_id" value="[% id %]" type="radio"
   [% IF check_old %] checked="checked"[% END %] 
   [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
