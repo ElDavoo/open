@@ -202,6 +202,12 @@ sub _search {
         # queries, which is used for words like "field:value" and "prefix*"
         mm => 1,
 
+        # [1 TO *] style range queries result in a
+        # org.apache.lucene.search.BooleanQuery$TooManyClauses exception to be
+        # thrown. This is fixed by disabling the Highlighter in these cases.
+        $query =~ /:\[[^]]+ TO \*\]/
+            ? ('hl.usePhraseHighlighter' => 'false') : (),
+
         # fq = Filter Query - superset of docs to return from
         (@filter_query ? (fq => \@filter_query) : ()),
         rows        => $opts{limit},
