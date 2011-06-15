@@ -1,7 +1,7 @@
 package Socialtext::Handler::REST;
 # @COPYRIGHT@
 
-use strict;
+use 5.12.0;
 use warnings;
 
 use base 'REST::Application::Routes';
@@ -132,11 +132,11 @@ sub real_handler {
 
     my $handler = __PACKAGE__->new( request => $r, user => $user );
     Socialtext::Timer->Continue('handler_run');
-    $handler->run();
+    my $rv = $handler->run();
     Socialtext::Timer->Pause('handler_run');
 
     $class->log_timings($handler);
-    return OK;
+    return $rv;
 }
 
 # record to st_timed_log a record of how long this
@@ -244,6 +244,7 @@ sub log_timings {
 sub loadResource {
     my ($self, $path, @extraArgs) = @_;
     $path ||= $self->getMatchText();
+    $path = URI->new($path)->path;
     my $handler = sub { $self->defaultResourceHandler(@_) };
     my %vars;
 
@@ -300,7 +301,7 @@ sub run {
     }
 
     # Get the headers and then add the representation to to the output stream.
-    my $output = $self->getHeaders();
+    my $output = ''; # $self->getHeaders();
     $self->addRepresentation($repr, \$output);
 
     # Send the output unless we're told not to by the environment.
@@ -321,8 +322,10 @@ sub run {
 sub new {
     my ($proto, %args) = @_;
     my $class = ref($proto) ? ref($proto) : $proto;
+    state $query;
+    $query = $args{query} // $query;
     my $self = bless(
-        { __defaultQuery => Socialtext::CGI::Scrubbed->new() },
+        { __query => $query },
         $class,
     );
     $self->setup(%args);
