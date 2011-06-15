@@ -243,7 +243,7 @@ Test the all-combined feed does not accidentally show edit_cancel and edit_start
 | get              | /data/events/conversations/%%user_c%%?activity=all-combined;with_my_signals=1;limit=100;direct=both | application/json |
 | code-is         | 200 |
 | json-parse      |     |
-| json-array-size | 28  |
+| json-array-size | 26  |
 
 | body-unlike | "tk":"100"             |
 | body-like   | "tk":"101"             |
