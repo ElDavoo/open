@@ -168,6 +168,7 @@ sub _add_page_doc {
         [revisions => $revisions],
         [tag_count => scalar(@$tags) ],
         (map { [ tag => $_ ] } @$tags),
+        [has_likes => 1],
         [like_count => scalar(@$likes) ],
         (map { [ like => $_ ] } @$likes),
         Socialtext::Search::Solr::BigField->new(body => \$body),
