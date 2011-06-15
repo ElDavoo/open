@@ -91,7 +91,7 @@ Set up events
 | get             | %%a_convos%% | application/json |
 | code-is         | 200          |                  |
 | json-parse      |              |                  |
-| json-array-size | 2            |                  |
+| json-array-size | 4            |                  |
 | body-like       | "tk":"1a"    |                  |
 | body-like       | "tk":"1b"    |                  |
 
@@ -99,7 +99,7 @@ Set up events
 | get             | %%a_convos%%?group_id=%%a_group_id%% | application/json |
 | code-is         | 200                                  |                  |
 | json-parse      |                                      |                  |
-| json-array-size | 2                                    |                  |
+| json-array-size | 4                                    |                  |
 | body-like       | "tk":"1a"                            |                  |
 | body-like       | "tk":"1b"                            |                  |
 
