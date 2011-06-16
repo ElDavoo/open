@@ -7,12 +7,25 @@ use CGI::PSGI;
 use Plack::Request;
 use Data::Dump qw(dd);
 use URI;
+use Test::MockObject;
+use Encode ();
+
+{
+    package _Connection;
+    use base 'Class::Accessor';
+    __PACKAGE__->mk_accessors(qw(user));
+}
+
+sub Apache::Cookie::fetch { '' } # TODO
 
 sub Plack::Request::header_in { scalar $_[0]->header($_[1]) }
 sub Plack::Request::args { $ENV{QUERY_STRING} }
 sub Plack::Request::cgi_env { %ENV }
 sub Plack::Request::parsed_uri { URI->new($ENV{REQUEST_URI}) }
 sub Plack::Request::log_error { dd @_ }
+sub Plack::Request::connection {
+    $_[0]{_connection} //= _Connection->new
+}
 *URI::unparse = *URI::as_string;
 
 my $app = sub {
@@ -46,5 +59,6 @@ my $app = sub {
         push @actual_headers, $key, $val;
     }
 
+    Encode::_utf8_off($out);
     return [$status, \@actual_headers, [$out]];
 };
