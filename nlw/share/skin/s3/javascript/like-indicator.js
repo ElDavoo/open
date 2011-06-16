@@ -8,7 +8,8 @@ LikeIndicator = function(opts) {
 
 LikeIndicator.prototype = {
     loc: loc,
-    limit: 5,
+    limit: 10,
+    col_limit: 5,
 
     render: function ($node) {
         var self = this;
@@ -63,6 +64,14 @@ LikeIndicator.prototype = {
 
         $.getJSON(url, function(likers) {
             self.likers = likers;
+
+            // Split into columns
+            self.columns = [];
+            $.each(likers.entry, function(i,liker) {
+                var col = Math.floor(i/self.col_limit);
+                if (!self.columns[col]) self.columns[col] = [];
+                self.columns[col].push(liker);
+            });
 
             self.pages = [];
             for (var i=0; i * self.limit < likers.totalResults; i++) {
