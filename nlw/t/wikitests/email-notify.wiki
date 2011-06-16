@@ -174,7 +174,7 @@ but after another few days or so:
 | clear-email          |                    |   |
 | st-fast-forward-jobs | 3500               |   |
 | st-process-jobs      |                    |   |
-| email-like           | qr/(?s)Aaaa.+Foo/s |   |
+| email-like           | qr/(?s)Aaaa.+Foo/  |   |
 | email-unlike         | qr/created by/     |   |
 
 and there's a "gap protector" job too:
