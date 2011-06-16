@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+use 5.12.0;
 use Plack::Test;
 use Term::ReadLine;
 
@@ -6,14 +7,24 @@ test_psgi
     app => do 'app.psgi',
     client => sub {
         my $cb = shift;
-        my $term = Term::ReadLine->new;
-        my $OUT = $term->OUT || \*STDOUT;
-        while ( defined ($_ = $term->readline('>>> GET http://localhost/')) ) {
-            chomp;
-            $_ ||= '/data/config';
-            s!^/+!!;
-            my $req = HTTP::Request->new(GET => "http://localhost/$_");
+        my $do_req = sub {
+            my $path = shift;
+            $path ||= '/data/config';
+            $path =~ s!^/+!!;
+            my $req = HTTP::Request->new(GET => "http://localhost/$path");
             my $res = $cb->($req);
-            $OUT->print($res->as_string);
+            say $res->as_string;
+        };
+
+        if (@ARGV) {
+            $do_req->($_) for @ARGV;
+            return;
+        }
+        else {
+            my $term = Term::ReadLine->new;
+            while ( defined ($_ = $term->readline('>>> GET http://localhost/')) ) {
+                chomp;
+                $do_req->($_);
+            }
         }
     };

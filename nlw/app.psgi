@@ -6,11 +6,14 @@ use Socialtext::Handler::REST;
 use CGI::PSGI;
 use Plack::Request;
 use Data::Dump qw(dd);
+use URI;
 
 sub Plack::Request::header_in { scalar $_[0]->header($_[1]) }
 sub Plack::Request::args { $ENV{QUERY_STRING} }
 sub Plack::Request::cgi_env { %ENV }
+sub Plack::Request::parsed_uri { URI->new($ENV{REQUEST_URI}) }
 sub Plack::Request::log_error { dd @_ }
+*URI::unparse = *URI::as_string;
 
 my $app = sub {
     my $env = shift;
