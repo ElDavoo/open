@@ -22,8 +22,8 @@ LikeIndicator.prototype = {
                 .removeClass('me')
                 .removeClass('others')
                 .addClass(self.className())
-                .attr('title', self.text())
-                .html(self.text());
+                .attr('title', self.text(true))
+                .html(self.text(true));
         }
 
         var $indicator = self.node.find('a.like-indicator');
@@ -129,13 +129,13 @@ LikeIndicator.prototype = {
         return classes.join(' ');
     },
 
-    text: function(extended) {
-        if (this.mutable) {
-            return this.isLikedByMe ? loc('do.unlike') : loc('do.like')
-        }
-        else {
-            return loc('like.like=count', this.count);
-        }
+    text: function(with_count) {
+        var loc_key = this.mutable
+            ? this.isLikedByMe
+                ? 'do.unlike' : 'do.like'
+            : 'like.like';
+        if (with_count) loc_key += '=count';
+        return loc(loc_key, this.count);
     },
 
     likeText: function() {

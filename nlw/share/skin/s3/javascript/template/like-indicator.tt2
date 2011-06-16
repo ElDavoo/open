@@ -1,4 +1,4 @@
-<a class="like-indicator [% className %]" href="#">[% text %]</a>
+<a class="like-indicator [% className %]" href="#">[% text(1) %]</a>
 
 [% BLOCK 'like-bubble' %]
     <div class="like-bubble">
@@ -42,7 +42,7 @@
 
         [% IF mutable %]
         <div class="like-button">
-            <a class="like-indicator [% className %]" href="#" title="[% text %]">[% text(1) %]</a>
+            <a class="like-indicator [% className %]" href="#" title="[% text %]">[% text %]</a>
         </div>
         [% END %]
     </div>
