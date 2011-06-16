@@ -2079,6 +2079,7 @@ div#controls div#controlsRight ul li a.watch.on {
     padding: 5px 10px 5px 23px;
     background: url(/nlw/plugin/like/images/like-nobody.gif)
                 no-repeat center left
+    white-space: nowrap;
 }
 #controlsRight .like-indicator { padding: 0 10px 0 28px }
 .like-indicator.immutable {
