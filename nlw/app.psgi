@@ -30,18 +30,21 @@ my $app = sub {
     map { $ENV{$_} = $env->{$_} }
         grep { /^HTTP/ }
         keys %{$env};
-    my $out = $app->handler($r);
+    my ($h, $out) = $app->handler($r);
 
-    given ($app->headerType) {
-        when ('header') {
-            return [200, [$app->header], [$out]];
+    my @headers = $h->header;
+    my @actual_headers;
+    my $status = 200;
+
+    while (my $key = shift @headers) {
+        my $val = shift @headers;
+        $key =~ s/^-//;
+        if ($key =~ /status/i) {
+            $status = int($val) || 200;
+            next;
         }
-        when ('redirect') {
-            my %h = $app->header();
-            return [200, [%h], [Data::Dump::dump(\%h)]];
-        }
-        default {
-            return [200, [], []];
-        }
+        push @actual_headers, $key, $val;
     }
+
+    return [$status, \@actual_headers, [$out]];
 };

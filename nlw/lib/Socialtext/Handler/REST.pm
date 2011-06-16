@@ -136,7 +136,7 @@ sub real_handler {
     Socialtext::Timer->Pause('handler_run');
 
     $class->log_timings($handler);
-    return $rv;
+    return ($handler, $rv);
 }
 
 # record to st_timed_log a record of how long this
