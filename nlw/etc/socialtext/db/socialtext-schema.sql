@@ -2988,4 +2988,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '144');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '145');

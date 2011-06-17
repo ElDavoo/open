@@ -45,7 +45,7 @@ CREATE TRIGGER update_like_count BEFORE INSERT OR DELETE ON user_like
     FOR EACH ROW EXECUTE PROCEDURE update_like_count();
 
 UPDATE "System"
-   SET value = '144'
+   SET value = '145'
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
