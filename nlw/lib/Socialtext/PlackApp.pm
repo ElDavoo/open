@@ -81,9 +81,11 @@ sub Apache::Request::new { $Request }
 sub Apache::Request::instance { $Request }
 
 BEGIN {
+    @Apache::Constants::ISA = 'Exporter';
     $INC{$_} = __FILE__ for qw(
         Apache/Cookie.pm
         Apache/Request.pm
+        Apache/Constants.pm
         Apache.pm
     );
     for my $method (@{$HTTP::Status::EXPORT_TAGS{constants}}) {
@@ -91,8 +93,10 @@ BEGIN {
         (my $code = $method) =~ s/^HTTP_//;
         my $value = &{"HTTP::Status::$method"}();
         *{"Apache::Constants::$code"} = sub { $value };
+        push @Apache::Constants::EXPORT, $code;
         if ($method eq 'HTTP_FOUND') {
             *{"Apache::Constants::REDIRECT"} = sub { $value };
+            push @Apache::Constants::EXPORT, 'REDIRECT';
         }
     }
     *URI::unparse = *URI::as_string;
