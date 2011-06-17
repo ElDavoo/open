@@ -86,19 +86,30 @@ BEGIN {
         Apache/Cookie.pm
         Apache/Request.pm
         Apache/Constants.pm
+        Apache/SubProcess.pm
+        Apache/URI.pm
         Apache.pm
     );
+    my %synonyms = (
+        FOUND => 'REDIRECT',
+        UNAUTHORIZED => 'AUTH_REQUIRED',
+    );
+
     for my $method (@{$HTTP::Status::EXPORT_TAGS{constants}}) {
         no strict 'refs';
         (my $code = $method) =~ s/^HTTP_//;
         my $value = &{"HTTP::Status::$method"}();
         *{"Apache::Constants::$code"} = sub { $value };
         push @Apache::Constants::EXPORT, $code;
-        if ($method eq 'HTTP_FOUND') {
-            *{"Apache::Constants::REDIRECT"} = sub { $value };
-            push @Apache::Constants::EXPORT, 'REDIRECT';
+        if (my $sym = $synonyms{$code}) {
+            *{"Apache::Constants::$sym"} = sub { $value };
+            push @Apache::Constants::EXPORT, $sym;
         }
     }
+    %Apache::Constants::EXPORT_TAGS = (
+        common => \@Apache::Constants::EXPORT,
+        response => \@Apache::Constants::EXPORT,
+    );
     *URI::unparse = *URI::as_string;
 }
 
