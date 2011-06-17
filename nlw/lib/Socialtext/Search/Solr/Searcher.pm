@@ -275,7 +275,7 @@ sub _sort_opts {
         sender         => 'creator_name',
         name           => 'name_asort',
         title          => 'plain_title',
-        likes          => 'like_count',
+        likes          => 'has_likes',
     );
     my %default_dir = (
         title => 'asc',
@@ -307,7 +307,14 @@ sub _sort_opts {
     # If a valid sort order is supplied, then we secondary sort by date,
     # unless the primary sort is already date, in which case we tie-break
     # by ID to accomodate sub-second differences in Signals.
-    my $sec_sort = $order eq 'date' ? "id $direction" : 'date desc, id desc';
+    # For {bz: 5372}, we also need to sort by has_likes so that all the
+    # pages that have never been liked show up lower than ones that have been
+    # liked
+    my $sec_sort = $order eq 'date'
+        ? "id $direction"
+        : $order eq 'likes'
+            ? "like_count $direction, date desc, id desc"
+            : 'date desc, id desc';
     return ('sort' => "$sortable{$order} $direction, $sec_sort");
 }
 
