@@ -23,6 +23,7 @@ use Socialtext::JSON qw/encode_json/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::UUID qw/new_uuid/;
 
+use Carp 'croak';
 use namespace::clean -except => 'meta';
 
 use constant TIDY_FREQUENCY => 60;
