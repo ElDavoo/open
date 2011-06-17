@@ -51,6 +51,7 @@ sub _wrapper {
             serialize   => 'Base64',
             handle      => get_dbh(),
             commit      => 0, # autocommit
+            header_object => $::PlackResponse,
         );
 
     return $_[0]->{wrapper};
