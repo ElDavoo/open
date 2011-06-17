@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 10:10-0700\n"
+"PO-Revision-Date: 2011-06-16 00:06-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -11,7 +11,7 @@ msgstr ""
 
 #: share/plugin/like/template/like/listview-tab.tt2:2
 msgid "like.all-likes"
-msgstr "All likes"
+msgstr "All Likes"
 
 #: share/plugin/like/template/like/listview-sortby.tt2:1
 msgid "like.likes"
@@ -23,7 +23,7 @@ msgstr "Look for <span style=\"padding:10px 0 10px 20px; font-weight: bold\" cla
 
 #: share/plugin/like/template/like/listview-tab.tt2:1
 msgid "like.my-likes"
-msgstr "My likes"
+msgstr "My Likes"
 
 #. (type)
 #: share/plugin/like/template/like/indicator.tt2:9

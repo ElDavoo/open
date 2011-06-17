@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-15 09:01-0700\n"
+"PO-Revision-Date: 2011-06-16 10:57-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -119,7 +119,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 10:10-0700\n"
+"PO-Revision-Date: 2011-06-16 00:06-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 10:31-0700\n"
+"PO-Revision-Date: 2011-06-16 00:08-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4485,6 +4485,10 @@ msgstr "Leave"
 msgid "do.like"
 msgstr "Like"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like=count"
+msgstr "(%1) Like"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "Next"
@@ -4560,6 +4564,10 @@ msgstr "Stop following this person"
 #: share/skin/s3/javascript/like-indicator.js:134
 msgid "do.unlike"
 msgstr "Unlike"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike=count"
+msgstr "(%1) Unlike"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -9983,7 +9991,7 @@ msgstr "Last Week"
 
 #: share/plugin/like/template/like/listview-tab.tt2:2
 msgid "like.all-likes"
-msgstr "All likes"
+msgstr "All Likes"
 
 #: share/skin/s3/javascript/template/like-indicator.tt2:7
 msgid "like.all-people"
@@ -10043,7 +10051,7 @@ msgstr "Look for <span style=\"padding:10px 0 10px 20px; font-weight: bold\" cla
 
 #: share/plugin/like/template/like/listview-tab.tt2:1
 msgid "like.my-likes"
-msgstr "My likes"
+msgstr "My Likes"
 
 #: share/plugin/like/template/like/listview-no-results.tt2:2
 msgid "like.no-pages-liked"
@@ -10470,6 +10478,10 @@ msgstr "Last"
 msgid "nav.last-page"
 msgstr "Last Page"
 
+#: lib/Socialtext/Pluggable/Plugin/Like.pm:113
+msgid "nav.likes"
+msgstr "Likes"
+
 #: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
 msgstr "Log in"
@@ -10493,10 +10505,6 @@ msgstr "Mine"
 #: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86 share/plugin/control/template/control/wrapper:132 share/plugin/control/template/control/wrapper:57
 msgid "nav.mobile"
 msgstr "Mobile"
-
-#: lib/Socialtext/Pluggable/Plugin/Like.pm:113
-msgid "nav.my-likes"
-msgstr "My Likes"
 
 #: share/plugin/people/template/lite/people.html:11
 msgid "nav.my-profile"

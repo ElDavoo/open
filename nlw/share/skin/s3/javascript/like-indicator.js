@@ -8,7 +8,8 @@ LikeIndicator = function(opts) {
 
 LikeIndicator.prototype = {
     loc: loc,
-    limit: 5,
+    limit: 10,
+    col_limit: 5,
 
     render: function ($node) {
         var self = this;
@@ -22,8 +23,8 @@ LikeIndicator.prototype = {
                 .removeClass('me')
                 .removeClass('others')
                 .addClass(self.className())
-                .attr('title', self.text())
-                .html(self.text());
+                .attr('title', self.text(true))
+                .html(self.text(true));
         }
 
         var $indicator = self.node.find('a.like-indicator');
@@ -63,6 +64,14 @@ LikeIndicator.prototype = {
 
         $.getJSON(url, function(likers) {
             self.likers = likers;
+
+            // Split into columns
+            self.columns = [];
+            $.each(likers.entry, function(i,liker) {
+                var col = Math.floor(i/self.col_limit);
+                if (!self.columns[col]) self.columns[col] = [];
+                self.columns[col].push(liker);
+            });
 
             self.pages = [];
             for (var i=0; i * self.limit < likers.totalResults; i++) {
@@ -129,13 +138,13 @@ LikeIndicator.prototype = {
         return classes.join(' ');
     },
 
-    text: function(extended) {
-        if (this.mutable) {
-            return this.isLikedByMe ? loc('do.unlike') : loc('do.like')
-        }
-        else {
-            return loc('like.like=count', this.count);
-        }
+    text: function(with_count) {
+        var loc_key = this.mutable
+            ? this.isLikedByMe
+                ? 'do.unlike' : 'do.like'
+            : 'like.like';
+        if (with_count) loc_key += '=count';
+        return loc(loc_key, this.count);
     },
 
     likeText: function() {

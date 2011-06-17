@@ -476,6 +476,31 @@ CREATE FUNCTION uniq(integer[]) RETURNS integer[]
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', 'uniq';
 
+CREATE FUNCTION update_like_count() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF (TG_OP = 'INSERT') THEN
+            IF NEW.page_id IS NOT NULL AND NEW.revision_id IS NULL THEN
+                UPDATE page
+                   SET like_count = like_count + 1
+                 WHERE page.workspace_id = NEW.workspace_id
+                   AND page.page_id = NEW.page_id;
+            END IF;
+            RETURN NEW;
+        ELSIF (TG_OP = 'DELETE') THEN
+            IF OLD.page_id IS NOT NULL AND OLD.revision_id IS NULL THEN
+                UPDATE page
+                   SET like_count = like_count - 1
+                 WHERE page.workspace_id = OLD.workspace_id
+                   AND page.page_id = OLD.page_id;
+            END IF;
+            RETURN OLD;
+        END IF;
+        RETURN NULL;
+    END;
+$$;
+
 CREATE FUNCTION update_recent_signal() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -1183,7 +1208,8 @@ CREATE TABLE page (
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
     tags text[] DEFAULT ARRAY[]::text[] NOT NULL,
-    views integer DEFAULT 0 NOT NULL
+    views integer DEFAULT 0 NOT NULL,
+    like_count bigint DEFAULT 0
 );
 
 CREATE TABLE page_attachment (
@@ -2297,6 +2323,9 @@ CREATE INDEX page_creator_time
 CREATE INDEX page_last_editor_time
 	    ON page (last_editor_id, last_edit_time);
 
+CREATE INDEX page_likes_count_idx
+	    ON page (like_count);
+
 CREATE INDEX page_link__from_page_md5
 	    ON page_link (from_workspace_id, from_page_md5);
 
@@ -2455,6 +2484,8 @@ CREATE TRIGGER signal_insert_recent AFTER INSERT ON signal FOR EACH ROW EXECUTE 
 CREATE TRIGGER signal_update_recent AFTER UPDATE ON signal FOR EACH ROW EXECUTE PROCEDURE update_recent_signal();
 
 CREATE TRIGGER signal_uset_insert_recent AFTER INSERT ON signal_user_set FOR EACH ROW EXECUTE PROCEDURE insert_recent_signal_user_set();
+
+CREATE TRIGGER update_like_count BEFORE INSERT OR DELETE ON user_like FOR EACH ROW EXECUTE PROCEDURE update_like_count();
 
 CREATE TRIGGER user_set_path_insert AFTER INSERT ON user_set_path FOR EACH ROW EXECUTE PROCEDURE on_user_set_path_insert();
 
@@ -2957,4 +2988,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '144');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '145');

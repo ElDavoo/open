@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-06-17 01:15-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4092,6 +4092,9 @@ msgstr "離開"
 msgid "do.like"
 msgstr "讚"
 
+msgid "do.like=count"
+msgstr "(%1) 讚"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64
 msgid "do.next"
 msgstr "下一步"
@@ -4165,6 +4168,9 @@ msgstr "停止關注此人"
 
 msgid "do.unlike"
 msgstr "取消讚"
+
+msgid "do.unlike=count"
+msgstr "(%1) 取消讚"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -5065,7 +5071,7 @@ msgid "error.at-least-one-admin-required"
 msgstr "您必須至少選擇一個管理員"
 
 msgid "error.at-least-one-column-required"
-msgstr "錯誤：請指定至少一個欄位。"
+msgstr "錯誤：請指定至少一個分欄。"
 
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
@@ -5189,7 +5195,7 @@ msgstr "清除功能尚未實現。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1955 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1409
 msgid "error.columns-too-big"
-msgstr "列數值過大，最大值為 35。"
+msgstr "欄數過大，最大值為 35。"
 
 #. ($new_ts)
 #: lib/Socialtext/Appliance/Model/Setup.pm:317
@@ -5574,7 +5580,7 @@ msgstr "認証所採用的軟限制須介於 %1 與 %2 天之間。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1401
 msgid "error.invalid-columns"
-msgstr "列數無效。"
+msgstr "欄數無效。"
 
 #: lib/Socialtext/Handler/Authen.pm:486 lib/Socialtext/Handler/Authen.pm:545 lib/Socialtext/Handler/Authen.pm:66
 msgid "error.invalid-confirmation-url"
@@ -6626,7 +6632,7 @@ msgstr "%1 已是 %3 工作區的 %2"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1405
 msgid "error.rows-and-columns-required"
-msgstr "行與列不能為 0。"
+msgstr "行與欄不能為 0。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1951 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1407
 msgid "error.rows-too-big"
@@ -9284,7 +9290,7 @@ msgstr "基本設定"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:169
 msgid "kanban.bug-columns"
-msgstr "瑕疵欄位"
+msgstr "瑕疵欄"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:183
 msgid "kanban.bug-notes"
@@ -9304,7 +9310,7 @@ msgstr "由此分享者 ID…"
 
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:38
 msgid "kanban.columns"
-msgstr "欄位"
+msgstr "分欄"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:105
 msgid "kanban.default-color:"
@@ -9449,34 +9455,34 @@ msgid "like.like=count"
 msgstr "%1 個讚"
 
 msgid "like.liked-this.page.not-you=followed"
-msgstr "%quant(%1,%1 位,%1 位,目前沒有)您關注的人說這頁面讚。"
+msgstr "%quant(%1,位,位,目前沒有)您關注的人說這頁面讚。"
 
 msgid "like.liked-this.page.not-you=others"
-msgstr "%quant(%1,%1 個,%1 個,目前沒有)人說這頁面讚。"
+msgstr "%quant(%1,個,個,目前沒有)人說這頁面讚。"
 
 msgid "like.liked-this.page.only-you"
 msgstr "只有您說這頁面讚。"
 
 msgid "like.liked-this.page.you=followed"
-msgstr "%quant(%1,您和 %1 位您關注的人都說,和 %1 位您關注的人都說,您說)這頁面讚。"
+msgstr "您和 %1 位您關注的人都說這頁面讚。"
 
 msgid "like.liked-this.page.you=others"
-msgstr "%quant(%1,您和其他 %1 個人都說,和其他 %1 個人都說,您說)這頁面讚。"
+msgstr "您和其他 %1 個人都說這頁面讚。"
 
 msgid "like.liked-this.revision.not-you=followed"
-msgstr "%quant(%1,%1 位,%1 位,目前沒有)您關注的人說這版本讚。"
+msgstr "%quant(%1,位,位,目前沒有)您關注的人說這版本讚。"
 
 msgid "like.liked-this.revision.not-you=others"
-msgstr "%quant(%1,%1 個,%1 個,目前沒有)人說這版本讚。"
+msgstr "%quant(%1,個,個,目前沒有)人說這版本讚。"
 
 msgid "like.liked-this.revision.only-you"
 msgstr "只有您說這版本讚。"
 
 msgid "like.liked-this.revision.you=followed"
-msgstr "%quant(%1,您和 %1 位您關注的人都說,和 %1 位您關注的人都說,您說)這版本讚。"
+msgstr "您和 %1 位您關注的人都說這版本讚。"
 
 msgid "like.liked-this.revision.you=others"
-msgstr "%quant(%1,您和其他 %1 個人都說,和其他 %1 個人都說,您說)這版本讚。"
+msgstr "您和其他 %1 個人都說這版本讚。"
 
 #: share/plugin/like/template/like/listview-sortby.tt2:1
 msgid "like.likes"
@@ -9907,6 +9913,9 @@ msgstr "最後"
 msgid "nav.last-page"
 msgstr "末頁"
 
+msgid "nav.likes"
+msgstr "哪些讚"
+
 #: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
 msgstr "登入"
@@ -9930,9 +9939,6 @@ msgstr "我的"
 #: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86
 msgid "nav.mobile"
 msgstr "行動版"
-
-msgid "nav.my-likes"
-msgstr "我的讚"
 
 #: share/plugin/people/template/lite/people.html:11
 msgid "nav.my-profile"
@@ -11687,7 +11693,7 @@ msgstr "顏色"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:169
 msgid "sc.column-width"
-msgstr "列寬"
+msgstr "欄寬"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2565
 msgid "sc.confirm-navigate-away?"
@@ -11709,7 +11715,7 @@ msgstr "（預設）"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:191
 msgid "sc.delete-column"
-msgstr "刪除列"
+msgstr "刪除欄"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:348
 msgid "sc.delete-name"
@@ -11777,11 +11783,11 @@ msgstr "向右填充"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
 msgid "sc.font"
-msgstr "字體"
+msgstr "字型"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:55 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:46
 msgid "sc.font-family"
-msgstr "系列"
+msgstr "字體"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:96 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
 msgid "sc.format"
@@ -11801,11 +11807,11 @@ msgstr "隱藏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:187
 msgid "sc.insert-column-left"
-msgstr "在左側插入一列"
+msgstr "在左側插入一欄"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:188
 msgid "sc.insert-column-right"
-msgstr "在右側插入一列"
+msgstr "在右側插入一欄"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1004 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:216
 msgid "sc.insert-formula"
@@ -11849,11 +11855,11 @@ msgstr "移動"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:189
 msgid "sc.move-column-left"
-msgstr "向左移動一列"
+msgstr "向左移動一欄"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:190
 msgid "sc.move-column-right"
-msgstr "向右移動一列"
+msgstr "向右移動一欄"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:203
 msgid "sc.move-insert"
@@ -12597,11 +12603,11 @@ msgstr "工作區"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:39
 msgid "table.add-column-left"
-msgstr "在左側新增列"
+msgstr "在左側新增欄"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:40
 msgid "table.add-column-right"
-msgstr "在右側新增列"
+msgstr "在右側新增欄"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:26
 msgid "table.add-row-above"
@@ -12613,7 +12619,7 @@ msgstr "在下方新增行"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-create.html:15
 msgid "table.columns:"
-msgstr "列："
+msgstr "欄："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-create.html:1
 msgid "table.create"
@@ -12621,7 +12627,7 @@ msgstr "建立表格"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:15
 msgid "table.current-column:"
-msgstr "目前列："
+msgstr "目前欄："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:5
 msgid "table.current-row:"
@@ -12629,7 +12635,7 @@ msgstr "目前行："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:45
 msgid "table.delete-column"
-msgstr "刪除列"
+msgstr "刪除欄"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:32
 msgid "table.delete-row"
@@ -12641,7 +12647,7 @@ msgstr "編輯表格"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1919
 msgid "table.enter-columns:"
-msgstr "請輸入表格列數："
+msgstr "請輸入表格欄數："
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1918
 msgid "table.enter-rows:"
@@ -12649,11 +12655,11 @@ msgstr "請輸入表格行數："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:42
 msgid "table.move-column-left"
-msgstr "將列往左移動"
+msgstr "將欄往左移動"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:43
 msgid "table.move-column-right"
-msgstr "將列往右移動"
+msgstr "將欄往右移動"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:30
 msgid "table.move-row-down"
@@ -13979,7 +13985,7 @@ msgstr "正在導入用戶 %1 的配置檔案"
 
 #: share/plugin/widgets/share/javascript/gadgets.js:677
 msgid "widgets.in-layout-mode-click-save-or-cancel"
-msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b>取消</b>將其舍棄。"
+msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b>取消</b>將其捨棄。"
 
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
@@ -14659,11 +14665,11 @@ msgstr "其他工作區："
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:35
 msgid "wikiwyg.add-column-left"
-msgstr "從左側新增表格列"
+msgstr "從左側新增表格欄"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:36
 msgid "wikiwyg.add-column-right"
-msgstr "從右側新增表格列"
+msgstr "從右側新增表格欄"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:30
 msgid "wikiwyg.add-row-above-current-row"
@@ -14679,7 +14685,7 @@ msgstr "粗體（Ctrl+B）"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:39
 msgid "wikiwyg.delete-table-column"
-msgstr "刪除目前表格列"
+msgstr "刪除目前表格欄"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:33
 msgid "wikiwyg.delete-table-row"
@@ -14727,11 +14733,11 @@ msgstr "中"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:37
 msgid "wikiwyg.move-column-left"
-msgstr "向左移動目前表格列"
+msgstr "向左移動目前表格欄"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:38
 msgid "wikiwyg.move-column-right"
-msgstr "向右移動目前表格列"
+msgstr "向右移動目前表格欄"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:31
 msgid "wikiwyg.move-row-down"

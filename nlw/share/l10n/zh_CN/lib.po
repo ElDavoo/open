@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 12:12-0700\n"
+"PO-Revision-Date: 2011-06-16 00:09-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -2914,8 +2914,8 @@ msgstr "活动"
 msgid "nav.groups"
 msgstr "群组"
 
-msgid "nav.my-likes"
-msgstr "我的赞"
+msgid "nav.likes"
+msgstr "哪些赞"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:268
 msgid "nav.news"

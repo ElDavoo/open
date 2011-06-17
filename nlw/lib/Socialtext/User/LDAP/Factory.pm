@@ -125,8 +125,12 @@ sub GetUser {
 
     return unless $proto_user;
 
-    $self->_vivify($proto_user);
-    return $self->new_homunculus($proto_user);
+    if ($self->_vivify($proto_user)) {
+        return $self->new_homunculus($proto_user);
+    }
+    else {
+        return;
+    }
 }
 
 sub _mark_as_found {
@@ -283,6 +287,8 @@ sub _vivify {
         my @user_drivers = Socialtext::User->_drivers();
         my $cached_homey = $self->GetHomunculus('user_id', $user_id, \@user_drivers);
 
+        return 0 unless $cached_homey;
+
         # Mark the User as cached, so that if we trigger any hooks/plugins
         # during validation/saving that they don't try to re-query the User
         # record again because he looks stale.
@@ -313,7 +319,7 @@ sub _vivify {
             }
             # return "last known good" cached data for the User
             %{$proto_user} = %{$cached_homey};
-            return;
+            return 1;
         }
         elsif ($@) {
             # some other kind of error; re-throw it.
@@ -360,7 +366,7 @@ sub _vivify {
     $user_attrs->{username} = delete $user_attrs->{driver_username};        # map "DB -> object"
     $user_attrs->{extra_attrs} = $extra_attrs;
     %$proto_user = %$user_attrs;
-    return;
+    return 1;
 }
 
 sub _check_cache_for_conflict {

@@ -63,7 +63,7 @@ sub _build_searchable_fields {
         # Group fields
         qw/name description desc/,
         # Like fields
-        qw/like like_count/,
+        qw/has_likes like like_count/,
     ]
 }
 

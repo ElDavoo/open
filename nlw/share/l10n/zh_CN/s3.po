@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 22:05-0700\n"
+"PO-Revision-Date: 2011-06-15 13:01-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -339,6 +339,9 @@ msgstr "加入以编辑"
 msgid "do.like"
 msgstr "赞"
 
+msgid "do.like=count"
+msgstr "(%1) 赞"
+
 #: share/skin/s3/javascript/lightbox/comment.tt2:12
 msgid "do.ol"
 msgstr "编号列表"
@@ -393,6 +396,9 @@ msgstr "停止关注此人"
 
 msgid "do.unlike"
 msgstr "取消赞"
+
+msgid "do.unlike=count"
+msgstr "(%1) 取消赞"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -1207,34 +1213,34 @@ msgid "like.like=count"
 msgstr "%1 个赞"
 
 msgid "like.liked-this.page.not-you=followed"
-msgstr "%quant(%1,%1 位,%1 位,目前没有)您关注的人说这页面赞。"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这页面赞。"
 
 msgid "like.liked-this.page.not-you=others"
-msgstr "%quant(%1,%1 个,%1 个,目前没有)人说这页面赞。"
+msgstr "%quant(%1,个,个,目前没有)人说这页面赞。"
 
 msgid "like.liked-this.page.only-you"
 msgstr "只有您说这页面赞。"
 
 msgid "like.liked-this.page.you=followed"
-msgstr "%quant(%1,您和 %1 位您关注的人都说,和 %1 位您关注的人都说,您说)这页面赞。"
+msgstr "您和 %1 位您关注的人都说这页面赞。"
 
 msgid "like.liked-this.page.you=others"
-msgstr "%quant(%1,您和其他 %1 个人都说,和其他 %1 个人都说,您说)这页面赞。"
+msgstr "您和其他 %1 个人都说这页面赞。"
 
 msgid "like.liked-this.revision.not-you=followed"
-msgstr "%quant(%1,%1 位,%1 位,目前没有)您关注的人说这版本赞。"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这版本赞。"
 
 msgid "like.liked-this.revision.not-you=others"
-msgstr "%quant(%1,%1 个,%1 个,目前没有)人说这版本赞。"
+msgstr "%quant(%1,个,个,目前没有)人说这版本赞。"
 
 msgid "like.liked-this.revision.only-you"
 msgstr "只有您说这版本赞。"
 
 msgid "like.liked-this.revision.you=followed"
-msgstr "%quant(%1,您和 %1 位您关注的人都说,和 %1 位您关注的人都说,您说)这版本赞。"
+msgstr "您和 %1 位您关注的人都说这版本赞。"
 
 msgid "like.liked-this.revision.you=others"
-msgstr "%quant(%1,您和其他 %1 个人都说,和其他 %1 个人都说,您说)这版本赞。"
+msgstr "您和其他 %1 个人都说这版本赞。"
 
 msgid "like.page:"
 msgstr "页数："

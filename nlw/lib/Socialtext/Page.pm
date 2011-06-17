@@ -82,6 +82,8 @@ has 'create_time'  => (
 has 'restored' => (is => 'rw', isa => 'Bool', writer => '_restored');
 has 'full_uri' => (is => 'rw', isa => 'Str', lazy_build => 1);
 
+has 'like_count' => (is => 'rw', isa => 'Int', default => 0);
+
 has 'rev' => (
     is => 'rw', isa => 'Socialtext::PageRevision',
     lazy_build => 1,
@@ -153,7 +155,8 @@ use constant SELECT_COLUMNS_STR => q{
     page.edit_summary,
     page.views,
     page.locked,
-    page.tags -- ordered array
+    page.tags, -- ordered array
+    page.like_count
 };
 
 # This should be the order they show up in on the actual table:
@@ -252,7 +255,7 @@ my %PAGE_ROW_MAP = (
     views => 'views',
     workspace_name => 'workspace_name',
     workspace_title => 'workspace_title',
-
+    like_count => 'like_count',
 );
 my %PAGE_ROW_SKIP = (
     workspace_name  => 1,

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-15 09:01-0700\n"
+"PO-Revision-Date: 2011-06-16 10:57-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -340,6 +340,10 @@ msgstr "Join To Edit"
 msgid "do.like"
 msgstr "Like"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like=count"
+msgstr "(%1) Like"
+
 #: share/skin/s3/javascript/lightbox/comment.tt2:12
 msgid "do.ol"
 msgstr "Numbered List"
@@ -395,6 +399,10 @@ msgstr "Stop following this person"
 #: share/skin/s3/javascript/like-indicator.js:134
 msgid "do.unlike"
 msgstr "Unlike"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike=count"
+msgstr "(%1) Unlike"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
