@@ -29,7 +29,7 @@ sub PerlHandler ($handler) {
 
         local %ENV = (%ENV, REST_APP_RETURN_ONLY => 1);
         map { $ENV{$_} = $env->{$_} }
-            grep { /^HTTP/ }
+            grep { /^HTTP|^QUERY|^REQUEST/ }
             keys %{$env};
 
         my ($h, $out) = $app->handler($Request);
@@ -122,6 +122,7 @@ package Socialtext::PlackApp::Request;
 use parent 'Plack::Request';
 use invoker;
 use Method::Signatures::Simple;
+use URI::Escape;
 no warnings 'redefine';
 
 *Response = *Socialtext::PlackApp::Response;
@@ -135,7 +136,7 @@ method content_type {
 
 method uri {
     if (caller =~ /^Socialtext::/) {
-        return $->SUPER::uri->path;
+        return uri_unescape($->SUPER::uri->path);
     }
     $->SUPER::uri();
 }
