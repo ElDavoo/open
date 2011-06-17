@@ -10,8 +10,9 @@ test_psgi
         my $do_req = sub {
             my $path = shift;
             $path ||= '/data/config';
-            $path =~ s!^/+!!;
-            my $req = HTTP::Request->new(GET => "http://localhost/$path");
+            $path =~ s!^/+!/!;
+            $path = "http://localhost$path" unless $path =~ m{://};
+            my $req = HTTP::Request->new(GET => $path);
             my $res = $cb->($req);
             say $res->as_string;
         };

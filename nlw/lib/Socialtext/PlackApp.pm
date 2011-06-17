@@ -1,15 +1,15 @@
 package Socialtext::PlackApp;
 use 5.12.0;
-use signatures;
 use parent 'Exporter';
+our @EXPORT = 'PerlHandler';
+
 use signatures;
 use CGI::PSGI;
 use URI;
-use Encode ();
 use Log::Dispatch;
 use Module::Load;
 use HTTP::Status ();
-our @EXPORT = 'PerlHandler';
+use Encode ();
 
 our ($Request, $Response);
 
@@ -51,14 +51,21 @@ sub PerlHandler ($handler) {
         my @headers = $h->header;
         $Response->content_type('text/html; charset=UTF-8');
 
+        warn "@headers";
         while (my $key = shift @headers) {
             my $val = shift @headers;
             $key =~ s/^-//;
-            if ($key =~ /status/i) {
-                $Response->status(int($val) || 200);
-                next;
+            given ($key) {
+                when ('status') {
+                    $Response->status(int($val) || 200);
+                    next;
+                }
+                when ('type') {
+                    $Response->content_type($val);
+                    next;
+                }
             }
-            $Response->headers([$key => $val]);
+            $Response->header($key => $val);
         }
 
         Encode::_utf8_off($out);
