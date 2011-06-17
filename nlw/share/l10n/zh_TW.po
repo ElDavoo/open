@@ -13985,7 +13985,7 @@ msgstr "正在導入用戶 %1 的配置檔案"
 
 #: share/plugin/widgets/share/javascript/gadgets.js:677
 msgid "widgets.in-layout-mode-click-save-or-cancel"
-msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b>取消</b>將其舍棄。"
+msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b>取消</b>將其捨棄。"
 
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
