@@ -32,7 +32,7 @@ Verbs: (start is the default verb if none is specified)
   restart       stop, then start
 
 Options:
-  -1                operate only on Apache 1 service
+  -1                operate only on nlw-psgi service
   -a                operate only on appliance console service
   -c                operate only on ceqlotron service
   -p                operate only on the json proxy service
@@ -48,12 +48,12 @@ END_OF_HELP
     exit 1;
 }
 
-my (%apache_command, %ceqlotron_command, %appliance_command, %pushd_command,
+my (%nlw_psgi_command, %ceqlotron_command, %appliance_command, %pushd_command,
     %userd_command, %jsonproxy_command, $nginx, $apache_perl);
 
 # Options
 my $use_test_server  = 0;
-my $apache1_please   = 0;
+my $nlw_psgi_please  = 0;
 my $nginx_please     = 0;
 my $ceqlotron_please = 0;
 my $jsonproxy_please = 0;
@@ -68,7 +68,7 @@ my %OPTSPEC = (
     a           => \$appliance_please,
     c           => \$ceqlotron_please,
     p           => \$jsonproxy_please,
-    1           => \$apache1_please,
+    1           => \$nlw_psgi_please,
     2           => \$nginx_please,
     n           => \$nginx_please,
     u           => \$pushd_please,
@@ -84,12 +84,12 @@ usage() if grep { $_ eq 'help' } @ARGV;
 my @verbs = @ARGV ? @ARGV : ('start');
 
 # If you don't specify any of -c, -1, or -2, you get them all.
-$appliance_please = $ceqlotron_please = $nginx_please = $apache1_please
+$appliance_please = $ceqlotron_please = $nginx_please = $nlw_psgi_please
     = $jsonproxy_please = $pushd_please = $userd_please = 1
     unless ( $ceqlotron_please
           || $appliance_please
           || $nginx_please
-          || $apache1_please
+          || $nlw_psgi_please
           || $pushd_please
           || $userd_please
           || $jsonproxy_please );
@@ -105,10 +105,6 @@ if ( $nginx_please ) {
     $nginx     = Socialtext::ApacheDaemon->new( name => 'nginx' );
     push @apaches, $nginx;
 }
-if ( $apache1_please ) {
-    $apache_perl = Socialtext::ApacheDaemon->new( name => 'apache-perl' );
-    push @apaches, $apache_perl;
-}
 my $master_apache = $apaches[0];
 
 _update_conf_file_for_tests($_) foreach @apaches;
@@ -120,7 +116,7 @@ sub dispatch {
     $master_apache->output_urls
         if $master_apache;
     foreach my $verb ( @verbs ) {
-        if ( my $cmd = $apache_command{$verb} ) {
+        if ( my $cmd = $nlw_psgi_command{$verb} ) {
             $cmd->($_) for @apaches;
             local $Socialtext::System::SILENT_RUN = 1;
             $ceqlotron_command{$verb}->() if $ceqlotron_please;
@@ -128,10 +124,11 @@ sub dispatch {
             $pushd_command{$verb}->() if $pushd_please;
             $userd_command{$verb}->() if $userd_please;
             $jsonproxy_command{$verb}->() if $jsonproxy_please;
+            $nlw_psgi_command{$verb}->() if $nlw_psgi_please;
         }
         else {
             warn "nlwctl: Skipping unknown command '$verb'.\n";
-            warn "        Known verbs: @{[ sort keys %apache_command ]}\n";
+            warn "        Known verbs: @{[ sort keys %nlw_psgi_command ]}\n";
         }
     }
 }
@@ -154,16 +151,19 @@ sub _update_conf_file_for_tests {
 }
 
 sub init_commands {
-    %apache_command = (
-        start   => sub { $_[0]->start },
-        stop    => sub { $_[0]->stop },
-        hup     => sub { $apache_command{$_}->(@_) for qw( stop start ) },
-        restart => sub { $apache_command{$_}->(@_) for qw( stop start ) },
-        ports   => sub {
-            foreach my $port ($_[0]->ports) {
-                print "$port\n";
-            }
+    my $nlw_psgi_svc_dir = "$ENV{ST_CURRENT}/nlw";
+    %nlw_psgi_command = (
+        start => sub {
+            print "Starting nlw-psgi server.\n";
+            shell_run("svc -u $nlw_psgi_svc_dir");
         },
+        stop => sub {
+            print "Stopping nlw-psgi server.\n";
+            shell_run("svc -d $nlw_psgi_svc_dir");
+        },
+        hup     => sub { },
+        restart => sub { $nlw_psgi_command{$_}->(@_) for qw( stop start ) },
+        ports   => sub { },
     );
     %ceqlotron_command = (
         start   => sub {

@@ -343,9 +343,9 @@ sub local_dirs {
         nginx_log => File::Spec->catfile( $root_dir, 'log', 'nginx' ),
         nginx_base_dir => "$dirs{etc}/nginx",
         apache_perl_etc  => "$dirs{etc}/apache-perl",
-        apache_perl_log  =>
-            File::Spec->catfile( $root_dir, 'log', 'apache-perl' ),
+        apache_perl_log  => File::Spec->catfile( $root_dir, 'log', 'apache-perl' ),
         apache_perl_base_dir => "$dirs{etc}/apache-perl",
+        nlw_psgi_log  => File::Spec->catfile( $root_dir, 'log', 'nlw-psgi' ),
         ssl_base             => "$dirs{etc}/ssl",
     );
     for my $dir ( keys %dirs ) {

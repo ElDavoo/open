@@ -4,7 +4,7 @@ use Plack::Test;
 use Term::ReadLine;
 
 test_psgi
-    app => do 'app.psgi',
+    app => do 'nlw.psgi',
     client => sub {
         my $cb = shift;
         my $do_req = sub {

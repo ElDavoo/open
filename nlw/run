@@ -1,0 +1,35 @@
+#!/usr/bin/env perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+BEGIN { push @INC, "$ENV{ST_CURRENT}/nlw/lib" if $ENV{ST_CURRENT} }
+use Plack::Runner;
+use FindBin;
+my $psgi = "$FindBin::Bin/nlw.psgi";
+die "Cannot find $psgi" unless -e $psgi;
+
+# Plack::Handler::Starman::Socialtext uses this:
+$::proctitle = 'nlw-psgi';
+
+use Socialtext::Daemontools;
+Socialtext::Daemontools->RunSupervised(
+    log_file => "nlw-psgi/error.log",
+    port_name => 'backend_http_port',
+    cb => sub {
+        my $port = shift;
+        $0 = $::proctitle;
+        my $runner = Plack::Runner->new;
+        $runner->parse_options(
+            '--server'       => 'Starman::Socialtext',
+            '--max-requests' => 1,
+            '--workers'      => 5,
+            '--host'         => 'localhost',
+            '--port'         => $port,
+            '--env'          => 'deployment',
+            '--app'          => $psgi,
+            '--M'            => 'Socialtext::Handler::REST',
+        );
+        $runner->run;
+    }
+);
+

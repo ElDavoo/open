@@ -9,6 +9,8 @@ use Data::Dump qw(dd);
 use URI;
 use Test::MockObject;
 use Encode ();
+use Plack::Builder;
+use Log::Dispatch;
 
 {
     package _Connection;
@@ -61,4 +63,23 @@ my $app = sub {
 
     Encode::_utf8_off($out);
     return [$status, \@actual_headers, [$out]];
+};
+
+my $logger = Log::Dispatch->new(
+    outputs => [
+        [ 'File', min_level => 'debug', filename => "$ENV{HOME}/.nlw/log/nlw-psgi/access.log" ]
+    ],
+);
+
+builder {
+    enable 'Plack::Middleware::XForwardedFor' => (
+        trust => [qw(127.0.0.1/8)],
+    );
+
+    enable "Plack::Middleware::AccessLog" => (
+        format => "combined",
+        logger => sub { $logger->debug(@_) },
+    );
+
+    $app;
 };
