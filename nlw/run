@@ -19,16 +19,16 @@ Socialtext::Daemontools->RunSupervised(
         my $port = shift;
         $0 = $::proctitle;
         my $runner = Plack::Runner->new;
-        $runner->parse_options(
+        my @argv = (
             '--server'       => 'Starman::Socialtext',
-            '--max-requests' => 1,
             '--workers'      => 5,
             '--host'         => 'localhost',
             '--port'         => $port,
             '--env'          => 'deployment',
             '--app'          => $psgi,
-            '--M'            => 'Socialtext::Handler::REST',
         );
+        $runner->parse_options(@argv);
+        $runner->set_options(argv => \@argv);
         $runner->run;
     }
 );
