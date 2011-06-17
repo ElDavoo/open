@@ -22,6 +22,7 @@ use Socialtext::Log qw(st_timed_log);
 use Socialtext::Timer;
 use Socialtext::CGI::Scrubbed;
 use Carp qw( croak );
+use URI::Escape qw( uri_unescape );
 
 Readonly my $AUTH_MAP => 'auth_map.yaml';
 Readonly my $AUTH_INFO_DEFAULTS => {
@@ -244,7 +245,7 @@ sub log_timings {
 sub loadResource {
     my ($self, $path, @extraArgs) = @_;
     $path ||= $self->getMatchText();
-    $path = URI->new($path)->path;
+    $path = uri_unescape(URI->new($path)->path);
     my $handler = sub { $self->defaultResourceHandler(@_) };
     my %vars;
 
