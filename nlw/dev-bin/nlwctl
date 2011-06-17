@@ -48,7 +48,7 @@ END_OF_HELP
     exit 1;
 }
 
-my (%nlw_psgi_command, %ceqlotron_command, %appliance_command, %pushd_command,
+my (%nginx_command, %nlw_psgi_command, %ceqlotron_command, %appliance_command, %pushd_command,
     %userd_command, %jsonproxy_command, $nginx, $apache_perl);
 
 # Options
@@ -116,7 +116,7 @@ sub dispatch {
     $master_apache->output_urls
         if $master_apache;
     foreach my $verb ( @verbs ) {
-        if ( my $cmd = $nlw_psgi_command{$verb} ) {
+        if ( my $cmd = $nginx_command{$verb} ) {
             $cmd->($_) for @apaches;
             local $Socialtext::System::SILENT_RUN = 1;
             $ceqlotron_command{$verb}->() if $ceqlotron_please;
@@ -151,6 +151,18 @@ sub _update_conf_file_for_tests {
 }
 
 sub init_commands {
+    %nginx_command = (
+        start   => sub { $_[0]->start },
+        stop    => sub { $_[0]->stop },
+        hup     => sub { $nginx_command{$_}->(@_) for qw( stop start ) },
+        restart => sub { $nginx_command{$_}->(@_) for qw( stop start ) },
+        ports   => sub {
+            foreach my $port ($_[0]->ports) {
+                print "$port\n";
+            }
+        }
+    );
+
     my $nlw_psgi_svc_dir = "$ENV{ST_CURRENT}/nlw";
     %nlw_psgi_command = (
         start => sub {
