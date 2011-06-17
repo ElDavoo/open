@@ -1,7 +1,20 @@
 package Socialtext::Search::Solr;
 # @COPYRIGHT@
 use Moose;
-use WebService::Solr;
+use WebService::Solr 0.11;
+BEGIN {
+    if (WebService::Solr->VERSION > 0.12) {
+        die << '.';
+Sorry, we currently only support WebService::Solr 0.11 or 0.12.
+
+Please downgrade by installing this:
+
+    http://search.cpan.org/CPAN/authors/id/B/BR/BRICAS/WebService-Solr-0.12.tar.gz
+
+Thank you!
+.
+    }
+}
 use namespace::clean -except => 'meta';
 
 =head1 NAME
