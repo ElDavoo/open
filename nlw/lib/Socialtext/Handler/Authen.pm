@@ -35,7 +35,6 @@ sub handler ($$) {
 
     my $self = bless {r => $r}, __PACKAGE__; # new can kiss my ass
     $self->{args} = { $r->args };
-    warn YAML::Dump($self->{args});
 
     loc_lang( system_locale() );
 
