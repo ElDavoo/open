@@ -447,13 +447,13 @@ sub update_from_remote {
             action => 'edit_contention',
             page => $self,
         });
-        $self->_log_page_and_user('EDIT_CONTENTION,PAGE,edit_contention');
+        $self->log_page_and_user('EDIT_CONTENTION,PAGE,edit_contention');
         Socialtext::Exception::Conflict->throw(
             error => "Contention: page has been updated since retrieved\n");
     }
 
     if (!$self->hub->checker->can_modify_locked($self)) {
-        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
+        $self->log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
         die "Page is locked and cannot be edited\n";
     }
 
@@ -730,7 +730,7 @@ sub add_comment {
     my $t = time_scope 'add_comment';
 
     if (!$self->hub->checker->can_modify_locked($self)) {
-        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
+        $self->log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
         die "Page is locked and cannot be edited\n";
     }
 
@@ -977,7 +977,7 @@ sub store {
         [$self, workspace => $self->hub->current_workspace],
     );
 
-    $self->_log_page_and_user('CREATE,EDIT_SUMMARY,edit_summary', $user)
+    $self->log_page_and_user('CREATE,EDIT_SUMMARY,edit_summary', $user)
         if $self->edit_summary;
 
     # need to return the Signal object if we're signalling-this-edit
@@ -992,7 +992,7 @@ sub store {
     return;
 }
 
-sub _log_page_and_user {
+sub log_page_and_user {
     my ($self, $message, $user) = @_;
     $user //= $self->hub->current_user;
     st_log->info(
