@@ -81,6 +81,11 @@ sub Apache::Request::new { $Request }
 sub Apache::Request::instance { $Request }
 
 BEGIN {
+    $INC{$_} = __FILE__ for qw(
+        Apache/Cookie.pm
+        Apache/Request.pm
+        Apache.pm
+    );
     for my $method (@{$HTTP::Status::EXPORT_TAGS{constants}}) {
         no strict 'refs';
         (my $code = $method) =~ s/^HTTP_//;
