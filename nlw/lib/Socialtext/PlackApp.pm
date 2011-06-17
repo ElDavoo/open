@@ -51,11 +51,10 @@ sub PerlHandler ($handler) {
         my @headers = $h->header;
         $Response->content_type('text/html; charset=UTF-8');
 
-        warn "@headers";
         while (my $key = shift @headers) {
             my $val = shift @headers;
             $key =~ s/^-//;
-            given ($key) {
+            given (lc $key) {
                 when ('status') {
                     $Response->status(int($val) || 200);
                     next;
@@ -75,6 +74,7 @@ sub PerlHandler ($handler) {
 };
 
 ### Apache method overrides ###
+sub Apache::Cookie::new { shift; shift; Socialtext::PlackApp::Cookie->new(@_) }
 sub Apache::Cookie::fetch { @_ ? $Request->cookies->{$_[0]} : $Request->cookies }
 sub Apache::request { $Request }
 sub Apache::Request::new { $Request }
@@ -91,6 +91,20 @@ BEGIN {
         }
     }
     *URI::unparse = *URI::as_string;
+}
+
+package Socialtext::PlackApp::Cookie;
+use parent 'CGI::Cookie';
+use invoker;
+use Method::Signatures::Simple;
+
+*Response = *Socialtext::PlackApp::Response;
+method new (%opts) {
+    delete $opts{'-expires'} unless $opts{'-expires'};
+    $->SUPER::new(%opts);
+}
+method bake {
+    $Response->header('Set-Cookie', $->as_string);
 }
 
 package Socialtext::PlackApp::Connection;
@@ -136,7 +150,7 @@ method header_out {
 method send_http_header { undef }
 method prev { undef }
 method header_in ($key) { scalar $->header($key) }
-method args { wantarray ? $->param : $ENV{QUERY_STRING} }
+method args { %{ $->parameters } }
 method content { wantarray ? () : $->SUPER::content }
 method cgi_env { %ENV }
 method parsed_uri { URI->new($ENV{REQUEST_URI}) }
