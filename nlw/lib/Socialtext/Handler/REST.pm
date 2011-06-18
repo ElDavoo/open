@@ -324,7 +324,7 @@ sub new {
     my ($proto, %args) = @_;
     my $class = ref($proto) ? ref($proto) : $proto;
     state $query;
-    $query = $args{query} // $query;
+    $query = $args{query} // $query // do { require CGI; CGI->new };
     my $self = bless(
         { __query => $query },
         $class,

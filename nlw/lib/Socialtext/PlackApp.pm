@@ -8,7 +8,6 @@ use CGI::PSGI;
 use URI;
 use Log::Dispatch;
 use Module::Load;
-use HTTP::Status ();
 use Encode ();
 
 our ($Request, $Response);
@@ -81,34 +80,12 @@ sub Apache::Request::new { $Request }
 sub Apache::Request::instance { $Request }
 
 BEGIN {
-    @Apache::Constants::ISA = 'Exporter';
     $INC{$_} = __FILE__ for qw(
         Apache/Cookie.pm
         Apache/Request.pm
-        Apache/Constants.pm
         Apache/SubProcess.pm
         Apache/URI.pm
         Apache.pm
-    );
-    my %synonyms = (
-        FOUND => 'REDIRECT',
-        UNAUTHORIZED => 'AUTH_REQUIRED',
-    );
-
-    for my $method (@{$HTTP::Status::EXPORT_TAGS{constants}}) {
-        no strict 'refs';
-        (my $code = $method) =~ s/^HTTP_//;
-        my $value = &{"HTTP::Status::$method"}();
-        *{"Apache::Constants::$code"} = sub { $value };
-        push @Apache::Constants::EXPORT, $code;
-        if (my $sym = $synonyms{$code}) {
-            *{"Apache::Constants::$sym"} = sub { $value };
-            push @Apache::Constants::EXPORT, $sym;
-        }
-    }
-    %Apache::Constants::EXPORT_TAGS = (
-        common => \@Apache::Constants::EXPORT,
-        response => \@Apache::Constants::EXPORT,
     );
     *URI::unparse = *URI::as_string;
 }
