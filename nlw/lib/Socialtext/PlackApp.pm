@@ -162,3 +162,26 @@ method log_error { warn @_ }
 method connection { $self->{_connection} //= Socialtext::PlackApp::Connection->new }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::PlackApp - Plack adapter to Socialtext Handlers
+
+=head1 SYNOPSIS
+
+    use Plack::Builder;
+    use Socialtext::PlackApp;
+    builder {
+        mount '/nlw/control' => PerlHandler('Socialtext::Handler::ControlPanel'),
+        mount '/nlw' => PerlHandler('Socialtext::Handler::Authen'),
+        mount '/' => PerlHandler('Socialtext::Handler::REST'),
+    }
+
+=head1 DESCRIPTION
+
+This module exports a single function, C<PerlHandler>, that takes a
+L<Socialtext::Handler> subclass and returns a Plack application for it.
+
+=cut

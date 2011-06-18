@@ -27,3 +27,21 @@ for my $method (@{$HTTP::Status::EXPORT_TAGS{constants}}) {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Apache::Constants - Drop-in replacement for the same module in mod_perl
+
+=head1 SYNOPSIS
+
+    use Apache::Constants;
+    print NOT_FOUND; # 404
+
+=head1 DESCRIPTION
+
+This module uses L<HTTP::Status> to provide the same constants
+as L<Apache::Constants> without requiring L<mod_perl>.
+
+=cut
