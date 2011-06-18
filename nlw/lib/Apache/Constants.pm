@@ -3,7 +3,10 @@ use 5.12.0;
 use parent 'Exporter';
 use HTTP::Status ();
 
-our @EXPORT;
+use constant DECLINED => -1;
+our @EXPORT = qw(
+    DECLINED
+);
 our %EXPORT_TAGS = (
     common => \@EXPORT,
     response => \@EXPORT,
@@ -18,8 +21,8 @@ for my $method (@{$HTTP::Status::EXPORT_TAGS{constants}}) {
     no strict 'refs';
     (my $code = $method) =~ s/^HTTP_//;
     my $value = &{"HTTP::Status::$method"}();
-    *$code = sub { $value };
-    push @EXPORT, $code;
+    *$code = *$method = sub { $value };
+    push @EXPORT, $code, $method;
     if (my $sym = $synonyms{$code}) {
         *$sym = sub { $value };
         push @EXPORT, $sym;
