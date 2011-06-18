@@ -29,7 +29,7 @@ sub PerlHandler ($handler) {
 
         local %ENV = (%ENV, REST_APP_RETURN_ONLY => 1);
         map { $ENV{$_} = $env->{$_} }
-            grep { /^HTTP|^QUERY|^REQUEST/ }
+            grep { /^(?:HTTP|QUERY|REQUEST|REMOTE|SCRIPT|PATH|CONTENT|SERVER)_/ }
             keys %{$env};
 
         my ($h, $out) = $app->handler($Request);
@@ -115,6 +115,7 @@ BEGIN {
 
 package Socialtext::PlackApp::Cookie;
 use parent 'CGI::Cookie';
+use namespace::autoclean;
 use invoker;
 use Method::Signatures::Simple;
 
@@ -133,6 +134,7 @@ __PACKAGE__->mk_accessors(qw(user));
 
 package Socialtext::PlackApp::Response;
 use parent 'Plack::Response';
+use namespace::autoclean;
 use invoker;
 use Method::Signatures::Simple;
 method err_headers_out { $self }
@@ -140,6 +142,7 @@ method add { $->header(\@_) }
 
 package Socialtext::PlackApp::Request;
 use parent 'Plack::Request';
+use namespace::autoclean;
 use invoker;
 use Method::Signatures::Simple;
 use URI::Escape;
@@ -162,9 +165,12 @@ method uri {
 }
 
 method print {
+    Encode::_utf8_off($_) for @_;
     $Response->body(@_);
 }
+
 method header_out {
+    Encode::_utf8_off($_) for @_;
     $Response->header(@_);
 }
 
