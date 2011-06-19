@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 31;
+use Test::More tests => 17;
 use File::Temp qw/tempdir/;
 
 my $gen_config = "dev-bin/gen-config";
@@ -28,8 +28,6 @@ Dev_env: {
         nginx/mime.conf
         nginx/proxy.conf
         nginx/auto-generated.d/nlw.conf
-        apache-perl/nlw-httpd.conf
-        apache-perl/auto-generated.d/nlw.conf
         socialtext/shortcuts.yaml
         socialtext/uri_map.yaml
         socialtext/auth_map.yaml
@@ -69,6 +67,8 @@ Quiet: {
 exit;
 
 sub check_apache_config {
+    return; # No longer applicable to nlw-psgi
+
     my %attr = @_;
 
     open CONF, "$test_root/etc/apache-perl/nlw-httpd.conf";
