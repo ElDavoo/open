@@ -10,7 +10,7 @@ use Log::Dispatch;
 use Module::Load;
 use Encode ();
 
-our ($Request, $Response);
+our ($Request, $Response, $CGI);
 
 sub PerlHandler ($handler) {
     load($handler);
@@ -20,10 +20,11 @@ sub PerlHandler ($handler) {
 
         local $Request = Socialtext::PlackApp::Request->new($env);
         local $Response = Socialtext::PlackApp::Response->new(200);
+        local $CGI = CGI::PSGI->new($env);
 
         my $app = $handler->can('new') ? $handler->new(
             request => $Request,
-            query => CGI::PSGI->new($env),
+            query => $CGI,
         ) : $handler;
 
         local %ENV = (%ENV, REST_APP_RETURN_ONLY => 1);
@@ -92,9 +93,8 @@ BEGIN {
 
 package Socialtext::PlackApp::Cookie;
 use parent 'CGI::Cookie';
-use namespace::autoclean;
+use methods;
 use invoker;
-use Method::Signatures::Simple;
 
 *Response = *Socialtext::PlackApp::Response;
 method new (%opts) {
@@ -111,17 +111,15 @@ __PACKAGE__->mk_accessors(qw(user));
 
 package Socialtext::PlackApp::Response;
 use parent 'Plack::Response';
-use namespace::autoclean;
+use methods;
 use invoker;
-use Method::Signatures::Simple;
 method err_headers_out { $self }
 method add { $->header(\@_) }
 
 package Socialtext::PlackApp::Request;
 use parent 'Plack::Request';
-use namespace::autoclean;
+use methods;
 use invoker;
-use Method::Signatures::Simple;
 use URI::Escape;
 no warnings 'redefine';
 
