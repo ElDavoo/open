@@ -23,7 +23,8 @@ Socialtext::Daemontools->RunSupervised(
             '--server'       => 'Starman::Socialtext',
             '--workers'      => 5,
             '--host'         => 'localhost',
-            '--port'         => $port,
+            '--listen'       => "127.0.0.1:$port",
+            '--listen'       => "127.0.0.1:".($port+1000), # backend_https_port
             '--env'          => 'deployment',
             '--app'          => $psgi,
         );
