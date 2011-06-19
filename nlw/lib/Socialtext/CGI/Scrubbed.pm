@@ -28,5 +28,3 @@ method param {
     }
     return $->SUPER::param(@_);
 }
-
-1;

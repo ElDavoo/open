@@ -159,8 +159,6 @@ method parsed_uri { URI->new($ENV{REQUEST_URI}) }
 method log_error { warn @_ }
 method connection { $self->{_connection} //= Socialtext::PlackApp::Connection->new }
 
-1;
-
 __END__
 
 =head1 NAME
