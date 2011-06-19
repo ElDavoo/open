@@ -12,6 +12,14 @@ use Socialtext::TimestampedWarnings;
 # mod_perl components.
 #
 
+BEGIN {
+    $INC{$_} = __FILE__ for qw(
+        mod_perl.pm
+        Apache/File.pm
+        Apache/Constants.pm
+    );
+}
+
 package mod_perl;
 our $VERSION = 0.01;
 
