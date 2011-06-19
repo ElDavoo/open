@@ -61,7 +61,6 @@ foreach my $maybe (
 
 my %passthru = (
     'apache-status'     => 's',
-    'apache-perl-moduledir' => 's',
     'dev'               => 'i',
 );
 
@@ -228,21 +227,6 @@ sub main {
            unless ( -e "$static_dir/html/502.standard.html" || -l "$static_dir/html/502.standard.html" );
     }
 
-    if ( is_target_for( 'apache', 'nginx', 'apache-perl' ) ) {
-        my $params = apache_perl_params( \%dirs );
-        push @files,
-            [
-            'apache-perl/base.tt2' => "$dirs{apache_perl_etc}/${app_prefix}httpd.conf",
-            $params,
-            'overwrite',
-            ],
-            [
-            'apache-perl/nlw.tt2' => "$dirs{apache_perl_etc}/auto-generated.d/nlw.conf",
-            $params,
-            'overwrite',
-            ];
-    }
-
     if ( is_target_for( "app" ) ) {
         if (!$is_dev_install && $opts{appliance}) {
 
@@ -328,7 +312,7 @@ sub main {
     generate_app_config( \%dirs ) if is_target_for("app") && !$opts{stdout};
     generate_config( @files );
     copy_static_files( \%dirs )
-        if is_target_for( "ssl", "apache", "nginx", "apache-perl" );
+        if is_target_for( "ssl", "nginx" );
 }
 
 sub local_dirs {
@@ -342,9 +326,6 @@ sub local_dirs {
         nginx_etc => "$dirs{etc}/nginx",
         nginx_log => File::Spec->catfile( $root_dir, 'log', 'nginx' ),
         nginx_base_dir => "$dirs{etc}/nginx",
-        apache_perl_etc  => "$dirs{etc}/apache-perl",
-        apache_perl_log  => File::Spec->catfile( $root_dir, 'log', 'apache-perl' ),
-        apache_perl_base_dir => "$dirs{etc}/apache-perl",
         nlw_psgi_log  => File::Spec->catfile( $root_dir, 'log', 'nlw-psgi' ),
         ssl_base             => "$dirs{etc}/ssl",
     );
@@ -678,13 +659,11 @@ sub apache_perl_params {
         lock_dir        => $dirs{lock},
         apache_perl_etc_dir => $dirs{apache_perl_etc},
         confd_exists    => -d $confd,
-        module_dir      => get_build_setting( 'apache-perl-moduledir' ),
         nlw_config_file => File::Spec->catfile( $dirs{socialtext_etc}, 'socialtext.conf' ),
         appliance_config_file => File::Spec->catfile( $dirs{socialtext_etc}, 'appliance.conf' ),
         app_prefix      => $app_prefix,
         log_prefix => 'nlw',
         nlw_server_aliases => [],
-        apache_short_name  => 'apache-perl',
         use_canonical_name => 'On',
     );
 
@@ -878,10 +857,8 @@ Options:
 
 --quiet       Don't print anything to STDOUT
 
---target      One of: app, apache, nginx, apache-perl, ssl
+--target      One of: app, nginx, ssl
                  app - generate just the YAML in /etc/Socialtext
-                 apache - generate nginx and apache-perl and ssl confs
-                 apache-perl - just the apache stuff
                  nginx - just the nginx stuff
                  ssl - just the SSL certs
 
