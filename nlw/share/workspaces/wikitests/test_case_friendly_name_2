@@ -44,10 +44,11 @@
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel group page |  |
 | open_ok | /nlw/control/group/%%fname_group_id%% |  |
-| wait_for_text_present_ok | %%fname%% | 30000 |
-| text_like | Created By: %%fname%% |  |
-| text_like | //div[@id='userTable'] | %%fname%% |
-| text_like | workspaces | %%fname%% |
+| wait_for_text_present_ok | Created By: %%fname%% | 30000 |
+| wait_for_element_present_ok | //div[@id='userTable']/table/tbody/tr[1]/td[2] | 10000 |
+| text_like | //div[@id='userTable']/table/tbody/tr[1]/td[2] | %%fname%% |
+| wait_for_element_present_ok | //table[@id='workspaces']/tbody/tr[2]/td[5] | 10000 |
+| text_like | //table[@id='workspaces']/tbody/tr[2]/td[5] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel user list |  |
 | open_ok | /nlw/control/user |  |
@@ -55,14 +56,14 @@
 | click_and_wait | user-sort-account |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 | *Comment* | %%fname%% needs to be checked for in two places within the same table, should occur exactly 4 times, no more or less |  |
-| wait_for_element_visible_ok | //a[contains(text(),%%fname%%)][1] | 30000 |
-| wait_for_element_visible_ok | //a[contains(text(),%%fname%%)][2] | 30000 |
-| wait_for_element_visible_ok | //a[contains(text(),%%fname%%)][3] | 30000 |
-| wait_for_element_visible_ok | //a[contains(text(),%%fname%%)][4] | 30000 |
-| wait_for_element_not_present_ok | //a[contains(text(),%%fname%%)][5] | 30000 |
+| wait_for_element_visible_ok | `//a[contains(text(),%%fname%%)][1]` | 30000 |
+| wait_for_element_visible_ok | `//a[contains(text(),%%fname%%)][2]` | 30000 |
+| wait_for_element_visible_ok | `//a[contains(text(),%%fname%%)][3]` | 30000 |
+| wait_for_element_visible_ok | `//a[contains(text(),%%fname%%)][4]` | 30000 |
+| wait_for_element_not_present_ok | `//a[contains(text(),%%fname%%)][5]` | 30000 |
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel User |  |
-| wait_for_element_visible_ok | //a[contains(text(),'%%fname_checker%%')] | 30000 |
+| wait_for_element_visible_ok | `//a[contains(text(),'%%fname_checker%%')]` | 30000 |
 | click_and_wait | //a[contains(text(),'%%fname_checker%%')] |  |
 
 | text_like | Invited by: "%%fname%%" |  |
@@ -78,7 +79,8 @@
 | wait_for_element_visible_ok | field_preferred_name | 30000 |
 | text_like | Preferred Name is calculated unless provided |  |
 
-| include | [Test Case: Friendly Name Teardown] |  |
-| st-admin | delete-workspace --workspace %%fname_wiki_2%% | deleted |
+| include | [Test Case: Friendly Name TEARDOWN] |  |
+| st-process-jobs |  |  |
+| delete-workspace | %%fname_wiki_2%% |  |
 
 | *Comment* | Test Case: Friendly Name 2 COMPLETED |
