@@ -280,6 +280,10 @@ sub new_from_uri {
         id  => title_to_id($uri) );
 
     die("Invalid page URI: $uri") unless $page;
+
+    my $return_id = title_to_id($page->title);
+    $page->title( $uri ) unless $return_id eq $uri;
+
     return $page;
 }
 
