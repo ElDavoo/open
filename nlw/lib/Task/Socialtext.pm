@@ -3,7 +3,7 @@ package Task::Socialtext;
 BEGIN { $INC{'Apache/AuthenNTLM.pm'} = __FILE__ }
 use Apache::AuthenNTLM (); # TODO: Remove mod_perl dependencies
 use WebService::Solr 0.12; # Version-specific
-use TheSchwartz::Moosified 0.05_005; # Dev version
+use TheSchwartz::Moosified '0.05_005'; # Dev version
 ###############################################################
 use if ($^O ne 'darwin') => 'Plack::Middleware::SizeLimit' => ();
 use if ($^O ne 'darwin') => 'Process::SizeLimit::Core' => ();
