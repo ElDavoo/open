@@ -25,7 +25,8 @@ Socialtext::Daemontools->RunSupervised(
             '--host'         => 'localhost',
             '--listen'       => "127.0.0.1:$port",
             '--listen'       => "127.0.0.1:".($port+1000), # backend_https_port
-            '--env'          => 'deployment',
+            '--env'          => 'development',
+            '--reload'       => 1,
             '--app'          => $psgi,
         );
         $runner->parse_options(@argv);
