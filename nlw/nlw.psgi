@@ -26,7 +26,12 @@ builder {
         logger => sub { $logger->debug(@_) },
     );
 
-    mount '/nlw/control' => PerlHandler('Socialtext::Handler::ControlPanel'),
+    # XXX "/nlw/ntlm" support
+
+    mount '/nlw/control' => PerlHandler(
+        'Socialtext::Handler::ControlPanel',
+        'Socialtext::AccessHandler::IsBusinessAdmin',
+    ),
     mount '/nlw' => PerlHandler('Socialtext::Handler::Authen'),
     mount '/' => PerlHandler('Socialtext::Handler::REST'),
 };

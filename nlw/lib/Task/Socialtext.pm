@@ -8,6 +8,7 @@ use TheSchwartz::Moosified '0.05_005'; # Dev version
 use if ($^O ne 'darwin') => 'Plack::Middleware::SizeLimit' => ();
 use if ($^O ne 'darwin') => 'Process::SizeLimit::Core' => ();
 use if ($^O eq 'linux') => 'Linux::Smaps' => ();
+use if ($^O eq 'linux') => 'Authen::Simple::SMB' => ();
 ###############################################################
 use Algorithm::Diff ();
 use Algorithm::Diff::XS ();

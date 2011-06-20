@@ -9,10 +9,11 @@ use URI;
 use Log::Dispatch;
 use Module::Load;
 use Encode ();
+use Apache::Constants qw(:response);
 
 our ($Request, $Response, $CGI);
 
-sub PerlHandler ($handler) {
+sub PerlHandler ($handler, $access_handler) {
     load($handler);
 
     return sub ($env) {
@@ -31,6 +32,15 @@ sub PerlHandler ($handler) {
         map { $ENV{$_} = $env->{$_} }
             grep { /^(?:HTTP|QUERY|REQUEST|REMOTE|SCRIPT|PATH|CONTENT|SERVER)_/ }
             keys %{$env};
+
+        if ($access_handler) {
+            load $access_handler;
+            my $rv = $access_handler->can('handler')->($Request);
+            if ($rv != OK) {
+                $Response->status($rv);
+                return $Response->finalize;
+            }
+        }
 
         my ($h, $out) = $app->handler($Request);
 
