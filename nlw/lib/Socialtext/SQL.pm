@@ -113,7 +113,7 @@ sub _connect_dbh {
     cluck "Creating a new DBH $params{db_name}" if $DEBUG;
     my $dsn = "dbi:Pg:database=$params{db_name}";
 
-    $_dbh = DBI->connect($dsn, $params{user}, "",  {
+    $_dbh = DBI->connect($dsn, $params{user}, $params{password} // "",  {
             AutoCommit => 1,
             pg_enable_utf8 => 1,
             pg_prepare_now => 1,
