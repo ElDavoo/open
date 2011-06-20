@@ -2095,8 +2095,16 @@ div#controls div#controlsRight ul li a.watch.on {
     background-image: url(/nlw/plugin/like/images/like-me-others.gif);
 }
 
-.like-bubble {
+.like-bubble.cols-0,
+.like-bubble.cols-1 {
     width: 200px;
+}
+.like-bubble.cols-2 {
+    width: 330px;
+}
+.like-bubble .liker-column {
+    float: left;
+    padding: 0 5px;
 }
 .like-bubble .liker {
     padding: 5px 0;
@@ -2120,6 +2128,7 @@ div#controls div#controlsRight ul li a.watch.on {
 }
 .like-bubble .like-filter {
     padding: 5px 0;
+    text-align: center;
 }
 .like-bubble .like-count {
     font-weight: bold;
@@ -2151,6 +2160,11 @@ div#controls div#controlsRight ul li a.watch.on {
 .like-bubble .paging  {
     padding: 10px;
     text-align: center;
+    font-weight: bold;
+}
+.like-bubble .paging span,
+.like-bubble .paging a {
+    margin: 0 4px;
 }
 
 td.listview-watchlist {

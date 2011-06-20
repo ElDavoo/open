@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-06-17 01:14-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -193,7 +193,7 @@ msgstr "颜色"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:169
 msgid "sc.column-width"
-msgstr "列宽"
+msgstr "栏宽"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2565
 msgid "sc.confirm-navigate-away?"
@@ -215,7 +215,7 @@ msgstr "（默认）"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:191
 msgid "sc.delete-column"
-msgstr "删除列"
+msgstr "删除栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:348
 msgid "sc.delete-name"
@@ -287,12 +287,12 @@ msgstr "向右填充"
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
 msgid "sc.font"
-msgstr "字体"
+msgstr "字型"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:55
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:46
 msgid "sc.font-family"
-msgstr "系列"
+msgstr "字体"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63
@@ -315,11 +315,11 @@ msgstr "隐藏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:187
 msgid "sc.insert-column-left"
-msgstr "在左侧插入一列"
+msgstr "在左侧插入一栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:188
 msgid "sc.insert-column-right"
-msgstr "在右侧插入一列"
+msgstr "在右侧插入一栏"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1004
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:216
@@ -374,11 +374,11 @@ msgstr "移动"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:189
 msgid "sc.move-column-left"
-msgstr "向左移动一列"
+msgstr "向左移动一栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:190
 msgid "sc.move-column-right"
-msgstr "向右移动一列"
+msgstr "向右移动一栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:203
 msgid "sc.move-insert"

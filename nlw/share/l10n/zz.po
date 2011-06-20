@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-15 09:01-0700\n"
+"PO-Revision-Date: 2011-06-16 10:57-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4485,6 +4485,10 @@ msgstr "Zzzzz"
 msgid "do.like"
 msgstr "Zzzz"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like=count"
+msgstr "(%1) Zzzz"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "Zzzz"
@@ -4560,6 +4564,10 @@ msgstr "Zzzz zzzzzzzzz zzzz zzzzzz"
 #: share/skin/s3/javascript/like-indicator.js:134
 msgid "do.unlike"
 msgstr "Zzzzzz"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike=count"
+msgstr "(%1) Zzzzzz"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
