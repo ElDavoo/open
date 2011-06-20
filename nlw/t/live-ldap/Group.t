@@ -8,7 +8,7 @@ use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 111;
+use Test::Socialtext tests => 106;
 use Test::Differences qw(eq_or_diff);
 use Socialtext::AppConfig;
 
@@ -22,6 +22,12 @@ fixtures(qw( db ));
 
 ###############################################################################
 sub bootstrap_openldap {
+
+    for my $user (Socialtext::User->All->all()) {
+        next if $user->is_system_created;
+        Test::Socialtext::User->delete_recklessly($user);
+    }
+
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
     ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'), 'added base_dn';
     ok $openldap->add_ldif('t/test-data/ldap/people.ldif'),  'added people';
@@ -33,7 +39,7 @@ sub bootstrap_openldap {
 # TEST: instantiate an LDAP Group Factory
 instantiate_ldap_group_factory: {
     my $openldap    = bootstrap_openldap();
-    my $factory_key = $openldap->_as_factory();
+    my $factory_key = $openldap->as_factory();
     my $factory = Socialtext::Group->Factory(driver_key => $factory_key);
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
 }
@@ -117,18 +123,13 @@ retrieve_nested_ldap_group: {
     isa_ok $users => 'Socialtext::MultiCursor';
     is $users->count => '4', '... with correct number of users';
 
-    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
-    my $user = shift @users;
-    is $user->username => 'michael moorcock', '... first user has correct name';
-
-    $user = shift @users;
-    is $user->username => 'lemmy kilmister', '... second user has correct name';
-
-    $user = shift @users;
-    is $user->username => 'phil taylor', '... third user has correct name';
-
-    $user = shift @users;
-    is $user->username => 'eddie clarke', '... fourth user has correct name';
+    my @users = sort map { $_->username } $users->all;
+    eq_or_diff \@users, [
+        'eddie clarke',
+        'lemmy kilmister',
+        'michael moorcock',
+        'phil taylor',
+    ], 'have correct users';
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($hawkwind);
@@ -150,12 +151,11 @@ retrieve_nested_ldap_group_circular_references: {
     isa_ok $users => 'Socialtext::MultiCursor';
     is $users->count => '2', '... with correct number of users';
 
-    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
-    my $user = shift @users;
-    is $user->username => 'michael moorcock', '... first user has correct name';
-
-    $user = shift @users;
-    is $user->username => 'phil taylor', '... second user has correct name';
+    my @users = sort map { $_->username } $users->all;
+    eq_or_diff \@users, [
+        'michael moorcock',
+        'phil taylor',
+    ], 'have correct users';
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($circular);
@@ -200,12 +200,11 @@ remove_user_from_group: {
     isa_ok $users => 'Socialtext::MultiCursor';
     is $users->count => '2', '... with two users';
 
-    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
-    my $user = shift @users;
-    is $user->username => 'lemmy kilmister', '... first user has correct name';
-
-    $user = shift @users;
-    is $user->username => 'eddie clarke', '... third user has correct name';
+    my @users = sort map { $_->username } $users->all;
+    eq_or_diff \@users, [
+        'eddie clarke',
+        'lemmy kilmister',
+    ], 'have correct users';
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);
@@ -340,7 +339,7 @@ group_lookup_reuses_ldap_connection: {
 # TEST: List available LDAP Groups
 available_ldap_groups: {
     my $openldap   = bootstrap_openldap();
-    my $driver_key = $openldap->_as_factory();
+    my $driver_key = $openldap->as_factory();
     my $factory    = Socialtext::Group->Factory(driver_key => $driver_key);
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
 
@@ -370,7 +369,7 @@ available_ldap_groups: {
 # TEST: List *ALL* available LDAP Groups
 all_available_ldap_groups: {
     my $openldap   = bootstrap_openldap();
-    my $driver_key = $openldap->_as_factory();
+    my $driver_key = $openldap->as_factory();
     my $factory    = Socialtext::Group->Factory(driver_key => $driver_key);
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
 
@@ -445,7 +444,7 @@ perf_test_big_ldap_groups: {
         # how long does it take to do "$factory->available(all=>1)" ?
         diag "Querying list of available Groups...";
         $t = timeit(1, sub {
-            my $driver    = $openldap->_as_factory();
+            my $driver    = $openldap->as_factory();
             my $factory   = Socialtext::Group->Factory(driver_key => $driver);
             my @available = $factory->Available(all => 1);
 

@@ -31,6 +31,7 @@ use Carp qw/croak/;
 use Try::Tiny;
 use Readonly;
 use Scalar::Util qw/blessed/;
+use List::MoreUtils qw(any);
 
 BEGIN {
     extends 'Socialtext::Base','Socialtext::MultiPlugin';
@@ -145,65 +146,118 @@ sub new_homunculus {
     my $homunculus = Socialtext::User::Cache->Fetch($key, $val);
     return $homunculus if $homunculus;
 
-    # if we pass in user_id, it will be one of the system-wide
-    # ids, we must short-circuit and immediately go to the driver
-    # associated with that system id
+    my $proto_user = $class->GetProtoUser($key => $val);
+
+    # The user_id key does not exist in LDAP, so map to username
     if ($key eq 'user_id') {
-        return undef if $val =~ /\D/;
+        unless ($proto_user) {
+            $proto_user = $class->GetProtoUser(
+                $key=>$val, collection=>'deleted') or return undef;
 
-        # Go get this User from the DB (so we know what driver it came from,
-        # and what it looked like _last time_ we saw it.
-        #
-        # Its *REALLY* important here to grab *ALL* of the columns from this
-        # table; we're going to pass it through to the Factory as a pre-loaded
-        # proto-user, so don't skimp here and try to just query one or two
-        # columns (we're going to need them all).
-        my $sth = sql_execute(qq{SELECT * FROM users WHERE user_id = ?}, $val);
-        my $row = $sth->fetchrow_hashref();
-        return unless $row;
-
-        # if driver doesn't exist any more, we don't have an instance of it to
-        # query.  e.g. customer removed an LDAP data store.
-        my $driver = eval {$class->_realize($row->{driver_key}, 'GetUser')};
-        if ($driver) {
-            # look the user up by *user_id*; *ALL* factories must support this
-            # lookup.
-            #
-            # "preload" is an optimization; we've already pulled the row from
-            # the DB for this User so pass it through to the factory so they
-            # can avoid looking the record up in the DB _again_.
-            $homunculus = $driver->GetUser($key, $val, preload => $row);
+            $proto_user->{missing} = 1;
         }
-
-        $homunculus ||= Socialtext::User::Deleted->new(
-            %{$row},
-            username => $row->{driver_username},    # ugh.
-        );
+        $key = 'username';
+        $val = $proto_user->{driver_username};
     }
-    # system generated users MUST come from the Default user store; we don't
-    # allow for them to live anywhere else.
-    #
-    # this prevents possible conflict with other stores having their own
-    # notion of what the "guest" or "system-user" is (e.g. Active Directory
-    # and its "Guest" user)
-    elsif (Socialtext::User::Default::Users->IsDefaultUser($key => $val)) {
+    # Weed out system users (called 'Default' users here).
+    if (Socialtext::User::Default::Users->IsDefaultUser($key => $val)) {
         my $factory = $class->_realize('Default', 'GetUser');
-        $homunculus = $factory->GetUser($key => $val);
+        return $factory->GetUser($key => $val);
     }
-    else {
-        $homunculus = $class->_first('GetUser', $key => $val);
 
-        if (!$homunculus && $key ne 'user_id') {
-            # maybe it was deleted?  do a search for users that don't have a
-            # registered driver key.
-            $homunculus = Socialtext::User::Factory->GetHomunculus(
-                $key, $val, [$class->_drivers]
-            );
+    $homunculus = eval {
+        $class->_first('GetUser', $key => $val, preload => $proto_user)
+    };
+    if (my $e = $@) {
+        st_log->error($e);
+            
+        if ($e =~ /no suitable LDAP response/) {
+            return $proto_user
+                ? Socialtext::User::Factory->NewHomunculus($proto_user)
+                : undef;
         }
+        elsif ($e =~ /LDAP error while finding user/) {
+            return $proto_user
+                ? Socialtext::User::Factory->NewHomunculus($proto_user)
+                : undef;
+        }
+        elsif ($e =~ /found multiple matches for user/) {
+            return undef;
+        }
+        elsif ($e =~ /duplicate key value violates unique constraint/) {
+            $proto_user = 
+                $class->GetProtoUser($key=>$val, collection=>'deleted');
+        }
+        else {
+            die $e;
+        }
+    }
+    
+    if ($proto_user && !$homunculus) {
+        $proto_user->{missing} = 1;
+        $proto_user->{cached_at} = 'now';
+        Socialtext::User::Factory->UpdateUserRecord($proto_user);
+        st_log->info("LDAP User '$proto_user->{driver_unique_id}' missing");
+
+        $proto_user->{username} = $proto_user->{driver_username};
+        require Socialtext::User::Deleted;
+        $homunculus = Socialtext::User::Deleted->new($proto_user);
     }
 
     Socialtext::User::Cache->Store($key, $val, $homunculus);
     return $homunculus;
+}
+
+sub GetProtoUser {
+    my $class = shift;
+    my $key = shift;
+    my $value = shift;
+    my %opts = @_;
+    my $collection = $opts{collection} || 'active';
+
+    my @binds;
+    my @where;
+    if ($opts{driver_keys}) {
+        push @binds, @{$opts{driver_keys}};
+        my $filter = $opts{exclude_driver_keys} ? 'NOT IN' : 'IN';
+        push @where, "driver_key $filter (" . join(",", map {'?'} @binds) .")";
+    }
+
+    if (any { $key eq $_ } qw/user_id driver_unique_id private_external_id/) {
+        return undef if ($key eq 'user_id' && $value !~ /^\d+$/);
+
+        push @where, "$key = ?";
+    }
+    elsif ($key eq 'username' || $key eq 'email_address') {
+        $value = Socialtext::String::trim(lc $value);
+        $key = 'driver_username' if $key eq 'username';
+        push @where, "LOWER($key) = ?";
+    }
+    else {
+        warn "invalid user ID lookup key '$key'";
+        return undef;
+    }
+    push @binds, $value;
+
+    my $where_clause = join(' AND ', @where);
+    my $table = 'users';
+    if ($collection eq 'all') {
+        $table = 'all_users';
+    }
+    elsif ($collection eq 'deleted') {
+        $table = 'all_users';
+        $where_clause .= ' AND is_deleted';
+    }
+
+    my $sth = sql_execute(qq{
+        SELECT * FROM $table WHERE $where_clause
+    }, @binds);
+    my $rows = $sth->fetchall_arrayref({});
+
+    return $rows if $collection eq 'all';
+
+    die "found more than one record for $key => $value" if scalar(@$rows) > 1;
+    return $rows->[0];
 }
 
 sub _update_profile_with_extra_attrs {
@@ -870,8 +924,10 @@ sub default_role {
 sub is_deactivated {
     my $self = shift;
     require Socialtext::Account;
-    return $self->primary_account_id
-        == Socialtext::Account->Deleted()->account_id;
+    my $accts_match = 
+        $self->primary_account_id == Socialtext::Account->Deleted()->account_id;
+
+    return $accts_match || $self->is_deleted;
 }
 
 # is User data sourced internally (eg. Default), or externally (eg. LDAP)
@@ -1120,20 +1176,20 @@ SELECT user_id
     ORDER BY driver_username $p{sort_order}
     LIMIT ? OFFSET ?
 EOSQL
-            workspace_count => qq{
+            workspace_count => qq!
 SELECT users.user_id, COALESCE(workspace_count,0) AS workspace_count
     FROM users
     LEFT JOIN (
         SELECT from_set_id AS user_id,
             COUNT(DISTINCT(into_set_id)) AS workspace_count
           FROM user_set_path
-         WHERE into_set_id } . PG_WKSP_FILTER . qq{
+         WHERE into_set_id ! . PG_WKSP_FILTER . qq!
         GROUP BY from_set_id
     ) temp1 USING (user_id)
     ORDER BY workspace_count $p{sort_order},
              users.driver_username ASC
     LIMIT ? OFFSET ?
-},
+!,
             user_id => <<EOSQL,
 SELECT user_id
     FROM users

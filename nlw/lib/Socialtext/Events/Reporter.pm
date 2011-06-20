@@ -1299,11 +1299,13 @@ sub get_events_workspace_activities {
 sub _conversations_where {
     my $visible_ws = shift || $VISIBLE_WORKSPACES;
     return qq{(
-        e.actor_id <> ?
-        AND page_workspace_id IN (
+        page_workspace_id IN (
             $visible_ws
         ) -- end page_workspace_id IN
         AND ( -- start convos clause
+            -- it's my own action
+            (e.actor_id = ?)
+            OR
             -- it's in my watchlist
             EXISTS (
                 SELECT 1
@@ -1348,8 +1350,7 @@ sub _build_convos_sql {
        before after limit count offset
     ));
 
-    my @bind = ($user_id); # the `actor_id <> ?` part of the big convos SQL
-
+    my @bind;
     my @ws_bind;
     my $visible_ws = qq{
     $VISIBLE_WORKSPACES
@@ -1375,7 +1376,7 @@ sub _build_convos_sql {
 
     my @where;
     push @where, _conversations_where($visible_ws);
-    push @bind, ($user_id) x 3;
+    push @bind, ($user_id) x 4;
 
     $opts->{activity} ||= '';
     $opts->{action} ||= [];
@@ -1420,10 +1421,11 @@ sub _build_convos_sql {
         }
 
         # If we are showing page events off the main events table, make sure we
-        # don't accidentally display the edit_start and edit_cancel events.
+        # don't accidentally display the edit_start, edit_cancel, watch_add or
+        # watch_delete events.
         if (!@classes or grep { $_ eq 'page' } @classes) {
             $self->add_outer_condition(
-                "evt.action NOT IN ('edit_start', 'edit_cancel')"
+                "evt.action NOT IN ('edit_start', 'edit_cancel', 'watch_add', 'watch_delete')"
             );
         }
     }

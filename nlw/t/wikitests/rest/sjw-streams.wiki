@@ -614,9 +614,9 @@ Used to be a bug that these group events showed up in this feed.  They shouldn't
 | json-path-is | $[2].event_class | page                    |
 | json-path-is | $[2].action      | edit_save               |
 
-| *Comment* | Member - conversations (empty since no edits after "mine") |
+| *Comment* | Member - conversations (no edits after "mine") |
 | GET-json | /data/events/conversations/%%membart_id%%?html=0 |
-| json-response-is | 200 | 0 |
+| json-response-is | 200 | 1 |
 
 | *Comment* | Member - own activities |
 | GET-json | /data/events/activities/%%membart_id%%?html=0 |
@@ -679,7 +679,7 @@ Used to be a bug that these group events showed up in this feed.  They shouldn't
 | *Comment* | Adminia - conversations should see membart's|
 | http-user-pass | %%adminia%% | password |
 | GET-json | /data/events/conversations/%%adminia_id%%?html=0 |
-| json-response-is | 200 | 1 |
+| json-response-is | 200 | 3 |
 | json-path-is | $[0].event_class | page                |
 | json-path-is | $[0].action      | edit_save           |
 # BUG: conversations should still have the signal_id.  It's not available

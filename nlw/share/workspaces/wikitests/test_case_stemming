@@ -22,7 +22,7 @@ NOTE: every search should check for every search result
 | st-result | Stemming test page 2 |  |
 | st-result | Announcements and Links |  |
 | st-result | Quick Start |  |
-| st-result |  Sample Excel 2007 file.xlsx |  |
+| st-result | Sample Excel 2007 file.xlsx |  |
 
 | st-search | fish | Pages matching 'fish' |
 | st-result | 1 total |  |
@@ -49,7 +49,7 @@ QUESTION: is this the correct result for "fisher"? The word "fisher" is on test 
 | st-result | jabber |  |
 
 | st-search | stemmer | Pages matching 'stemmer' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-result |  |  |
 
 | st-search | stemming | Pages matching 'stemming' |
@@ -65,10 +65,10 @@ QUESTION: is this the correct result for "fisher"? The word "fisher" is on test 
 | st-result | jabber |  |
 
 | st-search | zig | Pages matching 'zig' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | st-search | zigging | Pages matching 'zigging' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | st-search | zigzag | Pages matching 'zigzag' |
 | st-result | 1 total |  |
@@ -96,15 +96,15 @@ QUESTION: is this the correct result for "fisher"? The word "fisher" is on test 
 QUESTION: missing test data for "wolf"?
 
 | st-search | wolf | Pages matching 'wolf' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-result |  |  |
 
 | st-search | wolve | Pages matching 'wolve' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-result |  |  |
 
 | st-search | wolves | Pages matching 'wolves' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-result |  |  |
 
 | st-search | whole | Pages matching 'whole' |
@@ -112,7 +112,7 @@ QUESTION: missing test data for "wolf"?
 | st-result | Stemming test page 2 |  |
 
 | st-search | wholehearted | Pages matching 'wholehearted' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-result |  |  |
 
 | st-search | wholesale | Pages matching 'wholesale' |
@@ -120,7 +120,7 @@ QUESTION: missing test data for "wolf"?
 | st-result | Stemming test page 1 |  |
 
 | st-search | wholesome | Pages matching 'wholesome' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 | st-result |  |  |
 
 | *Comment* | Test Case: stemming COMPLETED |

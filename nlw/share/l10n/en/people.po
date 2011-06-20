@@ -458,6 +458,10 @@ msgstr "Tag Name"
 msgid "people.tools"
 msgstr "Tools"
 
+#: share/plugin/people/share/widgets/mytweets.xml:9
+msgid "people.twitter-id"
+msgstr "Twitter ID"
+
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"
 msgstr "Welcome, New User"

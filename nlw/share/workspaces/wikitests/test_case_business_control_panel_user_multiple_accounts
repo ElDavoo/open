@@ -1,6 +1,4 @@
-
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts |
-
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts Global Vars |  |
 | set | primacct | bcpprimacct%%start_time%% |
@@ -52,5 +50,38 @@
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts Find user |  |
 | st-search-cp-users | %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%primacct%% | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),'%%newuser%%')] | 30000 |
+
+| *Comment* | Test Case: Business Control Panel User Workspaces and links |  |
+| set | primws | bcpprimws%%start_time%% |
+| st-admin | create-workspace --name %%primws%% --title %%primws%% --account %%primacct%% --empty | created |
+| st-admin | add-member --w %%primws%% --u %%newuser%% | now has the role |
+| click_and_wait | //a[contains(text(),'%%newuser%%')] | 30000 |
+
+| set | accountTable | `//div[@id='accountTable']/table/tbody//tr` |
+| set | workspaceTable | `//div[@id='workspaceTable']/table/tbody//tr` |
+
+| *Comment* | Test Case: Business Control Panel User wait for tables to populate |  |
+| wait_for_element_visible_ok | %%accountTable%% | 30000 |
+| wait_for_element_visible_ok | %%workspaceTable%% | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Workspace table and links |  |
+| is_element_present_ok | %%workspaceTable%% | //a[contains(text(),'%%primws%%')] |
+| text_like | %%workspaceTable%% | system-user |
+| text_unlike | %%workspaceTable%% | href |
+
+| *Comment* | Test Case: Business Control Panel Account table and links |  |
+| is_element_present_ok | %%accountTable%% | //a[contains(text(),'%%primws%%')] |
+| text_like | %%accountTable%% | Primary Account |
+
+| *Comment* | TEST FOR {bz: 5349} should pass |  |
+| text_unlike | %%accountTable%% | href |
+
+| *Comment* | Test Case: Business Control Panel User Multiple Accounts TEARDOWN |  |
+| st-process-jobs |  |  |
+| delete-workspace | %%primws%% |  |
+| st-admin | deactivate-user --u %%newuser%% |  |
+| delete-account | %%acct2%% |  |
+| delete-account | %%primacct%% |  |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts COMPLETED |

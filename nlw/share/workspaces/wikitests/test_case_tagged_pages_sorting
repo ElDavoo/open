@@ -10,6 +10,7 @@
 | set | user_4 | user4_%%start_time%%@ken.socialtext.net |
 | set | user_4_regex | user4_%%start_time%%\@ken\.socialtext\.net |
 | set | sorting_workspace | tagged-%%start_time%% |
+| set | user_5 | user5_%%start_time%%@david.socialtext.net |
 
 | *Comment* | Test Case: Tagged Page Sorting Create new ws %%sorting_workspace%% |  |
 | st-admin | create-workspace --empty --name %%sorting_workspace%% --title %%sorting_workspace%% --empty | A new workspace named "%%sorting_workspace%%" was created. |
@@ -27,6 +28,8 @@
 | st-admin | add-member --email %%user_3%% --workspace %%sorting_workspace%% |  |
 | st-admin | create-user --email %%user_4%% --password 123456 |  |
 | st-admin | add-member --email %%user_4%% --workspace %%sorting_workspace%% |  |
+| st-admin | create-user --email %%user_5%% --password 123456 |  |
+| st-admin | add-member --email %%user_5%% --workspace %%sorting_workspace%% |  |
 
 Create unique sort order for each sort:
 1st date, page 2, user 3, 5 revisions
@@ -122,16 +125,16 @@ Create unique sort order for each sort:
 | wait_for_text_present_ok | Tagged Page %%start_time%% | 30000 |
 | text_like | link=Tagged Page %%start_time%% | Tagged Page %%start_time%% |
 
-| *Comment* | Test Case: Tagged Page Sorting. Login as %%email%% |  |
+| *Comment* | Test Case: Tagged Page Sorting. Login as %%user_5%% |  |
 | st-logout |  |  |
 | open_ok | /%%sorting_workspace%%/?Search Sort 1 |  |
-| type_ok | username | %%username%% |
-| type_ok | password | %%password%% |
+| type_ok | username | %%user_5%% |
+| type_ok | password | 123456 |
 | clickAndWait | login_btn |  |
 
 | *Comment* | Test Case: Tagged Page Sorting needs to sort using time in seconds |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Time |  |
+| open_ok | /?action=preferences_settings;preferences_class_id=timezone |  |
+| wait_for_element_visible_ok | timezone__time_display_seconds | 30000 |
 | check_ok | timezone__time_display_seconds |  |
 | click_and_wait | link=Save |  |
 

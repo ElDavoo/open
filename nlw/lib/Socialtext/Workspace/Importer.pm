@@ -143,6 +143,10 @@ sub import_workspace {
                 . $self->{new_name} . '('
                 . $self->{workspace}->workspace_id
                 . '),[' . $timer->elapsed . ']');
+
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser(), $self->{workspace});
+        $adapter->hook('nlw.import_workspace.after', [$self->{workspace}, $self->{info}]);
     };
     if (my $err = $@) {
         if ($self->{workspace}) {
@@ -204,6 +208,7 @@ sub _create_workspace {
     }
 
     $self->{workspace} = $ws;
+    $self->{info} = $info;
     $self->_set_permissions();
     $adapter->hook('nlw.import_workspace', [$ws, $info]);
 }

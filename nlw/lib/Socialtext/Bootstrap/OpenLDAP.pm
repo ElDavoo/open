@@ -390,7 +390,7 @@ sub add_to_user_factories {
 
     # get the list of existing User Factories, stripping us out of it (so we
     # don't add ourselves again as a duplicate)
-    my $me_as_factory = $self->_as_factory();
+    my $me_as_factory = $self->as_factory();
     my @factories =
         grep { $_ ne $me_as_factory }
         split /;\s*/, Socialtext::AppConfig->user_factories();
@@ -412,7 +412,7 @@ sub remove_from_user_factories {
     verbose( "# removing LDAP instance from user_factories" );
 
     # get the list of existing User Factories, stripping us out of it
-    my $me_as_factory = $self->_as_factory();
+    my $me_as_factory = $self->as_factory();
     my @factories =
         grep { $_ ne $me_as_factory }
         split /;\s*/, Socialtext::AppConfig->user_factories();
@@ -435,7 +435,7 @@ sub add_to_group_factories {
 
     # get the list of Group Factories, stripping us out of it (so we don't add
     # ourselves again as a duplicate)
-    my $me_as_factory = $self->_as_factory();
+    my $me_as_factory = $self->as_factory();
     my @factories =
         grep { $_ ne $me_as_factory }
         split /;\s*/, Socialtext::AppConfig->group_factories();
@@ -457,7 +457,7 @@ sub remove_from_group_factories {
     verbose( "# removing LDAP instance from group_factories" );
 
     # get the list of existing Group Factories, stripping us out of it
-    my $me_as_factory = $self->_as_factory();
+    my $me_as_factory = $self->as_factory();
     my @factories =
         grep { $_ ne $me_as_factory }
         split /;\s*/, Socialtext::AppConfig->group_factories();
@@ -474,7 +474,7 @@ sub remove_from_group_factories {
     return $got_set_ok;
 }
 
-sub _as_factory {
+sub as_factory {
     my $self = shift;
     my $id   = $self->ldap_config->id();
     return "LDAP:$id";

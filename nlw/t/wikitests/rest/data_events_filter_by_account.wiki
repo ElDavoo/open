@@ -79,7 +79,7 @@ Set up events
 | get             | %%a_convos%% | application/json |
 | code-is         | 200          |                  |
 | json-parse      |              |                  |
-| json-array-size | 2            |                  |
+| json-array-size | 4            |                  |
 | body-like       | "tk":"1a"    |                  |
 | body-like       | "tk":"1b"    |                  |
 
@@ -87,7 +87,7 @@ Set up events
 | get | %%a_convos%%?account_id=%%a_account_id%% | application/json |
 | code-is         | 200       |
 | json-parse      |           |
-| json-array-size | 1         |
+| json-array-size | 2         |
 | body-like       | "tk":"1a" |
 | body-unlike     | "tk":"1b" |
 
@@ -95,7 +95,7 @@ Set up events
 | get | %%a_convos%%?account_id=%%b_account_id%% | application/json |
 | code-is         | 200       |
 | json-parse      |           |
-| json-array-size | 1         |
+| json-array-size | 2         |
 | body-unlike     | "tk":"1a" |
 | body-like       | "tk":"1b" |
 

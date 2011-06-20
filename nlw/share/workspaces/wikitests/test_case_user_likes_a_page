@@ -1,0 +1,178 @@
+| *Comment* | Test Case: User Likes a Page |  |
+
+| set | user1 | user.one.%%start_time%%@david.socialtext.net |
+| set | user1_short | user one %%start_time%% |
+| set | user2 | user.two.%%start_time%%@david.socialtext.net |
+| set | user2_short | user two %%start_time%% |
+| set | user3 | user.three.%%start_time%%@david.socialtext.net |
+| set | user3_short | user three %%start_time%% |
+| set | user4 | user.four.%%start_time%%@david.socialtext.net |
+| set | user4_short | user four %%start_time%% |
+| set | user5 | user.five.%%start_time%%@david.socialtext.net |
+| set | user5_short | user five %%start_time%% |
+| set | user6 | user.six.%%start_time%%@david.socialtext.net |
+| set | user6_short | user six %%start_time%% |
+| set | user7 | user.seven.%%start_time%%@david.socialtext.net |
+| set | user7_short | user seven %%start_time%% |
+| set | acct | like-account-%%start_time%% |
+| set | wiki | like-wiki-%%start_time%% |
+
+| create_account | %%acct%% |  |  |
+| create_workspace | %%wiki%% | %%acct%% |  |
+| create_user | %%user1%% | %%password%% | %%acct%% |
+| set | user1_id | %%user_id%% |  |
+| create_user | %%user2%% | %%password%% | %%acct%% |
+| create_user | %%user3%% | %%password%% | %%acct%% |
+| create_user | %%user4%% | %%password%% | %%acct%% |
+| create_user | %%user5%% | %%password%% | %%acct%% |
+| create_user | %%user6%% | %%password%% | %%acct%% |
+| create_user | %%user7%% | %%password%% | %%acct%% |
+
+| st-admin | add-member --workspace %%wiki%% --email %%user1%% | now has the role |
+| st-admin | add-member --workspace %%wiki%% --email %%user2%% | now has the role |
+| st-admin | add-member --workspace %%wiki%% --email %%user3%% | now has the role |
+| st-admin | add-member --workspace %%wiki%% --email %%user4%% | now has the role |
+| st-admin | add-member --workspace %%wiki%% --email %%user5%% | now has the role |
+| st-admin | add-member --workspace %%wiki%% --email %%user6%% | now has the role |
+| st-admin | add-member --workspace %%wiki%% --email %%user7%% | now has the role |
+| st-admin | enable-plugin --account %%acct%% --p like |  |
+| st-admin | update-page --email %%user1%% --workspace %%wiki%% --page "%%wiki%%" < %%wikitest_client_files%%wikitest.txt | created |
+
+| *Comment* | Test Case: User Likes a Page first user likes the page, sees the proper icons |  |
+| st-logoutin | %%user1%% | %%password%% |
+| open_ok | /%%wiki%% |  |
+| wait_for_text_present_ok | Like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator '] | 30000 |
+| click_ok | //a[@class='like-indicator '] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+| open_ok | /%%wiki%% |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me'] | 30000 |
+
+| *Comment* | Test Case: User Likes a Page first user sees self in Like Bubble |  |
+| mouse_over_ok | //a[@class='like-indicator me'] |  |
+| wait_for_text_present_ok | Only you have liked this page. | 10000 |
+| wait_for_element_visible_ok | link=All People | 10000 |
+| click_ok | link=All People |  |
+| wait_for_text_present_ok | Only you have liked this page. | 10000 |
+| is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
+
+| *Comment* | Test Case: User Likes a Page second user likes the page, sees the proper icons |  |
+| st-logoutin | %%user2%% | %%password%% |
+| open_ok | /%%wiki%% |  |
+| wait_for_text_present_ok | Like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+| open_ok | /%%wiki%% |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+
+| *Comment* | Test Case: User Likes a Page follow user 1, then check mouseover bubble for colleague list |  |
+| open_ok | /st/profile/%%user1_id%% |  |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
+| pause | 5000 | needed for IE7 |
+| click_ok | link=Follow this person |  |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+| open_ok | /%%wiki%% |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_text_present_ok | You and 1 person you follow have liked this page. | 30000 |
+| is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
+
+| *Comment* | Test Case: User Likes a Page edit the page so it will have multiple revisions to like |  |
+| open_ok | /%%wiki%% |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| click_ok | st-edit-button-link |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | Revised |
+| st-page-save |  |  |
+
+| *Comment* | Test Case: User Likes a Page check that revisions have proper like numbers |  |
+| wait_for_element_visible_ok | controls-right-revisions | 30000 |
+| click_and_wait | controls-right-revisions |  |
+| wait_for_text_present_ok | 0 likes | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator immutable'] | 30000 |
+| wait_for_text_present_ok | 2 likes | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others immutable'] | 30000 |
+| text_like | qr/Revision 2.+0 likes.+Revision 1.+2 likes/ |  |
+
+| *Comment* | Test Case: User Likes a Page second user unlikes and relikes the page, 2nd revision now has a like |  |
+| wait_for_element_visible_ok | link=Back To Current Revision | 30000 |
+| click_and_wait | link=Back To Current Revision |  |
+| wait_for_text_present_ok | Revised | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| click_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_text_present_ok | Like | 30000 |
+| open_ok | /%%wiki%% |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+| wait_for_element_visible_ok | controls-right-revisions | 30000 |
+| click_and_wait | controls-right-revisions |  |
+| wait_for_text_present_ok | 1 like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator me immutable'] | 30000 |
+| wait_for_text_present_ok | 2 likes | 30000 |
+| text_like | qr/Revision 2.+1 like.+Revision 1.+2 likes/ |  |
+
+| *Comment* | Test Case: User Likes a Page users 3-7 like the page in order to produce pagination in the list of likers |  |
+| st-logoutin | %%user3%% | %%password%% |
+| open_ok | /%%wiki%% |  |
+| wait_for_text_present_ok | Like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+| st-logoutin | %%user4%% | %%password%% |
+| open_ok | /%%wiki%% |  |
+| wait_for_text_present_ok | Like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+| st-logoutin | %%user5%% | %%password%% |
+| open_ok | /%%wiki%% |  |
+| wait_for_text_present_ok | Like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+| st-logoutin | %%user6%% | %%password%% |
+| open_ok | /%%wiki%% |  |
+| wait_for_text_present_ok | Like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+| st-logoutin | %%user7%% | %%password%% |
+| open_ok | /%%wiki%% |  |
+| wait_for_text_present_ok | Like | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | Unlike | 30000 |
+
+| *Comment* | Test Case: User Likes a Page check the mouseover bubble of likes, including pagination |  |
+| open_ok | /%%wiki%% |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_text_present_ok | Only you have liked this page. | 30000 |
+| wait_for_element_visible_ok | link=All People | 30000 |
+| click_ok | link=All People |  |
+| wait_for_text_present_ok | You and 6 other people have liked this page. | 30000 |
+| wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user3_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user4_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user5_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user6_short%% | 30000 |
+| wait_for_element_visible_ok | //a[@class='page2'] | 30000 |
+| click_ok | //a[@class='page2'] |  |
+| wait_for_element_not_present_ok | link=%%user3_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user4_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user5_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user6_short%% | 30000 |
+| wait_for_element_visible_ok | //a[@class='page1'] | 30000 |
+| click_ok | //a[@class='page1'] |  |
+| wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
+
+| *Comment* | Test Case: User Like a Page TEARDOWN |  |
+| deactivate-user | %%user1%% | was deactivated |
+| deactivate-user | %%user2%% | was deactivated |
+| delete-workspace | %%wiki%% | Recklessly deleting |
+| delete-account | %%acct%% | Recklessly deleting |

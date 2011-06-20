@@ -6,7 +6,7 @@ use Socialtext::SQL qw/sql_execute sql_txn/;
 use Socialtext::JSON qw/encode_json decode_json/;
 use Socialtext::Migration::Utils qw/ensure_socialtext_schema/;
 
-ensure_socialtext_schema('141');
+ensure_socialtext_schema('143');
 
 my $users_sth = sql_execute(qq{
     SELECT user_id
@@ -71,7 +71,7 @@ sub set_global_prefs {
     sql_execute(qq{
         INSERT INTO user_pref (user_id, pref_blob)
              VALUES (?, ?)
-    }, $row->{user_id}, encode_json($timezone));
+    }, $row->{user_id}, encode_json({timezone=>$timezone}));
 
     return;
 }

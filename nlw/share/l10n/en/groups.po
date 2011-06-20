@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:20-0700\n"
+"PO-Revision-Date: 2011-06-14 09:22-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -336,7 +336,7 @@ msgstr "Currently, there are no workspaces associated with this group. Use the f
 
 #. (button)
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
-msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
+msgid "groups.note-click-this-to-save-changes=button"
 msgstr "NOTE: Click <b>%1</b> to save changes."
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39

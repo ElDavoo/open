@@ -86,7 +86,8 @@ sub Count {
 
 sub GetUser {
     my ($self, $id_key, $id_val, %opts) = @_;
-    if (my $proto = $opts{preload}) {
+    my $proto = $opts{preload};
+    if ($proto && $proto->{driver_key} eq $self->driver_key) {
         return $self->NewHomunculus($proto);
     }
     return $self->get_homunculus($id_key, $id_val);
@@ -94,7 +95,10 @@ sub GetUser {
 
 sub lookup {
     my ($self, $key, $val) = @_;
-    return $self->GetHomunculus($key, $val, $self->driver_key, 1);
+    return Socialtext::User->GetProtoUser(
+        $key, $val, 
+        driver_keys => [$self->driver_key],
+    );
 }
 
 sub create {

@@ -383,12 +383,15 @@ sub template_render {
 
 sub _get_pref_list {
     my $self = shift;
+    my $pref_scope = shift || ($self->hub->current_workspace->real ? 'workspace' : 'global');
     my $prefs = $self->hub->preferences_object->objects_by_class;
+
     my @pref_list = map {
         $_->{title} =~ s/ /&nbsp;/g;
         $_;
         } grep { $prefs->{ $_->{id} } }
         grep { $_->{id} ne 'search' } # hide search prefs screen
+        grep { $_->{pref_scope} eq $pref_scope or $_->{pref_scope} eq 'global' }
         @{ $self->hub->registry->lookup->plugins };
     return \@pref_list;
 }

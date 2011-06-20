@@ -443,6 +443,9 @@ msgstr "标签名称"
 msgid "people.tools"
 msgstr "工具"
 
+msgid "people.twitter-id"
+msgstr "Twitter 用户名"
+
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"
 msgstr "欢迎新用户"

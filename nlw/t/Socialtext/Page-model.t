@@ -42,6 +42,7 @@ Create_from_row: {
         views => 123_456,
         exists => 0, # should get overridden
         hub => $hub,
+        like_count => 0,
     };
     my $page = Socialtext::Page->_new_from_row($data);
     isa_ok $page, 'Socialtext::Page';

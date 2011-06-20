@@ -1454,6 +1454,15 @@ sub get {
         push @headers, map { split m/\s*=\s*/ } split m/\s*,\s*/, $headers;
     }
     $self->_get($uri, \@headers);
+
+    if ($self->{follow_redirects}) {
+        my $resp = $self->{http}->response;
+        if ($resp->code == 301 or $resp->code == 302) {
+            my $location = $resp->header('Location') || die 'No Location header';
+            diag "Redirect $location";
+            $self->get($location, $accept, $headers);
+        }
+    }
 }
 
 =head2 cond_get ( uri, accept, ims, inm )
@@ -1524,6 +1533,28 @@ sub code_is {
              "Status content matches";
     }
     return $code;
+}
+
+=head2 code_like( code [, expected_message])
+
+Check that the return code is correct.
+
+=cut
+
+sub code_like {
+    my ($self, $regex) = @_;
+    $regex = $self->quote_as_regex($regex);
+    my $http = $self->{http};
+    my $resp = $http->response;
+    if ($resp->code =~ $regex) {
+        pass "code is " . $resp->code;
+    }
+    else {
+        diag "Response message: " . ($resp->message || 'None') ."\n";
+        diag "Content: " . (substr($resp->content,0,256) || 'No content') . "\n"
+            unless $resp->code == 200;
+        diag "url(" . $http->request->url . ")\n";
+    }
 }
 
 =head2 dump_http_response 

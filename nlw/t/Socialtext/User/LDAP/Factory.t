@@ -4,7 +4,8 @@ use strict;
 use warnings FATAL => 'all';
 use mocked 'Net::LDAP';
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 48;
+use Test::More;
+use Test::Socialtext;
 use Test::Socialtext::User;
 
 # FIXTURE:  ldap_*
@@ -193,12 +194,10 @@ get_user_multiple_matches: {
     my $factory = Socialtext::User::LDAP::Factory->new();
     isa_ok $factory, 'Socialtext::User::LDAP::Factory';
 
-    my $user = $factory->GetUser(email_address=>'user@example.com');
+    my $user = eval { $factory->GetUser(email_address=>'user@example.com') };
+    my $e = $@;
+    like $e, qr/found multiple matches/, '... died finding multiple matches';
     ok !defined $user, 'get user w/multiple matches should fail';
-
-    # VERIFY logs; make sure we failed for the right reason
-    is logged_count(), 1, '... logged right number of entries';
-    next_log_like 'error', qr/found multiple matches/, '... logged multiple matches';
 }
 
 ###############################################################################
@@ -247,8 +246,8 @@ get_user_via_email_address_is_subtree: {
 
 ###############################################################################
 # User retrieval via "driver_unique_id" is optimized to be done as an exact
-# search
-get_user_via_driver_unique_id_is_exact: {
+# search IFF driver_unique_id is a subtree of the base.
+get_user_via_driver_unique_id_base_mismatch: {
     my $guard = Test::Socialtext::User->snapshot();
     Net::LDAP->set_mock_behaviour(
         search_results => [ $TEST_USERS[0] ],
@@ -259,13 +258,30 @@ get_user_via_driver_unique_id_is_exact: {
     isa_ok $factory, 'Socialtext::User::LDAP::Factory';
 
     my $user = $factory->GetUser(driver_unique_id=>$dn);
-    isa_ok $user, 'Socialtext::User::LDAP';
-
-    # VERIFY mocks...
     my $mock = Net::LDAP->mocked_object();
     $mock->called_pos_ok( 1, 'bind' );
     $mock->called_pos_ok( 2, 'search' );
     my ($self, %opts) = $mock->call_args(2);
-    is $opts{'scope'}, 'base', 'driver_unique_id search is exact';
-    is $opts{'base'}, $dn, 'driver_unique_id search base is DN';
+    is $opts{'scope'}, 'sub', 'subtree search when id is not in base';
+    is $opts{'base'}, 'dc=foo,dc=bar', 'default base when id is not in base';
 }
+
+get_user_via_driver_unique_id_base_match: {
+    Net::LDAP->set_mock_behaviour(
+        search_results => [ $TEST_USERS[0] ],
+    );
+    my $dn = 'cn=something,dc=foo,dc=bar';
+
+    my $factory = Socialtext::User::LDAP::Factory->new();
+    isa_ok $factory, 'Socialtext::User::LDAP::Factory';
+
+    my $user = $factory->GetUser(driver_unique_id=>$dn);
+    my $mock = Net::LDAP->mocked_object();
+    $mock->called_pos_ok( 1, 'bind' );
+    $mock->called_pos_ok( 2, 'search' );
+    my ($self, %opts) = $mock->call_args(2);
+    is $opts{'scope'}, 'base', 'base search when id is in base';
+    is $opts{'base'}, $dn, 'base is exact search';
+}
+
+done_testing;
