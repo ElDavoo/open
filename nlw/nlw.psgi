@@ -19,7 +19,7 @@ builder {
 
     enable "Plack::Middleware::SizeLimit" => (
         max_unshared_size_in_kb => '368640'
-    );
+    ) unless $^O eq 'darwin';
 
     enable "Plack::Middleware::AccessLog" => (
         format => "combined",
