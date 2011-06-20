@@ -124,7 +124,7 @@ use parent 'Plack::Response';
 use methods;
 use invoker;
 method err_headers_out { $self }
-method add { $->header(\@_) }
+method add { $->header(@_) }
 
 package Socialtext::PlackApp::Request;
 use parent 'Plack::Request';
