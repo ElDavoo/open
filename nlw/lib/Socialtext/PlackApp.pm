@@ -112,7 +112,7 @@ method new (%opts) {
     $->SUPER::new(%opts);
 }
 method bake {
-    $Response->header('Set-Cookie', $->as_string);
+    $Response->err_headers_out->add('Set-Cookie', $->as_string);
 }
 
 package Socialtext::PlackApp::Connection;
@@ -124,7 +124,12 @@ use parent 'Plack::Response';
 use methods;
 use invoker;
 method err_headers_out { $self }
-method add { $->header(@_) }
+method add ($key, $val) {
+    if ($key eq 'Set-Cookie') {
+        $val .= '; HttpOnly';
+    }
+    $->header($key, $val);
+}
 
 package Socialtext::PlackApp::Request;
 use parent 'Plack::Request';
