@@ -3,7 +3,7 @@ use 5.12.0;
 ###############################################################
 BEGIN { $INC{'Apache/AuthenNTLM.pm'} = __FILE__ }
 use Apache::AuthenNTLM (); # TODO: Remove mod_perl dependencies
-use WebService::Solr 0.12; # Version-specific
+use WebService::Solr 0.11; # Version-specific: 0.11 or 0.12
 use TheSchwartz::Moosified '0.05_005'; # Dev version
 ###############################################################
 use if ($^O ne 'darwin') => 'Plack::Middleware::SizeLimit' => ();
