@@ -1656,6 +1656,18 @@ sub put_form {
     $self->put($uri, 'Content-Type=application/x-www-form-urlencoded', @_);
 }
 
+=head2 put_wikitext( uri, body )
+
+Post to the specified URI with header 'Content-type=text/x.socialtext-wiki'
+
+=cut
+
+sub put_wikitext {
+    my $self = shift;
+    my $uri = shift;
+    $self->put($uri, 'Content-type=text/x.socialtext-wiki', @_);
+}
+
 =head2 post_file( uri, post_vars, filename_var filename )
 
 Post a local file to the specified URI
