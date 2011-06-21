@@ -7,16 +7,7 @@ ALTER TABLE page ADD COLUMN like_count bigint DEFAULT 0;
 CREATE INDEX page_likes_count_idx
     ON page(like_count);
 
--- Only required on staging where likes exist. We can hypothetically
--- remove this statement after this goes to staging.
-UPDATE page
-   SET like_count = (
-        SELECT COUNT(1)
-          FROM user_like
-         WHERE page_id = page.page_id
-           AND workspace_id = page.workspace_id
-           AND revision_id IS NULL
-   );
+-- Removed unnecessary page update
 
 CREATE FUNCTION update_like_count() RETURNS trigger AS $update_like_count$
     BEGIN
