@@ -1,4 +1,5 @@
 package Task::Socialtext;
+use 5.12.0;
 ###############################################################
 BEGIN { $INC{'Apache/AuthenNTLM.pm'} = __FILE__ }
 use Apache::AuthenNTLM (); # TODO: Remove mod_perl dependencies
@@ -36,6 +37,8 @@ use Bit::Vector ();
 use CGI ();
 use CGI::Application::PSGI ();
 use CGI::Application::Plugin::AutoRunmode ();
+use CGI::Application::Plugin::TT ();
+use CGI::Application::Plugin::Stream ();
 use CGI::PSGI ();
 use CSS ();
 use Cache::Cache ();
@@ -369,5 +372,20 @@ use pQuery ();
 use perl5 ();
 use signatures ();
 use strictures ();
-use true ();
-1;
+use true;
+__END__
+
+=head1 NAME
+
+Task::Socialtext - Load all Socialtext dependencies
+
+=head1 SYNOPSIS
+
+    use Task::Socialtext;
+
+=head1 DESCRIPTION
+
+Load this module to ensure that all dependencies needed to run Socialtext
+has been met by the local system.
+
+=cut
