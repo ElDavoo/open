@@ -523,6 +523,8 @@ sub db_connect_params {
         $connect_params{$k} = $self->$field();
     }
 
+    $connect_params{host} = '127.0.0.1' if $connect_params{host} eq 'localhost';
+
     return %connect_params;
 }
 
