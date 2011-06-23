@@ -7,13 +7,13 @@ use Socialtext::PlackApp 'PerlHandler';
 use Plack::Builder;
 
 builder {
-    enable 'Plack::Middleware::XForwardedFor' => (
+    enable XForwardedFor => (
         trust => [qw(127.0.0.1/8)],
     );
 
-    enable "Plack::Middleware::SizeLimit" => (
-        max_unshared_size_in_kb => '368640'
-    ) unless $^O eq 'darwin';
+    enable SizeLimit => (
+        max_unshared_size_in_kb => '368640',
+    );
 
     # XXX "/nlw/ntlm" support
 
