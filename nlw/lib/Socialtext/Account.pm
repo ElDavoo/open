@@ -44,6 +44,7 @@ Readonly our @ACCT_COLS => qw(
     allow_invitation
     account_type
     restrict_to_domain
+    pref_blob
 
     desktop_logo_uri
     desktop_header_gradient_top
@@ -217,6 +218,12 @@ sub reset_skin {
         $workspace->update(skin_name => '');
     }
     return $self->skin_name;
+}
+
+sub prefs {
+    my $self = shift;
+    require Socialtext::Prefs::Account;
+    return Socialtext::Prefs::Account->new(account=>$self);
 }
 
 sub workspaces {
