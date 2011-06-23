@@ -523,7 +523,10 @@ sub db_connect_params {
         $connect_params{$k} = $self->$field();
     }
 
-    $connect_params{host} = '127.0.0.1' if $connect_params{host} eq 'localhost';
+    if (($connect_params{host} eq 'localhost')
+            or (!$connect_params{host} and $^O eq 'darwin')) {
+        $connect_params{host} = '127.0.0.1';
+    }
 
     return %connect_params;
 }
