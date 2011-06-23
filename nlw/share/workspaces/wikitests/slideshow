@@ -165,7 +165,6 @@ Post by Email popup
 | clickAndWait | link=Your Notepad |  |
 | open_ok | /%%wiki%%/?action=preferences_settings;preferences_class_id=recent_changes |  |
 | clickAndWait | link=Syndicate |  |
-| clickAndWait | link=Time |  |
 | clickAndWait | link=Watchlist |  |
 | clickAndWait | //a[contains(@href,'?action=preferences_settings;preferences_class_id=weblog')] |  |
 
@@ -635,6 +634,7 @@ Lightbox screens:
 | include | [WidgetShow] |  |
 
 | *Comment* | moved Simple mode to end because Safari raises an alert |  |
+| st-logoutin | %%username%% | %%password%% |
 | open_ok | /%%wiki%%/index.cgi?Announcements and Links |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | click_ok | st-edit-button-link |  |

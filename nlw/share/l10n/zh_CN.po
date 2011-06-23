@@ -12411,11 +12411,11 @@ msgstr "显示第 %1 - %2 项，共 %3 项。"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
-msgstr "发送此页！"
+msgstr "分享此页！"
 
 #: share/plugin/signals/template/bookmarklet/index.html:4
 msgid "signals.signal-this-bookmarklet"
-msgstr "“发送此页”书签"
+msgstr "“分享此页”书签"
 
 #: share/plugin/signals/share/widgets/profile/widget.html:19
 msgid "signals.signal-to"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 08:09-0700\n"
+"PO-Revision-Date: 2011-06-22 05:05-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -337,11 +337,11 @@ msgstr "显示第 %1 - %2 项，共 %3 项。"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
-msgstr "发送此页！"
+msgstr "分享此页！"
 
 #: share/plugin/signals/template/bookmarklet/index.html:4
 msgid "signals.signal-this-bookmarklet"
-msgstr "“发送此页”书签"
+msgstr "“分享此页”书签"
 
 #: share/plugin/signals/share/widgets/profile/widget.html:19
 msgid "signals.signal-to"

@@ -220,7 +220,7 @@ proto.create_url = function () {
     var url;
     if (this._incipient_title) {
         url = "?action=display;is_incipient=1;page_name="
-            + this._incipient_title
+            + encodeURIComponent(this._incipient_title)
     }
     else {
         url = "?action=new_page";

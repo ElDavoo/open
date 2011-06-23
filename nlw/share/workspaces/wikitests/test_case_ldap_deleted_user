@@ -26,7 +26,6 @@ Also, you need base_dn.ldif in your wikitest_client_files directory.
 
 | *Comment* | Setup: add the user to the workspace and create a page to test against |  |
 | st-admin | add-member --email %%test_email%% --workspace %%workspace%% |  |
-| st-admin | update-page --email %%test_email%% --workspace %%workspace%% --page "eraseme %%start_time%%" < %%wikitest_client_files%%wikitest.txt | page has been created |
 
 | *Comment* | Test case: LDAP user can login |  |
 | st-login | %%test_username%% | %%test_password%% |
@@ -46,10 +45,9 @@ Also, you need base_dn.ldif in your wikitest_client_files directory.
 
 | *Comment* | Test case: should not be able to log in as now deleted LDAP user |  |
 | st-login | %%test_username%% | %%test_password%% |
-| st-message | Wrong username or password - please try again |  |
+| st-message | Login has been disabled |  |
 
 | *Comment* | Teardown: remove the user and the new page we created |  |
 | st-admin | remove-member --email %%test_email%% --workspace %%workspace%% | no longer has the role of 'member' |
-| st-admin | purge-page --workspace %%workspace%% --page "eraseme_%%start_time%%" | was purged |
 
 | *Comment* | Test Case: LDAP Deleted User COMPLETED |  |
