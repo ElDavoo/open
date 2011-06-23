@@ -1103,6 +1103,46 @@ Default: /challenge
 
 =for code type => SCALAR_TYPE
 
+=head2 time_timezone
+
+The system default timezone when displaying time.
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
+=head2 time_dst
+
+The system default daylight saving time when displaying time.
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
+=head2 time_date_display_format
+
+The system default format for dates when displaying time.
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
+=head2 time_time_display_12_24
+
+The system default format for time of day when displaying time.
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
+=head2 time_time_display_seconds
+
+The system default for whether or not to show seconds when displaying time.
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
 =head2 user_factories
 
 The semicolon-separated list of drivers to use for user creation.
