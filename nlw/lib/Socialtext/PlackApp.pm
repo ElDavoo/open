@@ -135,6 +135,7 @@ package Socialtext::PlackApp::Request;
 use parent 'Plack::Request';
 use methods;
 use invoker;
+use Encode ();
 use URI::Escape;
 no warnings 'redefine';
 
@@ -149,7 +150,8 @@ method content_type {
 
 method uri {
     if (caller =~ /^Socialtext::/) {
-        return uri_unescape($->SUPER::uri->path);
+        my $path = $->SUPER::uri->path;
+        return Encode::decode_utf8(Encode::encode(latin1 => $path));
     }
     $->SUPER::uri();
 }

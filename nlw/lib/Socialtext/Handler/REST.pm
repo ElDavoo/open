@@ -244,8 +244,11 @@ sub log_timings {
 
 sub loadResource {
     my ($self, $path, @extraArgs) = @_;
+
     $path ||= $self->getMatchText();
     $path = uri_unescape(URI->new($path)->path);
+    $path = Encode::decode_utf8(Encode::encode(latin1 => $path));
+
     my $handler = sub { $self->defaultResourceHandler(@_) };
     my %vars;
 
@@ -566,7 +569,7 @@ sub _getContent {
 
 sub user        { $_[0]->{_user} }
 sub request     { $_[0]->{_request} }
-sub getPathInfo { decode_utf8( $_[0]->request->uri ) }
+sub getPathInfo { $_[0]->request->uri }
 
 sub do_test {
 }
