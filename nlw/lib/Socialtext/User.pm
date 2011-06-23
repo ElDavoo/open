@@ -682,6 +682,12 @@ sub groups {
     );
 }
 
+sub prefs {
+    my $self = shift;
+    require Socialtext::Prefs::User;
+    return Socialtext::Prefs::User->new(user=>$self);
+}
+
 sub to_hash {
     my $self = shift;
     my %args = @_;
