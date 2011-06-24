@@ -18,6 +18,7 @@ use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE WORKSPACE_TYPE );
 
 our $VERSION = '4.7.4.2';
 
+
 const product_version => $VERSION;
 field using_debug => 0;
 field 'hub';
