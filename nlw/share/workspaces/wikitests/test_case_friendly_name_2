@@ -24,20 +24,28 @@
 | *Comment* | Test Case: Friendly Name 2 check Control Panel account page |  |
 | open_ok | /nlw/control/account/%%fname_acct_id%% |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
-| text_like | workspaces | %%fname%% |
-| text_like | //div[@id='userTable'] | %%fname%% |
-| text_like | groups | %%fname%% |
+
+| wait_for_element_present_ok | //table[@id='workspaces']/tbody/tr[3]/td[6] | 10000 |
+| text_like | //table[@id='workspaces']/tbody/tr[3]/td[6] | %%fname%% |
+
+| wait_for_element_present_ok | //div[@id='userTable']/table/tbody/tr[1]/td[1] | 10000 |
+| text_like | //div[@id='userTable']/table/tbody/tr[1]/td[1] | %%fname%% |
+
+| wait_for_element_present_ok | //table[@id='groups']/tbody/tr[1]/td[7] | 10000 |
+| text_like | //table[@id='groups']/tbody/tr[1]/td[7] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel workspace page |  |
 | open_ok | /nlw/control/account/%%fname_acct_id%% |  |
 | wait_for_element_visible_ok | //a[@title='view %%fname_wiki_2%%'] | 30000 |
 | click_and_wait | //a[@title='view %%fname_wiki_2%%'] |  |
-| wait_for_text_present_ok | %%fname%% | 30000 |
-| text_like | Created By: "%%fname%%" |  |
-| text_like | //div[@id='userTable'] | %%fname%% |
-| text_like | //div[@id='groupTable'] | %%fname%% |
+| wait_for_text_present_ok | Created By: "%%fname%%" | 30000 |
+| wait_for_element_present_ok | //div[@id='userTable']/table/tbody/tr[1]/td[2] | 10000 |
+| text_like | //div[@id='userTable']/table/tbody/tr[1]/td[2] | %%fname%% |
+| wait_for_element_present_ok | //div[@id='groupTable']/table/tbody/tr[1]/td[9] | 10000 |
+| text_like | //div[@id='groupTable']/table/tbody/tr[1]/td[9] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel workspaces list |  |
+| *Comment* | Workspaces list can have arbitrary content, so use weaker text_like test |  |
 | open_ok | /nlw/control/workspace |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 | text_like | workspaces | %%fname%% |
@@ -66,8 +74,9 @@
 | wait_for_element_visible_ok | `//a[contains(text(),'%%fname_checker%%')]` | 30000 |
 | click_and_wait | //a[contains(text(),'%%fname_checker%%')] |  |
 
-| text_like | Invited by: "%%fname%%" |  |
-| text_like | workspaceTable | %%fname_user%% |
+| wait_for_text_present_ok | Invited by: "%%fname%%" | 10000 |
+| wait_for_element_present_ok | //div[@id='workspaceTable']/table/tbody/tr[2]/td[6] | 10000 |
+| text_like | //div[@id='workspaceTable']/table/tbody/tr[2]/td[6] | %%fname_user%% |
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel other user page |  |
 | open_ok | /nlw/control/user/%%fname_user_id%% |  |
