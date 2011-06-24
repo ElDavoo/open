@@ -61,21 +61,28 @@ sub PerlHandler ($handler, $access_handler) {
         my @headers = $h->header;
         $Response->content_type('text/html; charset=UTF-8');
 
+        my $status;
+
         while (my $key = shift @headers) {
             my $val = shift @headers;
             $key =~ s/^-//;
             given (lc $key) {
                 when ('status') {
-                    $Response->status(int($val) || 200);
+                    $status = int($val) || $status;
                     next;
                 }
                 when ('type') {
                     $Response->content_type($val);
                     next;
                 }
+                when ('location') {
+                    $status ||= 302; # Fall through
+                }
             }
             $Response->header($key => $val);
         }
+
+        $Response->status($status || 200);
 
         Encode::_utf8_off($out);
         $Response->body($out);
