@@ -27,6 +27,7 @@ Socialtext::Daemontools->RunSupervised(
             '--listen'       => "127.0.0.1:$port",
             '--listen'       => "127.0.0.1:".($port+1000), # backend_https_port
             '--env'          => 'deployment',
+            '--keepalive'    => 0,
 #           '--reload'       => 1,
             '--app'          => $psgi,
         );
