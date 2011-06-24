@@ -1,7 +1,7 @@
 (function($) {
 
 LikeIndicator = function(opts) {
-    $.extend(this, opts);
+    $.extend(this, this._defaults, opts);
     this.others = this.isLikedByMe ? this.count - 1 : this.count;
     this.onlyFollows = true;
 };
@@ -10,6 +10,10 @@ LikeIndicator.prototype = {
     loc: loc,
     limit: 10,
     col_limit: 5,
+
+    _defaults: {
+        display: 'button',
+    },
 
     render: function ($node) {
         var self = this;
@@ -138,13 +142,22 @@ LikeIndicator.prototype = {
         return classes.join(' ');
     },
 
+    buttonText: function() {
+        return loc(this.isLikedByMe ? 'do.unlike' : 'do.like');
+    },
+
     text: function(with_count) {
-        var loc_key = this.mutable
-            ? this.isLikedByMe
-                ? 'do.unlike' : 'do.like'
-            : 'like.like';
-        if (with_count) loc_key += '=count';
-        return loc(loc_key, this.count);
+        switch(this.display) {
+            case 'count':
+                return this.count;
+            case 'button':
+                return loc(
+                    this.isLikedByMe ? 'do.unlike=count' : 'do.like=count',
+                    this.count
+                );
+            case 'text_count':
+                return loc('like.like=count', this.count);
+        }
     },
 
     likeText: function() {
