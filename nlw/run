@@ -5,8 +5,12 @@ use warnings;
 BEGIN { push @INC, "$ENV{ST_CURRENT}/nlw/lib" if $ENV{ST_CURRENT} }
 use Plack::Runner;
 use FindBin;
+use Socialtext::l10n qw(system_locale);
+
 my $psgi = "$FindBin::Bin/nlw.psgi";
 die "Cannot find $psgi" unless -e $psgi;
+
+$ENV{LANG} = $ENV{LC_ALL} = system_locale();
 
 # Plack::Handler::Starman::Socialtext uses this:
 $::proctitle = 'nlw-psgi';
