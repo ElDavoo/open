@@ -23,7 +23,7 @@
 | wait_for_element_visible_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` | 10000 |
 
 | *Comment* | Test Case: Web Page Widget. Verify divs. Don't use is_text_present, use divs, FF4 has trouble with text ! |
-| select_frame_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` |  |
+| selectFrame | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` |  |
 | is_element_present_ok | //body | 10000 |
 | is_element_present_ok | //div[@class='primarymessaging'] | 5000 |
 | is_element_present_ok | //div[@id='sitenavigation'] | 5000 |
@@ -39,7 +39,7 @@
 | wait_for_element_visible_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` | 10000 |
 
 | *Comment* | Test Case: Web Page Widget. Verify divs again. Don't use is_text_present, use divs, FF4 has trouble with text ! |
-| select_frame_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` |  |
+| selectFrame | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` |  |
 | is_element_present_ok | //body | 10000 |
 | is_element_present_ok | //div[@class='primarymessaging'] | 5000 |
 | is_element_present_ok | //div[@id='sitenavigation'] | 5000 |
