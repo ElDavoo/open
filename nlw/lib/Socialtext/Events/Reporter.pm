@@ -800,13 +800,20 @@ sub _build_standard_sql {
     my @field_list = $self->field_list;
     my $signals_join = '';
     if ($table eq 'event') {
+        my $user_id = $self->viewer->user_id;
         $signals_join = <<EOSQL;
 LEFT JOIN (
     SELECT signal_id, hash
     FROM signal
 ) outer_s USING (signal_id)
+LEFT JOIN (
+    SELECT signal_id, array_accum(liker_user_id) AS likers
+    FROM user_like
+    GROUP BY signal_id
+) likes_s USING (signal_id)
 EOSQL
-        push @field_list, [signal_hash => 'outer_s.hash'];
+        push @field_list, [ signal_hash => 'outer_s.hash' ];
+        push @field_list, [ likers  => 'likes_s.likers' ];
     }
 
     my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } @field_list);
