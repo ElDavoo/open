@@ -146,16 +146,19 @@ sub new_homunculus {
     my $homunculus = Socialtext::User::Cache->Fetch($key, $val);
     return $homunculus if $homunculus;
 
-    my $proto_user = $class->GetProtoUser($key => $val);
+    my $proto_user = $class->GetProtoUser($key => $val, collection=>'all');
+    if ($proto_user and $proto_user->{is_deleted}) {
+        $proto_user->{missing} = 1;
+        require Socialtext::User::Deleted;
+        $homunculus = Socialtext::User::Deleted->new($proto_user);
+        Socialtext::User::Cache->Store($key, $val, $homunculus);
+        return $homunculus;
+    }
 
     # The user_id key does not exist in LDAP, so map to username
     if ($key eq 'user_id') {
-        unless ($proto_user) {
-            $proto_user = $class->GetProtoUser(
-                $key=>$val, collection=>'deleted') or return undef;
+        return undef unless $proto_user;
 
-            $proto_user->{missing} = 1;
-        }
         $key = 'username';
         $val = $proto_user->{driver_username};
     }
@@ -183,10 +186,6 @@ sub new_homunculus {
         }
         elsif ($e =~ /found multiple matches for user/) {
             return undef;
-        }
-        elsif ($e =~ /duplicate key value violates unique constraint/) {
-            $proto_user = 
-                $class->GetProtoUser($key=>$val, collection=>'deleted');
         }
         else {
             die $e;
@@ -254,7 +253,11 @@ sub GetProtoUser {
     }, @binds);
     my $rows = $sth->fetchall_arrayref({});
 
-    return $rows if $collection eq 'all';
+    if ($collection eq 'all' and scalar(@$rows) > 1) {
+        if ( any { ! $_->{is_deleted} } @$rows ) {
+            $rows = [ grep { ! $_->{is_deleted} } @$rows ];
+        }
+    }
 
     die "found more than one record for $key => $value" if scalar(@$rows) > 1;
     return $rows->[0];
