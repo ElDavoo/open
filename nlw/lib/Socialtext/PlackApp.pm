@@ -10,11 +10,14 @@ use Log::Dispatch;
 use Module::Load;
 use Encode ();
 use Apache::Constants qw(:response);
+use Socialtext::HTTP::Ports;
 
 our ($Request, $Response, $CGI);
 
 sub PerlHandler ($handler, $access_handler) {
     load($handler);
+
+    state $https_port = Socialtext::HTTP::Ports->backend_https_port;
 
     return sub ($env) {
         delete $env->{"psgix.io"};
@@ -28,7 +31,11 @@ sub PerlHandler ($handler, $access_handler) {
             query => $CGI,
         ) : $handler;
 
-        local %ENV = (%ENV, REST_APP_RETURN_ONLY => 1);
+        local %ENV = (
+            %ENV,
+            REST_APP_RETURN_ONLY => 1,
+            NLWHTTPSRedirect => ($env->{SERVER_PORT} == $https_port),
+        );
         map { $ENV{$_} = $env->{$_} }
             grep { /^(?:HTTP|QUERY|REQUEST|REMOTE|SCRIPT|PATH|CONTENT|SERVER)_/ }
             keys %{$env};
