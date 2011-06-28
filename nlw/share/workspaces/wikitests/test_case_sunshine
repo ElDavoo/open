@@ -2,10 +2,11 @@
 
 * Fixture: SocialWidgets
 
-| set | user | sunshine.user.%%start_time%%@david.socialtext.net |
-| set | user_short | sunshine user %%start_time%% |
-| set | user_prefix | sunshine |
-| set | user_suffix | user %%start_time%% |
+| set | user | %%start_time%%.sunshine.user@david.socialtext.net |
+| set | user_short | %%start_time%%.sunshine.user |
+| set | user_with_spaces | %%start_time%% sunshine user |
+| set | user_prefix | %%start_time%% sunshine |
+| set | user_suffix | user |
 | set | acct | sunshine_account_%%start_time%% |
 | set | wiki | sunshine-wiki-%%start_time%% |
 | set | group | sunshine-group-%%start_time%% |
@@ -25,18 +26,22 @@
 | click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%user_suffix%%')] |  |
 | wait_for_element_visible_ok | link=%%user%% | 30000 |
 | wait_for_element_visible_ok | userTable-dropdown-2-0 | 30000 |
-| select_and_wait | userTable-dropdown-2-0 | label=Admin |
+| select_ok | userTable-dropdown-2-0 | label=Admin |
+| pause | 5000 |  |
 | click_and_wait | create |  |
 | wait_for_text_present_ok | Usage Reports | 30000 |
 
 | *Comment* | Test Case: Sunshine create a new group |  |
-| open_ok | /nlw/control |  |
-| wait_for_element_visible_ok | link=Create a Group | 30000 |
-| click_ok | link=Create a Group |  |
-| wait_for_element_visible_ok | st-groupname | 30000 |
-| type_ok | st-groupname | %%group%% |
-| click_and_wait | st-group-create-submit |  |
-| wait_for_text_present_ok | Created By: %%user_short%% | 30000 |
+| open_ok | /st/dashboard |  |
+| wait_for_element_present_ok | link=Create Group... | 30000 |
+| click_ok | link=Create Group... |  |
+| wait_for_element_visible_ok | st-create-group-next | 30000 |
+| click_and_wait | st-create-group-next |  |
+| wait_for_element_visible_ok | name | 30000 |
+| type_ok | name | %%group%% |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_and_wait | create-group |  |
+| wait_for_text_present_ok | Administrators %%user_short%%, | 30000 |
 
 | *Comment* | Test Case: Sunshine check the dashboard |  |
 | open_ok | /st/dashboard |  |
@@ -54,10 +59,10 @@
 | wait_for_text_present_ok | %%user%% | 30000 |
 | click_and_wait | //a[@class='realName'] |  |
 | location_like | /st/profile/%%user_id%% |  |
-| st-name-widget | 4 | wiki |
-| st-widget-title-like | wiki | Workspaces |
-| st-select-widget-frame | wiki |  |
-| wait_for_element_visible_ok | link=%%wiki%% | 30000 |
+| st-name-widget | 5 | wikis |
+| st-widget-title-like | wikis | Workspaces |
+| st-select-widget-frame | wikis |  |
+| wait_for_text_present_ok | %%wiki%% | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Sunshine check the group directory and group page |  |
@@ -66,11 +71,56 @@
 | wait_for_element_visible_ok | link=%%group%% | 30000 |
 | click_and_wait | link=%%group%% |  |
 | wait_for_text_present_ok | (self-join) | 30000 |
-| st-name-widget | 3 | ticker |
+| st-name-widget | 4 | ticker |
 | st-widget-title-like | ticker | Activities |
 | st-select-widget-frame | ticker |  |
 | wait_for_text_present_ok | joined the group %%group%%. | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Sunshine check Signals page and send a signal |  |
+| *Comment* | Test Case: Sunshine check Signals page and send a signal and reply |  |
 | click_and_wait | link=Signals |  |
+| wait_for_text_present_ok | There are no new signals in the last 30 days. | 30000 |
+| st-name-widget | 1 | signals_widget |
+| st_send_signal_via_activities_widget | signals_widget | signal 1 %%start_time%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | You less than a minute ago to %%acct%% | 30000 |
+| wait_for_text_present_ok | signal 1 %%start_time%% | 30000 |
+| st-send-reply | reply 1 %%start_time%% |  |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | reply 1 %%start_time%% | 30000 |
+| text_like | //div[@class='replies'] | qr/You less than a minute ago.+reply 1 %%start_time%%/ |
+
+| *Comment* | Test Case: Sunshine create a page in wiki |  |
+| click_and_wait | link=%%wiki%% |  |
+| wait_for_element_visible_ok | st-create-content-link | 30000 |
+| click_ok | st-create-content-link |  |
+| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
+| click_and_wait | st-create-content-savelink |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | page content |
+| type_ok | st-newpage-pagename-edit | page title |
+| st-page-save |  |  |
+| wait_for_text_present_ok | Created by | 30000 |
+| text_like | pageAttribution | qr/Created by.+%%user_with_spaces%%/ |
+| wait_for_text_present_ok | page content | 30000 |
+| wait_for_text_present_ok | page title | 30000 |
+
+| *Comment* | Test Case: Sunshine comment on the page |  |
+| click_ok | st-comment-button-link |  |
+| wait_for_element_visible_ok | comment | 30000 |
+| type_ok | comment | page comment |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| click_ok | link=Save |  |
+| wait_for_text_present_ok | contributed by | 30000 |
+| text_like | st-page-content | qr/contributed by.+%%user_with_spaces%%/ |
+| wait_for_text_present_ok | page comment | 30000 |
+
+
+
+
+
+| *Comment* | Test Case: Sunshine TEARDOWN |  |
+| deactivate-user | %%user%% |  |
+| delete-account | %%acct%% | Recklessly deleting |
