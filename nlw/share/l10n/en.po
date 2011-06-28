@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-16 10:57-0700\n"
+"PO-Revision-Date: 2011-06-28 09:47-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10040,6 +10040,26 @@ msgstr "You and %quant(%1,person you follow,people you follow) have liked this r
 #: share/skin/s3/javascript/like-indicator.js:152
 msgid "like.liked-this.revision.you=others"
 msgstr "You and %quant(%1,other person,other people) have liked this revision."
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.signal.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this signal,people you follow have liked this signal,None of the people you follow have liked this signal)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.signal.not-you=others"
+msgstr "%quant(%1,person has liked this signal,people have liked this signal,Nobody has liked this signal yet)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.signal.only-you"
+msgstr "Only you have liked this signal."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.signal.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this signal."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.signal.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this signal."
 
 #: share/plugin/like/template/like/listview-sortby.tt2:1
 msgid "like.likes"
