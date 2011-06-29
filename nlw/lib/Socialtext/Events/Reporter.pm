@@ -273,15 +273,17 @@ sub _extract_signal {
     my $hash = delete $row->{signal_hash};
 
     my $link_dictionary = $self->link_dictionary;
-    my $parser = Socialtext::WikiText::Parser::Messages->new(
-       receiver => Socialtext::WikiText::Emitter::Messages::HTML->new(
-           callbacks => {
-               link_dictionary => $link_dictionary,
-               viewer => $self->viewer,
-           },
-       )
-    );
-    $row->{context}{body} = $parser->parse($row->{context}{body});
+    if ($row->{context}{body}) { # like/unlike events don't have bodies
+        my $parser = Socialtext::WikiText::Parser::Messages->new(
+           receiver => Socialtext::WikiText::Emitter::Messages::HTML->new(
+               callbacks => {
+                   link_dictionary => $link_dictionary,
+                   viewer => $self->viewer,
+               },
+           )
+        );
+        $row->{context}{body} = $parser->parse($row->{context}{body});
+    }
     $row->{context}{hash} = $hash;
     $row->{context}{uri} = $link_dictionary->format_link(
         link => 'signal',

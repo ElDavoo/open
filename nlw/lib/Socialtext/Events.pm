@@ -76,12 +76,14 @@ sub Record {
 
     my $signal = $ev->{signal};
     if ($signal && ref $signal) {
+        if ($ev->{action} eq 'signal') {
+            $ev->{context}{body} = Socialtext::Signal::Render->new(
+                user => $signal->user
+            )->render_signal($signal)->{body};
+        }
         $ev->{context}{account_ids} = $signal->account_ids;
         $ev->{context}{group_ids} = $signal->group_ids;
         $ev->{context}{uri} = $signal->uri;
-        $ev->{context}{body} = Socialtext::Signal::Render->new(
-            user => $signal->user
-        )->render_signal($signal)->{body};
         $ev->{signal} = $signal->signal_id;
     }
 

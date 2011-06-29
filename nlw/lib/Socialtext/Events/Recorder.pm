@@ -66,9 +66,12 @@ sub _validate_insert_params {
     elsif ($class eq 'signal') {
         die "signal parameter is missing for signal event"
             unless $p->{signal};
-        unless ($p->{_checked_context} &&
+        if ($p->{action} eq 'signal'
+            and not(
+                $p->{_checked_context} &&
                 defined $p->{_checked_context}{body} &&
                 length $p->{_checked_context}{body}
+            )
         ) {
             die "body missing from context for signal event";
         }
