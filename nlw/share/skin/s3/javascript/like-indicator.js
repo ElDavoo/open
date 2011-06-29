@@ -1,9 +1,7 @@
 (function($) {
 
 LikeIndicator = function(opts) {
-    $.extend(this, this._defaults, opts);
-    this.others = this.isLikedByMe ? this.count - 1 : this.count;
-    this.onlyFollows = true;
+    this.update(opts);
 };
 
 LikeIndicator.prototype = {
@@ -13,6 +11,12 @@ LikeIndicator.prototype = {
 
     _defaults: {
         display: 'button',
+    },
+
+    update: function(opts) {
+        $.extend(this, this._defaults, opts);
+        this.others = this.isLikedByMe ? this.count - 1 : this.count;
+        this.onlyFollows = true;
     },
 
     render: function ($node) {
@@ -194,8 +198,14 @@ $.fn.likeIndicator = function(opts) {
     if (!opts.url) throw new Error('url required');
     if (!opts.type) throw new Error('type required');
     $.each(this, function(_, node) {
-        var indicator = new LikeIndicator(opts);
-        indicator.render($(node));
+        if (node._indicator) {
+            node._indicator.update(opts);
+            node._indicator.render();
+        }
+        else {
+            node._indicator = new LikeIndicator(opts);
+            node._indicator.render($(node));
+        }
     });
 };
 
