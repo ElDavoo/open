@@ -5,11 +5,13 @@
 | set | user | %%start_time%%.sunshine.user@david.socialtext.net |
 | set | user_short | %%start_time%%.sunshine.user |
 | set | user_with_spaces | %%start_time%% sunshine user |
-| set | user_prefix | %%start_time%% sunshine |
-| set | user_suffix | user |
+| set | user_prefix | %%start_time%% |
+| set | user_suffix | sunshine user |
 | set | acct | sunshine_account_%%start_time%% |
 | set | wiki | sunshine-wiki-%%start_time%% |
 | set | group | sunshine-group-%%start_time%% |
+| set | demo_user | socialtextdemo1@gmail.com |
+| set | demo_pass | socialtext |
 
 | create-account | %%acct%% |  |  |
 | create-user | %%user%% | %%password%% | %%acct%% |
@@ -32,7 +34,7 @@
 | wait_for_text_present_ok | Usage Reports | 30000 |
 
 | *Comment* | Test Case: Sunshine create a new group |  |
-| open_ok | /st/dashboard |  |
+| open_ok | /st/groups |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
 | wait_for_element_visible_ok | st-create-group-next | 30000 |
@@ -48,11 +50,7 @@
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 | st-name-widget | 1 | newbie |
 | st-widget-title-like | newbie | I'm new. What do I do? |
-| st-name-widget | 4 | ticker |
-| st-widget-title-like | ticker | Activities |
-| st-select-widget-frame | ticker |  |
 | wait_for_text_present_ok | edited Example Page: Project Tracking in %%wiki%%. | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Sunshine check people directory and profile page |  |
 | click_and_wait | link=People |  |
@@ -71,9 +69,6 @@
 | wait_for_element_visible_ok | link=%%group%% | 30000 |
 | click_and_wait | link=%%group%% |  |
 | wait_for_text_present_ok | (self-join) | 30000 |
-| st-name-widget | 4 | ticker |
-| st-widget-title-like | ticker | Activities |
-| st-select-widget-frame | ticker |  |
 | wait_for_text_present_ok | joined the group %%group%%. | 30000 |
 | select-frame | relative=parent |  |
 
@@ -117,10 +112,44 @@
 | text_like | st-page-content | qr/contributed by.+%%user_with_spaces%%/ |
 | wait_for_text_present_ok | page comment | 30000 |
 
+| *Comment* | Test Case: Sunshine check the what's new |  |
+| click_and_wait | link=What's New | 30000 |
+| wait_for_element_visible_ok | link=page title | 30000 |
+| text_like | st-listview-form | qr/page title.+%%wiki%%.+created by.+%%user_with_spaces%%.+updated by.+%%user_with_spaces%%.+2 Revisions/ |
+
+| *Comment* | Test Case: Sunshine check mobile |  |
+| click_and_wait | link=Mobile |  |
+| wait_for_text_present_ok | Recent Changes | 30000 |
+| wait_for_element_visible_ok | link=page title | 30000 |
+| click_and_wait | link=page title |  |
+| wait_for_text_present_ok | page content | 30000 |
+| text_like | //div[@class='wiki'] | qr/page content.+page comment.+contributed by.+%%user_with_spaces%%/ |
+| click_and_wait | mobile-signals |  |
+| wait_for_text_present_ok | You | 30000 |
+| text_like | mobile_event_list | qr/You.+signal 1 %%start_time%%.+You.+reply 1 %%start_time%%/ |
+| click_and_wait | mobile-activities |  |
+| wait_for_text_present_ok | commented on | 30000 |
+| text_like | //ul[@class='event_list'] | qr/%%user_with_spaces%%.+commented on.+page title.+%%wiki%%.+page comment.+%%user_with_spaces%%.+edited.+page title.+%%wiki%%/ |
+
+| *Comment* | Test Case: Sunshine change the user's name a check attributions |  |
 
 
-
+| *Comment* | Test Case: Sunshine use the demo account to check explore |  |
+| st-logoutin | %%demo_user%% | %%demo_pass%% |
+| wait_for_element_visible_ok | link=Explore | 30000 |
+| click_and_wait | link=Explore |  |
+| wait_for_element_visible_ok | //a[@class='close genericOrangeButton'] | 30000 |
+| click_ok | //a[@class='close genericOrangeButton'] |  |
+| wait_for_element_visible_ok | everything | 30000 |
+| wait_for_element_visible_ok | attachment | 30000 |
+| wait_for_element_visible_ok | wikilink | 30000 |
+| wait_for_element_visible_ok | weblink | 30000 |
+| text_like | //div[@class='assetList'] | qr/Great Trends in Solar Panels and Solar Energy.+Big Company.+home_solar_panels.jpg/ |
 
 | *Comment* | Test Case: Sunshine TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
+| delete-workspace | %%wiki%% | Recklessly deleting |
 | delete-account | %%acct%% | Recklessly deleting |
+
+| *Comment* | Test Case: Sunshine COMPLETED |  |
