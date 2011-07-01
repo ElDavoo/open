@@ -87,12 +87,6 @@ sub GetUser {
     return unless ($valid_get_user_terms{$key});
 
     my $cache_lookup = $opts{preload};
-    if ($CacheEnabled) {
-        time_scope 'ldap_user_check_cache';
-        if ($self->_is_cached_proto_user_valid($cache_lookup)) {
-            return $self->NewHomunculus($cache_lookup);
-        }
-    }
 
     # Forcably re-enable local LDAP User cache; if we end up following any
     # User lookups for things like profile relationship lookups, we *don't*
@@ -226,31 +220,19 @@ sub lookup {
     return $proto_user;
 }
 
-sub _is_cached_proto_user_valid {
+sub cache_is_enabled {
+    return $CacheEnabled;
+}
+
+sub db_cache_ttl {
     my $self       = shift;
     my $proto_user = shift;
 
-    return unless $proto_user;
-    return unless $proto_user->{cached_at};
-    return unless $proto_user->{driver_key} eq $self->driver_key;
-
     my $ttl = $proto_user->{missing}
-        ? $self->cache_not_found_ttl
-        : $self->cache_ttl;
-    my $cutoff    = $self->Now() - $ttl;
-    my $cached_at = sql_parse_timestamptz($proto_user->{cached_at});
+        ? $self->ldap_config->not_found_ttl
+        : $self->ldap_config->ttl;
 
-    return $cached_at > $cutoff ? 1 : 0;
-}
-
-sub cache_ttl {
-    my $self = shift;
-    return DateTime::Duration->new( seconds => $self->ldap_config->ttl );
-}
-
-sub cache_not_found_ttl {
-    my $self = shift;
-    return DateTime::Duration->new( seconds => $self->ldap_config->not_found_ttl );
+    return DateTime::Duration->new( seconds => $ttl);
 }
 
 sub _vivify {

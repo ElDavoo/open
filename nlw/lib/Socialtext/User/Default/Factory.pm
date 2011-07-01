@@ -19,6 +19,8 @@ const 'driver_name' => 'Default';
 const 'driver_key'  => 'Default';
 const 'driver_id'   => undef;
 
+our $CacheEnabled = 1; # only change this for test purposes
+
 # FIXME: This belongs elsewhere, in fixture generation code, perhaps
 sub _create_default_user {
     my $self = shift;
@@ -188,6 +190,16 @@ sub Search {
             };
         },
     )->all;
+}
+
+sub cache_is_enabled { return $CacheEnabled; }
+
+sub db_cache_ttl {
+    my $self       = shift;
+    my $proto_user = shift;
+
+    my $ttl = Socialtext::AppConfig->default_user_ttl;
+    return DateTime::Duration->new(seconds => $ttl);
 }
 
 1;
