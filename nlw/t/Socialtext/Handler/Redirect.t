@@ -73,7 +73,8 @@ redirect_to_offsite_absolute_uri_forbidden: {
     my $response     = Socialtext::Handler::Redirect->handler($mock_request);
 
     is $response, FORBIDDEN(), 'external redirect forbidden';
-    next_log_like 'debug', qr/redirect/;
-    next_log_like 'error', qr/redirect attempted to external/,
+    my $logged = dump_log;
+    like $logged, qr/\(debug\).*redirect/;
+    like $logged, qr/\(error\).*redirect attempted to external/,
         "... and logged an appropriate error";
 }
