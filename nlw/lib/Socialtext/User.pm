@@ -228,7 +228,7 @@ sub new_homunculus {
         st_log->info("User '$proto_user->{driver_unique_id}' missing");
 
         $proto_user->{username} = $proto_user->{driver_username};
-        return $self->deleted_user($proto_user);
+        return $class->deleted_user($proto_user);
     }
 
     Socialtext::User::Cache->Store($key, $val, $homunculus);
