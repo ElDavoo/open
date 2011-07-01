@@ -239,17 +239,15 @@ sub GetProtoUser {
     push @binds, $value;
 
     my $where_clause = join(' AND ', @where);
-    my $table = 'users';
-    if ($collection eq 'all') {
-        $table = 'all_users';
+    if ($collection eq 'active') {
+        $where_clause .= ' AND NOT is_deleted';
     }
     elsif ($collection eq 'deleted') {
-        $table = 'all_users';
         $where_clause .= ' AND is_deleted';
     }
 
     my $sth = sql_execute(qq{
-        SELECT * FROM $table WHERE $where_clause
+        SELECT * FROM all_users WHERE $where_clause
     }, @binds);
     my $rows = $sth->fetchall_arrayref({});
 
