@@ -196,7 +196,7 @@ sub new_homunculus {
         $proto_user->{missing} = 1;
         $proto_user->{cached_at} = 'now';
         Socialtext::User::Factory->UpdateUserRecord($proto_user);
-        st_log->info("LDAP User '$proto_user->{driver_unique_id}' missing");
+        st_log->info("User '$proto_user->{driver_unique_id}' missing");
 
         $proto_user->{username} = $proto_user->{driver_username};
         require Socialtext::User::Deleted;
