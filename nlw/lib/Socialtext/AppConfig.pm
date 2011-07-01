@@ -1103,6 +1103,14 @@ Default: /challenge
 
 =for code type => SCALAR_TYPE
 
+=head2 default_user_ttl
+
+The time, in seconds, between DB refreshes for users using the 'Default' driver.
+
+Default: 3600
+
+=for code type => SCALAR_TYPE
+
 =head2 user_factories
 
 The semicolon-separated list of drivers to use for user creation.
