@@ -138,6 +138,18 @@ sub _realize {
     return undef;
 }
 
+sub deleted_user {
+    my $class = shift;
+    my $proto_user = shift;
+
+    $proto_user->{missing} = 1;
+
+    require Socialtext::User::Deleted;
+    my $homunculus = Socialtext::User::Deleted->new($proto_user);
+
+    return $homunculus;
+}
+
 sub new_homunculus {
     my $class = shift;
     my $key = shift;
@@ -147,12 +159,29 @@ sub new_homunculus {
     return $homunculus if $homunculus;
 
     my $proto_user = $class->GetProtoUser($key => $val, collection=>'all');
-    if ($proto_user and $proto_user->{is_deleted}) {
-        $proto_user->{missing} = 1;
-        require Socialtext::User::Deleted;
-        $homunculus = Socialtext::User::Deleted->new($proto_user);
-        Socialtext::User::Cache->Store($key, $val, $homunculus);
-        return $homunculus;
+    if ($proto_user) {
+        if ($proto_user->{is_deleted}) {
+            my $homunculus = return $class->deleted_user($proto_user);
+            Socialtext::User::Cache->Store($key, $val, $homunculus);
+            return $homunculus;
+        }
+
+        my $factory = eval {
+            $class->_realize($proto_user->{driver_key}, 'NewHomunculus');
+        };
+        if (!$factory) {
+            my $homunculus = $class->deleted_user($proto_user);
+            Socialtext::User::Cache->Store($key, $val, $homunculus);
+            return $homunculus
+        }
+
+        if ($factory->is_cached_proto_user_valid($proto_user)) {
+            $homunculus = $factory->NewHomunculus($proto_user);
+            die "couldn't find user from ok cache" unless $homunculus;
+            st_log->debug("Returned cached user, $key => $val");
+            Socialtext::User::Cache->Store($key, $val, $homunculus);
+            return $homunculus;
+        }
     }
 
     # The user_id key does not exist in LDAP, so map to username
@@ -199,8 +228,7 @@ sub new_homunculus {
         st_log->info("User '$proto_user->{driver_unique_id}' missing");
 
         $proto_user->{username} = $proto_user->{driver_username};
-        require Socialtext::User::Deleted;
-        $homunculus = Socialtext::User::Deleted->new($proto_user);
+        return $self->deleted_user($proto_user);
     }
 
     Socialtext::User::Cache->Store($key, $val, $homunculus);
