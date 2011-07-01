@@ -129,7 +129,7 @@ sub _realize {
     my ($driver_name, $driver_id) = split /:/, $driver;
     my $real_class = join '::', $class->base_package, $driver_name, 'Factory';
     eval "require $real_class";
-    die "Couldn't load $real_class: $@" if $@;
+    die "ST::User->_realize: Couldn't load $real_class -- $@" if $@;
 
     if ($real_class->can($method)) {
         return $real_class->new($driver_id);

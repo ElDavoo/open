@@ -204,6 +204,7 @@ sub lookup {
         return;
     }
 
+    st_log->debug("ST::User::LDAP: found user in LDAP search; $key/$val");
     # instantiate from search results
     my $attr_map = $self->attr_map;
     my $proto_user = {
