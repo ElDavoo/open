@@ -90,6 +90,10 @@ sub GetUser {
     my ($self, $id_key, $id_val, %opts) = @_;
     my $proto = $opts{preload};
     if ($proto && $proto->{driver_key} eq $self->driver_key) {
+        $self->UpdateUserRecord({
+            %$proto,
+            cached_at => 'now',
+        });
         return $self->NewHomunculus($proto);
     }
     return $self->get_homunculus($id_key, $id_val);
