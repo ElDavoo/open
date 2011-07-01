@@ -472,6 +472,22 @@ sub ExpireUserRecord {
     }
 }
 
+sub is_cached_proto_user_valid {
+    my $self       = shift;
+    my $proto_user = shift;
+
+    return 0 unless $self->cache_is_enabled;
+    return 0 unless $proto_user;
+    return 0 unless $proto_user->{cached_at};
+    return 0 unless $proto_user->{driver_key} eq $self->driver_key;
+
+    my $ttl = $self->db_cache_ttl($proto_user);
+    my $cutoff    = $self->Now() - $ttl;
+    my $cached_at = sql_parse_timestamptz($proto_user->{cached_at});
+
+    return $cached_at gt $cutoff;
+}
+
 1;
 
 =head1 NAME
