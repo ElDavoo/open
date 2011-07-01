@@ -18,6 +18,21 @@
 | st-admin | give-accounts-admin --email %%user%% | now has accounts |  |
 | st-logoutin | %%user%% | %%password%% |  |
 
+| *Comment* | Test Case: Sunshine check the control panel |  |
+| wait_for_element_visible_ok | link=Control Panel | 30000 |
+| click_and_wait | link=Control Panel |  |
+| wait_for_text_present_ok | Welcome to the Socialtext Control Panel. | 30000 |
+| click_and_wait | link=Accounts |  |
+| wait_for_element_visible_ok | link=AnyCorp | 30000 |
+| click_and_wait | //a[@name='workspaces'] |  |
+| wait_for_element_visible_ok | link=admin | 30000 |
+| click_and_wait | link=Users |  |
+| wait_for_text_present_ok | %%user%% | 30000 |
+| click_and_wait | //a[@name='groups'] |  |
+| wait_for_text_present_ok | self-join | 30000 |
+| click_and_wait | link=Settings |  |
+| wait_for_text_present_ok | Server-Wide Account Permissions | 30000 |
+
 | *Comment* | Test Case: Sunshine create a new wiki |  |
 | open_ok | /nlw/control/workspaces/new |  |
 | wait_for_element_visible_ok | workspace_title | 30000 |
@@ -131,8 +146,13 @@
 | wait_for_text_present_ok | commented on | 30000 |
 | text_like | //ul[@class='event_list'] | qr/%%user_with_spaces%%.+commented on.+page title.+%%wiki%%.+page comment.+%%user_with_spaces%%.+edited.+page title.+%%wiki%%/ |
 
-| *Comment* | Test Case: Sunshine change the user's name a check attributions |  |
-
+| *Comment* | Test Case: Sunshine change the user's name and check attributions |  |
+| st-admin | set-user-names --email %%user%% --first-name first --last-name last | was updated |
+| open_ok | /%%wiki%%/page_title |  |
+| wait_for_text_present_ok | page comment | 30000 |
+| text_like | st-page-content | qr/contributed by.+first last/ |
+| text_like | pageAttribution | qr/Created by.+first last.+Updated by.+first last/ |
+| text_like | globalNav | qr/Welcome.+first last/ |
 
 | *Comment* | Test Case: Sunshine use the demo account to check explore |  |
 | st-logoutin | %%demo_user%% | %%demo_pass%% |
