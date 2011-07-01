@@ -102,7 +102,8 @@ deleted_ldap_user_shouldnt_prevent_workspace_import: {
     my $users = YAML::Load($user_yaml);
     ok defined $users, '... which could be parsed as valid YAML';
 
-    my ($john_doe) = grep { $_->{username} eq 'john doe' } @{$users};
+    my ($john_doe) = grep { $_->{email_address} eq 'john.doe@example.com' }
+        @{$users};
     ok defined $john_doe, '... ... and which contained our test user';
 
     ###########################################################################

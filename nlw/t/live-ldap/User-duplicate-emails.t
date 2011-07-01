@@ -8,6 +8,8 @@ use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 11;
 use Socialtext::User;
 use Socialtext::User::LDAP::Factory;
+use Socialtext::User::Default::Factory;
+use Socialtext::SQL 'sql_execute';
 
 ###############################################################################
 # FIXTURE: db
@@ -18,6 +20,7 @@ fixtures(qw( db ));
 $Socialtext::LDAP::CacheEnabled = 0;
 $Socialtext::User::Cache::Enabled = 0;
 $Socialtext::User::LDAP::Factory::CacheEnabled = 0;
+$Socialtext::User::Default::Factory::CacheEnabled = 0;
 
 ###############################################################################
 # TEST: Resolving a User by e-mail address should find the LDAP record first
