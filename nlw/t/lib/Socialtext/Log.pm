@@ -22,6 +22,7 @@ our @EXPORT = qw(
     nothing_logged_ok
     no_errors_logged_ok
     no_warnings_logged_ok
+    dump_log
     );
 
 our @EXPORT_OK = qw(
@@ -83,6 +84,23 @@ sub st_timed_log {
 
 ###############################################################################
 # Testing methods
+
+sub dump_log() {
+    my $log;
+    my $offset = 0;
+
+    $log .= "===START DUMP===\n";
+    while (1) {
+        my $sub = st_log->call_pos(++$offset);
+        last unless $sub;
+        my @args = st_log->call_args($offset);
+        $log .= "(". $sub .") ". $args[1] ."\n";
+    }
+    $log .=  "===END DUMP===\n";
+
+    return $log;
+}
+
 sub clear_log() {
     st_log->clear();
 }

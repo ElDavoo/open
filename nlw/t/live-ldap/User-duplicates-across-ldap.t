@@ -7,12 +7,14 @@ use Test::Socialtext;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Socialtext::User;
 use Socialtext::User::LDAP::Factory;
+use Socialtext::User::Default::Factory;
 
 fixtures('db');
 
 $Socialtext::LDAP::CacheEnabled = 0;
 $Socialtext::User::Cache::Enabled = 0;
 $Socialtext::User::LDAP::Factory::CacheEnabled = 0;
+$Socialtext::User::Default::Factory::CacheEnabled = 0;
 
 my ($foo,$bar); # LDAP stores.
 my ($user, $user_id); # test user
