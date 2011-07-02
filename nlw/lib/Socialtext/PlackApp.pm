@@ -70,10 +70,10 @@ sub PerlHandler ($handler, $access_handler) {
 
         my $status;
 
-        while (my $key = shift @headers) {
+        while (my $key = lc(shift @headers)) {
             my $val = shift @headers;
             $key =~ s/^-//;
-            given (lc $key) {
+            given ($key) {
                 when ('status') {
                     $status = int($val) || $status;
                     next;
@@ -86,7 +86,7 @@ sub PerlHandler ($handler, $access_handler) {
                     $status ||= 302; # Fall through
                 }
             }
-            $Response->header($key => $val);
+            $Response->headers->push_header($key => $val);
         }
 
         $Response->status($status || 200);
@@ -139,10 +139,10 @@ use methods;
 use invoker;
 method err_headers_out { $self }
 method add ($key, $val) {
-    if ($key eq 'Set-Cookie') {
+    if (lc $key eq 'set-cookie') {
         $val .= '; HttpOnly';
     }
-    $->header($key, $val);
+    $->headers->push_header(lc $key, $val);
 }
 
 package Socialtext::PlackApp::Request;
