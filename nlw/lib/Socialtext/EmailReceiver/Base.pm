@@ -41,7 +41,7 @@ sub _new {
     return bless {
         email          => $email,
         workspace      => $workspace,
-        body           => '',
+        body           => \'',
         attachments    => [],
         categories     => ['Email'],
         body_placement => $workspace->incoming_email_placement(),
