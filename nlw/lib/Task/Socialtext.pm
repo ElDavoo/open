@@ -12,6 +12,7 @@ use if ($^O eq 'linux') => 'Linux::Smaps' => ();
 use if ($^O eq 'linux') => 'Linux::Inotify2' => ();
 use if ($^O eq 'linux') => 'Authen::Simple::SMB' => ();
 ###############################################################
+BEGIN { $ENV{NYTPROF} = 'start=no' };
 use Algorithm::Diff ();
 use Algorithm::Diff::XS ();
 use AnyEvent ();
