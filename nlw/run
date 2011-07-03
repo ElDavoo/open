@@ -3,6 +3,11 @@
 use strict;
 use warnings;
 BEGIN { push @INC, "$ENV{ST_CURRENT}/nlw/lib" if $ENV{ST_CURRENT} }
+BEGIN {
+    # Prefer vend/lib over site/lib for Apache::* overrides.
+    my ($vend) = grep { m{/vend/} } @INC;
+    unshift @INC, $vend if $vend;
+}
 use FindBin '$Bin';
 use File::Basename 'basename';
 use Socialtext::HTTP::Ports;
@@ -24,6 +29,7 @@ BEGIN {
 
 use Plack::Runner;
 use Socialtext::l10n qw(system_locale);
+use Socialtext::Paths ();
 
 my $psgi = "$Bin/nlw.psgi";
 die "Cannot find $psgi" unless -e $psgi;
@@ -41,7 +47,7 @@ Socialtext::Daemontools->RunSupervised(
         $0 = $::proctitle;
         my $runner = Plack::Runner->new;
         my @argv = (
-            '--access-log'          => "$ENV{HOME}/.nlw/log/nlw-psgi/access.log",
+            '--access-log'          => Socialtext::Paths::log_directory()."/nlw-psgi/access.log",
             '--server'              => 'Starman::Socialtext',
             '--host'                => 'localhost',
             '--listen'              => "127.0.0.1:$backend_http_port",
