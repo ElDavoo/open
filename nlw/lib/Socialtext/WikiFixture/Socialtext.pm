@@ -712,15 +712,13 @@ Stops the webserver.
 sub st_stop_webserver {
     my ($self) = @_;
     if ($self->_is_appliance) {
-        diag "/etc/init.d/apache-perl stop";
-        my $output = `sudo /etc/init.d/apache-perl stop`;
-        ok($output=~/done/, 'apache-perl is stopped');
+        diag "/usr/sbin/service nlw-psgi stop";
+        my $output = `sudo /usr/sbin/service nlw-psgi stop`;
+        ok($output=~/stop/, 'nlw-psgi is stopped');
     }
     else {
-        diag "st_stop_webserver: killall apache-perl";
-        _run_command("killall apache-perl", 'ignore output');
-        diag "st_stop_webserver: killall -9 apache-perl";
-        _run_command("killall -9 apache-perl", 'ignore output');
+        diag "st_stop_webserver: nlwctl stop -1";
+        _run_command("nlwctl stop -1", "ignore output");
     }
     $self->pause(5000);
 }
@@ -735,9 +733,9 @@ sub st_start_webserver {
     my ($self) = @_;
     if ($self->_is_appliance) {
         # Appliance-specific
-        diag "st_start_webserver: /etc/init.d/apache-perl start";
-        my $output = `sudo /etc/init.d/apache-perl start`;
-        ok($output=~/done/, 'apache-perl is started');
+        diag "/usr/sbin/service nlw-psgi start";
+        my $output = `sudo /usr/sbin/service nlw-psgi start`;
+        ok($output=~/start/, 'nlw-psgi is started');
     }
     else {
         diag "st_start_webserver: nlwctl -1 start";
