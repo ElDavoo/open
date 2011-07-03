@@ -250,13 +250,7 @@ sub skin_name {
     my $skin_name;
     my $self_uri = Socialtext::URI::uri();
     if ( Apache::Cookie->can('fetch') ) {
-        my $cookies = Apache::Cookie->fetch;
-        if ($cookies) {
-            my $cookie = $cookies->{'socialtext-skin'};
-            if ($cookie) {
-                $skin_name = $cookie->value;
-            }
-        }
+        $skin_name = Apache::Cookie->fetch('socialtext-skin');
     }
 
     return $skin_name if $skin_name;

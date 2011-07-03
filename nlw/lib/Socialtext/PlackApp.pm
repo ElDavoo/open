@@ -115,7 +115,7 @@ sub PerlHandler ($handler, $access_handler) {
 
 ### Apache method overrides ###
 sub Apache::Cookie::new { shift; shift; Socialtext::PlackApp::Cookie->new(@_) }
-sub Apache::Cookie::fetch { @_ ? $Request->cookies->{$_[0]} : $Request->cookies }
+sub Apache::Cookie::fetch { shift; @_ ? $Request->cookies->{$_[0]} : $Request->cookies }
 sub Apache::request { $Request }
 sub Apache::Request::new { $Request }
 sub Apache::Request::instance { $Request }
