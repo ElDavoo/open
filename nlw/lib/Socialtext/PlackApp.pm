@@ -40,6 +40,19 @@ sub PerlHandler ($handler, $access_handler) {
             grep { /^(?:HTTP|QUERY|REQUEST|REMOTE|SCRIPT|PATH|CONTENT|SERVER)_/ }
             keys %{$env};
 
+        $ENV{NLW_MOBILE_BROWSER} = $env->{NLW_MOBILE_BROWSER} = (
+            $env->{HTTP_USER_AGENT} =~ m{
+                ^BlackBerry |
+                ^Nokia |
+                Palm |
+                SymbianOS |
+                Windows\s+CE |
+                ^hiptop |
+                iPhone |
+                Android
+            }x
+        );
+
         if ($access_handler) {
             load $access_handler;
             my $rv = $access_handler->can('handler')->($Request);
