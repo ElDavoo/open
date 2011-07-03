@@ -3,11 +3,29 @@
 use strict;
 use warnings;
 BEGIN { push @INC, "$ENV{ST_CURRENT}/nlw/lib" if $ENV{ST_CURRENT} }
+use FindBin '$Bin';
+use File::Basename 'basename';
+use Socialtext::HTTP::Ports;
+
+my ($backend_http_port, $backend_https_port);
+BEGIN {
+    $backend_http_port = Socialtext::HTTP::Ports->backend_http_port;
+    $backend_https_port = Socialtext::HTTP::Ports->backend_https_port;
+    unless ($ENV{SERVER_STARTER_PORT}) {
+        exec(
+            "start_server",
+            "--port=$backend_http_port",
+            "--port=$backend_https_port",
+            "--", 
+            "$Bin/".basename(__FILE__),
+        )
+    }
+}
+
 use Plack::Runner;
-use FindBin;
 use Socialtext::l10n qw(system_locale);
 
-my $psgi = "$FindBin::Bin/nlw.psgi";
+my $psgi = "$Bin/nlw.psgi";
 die "Cannot find $psgi" unless -e $psgi;
 
 $ENV{LANG} = $ENV{LC_ALL} = system_locale();
@@ -20,20 +38,23 @@ Socialtext::Daemontools->RunSupervised(
     log_file => "nlw-psgi/error.log",
     port_name => 'backend_http_port',
     cb => sub {
-        my $port = shift;
         $0 = $::proctitle;
         my $runner = Plack::Runner->new;
         my @argv = (
-            '--access-log'   => "$ENV{HOME}/.nlw/log/nlw-psgi/access.log",
-            '--server'       => 'Starman::Socialtext',
-            '--workers'      => 5,
-            '--host'         => 'localhost',
-            '--listen'       => "127.0.0.1:$port",
-            '--listen'       => "127.0.0.1:".($port+1000), # backend_https_port
-            '--env'          => 'deployment',
-            '--keepalive'    => 0,
-#           '--reload'       => 1,
-            '--app'          => $psgi,
+            '--access-log'          => "$ENV{HOME}/.nlw/log/nlw-psgi/access.log",
+            '--server'              => 'Starman::Socialtext',
+            '--host'                => 'localhost',
+            '--listen'              => "127.0.0.1:$backend_http_port",
+            '--listen'              => "127.0.0.1:$backend_https_port",
+            '--env'                 => 'deployment',
+            '--keepalive'           => 0,
+            '--app'                 => $psgi,
+            '--workers'             => 3,
+            '--min_spare_servers'   => 2,
+            '--max_spare_servers'   => 4,
+            '--max_servers'         => 18,
+            '--max_requests'        => 1000,
+#           '--reload'              => 1,
         );
         $runner->parse_options(@argv);
         $runner->set_options(argv => \@argv);
