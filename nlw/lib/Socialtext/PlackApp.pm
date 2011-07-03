@@ -11,6 +11,7 @@ use Module::Load;
 use Encode ();
 use Apache::Constants qw(:response);
 use Socialtext::HTTP::Ports;
+use Socialtext::AppConfig;
 
 our ($Request, $Response, $CGI);
 
@@ -18,6 +19,7 @@ sub PerlHandler ($handler, $access_handler) {
     load($handler);
 
     state $https_port = Socialtext::HTTP::Ports->backend_https_port;
+    my $is_dev_env = Socialtext::AppConfig->is_dev_env;
 
     return sub ($env) {
         delete $env->{"psgix.io"};
@@ -40,6 +42,7 @@ sub PerlHandler ($handler, $access_handler) {
             grep { /^(?:HTTP|QUERY|REQUEST|REMOTE|SCRIPT|PATH|CONTENT|SERVER)_/ }
             keys %{$env};
 
+        $ENV{NLW_DEV_MODE} = $env->{NLW_DEV_MODE} = $is_dev_env;
         $ENV{NLW_MOBILE_BROWSER} = $env->{NLW_MOBILE_BROWSER} = (
             $env->{HTTP_USER_AGENT} =~ m{
                 ^BlackBerry |
