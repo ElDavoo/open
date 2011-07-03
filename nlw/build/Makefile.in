@@ -233,7 +233,7 @@ install-files: install-ok         \
 	       install-nlw-psgi \
                $(INSTALL_FILE_TARGETS)
 
-FIXIN = $(PERL) -MExtUtils::MY -e 'MY->fixin(shift)' --
+FIXIN = dh_megaperl fixin
 
 install-nlw-psgi: install-ok
 	$(INSTALL_ST) -d $(PREFIX)/etc/nlw-psgi

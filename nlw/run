@@ -9,14 +9,25 @@ BEGIN {
     unshift @INC, $vend if $vend;
 }
 use FindBin '$Bin';
-use File::Basename 'basename';
+use File::Basename qw[ dirname basename ];
 use Socialtext::HTTP::Ports;
+use File::Path qw[ make_path ];
+use Socialtext::AppConfig;
+use Socialtext::Paths ();
 
-my ($backend_http_port, $backend_https_port);
+my ($backend_http_port, $backend_https_port, $log_dir);
 BEGIN {
     $backend_http_port = Socialtext::HTTP::Ports->backend_http_port;
     $backend_https_port = Socialtext::HTTP::Ports->backend_https_port;
+    $log_dir = Socialtext::Paths::log_dir()."/nlw-psgi";
     unless ($ENV{SERVER_STARTER_PORT}) {
+        $ENV{PATH} = dirname($^X) . ":$ENV{PATH}";
+        if (!-d $log_dir) {
+            my $root_dir = Socialtext::AppConfig->data_root_dir();
+            my ($uid, $gid) = (stat $root_dir)[4,5];
+            make_path($log_dir, {mode => 0774});
+            chown $uid, $gid, $log_dir;
+        }
         exec(
             "start_server",
             "--port=$backend_http_port",
@@ -29,7 +40,6 @@ BEGIN {
 
 use Plack::Runner;
 use Socialtext::l10n qw(system_locale);
-use Socialtext::Paths ();
 
 my $psgi = "$Bin/nlw.psgi";
 die "Cannot find $psgi" unless -e $psgi;
@@ -47,7 +57,7 @@ Socialtext::Daemontools->RunSupervised(
         $0 = $::proctitle;
         my $runner = Plack::Runner->new;
         my @argv = (
-            '--access-log'          => Socialtext::Paths::log_directory()."/nlw-psgi/access.log",
+            '--access-log'          => "$log_dir/access.log",
             '--server'              => 'Starman::Socialtext',
             '--host'                => 'localhost',
             '--listen'              => "127.0.0.1:$backend_http_port",
