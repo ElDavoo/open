@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+# @COPYRIGHT@
 use 5.12.0;
 use FindBin;
 use lib "$ENV{ST_CURRENT}/nlw/lib";

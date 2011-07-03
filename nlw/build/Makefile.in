@@ -233,11 +233,15 @@ install-files: install-ok         \
 	       install-nlw-psgi \
                $(INSTALL_FILE_TARGETS)
 
+FIXIN = $(PERL) -MExtUtils::MY -e 'MY->fixin(shift)' --
+
 install-nlw-psgi: install-ok
 	$(INSTALL_ST) -d $(PREFIX)/etc/nlw-psgi
 	$(CHOWN_DIR_ST) $(PREFIX)/etc/nlw-psgi
 	$(INSTALL_ST) run $(PREFIX)/etc/nlw-psgi
+	$(FIXIN) $(PREFIX)/etc/nlw-psgi/run
 	$(INSTALL_ST) nlw.psgi $(PREFIX)/etc/nlw-psgi
+	$(FIXIN) $(PREFIX)/etc/nlw-psgi/nlw.psgi
 
 DIR=$(subst install-,,$@)
 $(INSTALL_FILE_TARGETS): install-ok 
