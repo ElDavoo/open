@@ -19,7 +19,7 @@ my ($backend_http_port, $backend_https_port, $log_dir);
 BEGIN {
     $backend_http_port = Socialtext::HTTP::Ports->backend_http_port;
     $backend_https_port = Socialtext::HTTP::Ports->backend_https_port;
-    $log_dir = Socialtext::Paths::log_dir()."/nlw-psgi";
+    $log_dir = Socialtext::Paths::log_directory()."/nlw-psgi";
     unless ($ENV{SERVER_STARTER_PORT}) {
         $ENV{PATH} = dirname($^X) . ":$ENV{PATH}";
         if (!-d $log_dir) {
