@@ -1,8 +1,6 @@
 package Task::Socialtext;
 use 5.12.0;
 ###############################################################
-BEGIN { $INC{'Apache/AuthenNTLM.pm'} = __FILE__ }
-use Apache::AuthenNTLM (); # TODO: Remove mod_perl dependencies
 use WebService::Solr 0.11; # Version-specific: 0.11 or 0.12
 use TheSchwartz::Moosified '0.05_005'; # Dev version
 ###############################################################
@@ -25,6 +23,7 @@ use App::Options ();
 use AppConfig ();
 use Archive::Zip ();
 use Array::Heap ();
+#use Authen::Smb 0.96 (); # Comes with Apache::AuthenNTLM 2.10
 use Async::Interrupt ();
 use B::Hooks::EndOfScope ();
 use B::Hooks::OP::Annotation ();
