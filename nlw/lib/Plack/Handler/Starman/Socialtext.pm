@@ -33,6 +33,16 @@ sub run {
         local $self->{options}{argv} = [$::proctitle];
         $self->SUPER::child_init_hook(@_);
     }
+
+    sub _finalize_response {
+        my ($self, $env, $res) = @_;
+        if ($env->{'socialtext.keep-alive.force'}) {
+            # Forced keep-alive (for NTLM); ignore harakiri flag from SizeLimit
+            $env->{'psgix.harakiri.commit'} = 0;
+            $self->{client}{keepalive} = 1;
+        }
+        return $self->SUPER::_finalize_response($env, $res);
+    }
 }
 
 1;

@@ -205,6 +205,11 @@ method cgi_env { %ENV }
 method parsed_uri { URI->new($ENV{REQUEST_URI}) }
 method log_error { warn @_ }
 method connection { $self->{_connection} //= Socialtext::PlackApp::Connection->new }
+method subprocess_env ($key, $val) {
+    if ($key eq 'nokeepalive') {
+        $->env->{'socialtext.keep-alive.force'} = !$val;
+    }
+}
 
 __END__
 
