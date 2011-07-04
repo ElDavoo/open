@@ -210,6 +210,8 @@ method subprocess_env ($key, $val) {
         $->env->{'socialtext.keep-alive.force'} = !$val;
     }
 }
+method headers_out { $Response->headers_out(@_) }
+method err_headers_out { $Response->err_headers_out(@_) }
 
 __END__
 
