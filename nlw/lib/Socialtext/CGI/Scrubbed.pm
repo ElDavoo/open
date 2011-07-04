@@ -5,8 +5,7 @@ use warnings;
 use parent 'CGI::PSGI';
 use Class::Field 'field';
 use HTML::Scrubber;
-use methods;
-use invoker;
+use methods-invoker;
 
 field 'scrubber', -init => 'HTML::Scrubber->new';
 

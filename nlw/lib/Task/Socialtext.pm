@@ -343,7 +343,7 @@ use common::sense ();
 use enum ();
 use invoker ();
 use lib::abs ();
-use methods ();
+use methods 0.03 ();
 use mocked ();
 use namespace::autoclean ();
 use namespace::clean ();

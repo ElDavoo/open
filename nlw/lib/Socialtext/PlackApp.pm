@@ -133,8 +133,7 @@ BEGIN {
 
 package Socialtext::PlackApp::Cookie;
 use parent 'CGI::Cookie';
-use methods;
-use invoker;
+use methods-invoker;
 
 *Response = *Socialtext::PlackApp::Response;
 method new (%opts) {
@@ -151,8 +150,7 @@ __PACKAGE__->mk_accessors(qw(user));
 
 package Socialtext::PlackApp::Response;
 use parent 'Plack::Response';
-use methods;
-use invoker;
+use methods-invoker;
 method err_headers_out { $self }
 method add ($key, $val) {
     if (lc $key eq 'set-cookie') {
@@ -163,8 +161,7 @@ method add ($key, $val) {
 
 package Socialtext::PlackApp::Request;
 use parent 'Plack::Request';
-use methods;
-use invoker;
+use methods-invoker;
 use Encode ();
 use URI::Escape;
 no warnings 'redefine';
