@@ -33,7 +33,7 @@ S2_Homepage: {
     my $hp = Socialtext::HomepagePlugin->new( hub => $mock_hub );
     {
         no strict 'refs'; no warnings 'redefine', 'once';
-        like $hp->homepage, qr/Dashboard/;
+        is $hp->homepage, ''; # redirect
     }
 }
 
