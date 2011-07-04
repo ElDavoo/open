@@ -22,6 +22,10 @@ builder {
         'Socialtext::Handler::ControlPanel',
         'Socialtext::AccessHandler::IsBusinessAdmin',
     ),
+    mount '/nlw/ntlm' => PerlHandler(
+        'Socialtext::Handler::NTLM',
+        'Socialtext::Apache::Authen::NTLM',
+    ),
     mount '/nlw' => PerlHandler('Socialtext::Handler::Authen'),
     mount '/' => PerlHandler('Socialtext::Handler::REST'),
 };
