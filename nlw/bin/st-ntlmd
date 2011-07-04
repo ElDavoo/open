@@ -12,122 +12,6 @@ use Socialtext::TimestampedWarnings;
 # mod_perl components.
 #
 
-BEGIN {
-    $INC{$_} = __FILE__ for qw(
-        mod_perl.pm
-        Apache/File.pm
-        Apache/Constants.pm
-    );
-}
-
-package mod_perl;
-BEGIN { our $VERSION = 0.01 };
-
-
-# Caution: this class is a blessed Int, not a hashref:
-package Apache::Connection;
-use warnings;
-use strict;
-
-
-sub remote_addr {}
-use constant remote_host => '127.0.0.1';
-use constant remote_ip => '127.0.0.1';
-use constant remote_port => '0bogus';
-
-package Apache::Table;
-use Moose;
-use MooseX::AttributeHelpers;
-
-has '_table' => (is => 'rw', isa => 'HashRef',
-    default => sub {{}},
-    metaclass => 'Collection::Hash',
-    provides => {
-        get => 'get',
-        set => 'add',
-    }
-);
-
-package Apache;
-use Moose;
-use MooseX::AttributeInflate;
-use Socialtext::Log qw(st_log);
-
-use constant auth_type => 'ntlm,basic';
-use constant auth_name => '';
-use constant proxyreq => 0;
-
-has '_sid' => (is => 'rw', isa => 'Str');
-
-has '_dir_config' => (is => 'rw', isa => 'Apache::Table', lazy_build => 1);
-has_inflated 'err_headers_out' => (is => 'rw', isa => 'Apache::Table');
-has_inflated 'headers_in' => (
-    is => 'rw', isa => 'Apache::Table',
-    handles => {
-        header_in => 'get',
-    }
-);
-has_inflated 'headers_out' => (is => 'rw', isa => 'Apache::Table');
-has 'uri' => (is => 'rw', isa => 'Str');
-has 'user' => (is => 'rw', isa => 'Str');
-
-has 'reason' => (
-    is      => 'rw',
-    isa     => 'Str',
-    writer  => 'log_reason',
-    trigger => sub {
-        my ($self, $new_reason, $old_reason) = @_;
-        st_log->warning("AuthenNTLM reason: $new_reason");
-    },
-);
-
-# only support ntlm, not Basic
-has 'authtype' => (is => 'rw', isa => 'Str', default => 'ntlm');
-
-our $AUTOLOAD;
-sub AUTOLOAD {
-    use Data::Dumper; warn "Autoload Apache $AUTOLOAD ".Dumper([caller,@_]);
-    return '';
-}
-
-sub connection {
-    my $self = shift;
-    my $con = 42;
-    return bless \$con, 'Apache::Connection';
-}
-
-sub _build__dir_config {
-    return Apache::Table->new(_table => {
-        ntdomain          => 'foo bar baz',
-        ntlmdebug         => 0,
-        ntlmsemkey        => 0, # disable IPC::Semaphore locking
-        ntlmauthoritative => 1,
-    });
-}
-
-sub dir_config {
-    my $self = shift;
-    my $k = shift;
-    if (!$k) {
-        return $self->_dir_config;
-    }
-    return $self->_dir_config->get($k);
-}
-
-package Apache::Constants;
-use warnings;
-use strict;
-use constant OK => 'OK';
-use constant DECLINED => 'DECLINED';
-use constant HTTP_UNAUTHORIZED => 401;
-use constant HTTP_FORBIDDEN => 403;
-use constant HTTP_INTERNAL_SERVER_ERROR => 500;
-
-package Apache::File; # just prevent this one from loading
-use warnings;
-use strict;
-
-
 package main;
 
 use AnyEvent;
@@ -141,24 +25,10 @@ use Tie::Cache::LRU ();
 use Socialtext::Async::HTTPD qw/http_server/;
 use Socialtext::Log qw/st_log/;
 use Socialtext::NTLM::Config;
-use Apache::AuthenNTLM;
+use Socialtext::Apache::AuthenNTLM sub { goto &main::get_config };
 
 use constant MAX_PASSWORD_FAILURES => 5; # will reject after this many
 use constant REMEMBER_FAILURES     => 100;
-
-my $orig_get_config = \&Apache::AuthenNTLM::get_config;
-{
-    no warnings 'redefine';
-    *Apache::AuthenNTLM::sockaddr_in = sub {
-        return '127.0.0.1', '0bogus';
-    };
-    *Apache::AuthenNTLM::get_config = \&main::get_config;
-
-    # paranoia: disable the IPC::Semaphore stuff
-    *Apache::AuthenNTLM::Lock::lock = sub { 'dummy' };
-    *Apache::AuthenNTLM::Lock::DESTROY = sub {};
-}
-
 
 my $in_progress_sid;
 my $in_progress_timer;
@@ -186,11 +56,6 @@ exit 0;
 
 sub get_config {
     my ($self, $r) = @_;
-
-    # if we've already read in the config, don't do it again.
-    return if ($self->{smbpdc});
-
-    $orig_get_config->($self,$r);
 
     # mocking sets up these two:
     delete $self->{smbpdc}{foo};
@@ -298,7 +163,7 @@ sub empty_pending {
 
 sub cancel_in_progress {
     st_log->debug("throwing out sid $in_progress_sid\n");
-    undef $Apache::AuthenNTLM::cache; # releases samba
+    undef $Socialtext::Apache::AuthenNTLM::cache; # releases samba
     undef $in_progress_sid;
     undef $in_progress_timer;
 
@@ -360,7 +225,7 @@ sub _do_ntlm {
     );
 
     # blocks, blocks HARD:
-    my $rc = Apache::AuthenNTLM -> run($r);
+    my $rc = Socialtext::Apache::AuthenNTLM -> run($r);
 
     my $w_a = $r->err_headers_out->get('WWW-Authenticate');
     my $u = $r->user || '';
