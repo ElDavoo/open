@@ -199,7 +199,7 @@ method header_out {
 method send_http_header { undef }
 method prev { undef }
 method header_in ($key) { scalar $->header($key) }
-method args { %{ $->parameters } }
+method args { wantarray ? %{ $->parameters } : $ENV{QUERY_STRING} }
 method content { wantarray ? () : $->SUPER::content }
 method cgi_env { %ENV }
 method parsed_uri { URI->new($ENV{REQUEST_URI}) }
