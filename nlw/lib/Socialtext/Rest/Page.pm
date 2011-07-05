@@ -79,7 +79,7 @@ sub make_GETter {
                     );
                     $self->_record_view($page);
 
-                    if ($content_type eq 'text/html' and $content_to_return =~ /gadgets\.container\.renderGadget/) {
+                    if ($content_type eq 'text/html' and $content_to_return =~ /container\.renderGadget/) {
                         # TODO: Refactor this to properly reuse [% FILTER decorate "head" %].
                         my $app_version = Socialtext->product_version;
                         $content_to_return = << ".";
