@@ -645,3 +645,4 @@ t/Socialtext/People/Profile-listing.t
 t/wikitests/signals/data_signals_at.wiki
 supervise
 t/Socialtext/People/Profile-listing.t
+t/wikitests/frontend/http-keep-alive.wiki.orig
