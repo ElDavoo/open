@@ -10437,7 +10437,7 @@ msgstr "重命名页面"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "页面重命名为<%1>"
+msgstr "页面重命名为 [%1]"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:28
 msgid "page.replace"
