@@ -127,7 +127,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-16 00:08-0700\n"
+"PO-Revision-Date: 2011-07-05 14:39-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -11023,7 +11023,7 @@ msgstr "Zzzzzz Zzzz"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "Zzzz zzzzzzz zz <%1>"
+msgstr "Zzzz zzzzzzz zz [%1]"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:28
 msgid "page.replace"

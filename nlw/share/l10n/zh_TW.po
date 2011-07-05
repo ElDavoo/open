@@ -10457,7 +10457,7 @@ msgstr "重新命名頁面"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "頁面重新命名為<%1>"
+msgstr "頁面重新命名為 [%1]"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:28
 msgid "page.replace"
