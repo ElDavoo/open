@@ -1,0 +1,210 @@
+| *Comment* | Test Case: User Likes a Signal |  |
+
+* Fixture: SocialWidgets
+
+| set | user1 | user.one.%%start_time%%@david.socialtext.net |
+| set | user1_short | user one %%start_time%% |
+| set | user2 | user.two.%%start_time%%@david.socialtext.net |
+| set | user2_short | user two %%start_time%% |
+| set | user3 | user.three.%%start_time%%@david.socialtext.net |
+| set | user3_short | user three %%start_time%% |
+| set | user4 | user.four.%%start_time%%@david.socialtext.net |
+| set | user4_short | user four %%start_time%% |
+| set | user5 | user.five.%%start_time%%@david.socialtext.net |
+| set | user5_short | user five %%start_time%% |
+| set | user6 | user.six.%%start_time%%@david.socialtext.net |
+| set | user6_short | user six %%start_time%% |
+| set | user7 | user.seven.%%start_time%%@david.socialtext.net |
+| set | user7_short | user seven %%start_time%% |
+| set | user8 | user.eight.%%start_time%%@david.socialtext.net |
+| set | user8_short | user eight %%start_time%% |
+| set | user9 | user.nine.%%start_time%%@david.socialtext.net |
+| set | user9_short | user nine %%start_time%% |
+| set | user10 | user.ten.%%start_time%%@david.socialtext.net |
+| set | user10_short | user ten %%start_time%% |
+| set | user11 | user.eleven.%%start_time%%@david.socialtext.net |
+| set | user11_short | user eleven %%start_time%% |
+| set | acct | usl_account_%%start_time%% |
+
+| create_account | %%acct%% |  |  |
+| create_user | %%user1%% | %%password%% | %%acct%% |
+| set | user1_id | %%user_id%% |  |
+| create_user | %%user2%% | %%password%% | %%acct%% |
+| create_user | %%user3%% | %%password%% | %%acct%% |
+| create_user | %%user4%% | %%password%% | %%acct%% |
+| create_user | %%user5%% | %%password%% | %%acct%% |
+| create_user | %%user6%% | %%password%% | %%acct%% |
+| create_user | %%user7%% | %%password%% | %%acct%% |
+| create_user | %%user8%% | %%password%% | %%acct%% |
+| create_user | %%user9%% | %%password%% | %%acct%% |
+| create_user | %%user10%% | %%password%% | %%acct%% |
+| create_user | %%user11%% | %%password%% | %%acct%% |
+
+| st-logoutin | %%user1%% | %%password%% |
+| http-user-pass | %%user1%% | %%password%% |
+| post-signal | Signal 1 |  |
+| st-process-jobs |  |  |
+
+| *Comment* | Test Case: User Likes a Page first user likes the signal, sees the proper icons |  |
+| open_ok | /st/dashboard |  |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator '] | 30000 |
+| text_like | //div[@class='like-signal'] | 0 |
+| text_like | //div[@class='like-signal'] | 1 |
+| click_ok | //a[@class='like-indicator '] |  |
+| pause | 2000 |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me'] | 30000 |
+| text_like | //div[@class='like-signal'] | 1 |
+
+| *Comment* | Test Case: User Likes a Page first user sees self in Like Bubble |  |
+| mouse_over_ok | //a[@class='like-indicator me'] |  |
+| wait_for_text_present_ok | Only you have liked this signal. | 10000 |
+| wait_for_element_visible_ok | link=All People | 10000 |
+| click_ok | link=All People |  |
+| wait_for_text_present_ok | Only you have liked this signal. | 10000 |
+| is_element_present_ok | //div[@class='likers'] | //a[contains(text(),'%%user1_short%%')] |
+
+| *Comment* | Test Case: User Likes a Page second user likes the signal, sees the proper icons |  |
+| st-logoutin | %%user2%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| text_like | //div[@class='like-signal'] | 1 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| text_like | //div[@class='like-signal'] | 2 |
+
+| *Comment* | Test Case: User Likes a Page follow user 1, then check mouseover bubble for colleague list |  |
+| open_ok | /st/profile/%%user1_id%% |  |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
+| pause | 5000 | needed for IE7 |
+| click_ok | link=Follow this person |  |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_text_present_ok | You and 1 person you follow have liked this signal. | 30000 |
+| is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
+
+| *Comment* | Test Case: User Likes a Page users 3-11 like the signal in order to produce pagination in the list of likers |  |
+| st-logoutin | %%user3%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 3 |
+| st-logoutin | %%user4%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 4 |
+| st-logoutin | %%user5%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 5 |
+| st-logoutin | %%user6%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 6 |
+| st-logoutin | %%user7%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 7 |
+| st-logoutin | %%user8%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 8 |
+| st-logoutin | %%user9%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 9 |
+| st-logoutin | %%user10%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 10 |
+| st-logoutin | %%user11%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | Signal 1 | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| click_ok | //a[@class='like-indicator others'] |  |
+| pause | 2000 |  |
+| text_like | //div[@class='like-signal'] | 11 |
+
+| *Comment* | Test Case: User Likes a Page check the mouseover bubble of likes, including pagination |  |
+| st-logoutin | %%user3%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_text_present_ok | Only you have liked this signal. | 30000 |
+| wait_for_element_visible_ok | link=All People | 30000 |
+| click_ok | link=All People |  |
+| wait_for_text_present_ok | You and 10 other people have liked this signal. | 30000 |
+| wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user4_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user5_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user6_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user7_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user8_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user9_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user10_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user11_short%% | 30000 |
+| wait_for_element_visible_ok | //a[@class='page2'] | 30000 |
+| click_ok | //a[@class='page2'] |  |
+| wait_for_element_not_present_ok | link=%%user4_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user8_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user10_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user11_short%% | 30000 |
+| wait_for_element_visible_ok | //a[@class='page1'] | 30000 |
+| click_ok | //a[@class='page1'] |  |
+| wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
+
+| *Comment* | Test Case: User Likes a Page check dashboard widget for liked signal |  |
+| open_ok | /st/dashboard |  |
+| st-name-widget | 4 | ticker |
+| st-widget-title-like | ticker | Activities |
+| st-select-widget-frame | ticker |  |
+| wait_for_text_present_ok | liked signal | 30000 |
+| text_like | qr/%%user11_short%%.+%%user10_short%%.+%%user9_short%%.+%%user8_short%%.+%%user7_short%%.+%%user6_short%%.+%%user5_short%%.+%%user4_short%%.+You.+%%user2_short%%.+%%user2_short%%.+%%user1_short%%/ |  |
+
+| *Comment* | Test Case: User Like a Page TEARDOWN |  |
+| st-process-jobs |  |  |
+| deactivate-user | %%user1%% | was deactivated |
+| deactivate-user | %%user2%% | was deactivated |
+| deactivate-user | %%user3%% | was deactivated |
+| deactivate-user | %%user4%% | was deactivated |
+| deactivate-user | %%user5%% | was deactivated |
+| deactivate-user | %%user6%% | was deactivated |
+| deactivate-user | %%user7%% | was deactivated |
+| deactivate-user | %%user8%% | was deactivated |
+| deactivate-user | %%user9%% | was deactivated |
+| deactivate-user | %%user10%% | was deactivated |
+| deactivate-user | %%user11%% | was deactivated |
+| delete-account | %%acct%% | Recklessly deleting |
+
+| *Comment* | Test Case: User Likes a Page COMPLETED |  |
