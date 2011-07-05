@@ -111,8 +111,8 @@ init_vivify_all_users: {
     }
     override_ldap_cache_check: {
         no warnings 'redefine';
-        my $old = \&Socialtext::User::LDAP::Factory::_is_cached_proto_user_valid;
-        *Socialtext::User::LDAP::Factory::_is_cached_proto_user_valid = sub {
+        my $old = \&Socialtext::User::LDAP::Factory::db_cache_ttl;
+        *Socialtext::User::LDAP::Factory::db_cache_ttl = sub {
             $stats{ldap_cache_checks}++;
             goto $old;
         };

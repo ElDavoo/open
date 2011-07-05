@@ -62,6 +62,7 @@ sub set_names {
 {
     no warnings 'once';
     $Socialtext::User::LDAP::Factory::CacheEnabled = 0;
+    $Socialtext::User::User::Factory::CacheEnabled = 0;
 }
 
 verify_not_caching_is_the_default_behaviour: {
