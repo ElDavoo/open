@@ -28,9 +28,8 @@ LikeIndicator.prototype = {
         }
         else {
             self.node.find('.like-indicator')
-                .removeClass('me')
-                .removeClass('others')
                 .addClass(self.className())
+                .removeClass('loading')
                 .attr('title', self.text(true))
                 .html(self.text(true));
         }
@@ -121,6 +120,12 @@ LikeIndicator.prototype = {
 
     toggleLike: function() {
         var self = this;
+
+        self.node.find('.like-indicator')
+            .addClass('loading')
+            .removeClass('me')
+            .removeClass('others');
+
         $.ajax({
             url: self.url + '/' + Socialtext.userid,
             type: self.isLikedByMe ? 'DELETE' : 'PUT',

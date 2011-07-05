@@ -2094,6 +2094,9 @@ div#controls div#controlsRight ul li a.watch.on {
 .like-indicator.me.others {
     background-image: url(/nlw/plugin/like/images/like-me-others.gif);
 }
+.like-indicator.loading {
+    background-image: url(../images/ajax-loader.gif);
+}
 
 .like-bubble.cols-0,
 .like-bubble.cols-1 {
