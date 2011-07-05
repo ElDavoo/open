@@ -15,7 +15,7 @@ if [ ! -d "$DATA_DIR" ]; then
     exit 0
 fi
 
-DATA_GROUP=`stat -c %G $DATA_DIR/`
+DATA_GROUP=`stat -c %G $DATA_DIR/ || gstat -c %G $DATA_DIR/`
 echo -n "Creating solr core ..."
 
 inthegroup=`groups 2>&1 | grep $DATA_GROUP || true`
