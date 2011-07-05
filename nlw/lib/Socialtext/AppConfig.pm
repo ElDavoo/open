@@ -1107,7 +1107,7 @@ Default: /challenge
 
 The time, in seconds, between DB refreshes for users using the 'Default' driver.
 
-Default: 3600
+Default: 86400
 
 =for code type => SCALAR_TYPE
 
