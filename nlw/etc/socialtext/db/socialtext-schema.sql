@@ -486,13 +486,6 @@ CREATE FUNCTION update_like_count() RETURNS trigger
                    SET like_count = like_count + 1
                  WHERE page.workspace_id = NEW.workspace_id
                    AND page.page_id = NEW.page_id;
-            ELSIF NEW.signal_id IS NOT NULL THEN
-                UPDATE signal
-                   SET like_count = like_count + 1
-                 WHERE signal.signal_id = NEW.signal_id;
-                UPDATE recent_signal
-                   SET like_count = like_count + 1
-                 WHERE signal_id = NEW.signal_id;
             END IF;
             RETURN NEW;
         ELSIF (TG_OP = 'DELETE') THEN
@@ -501,13 +494,6 @@ CREATE FUNCTION update_like_count() RETURNS trigger
                    SET like_count = like_count - 1
                  WHERE page.workspace_id = OLD.workspace_id
                    AND page.page_id = OLD.page_id;
-            ELSIF OLD.signal_id IS NOT NULL THEN
-                UPDATE signal
-                   SET like_count = like_count - 1
-                 WHERE signal.signal_id = OLD.signal_id;
-                UPDATE recent_signal
-                   SET like_count = like_count - 1
-                 WHERE signal_id = OLD.signal_id;
             END IF;
             RETURN OLD;
         END IF;
@@ -1336,8 +1322,7 @@ CREATE TABLE recent_signal (
     recipient_id bigint,
     hidden boolean DEFAULT false,
     hash character(32) NOT NULL,
-    anno_blob text,
-    like_count bigint DEFAULT 0
+    anno_blob text
 );
 
 CREATE TABLE recent_signal_user_set (
@@ -1372,8 +1357,7 @@ CREATE TABLE signal (
     recipient_id bigint,
     hidden boolean DEFAULT false,
     hash character(32) NOT NULL,
-    anno_blob text,
-    like_count bigint DEFAULT 0
+    anno_blob text
 );
 
 CREATE TABLE signal_asset (
@@ -2385,9 +2369,6 @@ CREATE INDEX profile_relationship_other_user_id
 CREATE INDEX recent_signal_hidden
 	    ON recent_signal (hidden);
 
-CREATE INDEX recent_signal_likes_count_idx
-	    ON recent_signal (like_count);
-
 CREATE INDEX signal_hidden
 	    ON signal (hidden);
 
@@ -3007,4 +2988,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '146');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '145');
