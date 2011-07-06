@@ -2057,11 +2057,7 @@ sub rename {
         );
         return 0 unless $ok;
 
-        # XXX: is there a better way to put square brackets around the
-        # target name?  Maybe with [sprintf,...] somehow?
         my $localized_str = loc("page.renamed=title", $new_page_title);
-        $localized_str =~ tr/></][/;
-
         my $rev = $self->edit_rev();
         $rev->body_ref(\$localized_str);
         $rev->page_type('wiki');

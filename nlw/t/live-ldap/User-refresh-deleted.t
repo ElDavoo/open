@@ -65,18 +65,16 @@ revivify_user_returns_deleted: {
 }
 
 set_user_factories($foo->as_factory, $bar->as_factory, 'Default');
-vivify_user_in_new_factory: {
+user_in_new_factory_is_still_deleted: {
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'found a user';
-    is $user->homunculus->driver_key, $foo->as_factory, 'user in foo';
-    isa_ok $user->homunculus, 'Socialtext::User::LDAP';
+    isa_ok $user->homunculus, 'Socialtext::User::Deleted';
 }
 
 set_user_factories($bar->as_factory, $foo->as_factory, 'Default');
 refreshing_user: {
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'found a user';
-    is $user->homunculus->driver_key, $bar->as_factory, 'user in bar';
     isa_ok $user->homunculus, 'Socialtext::User::Deleted';
 }
 

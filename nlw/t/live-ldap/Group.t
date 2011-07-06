@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use mocked 'Socialtext::Log', qw(:tests);
+use mocked 'Socialtext::Log', qw(:tests st_log);
 use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
 use Socialtext::Group::Factory;
@@ -222,19 +222,20 @@ ldap_group_records_events_on_membership_change: {
         driver_unique_id => $group_dn,
     );
 
-    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
+    my $logged = dump_log();
+    like $logged, qr/ASSIGN,USER_ROLE,.*lemmy.*account:/,
         '... User/Account role assignment logged in nlw.log';
-    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
+    like $logged, qr/ASSIGN,USER_ROLE,.*lemmy.*group:/,
         '... User/Group role assignment logged in nlw.log';
 
-    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
+    like $logged, qr/ASSIGN,USER_ROLE,.*phil.*account:/,
         '... User/Account role assignment logged in nlw.log';
-    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
+    like $logged, qr/ASSIGN,USER_ROLE,.*phil.*group:/,
         '... User/Group role assignment logged in nlw.log';
 
-    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
+    like $logged, qr/ASSIGN,USER_ROLE,.*eddie.*account:/,
         '... User/Account role assignment logged in nlw.log';
-    next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
+    like $logged, qr/ASSIGN,USER_ROLE,.*eddie.*group:/,
         '... User/Group role assignment logged in nlw.log';
 
     # expire the Group, so subsequent lookups will cause it to get refreshed
@@ -258,7 +259,8 @@ ldap_group_records_events_on_membership_change: {
         driver_unique_id => $group_dn,
     );
 
-    next_log_like 'info', qr/REMOVE,USER_ROLE,.*group:/,
+    $logged = dump_log();
+    like $logged, qr/REMOVE,USER_ROLE,.*group:/,
         '... User/Group role removal logged in nlw.log';
 
     # CLEANUP

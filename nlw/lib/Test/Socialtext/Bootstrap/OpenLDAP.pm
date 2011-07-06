@@ -56,11 +56,10 @@ sub set_user_factories {
 
 sub user_is_unique_to_socialtext {
     my $username = shift;
-    my $driver_key = shift;
 
     my $count = sql_singlevalue(qq{
         SELECT COUNT(*) 
-          FROM users
+          FROM all_users
          WHERE driver_username = ?
     }, $username);
     is $count, 1, "one copy of $username exists";
