@@ -67,7 +67,7 @@ LikeIndicator.prototype = {
             startIndex: self.startIndex,
             limit: self.limit,
             only_follows: self.onlyFollows ? 1 : 0
-        });
+        }).replace('&',';'); // Something doesn't like &'s here
 
         $.getJSON(url, function(likers) {
             self.likers = likers;
