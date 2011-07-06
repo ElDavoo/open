@@ -257,11 +257,6 @@ sub _generic_level_not_logged_ok {
     }
 }
 
-for (qw(debug info notice warning error critical alert emergency)) {
-    no strict 'refs';
-    *$_ = sub { 1 };
-}
-
 1;
 
 =head1 NAME
