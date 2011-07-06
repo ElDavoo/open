@@ -84,7 +84,7 @@ sub Record {
         $ev->{context}{uri} = $signal->uri;
         $ev->{signal} = $signal->signal_id;
         if ($ev->{action} ne 'signal') {
-            $ev->{context}{creator} = $signal->user->to_hash(minimal => 1);
+            $ev->{context}{creator_id} = $signal->user->user_id;
         }
     }
 

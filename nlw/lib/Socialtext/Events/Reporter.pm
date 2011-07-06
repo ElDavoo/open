@@ -332,6 +332,10 @@ sub decorate_event_set {
         $self->_extract_group($row);
         $self->_extract_tag($row);
 
+        if ($row->{context}{creator_id}) {
+            $self->_extract_person($row->{context}, 'creator');
+        }
+
         delete $row->{person}
             if (!defined($row->{person}) and $row->{event_class} ne 'person');
 

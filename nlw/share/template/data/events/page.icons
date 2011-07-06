@@ -4,6 +4,8 @@
     [%- CASE "tag_delete" -%]<img class="asset-icon" src="[% skin_uri("/images/asset-icons/tag-16.png") %]"/>
     [%- CASE "watch_add" -%]<img class="asset-icon" src="[% skin_uri("/images/asset-icons/follow-16.png") %]"/>
     [%- CASE "watch_delete" -%]<img class="asset-icon" src="[% skin_uri("/images/asset-icons/follow-16.png") %]"/>
+    [%- CASE "like" -%]<img class="asset-icon" src="[% static_path %]/plugin/like/share/images/like-me.gif"/>
+    [%- CASE "unlike" -%]<img class="asset-icon" src="[% static_path %]/plugin/like/share/images/like-nobody.gif"/>
     [%- CASE -%]<img class="asset-icon" src="[% skin_uri("/images/asset-icons/edit-16.png") %]"/>
 [%- END -%]
 
