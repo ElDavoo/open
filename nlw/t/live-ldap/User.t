@@ -13,6 +13,8 @@ use Test::Socialtext tests => 41;
 
 fixtures( 'db' );
 
+$Socialtext::User::Default::Factory::CacheEnabled = 0;
+
 ###############################################################################
 ### TEST DATA
 ###

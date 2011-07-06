@@ -19,6 +19,8 @@ const 'driver_name' => 'Default';
 const 'driver_key'  => 'Default';
 const 'driver_id'   => undef;
 
+our $CacheEnabled = 1; # only change this for test purposes
+
 # FIXME: This belongs elsewhere, in fixture generation code, perhaps
 sub _create_default_user {
     my $self = shift;
@@ -88,6 +90,10 @@ sub GetUser {
     my ($self, $id_key, $id_val, %opts) = @_;
     my $proto = $opts{preload};
     if ($proto && $proto->{driver_key} eq $self->driver_key) {
+        $self->UpdateUserRecord({
+            %$proto,
+            cached_at => 'now',
+        });
         return $self->NewHomunculus($proto);
     }
     return $self->get_homunculus($id_key, $id_val);
@@ -188,6 +194,16 @@ sub Search {
             };
         },
     )->all;
+}
+
+sub cache_is_enabled { return $CacheEnabled; }
+
+sub db_cache_ttl {
+    my $self       = shift;
+    my $proto_user = shift;
+
+    my $ttl = Socialtext::AppConfig->default_user_ttl;
+    return DateTime::Duration->new(seconds => $ttl);
 }
 
 1;

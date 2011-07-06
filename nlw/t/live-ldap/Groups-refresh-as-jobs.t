@@ -9,6 +9,7 @@ use Socialtext::JobCreator;
 use Socialtext::Jobs;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext::Group;
+use Test::Socialtext::User;
 use Test::Socialtext tests => 30;
 
 # Need a DB, but don't care at all what's in it.
@@ -46,6 +47,7 @@ ldap_group: {
     is $freshened->users->count, 3, '... users have been vivified.';
 
     # Cleanup
+    Test::Socialtext::User->delete_recklessly($_) for $group->users->all;
     Test::Socialtext::Group->delete_recklessly($group);
 }
 
@@ -86,6 +88,7 @@ ldap_group_freshened: {
     is $actualized->users->count, 3, '... three users vivified.';
 
     # Cleanup
+    Test::Socialtext::User->delete_recklessly($_) for $group->users->all;
     Test::Socialtext::Group->delete_recklessly($group);
 }
 

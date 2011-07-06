@@ -1141,6 +1141,12 @@ The system default for whether or not to show seconds when displaying time.
 
 Optional.
 
+=head2 default_user_ttl
+
+The time, in seconds, between DB refreshes for users using the 'Default' driver.
+
+Default: 86400
+
 =for code type => SCALAR_TYPE
 
 =head2 user_factories
