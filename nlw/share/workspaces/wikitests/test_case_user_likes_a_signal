@@ -2,6 +2,7 @@
 
 | set | user1 | uls.one.%%start_time%%@david.socialtext.net |
 | set | user1_short | uls one %%start_time%% |
+| set | user1_shorter | uls.one.%%start_time%% |
 | set | user2 | uls.two.%%start_time%%@david.socialtext.net |
 | set | user2_short | uls two %%start_time%% |
 | set | user3 | uls.three.%%start_time%%@david.socialtext.net |
@@ -38,7 +39,7 @@
 | create_user | %%user10%% | %%password%% | %%acct%% |
 | create_user | %%user11%% | %%password%% | %%acct%% |
 
-| *Comment* | Test Case: User Likes a Page wait for the stupid edit events after first login |  |
+| *Comment* | Test Case: User Likes a Signal wait for the stupid edit events after first login |  |
 | st-logoutin | %%user1%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | %%acct%% | 60000 |
@@ -49,7 +50,7 @@
 | post-signal | ULS Signal %%start_time%% |  |
 | st-process-jobs |  |  |
 
-| *Comment* | Test Case: User Likes a Page first user likes the signal, sees the proper icons |  |
+| *Comment* | Test Case: User Likes a Signal first user likes the signal, sees the proper icons |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
 | wait_for_element_visible_ok | //a[@class='like-indicator '] | 30000 |
@@ -57,9 +58,9 @@
 | st_click_pause | //a[@class='like-indicator '] | 2000 |
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me'] | 30000 |
-| text_like | `//div[@class='like-signal']` | `1` |
+| text_like | //div[@class='like-signal'] | 1 |
 
-| *Comment* | Test Case: User Likes a Page first user sees self in Like Bubble |  |
+| *Comment* | Test Case: User Likes a Signal first user sees self in Like Bubble |  |
 | mouse_over_ok | //a[@class='like-indicator me'] |  |
 | wait_for_text_present_ok | Only you have liked this signal. | 10000 |
 | wait_for_element_visible_ok | link=All People | 10000 |
@@ -67,7 +68,7 @@
 | wait_for_text_present_ok | Only you have liked this signal. | 10000 |
 | is_element_present_ok | //div[@class='likers'] | //a[contains(text(),'%%user1_short%%')] |
 
-| *Comment* | Test Case: User Likes a Page second user likes the signal, sees the proper icons |  |
+| *Comment* | Test Case: User Likes a Signal second user likes the signal, sees the proper icons |  |
 | st-logoutin | %%user2%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
@@ -78,7 +79,7 @@
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
 | text_like | //div[@class='like-signal'] | 2 |
 
-| *Comment* | Test Case: User Likes a Page follow user 1, then check mouseover bubble for colleague list |  |
+| *Comment* | Test Case: User Likes a Signal follow user 1, then check mouseover bubble for colleague list |  |
 | open_ok | /st/profile/%%user1_id%% |  |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 | pause_ok | 5000 | needed for IE7 |
@@ -90,6 +91,19 @@
 | wait_for_text_present_ok | You and 1 person you follow have liked this signal. | 30000 |
 | is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
 
+| *Comment* | Test Case: User Likes a Signal unfollow user 1, then check mouseover bubble for lack of colleague list |  |
+| open_ok | /st/profile/%%user1_id%% |  |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+| pause_ok | 5000 | needed for IE7 |
+| click_ok | link=Stop following this person |  |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_text_present_ok | Only you have liked this signal. | 30000 |
+| is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user2_short%%')] |
+| text_unlike | //div[@class='liker'] | %%user1_short%% |
+
 | *Comment* | Test Case: User Likes a Page users 3-11 like the signal in order to produce pagination in the list of likers |  |
 | st-logoutin | %%user3%% | %%password%% |
 | open_ok | /st/signals |  |
@@ -97,7 +111,6 @@
 | wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
 | st_click_pause | //a[@class='like-indicator others'] | 2000 |
 | text_like | //div[@class='like-signal'] | 3 |
-
 | st-logoutin | %%user4%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
@@ -155,7 +168,7 @@
 | pause | 2000 |  |
 | text_like | //div[@class='like-signal'] | 11 |
 
-| *Comment* | Test Case: User Likes a Page check the mouseover bubble of likes, including pagination |  |
+| *Comment* | Test Case: User Likes a Signal check the mouseover bubble of likes, including pagination |  |
 | st-logoutin | %%user3%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
@@ -184,15 +197,44 @@
 | click_ok | //a[@class='page1'] |  |
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 
-| *Comment* | Test Case: User Likes a Page check dashboard widget for liked signal |  |
+| *Comment* | Test Case: User Likes a Signal check dashboard widget for liked signal |  |
 | open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | liked signal | 30000 |
+| wait_for_text_present_ok | liked their own signal | 30000 |
 
-| *Comment* | Test Case: User Likes a Page use two text_like tests to keep the test string short enough |  |
+| *Comment* | Test Case: User Likes a Signal use two text_like tests to keep the test string short enough |  |
 | text_like | qr/%%user11_short%%.+%%user10_short%%.+%%user9_short%%.+%%user8_short%%.+%%user7_short%%.+%%user6_short%%/ism |  |
-| text_like | qr/%%user11_short%%.+%%user5_short%%.+%%user4_short%%.+%%user2_short%%.+%%user1_short%%/ism |  |
+| text_like | qr/%%user11_short%%.+%%user5_short%%.+%%user4_short%%.+You.+%%user2_short%%.+%%user1_short%%/ism |  |
 
-| *Comment* | Test Case: User Like a Page TEARDOWN |  |
+| *Comment* | Test Case: User Likes a Signal user 3 unlikes the signal, no longer sees themselves in mouseover bubble |  |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| st_click_pause | //a[@class='like-indicator me others'] | 2000 |
+| text_like | //div[@class='like-signal'] | 10 |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| mouse_over_ok | //a[@class='like-indicator others'] |  |
+| wait_for_text_present_ok | None of the people you follow have liked this signal. | 30000 |
+| wait_for_element_visible_ok | link=All People | 30000 |
+| click_ok | link=All People |  |
+| wait_for_text_present_ok | 10 people have liked this signal. | 30000 |
+| wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user4_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user5_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user6_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user7_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user8_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user9_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user10_short%% | 30000 |
+| wait_for_element_visible_ok | link=%%user11_short%% | 30000 |
+| text_unlike | //div[@class='likers'] | %%user3_short%% |
+
+| *Comment* | Test Case: User Likes a Signal dislike event is recorded in activities widget |  |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | unliked %%user1_shorter%%'s signal, "ULS Signal %%start_time%%". | 30000 |
+
+| *Comment* | Test Case: User Likes a Signal TEARDOWN |  |
 | st-process-jobs |  |  |
 | deactivate-user | %%user1%% | was deactivated |
 | deactivate-user | %%user2%% | was deactivated |
@@ -207,4 +249,4 @@
 | deactivate-user | %%user11%% | was deactivated |
 | delete-account | %%acct%% | Recklessly deleting |
 
-| *Comment* | Test Case: User Likes a Page COMPLETED |  |
+| *Comment* | Test Case: User Likes a Signal COMPLETED |  |
