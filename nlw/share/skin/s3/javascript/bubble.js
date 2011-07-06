@@ -45,6 +45,10 @@ Bubble.prototype = {
         }, this.hoverTimeout);
     },
 
+    isVisible: function() {
+        return this.popup && this.popup.is(':visible');
+    },
+
     createPopup: function() {
         var self = this;
         this.contentNode = $('<div></div>')

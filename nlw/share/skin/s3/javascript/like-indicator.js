@@ -46,7 +46,9 @@ LikeIndicator.prototype = {
             var vars = {
                 node: $indicator.get(0),
                 onFirstShow: function() {
-                    self.renderBubble();
+                    self.renderBubble(function() {
+                        self.bubble.show();
+                    })
                 }
             };
             if ($indicator.parents('#controlsRight').size()) {
@@ -60,7 +62,7 @@ LikeIndicator.prototype = {
             .click(function() { self.toggleLike(); return false });
     },
 
-    renderBubble: function() {
+    renderBubble: function(cb) {
         var self = this;
 
         var url = self.url + '?' + $.param({
@@ -114,7 +116,7 @@ LikeIndicator.prototype = {
                 });
             });
 
-            self.bubble.show();
+            if ($.isFunction(cb)) cb();
         });
     },
 
