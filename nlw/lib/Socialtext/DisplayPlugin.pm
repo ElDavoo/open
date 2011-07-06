@@ -176,7 +176,8 @@ sub display {
         if (my $template = $self->cgi->template) {
             my $tmpl_page = $self->hub->pages->new_from_name($template);
             if ($tmpl_page->exists) {
-                push @new_tags, grep { $_ !~ /^template$/i }
+                my @template_tags = (lc('template'), lc(loc('tag.template')));
+                push @new_tags, grep { not( lc($_) ~~ @template_tags ) }
                                 @{ $tmpl_page->tags };
                 if ($page->mutable) {
                     $page->content($tmpl_page->content);
