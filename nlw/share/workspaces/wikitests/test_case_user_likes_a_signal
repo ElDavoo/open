@@ -22,7 +22,7 @@
 | set | user10_short | uls ten %%start_time%% |
 | set | user11 | uls.eleven.%%start_time%%@david.socialtext.net |
 | set | user11_short | uls eleven %%start_time%% |
-| set | acct | usl_account_%%start_time%% |
+| set | acct | usl_acct_%%start_time%% |
 
 | create_account | %%acct%% |  |  |
 | create_user | %%user1%% | %%password%% | %%acct%% |
@@ -38,12 +38,13 @@
 | create_user | %%user10%% | %%password%% | %%acct%% |
 | create_user | %%user11%% | %%password%% | %%acct%% |
 
-| *Comment* | Test Case: User Likes a Page wait for the stupid account central page edit events |  |
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | in %%acct%% Central | 90000 |
-| st_pause_ok | 8000 | Waited for all the edit events to post before posting signals |
-
+| *Comment* | Test Case: User Likes a Page wait for the stupid edit events after first login |  |
 | st-logoutin | %%user1%% | %%password%% |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | %%acct%% | 60000 |
+| pause_ok | 8000 | Waited for all the edit events to post before posting signals |
+
+
 | http-user-pass | %%user1%% | %%password%% |
 | post-signal | ULS Signal %%start_time%% |  |
 | st-process-jobs |  |  |
