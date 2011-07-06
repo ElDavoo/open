@@ -28,7 +28,7 @@
 | open_ok | /?dashboard |  |
 | *Comment* | SEE Groups Dropdown - Hover over it |  |
 | *Comment* | SEE Groups Dropdown - Hover over it - ALPHABETICAL SORT OF GROUPS? |  |
-| *Comment* | SEE Groups Dropdown SEE list of three groups %%aagrpname%%, %%aagrpname%%, %%aagrpname%% |  |
+| *Comment* | SEE Groups Dropdown SEE list of three groups %%aagrpname%%, %%bbgrpname%%, %%ccgrpname%% |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
@@ -36,15 +36,13 @@
 | *Comment* | Open a group page |
 | open | /st/group/%%group_id%% |
 | *Comment* | SEE: Groups PAGE |
-| *Comment* | SEE: Group name %%aagrpname%%, created by %%username%%, belonging to workspace %%newws%% |
+| *Comment* | SEE: Group name %%bbgrpname%%, has member %%username%%, belonging to workspace %%newws%% |
 | pause | %%pt%% |
 
 | *Comment* | Turn OFF groups plugin for this account |  |
 | st-admin | disable-plugin --plugin groups --account %%newacctname%% |  |
 | open_ok | /?dashboard |  |
 | *Comment* | DO NOT SEE GROUP In Global Nav |  |
-| pause | %%pt%% |  |
-| pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
 | *Comment* | GroupsHomeShow TearDown |  |

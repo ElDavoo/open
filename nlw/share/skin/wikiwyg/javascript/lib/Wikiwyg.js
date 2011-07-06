@@ -2120,6 +2120,7 @@ proto.do_opensocial_setup = function(src) {
 
     $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
         Wikiwyg.Widgets.widget_editing = 0;
+        $('#st-widget-opensocial-setup').remove();
     });
 }
 

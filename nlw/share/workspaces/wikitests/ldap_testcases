@@ -19,9 +19,7 @@ Test Case: Verify LDAP Enabled verifies the LDAP user screens for Login/Logout, 
 
 * [Test Case: Verify LDAP Enabled]
 
-Test Case: LDAP Groups creates an LDAP Group and exercises it
-
-* [Test Case: LDAP Groups]
+Test Case: LDAP Group moved to top of top-level testcases so they run in a pristine LDAP environment ...
 
 Special test case for LDAP user CLI commands
 

@@ -5,14 +5,17 @@
 | set | page | Special Edit Contention Page |
 
 | open_ok | /%%workspace%%/?%%page%% |  |
-| text_like | qr/.+opened this page for editing/ism |  |
+| wait_for_text_present_ok | opened this page for editing | 15000 |
 
-| *Comment* | Test Case: Edit Contention Execute. Warning Text should disappear on its own. We need wait_for_text_not_visible but we don't have it. |  |
+| *Comment* | Test Case: Edit Contention Execute. Warning Text should disappear on its own. |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
 | click_ok | link=Edit |  |
+
+| *Comment* | Test Case: Edit Contention Execute. slow down or buttons don't work. |  |
+| set_speed_ok | 2000 |  |
 | wait_for_element_visible_ok | link=Edit Anyway | 30000 |
 | wait_for_element_visible_ok | link=Return to Page View | 30000 |
-| text_like | qr/.+has opened this page for editing/ism |  |
+| wait_for_text_present_ok | has opened this page for editing | 30000 |
 | text_like | qr/%%atmail%%/ism |  |
 
 | *Comment* | Test Case: Edit Contention Execute. Test Return to Page View and Edit Anyway |  |
@@ -31,6 +34,7 @@
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 
 | *Comment* | Test Case: Edit Contention Execute. Save anyway. |  |
+| set_speed_ok | 0 |  |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | wait_for_element_visible_ok | link=Save | 30000 |

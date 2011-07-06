@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 03:25-0700\n"
+"PO-Revision-Date: 2011-06-15 13:01-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -336,6 +336,12 @@ msgstr "加入"
 msgid "do.join-to-edit"
 msgstr "加入以编辑"
 
+msgid "do.like"
+msgstr "赞"
+
+msgid "do.like=count"
+msgstr "(%1) 赞"
+
 #: share/skin/s3/javascript/lightbox/comment.tt2:12
 msgid "do.ol"
 msgstr "编号列表"
@@ -387,6 +393,12 @@ msgstr "项目符号列表"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "停止关注此人"
+
+msgid "do.unlike"
+msgstr "取消赞"
+
+msgid "do.unlike=count"
+msgstr "(%1) 取消赞"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -591,6 +603,9 @@ msgstr "对不起，此功能不支持电子表格。"
 msgid "error.filename-too-long"
 msgstr "网址编码后文件名太长。"
 
+msgid "error.groups-member-exists=count:"
+msgstr "下面的 %1 名用户已经是这些群组的成员："
+
 #. (new_title)
 #: share/skin/s3/javascript/st-lightbox.js:86
 msgid "error.invalid-page-name=title"
@@ -637,6 +652,9 @@ msgstr "找不到有“%2”标签的%1"
 msgid "error.no-recipient"
 msgstr "错误：要发送邮件，您必须指定收件人。"
 
+msgid "error.no-search-results"
+msgstr "您的搜索没有找到任何结果。"
+
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:23
 msgid "error.non-admin-create-group"
 msgstr "由于您的应用配置限制，只有帐户管理员可以创建群组。"
@@ -675,6 +693,9 @@ msgstr "“%1”存在，但并不是%2"
 #: share/skin/s3/javascript/people-avatar.js:195
 msgid "error.user-data"
 msgstr "错误恢复用户数据"
+
+msgid "error.wiki-member-exists=count:"
+msgstr "下面的 %1 名用户已经是工作区成员："
 
 #: share/skin/s3/template/element/settings/weblog_create:13
 msgid "example.blog"
@@ -973,6 +994,9 @@ msgstr "使用下面的表格来邀请用户加入此工作区的一个群组。
 msgid "info.logged-in=name"
 msgstr "您已登入为 %1"
 
+msgid "info.no-search-results"
+msgstr "请检查搜索拼字是否正确，然后再试一次："
+
 #: share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "使编辑区域回到正常视图"
@@ -1069,6 +1093,12 @@ msgstr "这是您工作区的标题。需要的话稍后可以更改。"
 msgid "info.wikis"
 msgstr "...列出您所属的工作区。您必须登录查看您的列表。"
 
+msgid "invite.added-to-groups=users:"
+msgstr "下面的 %1 名用户已经被成功的邀请到这些群组："
+
+msgid "invite.added-to-wiki=users:"
+msgstr "下面的 %1 名用户已经被成功的邀请到工作区："
+
 #: share/skin/s3/template/element/settings/users_invite_search_section:126 share/skin/s3/template/element/settings/users_invite_section:81
 msgid "invite.append?"
 msgstr "添加下面的个人消息？"
@@ -1145,6 +1175,9 @@ msgstr "邀请其他用户"
 msgid "invite.personal-message"
 msgstr "个人消息"
 
+msgid "invite.request-sent=users:"
+msgstr "已经成功寄出给下面 %1 名用户的邀请函："
+
 #: share/skin/s3/template/element/settings/users_invite_search_section:6
 msgid "invite.search-users"
 msgstr "搜索用户并邀请"
@@ -1172,6 +1205,48 @@ msgstr "您的"
 #: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "invite.your-personal-message"
 msgstr "<此处是您的个人消息。>"
+
+msgid "like.all-people"
+msgstr "所有人"
+
+msgid "like.like=count"
+msgstr "%1 个赞"
+
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这页面赞。"
+
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,个,个,目前没有)人说这页面赞。"
+
+msgid "like.liked-this.page.only-you"
+msgstr "只有您说这页面赞。"
+
+msgid "like.liked-this.page.you=followed"
+msgstr "您和 %1 位您关注的人都说这页面赞。"
+
+msgid "like.liked-this.page.you=others"
+msgstr "您和其他 %1 个人都说这页面赞。"
+
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这版本赞。"
+
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,个,个,目前没有)人说这版本赞。"
+
+msgid "like.liked-this.revision.only-you"
+msgstr "只有您说这版本赞。"
+
+msgid "like.liked-this.revision.you=followed"
+msgstr "您和 %1 位您关注的人都说这版本赞。"
+
+msgid "like.liked-this.revision.you=others"
+msgstr "您和其他 %1 个人都说这版本赞。"
+
+msgid "like.page:"
+msgstr "页数："
+
+msgid "like.people-i-follow"
+msgstr "我关注的人"
 
 #: share/skin/s3/template/lite/paging.html:4 share/skin/s3/template/lite/paging.html:6 share/skin/s3/template/lite/paging.html:8
 msgid "lite.first-page"

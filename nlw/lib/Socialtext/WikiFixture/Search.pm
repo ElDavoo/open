@@ -84,6 +84,9 @@ sub ws_search {
         my $matches = $1;
         is $matches, $expected_results, "expected results for '$q'";
     }
+    elsif ($body =~ m/Your search returned 0 results\./) {
+        is 0, $expected_results, "expected results for '$q'";
+    }
     else {
         ok 0, "Couldn't find the number of results";
     }

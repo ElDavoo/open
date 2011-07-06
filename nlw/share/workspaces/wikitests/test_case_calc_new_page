@@ -25,6 +25,10 @@
 | click_ok | st-save-button-link |  |
 
 | *Comment* | Test Case: Calc New Page. Page Already Exists |  |
+| *Comment* | Test Case: Calc New Page. This fails if you go too fast. setSpeed 2000 |  |
+| *Comment* | Test Case: Calc New Page. Sheet saves but does not close |  |
+| set_speed_ok | 2000 |  |
+
 | *Comment* | Test Case: Calc New Page. Use duplicate option different |  |
 | wait_for_element_visible_ok | st-newspreadsheet-duplicate-option-different | 30000 |
 | check_ok | st-newspreadsheet-duplicate-option-different |  |

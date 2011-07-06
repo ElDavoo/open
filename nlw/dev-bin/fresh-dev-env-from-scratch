@@ -113,8 +113,13 @@ else
 fi
 
 
-bin/st-admin enable-plugin --all-accounts --plugin dashboard \
-    --plugin signals --plugin groups --plugin push --plugin analytics
+bin/st-admin enable-plugin --all-accounts \
+    --plugin dashboard \
+    --plugin signals \
+    --plugin groups \
+    --plugin push \
+    --plugin analytics \
+    --plugin like \
 
 bin/st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 

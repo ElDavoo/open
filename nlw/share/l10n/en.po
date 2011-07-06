@@ -16,9 +16,9 @@
 # @COPYRIGHT@
 # #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
-# #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+# #-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
-# #-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#
+# #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:02-0700\n"
+"PO-Revision-Date: 2011-05-28 09:55-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 03:27-0700\n"
+"PO-Revision-Date: 2011-06-16 10:57-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +103,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 23:13-0700\n"
+"PO-Revision-Date: 2011-05-19 02:19-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -117,17 +117,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
+"#-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-24 06:39-0700\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-06-16 00:06-0700\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#\n"
+"#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-17 04:45-0700\n"
+"PO-Revision-Date: 2011-07-05 14:39-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:20-0700\n"
+"PO-Revision-Date: 2011-06-14 09:22-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1163,6 +1163,10 @@ msgstr "Automatic Backups"
 msgid "backup.automatic-cleanup"
 msgstr "Automatic Cleanup"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:19
+msgid "backup.cannot-delete-last-backup"
+msgstr "It is required that at least one backup exists. If only one backup is present then it cannot be deleted."
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "Automatic Full backups will be initiated on the selected days of the week. Unselect all to disable."
@@ -1186,6 +1190,10 @@ msgstr "Day(s) of the week:"
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:98
 msgid "backup.delete-expired-files"
 msgstr "Delete expired files"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:10
+msgid "backup.delete=label?"
+msgstr "Delete \"%1\" backup?"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
 msgid "backup.directory"
@@ -1292,6 +1300,16 @@ msgstr "Please read the Socialtext Admin Guide <a href=\"%1\">Backup</a> documen
 msgid "backup.schedule:"
 msgstr "Backup schedule:"
 
+#. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
+#. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:18
+msgid "backup.see-admin-guide-about-backup-mode"
+msgstr "See the <a href=\"%1\">Admin Guide</a> for an explanation of Backup Mode. A copy of this documentation is available publically <a href=\"%2\">here</a>."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:6
+msgid "backup.select-backup-to-delete"
+msgstr "You must select a backup to delete."
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:44
 msgid "backup.share-name"
 msgstr "Backup Share Name"
@@ -1308,6 +1326,10 @@ msgstr "Backup Status"
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
 msgid "backup.status-unavailable-check-error-log"
 msgstr "Backup status unavailable, check logs for errors"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:48
+msgid "backup.successfully-deleted=label"
+msgstr "%1 successfully deleted"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.unwritable"
@@ -4041,7 +4063,7 @@ msgstr "Display a list of the open blocker bugs."
 msgid "description.blognews2"
 msgstr "Tabbed theXblogs RSS Reader. Edit the gadget settings to view between 1 to 15 items. Choose long or short summaries. Customize categories with personalized feeds such as Top Stories, World, Business, Technology, Sports, Entertainment, Politics etc."
 
-msgid "description.bug_board"
+msgid "description.bz_page_tracker"
 msgstr "Visualize Bugzilla tickets and tagged pages with multiple columns."
 
 msgid "description.calc"
@@ -4122,6 +4144,9 @@ msgstr "Displays a single web page within a Socialtext Widget."
 msgid "description.oneimage"
 msgstr "Displays a single spreadsheet within a Socialtext Widget."
 
+msgid "description.page_tracker"
+msgstr "Visualize tagged pages in a workspace with multiple columns."
+
 #: share/plugin/groups/share/widgets/people/config.yaml:4
 msgid "description.people"
 msgstr "People in this group."
@@ -4167,9 +4192,6 @@ msgstr "Displays a tag cloud of all tags in a particular workspace."
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "Displays a list of pages with a certain tag"
-
-msgid "description.task_board"
-msgstr "Visualize tagged pages in a workspace with multiple columns."
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:4
 msgid "description.teaser"
@@ -4459,6 +4481,14 @@ msgstr "Join To Edit"
 msgid "do.leave"
 msgstr "Leave"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like"
+msgstr "Like"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like=count"
+msgstr "(%1) Like"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "Next"
@@ -4530,6 +4560,14 @@ msgstr "Bulleted List"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "Stop following this person"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike"
+msgstr "Unlike"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike=count"
+msgstr "(%1) Unlike"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -5429,6 +5467,9 @@ msgstr "Application error in %1 on %2: %3"
 msgid "error.at-least-one-admin-required"
 msgstr "You must choose at least one administrator."
 
+msgid "error.at-least-one-column-required"
+msgstr "Error: Please define at least one column."
+
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
 msgstr "Groups need at least one admin"
@@ -5452,6 +5493,11 @@ msgstr "Authentication token soft limit must be lower than the hard limit."
 
 msgid "error.backup-already-running"
 msgstr "Backup already running"
+
+#. ($_)
+#: lib/Socialtext/Appliance/Model/Backup.pm:53
+msgid "error.backup-delete-failed=error"
+msgstr "Backup delete failed: %1"
 
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
@@ -5888,6 +5934,10 @@ msgstr "Can only change permissions on a group or workspace."
 #: lib/Socialtext/CLI.pm:3646
 msgid "error.group-required=command"
 msgstr "The command you called (%1) requires a '--group' parameter."
+
+#: share/skin/s3/template/element/settings/users_invited_section:10 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "error.groups-member-exists=count:"
+msgstr "The following %*(%1,user already has,users already have) roles in the following Groups:"
 
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
 msgid "error.html-report-not-implemented"
@@ -6543,6 +6593,10 @@ msgstr "%1 does not have the role of '%2' in %3"
 #: lib/Socialtext/CLI.pm:1620
 msgid "error.no-role=name,role,container,type"
 msgstr "%1 does not have the role of '%2' in the %3 %4."
+
+#: share/skin/s3/template/view/listview:40
+msgid "error.no-search-results"
+msgstr "Your search returned 0 results."
 
 #: share/plugin/people/template/lite/profile.html:72 lib/Socialtext/Lite/People.pm:78
 msgid "error.no-signals"
@@ -7271,6 +7325,11 @@ msgstr "Unexpected Widget >>%1<< in parseWidget"
 msgid "error.unknown"
 msgstr "Unknown error"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "Unknown type: %1"
+
 #. ($type)
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
 msgid "error.unknown-report=type"
@@ -7463,6 +7522,11 @@ msgstr "User %1 is not authorized to view workspace %2"
 #: lib/Socialtext/Handler/ControlPanel.pm:1773
 msgid "error.wiki-id-required=uri"
 msgstr "You must provide a workspace_id to this URI (%1)."
+
+#. (users_already_present.size)
+#: share/skin/s3/template/element/settings/users_invited_section:5 share/skin/s3/template/element/settings/users_invited_section:6
+msgid "error.wiki-member-exists=count:"
+msgstr "The following %*(%1,user was already a member,users were already members) of this Workspace:"
 
 #: lib/Socialtext/Workspace.pm:600 share/plugin/control/template/control/workspace_invite.html:269
 msgid "error.wiki-name-required"
@@ -7671,6 +7735,16 @@ msgid "event.leave=user,wiki"
 msgstr "removed %1 from the workspace %2."
 
 #. (page_in_workspace)
+#: share/template/data/events/page:27
+msgid "event.like=page"
+msgstr "liked %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "event.like=page,wiki"
+msgstr "liked %1 in %2"
+
+#. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
 msgstr "renamed %1."
@@ -7694,6 +7768,16 @@ msgstr "stopped following %1."
 #: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
 msgstr "Unknown event class: %1"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:29
+msgid "event.unlike=page"
+msgstr "unliked %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:24
+msgid "event.unlike=page,wiki"
+msgstr "unliked %1 in %2"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -8514,7 +8598,7 @@ msgstr "Currently, there are no workspaces associated with this group. Use the f
 
 #. (button)
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
-msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
+msgid "groups.note-click-this-to-save-changes=button"
 msgstr "NOTE: Click <b>%1</b> to save changes."
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
@@ -9010,6 +9094,10 @@ msgstr "Enter a meaningful and distinctive title for your page."
 msgid "info.new-page-title"
 msgstr "Tip: You'll be able to find this page later by using the title you choose."
 
+#: share/skin/s3/template/view/listview:43
+msgid "info.no-search-results"
+msgstr "Please make sure your query is spelled correctly and try again:"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "Return edit area to normal view"
@@ -9319,6 +9407,16 @@ msgstr "Because you already have a %1 account, the password is the same as the p
 msgid "invite.added-to-group=users:"
 msgstr "The following %*(%1,user was,users were) successfully invited into this Group:"
 
+#. (no_role_in_group.size)
+#: share/skin/s3/template/element/settings/users_invited_section:14 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-groups=users:"
+msgstr "The following %*(%1,user was,users were) invited to the following Groups:"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:26 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-wiki=users:"
+msgstr "The following %*(%1,user was,users were) invited into this Workspace:"
+
 #: share/plugin/people/template/invite:47
 msgid "invite.another-example-email-address"
 msgstr "another.friend@example.com"
@@ -9490,6 +9588,11 @@ msgstr "Include the personal message below in the invitation email?"
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
 msgstr "primary, %*(%1,user)"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:30 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.request-sent=users:"
+msgstr "Your request to invite the following %*(%1,user) has been sent:"
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -9717,145 +9820,133 @@ msgstr "Total"
 msgid "job.type"
 msgstr "Job Type"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:64 share/plugin/kanban/share/widgets/bug_board/widget.html:80 share/plugin/kanban/share/widgets/bug_board/widget.html:94
-msgid "kanban.add"
-msgstr "Add"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:168
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "kanban.advanced"
 msgstr "Advanced"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:121
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:121
 msgid "kanban.background-color:"
 msgstr "…use this color:"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:32
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:32
 msgid "kanban.basics"
 msgstr "Basics"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:169
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:169
 msgid "kanban.bug-columns"
 msgstr "Bug Columns"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:183
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:183
 msgid "kanban.bug-notes"
 msgstr "Bug notes"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:187
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:187
 msgid "kanban.bug-stamp-color:"
 msgstr "…show its value in this color:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:173
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:173
 msgid "kanban.bz-search:"
 msgstr "…run this BZ search:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:172
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:172
 msgid "kanban.bz-sharer-id"
 msgstr "From this sharer ID…"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.cancel"
-msgstr "Cancel"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:38
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:38
 msgid "kanban.columns"
 msgstr "Columns"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:105
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:105
 msgid "kanban.default-color:"
 msgstr "Default color:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:198
 msgid "kanban.editable?"
 msgstr "Allow moving pages between columns?"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:89
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:89
 msgid "kanban.exclude-tags:"
 msgstr "…but not pages with any of these tags:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:47
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:47
 msgid "kanban.heading"
 msgstr "Heading"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:186
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:186
 msgid "kanban.if-bug-has-field"
 msgstr "If bug has this field…"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:117 share/plugin/kanban/share/widgets/bug_board/widget.html:141
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:117 share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:141
 msgid "kanban.if-page-has-tag"
 msgstr "If page has this tag…"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:75
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:75
 msgid "kanban.include-tags:"
 msgstr "Show only pages with any of these tags:"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100
 msgid "kanban.item-background"
 msgstr "Item Background"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:136
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "Item Notes"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:51
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
 msgstr "Notes"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:200
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:200
 msgid "kanban.omit-page-prefix:"
 msgstr "Omit this part from page titles starting with:"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100 share/plugin/widgets/share/widgets/page_tracker/widget.html:136 share/plugin/widgets/share/widgets/page_tracker/widget.html:168 share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.optional"
 msgstr "(optional)"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.page-filtering"
 msgstr "Page Filtering"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:43
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:43
 msgid "kanban.page-tag"
 msgstr "Page Tag"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:202
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.js:48
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "Please fill in the Workspace field first."
+
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "Additional query constraints for pages:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.refresh-interval"
 msgstr "Refresh interval"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.save"
-msgstr "Save"
-
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.seconds"
 msgstr "(seconds)"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:26
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:26
 msgid "kanban.settings"
 msgstr "Settings"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:149
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:149
 msgid "kanban.stamp-color:"
 msgstr "…in this color:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:145
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:145
 msgid "kanban.stamp-note"
 msgstr "…show this note…"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:36
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:36
 msgid "kanban.widget-title:"
 msgstr "Widget Title:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:34
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:34
 msgid "kanban.wiki:"
 msgstr "Workspace:"
-
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
-msgid "kanban.yes"
-msgstr "Yes"
 
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895
@@ -9897,6 +9988,82 @@ msgstr "Last Month"
 #: lib/Socialtext/RecentChangesPlugin.pm:45
 msgid "last.week"
 msgstr "Last Week"
+
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "All Likes"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:7
+msgid "like.all-people"
+msgstr "All People"
+
+#: share/skin/s3/javascript/like-indicator.js:137
+msgid "like.like=count"
+msgstr "%quant(%1,like)"
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,person has liked this page,people have liked this page,Nobody has liked this page yet)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.only-you"
+msgstr "Only you have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.page.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this revision,people you follow have liked this revision,None of the people you follow have liked this revision)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,person has liked this revision,people have liked this revision,Nobody has liked this revision yet)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.only-you"
+msgstr "Only you have liked this revision."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this revision."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.revision.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this revision."
+
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "Likes"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "Look for <span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">Like</span> on a page you like and then click on it to add the page to your list of liked items."
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "My Likes"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "You don't like any pages yet."
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:30
+msgid "like.page:"
+msgstr "page:"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:6
+msgid "like.people-i-follow"
+msgstr "People I Follow"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"
@@ -10310,6 +10477,10 @@ msgstr "Last"
 #: share/skin/s3/template/view/paging:27
 msgid "nav.last-page"
 msgstr "Last Page"
+
+#: lib/Socialtext/Pluggable/Plugin/Like.pm:113
+msgid "nav.likes"
+msgstr "Likes"
 
 #: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
@@ -10832,7 +11003,7 @@ msgstr "Rename Page"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "Page renamed to <%1>"
+msgstr "Page renamed to [%1]"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:28
 msgid "page.replace"
@@ -11097,6 +11268,10 @@ msgstr "All People Tagged '%1'"
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
 msgstr "Tools"
+
+#: share/plugin/people/share/widgets/mytweets.xml:9
+msgid "people.twitter-id"
+msgstr "Twitter ID"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"
@@ -13310,7 +13485,7 @@ msgstr "Open Blocker Bugs"
 msgid "title.blognews2"
 msgstr "theXblogs™"
 
-msgid "title.bug_board"
+msgid "title.bz_page_tracker"
 msgstr "Page/Bug Tracker"
 
 msgid "title.calc"
@@ -13387,6 +13562,9 @@ msgstr "Web Page"
 msgid "title.oneimage"
 msgstr "Image"
 
+msgid "title.page_tracker"
+msgstr "Page Tracker"
+
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
 msgstr "Membership"
@@ -13429,9 +13607,6 @@ msgstr "Workspace Tags"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "Pages tagged X"
-
-msgid "title.task_board"
-msgstr "Page Tracker"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"
@@ -14475,6 +14650,9 @@ msgstr "emailed pages"
 #: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
 msgid "widgets.from"
 msgstr "from"
+
+msgid "widgets.from-account"
+msgstr "from account"
 
 msgid "widgets.gallery"
 msgstr "Widget Gallery"

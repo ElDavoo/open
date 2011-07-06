@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 23:13-0700\n"
+"PO-Revision-Date: 2011-05-19 02:19-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -457,6 +457,10 @@ msgstr "Tag Name"
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
 msgstr "Tools"
+
+#: share/plugin/people/share/widgets/mytweets.xml:9
+msgid "people.twitter-id"
+msgstr "Twitter ID"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"

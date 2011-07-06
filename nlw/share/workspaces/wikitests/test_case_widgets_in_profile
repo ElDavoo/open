@@ -44,6 +44,8 @@
 | wait_for_element_visible_ok | st-edit-layout | 10000 |
 | click_ok | st-edit-layout |  |
 | wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+|  *Comment* |  Test sometimes adds a second widget or fails to change prefs. Slow it down ? |  |
+|  set_speed_ok | 2000  |  |
 | wait_for_element_visible_ok | st-add-widget | 10000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
@@ -91,6 +93,7 @@
 | st-select-widget-frame | wiki |  |
 | wait_for_text_present_ok | Wiki Search (French) | 10000 |
 | select-frame | relative=parent |  |
+|  set_speed_ok | 0  |  |
 
 | *Comment* | Test Case: Widgets in Profile use X button to remove widget |  |
 | click_ok | st-edit-layout |  |

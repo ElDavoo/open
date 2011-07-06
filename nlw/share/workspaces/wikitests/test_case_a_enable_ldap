@@ -11,6 +11,6 @@
 | pause | 20000 |  |
 
 | st-process-jobs | PersonIndex |  |
-| st-admin | add-workspace-admin --username devnullx --w %%workspace%% | devnullx now has the role of 'admin' in the test-data Workspace |
+| st-admin | add-workspace-admin --username devnullx --w %%workspace%% | qr/.+role of 'admin'/ |
 
 | *Comment* | Test Case: A Enable LDAP COMPLETED |  |

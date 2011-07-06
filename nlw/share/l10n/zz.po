@@ -16,9 +16,9 @@
 # @COPYRIGHT@
 # #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
-# #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+# #-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
-# #-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#
+# #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:02-0700\n"
+"PO-Revision-Date: 2011-05-28 09:55-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 03:27-0700\n"
+"PO-Revision-Date: 2011-06-16 10:57-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +103,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 23:13-0700\n"
+"PO-Revision-Date: 2011-05-19 02:19-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -117,17 +117,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
+"#-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-24 06:39-0700\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-06-16 00:06-0700\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#\n"
+"#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-17 04:45-0700\n"
+"PO-Revision-Date: 2011-07-05 14:39-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:20-0700\n"
+"PO-Revision-Date: 2011-06-14 09:22-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1163,6 +1163,10 @@ msgstr "Zzzzzzzzz Zzzzzzz"
 msgid "backup.automatic-cleanup"
 msgstr "Zzzzzzzzz Zzzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:19
+msgid "backup.cannot-delete-last-backup"
+msgstr "Zz zz zzzzzzzz zzzz zz zzzzz zzz zzzzzz zzzzzz. Zz zzzz zzz zzzzzz zz zzzzzzz zzzz zz zzzzzz zz zzzzzzz."
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "Zzzzzzzzz Zzzz zzzzzzz zzzz zz zzzzzzzzz zz zzz zzzzzzzz zzzz zz zzz zzzz. Zzzzzzzz zzz zz zzzzzzz."
@@ -1186,6 +1190,10 @@ msgstr "Zzz(z) zz zzz zzzz:"
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:98
 msgid "backup.delete-expired-files"
 msgstr "Zzzzzz zzzzzzz zzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:10
+msgid "backup.delete=label?"
+msgstr "Zzzzzz \"%1\" zzzzzz?"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
 msgid "backup.directory"
@@ -1292,6 +1300,16 @@ msgstr "Zzzzzz zzzz zzz Zzzzzzzzzz Zzzzz Zzzzz <a href=\"%1\">Zzzzzz</a> zzzzzzz
 msgid "backup.schedule:"
 msgstr "Zzzzzz zzzzzzzz:"
 
+#. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
+#. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:18
+msgid "backup.see-admin-guide-about-backup-mode"
+msgstr "Zzz zzz <a href=\"%1\">Zzzzz Zzzzz</a> zzz zz zzzzzzzzzzz zz Zzzzzz Zzzz. Z zzzz zz zzzz zzzzzzzzzzzzz zz zzzzzzzzz zzzzzzzzzz <a href=\"%2\">zzzz</a>."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:6
+msgid "backup.select-backup-to-delete"
+msgstr "Zzz zzzz zzzzzz z zzzzzz zz zzzzzz."
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:44
 msgid "backup.share-name"
 msgstr "Zzzzzz Zzzzz Zzzz"
@@ -1308,6 +1326,10 @@ msgstr "Zzzzzz Zzzzzz"
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
 msgid "backup.status-unavailable-check-error-log"
 msgstr "Zzzzzz zzzzzz zzzzzzzzzzz, zzzzz zzzz zzz zzzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:48
+msgid "backup.successfully-deleted=label"
+msgstr "%1 zzzzzzzzzzzz zzzzzzz"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.unwritable"
@@ -4041,7 +4063,7 @@ msgstr "Zzzzzzz z zzzz zz zzz zzzz zzzzzzz zzzz."
 msgid "description.blognews2"
 msgstr "Zzzzzz zzzZzzzzz ZZZ Zzzzzz. Zzzz zzz zzzzzz zzzzzzzz zz zzzz zzzzzzz 1 zz 15 zzzzz. Zzzzzz zzzz zz zzzzz zzzzzzzzz. Zzzzzzzzz zzzzzzzzzz zzzz zzzzzzzzzzzz zzzzz zzzz zz Zzz Zzzzzzz, Zzzzz, Zzzzzzzz, Zzzzzzzzzz, Zzzzzz, Zzzzzzzzzzzzz, Zzzzzzzz zzz."
 
-msgid "description.bug_board"
+msgid "description.bz_page_tracker"
 msgstr "Zzzzzzzzz Zzzzzzzz zzzzzzz zzz zzzzzz zzzzz zzzz zzzzzzzz zzzzzzz."
 
 msgid "description.calc"
@@ -4122,6 +4144,9 @@ msgstr "Zzzzzzzz z zzzzzz zzz zzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
 msgid "description.oneimage"
 msgstr "Zzzzzzzz z zzzzzz zzzzzzzzzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
 
+msgid "description.page_tracker"
+msgstr "Zzzzzzzzz zzzzzz zzzzz zz z zzzzzzzzz zzzz zzzzzzzz zzzzzzz."
+
 #: share/plugin/groups/share/widgets/people/config.yaml:4
 msgid "description.people"
 msgstr "Zzzzzz zz zzzz zzzzz."
@@ -4167,9 +4192,6 @@ msgstr "Zzzzzzzz z zzz zzzzz zz zzz zzzz zz z zzzzzzzzzz zzzzzzzzz."
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "Zzzzzzzz z zzzz zz zzzzz zzzz z zzzzzzz zzz"
-
-msgid "description.task_board"
-msgstr "Zzzzzzzzz zzzzzz zzzzz zz z zzzzzzzzz zzzz zzzzzzzz zzzzzzz."
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:4
 msgid "description.teaser"
@@ -4459,6 +4481,14 @@ msgstr "Zzzz Zz Zzzz"
 msgid "do.leave"
 msgstr "Zzzzz"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like"
+msgstr "Zzzz"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like=count"
+msgstr "(%1) Zzzz"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "Zzzz"
@@ -4530,6 +4560,14 @@ msgstr "Zzzzzzzz Zzzz"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "Zzzz zzzzzzzzz zzzz zzzzzz"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike"
+msgstr "Zzzzzz"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike=count"
+msgstr "(%1) Zzzzzz"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -5429,6 +5467,9 @@ msgstr "Zzzzzzzzzzz zzzzz zz %1 zz %2: %3"
 msgid "error.at-least-one-admin-required"
 msgstr "Zzz zzzz zzzzzz zz zzzzz zzz zzzzzzzzzzzzz."
 
+msgid "error.at-least-one-column-required"
+msgstr "Zzzzz: Zzzzzz zzzzzz zz zzzzz zzz zzzzzz."
+
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
 msgstr "Zzzzzz zzzz zz zzzzz zzz zzzzz"
@@ -5452,6 +5493,11 @@ msgstr "Zzzzzzzzzzzzzz zzzzz zzzz zzzzz zzzz zz zzzzz zzzz zzz zzzz zzzzz."
 
 msgid "error.backup-already-running"
 msgstr "Zzzzzz zzzzzzz zzzzzzz"
+
+#. ($_)
+#: lib/Socialtext/Appliance/Model/Backup.pm:53
+msgid "error.backup-delete-failed=error"
+msgstr "Zzzzzz zzzzzz zzzzzz: %1"
 
 msgid "error.backup-failed"
 msgstr "Zzzzzz zzzzzz ..."
@@ -5888,6 +5934,10 @@ msgstr "Zzz zzzz zzzzzz zzzzzzzzzzz zz z zzzzz zz zzzzzzzzz."
 #: lib/Socialtext/CLI.pm:3646
 msgid "error.group-required=command"
 msgstr "Zzz zzzzzzz zzz zzzzzz (%1) zzzzzzzz z '--zzzzz' zzzzzzzzz."
+
+#: share/skin/s3/template/element/settings/users_invited_section:10 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "error.groups-member-exists=count:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzzzzzz zzz,zzzzz zzzzzzz zzzz) zzzzz zz zzz zzzzzzzzz Zzzzzz:"
 
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
 msgid "error.html-report-not-implemented"
@@ -6543,6 +6593,10 @@ msgstr "%1 zzzz zzz zzzz zzz zzzz zz '%2' zz %3"
 #: lib/Socialtext/CLI.pm:1620
 msgid "error.no-role=name,role,container,type"
 msgstr "%1 zzzz zzz zzzz zzz zzzz zz '%2' zz zzz %3 %4."
+
+#: share/skin/s3/template/view/listview:40
+msgid "error.no-search-results"
+msgstr "Zzzz zzzzzz zzzzzzzz 0 zzzzzzz."
 
 #: share/plugin/people/template/lite/profile.html:72 lib/Socialtext/Lite/People.pm:78
 msgid "error.no-signals"
@@ -7271,6 +7325,11 @@ msgstr "Zzzzzzzzzz Zzzzzz >>%1<< in parseWidget"
 msgid "error.unknown"
 msgstr "Zzzzzzz zzzzz"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "Zzzzzzz zzzz: %1"
+
 #. ($type)
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
 msgid "error.unknown-report=type"
@@ -7463,6 +7522,11 @@ msgstr "Zzzz %1 zz zzz zzzzzzzzzz zz zzzz zzzzzzzzz %2"
 #: lib/Socialtext/Handler/ControlPanel.pm:1773
 msgid "error.wiki-id-required=uri"
 msgstr "Zzz zzzz zzzzzzz z zzzzzzzzz_zz zz zzzz ZZZ (%1)."
+
+#. (users_already_present.size)
+#: share/skin/s3/template/element/settings/users_invited_section:5 share/skin/s3/template/element/settings/users_invited_section:6
+msgid "error.wiki-member-exists=count:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz zzzzzzz z zzzzzz,zzzzz zzzz zzzzzzz zzzzzzz) zz zzzz Zzzzzzzzz:"
 
 #: lib/Socialtext/Workspace.pm:600 share/plugin/control/template/control/workspace_invite.html:269
 msgid "error.wiki-name-required"
@@ -7671,6 +7735,16 @@ msgid "event.leave=user,wiki"
 msgstr "zzzzzzz %1 zzzz zzz zzzzzzzzz %2."
 
 #. (page_in_workspace)
+#: share/template/data/events/page:27
+msgid "event.like=page"
+msgstr "zzzzz %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "event.like=page,wiki"
+msgstr "zzzzz %1 zz %2"
+
+#. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
 msgstr "zzzzzzz %1."
@@ -7694,6 +7768,16 @@ msgstr "zzzzzzz zzzzzzzzz %1."
 #: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
 msgstr "Zzzzzzz zzzzz zzzzz: %1"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:29
+msgid "event.unlike=page"
+msgstr "zzzzzzz %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:24
+msgid "event.unlike=page,wiki"
+msgstr "zzzzzzz %1 zz %2"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -8514,7 +8598,7 @@ msgstr "Zzzzzzzzz, zzzzz zzz zz zzzzzzzzzz zzzzzzzzzz zzzz zzzz zzzzz. Zzz zzz z
 
 #. (button)
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
-msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
+msgid "groups.note-click-this-to-save-changes=button"
 msgstr "ZZZZ: Zzzzz <b>%1</b> zz zzzz zzzzzzz."
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
@@ -9010,6 +9094,10 @@ msgstr "Zzzzz z zzzzzzzzzz zzz zzzzzzzzzzz zzzzz zzz zzzz zzzz."
 msgid "info.new-page-title"
 msgstr "Zzz: Zzz'zz zz zzzz zz zzzz zzzz zzzz zzzzz zz zzzzz zzz zzzzz zzz zzzzzz."
 
+#: share/skin/s3/template/view/listview:43
+msgid "info.no-search-results"
+msgstr "Zzzzzz zzzz zzzz zzzz zzzzz zz zzzzzzz zzzzzzzzz zzz zzz zzzzz:"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "Zzzzzz zzzz zzzz zz zzzzzz zzzz"
@@ -9319,6 +9407,16 @@ msgstr "Zzzzzzz zzz zzzzzzz zzzz z %1 zzzzzzz, zzz zzzzzzzz zz zzz zzzz zz zzz z
 msgid "invite.added-to-group=users:"
 msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz,zzzzz zzzz) zzzzzzzzzzzz zzzzzzz zzzz zzzz Zzzzz:"
 
+#. (no_role_in_group.size)
+#: share/skin/s3/template/element/settings/users_invited_section:14 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-groups=users:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz,zzzzz zzzz) zzzzzzz zz zzz zzzzzzzzz Zzzzzz:"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:26 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-wiki=users:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz,zzzzz zzzz) zzzzzzz zzzz zzzz Zzzzzzzzz:"
+
 #: share/plugin/people/template/invite:47
 msgid "invite.another-example-email-address"
 msgstr "zzzzzzz.zzzzzz@zzzzzzz.zzz"
@@ -9490,6 +9588,11 @@ msgstr "Zzzzzzz zzz zzzzzzzz zzzzzzz zzzzz zz zzz zzzzzzzzzz zzzzz?"
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
 msgstr "zzzzzzz, %*(%1,zzzz)"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:30 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.request-sent=users:"
+msgstr "Zzzz zzzzzzz zz zzzzzz zzz zzzzzzzzz %*(%1,zzzz) zzz zzzz zzzz:"
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -9717,145 +9820,133 @@ msgstr "Zzzzz"
 msgid "job.type"
 msgstr "Zzz Zzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:64 share/plugin/kanban/share/widgets/bug_board/widget.html:80 share/plugin/kanban/share/widgets/bug_board/widget.html:94
-msgid "kanban.add"
-msgstr "Zzz"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:168
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "kanban.advanced"
 msgstr "Zzzzzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:121
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:121
 msgid "kanban.background-color:"
 msgstr "…zzz zzzz zzzzz:"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:32
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:32
 msgid "kanban.basics"
 msgstr "Zzzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:169
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:169
 msgid "kanban.bug-columns"
 msgstr "Zzz Zzzzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:183
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:183
 msgid "kanban.bug-notes"
 msgstr "Zzz zzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:187
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:187
 msgid "kanban.bug-stamp-color:"
 msgstr "…zzzz zzz zzzzz zz zzzz zzzzz:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:173
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:173
 msgid "kanban.bz-search:"
 msgstr "…zzz zzzz ZZ zzzzzz:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:172
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:172
 msgid "kanban.bz-sharer-id"
 msgstr "Zzzz zzzz zzzzzz ZZ…"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.cancel"
-msgstr "Zzzzzz"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:38
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:38
 msgid "kanban.columns"
 msgstr "Zzzzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:105
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:105
 msgid "kanban.default-color:"
 msgstr "Zzzzzzz zzzzz:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:198
 msgid "kanban.editable?"
 msgstr "Zzzzz zzzzzz zzzzz zzzzzzz zzzzzzz?"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:89
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:89
 msgid "kanban.exclude-tags:"
 msgstr "…zzz zzz zzzzz zzzz zzz zz zzzzz zzzz:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:47
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:47
 msgid "kanban.heading"
 msgstr "Zzzzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:186
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:186
 msgid "kanban.if-bug-has-field"
 msgstr "Zz zzz zzz zzzz zzzzz…"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:117 share/plugin/kanban/share/widgets/bug_board/widget.html:141
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:117 share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:141
 msgid "kanban.if-page-has-tag"
 msgstr "Zz zzzz zzz zzzz zzz…"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:75
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:75
 msgid "kanban.include-tags:"
 msgstr "Zzzz zzzz zzzzz zzzz zzz zz zzzzz zzzz:"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100
 msgid "kanban.item-background"
 msgstr "Zzzz Zzzzzzzzzz"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:136
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "Zzzz Zzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:51
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
 msgstr "Zzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:200
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:200
 msgid "kanban.omit-page-prefix:"
 msgstr "Zzzz zzzz zzzz zzzz zzzz zzzzzz zzzzzzzz zzzz:"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100 share/plugin/widgets/share/widgets/page_tracker/widget.html:136 share/plugin/widgets/share/widgets/page_tracker/widget.html:168 share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.optional"
 msgstr "(zzzzzzzz)"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.page-filtering"
 msgstr "Zzzz Zzzzzzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:43
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:43
 msgid "kanban.page-tag"
 msgstr "Zzzz Zzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:202
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.js:48
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "Zzzzzz zzzz zz zzz Zzzzzzzzz zzzzz zzzzz."
+
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "Zzzzzzzzzz zzzzz zzzzzzzzzzz zzz zzzzz:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.refresh-interval"
 msgstr "Zzzzzzz zzzzzzzz"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.save"
-msgstr "Zzzz"
-
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.seconds"
 msgstr "(zzzzzzz)"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:26
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:26
 msgid "kanban.settings"
 msgstr "Zzzzzzzz"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:149
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:149
 msgid "kanban.stamp-color:"
 msgstr "…zz zzzz zzzzz:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:145
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:145
 msgid "kanban.stamp-note"
 msgstr "…zzzz zzzz zzzz…"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:36
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:36
 msgid "kanban.widget-title:"
 msgstr "Zzzzzz Zzzzz:"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:34
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:34
 msgid "kanban.wiki:"
 msgstr "Zzzzzzzzz:"
-
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
-msgid "kanban.yes"
-msgstr "Zzz"
 
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895
@@ -9897,6 +9988,82 @@ msgstr "Zzzz Zzzzz"
 #: lib/Socialtext/RecentChangesPlugin.pm:45
 msgid "last.week"
 msgstr "Zzzz Zzzz"
+
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "Zzz Zzzzz"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:7
+msgid "like.all-people"
+msgstr "Zzz Zzzzzz"
+
+#: share/skin/s3/javascript/like-indicator.js:137
+msgid "like.like=count"
+msgstr "%quant(%1,zzzz)"
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,zzzzzz zzz zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz,Zzzz zz zzz zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzz)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,zzzzzz zzz zzzzz zzzz zzzz,zzzzzz zzzz zzzzz zzzz zzzz,Zzzzzz zzz zzzzz zzzz zzzz zzz)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.only-you"
+msgstr "Zzzz zzz zzzz zzzzz zzzz zzzz."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.you=followed"
+msgstr "Zzz zzz %quant(%1,zzzzzz zzz zzzzzz,zzzzzz zzz zzzzzz) zzzz zzzzz zzzz zzzz."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.page.you=others"
+msgstr "Zzz zzz %quant(%1,zzzzz zzzzzz,zzzzz zzzzzz) zzzz zzzzz zzzz zzzz."
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,zzzzzz zzz zzzzzz zzz zzzzz zzzz zzzzzzzz,zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzzzzzz,Zzzz zz zzz zzzzzz zzz zzzzzz zzzz zzzzz zzzz zzzzzzzz)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,zzzzzz zzz zzzzz zzzz zzzzzzzz,zzzzzz zzzz zzzzz zzzz zzzzzzzz,Zzzzzz zzz zzzzz zzzz zzzzzzzz zzz)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.only-you"
+msgstr "Zzzz zzz zzzz zzzzz zzzz zzzzzzzz."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.you=followed"
+msgstr "Zzz zzz %quant(%1,zzzzzz zzz zzzzzz,zzzzzz zzz zzzzzz) zzzz zzzzz zzzz zzzzzzzz."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.revision.you=others"
+msgstr "Zzz zzz %quant(%1,zzzzz zzzzzz,zzzzz zzzzzz) zzzz zzzzz zzzz zzzzzzzz."
+
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "Zzzzz"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "Zzzz zzz <span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">Zzzz</span> zz z zzzz zzz zzzz zzz zzzz zzzzz zz zz zz zzz zzz zzzz zz zzzz zzzz zz zzzzz zzzzz."
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "Zz Zzzzz"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "Zzz zzz'z zzzz zzz zzzzz zzz."
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:30
+msgid "like.page:"
+msgstr "zzzz:"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:6
+msgid "like.people-i-follow"
+msgstr "Zzzzzz Z Zzzzzz"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"
@@ -10310,6 +10477,10 @@ msgstr "Zzzz"
 #: share/skin/s3/template/view/paging:27
 msgid "nav.last-page"
 msgstr "Zzzz Zzzz"
+
+#: lib/Socialtext/Pluggable/Plugin/Like.pm:113
+msgid "nav.likes"
+msgstr "Zzzzz"
 
 #: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
@@ -10832,7 +11003,7 @@ msgstr "Zzzzzz Zzzz"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "Zzzz zzzzzzz zz <%1>"
+msgstr "Zzzz zzzzzzz zz [%1]"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:28
 msgid "page.replace"
@@ -11097,6 +11268,10 @@ msgstr "Zzz Zzzzzz Zzzzzz '%1'"
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
 msgstr "Zzzzz"
+
+#: share/plugin/people/share/widgets/mytweets.xml:9
+msgid "people.twitter-id"
+msgstr "Zzzzzzz ZZ"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"
@@ -13310,7 +13485,7 @@ msgstr "Zzzz Zzzzzzz Zzzz"
 msgid "title.blognews2"
 msgstr "zzzZzzzzz™"
 
-msgid "title.bug_board"
+msgid "title.bz_page_tracker"
 msgstr "Zzzz/Zzz Zzzzzzz"
 
 msgid "title.calc"
@@ -13387,6 +13562,9 @@ msgstr "Zzz Zzzz"
 msgid "title.oneimage"
 msgstr "Zzzzz"
 
+msgid "title.page_tracker"
+msgstr "Zzzz Zzzzzzz"
+
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
 msgstr "Zzzzzzzzzz"
@@ -13429,9 +13607,6 @@ msgstr "Zzzzzzzzz Zzzz"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "Zzzzz zzzzzz Z"
-
-msgid "title.task_board"
-msgstr "Zzzz Zzzzzzz"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"
@@ -14475,6 +14650,9 @@ msgstr "zzzzzzz zzzzz"
 #: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
 msgid "widgets.from"
 msgstr "zzzz"
+
+msgid "widgets.from-account"
+msgstr "zzzz zzzzzzz"
 
 msgid "widgets.gallery"
 msgstr "Zzzzzz Zzzzzzz"

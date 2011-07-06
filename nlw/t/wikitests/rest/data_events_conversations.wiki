@@ -1,7 +1,8 @@
 Test case to test `/data/events/conversations/:user`
 
+* check an empty conversation list for user A
 * insert some edit events as user A
-* check an empty conversation list
+* check that those events do show up for user A's conversation list
 * insert some other edit event as user B
 * check that the event shows up on A's conversation list
 * insert some view events as user B
@@ -191,9 +192,16 @@ When another person makes a contribution *after* your contribution, it should sh
 | get              | /data/events/conversations/%%user_c%% | application/json |        |
 | code-is         | 200                                   |        |
 | json-parse      |                                       |        |
-| json-array-size | 18                                    |        |
+| json-array-size | 25                                    |        |
 
 | comment     | check that the first user's events show up |
+| body-like   | "tk":"01" |
+| body-like   | "tk":"05" |
+| body-like   | "tk":"06" |
+| body-like   | "tk":"07" |
+| body-like   | "tk":"08" |
+| body-like   | "tk":"09" |
+| body-like   | "tk":"12" |
 | body-unlike | "tk":"100" |
 | body-like   | "tk":"101" |
 | body-unlike | "tk":"101-start"       |
@@ -235,7 +243,7 @@ Test the all-combined feed does not accidentally show edit_cancel and edit_start
 | get              | /data/events/conversations/%%user_c%%?activity=all-combined;with_my_signals=1;limit=100;direct=both | application/json |
 | code-is         | 200 |
 | json-parse      |     |
-| json-array-size | 18  |
+| json-array-size | 26  |
 
 | body-unlike | "tk":"100"             |
 | body-like   | "tk":"101"             |
@@ -257,7 +265,7 @@ Allow filtering on the event actions.
 | get              | /data/events/conversations/%%user_c%%?action=comment | application/json |        |
 | code-is         | 200                                   |        |
 | json-parse      |                                       |        |
-| json-array-size | 7                                    |        |
+| json-array-size | 8                                     |        |
 
 | comment     | check that the first user's events show up |
 | body-unlike | "tk":"100" |
@@ -438,7 +446,7 @@ The `before` and `after` clauses work.
 | get              | /data/events/conversations/%%user_c%%?offset=50;limit=50 | application/json |
 | code-is         | 200                                                      |
 | json-parse      |                                                          |
-| json-array-size | 18                                                       |
+| json-array-size | 25                                                       |
 | body-unlike     | qr/"tk":"4/                                              |
 
 | comment | check that we can't access another user's conversations |

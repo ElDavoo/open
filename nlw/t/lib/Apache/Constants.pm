@@ -7,7 +7,7 @@ use base 'Exporter';
 our @EXPORT_OK = qw(REDIRECT NOT_FOUND OK DECLINED FORBIDDEN);
 our %EXPORT_TAGS = (
     response => [qw(REDIRECT)],
-    common => [qw(OK DECLINED NOT_FOUND)],
+    common => [qw(OK DECLINED NOT_FOUND FORBIDDEN)],
 );
 
 sub OK { 200 }

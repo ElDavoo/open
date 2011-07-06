@@ -16,15 +16,15 @@
 [%- IF out == 'html' -%]
     [%- MACRO actor GET event.actor.id | decorate('user_link') -%]
     [%- MACRO person GET event.person.id | decorate('user_link') -%]
-    [%- MACRO page_tag BLOCK -%]<a href="[% event.tag_uri %]">[% event.tag_name %]</a>
+    [%- MACRO page_tag BLOCK -%]<a href="[% event.tag_uri %]">[% event.tag_name |html %]</a>
     [%- END -%]
-    [%- MACRO person_tag BLOCK -%]<a href="[% event.tag_uri %]">[% event.tag_name %]</a>
+    [%- MACRO person_tag BLOCK -%]<a href="[% event.tag_uri %]">[% event.tag_name |html %]</a>
     [%- END -%]
-    [%- MACRO page BLOCK -%]<b><a href="[% event.page.uri %]">[% event.page.name %]</a></b>
+    [%- MACRO page BLOCK -%]<b><a href="[% event.page.uri %]">[% event.page.name |html %]</a></b>
     [%- END %]
-    [%- MACRO workspace BLOCK -%]<a href="[% event.page.workspace_uri %]">[% event.page.workspace_title %]</a>
+    [%- MACRO workspace BLOCK -%]<a href="[% event.page.workspace_uri %]">[% event.page.workspace_title |html %]</a>
     [%- END -%]
-    [%- MACRO group BLOCK -%]<a href="[% event.group.uri %]">[% event.group.name %]</a>
+    [%- MACRO group BLOCK -%]<a href="[% event.group.uri %]">[% event.group.name |html %]</a>
     [%- END -%]
     [%- MACRO ago BLOCK -%]
         [%- UNLESS miki -%]

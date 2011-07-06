@@ -40,6 +40,8 @@ field 'last_prefs_userid' => '';
 use REST::Application;
 field 'rest' => -init => 'REST::Application->new()';
 
+field 'app';
+
 field config_files => [];
 
 =head1 NAME

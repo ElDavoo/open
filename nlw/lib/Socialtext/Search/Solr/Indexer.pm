@@ -22,7 +22,7 @@ use Socialtext::File::Stringify;
 use WebService::Solr;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::Solr;
-use Socialtext::String;
+use Socialtext::String qw(uri_escape);
 use Socialtext::l10n qw(getSortKey);
 use namespace::clean -except => 'meta';
 
@@ -74,7 +74,7 @@ sub index_workspace {
     for my $page_id ( $self->hub->pages->all_ids ) {
         my $page = $self->_load_page($page_id) || next;
         $self->_add_page_doc($page);
-        $self->_index_page_attachments($page);
+        $self->_index_page_attachments($page,0);
     }
     $self->_commit;
 }
@@ -150,6 +150,7 @@ sub _add_page_doc {
     my $title = $page->title;
     _scrub_field(\$title);
 
+    my $likes = [ map { $_->user_id } @{$page->likes} ];
     my $tags = $page->tags;
     my @fields = (
         [id => $id], # composite of workspace and page
@@ -167,6 +168,9 @@ sub _add_page_doc {
         [revisions => $revisions],
         [tag_count => scalar(@$tags) ],
         (map { [ tag => $_ ] } @$tags),
+        [has_likes => 1],
+        [like_count => scalar(@$likes) ],
+        (map { [ like => $_ ] } @$likes),
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
     if (my $mtime = _datetime_to_iso($page->last_edit_time)) {
@@ -192,7 +196,7 @@ sub page_key {
 
 # Load an attachment and then add it to the index.
 sub index_attachment {
-    my ( $self, $page_id, $attachment_or_id ) = @_;
+    my ( $self, $page_id, $attachment_or_id, $check_skip ) = @_;
 
     my $attachment = blessed($attachment_or_id)
         ? $attachment_or_id
@@ -203,6 +207,18 @@ sub index_attachment {
     my $attachment_id = $attachment->id;
     _debug("Loaded attachment: page_id=$page_id attachment_id=$attachment_id");
 
+    if ($check_skip) {
+        my $doc_id = join(':',
+            $self->workspace->workspace_id,$page_id,$attachment_id);
+        $doc_id = qq{"$doc_id"};
+        my $resp = $self->solr->search("id:$doc_id", {fl=>'id',qt=>'standard'});
+        my $docs = $resp->docs;
+        if ($docs && @$docs == 1) {
+            _debug("Skipping $attachment_id, doc id $doc_id already present");
+            return;
+        }
+    }
+
     $self->_add_attachment_doc($attachment);
     $self->_commit();
 }
@@ -212,9 +228,10 @@ sub delete_attachment {
     my ( $self, $page_id, $attachment_id ) = @_;
     my $ws_id = $self->workspace->workspace_id;
     my $page = $self->_load_page($page_id, 'deleted ok') || return;
-    my $id = join(':',$ws_id,$page->id,$attachment_id);
-    $self->solr->delete_by_id($id);
+    my $doc_id = join(':',$ws_id,$page->id,$attachment_id);
+    $self->solr->delete_by_id($doc_id);
     $self->_commit();
+    _debug("Deleted attachment $doc_id");
 }
 
 # Get the attachments content, create a new Document, set the Doc's fields,
@@ -265,6 +282,8 @@ sub _add_attachment_doc {
         [date => $date],
         [created => $date],
         [revisions => $revisions],
+        # NOTE if you add any more fields, check that the "skip indexing"
+        # check in index_attachment() is still valid.
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
 

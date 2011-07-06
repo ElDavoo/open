@@ -39,7 +39,7 @@
 | wait_for_element_visible_ok | //input[@name='section'] | 5000 |
 | wait_for_element_visible_ok | //a[@class='btn done'] | 5000 |
 | wait_for_element_visible_ok | //a[@class='btn cancel'] | 5000 |
-| text_like | Choose a workspace then search for the wikipage you want linked. |  |
+| text_like | First, start typing a Workspace name, then choose a Workspace from the list that appears. Next, start typing a Page name, then choose a Page from the list that appears. Optionally, add Link text and a Page Section. |  |
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed 3000 to allow for type-in |  |
 | setSpeed | 3000 |  |

@@ -21,16 +21,17 @@
         <th class="toggle"><div class="toggle">
             [% IF pager %]
             &mdash;
-            [% PROCESS list_pager %] 
+            <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+            [% INCLUDE "view/paging" %]
             [% END %]
         </div></th>
         <th class="sort">[% loc('sort.by:') %]
           <select id="sort-picker" onchange="sort_by();">
-            [% PROCESS sort_by_option name = loc('file.name') field = 'filename' %]
-            [% PROCESS sort_by_option name = loc('page.title') field = 'subject' %]
-            [% PROCESS sort_by_option name = loc('sort.uploader') field = 'user' %]
-            [% PROCESS sort_by_option name = loc('nav.uploaded-date') field = 'date' %]
-            [% PROCESS sort_by_option name = loc('file.size') field = 'size' %]
+            [% PROCESS element/listview_sort_by_option name = loc('file.name') field = 'filename' %]
+            [% PROCESS element/listview_sort_by_option name = loc('page.title') field = 'subject' %]
+            [% PROCESS element/listview_sort_by_option name = loc('sort.uploader') field = 'user' %]
+            [% PROCESS element/listview_sort_by_option name = loc('nav.uploaded-date') field = 'date' %]
+            [% PROCESS element/listview_sort_by_option name = loc('file.size') field = 'size' %]
           </select>
         </th>
         <script language="javascript">
@@ -68,7 +69,10 @@
         <table class="dataTable pagelist" cellspacing="0">
           <tr>
             <th width="30" style="border-right: 0">&nbsp;</th>
-            <th class="toggle">[% PROCESS list_pager %]</th>
+            <th class="toggle">
+              <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+              [% INCLUDE "view/paging" %]
+            </th>
           </tr>
         </table>
       [% END %]
@@ -79,16 +83,4 @@
       </form>
     [% END %]
   </div><!-- contentContainer -->
-[% END %]
-
-[% BLOCK sort_by_option %]
-  <option [% IF sortby == field %]selected="selected"[% END %] value="sortby=[% field %];direction=[% sortdir.$field %]">[% name %]</option>
-  [% IF sortby == field %]
-    <option value="sortby=[% field %];direction=[% direction == 'asc' ? 'desc' : 'asc' %]">[% name %] [% direction == 'asc' ? '(&darr;)' : '(&uarr;)' %]</option>
-  [% END %]
-[% END %]
-
-[% BLOCK list_pager %]
-    <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-    [% INCLUDE "view/paging" %]
 [% END %]

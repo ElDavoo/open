@@ -23,18 +23,20 @@
 | st-admin | add-member --e %%user2%% --w %%newws%% | now has |
 
 | *Comment* | Test Case: Wiki Page Caching Login as second user, comment |  |
+| st-process-jobs |  |  |
 | st-logoutin | %%user2%% | %%password%% |
 | st-create-wikipage | %%newws%% | %%pagetwo%% |
 | st-comment-on-page | /%%newws%%/?%%pagetwo%% | %%pagetwo%% Content |
 | st-comment-on-page | /%%ws%%/?%%pagename%% | "This is a link to newws"{link: %%newws%% [%%pagetwo%%]} |
 
 | *Comment* | Test Case: Wiki Page Caching Login as user1 |  |
+| st-process-jobs |  |  |
 | st-logoutin | %%username%% | %%password%% |
 | open_ok | /%%ws%%/?%%pagename%% |  |
 
 | *Comment* | Test Case: Wiki Page Caching. See link text, but not link. See attribution. |  |
 | wait_for_text_present_ok | This is a link to newws | 30000 |
-| wait_for_element_not_present_ok | link=This is a link to newws | 30000 |
+| wait_for_element_not_present_ok | link=This is a link to newws | 5000 |
 | wait_for_element_visible_ok | link=%%short_user2%% | 30000 |
 
 | *Comment* | Test Case: Wiki Page Caching Add %%short_username%% to %%newws%%, text becomes a link |  |
@@ -85,5 +87,7 @@
 | *Comment* | Test Case: Wiki Page Caching TEARDOWN |  |
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%newws%% --no-export | has been deleted |
+| st-admin | deactivate-user --e %%user2%% |  |
+| delete-account | %%newacct%% |  |
 
 | *Comment* | Test Case: Wiki Page Caching COMPLETED |  |

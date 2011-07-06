@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>401</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-401.air</url>
-<description><![CDATA[[Build 401 - Sun May  8 02:05:09 PDT 2011]
+  <version>402</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-402.air</url>
+<description><![CDATA[[Build 402 - Fri Jun 10 08:37:20 PDT 2011]
+* Fix "Flashback spins forever fetching before/after signals". {bz: 5255}
+* Clicking the Signals/Search sub-tab now puts focus into search field.
+
+[Build 401 - Sun May  8 02:05:09 PDT 2011]
 * Sync to the latest wiki.css stylesheet. {bz: 5264}
 
 [Build 400 - Wed Mar 23 22:59:54 PDT 2011]

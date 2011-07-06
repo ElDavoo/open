@@ -83,83 +83,47 @@ sub _attr_map {
 sub GetUser {
     my ($self, $key, $val, %opts) = @_;
 
-    # SANITY CHECK: have inbound parameters
-    return unless $key;
-    return unless $val;
-
-    # SANITY CHECK: get user term is acceptable
+    return unless $key && $val;
     return unless ($valid_get_user_terms{$key});
 
-    # If we have a valid/fresh cached copy of the User, use that
-    my $cache_lookup
-        = $opts{preload}
-        || $self->GetHomunculus(
-            $key, $val, $self->driver_key, 'raw_proto_user_please',
-           );
-    if ($CacheEnabled) {
-        time_scope 'ldap_user_check_cache';
-        if ($self->_is_cached_proto_user_valid($cache_lookup)) {
-            return $self->NewHomunculus($cache_lookup);
-        }
-    }
+    my $cache_lookup = $opts{preload};
 
     # Forcably re-enable local LDAP User cache; if we end up following any
     # User lookups for things like profile relationship lookups, we *don't*
     # want to end up chasing circular relationship.  So, break the chain now.
     local $Socialtext::User::LDAP::Factory::CacheEnabled = 1;
 
-    # Look the User up in LDAP
-    local $self->{_user_not_found};
-    my $proto_user = eval { $self->lookup($key => $val) };
-    if ($@) {
-        st_log->error($@);
-        return;
+    my $proto_user;
+    if ($cache_lookup) {
+        for my $field (qw/username driver_unique_id email_address/) {
+            my $value = $field eq 'username'
+                ? $cache_lookup->{driver_username}
+                : $cache_lookup->{$field};
+
+            (my $cached_driver = $cache_lookup->{driver_key}) =~ s/:.+$//;
+            next if $field eq 'driver_unique_id'
+                && $self->driver_name ne $cached_driver;
+                
+            $proto_user = $self->lookup($field => $value);
+
+            if ($proto_user) {
+                $proto_user->{user_id} = $cache_lookup->{user_id};
+                $proto_user->{cached_at} = $cache_lookup->{cached_at};
+                last;
+            }
+        }
+    }
+    else {
+        $proto_user = $self->lookup($key => $val);
     }
 
-    # If we found the User in LDAP, cache the data in the DB and return that
-    # back to the caller as the homunculus.
-    if ($proto_user) {
-        $self->_vivify($proto_user);
+    return unless $proto_user;
+
+    if ($self->_vivify($proto_user)) {
         return $self->new_homunculus($proto_user);
     }
-
-    # Didn't find User in LDAP, but they *do* exist in the DB
-    if ($cache_lookup) {
-        my $homey = $self->NewHomunculus($cache_lookup);
-        if ($self->{_user_not_found}) {
-            # User was previously cached, so they existed at some point but
-            # can't be found in LDAP any longer.  Must be a Deleted User.
-            $self->_mark_as_missing($homey);
-            $self->UpdateUserRecord( {
-                user_id   => $homey->{user_id},
-                cached_at => $self->Now(),
-            } );
-            require Socialtext::User::Deleted;
-            return Socialtext::User::Deleted->new($homey);
-        }
-        else {
-            # Something else caused LDAP lookup to fail; return previously
-            # cached data (its better than nothing).
-            return $homey;
-        }
-    }
-
-    # Didn't find User in LDAP, don't exist in DB; unknown User.
-    return;
-}
-
-sub _mark_as_missing {
-    my $self  = shift;
-    my $homey = shift;
-    unless ($homey->{missing}) {
-        $homey->{missing}   = 1;
-        $homey->{cached_at} = $self->Now();
-        $self->UpdateUserRecord( {
-            user_id   => $homey->{user_id},
-            cached_at => $homey->{cached_at},
-            missing   => $homey->{missing},
-        } );
-        st_log->info("LDAP User '$homey->{driver_unique_id}' missing");
+    else {
+        return;
     }
 }
 
@@ -231,10 +195,10 @@ sub lookup {
     my $result = $mesg->shift_entry();
     unless ($result) {
         st_log->debug( "ST::User::LDAP: unable to find user in LDAP; $key/$val" );
-        $self->{_user_not_found} = 1;
         return;
     }
 
+    st_log->debug("ST::User::LDAP: found user in LDAP search; $key/$val");
     # instantiate from search results
     my $attr_map = $self->attr_map;
     my $proto_user = {
@@ -256,30 +220,19 @@ sub lookup {
     return $proto_user;
 }
 
-sub _is_cached_proto_user_valid {
+sub cache_is_enabled {
+    return $CacheEnabled;
+}
+
+sub db_cache_ttl {
     my $self       = shift;
     my $proto_user = shift;
 
-    return unless $proto_user;
-    return unless $proto_user->{cached_at};
-
     my $ttl = $proto_user->{missing}
-        ? $self->cache_not_found_ttl
-        : $self->cache_ttl;
-    my $cutoff    = $self->Now() - $ttl;
-    my $cached_at = sql_parse_timestamptz($proto_user->{cached_at});
+        ? $self->ldap_config->not_found_ttl
+        : $self->ldap_config->ttl;
 
-    return $cached_at > $cutoff ? 1 : 0;
-}
-
-sub cache_ttl {
-    my $self = shift;
-    return DateTime::Duration->new( seconds => $self->ldap_config->ttl );
-}
-
-sub cache_not_found_ttl {
-    my $self = shift;
-    return DateTime::Duration->new( seconds => $self->ldap_config->not_found_ttl );
+    return DateTime::Duration->new( seconds => $ttl);
 }
 
 sub _vivify {
@@ -309,15 +262,15 @@ sub _vivify {
     # don't encrypt the placeholder password; just store it as-is
     $user_attrs->{no_crypt} = 1;
 
-    # depending on whether or not this User exists in the DB already, we're
-    # either updating an existing User or creating a new one.
-    my $user_id = $self->ResolveId($proto_user);
+    my $user_id = $proto_user->{user_id} || $self->ResolveId($proto_user);
     if ($user_id) {
         ### Update existing User record
 
         # Pull existing User record out of DB
         my @user_drivers = Socialtext::User->_drivers();
         my $cached_homey = $self->GetHomunculus('user_id', $user_id, \@user_drivers);
+
+        return 0 unless $cached_homey;
 
         # Mark the User as cached, so that if we trigger any hooks/plugins
         # during validation/saving that they don't try to re-query the User
@@ -349,7 +302,7 @@ sub _vivify {
             }
             # return "last known good" cached data for the User
             %{$proto_user} = %{$cached_homey};
-            return;
+            return 1;
         }
         elsif ($@) {
             # some other kind of error; re-throw it.
@@ -396,7 +349,7 @@ sub _vivify {
     $user_attrs->{username} = delete $user_attrs->{driver_username};        # map "DB -> object"
     $user_attrs->{extra_attrs} = $extra_attrs;
     %$proto_user = %$user_attrs;
-    return;
+    return 1;
 }
 
 sub _check_cache_for_conflict {
@@ -518,6 +471,17 @@ sub Search {
     return @users;
 }
 
+sub _is_dn_search_in_base {
+    my $self = shift;
+    my $search_attr = shift;
+    my $dn = shift;
+  
+    return 0 unless ($search_attr =~ m{^(dn|distinguishedName)$});
+
+    my $base = $self->ldap_config->base;
+    return $dn =~ /\Q$base\E$/;
+}
+
 sub _find_user {
     my ($self, $key, $val) = @_;
     my $attr_map = $self->attr_map();
@@ -531,7 +495,7 @@ sub _find_user {
     my %options = (
         attrs => [ values %$attr_map ],
     );
-    if ($search_attr =~ m{^(dn|distinguishedName)$}) {
+    if ($self->_is_dn_search_in_base($search_attr, $val)) {
         # DN searches are best done as -exact- searches
         $options{'base'}    = $val;
         $options{'scope'}   = 'base';
