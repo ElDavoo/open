@@ -350,6 +350,7 @@ sub export {
         users                      => $self->all_users_as_hash(want_private_fields => 1),
         logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
+        pref_blob                  => $self->pref_blob,
         plugins                    => [ $self->plugins_enabled ],
         plugin_preferences         =>
             Socialtext::Pluggable::Adapter->new->account_preferences(
@@ -463,6 +464,7 @@ sub import_file {
     my %acct_params = (
         is_system_created          => $hash->{is_system_created},
         skin_name                  => $hash->{skin_name},
+        pref_blob                  => $hash->{pref_blob} || '',
         backup_skin_name           => 's3',
         email_addresses_are_hidden => $hash->{email_addresses_are_hidden} ? 1 : 0,
         allow_invitation           => (
