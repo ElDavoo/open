@@ -1,41 +1,25 @@
 package Socialtext::Prefs::System;
 use Moose;
-use Try::Tiny;
-use Socialtext::JSON qw(encode_json decode_json);
-use Socialtext::SQL qw(sql_singlevalue sql_execute sql_txn);
-use Socialtext::l10n qw(system_locale);
+use Socialtext::SQL qw(sql_singlevalue sql_execute);
 use Socialtext::Date::l10n;
 use Socialtext::AppConfig;
 use List::Util qw(first);
 
-has 'prefs' => (is => 'ro', isa => 'HashRef',
-                lazy_build => 1, clearer => '_clear_prefs');
-has 'all_prefs' => (is => 'ro', isa => 'HashRef',
-                    lazy_build => 1, clearer =>'_clear_all_prefs');
+with 'Socialtext::Prefs';
 
-sub _build_prefs {
-    my $blob = sql_singlevalue(qq{
+sub _get_blob {
+    return sql_singlevalue(qq{
         SELECT value
           FROM "System"
          WHERE field = 'pref_blob'
     });
-    return {} unless $blob;
-
-    my $prefs = eval { decode_json($blob) };
-    if (my $e = $@) { 
-        st_log->error("failed to load prefs blob: $e");
-        return {};
-    }
- 
-    return $prefs;
 }
 
-sub _build_all_prefs {
+sub _get_inherited_prefs {
     my $self = shift;
-    my $sys_prefs = $self->prefs;
     my $locale = Socialtext::AppConfig->locale;
 
-    my $defaults = +{
+    return +{
         timezone => {
             timezone => timezone($locale),
             dst => dst($locale),
@@ -44,49 +28,27 @@ sub _build_all_prefs {
             time_display_seconds => time_display_seconds($locale),
         },
     };
-
-    return +{%$defaults, %$sys_prefs};
 }
 
-sub save {
+sub _update_db {
     my $self = shift;
-    my $updates = shift;
-    my $sys_prefs = $self->prefs;
+    my $blob = shift;
 
-    my %prefs = clear_undef_indexes(%$sys_prefs, %$updates);
-    my $has_prefs = keys %prefs ? 1 : 0;
-    try {
-        sql_txn {
-            sql_execute('DELETE FROM "System" WHERE field = ?', 'pref_blob');
+    sql_execute('DELETE FROM "System" WHERE field = ?', 'pref_blob');
+    return unless $blob;
 
-            if ($has_prefs) {
-                my $blob = eval { encode_json(\%prefs) };
-                sql_execute(
-                    'INSERT INTO "System" (field,value) VALUES (?,?)',
-                    'pref_blob', $blob
-                );
-            }
-        };
-        $self->update_objects;
-    }
-    catch { die "saving user prefs: $_\n" };
-
-    return 1;
+    sql_execute(
+        'INSERT INTO "System" (field,value) VALUES (?,?)',
+        'pref_blob', $blob
+    );
 }
 
-sub update_objects {
+sub _update_objects {
     my $self = shift;
     my $blob = shift;
 
     $self->_clear_all_prefs;
     $self->_clear_prefs;
-}
-
-sub clear_undef_indexes {
-    my %prefs = @_;
-
-    return map { $_ => $prefs{$_} }
-        grep { $prefs{$_} } keys %prefs;
 }
 
 sub timezone { # XXX: stolen from ST::TimeZonePlugin
