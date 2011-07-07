@@ -83,6 +83,31 @@ restore_system_defaults: {
     eq_or_diff $freshened->all_prefs, $system_prefs, 'system prefs restored';
 }
 
+test_form_input: {
+    my $acct_prefs = $account->prefs;
+    my $data = {
+        'timezone__time_display_12_24' => '12',
+        'timezone__time_display_seconds-boolean' => '0',
+        'timezone__timezone' => '-0800',
+        'preferences_class_id' => 'timezone',
+        'timezone__dst' => 'auto-us',
+        'timezone__date_display_format' => 'mmm_d_yyyy',
+        'account_id' => '2'
+    };
+
+    my $parsed = $acct_prefs->parse_form_data($data);
+
+    eq_or_diff $parsed, {
+        timezone => {
+            time_display_12_24 => '12',
+            time_display_seconds => '0',
+            timezone => '-0800',
+            dst => 'auto-us',
+            date_display_format => 'mmm_d_yyyy',
+        }
+    }, 'properly parsed form data';
+}
+
 done_testing;
 exit;
 ################################################################################
