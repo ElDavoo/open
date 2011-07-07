@@ -12,7 +12,12 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
 }
 $(function() {
     var $dropbox = $('#dropbox');
-    if (!$dropbox.size()) return; // Early out on non-page urls
+    
+    // Early out on non-page urls
+    if (!$dropbox.size()) return;
+
+    // Early out on unsupported browser
+    if (!window.FileReader) return;
 
     var over_document = false;
     var over_dropbox = false;
