@@ -2197,6 +2197,8 @@ sub _show_config {
     my $fmt = '%-32s: %s';
     my $hash = $obj->to_hash;
     delete $hash->{name};
+    delete $hash->{pref_blob};
+
     for my $c ( sort keys %$hash ) {
         my $val = $hash->{$c};
         $val = 'NULL' unless defined $val;
@@ -2212,6 +2214,17 @@ sub _show_config {
         $msg .= sprintf( $fmt, 'custom comment form fields', join ' - ',
             $obj->comment_form_custom_fields );
         $msg .= "\n";
+    }
+
+    if ($thing_name eq 'Account') {
+        my $prefs = $obj->prefs->all_prefs;
+        my $separator = "\n" . " "x34;
+        for my $index (keys %$prefs) {
+            for my $key (keys %{$prefs->{$index}}) {
+                $msg .= sprintf( '%-32s: ', "($index) $key" );
+                $msg .= $prefs->{$index}{$key} . "\n";
+            }
+        }
     }
 
     my @enabled         = $obj->plugins_enabled;
