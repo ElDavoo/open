@@ -8,54 +8,85 @@ use Socialtext::Date::l10n;
 use Socialtext::AppConfig;
 use List::Util qw(first);
 
-has 'prefs' => (is => 'rw', isa => 'HashRef', lazy_build => 1);
-has 'config' => (is => 'ro', isa => 'Socialtext::AppConfig', 
-    default => sub { Socialtext::AppConfig->instance() } );
+has 'prefs' => (is => 'ro', isa => 'HashRef',
+                lazy_build => 1, clearer => '_clear_prefs');
+has 'all_prefs' => (is => 'ro', isa => 'HashRef',
+                    lazy_build => 1, clearer =>'_clear_all_prefs');
 
 sub _build_prefs {
-    my $self = shift;
-    my $config = $self->config;
-    my $locale = $config->locale;
+    my $blob = sql_singlevalue(qq{
+        SELECT value
+          FROM "System"
+         WHERE field = 'pref_blob'
+    });
+    return {} unless $blob;
 
-    return +{
-        timezone => {
-            timezone => $config->time_timezone || timezone($locale),
-            dst => $config->time_dst || dst($locale),
-            date_display_format => $config->time_date_display_format || date_display_format($locale),
-            time_display_12_24 => $config->time_time_display_12_24 || time_display_12_24($locale),
-            time_display_seconds => $config->time_time_display_seconds || time_display_seconds($locale),
-        },
-    };
+    my $prefs = eval { decode_json($blob) };
+    if (my $e = $@) { 
+        st_log->error("failed to load prefs blob: $e");
+        return {};
+    }
+ 
+    return $prefs;
 }
 
-sub all_prefs {
+sub _build_all_prefs {
     my $self = shift;
-    return $self->prefs;
+    my $sys_prefs = $self->prefs;
+    my $locale = Socialtext::AppConfig->locale;
+
+    my $defaults = +{
+        timezone => {
+            timezone => timezone($locale),
+            dst => dst($locale),
+            date_display_format => date_display_format($locale),
+            time_display_12_24 => time_display_12_24($locale),
+            time_display_seconds => time_display_seconds($locale),
+        },
+    };
+
+    return +{%$defaults, %$sys_prefs};
 }
 
 sub save {
     my $self = shift;
-    my $prefs = shift;
+    my $updates = shift;
+    my $sys_prefs = $self->prefs;
 
-    die "timezone index required when saving system prefs\n"
-        unless exists($prefs->{timezone});
-
-    my $config = $self->config;
-    my $timezone = $prefs->{timezone};
-
-    my @fields = qw(timezone dst date_display_format
-                    time_display_12_24 time_display_seconds);
+    my %prefs = clear_undef_indexes(%$sys_prefs, %$updates);
+    my $has_prefs = keys %prefs ? 1 : 0;
     try {
-        for my $ix (@fields) {
-            my $value = $timezone->{$ix};
-            my $setting = "time_$ix";
-            $config->set($setting => $value);
-        }
-        $config->write();
+        sql_txn {
+            sql_execute('DELETE FROM "System" WHERE field = ?', 'pref_blob');
+
+            if ($has_prefs) {
+                my $blob = eval { encode_json(\%prefs) };
+                sql_execute(
+                    'INSERT INTO "System" (field,value) VALUES (?,?)',
+                    'pref_blob', $blob
+                );
+            }
+        };
+        $self->update_objects;
     }
-    catch { die "saving system prefs: $_\n" };
+    catch { die "saving user prefs: $_\n" };
 
     return 1;
+}
+
+sub update_objects {
+    my $self = shift;
+    my $blob = shift;
+
+    $self->_clear_all_prefs;
+    $self->_clear_prefs;
+}
+
+sub clear_undef_indexes {
+    my %prefs = @_;
+
+    return map { $_ => $prefs{$_} }
+        grep { $prefs{$_} } keys %prefs;
 }
 
 sub timezone { # XXX: stolen from ST::TimeZonePlugin

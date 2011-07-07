@@ -15,7 +15,8 @@ instantiate: {
     my $system_prefs = Socialtext::Prefs::System->new();
     isa_ok $system_prefs, 'Socialtext::Prefs::System', 'got a prefs object';
 
-    eq_or_diff $system_prefs->prefs, {
+    eq_or_diff $system_prefs->prefs, {}, 'non default prefs are empty';
+    eq_or_diff $system_prefs->all_prefs, {
         timezone => {
             timezone => '-0800',
             dst => 'auto-us',
@@ -31,7 +32,9 @@ non_en_locale: {
     set_locale('zh_TW');
     
     my $system_prefs = Socialtext::Prefs::System->new();
-    eq_or_diff $system_prefs->prefs, {
+
+    eq_or_diff $system_prefs->prefs, {}, 'non default prefs are empty';
+    eq_or_diff $system_prefs->all_prefs, {
         timezone => {
             timezone => '-0800',
             dst => 'never',
@@ -56,6 +59,7 @@ save: {
     ok $system_prefs->save($prefs), 'saved system prefs';
 
     my $freshened = Socialtext::Prefs::System->new();
+    eq_or_diff $freshened->all_prefs, $prefs, 'system all_prefs updated';
     eq_or_diff $freshened->prefs, $prefs, 'system prefs updated';
 }
 
@@ -64,7 +68,9 @@ back_to_locale_defaults: {
     ok $system_prefs->save({timezone => undef}), 'saved system prefs';
 
     my $freshened = Socialtext::Prefs::System->new();
-    eq_or_diff $system_prefs->prefs, {
+
+    eq_or_diff $freshened->prefs, {}, 'non default prefs are empty again';
+    eq_or_diff $system_prefs->all_prefs, {
         timezone => {
             timezone => '-0800',
             dst => 'auto-us',
