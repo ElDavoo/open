@@ -75,6 +75,6 @@
 | *Comment* | Test Case: Widgets in Pages TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%wip_ws%% --no-export | has been deleted |
-| st-admin | deactivate-user --email %%wip_user%% | has been removed |
+| st-admin | deactivate-user --email %%wip_user%% | has been deactivated |
 
 | *Comment* | Test Case: Widgets in Pages COMPLETED |  |
