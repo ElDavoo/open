@@ -70,7 +70,7 @@
 | *Comment* | Test Case: Inter Workspace Search Test user is still LOGGED OUT but searching test-data3 ws |  |
 
 | st-search | jabber workspaces:test-data3 | Pages matching 'jabber workspaces:test-data3' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | st-admin | set-permissions --workspace test-data3 --permissions public-join-to-edit | The permissions for the test-data3 workspace have been changed to public-join-to-edit. |
 | st-search | jabber workspaces:test-data3 | Pages matching 'jabber workspaces:test-data3' |
@@ -131,7 +131,7 @@
 
 | st-admin | set-permissions --workspace test-data3 --permissions authenticated-user-only | The permissions for the test-data3 workspace have been changed to authenticated-user-only. |
 | st-search | jabber workspaces:test-data3 | Pages matching 'jabber workspaces:test-data3' |
-| st-result | 0 total |  |
+| st-result | 0 results |  |
 
 | *Comment* | Test Case: Inter Workspace Search UNSUBSCRIBE |  |
 | *Comment* | Add back test-data2, unsub from test-data3 via UI |  |

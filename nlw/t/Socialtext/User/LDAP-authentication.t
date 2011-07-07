@@ -4,7 +4,8 @@ use strict;
 use warnings FATAL => 'all';
 use mocked 'Net::LDAP';
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 24;
+use Test::More;
+use Test::Socialtext;
 
 # FIXTURE:  ldap_*
 #
@@ -134,7 +135,6 @@ ldap_auth_password_ok: {
     ($self, $dn, %opts) = $mock->call_args(3);
     is $dn, $user->driver_unique_id, 'LDAP Auth; password match used correct DN';
     is $opts{'password'}, $good_pass, 'LDAP auth; password match used correct password';
-
-    # VERIFY logs; should be empty
-    is logged_count(), 0, '... logged right number of entries';
 }
+
+done_testing;

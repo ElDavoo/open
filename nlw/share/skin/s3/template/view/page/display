@@ -76,7 +76,7 @@
       [% END %]
       <li><a class="print" title="[% loc('page.print') %]" id="st-pagetools-print" href="JavaScript:window.print()">[% loc('do.print') %]</a></li>
       [% IF checker.check_permission('email_out') %]
-      <li><a class="email" title="[% loc('info.email-page') %]" id="st-pagetools-email" href="#">[% loc('user.email') %]</a></li>
+      <li><a class="email" title="[% loc('info.email-page') %]" id="st-pagetools-email" href="#">[% loc('do.email') %]</a></li>
       [% END %]
       <li class="last submenu"><a class="tools" id="st-pagetools-tools" href="#">[% loc('nav.tools') %]</a>
         <ul class="level2">
@@ -205,7 +205,7 @@
         <div class="widgetContent">
           <ul>
           [% FOR in = page.incoming %]
-            <li><a href="[% in.page_id %]">[% in.page_title %]</a></li>
+            <li><a href="[% in.page_id %]">[% in.page_title |html %]</a></li>
           [% END %]
           </ul>
           [% IF page.incoming.size == 0 %]

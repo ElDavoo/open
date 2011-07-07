@@ -1,5 +1,8 @@
 * Fixture: SocialRest
 
+# XXX: Test 16, `| body-like | qr/\Q<a id="st-home-link" href="\/">Dashboard<\/a>\E/ |`
+# appears to be flaky and should be fixed in the near future.
+
 | set              | account       | account%%start_time%%                 |             |
 | create-account   | %%account%%   |                                       |             |
 | set              | workspace     | wksp%%start_time%%                    |             |
@@ -57,7 +60,7 @@
 | code-is            | 200                                                                                        |                 |
 
 | Comment   | ... user clicks home. they navigate to the default workspace |                |
-| body-like | qr/\Q<a id="st-home-link" href="\/">Dashboard<\/a>\E/              |                |
+| body-like | <a id="st-home-link" href="/">Dashboard</a>              |                |
 | get       | /                                                            |                |
 | code-is   | 302                                                          |                |
 | header-is | Location                                                     | /%%workspace%% |

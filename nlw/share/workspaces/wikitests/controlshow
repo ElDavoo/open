@@ -59,6 +59,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | *Comment* | SEE /Usage Reports/Growth Reports |  |
 | pause | %%pt%% |  |
 
+| *Comment* | SCROLL DOWN |  |
 | *Comment* | SEE Features And Skins |  |
 | *Comment* | SEE Account Logo/Custom Desktop Skin |  |
 | *Comment* | SEE Optional modules installed: |  |
@@ -66,7 +67,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
-| *Comment* | SCROLL DOWN TO |  |
+| *Comment* | SCROLL TO |  |
 | *Comment* | SEE Workspaces and Users |  |
 | *Comment* | SEE Add User/Add Users |  |
 | pause | %%pt%% |  |
@@ -202,13 +203,13 @@ This test case is an aid to visually observing each screen type in the applicati
 
 | *Comment* | SEE %%username%% |  |
 | *Comment* | SEE Created: DATE |  |
-| *Comment* | SEE Deactivate user button |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
 | *Comment* | SEE Last login: DATE |  |
 | *Comment* | SEE Invited by: USER |  |
 | *Comment* | SEE User is confirmed |  |
+| *Comment* | SEE Deactivate User button |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
@@ -217,10 +218,10 @@ This test case is an aid to visually observing each screen type in the applicati
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
-| *Comment* | SEE Socialtext Accounts Access? yes |  |
-| *Comment* | SEE Remove Access to Socialtext Accounts button |  |
-| *Comment* | SEE Socialtext System Management Access? yes |  |
-| *Comment* | SEE Remove Access to Socialtext System Management button |  |
+| *Comment* | SEE Appliance Business Administrator? yes |  |
+| *Comment* | SEE Remove Appliance Business Administrator button |  |
+| *Comment* | SEE Appliance Technical Administrator? yes |  |
+| *Comment* | SEE Remove Appliance Technical Administrator button |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 

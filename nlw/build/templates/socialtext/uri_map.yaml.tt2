@@ -458,6 +458,13 @@
             'application/json': [Socialtext::Rest::UserWorkspaces, GET_json]
         '*':                    [Socialtext::Rest::UserWorkspaces, bad_method]
 -
+    '/data/users/:username/preferences':
+        'GET':
+            'application/json': [Socialtext::Rest::UserPreferences, GET_json]
+        'POST':
+            'application/json': [Socialtext::Rest::UserPreferences, POST_json]
+        '*':                    [Socialtext::Rest::UserPreferences, bad_method]
+-
     '/data/users':
         'POST':
             '*/*':              [Socialtext::Rest::Users, bad_type]

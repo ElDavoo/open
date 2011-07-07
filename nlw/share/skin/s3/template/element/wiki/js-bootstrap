@@ -8,33 +8,34 @@ var Socialtext = Socialtext || {};
 [% FILTER decorate('socialtext_js_vars') %]
 Socialtext.version = "[% app_version %]";
 Socialtext.new_page = [% IF is_new %] true; [% ELSE %] false; [% END %]
-Socialtext.accept_encoding = '[% accept_encoding %]';
-Socialtext.loc_lang = '[% loc_lang %]';
-Socialtext.wiki_id = '[% wiki.name.replace('\'', '\\\'') %]';
-Socialtext.wiki_title = '[% wiki.title.replace('\'', '\\\'') %]';
+Socialtext.accept_encoding = [% accept_encoding.json || '""' %];
+Socialtext.loc_lang = [% loc_lang.json || '""' %];
+Socialtext.wiki_id = [% wiki.name.json || '""' %];
+Socialtext.wiki_title = [% wiki.title.json || '""' %];
 Socialtext.start_in_edit_mode = [% IF start_in_edit_mode %] true; [% ELSE %] false; [% END %]
 
 [%# XXX Fix these values so they match other parts of the system! %]
 Socialtext.real_user_id = [% user.id %];
-Socialtext.userid = '[% user.userid.replace('\'', '\\\'')  %]';
-Socialtext.username = '[% user.username.replace('\'', '\\\'') %]';
-Socialtext.email_address = '[% user.email_address.replace('\'', '\\\'') %]';
+Socialtext.userid = [% user.userid.json %];
+Socialtext.username = [% user.username.json %];
+Socialtext.email_address = [% user.email_address.json %];
 
 Socialtext.workspaces = [% workspaceslist.json %];
 Socialtext.accounts = [% user.accounts.json %];
 
 Socialtext.dev_env = [% IF dev_mode %]true[% ELSE %]false[% END %];
 
-Socialtext.page_id = '[% page.id %]';
-Socialtext.page_title = '[% page.title.replace('\'', '\\\'') %]';
-Socialtext.template_name = '[% template_name.replace('\'', '\\\'') %]';
+Socialtext.page_id = [% page.id.json || '""' %];
+Socialtext.page_title = [% page.title.json || '""' %];
+
+Socialtext.template_name = [% template_name.json || '""' %];
 [% DEFAULT content_types = [] %]
 Socialtext.content_types = [% content_types.json %];
 Socialtext.page_type = '[% page.page_type %]';
 Socialtext.page_size = [% page.size || 0 %];
-Socialtext.wiki_title = '[% wiki.title.replace('\'', '\\\'') %]';
-Socialtext.revision_id = '[% page.revision_id %]';
-Socialtext.comment_form_window_height = '[% wiki.comment_form_window_height %]'
+Socialtext.wiki_title = [% wiki.title.json || '""' %];
+Socialtext.revision_id = "[% page.revision_id %]";
+Socialtext.comment_form_window_height = '[% wiki.comment_form_window_height %]';
 Socialtext.plugins_enabled = [% plugins_enabled.json %];
 Socialtext.plugins_enabled_for_current_workspace_account = [% plugins_enabled_for_current_workspace_account.json %];
 Socialtext.current_workspace_account_id = [% current_workspace.account.account_id %];
@@ -74,8 +75,6 @@ function nlw_make_plugin_path(rest) {
   return "[% wiki.static_path %]".replace(/static/, 'nlw/plugin') + rest;
 }
 
-[% USE JSON %]
-
 [% DEFAULT attachments = [] %]
 [% DEFAULT new_attachments = [] %]
 Socialtext.attachments = [% attachments.json %];
@@ -91,12 +90,12 @@ var Page;
 
 function createPageObject() {
   Page = new ST.Page ({
-    page_id: '[% page.id %]',
-    page_type: '[% page.page_type %]',
-    page_title: '[% page.title.replace('\'', '\\\'') %]',
-    wiki_id: '[% wiki.name %]',
-    wiki_title: '[% wiki.title.replace('\'', '\\\'') %]',
-    revision_id: '[% page.revision_id %]',
+    page_id: [% page.id.json || '""' %],
+    page_type: [% page.page_type.json || '""' %],
+    page_title: [% page.title.json || '""' %],
+    wiki_id: [% wiki.name.json  || '""' %],
+    wiki_title: [% wiki.title.json || '""' %],
+    revision_id: "[% page.revision_id %]",
     comment_form_window_height: '[% wiki.comment_form_window_height %]'
   });
 }
@@ -110,11 +109,11 @@ v.dropshadow.defined = "[% dropshadow.defined %]";
 v.is_new = ("[% is_new %]" != "0");
 v.is_incipient = ("[% is_incipient %]" != "0");
 v.page = {};
-v.page.title = "[% page.title.replace('"', '\\"') %]";
-v.page.page_type = "[% page.page_type %]";
-v.page.display_title = "[% page.display_title.replace('"', '\\"') %]";
+v.page.title = [% page.title.json || '""' %];
+v.page.page_type = [% page.page_type.json || '""' %];
+v.page.display_title = [% page.display_title.json || '""' %];
 v.page.revision_id = "[% page.revision_id %]";
-v.page.caller = "[% page.caller %]";
+v.page.caller = [% page.caller.json || '""' %];
 v.wiki = {};
 v.wiki.static_path = "[% wiki.static_path %]";
 v.wiki.is_public = "[% wiki_is_public %]";
@@ -133,7 +132,7 @@ v.new_tags = [];
 v.new_tags.push("[% tag | html %]");
 [% END %]
 
-v.miki_url = [% miki_url.json %];
+v.miki_url = [% miki_url.json || '""' %];
 
 v.user = {};
 v.user.is_guest = "[% user.is_guest %]";

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 07:57-0700\n"
+"PO-Revision-Date: 2011-06-14 09:23-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -337,8 +337,8 @@ msgstr "当前，没有任何工作区关联至本群组。请在下方选择工
 
 #. (button)
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
-msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
-msgstr "提示：点击屏幕底端的<b>%1</b>来保存所做的更改。"
+msgid "groups.note-click-this-to-save-changes=button"
+msgstr "提示：点击<b>%1</b>来保存所做的更改。"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
 msgid "groups.note-message-sent-to-added-members-only"

@@ -10,7 +10,6 @@ use Socialtext::Watchlist;
 use Socialtext::l10n qw(loc __);
 use Socialtext::Events;
 use Socialtext::Pageset;
-use Scalar::Defer 'defer';
 
 const class_id    => 'watchlist';
 const class_title => __('class.watchlist');
@@ -39,12 +38,7 @@ our $Default_notify_frequency_in_minutes = 1440;
 sub watchlist_notify_frequency {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_notify_frequency');
-    $p->query(defer {
-        __('watch.email-frequency?')
-        . '<br /><i>' .
-        __('email.frequency-capped')
-        . '</i><br />'
-    });
+    $p->query(__('watch.email-frequency?'));
     $p->type('pulldown');
     my $choices = [
         0     => __('time.never'),

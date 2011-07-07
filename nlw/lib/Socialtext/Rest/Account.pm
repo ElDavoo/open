@@ -15,9 +15,7 @@ has 'account' => (
 );
 sub _build_account {
     my $self = shift;
-    return Socialtext::Account->new(
-        name => Socialtext::String::uri_unescape( $self->acct )
-    );
+    return Socialtext::Account->Resolve(Socialtext::String::uri_unescape( $self->acct ));
 }
 
 sub allowed_methods { 'GET' }

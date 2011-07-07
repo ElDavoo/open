@@ -4,6 +4,21 @@ use Moose;
 use Socialtext::People::Profile;
 use namespace::clean -except => 'meta';
 
+has 'score'   => (is => 'ro', isa => 'Num', required => 1);
+has 'user_id' => (is => 'ro', isa => 'Int', required => 1);
+has 'profile' =>
+    (is => 'ro', isa => 'Socialtext::People::Profile', lazy_build => 1);
+
+sub _build_profile {
+    my $self = shift;
+    return Socialtext::People::Profile->GetProfile($self->user_id);
+}
+
+__PACKAGE__->meta->make_immutable;
+1;
+
+__END__
+
 =head1 NAME
 
 Socialtext::Search::PersonHit - A search result hit.
@@ -24,15 +39,3 @@ This represents a search result hit and provides handy accessors.
 
 =cut
 
-has 'score'   => (is => 'ro', isa => 'Num', required => 1);
-has 'user_id' => (is => 'ro', isa => 'Int', required => 1);
-has 'profile' =>
-    (is => 'ro', isa => 'Socialtext::People::Profile', lazy_build => 1);
-
-sub _build_profile {
-    my $self = shift;
-    return Socialtext::People::Profile->GetProfile($self->user_id);
-}
-
-__PACKAGE__->meta->make_immutable;
-1;

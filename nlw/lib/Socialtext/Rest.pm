@@ -25,6 +25,7 @@ use Socialtext::Log 'st_log';
 use Socialtext::URI;
 use Socialtext::Session;
 use Socialtext::JSON qw/decode_json/;
+use Socialtext::SQL 'sql_singlevalue';
 use Socialtext::l10n qw( system_locale loc loc_lang best_locale );
 
 our $AUTOLOAD;
@@ -37,6 +38,7 @@ field 'workspace';
 field 'params' => {};
 field 'rest';
 field 'session', -init => 'Socialtext::Session->new()';
+field 'impersonator';
 
 sub new {
     my $class = shift;
@@ -127,6 +129,21 @@ sub _initialize {
     $self->rest($rest);
     $self->params($params) if ($params);
     $self->workspace($self->_new_workspace);
+
+    my $user = $self->rest->user;
+    if ($user->is_guest) {
+        loc_lang(system_locale());
+        return;
+    }
+
+    my $locale = sql_singlevalue(<<'.', $self->rest->user->user_id);
+SELECT value
+  FROM user_plugin_pref
+ WHERE user_id = ?
+   AND plugin = 'locales'
+   AND key = 'locale' 
+.
+    loc_lang( $locale || system_locale() );
 }
 
 sub _new_workspace {
@@ -199,6 +216,7 @@ sub _check_on_behalf_of {
         die $e;
     };
 
+    $self->{impersonator} = $self->rest->user;
     $self->rest->{_user} = $desired_user;
     $self->rest->request->connection->user($desired_user->username);
 
@@ -222,8 +240,6 @@ sub _new_main {
     );
     $main->hub->registry->load;
     $main->debug;
-
-    loc_lang( best_locale($main->hub) );
 
     return $main;
 }
@@ -319,6 +335,19 @@ sub not_authorized {
     }
     return loc('error.user-not-authorized');
 }
+
+=head2 no_content()
+
+Informs the client that we operated successfully, but aren't returning content
+
+=cut
+
+sub no_content {
+    my $self = shift;
+    $self->rest->header(-status => HTTP_204_No_Content);
+    return '';
+}
+
 
 =head2 no_workspace()
 

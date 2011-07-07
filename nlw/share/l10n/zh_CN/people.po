@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 08:00-0700\n"
+"PO-Revision-Date: 2011-05-18 08:08-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +46,7 @@ msgstr "编辑布局"
 
 #: share/plugin/people/template/profile_links:5
 msgid "do.edit-profile"
-msgstr "编辑个人资料"
+msgstr "编辑个人档案"
 
 #: share/plugin/people/template/invite:102
 msgid "do.invite"
@@ -150,12 +150,12 @@ msgstr "给 %2 移除标签 %1。"
 
 #: share/plugin/people/template/data/events/person:4
 msgid "event.edit-profile-self"
-msgstr "编辑自己的个人资料。"
+msgstr "编辑自己的个人档案。"
 
 #. (person)
 #: share/plugin/people/template/data/events/person:15
 msgid "event.edit-profile=person"
-msgstr "编辑 %1 的个人资料。"
+msgstr "编辑 %1 的个人档案。"
 
 #. (person)
 #: share/plugin/people/template/data/events/person:21
@@ -383,6 +383,9 @@ msgstr "关注"
 msgid "people.mobile:"
 msgstr "移动电话："
 
+msgid "people.number-of-tweets"
+msgstr "显示推特数量上限"
+
 msgid "people.peer=count"
 msgstr "%* 位同事"
 
@@ -433,9 +436,15 @@ msgstr "相关度"
 msgid "people.stop-following"
 msgstr "停止下面的"
 
+msgid "people.tag-name"
+msgstr "标签名称"
+
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
 msgstr "工具"
+
+msgid "people.twitter-id"
+msgstr "Twitter 用户名"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"
@@ -652,3 +661,9 @@ msgstr "标签"
 #: share/plugin/people/share/widgets/profile_edit/widget.html:44
 msgid "user.name"
 msgstr "名称"
+
+msgid "widgets.all"
+msgstr "全部"
+
+msgid "widgets.number-of-tags-to-show"
+msgstr "显示标签数量"

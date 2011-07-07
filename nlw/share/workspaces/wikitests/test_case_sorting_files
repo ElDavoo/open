@@ -142,9 +142,7 @@
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
 | click_ok | st-attachments-attach-closebutton |  |
 
-| click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Time | 30000 |
-| click_and_wait | link=Time |  |
+| open_ok | /?action=preferences_settings;preferences_class_id=timezone |  |
 | wait_for_element_visible_ok | timezone__time_display_seconds | 30000 |
 | check_ok | timezone__time_display_seconds |  |
 | click_and_wait | link=Save |  |

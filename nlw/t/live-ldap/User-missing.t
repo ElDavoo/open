@@ -7,6 +7,7 @@ use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 27;
 use Socialtext::SQL qw(:exec :time);
+use Test::Socialtext::User;
 
 fixtures(qw( db ));
 
@@ -50,6 +51,8 @@ existing_user_not_missing: {
     my $user = Socialtext::User->new(username => 'John Doe');
     isa_ok $user, 'Socialtext::User', 'existing User';
     ok !$user->missing, '... who is marked as _not_ missing';
+
+    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -107,6 +110,8 @@ missing_when_not_in_ldap: {
         ok $cached_at_after > $cached_at_before,
             '... ... "cached_at" was updated';
     }
+
+    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -135,6 +140,8 @@ missing_users_are_deleted_users: {
     ok $user->missing, '... still missing';
     isa_ok $user->homunculus, 'Socialtext::User::Deleted',
         '... still with ST::U::Deleted homunculus';
+
+    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -193,4 +200,6 @@ reuse_cached_data_while_missing: {
         ok $user->missing, '... still missing';
         ok $user->is_deleted, '... and is_deleted';
     }
+
+    Test::Socialtext::User->delete_recklessly($user);
 }

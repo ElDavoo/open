@@ -38,6 +38,8 @@ fixtures(qw( db ));
 # address?
 user_with_duplicate_email_in_ldap: {
     my $email = 'test.user@example.com',
+    my $first_user_dn = 'cn=First User,dc=example,dc=com';
+    my $second_user_dn = 'cn=Second User,dc=example,dc=com';
 
     # Bootstrap OpenLDAP
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
@@ -53,7 +55,7 @@ user_with_duplicate_email_in_ldap: {
 
     # Add a User to LDAP, and vivify them into ST.
     my $rc = $openldap->add(
-        'cn=First User,dc=example,dc=com',
+        $first_user_dn,
         objectClass     => 'inetOrgPerson',
         cn              => 'First User',
         gn              => 'First',
@@ -69,7 +71,7 @@ user_with_duplicate_email_in_ldap: {
 
     # Add another User to LDAP with the *SAME* e-mail address.
     $rc = $openldap->add(
-        'cn=Second User,dc=example,dc=com',
+        $second_user_dn,
         objectClass     => 'inetOrgPerson',
         cn              => 'Second User',
         gn              => 'Second',
@@ -83,11 +85,9 @@ user_with_duplicate_email_in_ldap: {
     # having found multiple Users in LDAP with the same e-mail address.
     clear_log();
 
-    my $failed_lookup = Socialtext::User->new( email_address => $email );
-    ok !$failed_lookup, '... failed to find User when dupes present';
-
-    logged_like 'error', qr{multiple matches for user; email_address/$email},
-        '... ... because of multiple LDAP matches';
+    my $lookup = Socialtext::User->new( email_address => $email );
+    isa_ok $lookup, 'Socialtext::User', 'found a user searching by email';
+    is $lookup->driver_unique_id, $first_user_dn, 'found first user';
 
     # Tweak the LDAP config, to try to hide the first User.
     $openldap->ldap_config->{filter} = '(&(objectClass=inetOrgPerson)(!(gn=First)))';

@@ -112,8 +112,7 @@ sub gen_js {
     print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
     my $json = encode_json $lexicon;
     utf8::decode($json);
-    $json =~ s/\x{FFFC}/\\n/g;
-    $json =~ s/([^\x00-\x7f])/sprintf('\\u%04X', ord $1)/eg;
+    $json =~ s/\\ufffc/\\n/g;
     $json =~ s/^\{//;
     $json =~ s/","/"\n"/g;
     $json =~ s/\}$//;
@@ -575,6 +574,12 @@ use constant CN2TW => {qw(
     硬盤         硬碟
     空閒         閒置
     馬甲         分身
+    日歷         日曆
+    卷動         捲動
+    舍棄         捨棄
+
+    里           裡
+    贊           讚
 )};
 
 use constant CN2TW_ExactMatch => {qw(

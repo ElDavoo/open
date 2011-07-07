@@ -149,10 +149,23 @@ sub css_info {
         ? $self->parent->css_info
         : {};
 
-    while (my ($sec,$files) = each %css_files) {
-        push @{$css_info->{$sec}}, map  { $self->skin_uri('css',$_) }
-                                   grep { -f $self->skin_path('css',$_) }
-                                   @$files;
+    if ($self->skin_name eq $skin_info->{skin_name}) {
+        while (my ($sec,$files) = each %css_files) {
+            push @{$css_info->{$sec}}, map  { $self->skin_uri('css',$_) }
+                                       grep { -f $self->skin_path('css',$_) }
+                                       @$files;
+        }
+    }
+    else {
+        # {bz: 5366}: During a global search, the search result affects
+        # hub->workspace_name and so we can end up with an inconsistent
+        # result-ws-specific $self->skin_name vs global $skin_info->{skin_name}.
+        # In that case, simply choose the latter.
+        while (my ($sec,$files) = each %css_files) {
+            push @{$css_info->{$sec}}, map  { $self->_uri('skin', $skin_info->{skin_name}, 'css',$_) }
+                                       grep { -f $self->_path('skin', $skin_info->{skin_name}, 'css',$_) }
+                                       @$files;
+        }
     }
 
     # Common CSS

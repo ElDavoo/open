@@ -9,6 +9,7 @@ use Class::Field qw( const );
 use Socialtext::URI;
 use REST::Google::Search;
 use Socialtext::Encode;
+use Socialtext::String qw( uri_unescape );
 
 const limit => 8;
 const class_title => __('class.google_search');
@@ -59,7 +60,7 @@ sub get_result {
         resultElements => [
             map { +{
                 title   => $_->title,
-                URL     => $_->url,
+                URL     => uri_unescape($_->url),
                 snippet => $_->content
             } } @results
         ]

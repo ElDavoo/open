@@ -22,6 +22,7 @@ fixtures("db");
 # CASE: Have "Default" Group, export w/Workspace, flush, Group is
 # re-constituted on Workspace import, into its original Primary Account.
 reconstitute_default_group_on_workspace_import: {
+    clean_all_users();
     my $primary_account   = create_test_account_bypassing_factory();
     my $group             = create_test_group(account => $primary_account);
     my $secondary_account = create_test_account_bypassing_factory();
@@ -58,6 +59,7 @@ reconstitute_default_group_on_workspace_import: {
 # CASE: Have "Default" Group, export w/Workspace, Group membership list is
 # merged on Workspace import.
 merge_default_group_on_workspace_import: {
+    clean_all_users();
     my $primary_account   = create_test_account_bypassing_factory();
     my $group             = create_test_group(account => $primary_account);
     my $user_one          = create_test_user(account => $primary_account);
@@ -95,6 +97,7 @@ merge_default_group_on_workspace_import: {
 # LDAP, we just pull membership from LDAP (as we know any membership we import
 # is going to get thrown away).
 existing_ldap_group_on_workspace_import: {
+    clean_all_users();
     local $Socialtext::Group::Factory::Asynchronous = 0;
     my $openldap     = bootstrap_openldap();
     my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
@@ -144,7 +147,9 @@ existing_ldap_group_on_workspace_import: {
 # Account (e.g. possible reconstituted Group from the past).  Membership is
 # merged into the "Default" Group.
 merge_to_default_an_ldap_group_on_workspace_import: {
+    clean_all_users();
     local $Socialtext::Group::Factory::Asynchronous = 0;
+
     my $openldap     = bootstrap_openldap();
     my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
 
@@ -202,6 +207,7 @@ merge_to_default_an_ldap_group_on_workspace_import: {
 # LDAP, nor can a matching "Default" Group be found.  Group is re-constituted
 # as a Default Group, in its original Primary Account.
 reconstitute_as_default_group_an_ldap_group_on_workspace_import: {
+    clean_all_users();
     local $Socialtext::Group::Factory::Asynchronous = 0;
     my $openldap     = bootstrap_openldap();
     my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
@@ -256,6 +262,7 @@ reconstitute_as_default_group_an_ldap_group_on_workspace_import: {
 # CASE: Have "Default" Group, export w/Account, flush, Group is re-constituted
 # on Account import, into original Primary Account.
 reconsitute_default_group_on_account_import: {
+    clean_all_users();
     my $primary_account   = create_test_account_bypassing_factory();
     my $group             = create_test_group(account => $primary_account);
     my $secondary_account = create_test_account_bypassing_factory();
@@ -292,6 +299,7 @@ reconsitute_default_group_on_account_import: {
 # CASE: Have "Default" Group, export w/Account, Group membership list is
 # merged on Account import.
 reconsitute_default_group_on_account_import: {
+    clean_all_users();
     my $primary_account   = create_test_account_bypassing_factory();
     my $group             = create_test_group(account => $primary_account);
     my $user_one          = create_test_user(account => $primary_account);
@@ -329,6 +337,7 @@ reconsitute_default_group_on_account_import: {
 # LDAP, we just pull membership from LDAP (as we know any membership we import
 # is going to get thrown away).
 existing_ldap_group_on_account_import: {
+    clean_all_users();
     local $Socialtext::Group::Factory::Asynchronous = 0;
     my $openldap     = bootstrap_openldap();
     my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
@@ -381,10 +390,15 @@ existing_ldap_group_on_account_import: {
 # (e.g. possibly reconstituted Group from the past).  Membership is merged
 # into the "Default" Group.
 merge_to_default_an_ldap_group_on_account_import: {
+    clean_all_users();
     local $Socialtext::Group::Factory::Asynchronous = 0;
     my $openldap     = bootstrap_openldap();
     my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
 
+use Socialtext::SQL qw(sql_execute);
+use Data::Dumper;
+my $sth = sql_execute('select * from users');
+warn Dumper $sth->fetchall_arrayref({});
     my $primary_account = create_test_account_bypassing_factory();
     my $group           = Socialtext::Group->GetGroup(
         primary_account_id => $primary_account->account_id,
@@ -437,6 +451,7 @@ merge_to_default_an_ldap_group_on_account_import: {
 # LDAP, nor can a matching "Default" Group be found.  Group is re-constituted
 # as a Default Group, in its original Primary Account.
 reconstitute_as_default_group_an_ldap_group_on_account_import: {
+    clean_all_users();
     local $Socialtext::Group::Factory::Asynchronous = 0;
     my $openldap     = bootstrap_openldap();
     my $dn_motorhead = 'cn=Motorhead,dc=example,dc=com';
@@ -558,4 +573,11 @@ sub export_and_import_workspace {
 
     # CLEANUP
     rmtree [$export_dir], 0;
+}
+
+sub clean_all_users {
+    for my $user (Socialtext::User->All->all()) {
+        next if $user->is_system_created;
+        Test::Socialtext::User->delete_recklessly($user);
+    }
 }

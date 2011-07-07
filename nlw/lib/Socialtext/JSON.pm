@@ -1,5 +1,5 @@
 package Socialtext::JSON;
-use strict;
+use 5.12.0;
 use warnings;
 use JSON::XS qw();
 use Encode ();
@@ -16,10 +16,8 @@ our @EXPORT = qw(
 );
 
 sub encode_json {
-    unless (ref $_[0]) {
-        return JSON::XS->new->utf8->allow_nonref->encode($_[0]);
-    }
-    goto &JSON::XS::encode_json;
+    state $encoder //= JSON::XS->new->ascii->allow_nonref;
+    return $encoder->encode($_[0]);
 }
 
 # was "sub decode_json"; now is a pass-through

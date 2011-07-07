@@ -16,6 +16,7 @@ use Socialtext::Pageset;
 use Socialtext::String;
 
 const class_id => 'search';
+const pref_scope => 'none';
 const class_title => __('class.search');
 const cgi_class => 'Socialtext::Search::CGI';
 
@@ -29,10 +30,14 @@ const sortdir => {
     revision_count => 'desc',
     username       => 'asc',
     creator        => 'asc',
+    likes          => 'desc',
 };
 
 field 'category_search';
 field 'title_search';
+field 'display_title';
+field 'predicate';
+field 'html_escaped_search_term';
 
 =head1 DESCRIPTION
 
@@ -96,6 +101,8 @@ sub direction_pref {
 sub search {
     my $self = shift;
     my $scope = shift || $self->cgi->scope || '_';
+    my $search_term = shift;
+
     my $timer = Socialtext::Timer->new;
     my $index = $self->cgi->index;
     my $search_factory = Socialtext::Search::AbstractFactory->GetFactory();
@@ -114,24 +121,25 @@ sub search {
         $self->sortby($self->preferences->default_search_order->value);
     }
 
-    my $search_term;
-
-    if ($self->cgi->defined('search_term')) {
-        $search_term = $self->cgi->search_term;
-        $self->dont_use_cached_result_set();
-    }
-    elsif ($self->cgi->defined('orig_search_term')) {
-        $search_term = $self->cgi->orig_search_term;
-    }
-    else {
-        die "no search term?!";
+    unless ($search_term) {
+        if ($self->cgi->defined('search_term')) {
+            $search_term = $self->cgi->search_term;
+            $self->dont_use_cached_result_set();
+        }
+        elsif ($self->cgi->defined('orig_search_term')) {
+            $search_term = $self->cgi->orig_search_term;
+        }
+        else {
+            die "no search term?!";
+        
+        }
     }
 
     my %template_args = (
         scope => $scope,
         search_term  => $self->uri_escape($search_term),
-        html_escaped_search_term =>
-            Socialtext::String::html_escape($search_term),
+        html_escaped_search_term => $self->html_escaped_search_term
+            // Socialtext::String::html_escape($search_term),
         $search_factory->template_vars(),
     );
 
@@ -239,9 +247,9 @@ sub search_for_term {
         $result_set->{rows} = $rows;
 
         $search_term =~ s/=(\S+|"[^"]+")/title:$1/g;
-        $result_set->{display_title} = 
+        $result_set->{display_title} = $self->display_title ||
             loc("search.pages=query", $search_term);
-        $result_set->{predicate} = 'action=search';
+        $result_set->{predicate} = $self->predicate || 'action=search';
 
         $self->write_result_set;
     };

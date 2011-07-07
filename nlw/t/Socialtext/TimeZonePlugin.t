@@ -4,6 +4,7 @@
 use strict;
 use warnings;
 
+use Test::More;
 use Test::Socialtext;
 fixtures(qw( empty ));
 
@@ -22,11 +23,8 @@ my $prefs = $hub->preferences_object;
 
 my $tz = $hub->timezone;
 
-my @formats = qw( mmm_d d_mmm mm_dd mmm_d_yyyy d_mmm_yy yyyy_mm_dd );
-my %strftime_formats = ( mmm_d      => '%b %{day}, %Y',
-                         d_mmm      => '%{day}-%b-%y',
-                         mm_dd      => '%Y-%m-%d',
-                         mmm_d_yyyy => '%b %{day}, %Y',
+my @formats = qw( mmm_d_yyyy d_mmm_yy yyyy_mm_dd );
+my %strftime_formats = ( mmm_d_yyyy => '%b %{day}, %Y',
                          d_mmm_yy   => '%{day}-%b-%y',
                          yyyy_mm_dd => '%Y-%m-%d',
                        );
@@ -54,8 +52,6 @@ if ($ENV{NLW_TEST_FASTER}) {
       while scalar(keys %test_numbers) < $total_tests;
     $permutations = $total_tests;
 }
-
-plan tests => ( $permutations * @tests ) + 3;
 
 my $formats_re = join '|', @formats;
 
@@ -92,18 +88,21 @@ foreach my $z ( keys %$zones ) {
     $prefs->time_display_12_24->value(24);
     $prefs->time_display_seconds->value(0);
 
-    $prefs->date_display_format->value('mm_dd');
-    is( $tz->date_local( $date_with_this_year ), '12-05 10:10',
-        'test short date format with current year - mm_dd' );
+    my %fmts = (
+        mmm_d_yyyy => 'Dec 5, 2011 10:10',
+        d_mmm_yy   => '5-Dec-11 10:10',
+        yyyy_mm_dd => '2011-12-05 10:10',
+    );
 
-    $prefs->date_display_format->value('d_mmm');
-    is( $tz->date_local( $date_with_this_year ), '5-Dec 10:10',
-        'test short date format with current year - d_mmm' );
-
-    $prefs->date_display_format->value('mmm_d');
-    is( $tz->date_local( $date_with_this_year ), 'Dec 5 10:10',
-        'test short date format with current year - mmm_d' );
+    for my $fmt (keys %fmts) {
+        $prefs->date_display_format->value($fmt);
+        is( $tz->date_local( $date_with_this_year ), $fmts{$fmt},
+            "test short date format with current year - $fmt" );
+    }
 }
+
+done_testing;
+exit;
 
 sub run_tests {
     my $prefs = shift;

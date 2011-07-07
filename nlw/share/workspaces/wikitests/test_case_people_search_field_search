@@ -11,6 +11,7 @@
 | set_default | diffacct | diff-acct%%start_time%% |
 | set_default | diffws | diff-ws%%start_time%% |
 
+
 | *Comment* | Test Case: People Search Field Search. Restore these lines for stand-alone development |  |
 
 st-admin | create-account --name %%diffacct%% | |
@@ -20,7 +21,8 @@ st-logoutin | %%euserfive%% | %%password%% | |
 include | [Test Case: People Search Edit A Profile] | |
 
 | *Comment* | Test Case: People Search Field Search. Index %%first%% %%last%% profile |  |
-| st-process-jobs | PersonIndex |  |
+|  *Comment* |  This test behaves as if indexing is delayed, so process all jobs, not just index jobs |  |
+| st-process-jobs |  |  |
 
 | *Comment* | Test Case: People Search Field Search Access People. |  |
 | open_ok | /?action=people |  |

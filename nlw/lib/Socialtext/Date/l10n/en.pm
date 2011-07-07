@@ -12,21 +12,6 @@ my $date_format = {
         locale    => 'en',
     ),
 
-    'mmm_d' => DateTime::Format::Strptime->new(
-        pattern   => '%b %e',
-        locale    => 'en',
-    ),
-
-    'd_mmm' => DateTime::Format::Strptime->new(
-        pattern   => '%e-%b',
-        locale    => 'en',
-    ),
-
-    'mm_dd' => DateTime::Format::Strptime->new(
-        pattern   => '%m-%d',
-        locale    => 'en',
-    ),
-
     'mmm_d_yyyy' => DateTime::Format::Strptime->new(
         pattern   => '%b %e, %Y',
         locale    => 'en',

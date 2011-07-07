@@ -9,6 +9,7 @@ use utf8;
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
 
+use Test::More;
 use Test::Socialtext;
 fixtures(qw( empty ));
 
@@ -27,12 +28,10 @@ my $prefs = $hub->preferences_object;
 
 my $tz = $hub->timezone;
 
-my @formats = qw( yyyy_mm_dd yyyy_mm_dd_sl mm_dd_sl yyyy_mm_dd_jp mm_dd_jp );
+my @formats = qw( yyyy_mm_dd yyyy_mm_dd_sl yyyy_mm_dd_jp );
 my %strftime_formats = ( 'yyyy_mm_dd' => '%Y-%m-%d',
                          'yyyy_mm_dd_sl' => '%Y/%m/%d',
-                        'mm_dd_sl' => '%Y/%m/%d',
                          'yyyy_mm_dd_jp' => '%Y年%m月%d日',
-                         'mm_dd_jp' => '%Y年%m月%d日',
                        );
 
 my @dst = qw( on off auto-us never );
@@ -72,23 +71,16 @@ if ($ENV{NLW_TEST_FASTER})
     $permutations = $total_tests;
 }
 
-plan tests => ( $permutations * @tests ) + 2;
-
 my $formats_re = join '|', @formats;
 
 # Is there a less grotesque way to do this?
 # I don't know, but there is a _FASTER way.
 my $i = 0;
-foreach my $z ( keys %$zones )
-{
-    foreach my $f (@formats)
-    {
-        foreach my $dst (@dst)
-        {
-            foreach my $h (@hours_display)
-            {
-                foreach my $s (@show_seconds)
-                {
+foreach my $z ( keys %$zones ) {
+    foreach my $f (@formats) {
+        foreach my $dst (@dst) {
+            foreach my $h (@hours_display) {
+                foreach my $s (@show_seconds) {
                     if (not($ENV{NLW_TEST_FASTER}) or
                         exists($test_numbers{$i++}))
                     {
@@ -114,15 +106,21 @@ foreach my $z ( keys %$zones )
     $prefs->time_display_12_24->value('24');
     $prefs->time_display_seconds->value(0);
 
-    $prefs->date_display_format->value('mm_dd_sl');
-    is( $tz->date_local( $date_with_this_year ), '12/05 10:10',
-        'test short date format with current year - mm_dd_sl' );
+    my %fmts = (
+        yyyy_mm_dd    => '2011-12-05 10:10',
+        yyyy_mm_dd_sl => '2011/12/05 10:10',
+        yyyy_mm_dd_jp => '2011年12月05日 10:10',
+    );
 
-    $prefs->date_display_format->value('mm_dd_jp');
-    is( $tz->date_local( $date_with_this_year ), '12月05日 10:10',
-        'test short date format with current year - mm_dd_jp' );
-
+    for my $fmt (keys %fmts) {
+        $prefs->date_display_format->value($fmt);
+        is( $tz->date_local( $date_with_this_year ), $fmts{$fmt},
+            "test short date format with current year - $fmt" );
+    }
 }
+
+done_testing;
+exit;
 
 sub run_tests
 {

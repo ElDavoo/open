@@ -56,6 +56,7 @@ our @EXPORT = qw(
     create_test_badmin
     create_test_workspace
     create_test_group
+    clear_ldap_users
     SSS
     run_smarter_like
     smarter_like
@@ -482,12 +483,16 @@ sub _teardown_cleanup {
     my %Initial;
     my %Objects = (
         user => {
-            get_iterator => sub { Socialtext::User->All() },
-            get_id       => sub { $_[0]->user_id },
+            get_iterator => sub {
+                my $sth = sql_execute("SELECT user_id FROM all_users");
+                return Socialtext::MultiCursor->new(
+                    iterables => $sth->fetchall_arrayref(),
+                    apply => sub { $_[0] },
+                );
+            },
+            get_id       => sub { $_[0] },
             identifier   => sub {
-                my $u = shift;
-                return $u->driver_name . ':' . $u->user_id
-                     . ' (' . $u->username . ')';
+                return $_[0];
             },
             delete_item => sub {
                 Test::Socialtext::User->delete_recklessly($_[0]);
@@ -549,22 +554,7 @@ sub _teardown_cleanup {
 
     sub _remove_all_but_initial_objects {
         while (my ($key,$obj) = each %Objects) {
-            my $iterator = $obj->{get_iterator}->();
-            if (Test::Socialtext::Environment->instance()->verbose) {
-                Test::More::diag("CLEANUP: removing ${key}s");
-            }
-            while (my $item = $iterator->next()) {
-                # remove all but the initial set of objects that were
-                # created and available at startup.
-                my $id = $obj->{get_id}->($item);
-                next if $Initial{$key}{$id};
-
-                # Delete it
-                if (Test::Socialtext::Environment->instance()->verbose) {
-                    my $identifier = $obj->{identifier}->($item);
-                }
-                $obj->{delete_item}->($item);
-            }
+            _generic_delete($key => $obj);
         }
 
         if (Test::Socialtext::Environment->instance()->verbose) {
@@ -575,6 +565,35 @@ sub _teardown_cleanup {
         sql_txn {
             sql_execute("TRUNCATE note, error, exitstatus, job");
         };
+    }
+
+    sub _generic_delete {
+        my $key = shift;
+        my $obj = shift;
+        my $iterator = $obj->{get_iterator}->();
+        if (Test::Socialtext::Environment->instance()->verbose) {
+            Test::More::diag("CLEANUP: removing ${key}s");
+        }
+        while (my $item = $iterator->next()) {
+            # remove all but the initial set of objects that were
+            # created and available at startup.
+            my $id = $obj->{get_id}->($item);
+            next if $Initial{$key}{$id};
+
+            # Delete it
+            if (Test::Socialtext::Environment->instance()->verbose) {
+                my $identifier = $obj->{identifier}->($item);
+            }
+            $obj->{delete_item}->($item);
+        }
+    }
+
+    sub clear_ldap_users {
+        for my $user (Socialtext::User->All->all) {
+            next if $user->is_system_created;
+            next unless $user->homunculus->driver_name eq 'LDAP';
+            Test::Socialtext::User->delete_recklessly($user);
+        }
     }
 }
 
