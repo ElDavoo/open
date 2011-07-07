@@ -2246,6 +2246,8 @@ sub set_account_config {
     my $self = shift;
 
     my $account = $self->_require_account;
+    my $pref_ix = $self->_optional_string('index');
+    return $self->_update_account_prefs($account => $pref_ix) if $pref_ix;
 
     my %update;
     while ( my ($key, $value) = splice @{ $self->{argv} }, 0, 2 ) {
@@ -2276,6 +2278,28 @@ sub set_account_config {
 
     $self->_success(
         'The account config for ' . $account->name() . ' has been updated.' );
+}
+
+sub _update_account_prefs {
+    my $self = shift;
+    my $account = shift;
+    my $index = shift;
+
+    my $prefs = $account->prefs->all_prefs->{$index};
+
+    while (my ($key,$value) = splice(@{$self->{argv}}, 0, 2)) {
+        $prefs->{$key} = $value;
+    }
+
+    eval {
+        $account->prefs->save({$index=>$prefs});
+    };
+    if (my $e = $@) {
+        $self->_error($@);
+    }
+
+    $self->_success(
+        "Updated the $index prefs for the ". $account->name ." account");
 }
 
 sub reset_account_skin {
