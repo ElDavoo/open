@@ -942,6 +942,7 @@ $(function() {
                 }
             );
         }
+        return false;
     }; }
 
     $('#st-wikinav-register a').click(function() {
