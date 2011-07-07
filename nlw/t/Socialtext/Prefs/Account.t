@@ -11,7 +11,7 @@ use Socialtext::Prefs::Account;
 fixtures('db');
 
 my $account = create_test_account_bypassing_factory();
-my $system_prefs = Socialtext::Prefs::System->new()->prefs;
+my $system_prefs = Socialtext::Prefs::System->new()->all_prefs;
 
 instantiate: {
     my $acct = Socialtext::Prefs::Account->new(account=>$account);
