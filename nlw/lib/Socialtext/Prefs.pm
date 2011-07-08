@@ -87,3 +87,23 @@ sub clear_undef_indexes {
 }
 
 1;
+
+=head1 NAME
+
+Socialtext::Prefs
+
+=head1 SYNOPSIS
+
+    package SomePrefs;
+    use Moose;
+    with 'Socialtext::Prefs';
+
+    ...
+
+=head1 DESCRIPTION
+
+Role for Prefs objects. Responsible for taking a text blob and rendering it as
+a JSON structure, or taking a JSON structure and transforming it back into a
+text blob.
+
+=cut
