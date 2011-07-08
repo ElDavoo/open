@@ -234,6 +234,7 @@ use Net::SSH::Expect ();
 use Net::SSH::Perl ();
 use Net::SSLeay ();
 use Net::Server ();
+use Net::Server::SS::PreFork ();
 use Number::Compare ();
 use Number::Format ();
 use OSSP::uuid ();
