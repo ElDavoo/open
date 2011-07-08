@@ -39,13 +39,13 @@
 | wait_for_element_visible_ok | link=%%group11%% (1 user) | 5000 |
 | st-type-signal | New signal to %%group11%% | 1 |
 | st_pause_click | 5000 | mobile_post |
-| wait_for_text_present_ok | You | 30000 |
-| text_like | qr/You.+minute ago.+New signal to %%group11%%/ism |  |
+| wait_for_text_present_ok | By you | 30000 |
+| text_like | qr/New signal to %%group11%%.+By you.+minute ago.+to.+%%group11%%/ism |  |
 
 | *Comment* | Test Case: Mobile Signals check for signal in other UI |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Signals |  |
-| text_like | qr/You.+New signal to %%group11%%/ism |  |
+| text_like | qr/By you.+New signal to %%group11%%/ism |  |
 
 | *Comment* | Test Case: Mobile Signals to Group TEARDOWN |  |
 | st-admin | deactivate-user --email %%msg_user%% | removed |
