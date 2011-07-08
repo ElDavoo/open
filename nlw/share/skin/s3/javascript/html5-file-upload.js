@@ -1,3 +1,5 @@
+(function($) {
+
 /* HTML5 file upload */
 if (!XMLHttpRequest.prototype.sendAsBinary) {
     // For chrome
@@ -10,14 +12,14 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
         this.send(ui8a.buffer);
     }
 }
-$(function() {
-    var $dropbox = $('#dropbox');
-    
-    // Early out on non-page urls
-    if (!$dropbox.size()) return;
 
-    // Early out on unsupported browser
-    if (!window.FileReader) return;
+$.fn.createUploadDropArea = function(opts) {
+    var $dropbox = $(this);
+
+    if (!opts.url) throw new Error('url required');
+    
+    // Early out on non-wiki-pages or an unsupported browser
+    if (!$dropbox.size() || !window.FileReader) return;
 
     var over_document = false;
     var over_dropbox = false;
@@ -57,44 +59,84 @@ $(function() {
         // Hide the dropbox
         $dropbox.hide().removeClass('over');
 
-        /* Actual File upload */
-        $.each(evt.dataTransfer.files, function(_, file) {
-            var $progress = $('<div class="dropbox-progress"></div>');
-            $progress.insertAfter('#dropbox');
-            $progress.progressbar({ value: 0 });
+        // Turn this FileList into an Array
+        var uploads = $.map(evt.dataTransfer.files, function(f) { return f });
 
-            var reader = new FileReader();  // reader
-            var xhr = new XMLHttpRequest(); // writer
-
-            xhr.upload.addEventListener("progress", function(e) {
-                var percentage = 0;
-                if (e.lengthComputable) {
-                    percentage = Math.round((e.loaded / e.total) * 100);
-                }
-                $progress.progressbar({ value: percentage });
-            }, false);
-
-            var url = '/data/workspaces/' + Socialtext.wiki_id
-                    + '/pages/' + Socialtext.page_id 
-                    + '/attachments?name=' + encodeURIComponent(file.name);
-
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader("Content-Type", file.type);
-            reader.onload = function(evt) {
-                xhr.sendAsBinary(evt.target.result);
+        $.getJSON(opts.url, function(files) {
+            // Determine dups and non-dups
+            var dups = [];
+            for (var i = uploads.length - 1; i >= 0; i--) {
+                $.each(files, function(_, file) {
+                    if (file.name == uploads[i].name) {
+                        dups = dups.concat(uploads.splice(i, 1));
+                        return false;
+                    }
+                })
             };
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    get_lightbox('attachment', function () {
-                        $progress.remove()
-                        Attachments.refreshAttachments();
+
+            // Non duplicates:
+            if (uploads.length) {
+                $.each(uploads, function(_, file) {
+                    $dropbox.uploadDroppedFile(file, opts.url);
+                });
+            }
+
+            // Duplicates:
+            if (dups.length) {
+                get_lightbox('attachment', function () {
+                    Attachments.showDuplicateLightbox(dups, function(file, r){
+                        $dropbox.uploadDroppedFile(file, opts.url, r);
                     });
-                }
-            };
-            reader.onloadend = function(evt) {
-                $progress.progressbar({ value: 100 });
-            };
-            reader.readAsBinaryString(file);
+                });
+            }
         });
     }, false);
+};
+
+$.fn.uploadDroppedFile = function(file, url, replace) {
+    var $progress = $('<div class="dropbox-progress"></div>');
+    $progress.insertAfter(this);
+    $progress.progressbar({ value: 0 });
+
+    var reader = new FileReader();  // reader
+    var xhr = new XMLHttpRequest(); // writer
+
+    xhr.upload.addEventListener("progress", function(e) {
+        var percentage = 0;
+        if (e.lengthComputable) {
+            percentage = Math.round((e.loaded / e.total) * 100);
+        }
+        $progress.progressbar({ value: percentage });
+    }, false);
+
+    url += '?' + $.param({
+        name: encodeURIComponent(file.name),
+        replace: replace || 0
+    });
+
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader("Content-Type", file.type);
+    reader.onload = function(evt) {
+        xhr.sendAsBinary(evt.target.result);
+    };
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            get_lightbox('attachment', function () {
+                $progress.remove()
+                Attachments.refreshAttachments();
+            });
+        }
+    };
+    reader.onloadend = function(evt) {
+        $progress.progressbar({ value: 100 });
+    };
+    reader.readAsBinaryString(file);
+};
+
+$(function() {
+    var url = '/data/workspaces/' + Socialtext.wiki_id
+            + '/pages/' + Socialtext.page_id + '/attachments';
+    $('#dropbox').createUploadDropArea({ url: url });
 });
+
+})(jQuery);
