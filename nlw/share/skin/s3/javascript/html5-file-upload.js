@@ -37,6 +37,8 @@ $.fn.createUploadDropArea = function(opts) {
         $dropbox.show();
     }, false);
     document.addEventListener("drop", function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
         $dropbox.hide();
     }, false);
 
