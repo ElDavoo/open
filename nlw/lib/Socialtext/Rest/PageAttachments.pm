@@ -6,6 +6,7 @@ use strict;
 
 use base 'Socialtext::Rest::Attachments';
 
+use Socialtext::SQL qw/sql_txn/;
 use Fcntl ':seek';
 use File::Temp;
 use Socialtext::HTTP ':codes';
@@ -35,30 +36,41 @@ sub POST {
         return 'Content-type header required';
     }
     my $page = $self->page;
+    $self->hub->pages->current($page);
 
     my $content_fh = File::Temp->new();
     print $content_fh $rest->getContent;
     seek $content_fh, 0, SEEK_SET;
 
-    # read the ?name= query parameter (REST::Application can't do this)
+    # read the ?name= and replace query parameters
+    # (REST::Application can't do this)
+    my $replace = Apache::Request->new(Apache->request)->param('replace');
     my $name = Apache::Request->new(Apache->request)->param('name')
         or return $self->_http_401(
             'You must supply a value for the "name" parameter.' );
 
-    my $att = $self->hub->attachments->create(
-        filename     => $name,
-        fh           => $content_fh,
-        creator      => $rest->user,
-        Content_type => $content_type,
-        page         => $page,
-        embed        => 0, # don't inline a wafl for the ReST API
-    );
+    sql_txn { 
+        if ($replace) {
+            my $with_name = $self->hub->attachments->all(filename => $name);
+            for my $att (@$with_name) {
+                $att->is_temporary ? $att->purge() : $att->delete();
+            }
+        }
 
-    my $base = $self->rest->query->url( -base => 1 );
-    $rest->header(
-        -status   => HTTP_201_Created,
-        -Location => $base . $att->download_uri('files'),
-    );
+        my $att = $self->hub->attachments->create(
+            filename     => $name,
+            fh           => $content_fh,
+            creator      => $rest->user,
+            Content_type => $content_type,
+            page         => $page,
+            embed        => 0, # don't inline a wafl for the ReST API
+        );
+        my $base = $self->rest->query->url( -base => 1 );
+        $rest->header(
+            -status   => HTTP_201_Created,
+            -Location => $base . $att->download_uri('files'),
+        );
+    };
 
     # {bz: 4286}: Record edit_save events for attachment uploads via ReST too.
     # XXX: UGH seriously? pass the page content all the way through?!
