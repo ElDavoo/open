@@ -45,7 +45,7 @@
 | *Comment* | Test Case: Mobile Signals check for signal in other UI |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Signals |  |
-| text_like | qr/By you.+New signal to %%group11%%/ism |  |
+| text_like | qr/New signal to %%group11.+By you%%/ism |  |
 
 | *Comment* | Test Case: Mobile Signals to Group TEARDOWN |  |
 | st-admin | deactivate-user --email %%msg_user%% | removed |
