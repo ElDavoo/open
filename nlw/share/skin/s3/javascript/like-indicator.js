@@ -160,7 +160,7 @@ LikeIndicator.prototype = {
     text: function(with_count) {
         switch(this.display) {
             case 'count':
-                return this.count;
+                return this.count || '';
             case 'button':
                 return loc(
                     this.isLikedByMe ? 'do.unlike=count' : 'do.like=count',
