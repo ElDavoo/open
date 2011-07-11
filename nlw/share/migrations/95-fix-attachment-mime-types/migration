@@ -1,0 +1,103 @@
+#!/usr/bin/env perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use List::MoreUtils qw/uniq/;
+use Try::Tiny;
+use File::Temp qw/tempdir/;
+use Guard;
+use Socialtext::SQL qw/sql_execute/;
+use Socialtext::Workspace;
+use Socialtext::User;
+use Socialtext;
+use Socialtext::Attachment;
+use Socialtext::Upload;
+use Socialtext::File qw/mime_type/;
+
+my $dir = tempdir(CLEANUP => 1);
+foreach_attachment(sub {
+    my $att = shift;
+    my $tmpfile = join '/', $dir, $att->filename;
+    my $guard = scope_guard { unlink $tmpfile };
+
+    my $blob = $att->content;
+    open my $fh, '>', $tmpfile;
+    binmode($fh);
+    print $fh $blob;
+    close $fh;
+
+    my $type = mime_type($tmpfile, $att->filename, $att->mime_type);
+    update_mime_type($att => $type);
+    Socialtext::JobCreator->index_attachment($att, 'solr',
+        attachment_job_class => 'Socialtext::Job::AttachmentReIndex'
+    );
+});
+
+exit;
+################################################################################
+
+sub update_mime_type {
+    my $attachment = shift;
+    my $mime_type = shift;
+
+    sql_execute(qq{
+        UPDATE attachment
+           SET mime_type = ?
+         WHERE attachment_id = ?
+    }, $mime_type, $attachment->attachment_id);
+}
+
+sub foreach_attachment {
+    my $coderef = shift;
+
+    my $sth = attachment_sth();
+    while (my $row = $sth->fetchrow_hashref) {
+        my $hashref = as_hashref($row);
+        my $attachment = Socialtext::Attachment->new($hashref);
+
+        try {
+            $coderef->($attachment);
+        }
+        catch {
+            die "couldn't update attachment $hashref->{attachment_id} : $_\n";
+        };
+    }
+}
+
+sub as_hashref {
+    my $upload_param = shift;
+
+    my $attachment_param = {
+        map { $_ => delete $upload_param->{$_} }
+            qw/id workspace_id page_id deleted/
+    };
+    $upload_param->{created_at} = delete $upload_param->{created_at_utc}
+        if $upload_param->{created_at_utc};
+
+    # hub is a weak ref in ST::Attachment, be sure to keep it in scope by
+    # passing back the hashref rather than an object. yuck!
+    my $hub = Socialtext->new->load_hub(
+        current_workspace => Socialtext::Workspace->new(
+            workspace_id => $attachment_param->{workspace_id}),
+        current_user => Socialtext::User->SystemUser,
+    );
+    $hub->registry->load;
+
+    $attachment_param->{hub} = $hub;
+    $attachment_param->{upload} = Socialtext::Upload->new($upload_param);
+
+    return $attachment_param;
+}
+
+sub attachment_sth {
+    my $COLS = join(', ',
+        uniq(Socialtext::Attachment->COLUMNS, Socialtext::Upload->COLUMNS));
+
+    my $sth = sql_execute(qq{
+        SELECT $COLS,
+               created_at AT TIME ZONE 'UTC' || '+0000' AS created_at_utc
+          FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE mime_type = 'application/binary'
+    });
+}
