@@ -28,11 +28,11 @@
 
 ## GET, user is visible (as actor)
 | *Comment* | GET, user is visible (as actor) |
-| GET-json   | /data/users/%%actor%%/preferences |                                 |
-| code-is    | 200                               |                                 |
-| header-is  | Content-Type                      | application/json; charset=UTF-8 |
-| json-parse |                                   |                                 |
-| body-like  | {}                                |                                 |
+| GET-json     | /data/users/%%actor%%/preferences |                                 |
+| code-is      | 200                               |                                 |
+| header-is    | Content-Type                      | application/json; charset=UTF-8 |
+| json-parse   |                                   |                                 |
+| json-path-is | $.timezone.timezone               | -0800                           |
 
 ## POST, user exists but is not visible (as actor)
 | *Comment* | POST, user exists but is not visible (as actor) |
