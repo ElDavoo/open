@@ -134,3 +134,18 @@ package Apache::File; # just prevent this one from loading
 use warnings;
 use strict;
 
+=head1 NAME
+
+Socialtext::Apache::AuthenNTLM
+
+=head1 SYNOPSIS
+
+  <Location /nlw/ntlm>
+    PerlAuthenHandler   +Socialtext::Apache::AuthenNTLM
+  </Location>
+
+=head1 DESCRIPTION
+
+Socialtext wrapper around Apache::AuthenNTLM
+
+=cut
