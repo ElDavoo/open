@@ -85,23 +85,33 @@ Bubble.prototype = {
         var $node = $img.size() ? $img : $(this.node);
         var offset = $node.offset();
 
-        // Check if the avatar is more than half of the way down the page
         var winOffset = $.browser.msie ? document.documentElement.scrollTop 
                                        : window.pageYOffset;
+
+        this.popup.removeClass('top').removeClass('left');
+        var pop_offset = { left: offset.left - 43 };
+
+        // Figure out whether to show the avatar above or below
         if ((offset.top - winOffset) > ($(window).height() / 2)) {
-            this.popup
-                .removeClass('top')
-                .css(
-                    'top', offset.top - this.popup.height() - this.bottomOffset
-                );
+            // Above
+            pop_offset.top
+                = offset.top - this.popup.height() - this.bottomOffset;
         }
         else {
-            this.popup
-                .addClass('top')
-                .css('top', offset.top + $node.height() + this.topOffset);
+            // Below
+            this.popup.addClass('top')
+            pop_offset.top =  offset.top + $node.height() + this.topOffset;
         }
 
-        this.popup.css('left', offset.left - 43 );
+        // Now check if the bubble goes off the page to the right
+        if (pop_offset.left + this.popup.width() > $(window).width()) {
+            // Move the bubble over to the left
+            pop_offset.left
+                = offset.left + $node.width() - this.popup.width() + 20;
+            this.popup.addClass('left')
+        }
+        
+        this.popup.css(pop_offset);
 
         if ($.browser.msie && this.popup.is(':hidden')) {
             // XXX

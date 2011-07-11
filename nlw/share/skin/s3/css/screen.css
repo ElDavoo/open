@@ -4588,6 +4588,16 @@ body#dashBoard div#controls div#controlsRight ul {
     left:41px;
     border-width:0 19px 19px;
 }
+.bubbleWrap.left .before,
+.bubbleWrap.left.top .before {
+    left: auto;
+    right: 9px;
+}
+.bubbleWrap.left .after,
+.bubbleWrap.left.top .after {
+    left: auto;
+    right: 10px;
+}
 
 /* Avatar popup stuff */
 .bubble .fn {
