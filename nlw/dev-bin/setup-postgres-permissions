@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 PG_HBA=/etc/postgresql/9.0/main/pg_hba.conf
 if [ ! -e "$PG_HBA" ]; then
     echo "Usage: $0"
@@ -26,5 +28,5 @@ AFTER=`md5sum $PG_HBA | awk '{print $1}'`
 
 if [ "$BEFORE" != "$AFTER" ]; then
     echo "$PG_HBA changed.  Reloading PostgreSQL"
-    service postgresql reload
+    service postgresql status >/dev/null && service postgresql reload || true
 fi
