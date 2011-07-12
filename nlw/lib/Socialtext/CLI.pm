@@ -2197,6 +2197,8 @@ sub _show_config {
     my $fmt = '%-32s: %s';
     my $hash = $obj->to_hash;
     delete $hash->{name};
+    delete $hash->{pref_blob};
+
     for my $c ( sort keys %$hash ) {
         my $val = $hash->{$c};
         $val = 'NULL' unless defined $val;
@@ -2212,6 +2214,17 @@ sub _show_config {
         $msg .= sprintf( $fmt, 'custom comment form fields', join ' - ',
             $obj->comment_form_custom_fields );
         $msg .= "\n";
+    }
+
+    if ($thing_name eq 'Account') {
+        my $prefs = $obj->prefs->all_prefs;
+        my $separator = "\n" . " "x34;
+        for my $index (keys %$prefs) {
+            for my $key (keys %{$prefs->{$index}}) {
+                $msg .= sprintf( '%-32s: ', "($index) $key" );
+                $msg .= $prefs->{$index}{$key} . "\n";
+            }
+        }
     }
 
     my @enabled         = $obj->plugins_enabled;
@@ -2233,6 +2246,8 @@ sub set_account_config {
     my $self = shift;
 
     my $account = $self->_require_account;
+    my $pref_ix = $self->_optional_string('index');
+    return $self->_update_account_prefs($account => $pref_ix) if $pref_ix;
 
     my %update;
     while ( my ($key, $value) = splice @{ $self->{argv} }, 0, 2 ) {
@@ -2263,6 +2278,28 @@ sub set_account_config {
 
     $self->_success(
         'The account config for ' . $account->name() . ' has been updated.' );
+}
+
+sub _update_account_prefs {
+    my $self = shift;
+    my $account = shift;
+    my $index = shift;
+
+    my $prefs = $account->prefs->all_prefs->{$index};
+
+    while (my ($key,$value) = splice(@{$self->{argv}}, 0, 2)) {
+        $prefs->{$key} = $value;
+    }
+
+    eval {
+        $account->prefs->save({$index=>$prefs});
+    };
+    if (my $e = $@) {
+        $self->_error($@);
+    }
+
+    $self->_success(
+        "Updated the $index prefs for the ". $account->name ." account");
 }
 
 sub reset_account_skin {
