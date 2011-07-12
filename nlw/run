@@ -25,7 +25,7 @@ BEGIN {
         if (!-d $log_dir) {
             my $root_dir = Socialtext::AppConfig->data_root_dir();
             my ($uid, $gid) = (stat $root_dir)[4,5];
-            make_path($log_dir, {mode => 0774});
+            make_path($log_dir, {mode => 0775});
             chown $uid, $gid, $log_dir;
         }
         exec(

@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Bare Account |
+
 
 | *Comment* | Test Case: Bare Account Create an account, ideally after a big test run has completed |
 | *Comment* | Test Case: Bare Account There should be no events available at all. Period. |
@@ -14,6 +16,7 @@
 | open_ok | /st/dashboard |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[1]/a[text()='all events'] | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[2]/a[text()='signals'] | 5000 |
+|  pause_ok | 8000  | wait for widget to load  |
 | click_ok | //ul[@id='st-dropdown-0-list']/li[2]/a[text()='signals'] |  |
 | wait_for_text_present_ok | There are no new signals in the last 30 days | 30000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[3]/a[text()='contributions'] | 5000 |
