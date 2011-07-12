@@ -25,6 +25,8 @@ foreach_attachment(sub {
 
 
     my $type = mime_type($tmpfile, $upload->filename, $upload->mime_type);
+    return if $type eq $upload->mime_type;
+
     update_mime_type($upload->attachment_id => $type);
     Socialtext::JobCreator->index_page($att->page, 'solr',
         attachment_job_class => 'Socialtext::Job::AttachmentReIndex',
