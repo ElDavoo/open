@@ -8,6 +8,11 @@ Bubble = function (opts) {
         .unbind('mouseout')
         .mouseover(function(){ self.mouseOver() })
         .mouseout(function(){ self.mouseOut() });
+
+    // Help mobile signals hide bubbles
+    $(window).scroll(function(){
+        $(self.node).mouseout();
+    });
 };
 
 Bubble.prototype = {
