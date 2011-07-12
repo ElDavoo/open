@@ -33,6 +33,12 @@ Person.prototype = {
     updateFollowLink: function() {
         var linkText = this.linkText();
         this.node.text(linkText).attr('title', linkText);
+        if (this.isFollowing()) {
+            this.node.addClass('following');
+        }
+        else {
+            this.node.removeClass('following');
+        }
     },
 
     linkText: function() {

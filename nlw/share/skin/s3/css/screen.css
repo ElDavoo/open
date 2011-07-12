@@ -2364,12 +2364,16 @@ dl.invite dd, #settingsPage dd {
 ul li a.followPersonButton {
     line-height: 16px;
     height: 28px;
-    background: url(../images/followIcon.png) no-repeat top left;
+    background: url(../images/watchIcon.png) no-repeat top left;
     padding-left: 25px;
     color:#333333;
     float:left;
     font-size:9px;
     font-weight:bold;
+}
+
+ul li a.followPersonButton.following {
+    background: url(../images/watchingIcon.png) no-repeat top left;
 }
 
 body#dashBoard div#lastsignal {
