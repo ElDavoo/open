@@ -115,7 +115,7 @@ $.fn.uploadDroppedFile = function(file, url, replace) {
     }, false);
 
     url += '?' + $.param({
-        name: encodeURIComponent(file.name),
+        name: file.name,
         replace: replace || 0
     });
 
