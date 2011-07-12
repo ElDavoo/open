@@ -129,7 +129,6 @@ LikeIndicator.prototype = {
             .removeClass('others');
 
         var url = self.url + '/' + Socialtext.userid;
-        console.log(self.isLikedByMe ? 'DELETE '  + url : 'PUT ' + url);
 
         $.ajax({
             url: self.url + '/' + Socialtext.userid,
