@@ -120,7 +120,12 @@ $.fn.uploadDroppedFile = function(file, url, replace) {
     });
 
     xhr.open('POST', url, true);
-    xhr.setRequestHeader("Content-Type", file.type);
+
+    // Transfer files using the application/octet-stream MIME type since
+    // the server seems to be much better at determining the actual
+    // MIME type than the browser is, or at least than Chrome on Windows
+    xhr.setRequestHeader("Content-Type", 'application/octet-stream');
+
     reader.onload = function(evt) {
         xhr.sendAsBinary(evt.target.result);
     };
