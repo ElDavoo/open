@@ -33,7 +33,7 @@ sub foreach_attachment {
     print "Creating jobs for $rows attachments...\n";
     while (my $row = $sth->fetchrow_hashref) {
 
-        print "... $inc jobs created... \n" if $inc && $inc % 50 == 0;
+        print "... $inc jobs created... \n" if $inc && $inc % 500 == 0;
         try {
             $coderef->($row);
             $created++;
