@@ -485,6 +485,11 @@ sub visibility_sql {
         }
         push @parts, "( $class_restriction".
             $self->visible_exists('signals',$opts,\@bind).' )';
+
+        # Like visibility
+        unless ($self->viewer->can_use_plugin('like')) {
+            push @parts, "(evt.action <> 'like'AND evt.action <> 'unlike')";
+        }
     }
     else {
         push @parts, "(evt.event_class <> 'signal')";
@@ -804,7 +809,6 @@ sub _build_standard_sql {
     my @field_list = $self->field_list;
     my $signals_join = '';
     if ($table eq 'event') {
-        my $user_id = $self->viewer->user_id;
         $signals_join = <<EOSQL;
 LEFT JOIN (
     SELECT signal_id, hash
