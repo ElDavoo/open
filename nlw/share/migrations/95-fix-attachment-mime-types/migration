@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use List::MoreUtils qw/uniq/;
 use Try::Tiny;
-use File::Temp qw/tempdir/;
+use File::Temp qw/tempdir tempfile/;
 use Guard;
 use Socialtext::SQL qw/sql_execute/;
 use Socialtext::Workspace;
@@ -17,19 +17,17 @@ use Socialtext::File qw/mime_type/;
 my $dir = tempdir(CLEANUP => 1);
 foreach_attachment(sub {
     my $att = shift;
-    my $tmpfile = join '/', $dir, $att->filename;
+    my $upload = $att->upload;
+
+    my ($fh, $tmpfile) = tempfile();
     my $guard = scope_guard { unlink $tmpfile };
+    $upload->copy_to_fh($fh);
 
-    my $blob = $att->content;
-    open my $fh, '>', $tmpfile;
-    binmode($fh);
-    print $fh $blob;
-    close $fh;
 
-    my $type = mime_type($tmpfile, $att->filename, $att->mime_type);
-    update_mime_type($att => $type);
-    Socialtext::JobCreator->index_attachment($att, 'solr',
-        attachment_job_class => 'Socialtext::Job::AttachmentReIndex'
+    my $type = mime_type($tmpfile, $upload->filename, $upload->mime_type);
+    update_mime_type($upload->attachment_id => $type);
+    Socialtext::JobCreator->index_page($att, 'solr',
+        attachment_job_class => 'Socialtext::Job::AttachmentReIndex',
     );
 });
 
@@ -37,14 +35,14 @@ exit;
 ################################################################################
 
 sub update_mime_type {
-    my $attachment = shift;
+    my $id = shift;
     my $mime_type = shift;
 
     sql_execute(qq{
         UPDATE attachment
            SET mime_type = ?
          WHERE attachment_id = ?
-    }, $mime_type, $attachment->attachment_id);
+    }, $mime_type, $id);
 }
 
 sub foreach_attachment {
@@ -52,41 +50,37 @@ sub foreach_attachment {
 
     my $sth = attachment_sth();
     while (my $row = $sth->fetchrow_hashref) {
-        my $hashref = as_hashref($row);
-        my $attachment = Socialtext::Attachment->new($hashref);
+        my $proto = make_proto($row);
+        my $attachment = Socialtext::Attachment->new($proto);
 
         try {
             $coderef->($attachment);
         }
         catch {
-            die "couldn't update attachment $hashref->{attachment_id} : $_\n";
+            my $id = $proto->{upload}->attachment_id;
+            die "couldn't update attachment $id: $_\n";
         };
     }
 }
 
-sub as_hashref {
-    my $upload_param = shift;
+sub make_proto {
+    my $param = shift;
 
-    my $attachment_param = {
-        map { $_ => delete $upload_param->{$_} }
-            qw/id workspace_id page_id deleted/
-    };
-    $upload_param->{created_at} = delete $upload_param->{created_at_utc}
-        if $upload_param->{created_at_utc};
+    my $proto = { map { $_ => delete $param->{$_} }
+        qw/id workspace_id page_id deleted/ };
+  
+    $param->{created_at} = delete $param->{created_at_utc}
+        if $param->{created_at_utc};
 
-    # hub is a weak ref in ST::Attachment, be sure to keep it in scope by
-    # passing back the hashref rather than an object. yuck!
+    $proto->{upload} = Socialtext::Upload->new($param);
+
+    my $ws = Socialtext::Workspace->new(workspace_id => $proto->{workspace_id});
     my $hub = Socialtext->new->load_hub(
-        current_workspace => Socialtext::Workspace->new(
-            workspace_id => $attachment_param->{workspace_id}),
-        current_user => Socialtext::User->SystemUser,
-    );
+        current_workspace => $ws, current_user => Socialtext::User->SystemUser);
     $hub->registry->load;
+    $proto->{hub} = $hub;
 
-    $attachment_param->{hub} = $hub;
-    $attachment_param->{upload} = Socialtext::Upload->new($upload_param);
-
-    return $attachment_param;
+    return $proto;
 }
 
 sub attachment_sth {
