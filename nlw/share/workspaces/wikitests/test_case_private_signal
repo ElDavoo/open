@@ -83,11 +83,11 @@
 | *Comment* | Test Case: Private Signal send and verify the public signal |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | %%cancel%% | 30000 |
-| text_like | qr/You.+minute.+ago/ |  |
-| wait_for_text_not_present_ok | You.+private to.+%%psshort%% | 30000 |
+| text_like | qr/By you.+minute.+ago/ |  |
+| wait_for_text_not_present_ok | By you.+private to.+%%psshort%% | 30000 |
 
 | *Comment* | Test Case: Private Signal TEARDOWN |  |
-| st-logout |  |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%psuser%% |  |
 | st-admin | deactivate-user --e %%psusertwo%% |  |
 

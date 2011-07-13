@@ -1315,6 +1315,25 @@ sub st_if_ie_check_mobile_signaltypes {
    }
 }
 
+sub st_unlike_signal {
+    my $self = shift;
+    my $signal = shift; # signal ID
+    my $user  = shift; # username or email
+
+    $self->delete("/data/signals/$signal/likes/$user");
+    $self->code_is(204);
+    ok(!$@, "$user unlikes $signal");
+}
+
+sub st_like_signal {
+    my $self = shift;
+    my $signal = shift; # signal ID
+    my $user  = shift; # username or email
+
+    $self->put("/data/signals/$signal/likes/$user");
+    $self->code_is(204);
+    ok(!$@, "$user likes $signal");
+}
 
 sub _click_user_row {
     my ($self, $email, $method_name, $click_col) = @_;

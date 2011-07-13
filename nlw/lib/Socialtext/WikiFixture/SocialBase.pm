@@ -1507,7 +1507,7 @@ sub delete {
     my ($self, $uri, $accept) = @_;
     $accept ||= 'text/html';
 
-    $self->_delete($uri, [Accept => $accept]);
+    $self->_call_method('delete', $uri, [Accept => $accept]);
 }
 
 
@@ -2314,13 +2314,6 @@ sub _get {
     $uri = "$self->{browser_url}$uri" if $uri =~ m#^/#;
     diag "GET: $uri\n";
     $self->{http}->get( $uri, $opts );
-    $self->{_last_http_time} = time() - $start;
-}
-
-sub _delete {
-    my ($self, $uri, $opts) = @_;
-    my $start = time();
-    $self->{http}->delete( $self->{browser_url} . $uri, $opts );
     $self->{_last_http_time} = time() - $start;
 }
 

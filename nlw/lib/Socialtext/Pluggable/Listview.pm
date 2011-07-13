@@ -5,6 +5,7 @@ use warnings;
 use Socialtext::Exceptions;
 use Socialtext::Pageset;
 use Socialtext::String;
+use Socialtext::SearchPlugin;
 use Socialtext::l10n qw(loc);
 
 sub _prepare_listview {
@@ -66,13 +67,16 @@ sub _prepare_listview {
         max_page_size => 50,
     );
 
+    my $direction = $cgi_vars{direction}
+        || Socialtext::SearchPlugin->sortdir->{$sortby};
+
     my @list_args = (
         sort => $sortby,
         order => $sortby,
         viewer => $user,
         limit => $pageset->limit,
         offset => $pageset->offset,
-        direction => $cgi_vars{direction},
+        direction => $direction,
     );
     push @list_args, tag => $tag if $tag;
     push @list_args, account_id => $account_id unless $all_accounts;
@@ -93,9 +97,10 @@ sub _prepare_listview {
         tag => $tag,
         title => $title,
         display_title => $title,
-        sort_by => $sortby,
+        sortby => $sortby,
         accounts => $accounts,
         account_groups => $acct_group_set,
+        direction => $direction,
         @common,
     );
 

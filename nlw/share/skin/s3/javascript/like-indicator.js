@@ -1,15 +1,23 @@
 (function($) {
 
 LikeIndicator = function(opts) {
-    $.extend(this, opts);
-    this.others = this.isLikedByMe ? this.count - 1 : this.count;
-    this.onlyFollows = true;
+    this.update(opts);
 };
 
 LikeIndicator.prototype = {
     loc: loc,
     limit: 10,
     col_limit: 5,
+
+    _defaults: {
+        display: 'button',
+    },
+
+    update: function(opts) {
+        $.extend(this, this._defaults, opts);
+        this.others = this.isLikedByMe ? this.count - 1 : this.count;
+        this.onlyFollows = true;
+    },
 
     render: function ($node) {
         var self = this;
@@ -20,9 +28,8 @@ LikeIndicator.prototype = {
         }
         else {
             self.node.find('.like-indicator')
-                .removeClass('me')
-                .removeClass('others')
                 .addClass(self.className())
+                .removeClass('loading')
                 .attr('title', self.text(true))
                 .html(self.text(true));
         }
@@ -39,7 +46,9 @@ LikeIndicator.prototype = {
             var vars = {
                 node: $indicator.get(0),
                 onFirstShow: function() {
-                    self.renderBubble();
+                    self.renderBubble(function() {
+                        self.bubble.show();
+                    })
                 }
             };
             if ($indicator.parents('#controlsRight').size()) {
@@ -53,14 +62,14 @@ LikeIndicator.prototype = {
             .click(function() { self.toggleLike(); return false });
     },
 
-    renderBubble: function() {
+    renderBubble: function(cb) {
         var self = this;
 
         var url = self.url + '?' + $.param({
             startIndex: self.startIndex,
             limit: self.limit,
             only_follows: self.onlyFollows ? 1 : 0
-        });
+        }).replace('&',';'); // Something doesn't like &'s here
 
         $.getJSON(url, function(likers) {
             self.likers = likers;
@@ -107,15 +116,24 @@ LikeIndicator.prototype = {
                 });
             });
 
-            self.bubble.show();
+            if ($.isFunction(cb)) cb();
         });
     },
 
     toggleLike: function() {
         var self = this;
+
+        self.node.find('.like-indicator')
+            .addClass('loading')
+            .removeClass('me')
+            .removeClass('others');
+
+        var url = self.url + '/' + Socialtext.userid;
+
         $.ajax({
             url: self.url + '/' + Socialtext.userid,
             type: self.isLikedByMe ? 'DELETE' : 'PUT',
+            data: "{}",
             success: function() {
                 if (self.isLikedByMe) {
                     self.isLikedByMe = false;
@@ -135,16 +153,29 @@ LikeIndicator.prototype = {
         if (this.isLikedByMe) classes.push('me');
         if (this.others) classes.push('others');
         if (!this.mutable) classes.push('immutable');
+        if (this.display.match(/^light-/)) classes.push('light');
         return classes.join(' ');
     },
 
+    buttonText: function() {
+        return loc(this.isLikedByMe ? 'do.unlike' : 'do.like');
+    },
+
     text: function(with_count) {
-        var loc_key = this.mutable
-            ? this.isLikedByMe
-                ? 'do.unlike' : 'do.like'
-            : 'like.like';
-        if (with_count) loc_key += '=count';
-        return loc(loc_key, this.count);
+        switch(this.display) {
+            case 'light-count':
+            case 'count':
+                return this.count || '';
+            case 'light-button':
+            case 'button':
+                return loc(
+                    this.isLikedByMe ? 'do.unlike=count' : 'do.like=count',
+                    this.count
+                );
+            case 'light-text_count':
+            case 'text_count':
+                return loc('like.like=count', this.count);
+        }
     },
 
     likeText: function() {
@@ -181,8 +212,14 @@ $.fn.likeIndicator = function(opts) {
     if (!opts.url) throw new Error('url required');
     if (!opts.type) throw new Error('type required');
     $.each(this, function(_, node) {
-        var indicator = new LikeIndicator(opts);
-        indicator.render($(node));
+        if (node._indicator) {
+            node._indicator.update(opts);
+            node._indicator.render();
+        }
+        else {
+            node._indicator = new LikeIndicator(opts);
+            node._indicator.render($(node));
+        }
     });
 };
 
