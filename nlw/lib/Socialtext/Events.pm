@@ -76,13 +76,16 @@ sub Record {
 
     my $signal = $ev->{signal};
     if ($signal && ref $signal) {
-        $ev->{context}{account_ids} = $signal->account_ids;
-        $ev->{context}{group_ids} = $signal->group_ids;
-        $ev->{context}{uri} = $signal->uri;
         $ev->{context}{body} = Socialtext::Signal::Render->new(
             user => $signal->user
         )->render_signal($signal)->{body};
+        $ev->{context}{account_ids} = $signal->account_ids;
+        $ev->{context}{group_ids} = $signal->group_ids;
+        $ev->{context}{uri} = $signal->uri;
         $ev->{signal} = $signal->signal_id;
+        if ($ev->{action} ne 'signal') {
+            $ev->{context}{creator_id} = $signal->user->user_id;
+        }
     }
 
     if ($ev->{event_class} && $ev->{event_class} eq 'page' &&

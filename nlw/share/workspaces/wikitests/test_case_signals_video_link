@@ -31,7 +31,7 @@
 | pause | 3000 |  |
 | wait_for_element_visible_ok | link=Post | 5000 |
 | click_ok | link=Post |  |
-| wait_for_text_present_ok | You | 30000 |
+| wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%vimeo_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link send youtube signal |  |
@@ -47,7 +47,7 @@
 | pause | 3000 |  |
 | wait_for_element_visible_ok | link=Post | 5000 |
 | click_ok | link=Post |  |
-| wait_for_text_present_ok | You | 30000 |
+| wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%youtube_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link send slideshare signal |  |
@@ -63,7 +63,7 @@
 | pause | 3000 |  |
 | wait_for_element_visible_ok | link=Post | 5000 |
 | click_ok | link=Post |  |
-| wait_for_text_present_ok | You | 30000 |
+| wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%slide_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link send google signal |  |
@@ -79,7 +79,7 @@
 | pause | 3000 |  |
 | wait_for_element_visible_ok | link=Post | 5000 |
 | click_ok | link=Post |  |
-| wait_for_text_present_ok | You | 30000 |
+| wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%google_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link check bad signal |  |
@@ -136,7 +136,7 @@
 | pause | 3000 |  |
 | wait_for_element_visible_ok | link=Post | 5000 |
 | click_ok | link=Post |  |
-| wait_for_text_present_ok | You | 30000 |
+| wait_for_text_present_ok | By you | 30000 |
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | link=%%vimeo_title%% | 30000 |
 | wait_for_element_visible_ok | link=%%youtube_title%% | 30000 |

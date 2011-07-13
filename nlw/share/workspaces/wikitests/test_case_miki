@@ -65,7 +65,7 @@
 | click_and_pause | %%miki_signal_submit%% |  |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
-| text_like | //body | qr/minute.+to %%mikiacct%%.+%%signal1%%/ism |
+| text_like | //body | qr/%%signal1%%.+By.+minute.+to.+%%mikiacct%%/ism |
 
 | *Comment* | Test case: Miki Send MULTI Signals |  |
 | st_mobile_account_select_ok | %%mikiacct%% (primary, 2 users) |  |
@@ -76,7 +76,7 @@
 | click_and_pause | %%miki_signal_submit%% |  |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%multisignal%% | 30000 |
-| text_like | //body | qr/minute.+%%multisignal%%/ism |
+| text_like | //body | qr/%%multisignal%%.+By.+minute.+to.+%%othermikiacct%%/ism |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |

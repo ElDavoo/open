@@ -332,6 +332,10 @@ sub decorate_event_set {
         $self->_extract_group($row);
         $self->_extract_tag($row);
 
+        if ($row->{context}{creator_id}) {
+            $self->_extract_person($row->{context}, 'creator');
+        }
+
         delete $row->{person}
             if (!defined($row->{person}) and $row->{event_class} ne 'person');
 
@@ -481,6 +485,11 @@ sub visibility_sql {
         }
         push @parts, "( $class_restriction".
             $self->visible_exists('signals',$opts,\@bind).' )';
+
+        # Like visibility
+        unless ($self->viewer->can_use_plugin('like')) {
+            push @parts, "(evt.action <> 'like'AND evt.action <> 'unlike')";
+        }
     }
     else {
         push @parts, "(evt.event_class <> 'signal')";
@@ -805,8 +814,14 @@ LEFT JOIN (
     SELECT signal_id, hash
     FROM signal
 ) outer_s USING (signal_id)
+LEFT JOIN (
+    SELECT signal_id, array_accum(liker_user_id) AS likers
+    FROM user_like
+    GROUP BY signal_id
+) likes_s USING (signal_id)
 EOSQL
-        push @field_list, [signal_hash => 'outer_s.hash'];
+        push @field_list, [ signal_hash => 'outer_s.hash' ];
+        push @field_list, [ likers  => 'likes_s.likers' ];
     }
 
     my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } @field_list);

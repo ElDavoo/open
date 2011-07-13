@@ -50,7 +50,7 @@
 | wait_for_element_visible_ok | link=Post | 5000 |
 | pause | 3000 |  |
 | click_ok | link=Post |  |
-| wait_for_text_present_ok | You | 30000 |
+| wait_for_text_present_ok | By you | 30000 |
 | wait_for_element_visible_ok | link=%%text%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'%%url%%')] | 30000 |
 
