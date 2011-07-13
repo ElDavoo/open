@@ -1153,7 +1153,7 @@ sub get_events_activities {
     if ($classes{page}) {
         push @conditions, q{
             event_class = 'page'
-            AND is_page_contribution(action)
+            AND (is_page_contribution(action) OR action IN ('like', 'unlike'))
             AND actor_id = ?
         };
         $user_ids++;
