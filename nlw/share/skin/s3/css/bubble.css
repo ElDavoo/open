@@ -91,7 +91,7 @@
     white-space: nowrap;
 }
 .like-indicator.light {
-    background-image: url(../../../plugin/like/share/images/light-like-nobody.png);
+    background-image: url(../../../plugin/like/share/images/light-like-nobody.gif);
 }
 .like-indicator.me {
     background-image: url(../../../plugin/like/share/images/like-me.gif);
@@ -100,7 +100,7 @@
     background-image: url(../../../plugin/like/share/images/like-others.gif);
 }
 .like-indicator.light.others {
-    background-image: url(../../../plugin/like/share/images/light-like-others.png);
+    background-image: url(../../../plugin/like/share/images/light-like-others.gif);
 }
 .like-indicator.me.others {
     background-image: url(../../../plugin/like/share/images/like-me-others.gif);
