@@ -153,6 +153,7 @@ LikeIndicator.prototype = {
         if (this.isLikedByMe) classes.push('me');
         if (this.others) classes.push('others');
         if (!this.mutable) classes.push('immutable');
+        if (this.display.match(/^light-/)) classes.push('light');
         return classes.join(' ');
     },
 
@@ -162,13 +163,16 @@ LikeIndicator.prototype = {
 
     text: function(with_count) {
         switch(this.display) {
+            case 'light-count':
             case 'count':
                 return this.count || '';
+            case 'light-button':
             case 'button':
                 return loc(
                     this.isLikedByMe ? 'do.unlike=count' : 'do.like=count',
                     this.count
                 );
+            case 'light-text_count':
             case 'text_count':
                 return loc('like.like=count', this.count);
         }
