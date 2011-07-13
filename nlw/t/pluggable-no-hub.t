@@ -21,7 +21,7 @@ for my $plugin (@plugins) {
         }
     }
     local $TODO = "The $name plugin intentionally uses ->hub (for now), instead of contributing to the plugin architecture"
-        if $name ~~ [qw[ Like Analytics ]];
+        if $name ~~ [qw[ Push Like Analytics ]];
     ok $ok, $plugin;
     close $fh;
 }

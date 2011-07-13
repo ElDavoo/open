@@ -53,14 +53,14 @@
 | *Comment* | Test Case: User Likes a Signal first user likes the signal, sees the proper icons |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
-| wait_for_element_visible_ok | //a[@class='like-indicator '] | 30000 |
-| st_click_pause | //a[@class='like-indicator '] | 2000 |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator ')] | 30000 |
+| st_click_pause | //a[contains(@class,'like-indicator ')] | 2000 |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | //a[@class='like-indicator me'] | 30000 |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator me')] | 30000 |
 | text_like | //div[@class='like-signal'] | 1 |
 
 | *Comment* | Test Case: User Likes a Signal first user sees self in Like Bubble |  |
-| mouse_over_ok | //a[@class='like-indicator me'] |  |
+| mouse_over_ok | //a[contains(@class,'like-indicator me')] |  |
 | wait_for_text_present_ok | Only you have liked this signal. | 10000 |
 | wait_for_element_visible_ok | link=All People | 10000 |
 | click_ok | link=All People |  |
@@ -71,11 +71,11 @@
 | st-logoutin | %%user2%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
-| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator others')] | 30000 |
 | text_like | //div[@class='like-signal'] | 1 |
-| st_click_pause | //a[@class='like-indicator others'] | 2000 |
+| st_click_pause | //a[contains(@class,'like-indicator others')] | 2000 |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator me others')] | 30000 |
 | text_like | //div[@class='like-signal'] | 2 |
 
 | *Comment* | Test Case: User Likes a Signal follow user 1, then check mouseover bubble for colleague list |  |
@@ -85,8 +85,8 @@
 | click_ok | link=Follow this person |  |
 | wait_for_element_visible_ok | link=Stop following this person | 30000 |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
-| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator me others')] | 30000 |
+| mouse_over_ok | //a[contains(@class,'like-indicator me others')] |  |
 | wait_for_text_present_ok | You and 1 person you follow have liked this signal. | 30000 |
 | is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user1_short%%')] |
 
@@ -97,8 +97,8 @@
 | click_ok | link=Stop following this person |  |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
-| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator me others')] | 30000 |
+| mouse_over_ok | //a[contains(@class,'like-indicator me others')] |  |
 | wait_for_text_present_ok | Only you have liked this signal. | 30000 |
 | is_element_present_ok | //div[@class='liker'] | //a[contains(text(),'%%user2_short%%')] |
 | text_unlike | //div[@class='liker'] | %%user1_short%% |
@@ -126,8 +126,8 @@
 | *Comment* | Test Case: User Likes a Signal check the mouseover bubble of likes, including pagination |  |
 | st-logoutin | %%user3%% | %%password%% |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
-| mouse_over_ok | //a[@class='like-indicator me others'] |  |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator me others')] | 30000 |
+| mouse_over_ok | //a[contains(@class,'like-indicator me others')] |  |
 | wait_for_text_present_ok | Only you have liked this signal. | 30000 |
 | wait_for_element_visible_ok | link=All People | 30000 |
 | click_ok | link=All People |  |
@@ -163,12 +163,12 @@
 | *Comment* | Test Case: User Likes a Signal user 3 unlikes the signal, no longer sees themselves in mouseover bubble |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
-| wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
-| st_click_pause | //a[@class='like-indicator me others'] | 2000 |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator me others')] | 30000 |
+| st_click_pause | //a[contains(@class,'like-indicator me others')] | 2000 |
 | text_like | //div[@class='like-signal'] | 10 |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | //a[@class='like-indicator others'] | 30000 |
-| mouse_over_ok | //a[@class='like-indicator others'] |  |
+| wait_for_element_visible_ok | //a[contains(@class,'like-indicator others')] | 30000 |
+| mouse_over_ok | //a[contains(@class,'like-indicator others')] |  |
 | wait_for_text_present_ok | None of the people you follow have liked this signal. | 30000 |
 | wait_for_element_visible_ok | link=All People | 30000 |
 | click_ok | link=All People |  |
