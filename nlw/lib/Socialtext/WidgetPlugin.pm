@@ -63,7 +63,7 @@ sub gadget_vars {
     my $width = $overrides{__width__} // 600;
     $width .= "px" if $width =~ /^\d+$/;
 
-    my $content_type = $renderer->content_type;
+    my $content_type = $renderer->content_type || 'html';
 
     return {
         # Render the preferences so __('') in options localizes correctly.
