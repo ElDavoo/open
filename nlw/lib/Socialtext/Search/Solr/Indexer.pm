@@ -173,6 +173,7 @@ sub _add_page_doc {
         (map { [ like => $_ ] } @$likes),
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
+    
     if (my $mtime = _datetime_to_iso($page->last_edit_time)) {
         push @fields, [date => $mtime];
     }

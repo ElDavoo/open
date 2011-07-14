@@ -236,6 +236,22 @@ sub pkey {
     return map { $self->$_ } qw(workspace_id page_id revision_id);
 }
 
+sub values {
+    my $self = shift;
+
+    my $values = {};
+    my $body = ${$self->body_ref};
+
+    while ($body =~ /{values:\s*(.+?)}/g) {
+        my $s = $1;
+        while ($s =~ /field_\d+:(.+?):(.+?):"(.+?)"/g) {
+            $values->{$1} = $3;
+        }
+    }
+
+    return $values;
+}
+
 sub modified_time { $_[0]->edit_time->epoch };
 
 sub mutable_clone {
