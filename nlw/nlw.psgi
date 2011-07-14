@@ -38,7 +38,6 @@ builder {
             },
         )->to_app if -d dir($path, 'cgi');
 
-        warn dir($path, 'static');
         mount "/webplugin/$name" => Plack::App::File->new(
             root => dir($path, 'static'),
         )->to_app if -d dir($path, 'static');
