@@ -63,3 +63,26 @@ sub save_mime_type {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
+
+=head1 NAME
+
+Socialtext::Job::FixMimeType - Fix "mime_type" field for attachments in database
+
+=head1 SYNOPSIS
+
+    use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::FixMimeType => {
+            workspace_id => $ws_id,
+            page_id => $page_id,
+            id => $attachment_id,
+        }
+    );
+
+=head1 DESCRIPTION
+
+Re-index old attachment's MIME types in the database, for the
+[Task: fix mime-type mismatch of attachments] story.
+
+=cut
