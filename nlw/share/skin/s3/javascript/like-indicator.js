@@ -10,7 +10,7 @@ LikeIndicator.prototype = {
     col_limit: 5,
 
     _defaults: {
-        display: 'button',
+        display: 'button'
     },
 
     update: function(opts) {
