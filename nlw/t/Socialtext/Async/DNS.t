@@ -8,6 +8,7 @@ use Test::Socialtext::Async qw/empty_port/;
 use Guard;
 
 my $hostname = `hostname`; chomp $hostname;
+$hostname =~ s/^[^.]*$/www.socialtext.net/;
 
 my ($port,$sock) = empty_port();
 
@@ -29,7 +30,7 @@ my $exec_counter = 0;
     }
 }
 
-my $resolver = AnyEvent::DNS::resolver;
+my $resolver = AnyEvent::DNS::resolver();
 
 resolver_is_reblessed: {
     ok exists($resolver->{st_cache}), 'resolver has a cache member var';

@@ -36,7 +36,7 @@ if [ "$ST_CURRENT" != "" ]; then
 fi
 
 # Clean up dead symlinks
-find -L -type l -delete
+find -L -type l -delete 2>/dev/null || gfind -L -type l -delete
 
 perl -MCwd -le'print "Running ", Cwd::abs_path(shift)' $0
 
@@ -135,7 +135,7 @@ if [ $STAGING == 1 ]; then
 fi
 
 # Clean up dead symlinks
-find -L -type l -delete
+find -L -type l -delete  2>/dev/null || gfind -L -type l -delete
 
 # Purge json proxy cache
 bin/st-purge-json-proxy-cache

@@ -112,8 +112,10 @@ sub _connect_dbh {
     my %params = Socialtext::AppConfig->db_connect_params();
     cluck "Creating a new DBH $params{db_name}" if $DEBUG;
     my $dsn = "dbi:Pg:database=$params{db_name}";
+    $dsn .= ";host=$params{host}" if $params{host};
+    $dsn .= ";port=$params{port}" if $params{port};
 
-    $_dbh = DBI->connect($dsn, $params{user}, "",  {
+    $_dbh = DBI->connect($dsn, $params{user}, $params{password} // "",  {
             AutoCommit => 1,
             pg_enable_utf8 => 1,
             pg_prepare_now => 1,

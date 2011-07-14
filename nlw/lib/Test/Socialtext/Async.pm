@@ -1,7 +1,7 @@
 package Test::Socialtext::Async;
 # @COPYRIGHT@
+use 5.12.0;
 use warnings;
-use strict;
 use AnyEvent;
 use AnyEvent::HTTP;
 use Test::More;
@@ -15,6 +15,7 @@ our @EXPORT = qw(wait_until_pingable empty_port fork_off kill_kill_pid kill_kill
 sub wait_until_pingable {
     my $port = shift;
     my $kind = shift || 'proxy';
+    my $path = ($kind eq 'nlw-psgi') ? '/data/version' : '/ping';
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     my $ping_err = '?';
@@ -23,7 +24,7 @@ sub wait_until_pingable {
     while (AE::now - $started < 30.0) {
         my $cv = AE::cv;
         my $t = AE::timer 5, 0, sub { $ping_err = 'timeout'; $cv->send(0) };
-        my $r = http_request 'GET' => "http://localhost:$port/ping",
+        my $r = http_request 'GET' => "http://localhost:$port$path",
             timeout => 1,
             sub {
                 my ($body,$hdr) = @_;
@@ -50,14 +51,20 @@ sub wait_until_pingable {
         (AE::now - $started)." seconds)";
 
     $content =~ s/^.+?{/{/; # remove unparsable cruft
-    my $got = decode_json($content);
-    if ($kind eq 'proxy') {
-        is_deeply $got, {
-            "/ping" => { rc => 200, body => "pong", service => 'json-proxy' },
-        }, "wait_until_pingable: got correctly formatted response";
-    }
-    else {
-        is $got->{ping}, 'ok', "wait_until_pingable: response says 'ok'";
+    given ($kind) {
+        when ('nlw-psgi') {
+            ok $content, "wait_until_pingable: response says '$content'";
+        }
+
+        my $got = decode_json($content);
+        when ('proxy') {
+            is_deeply $got, {
+                "/ping" => { rc => 200, body => "pong", service => 'json-proxy' },
+            }, "wait_until_pingable: got correctly formatted response";
+        }
+        default {
+            is $got->{ping}, 'ok', "wait_until_pingable: response says 'ok'";
+        }
     }
 }
 

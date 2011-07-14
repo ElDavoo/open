@@ -9,8 +9,13 @@ set -e
 #
 
 DATA_DIR="/var/lib/socialtext-solr/cores"
-DATA_GROUP=`stat -c %G $DATA_DIR/`
 
+if [ ! -d "$DATA_DIR" ]; then
+    echo "Cannot find $DATA_DIR; skipping solr-create"
+    exit 0
+fi
+
+DATA_GROUP=`stat -c %G $DATA_DIR/ || gstat -c %G $DATA_DIR/`
 echo -n "Creating solr core ..."
 
 inthegroup=`groups 2>&1 | grep $DATA_GROUP || true`

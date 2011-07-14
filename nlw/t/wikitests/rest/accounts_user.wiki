@@ -26,7 +26,6 @@ Test case for `/data/account/:acct/users` ( GET and POST )
 | *Comment* | GET returns a 200 for a business admin |
 | get       | /data/accounts/Socialtext/users        |
 | code-is   | 200                                    |
-| body-like | devnull1@socialtext.com                |
 
 | *Comment* | GET returns 404 when no account exists. |
 | get       | /data/accounts/ENOSUCHACCOUNT/users     |
@@ -47,6 +46,11 @@ Test case for `/data/account/:acct/users` ( GET and POST )
 | *Comment* | Returns a 201 when all is good. |                                       |
 | post-json | /data/accounts/Socialtext/users | {"email_address":"%%email_address%%"} |
 | code-is   | 201                             |                                       |
+
+| *Comment* | GET returns a 200 for a business admin |
+| get       | /data/accounts/Socialtext/users?all=1  |
+| code-is   | 200                                    |
+| body-like | %%email_address%%                      |
 
 | *Comment* | Returns a 201 when we post to an account with a space in the name. |                                |
 | post-json | /data/accounts/%%acct2%%/users                                     | {"email_address":"%%tester%%"} |

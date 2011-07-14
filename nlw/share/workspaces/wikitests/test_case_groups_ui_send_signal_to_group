@@ -42,7 +42,7 @@
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%account_signal%% |  |
 | st_send_signal_via_activities_widget | signals_widget | %%account_signal%% |
-| st_verify_text_in_activities_widget | signals_widget | qr/You.*minute.*ago\s*to\s*%%group_acct%%/ |
+| st_verify_text_in_activities_widget | signals_widget | qr/%%group_acct%%.+By you.*minute.*ago\s*to/ism |
 | st_verify_text_in_activities_widget | signals_widget | %%account_signal%% |
 | open_ok | /st/signals |  |
 
@@ -54,7 +54,7 @@
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%group_signal%% |  |
 
 | st_send_signal_via_activities_widget | signals_widget | %%group_signal%% |
-| st_verify_text_in_activities_widget | signals_widget | qr/You.*minute.*ago\s*to\s*%%group_name%%/ |
+| st_verify_text_in_activities_widget | signals_widget | qr/%%group_name%%.+By you.*minute.*ago\s*to/ism |
 | st_verify_text_in_activities_widget | signals_widget | %%group_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. login as group member %%ssg_user%% |  |

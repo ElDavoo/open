@@ -16,6 +16,7 @@ my %services = (
     pushd =>   "plugins/push/service",
     proxy =>   "plugins/widgets/service",
     userd =>   "nlw/service/st-userd",
+    'nlw-psgi' =>   "nlw",
 );
 
 my $pid_dir = Socialtext::AppConfig->pid_file_dir;

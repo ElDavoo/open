@@ -385,3 +385,12 @@ caption, th, td {
     padding-top: 6px;
     white-space: nowrap;
 }
+
+
+.ui-icon-watch {
+    background: url("../images/watchIcon-mobile.png") no-repeat rgba(0, 0, 0, 0.4);
+}
+
+.ui-icon-watching {
+    background: url("../images/watchingIcon-mobile.png") no-repeat rgba(0, 0, 0, 0.4);
+}

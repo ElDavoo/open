@@ -43,10 +43,6 @@ People tests
 
 * [Dashboard Testcases]
 
-Server down testcases
-
-* [Test Case: Save Race Conditions]
-
-Appliance testcases are run last because they do a backup/restore
+Appliance testcases are run last because they use appliance-only features or code
 
 * [Appliance Testcases]

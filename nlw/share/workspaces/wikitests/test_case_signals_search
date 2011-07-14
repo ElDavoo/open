@@ -122,8 +122,8 @@
 | st-name-widget | 1 | siggy |
 | st-select-widget-frame | siggy |  |
 | wait_for_text_present_ok | LessRelevant %%start_time%% | 30000 |
-| wait_for_element_visible_ok | //a[@class='hideLink'] | 10000 |
-| click_ok | //a[@class='hideLink'] |  |
+| wait_for_element_visible_ok | //a[@class='hoverLink hideLink'] | 10000 |
+| click_ok | //a[@class='hoverLink hideLink'] |  |
 | verifyConfirmation | Are you sure you want to delete this Signal?\nYou cannot undelete it. |  |
 | wait_for_text_not_present_ok | LessRelevant %%start_time%% | 10000 |
 | select_frame | relative=parent |  |
