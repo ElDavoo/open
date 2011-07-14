@@ -107,6 +107,7 @@ sub Available {
             already_created     => defined $exists_in_db ? 1 : 0,
             member_count        => scalar @members,
         };
+        $group->{driver_unique_id} =~ s/\\23/#/g;
 
         push @available, $group;
     }
@@ -407,8 +408,14 @@ sub _update_group_members {
             my $attr = $attr_map->{$field};
             next unless $attr;
 
-            $ldap_attrs{$attr} = $opts{escaped}
-                ?  $proto_value : escape_filter_value($proto_value);
+            if ($proto_field eq 'driver_unique_id') {
+                $proto_value =~ s/#/\\23/g;
+                $ldap_attrs{$attr} = $proto_value;
+            }
+            else {
+                $ldap_attrs{$attr} = $opts{escaped}
+                    ?  $proto_value : escape_filter_value($proto_value);
+            }
         }
         return \%ldap_attrs;
     }
