@@ -160,6 +160,10 @@
 | text_like | qr/%%user11_short%%.+%%user10_short%%.+%%user9_short%%.+%%user8_short%%.+%%user7_short%%.+%%user6_short%%/ism |  |
 | text_like | qr/%%user11_short%%.+%%user5_short%%.+%%user4_short%%.+You.+%%user2_short%%.+%%user1_short%%/ism |  |
 
+| *Comment* | Test Case: User Likes a Signal check profile widget for proper event |  |
+| open_ok | /st/profile |  |
+| wait_for_text_present_ok | liked %%user1_short%%'s signal, "ULS Signal %%start_time%%". | 30000 |
+
 | *Comment* | Test Case: User Likes a Signal user 3 unlikes the signal, no longer sees themselves in mouseover bubble |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
@@ -185,8 +189,10 @@
 | wait_for_element_visible_ok | link=%%user11_short%% | 30000 |
 | text_unlike | //div[@class='likers'] | %%user3_short%% |
 
-| *Comment* | Test Case: User Likes a Signal dislike event is recorded in activities widget |  |
+| *Comment* | Test Case: User Likes a Signal dislike event is recorded in dashboard and profile widgets |  |
 | open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | unliked %%user1_short%%'s signal, "ULS Signal %%start_time%%". | 30000 |
+| open_ok | /st/profile |  |
 | wait_for_text_present_ok | unliked %%user1_short%%'s signal, "ULS Signal %%start_time%%". | 30000 |
 
 | *Comment* | Test Case: User Likes a Signal TEARDOWN |  |

@@ -262,7 +262,7 @@
 | click_ok | //a[@class='page1'] |  |
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 
-| *Comment* | Test Case: User Likes a Page check activities widget for liking posts |  |
+| *Comment* | Test Case: User Likes a Page check dashboard activities widget for liking posts |  |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 4 | ticker |
 | st-widget-title-like | ticker | Activities |
@@ -270,6 +270,13 @@
 | wait_for_text_present_ok | liked %%wiki%% in %%wiki%% | 30000 |
 | wait_for_text_present_ok | unliked %%wiki%% in %%wiki%% | 30000 |
 | text_like | qr/%%user11_short%%.+%%user10_short%%.+%%user9_short%%.+%%user8_short%%.+%%user7_short%%.+%%user6_short%%.+%%user5_short%%.+%%user4_short%%.+You.+%%user2_short%%.+%%user2_short%%.+%%user2_short%%.+%%user1_short%%/ |  |
+
+| *Comment* | Test Case: User Likes a Page check profile activities widget for liking post |  |
+| st-logoutin | %%user2%% | %%password%% |
+| open_ok | /st/profile |  |
+| wait_for_text_present_ok | liked %%wiki%% in %%wiki%% | 30000 |
+| wait_for_text_present_ok | unliked %%wiki%% in %%wiki%% | 30000 |
+| text_like | //div[@class='event_list'] | qr/liked.+unliked.+liked/ |
 
 | *Comment* | Test Case: User Like a Page TEARDOWN |  |
 | st-process-jobs |  |  |
