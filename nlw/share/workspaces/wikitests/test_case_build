@@ -110,12 +110,12 @@
 | st-name-widget | 1 | signals_widget |
 | st_send_signal_via_activities_widget | signals_widget | signal 1 %%start_time%% |
 | open_ok | /st/signals |  |
-| wait_for_text_present_ok | You less than a minute ago to %%acct%% | 30000 |
+| wait_for_text_present_ok | By you less than a minute ago to %%acct%% | 30000 |
 | wait_for_text_present_ok | signal 1 %%start_time%% | 30000 |
 | st-send-reply | reply 1 %%start_time%% |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | reply 1 %%start_time%% | 30000 |
-| text_like | //div[@class='replies'] | qr/You less than a minute ago.+reply 1 %%start_time%%/ |
+| text_like | //div[@class='replies'] | qr/reply 1 %%start_time%%.+By you less than a minute ago/ism |
 
 | *Comment* | Build Testcases create a page in wiki |  |
 | click_and_wait | link=%%wiki%% |  |
@@ -157,8 +157,8 @@
 | wait_for_text_present_ok | page content | 30000 |
 | text_like | //div[@class='wiki'] | qr/page content.+page comment.+contributed by.+%%user_with_spaces%%/ |
 | click_and_wait | mobile-signals |  |
-| wait_for_text_present_ok | You | 30000 |
-| text_like | mobile_event_list | qr/You.+signal 1 %%start_time%%.+You.+reply 1 %%start_time%%/ |
+| wait_for_text_present_ok | By you | 30000 |
+| text_like | mobile_event_list | qr/signal 1 %%start_time%%.+By you.+reply 1 %%start_time%%.+By you/ism |
 | click_and_wait | mobile-activities |  |
 | wait_for_text_present_ok | commented on | 30000 |
 | text_like | //ul[@class='event_list'] | qr/%%user_with_spaces%%.+commented on.+page title.+%%wiki%%.+page comment.+%%user_with_spaces%%.+edited.+page title.+%%wiki%%/ |
