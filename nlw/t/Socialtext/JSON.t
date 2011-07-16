@@ -17,7 +17,7 @@ is encode_json(qq{illegal: " and \n}),
    "escaped illegal json chars in plain string mode";
 
 is encode_json(qq{illégale: " et \n}),
-   Encode::encode_utf8(q{"illégale: \" et \n"}),
+   Encode::encode_utf8(q{"ill\\u00e9gale: \" et \n"}),
    "escaped illegal json chars in plain string mode (with utf8-encoding)";
 
 ok exception { decode_json('"foo"') }, "can't decode non-refs";

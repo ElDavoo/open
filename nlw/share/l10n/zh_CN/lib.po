@@ -386,6 +386,9 @@ msgstr "备份共享名"
 msgid "backup.starting-recovery=options"
 msgstr "正在开始还原，选项“%1”"
 
+msgid "backup.successfully-deleted=label"
+msgstr "成功删除备份：%1"
+
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:202
 msgid "blog.atom=blog"
@@ -1040,9 +1043,6 @@ msgstr "已登陆到工作区 %1"
 msgid "email.date:"
 msgstr "日期："
 
-msgid "email.frequency-capped"
-msgstr "（注：“每分钟”和“每5分钟”的选择目前视同15分钟。）"
-
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
 msgstr "您想要多长时间收到一次邮件更新？"
@@ -1187,6 +1187,9 @@ msgstr "认证所采用的软限制须低于硬限制。"
 
 msgid "error.backup-already-running"
 msgstr "备份已经开始"
+
+msgid "error.backup-delete-failed=error"
+msgstr "删除备份失败：%1"
 
 msgid "error.backup-failed"
 msgstr "备份失败 ..."

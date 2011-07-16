@@ -59,7 +59,9 @@ sub _build_json_converter {
 sub json {
         my ( $self, $value ) = @_;
 
-        return ensure_is_utf8($self->json_converter->allow_blessed->convert_blessed->ascii->encode($value));
+        my $json = ensure_is_utf8($self->json_converter->allow_blessed->convert_blessed->ascii->encode($value));
+        $json =~ s!</(scr)(ipt)>!</$1" + "$2>!gi;
+        return $json;
 }
 
 sub json_decode {

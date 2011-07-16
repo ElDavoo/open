@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 20:31+0800\n"
+"PO-Revision-Date: 2011-05-24 06:39-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -400,6 +400,10 @@ msgstr "Backup Share Name"
 #: lib/Socialtext/Appliance/PgRestore.pm:558
 msgid "backup.starting-recovery=options"
 msgstr "starting recovery, options \"%1\""
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:48
+msgid "backup.successfully-deleted=label"
+msgstr "%1 successfully deleted"
 
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:202
@@ -1085,10 +1089,6 @@ msgstr "You can now login to the %1 workspace"
 msgid "email.date:"
 msgstr "Date:"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:31
-msgid "email.frequency-capped"
-msgstr "(Note: 'Every minute' and 'Every 5 minute' choices are treated as 15 minutes until further notice.)"
-
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
 msgstr "How often would you like to receive email updates?"
@@ -1234,6 +1234,11 @@ msgstr "Authentication token soft limit must be lower than the hard limit."
 
 msgid "error.backup-already-running"
 msgstr "Backup already running"
+
+#. ($_)
+#: lib/Socialtext/Appliance/Model/Backup.pm:53
+msgid "error.backup-delete-failed=error"
+msgstr "Backup delete failed: %1"
 
 msgid "error.backup-failed"
 msgstr "Backup failed ..."

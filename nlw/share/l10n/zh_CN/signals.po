@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-05-18 08:09-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -38,23 +38,19 @@ msgstr "所有资源"
 msgid "explore.all-people"
 msgstr "所有人"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
 msgid "explore.any-group"
 msgstr "任何群组"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
 msgid "explore.any-tag"
 msgstr "任何标签"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
 msgid "explore.anyone"
 msgstr "任何人"
 
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:398
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:408
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:408
 msgid "explore.anytime"
 msgstr "任何时间"
 
@@ -94,10 +90,12 @@ msgstr "提及"
 msgid "explore.mine"
 msgstr "我的"
 
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:398
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:404
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:404
 msgid "explore.now"
 msgstr "现在"
+
+msgid "explore.number-of-activities-to-display"
+msgstr "显示活动数量上限"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
 msgid "explore.people"
@@ -159,10 +157,7 @@ msgstr "<b>Socialtext 探索</b> 让您轻松发现同事们通过 Socialtext �
 msgid "nav.explore"
 msgstr "探索"
 
-#: share/plugin/signals/template/cp_signal_size_limit:2
-#: share/plugin/signals/template/element/settings/private_menu:1
-#: share/plugin/signals/template/nav_signals:1
-#: share/plugin/signals/template/signals_hello:1
+#: share/plugin/signals/template/cp_signal_size_limit:2 share/plugin/signals/template/element/settings/private_menu:1 share/plugin/signals/template/nav_signals:1 share/plugin/signals/template/signals_hello:1
 msgid "nav.signals"
 msgstr "讯息"
 
@@ -211,8 +206,7 @@ msgid "signals.drag-button-to-bookmarks-bar"
 msgstr "对于其它的浏览器，您只需将按钮拖放到书签栏下面。"
 
 #. (event.context.body)
-#: share/plugin/signals/template/data/events/signal:1
-#: share/plugin/signals/template/data/events/signal:3
+#: share/plugin/signals/template/data/events/signal:1 share/plugin/signals/template/data/events/signal:3
 msgid "signals.edit-save=event"
 msgstr "%1。"
 
@@ -243,10 +237,12 @@ msgstr "该设备的最大值是 %1"
 
 #. (a.user_count)
 #. (g.user_count)
-#: share/plugin/signals/template/lite/signals.html:52
-#: share/plugin/signals/template/lite/signals.html:63
+#: share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
 msgid "signals.network-count=users"
 msgstr "%1 名用户"
+
+msgid "signals.number-of-signals-to-display"
+msgstr "显示讯息数量上限"
 
 #. (user_link(row.signal.user_id)
 #. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), networks(row.signal))
@@ -281,8 +277,7 @@ msgstr "主帐户，%1 名用户"
 
 #. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
 #. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
-#: share/plugin/signals/template/email/direct-message.html:0
-#: share/plugin/signals/template/email/direct-message.html:5
+#: share/plugin/signals/template/email/direct-message.html:0 share/plugin/signals/template/email/direct-message.html:5
 msgid "signals.private-message-from=user:"
 msgstr "您收到了 %1 的私人讯息："
 
@@ -290,8 +285,7 @@ msgstr "您收到了 %1 的私人讯息："
 msgid "signals.private-message-to-email"
 msgstr "如果勾选上，每次别人给您发送私人讯息，您将会收到包含该消息的电子邮件。"
 
-#: share/plugin/signals/template/element/settings/private_menu:3
-#: share/plugin/signals/template/element/settings/signals_settings_section:5
+#: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
 msgid "signals.private-messages"
 msgstr "私人讯息"
 
@@ -300,8 +294,7 @@ msgid "signals.private-reply"
 msgstr "私密回复"
 
 #. (person, event.context.body)
-#: share/plugin/signals/template/data/events/signal:1
-#: share/plugin/signals/template/data/events/signal:6
+#: share/plugin/signals/template/data/events/signal:1 share/plugin/signals/template/data/events/signal:6
 msgid "signals.private-to=person,body"
 msgstr "给 %1 发送私人讯息：“%2”。"
 
@@ -380,17 +373,14 @@ msgstr "发送者"
 
 #. (signal.networks.size)
 #. (event.context.account_ids.size + event.context.group_ids.size)
-#: share/plugin/signals/template/data/events/signal.meta:4
-#: share/plugin/signals/template/view/signallist:10
+#: share/plugin/signals/template/data/events/signal.meta:4 share/plugin/signals/template/view/signallist:10
 msgid "signals.to-groups=count"
 msgstr "给%1个群组"
 
 #. (signal.networks.0)
 #. (a.name)
 #. (g.name)
-#: share/plugin/signals/template/data/events/signal.meta:13
-#: share/plugin/signals/template/data/events/signal.meta:8
-#: share/plugin/signals/template/view/signallist:7
+#: share/plugin/signals/template/data/events/signal.meta:13 share/plugin/signals/template/data/events/signal.meta:8 share/plugin/signals/template/view/signallist:7
 msgid "signals.to=name"
 msgstr "给%1"
 
@@ -409,6 +399,9 @@ msgstr "您在做什么呢？"
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"
 msgstr "您的设置"
+
+msgid "title.activities"
+msgstr "活动"
 
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"

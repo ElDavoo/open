@@ -11,8 +11,7 @@
 <div>
     [% IF tag %]
     <a href="/m/tag/[% ws.name %]/[% tag | uri |html %]">
-        [% SET escaped_str = tag | html %]
-        [% loc('page.all=wiki', escaped_str) %]
+        [% loc('page.all=wiki', tag) |html %]
     </a>
     [% END %]
 </div>

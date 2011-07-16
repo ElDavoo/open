@@ -19,7 +19,7 @@ sub _entities_for_query {
     my $user      = $rest->user;
     my $query     = $rest->query->param('q') || '';
     my $acct_name = $self->acct();
-    my $account   = Socialtext::Account->new( name => $acct_name );
+    my $account   = Socialtext::Account->Resolve($acct_name);
     my $set_filter = $rest->query->param('permission_set');
 
     return () unless $account;

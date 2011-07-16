@@ -470,11 +470,14 @@ sub _validate_assign_creation_datetime {
 
 sub _validate_trim_values {
     my ($self, $p) = @_;
-    map { $p->{$_} = Socialtext::String::trim($p->{$_}) }
-        grep { !ref($p->{$_}) }
-        grep { defined $p->{$_} }
-        map  { $_->name }
-        $self->Sql_columns;
+
+    ($p->{$_} = ($_ eq 'driver_group_name')
+        ? Socialtext::String::scrub($p->{$_})
+        : Socialtext::String::trim($p->{$_}))
+            for grep { !ref($p->{$_}) }
+                grep { defined $p->{$_} }
+                map  { $_->name }
+                $self->Sql_columns;
     return;
 }
 

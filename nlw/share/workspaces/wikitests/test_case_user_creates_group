@@ -6,24 +6,24 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: User Creates Group Setup |  |
-| set | groupname | ucg-group-%%start_time%% |
-| set | group_prefix | ucg |
-| set | group_suffix | `-group-%%start_time%%` |
+| set | groupname | %%start_time%%-ucg-group |
+| set | group_prefix | %%start_time%% |
+| set | group_suffix | `-ucg-group` |
 | set | groupuser | ucg_user_%%start_time%% |
 | set | short_groupuser | ucg user %%start_time%% |
 | set | groupemail | %%groupuser%%@ken.socialtext.net |
 
 | *Comment* | Test Case: User Creates Group these groups will be used later to test pagination of a list |  |
-| set | group_1 | ucg-group-1-%%start_time%% |
-| set | group_2 | ucg-group-2-%%start_time%% |
-| set | group_3 | ucg-group-3-%%start_time%% |
-| set | group_4 | ucg-group-4-%%start_time%% |
-| set | group_5 | ucg-group-5-%%start_time%% |
-| set | group_6 | ucg-group-6-%%start_time%% |
-| set | group_7 | ucg-group-7-%%start_time%% |
-| set | group_8 | ucg-group-8-%%start_time%% |
-| set | group_9 | ucg-group-9-%%start_time%% |
-| set | group_10 | ucg-group-10-%%start_time%% |
+| set | group_1 | %%start_time%%-ucg-group-1 |
+| set | group_2 | %%start_time%%-ucg-group-2 |
+| set | group_3 | %%start_time%%-ucg-group-3 |
+| set | group_4 | %%start_time%%-ucg-group-4 |
+| set | group_5 | %%start_time%%-ucg-group-5 |
+| set | group_6 | %%start_time%%-ucg-group-6 |
+| set | group_7 | %%start_time%%-ucg-group-7 |
+| set | group_8 | %%start_time%%-ucg-group-8 |
+| set | group_9 | %%start_time%%-ucg-group-9 |
+| set | group_10 | %%start_time%%-ucg-group-10 |
 
 | create-user | %%groupemail%% | %%password%% |
 
@@ -97,7 +97,7 @@
 | wait_for_text_present_ok | %%short_groupuser%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: User Creates Group create 10 more groups to test pagination of existing group lookahead in Create Group window |  |
+| *Comment* | Test Case: User Creates Group create 10 more groups to test pagination of existing group lookahead in Create Group window |  |  |
 | create-group | %%group_1%% |  | %%groupemail%% |
 | set | group_id_1 | %%group_id%% |  |
 | create-group | %%group_2%% |  | %%groupemail%% |
@@ -123,6 +123,9 @@
 | open_ok | /st/dashboard |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
+
+| *Comment* | Test Case: User Creates Group lookahead fails if you go too fast |  |
+| set_speed_ok | 2000 |  |
 | wait_for_text_present_ok | Before creating a group, you can search names and descriptions for existing groups. | 30000 |
 | wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 30000 |
 | type_lookahead_ok | //input[@class='lookahead-prompt'] | %%group_prefix%% |
@@ -130,6 +133,7 @@
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'Show all results...')] | 30000 |
 | click_and_wait | //div[@class='lookaheadItem']/a[contains(text(),'Show all results...')] |  |
 | wait_for_text_present_ok | Group names and descriptions matching '%%group_prefix%% OR %%group_prefix%%*' | 30000 |
+| set_speed_ok | 0 |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | open_ok | /st/dashboard |  |

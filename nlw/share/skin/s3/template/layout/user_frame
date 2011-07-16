@@ -21,7 +21,7 @@
     [% END %]
 
     [% FILTER decorate "head" %]
-    <title>[% title || display_title %][% IF workspace_present AND wiki.title %] / [% wiki.title %][% END %]</title>
+    <title>[% title || display_title |html %][% IF workspace_present AND wiki.title %] / [% wiki.title |html %][% END %]</title>
 
     [% FILTER decorate "head_css" %]
     [% PROCESS element/css_links %]
@@ -138,9 +138,9 @@
           <ul>
             <li>[% current_workspace.permissions.current_set_display_name %] [% loc("nav.wiki") %]:
               [% IF current_workspace.title != current_page.title || action %]
-              <a href="/[% current_workspace.name %]" id="workspaceName" class="here">[% current_workspace.title %]</a>
+              <a href="/[% current_workspace.name %]" id="workspaceName" class="here">[% current_workspace.title |html %]</a>
               [% ELSE %]
-              <span class="here">[% current_workspace.title %]</span>
+              <span class="here">[% current_workspace.title |html %]</span>
               [% END %]
               </li>
             [% FILTER decorate('workspace_nav') %]

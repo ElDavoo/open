@@ -629,3 +629,5 @@ t/Socialtext/Pluggable/Plugin/People.t
 t/Socialtext/People/profile-account.t
 lib/Socialtext/Pluggable/Plugin/Kanban.pm
 lib/Test/Socialtext/PgPITR.pm
+template/backups.inc
+lib/Socialtext/Gadgets/Container/Group.pm.orig

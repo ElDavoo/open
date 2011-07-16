@@ -19,12 +19,14 @@ Carefully set up the environment so the tests will run.
 
 | *Comment* | Default User Testcases: By INCLUDING these tests, they will run with the overridden username, pwd, and email |  |
 
+
 | include | [Test case: Login Logout] |  |
 | include | [Test case: User Resets Password] |  |
 | include | [Test case: Admin Resets Password] |  |
-| include | [Test Case: User Restrictions] |  |
 
 | *Comment* | Default User Testcases: Re-enable LDAP. Bring the LDAP user back to life |  |
 | include | [Enable LDAP] |  |
 
 | *Comment* | Default User Testcases COMPLETED |  |
+
+Test Case: User Restrictions moved to [Stubborn Testcases]
