@@ -1,7 +1,7 @@
 (function($) {
 
 /* HTML5 file upload */
-if (!XMLHttpRequest.prototype.sendAsBinary) {
+if (window.XMLHttpRequest && typeof XMLHttpRequest.prototype != 'undefined' && !XMLHttpRequest.prototype.sendAsBinary) {
     // For chrome
     XMLHttpRequest.prototype.sendAsBinary = function(datastr) {
         function byteValue(x) {
