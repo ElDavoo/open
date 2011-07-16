@@ -1526,6 +1526,28 @@ sub code_is {
     return $code;
 }
 
+=head2 code_like( code [, expected_message])
+
+Check that the return code is correct.
+
+=cut
+
+sub code_like {
+    my ($self, $regex) = @_;
+    $regex = $self->quote_as_regex($regex);
+    my $http = $self->{http};
+    my $resp = $http->response;
+    if ($resp->code =~ $regex) {
+        pass "code is " . $resp->code;
+    }
+    else {
+        diag "Response message: " . ($resp->message || 'None') ."\n";
+        diag "Content: " . (substr($resp->content,0,256) || 'No content') . "\n"
+            unless $resp->code == 200;
+        diag "url(" . $http->request->url . ")\n";
+    }
+}
+
 =head2 dump_http_response 
 
 Dump the headers of the last http response.
@@ -1623,6 +1645,18 @@ sub put_form {
     my $self = shift;
     my $uri = shift;
     $self->put($uri, 'Content-Type=application/x-www-form-urlencoded', @_);
+}
+
+=head2 put_wikitext( uri, body )
+
+Post to the specified URI with header 'Content-type=text/x.socialtext-wiki'
+
+=cut
+
+sub put_wikitext {
+    my $self = shift;
+    my $uri = shift;
+    $self->put($uri, 'Content-type=text/x.socialtext-wiki', @_);
 }
 
 =head2 post_file( uri, post_vars, filename_var filename )

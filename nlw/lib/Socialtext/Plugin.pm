@@ -19,6 +19,7 @@ use Socialtext::TT2::Renderer;
 use Module::Pluggable search_path => ['Socialtext::Plugin'];
 
 const cgi_class       => '';
+const pref_scope => 'workspace';
 
 field cgi         => -init => '$self->hub->cgi';
 field display_title => '';
@@ -235,13 +236,11 @@ sub _redirect_url {
 
 sub _get_pref_list {
     my $self = shift;
+    my $pref_scope = shift || 'workspace';
     my $prefs = $self->preferences->objects_by_class;
-
-    my @pref_list = map {
-        $_->{title} =~ s/ /&nbsp;/g;
-        $_;
-        } grep { $prefs->{ $_->{id} } }
-        grep { $_->{id} ne 'search' } # hide search prefs screen
+    my @pref_list = map { $_->{title} =~ s/ /&nbsp;/g; $_; }
+        grep { $prefs->{ $_->{id} } }
+        grep { $_->{pref_scope} eq $pref_scope }
         @{ $self->hub->registry->lookup->plugins };
 
     return \@pref_list;

@@ -289,6 +289,7 @@ This test case assumes a logged in user.
 
 | Comment         | Set-up LDAP user                                   | .       |
 | st-clear-events |                                                    |         |
+| clear-ldap-users |                                                   |         |
 | st-ldap         | start                                              |         |
 | st-admin        | add-workspace-admin --w %%workspace%% --u devnull3 |         |
 | http-user-pass  | devnull3                                           | ldapd3v |

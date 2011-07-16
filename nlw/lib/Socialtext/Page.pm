@@ -82,6 +82,8 @@ has 'create_time'  => (
 has 'restored' => (is => 'rw', isa => 'Bool', writer => '_restored');
 has 'full_uri' => (is => 'rw', isa => 'Str', lazy_build => 1);
 
+has 'like_count' => (is => 'rw', isa => 'Int', default => 0);
+
 has 'rev' => (
     is => 'rw', isa => 'Socialtext::PageRevision',
     lazy_build => 1,
@@ -153,7 +155,8 @@ use constant SELECT_COLUMNS_STR => q{
     page.edit_summary,
     page.views,
     page.locked,
-    page.tags -- ordered array
+    page.tags, -- ordered array
+    page.like_count
 };
 
 # This should be the order they show up in on the actual table:
@@ -252,7 +255,7 @@ my %PAGE_ROW_MAP = (
     views => 'views',
     workspace_name => 'workspace_name',
     workspace_title => 'workspace_title',
-
+    like_count => 'like_count',
 );
 my %PAGE_ROW_SKIP = (
     workspace_name  => 1,
@@ -444,13 +447,13 @@ sub update_from_remote {
             action => 'edit_contention',
             page => $self,
         });
-        $self->_log_page_and_user('EDIT_CONTENTION,PAGE,edit_contention');
+        $self->log_page_and_user('EDIT_CONTENTION,PAGE,edit_contention');
         Socialtext::Exception::Conflict->throw(
             error => "Contention: page has been updated since retrieved\n");
     }
 
     if (!$self->hub->checker->can_modify_locked($self)) {
-        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
+        $self->log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
         die "Page is locked and cannot be edited\n";
     }
 
@@ -727,7 +730,7 @@ sub add_comment {
     my $t = time_scope 'add_comment';
 
     if (!$self->hub->checker->can_modify_locked($self)) {
-        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
+        $self->log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
         die "Page is locked and cannot be edited\n";
     }
 
@@ -974,7 +977,7 @@ sub store {
         [$self, workspace => $self->hub->current_workspace],
     );
 
-    $self->_log_page_and_user('CREATE,EDIT_SUMMARY,edit_summary', $user)
+    $self->log_page_and_user('CREATE,EDIT_SUMMARY,edit_summary', $user)
         if $self->edit_summary;
 
     # need to return the Signal object if we're signalling-this-edit
@@ -989,7 +992,7 @@ sub store {
     return;
 }
 
-sub _log_page_and_user {
+sub log_page_and_user {
     my ($self, $message, $user) = @_;
     $user //= $self->hub->current_user;
     st_log->info(

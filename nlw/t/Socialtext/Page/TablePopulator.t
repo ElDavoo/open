@@ -31,6 +31,7 @@ only_these_things_reference_page_id: {
         event_page_fk
         page_link__from_page_id_fk
         page_tag_workspace_id_page_id_fkey
+        user_like_page_id_fk
     )], "no additional fk constraints on page";
 }
 

@@ -32,6 +32,10 @@
                 [% IF perm_ws_admin || perm_invite %]
                   <li><a href="?action=users_invitation">[% loc('invite.new-users') %]</a></li>
                 [% END %]
+              [% ELSE %]
+                [% FOR pref = pref_list %]
+                  <li><a href="?action=preferences_settings;preferences_class_id=[% pref.id %]">[% loc(pref.title) %]</a></li>
+                [% END %]
               [% END %]
               [% END %]
             </ul>

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-28 10:08-0700\n"
+"PO-Revision-Date: 2011-06-17 01:18-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -597,7 +597,7 @@ msgid "do.yes"
 msgstr "是"
 
 msgid "error.at-least-one-column-required"
-msgstr "错误：请指定至少一个字段。"
+msgstr "错误：请指定至少一个分栏。"
 
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
@@ -836,10 +836,16 @@ msgstr "从组 %2 中移除 %1。"
 msgid "event.leave=user,wiki"
 msgstr "从工作区 %2 中移除 %1。"
 
+msgid "event.like=page,wiki"
+msgstr "说 %2 里的 %1 很赞。"
+
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23
 msgid "event.unfollow=person"
 msgstr "停止关注 %1。"
+
+msgid "event.unlike=page,wiki"
+msgstr "取消对 %2 里的 %1 说赞。"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -947,7 +953,7 @@ msgstr "基本设置"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:169
 msgid "kanban.bug-columns"
-msgstr "瑕疵字段"
+msgstr "瑕疵栏"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:183
 msgid "kanban.bug-notes"
@@ -967,7 +973,7 @@ msgstr "由此分享者 ID…"
 
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:38
 msgid "kanban.columns"
-msgstr "字段"
+msgstr "分栏"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:105
 msgid "kanban.default-color:"

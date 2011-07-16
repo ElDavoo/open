@@ -58,7 +58,7 @@ sub workspaces_listall {
         settings_section  => $settings_section,
         hub               => $self->hub,
         display_title     => loc('config.wiki-list'),
-        pref_list         => $self->_get_pref_list,
+        pref_list         => $self->_get_pref_list('global'),
     );
 }
 

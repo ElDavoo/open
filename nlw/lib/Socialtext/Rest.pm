@@ -38,6 +38,7 @@ field 'workspace';
 field 'params' => {};
 field 'rest';
 field 'session', -init => 'Socialtext::Session->new()';
+field 'impersonator';
 
 sub new {
     my $class = shift;
@@ -215,6 +216,7 @@ sub _check_on_behalf_of {
         die $e;
     };
 
+    $self->{impersonator} = $self->rest->user;
     $self->rest->{_user} = $desired_user;
     $self->rest->request->connection->user($desired_user->username);
 

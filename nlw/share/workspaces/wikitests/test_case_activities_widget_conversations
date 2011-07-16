@@ -114,7 +114,7 @@
 | *Comment* | %%mentioncode%% |  |
 | st_verify_text_in_activities_widget | activities_widget | %%mentioncode%% |
 
-| *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, NOT PRESENTs - mention /is/ present |  |
+| *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, PRESENT - mention /is/ present |  |
 | wait_for_element_present_ok | link=my conversations | 5000 |
 | click_ok | link=my conversations |  |
 
@@ -124,8 +124,8 @@
 
 | st_text_unlike_in_activities_widget | activities_widget | qr/Showing.+%%r1%%/ism |
 | st_text_unlike_in_activities_widget | activities_widget | qr/Showing.+%%r5%%/ism |
-| st_text_unlike_in_activities_widget | activities_widget | qr/Showing.+%%r6%%/ism |
-| st_text_unlike_in_activities_widget | activities_widget | qr/Showing.+%%r7%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r6%%/ism |
+| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r7%%/ism |
 | st_verify_text_in_activities_widget | activities_widget | %%mentioncode%% |
 
 

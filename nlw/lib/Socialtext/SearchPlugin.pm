@@ -16,6 +16,7 @@ use Socialtext::Pageset;
 use Socialtext::String;
 
 const class_id => 'search';
+const pref_scope => 'none';
 const class_title => __('class.search');
 const cgi_class => 'Socialtext::Search::CGI';
 

@@ -19,7 +19,12 @@ sub do_work {
     my $self    = shift;
     my $indexer = $self->indexer or return;
 
-    $indexer->index_person($self->user);
+    if ($self->user) {
+        $indexer->index_person($self->user);
+    }
+    else {
+        $indexer->delete_person($self->arg->{user_id});
+    }
 
     $self->completed();
 }

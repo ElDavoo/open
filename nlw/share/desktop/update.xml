@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.7.2.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.2.0.air</url>
-  <description><![CDATA[[4.7.2.0 - Sun May  8 02:56:08 PDT 2011]
+  <version>4.7.3.0</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.3.0.air</url>
+  <description><![CDATA[[4.7.3.0 - Fri Jun 10 09:18:23 PDT 2011]
+(Enhancements)
+* Signals: Clicking the "Search" sub-tab now sets focus on the search field.
+* Signals: Flashback now correctly retrieves "before" and "after" signals again. {bz: 5255}
+
+[4.7.2.0 - Sun May  8 02:56:08 PDT 2011]
 (Enhancements)
 * Improved OpenSocial Widgets rendering for ST server version 4.7.2+.
 

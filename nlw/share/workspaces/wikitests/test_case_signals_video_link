@@ -146,3 +146,5 @@
 | *Comment* | Test Case: Signals Video Link TEARDOWN |  |
 | st-admin | deactivate-user --email %%video_user%% |  |
 | st-admin | deactivate-user --email %%all_video_user%% |  |
+
+| *Comment* | Test Case: Signals Video Link COMPLETED |  |

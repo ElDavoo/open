@@ -33,6 +33,8 @@ sub handler {
         # elsewhere when doing Socialtext::CGI operations
         $self->hub->rest($rest);
 
+        $self->hub->app($self);
+
         # Set the locale for this request
         loc_lang( $self->hub->best_locale );
 

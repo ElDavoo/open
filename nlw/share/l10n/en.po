@@ -16,6 +16,8 @@
 # @COPYRIGHT@
 # #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
+# #-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
 # #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
@@ -85,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 03:27-0700\n"
+"PO-Revision-Date: 2011-06-16 10:57-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -115,9 +117,17 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  like.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-06-16 00:06-0700\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-24 06:39-0700\n"
+"PO-Revision-Date: 2011-06-16 00:08-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -125,7 +135,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:20-0700\n"
+"PO-Revision-Date: 2011-06-14 09:22-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4471,6 +4481,14 @@ msgstr "Join To Edit"
 msgid "do.leave"
 msgstr "Leave"
 
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like"
+msgstr "Like"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.like=count"
+msgstr "(%1) Like"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "Next"
@@ -4542,6 +4560,14 @@ msgstr "Bulleted List"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "Stop following this person"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike"
+msgstr "Unlike"
+
+#: share/skin/s3/javascript/like-indicator.js:134
+msgid "do.unlike=count"
+msgstr "(%1) Unlike"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -6568,6 +6594,10 @@ msgstr "%1 does not have the role of '%2' in %3"
 msgid "error.no-role=name,role,container,type"
 msgstr "%1 does not have the role of '%2' in the %3 %4."
 
+#: share/skin/s3/template/view/listview:40
+msgid "error.no-search-results"
+msgstr "Your search returned 0 results."
+
 #: share/plugin/people/template/lite/profile.html:72 lib/Socialtext/Lite/People.pm:78
 msgid "error.no-signals"
 msgstr "No signals to display."
@@ -7295,6 +7325,11 @@ msgstr "Unexpected Widget >>%1<< in parseWidget"
 msgid "error.unknown"
 msgstr "Unknown error"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "Unknown type: %1"
+
 #. ($type)
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
 msgid "error.unknown-report=type"
@@ -7700,6 +7735,16 @@ msgid "event.leave=user,wiki"
 msgstr "removed %1 from the workspace %2."
 
 #. (page_in_workspace)
+#: share/template/data/events/page:27
+msgid "event.like=page"
+msgstr "liked %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "event.like=page,wiki"
+msgstr "liked %1 in %2"
+
+#. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
 msgstr "renamed %1."
@@ -7723,6 +7768,16 @@ msgstr "stopped following %1."
 #: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
 msgstr "Unknown event class: %1"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:29
+msgid "event.unlike=page"
+msgstr "unliked %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:24
+msgid "event.unlike=page,wiki"
+msgstr "unliked %1 in %2"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -8543,7 +8598,7 @@ msgstr "Currently, there are no workspaces associated with this group. Use the f
 
 #. (button)
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
-msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
+msgid "groups.note-click-this-to-save-changes=button"
 msgstr "NOTE: Click <b>%1</b> to save changes."
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
@@ -9038,6 +9093,10 @@ msgstr "Enter a meaningful and distinctive title for your page."
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:164
 msgid "info.new-page-title"
 msgstr "Tip: You'll be able to find this page later by using the title you choose."
+
+#: share/skin/s3/template/view/listview:43
+msgid "info.no-search-results"
+msgstr "Please make sure your query is spelled correctly and try again:"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
@@ -9930,6 +9989,82 @@ msgstr "Last Month"
 msgid "last.week"
 msgstr "Last Week"
 
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "All Likes"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:7
+msgid "like.all-people"
+msgstr "All People"
+
+#: share/skin/s3/javascript/like-indicator.js:137
+msgid "like.like=count"
+msgstr "%quant(%1,like)"
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,person has liked this page,people have liked this page,Nobody has liked this page yet)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.only-you"
+msgstr "Only you have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.page.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.page.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this page."
+
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this revision,people you follow have liked this revision,None of the people you follow have liked this revision)."
+
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,person has liked this revision,people have liked this revision,Nobody has liked this revision yet)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.only-you"
+msgstr "Only you have liked this revision."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.revision.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this revision."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.revision.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this revision."
+
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "Likes"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "Look for <span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">Like</span> on a page you like and then click on it to add the page to your list of liked items."
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "My Likes"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "You don't like any pages yet."
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:30
+msgid "like.page:"
+msgstr "page:"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:6
+msgid "like.people-i-follow"
+msgstr "People I Follow"
+
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"
 msgstr "Add a link"
@@ -10342,6 +10477,10 @@ msgstr "Last"
 #: share/skin/s3/template/view/paging:27
 msgid "nav.last-page"
 msgstr "Last Page"
+
+#: lib/Socialtext/Pluggable/Plugin/Like.pm:113
+msgid "nav.likes"
+msgstr "Likes"
 
 #: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"

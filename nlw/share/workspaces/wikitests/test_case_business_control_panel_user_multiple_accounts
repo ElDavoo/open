@@ -61,6 +61,10 @@
 | set | accountTable | `//div[@id='accountTable']/table/tbody//tr` |
 | set | workspaceTable | `//div[@id='workspaceTable']/table/tbody//tr` |
 
+| *Comment* | Test Case: Business Control Panel User wait for tables to populate |  |
+| wait_for_element_visible_ok | %%accountTable%% | 30000 |
+| wait_for_element_visible_ok | %%workspaceTable%% | 30000 |
+
 | *Comment* | Test Case: Business Control Panel Workspace table and links |  |
 | is_element_present_ok | %%workspaceTable%% | //a[contains(text(),'%%primws%%')] |
 | text_like | %%workspaceTable%% | system-user |

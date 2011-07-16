@@ -7,7 +7,7 @@ use Test::Socialtext;
 use Socialtext::Date::l10n;
 
 my @locale = qw( en unknown );
-my @date_key = ('mm_dd', 'unknown');
+my @date_key = ('unknown');
 my %strftime_date_formats = ( 'mm_dd'   => '%m-%d',
                               'unknown' => '%b %{day}, %Y',
 );
@@ -24,7 +24,7 @@ my %strftime_time_sec_formats = ( '24'   => '%H:%M:%S',
                               'unknown' => '%l:%M:%S%P',
 );
 
-my @date_all_key = sort qw( default mmm_d d_mmm mm_dd mmm_d_yyyy d_mmm_yy yyyy_mm_dd );
+my @date_all_key = sort qw( default mmm_d_yyyy d_mmm_yy yyyy_mm_dd );
 my @time_all_key = sort qw( default 24 12 );
 
 my $dt = DateTime->new(

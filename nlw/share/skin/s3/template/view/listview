@@ -33,7 +33,25 @@
   [% END %]
   <div id="contentContainer">
     <h2 class="tableTitle wrap" title="[% display_title | html %]">[% display_title | html %]</h2>
-    [% IF too_many %]
+    [% IF !rows.size %]
+      <div style="font-size:110%" id="tooManyResults">
+          [% IF empty_message; empty_message; ELSE %]
+            <p style="margin:10px 0">
+              [% loc('error.no-search-results') %]
+            </p>
+            [% IF action == 'search_workspace' %]
+            <p style="margin:8px 0">
+              [% loc('info.no-search-results') %]
+            </p>
+            [% END %]
+          [% END %]
+        [% IF action == 'search_workspace' %]
+          <div id="inlineSearch">
+            [% INCLUDE element/search_form sid='search-again' %]
+          </div>
+        [% END %]
+      </div>
+    [% ELSIF too_many %]
       <div id="tooManyResults">
         <p>
           [% loc('search.too-many=count', too_many) %]

@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 15;
+use Test::Socialtext tests => 16;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Output qw(combined_from combined_like);
 use Socialtext::LDAP::Operations;
@@ -38,11 +38,12 @@ with_a_driver: {
     unlike $output, qr/Factory:.*Factory:/s, '... and only one Driver';
 
     my @groups = grep { /Group:/ } split /^/, $output;
-    is scalar @groups, 4, '... containing correct number of Groups';
+    is scalar @groups, 5, '... containing correct number of Groups';
     like $output, qr/Group:\s+Circular A/, '... ... Circular A';
     like $output, qr/Group:\s+Circular B/, '... ... Circular B';
     like $output, qr/Group:\s+Hawkwind/,   '... ... Hawkwind';
     like $output, qr/Group:\s+Motorhead/,  '... ... Motorhead';
+    like $output, qr/Group:\s+With Hash/,  '... ... WithHash';
 }
 
 ###############################################################################

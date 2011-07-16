@@ -56,13 +56,16 @@ sub preferences_settings {
         $self->status_messages_for_template,
     );
 
+    my $ws = $self->hub->current_workspace;
+    my $scope = $ws && $ws->real ? 'workspace' : 'global';
+
     $self->screen_template('view/settings');
     return $self->render_screen(
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
         display_title     => loc('pref.for-class=title', $object->class_title),
-        pref_list         => $self->_get_pref_list,
+        pref_list         => $self->_get_pref_list($scope),
     );
 }
 

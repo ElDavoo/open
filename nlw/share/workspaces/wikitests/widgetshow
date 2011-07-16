@@ -115,7 +115,7 @@
 | *Comment* | SEE web page widget with Google in lightbox |  |
 | pause | %%pt%% |  |
 
-| click_and_wait | st-widget-opensocial-setup-save |  |
+| click_ok | st-widget-opensocial-setup-save |  |
 | *Comment* | SEE plaintext code for widget in Editing box |  |
 | pause | %%pt%% |  |
 

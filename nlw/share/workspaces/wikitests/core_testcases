@@ -102,6 +102,8 @@ test env properly and are not testing the test-workspace
 * [Test Case: Sticky Search Selection]
 * [Test Case: All Users Workspace]
 * [Test case: Event-Driven Control Panel Reports]
+* [Test Case: User Likes a Page]
+* [Test Case: Global Time]
 
 Keep these Miki test cases at the end since they create a large number of users
 
