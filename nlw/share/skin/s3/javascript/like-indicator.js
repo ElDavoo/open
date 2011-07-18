@@ -57,9 +57,11 @@ LikeIndicator.prototype = {
             self.bubble = new Bubble(vars);
         }
 
-        $indicator
-            .unbind('click')
-            .click(function() { self.toggleLike(); return false });
+        if (!self.bubble.isTouchDevice()) {
+            $indicator
+                .unbind('click')
+                .click(function() { self.toggleLike(); return false });
+        }
     },
 
     renderBubble: function(cb) {
