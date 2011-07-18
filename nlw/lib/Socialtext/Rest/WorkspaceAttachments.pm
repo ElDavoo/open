@@ -10,7 +10,7 @@ sub allowed_methods { 'GET, HEAD' }
 
 sub _entities_for_query {
     my $self = shift;
-    return $self->hub->attachments->all_attachments_in_workspace()
+    return @{$self->hub->attachments->all_attachments_in_workspace()};
 }
 
 1;
