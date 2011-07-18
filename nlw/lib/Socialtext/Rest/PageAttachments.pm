@@ -10,6 +10,7 @@ use Socialtext::SQL qw/sql_txn/;
 use Fcntl ':seek';
 use File::Temp;
 use Socialtext::HTTP ':codes';
+use Socialtext::Attachment;
 
 =head2 POST
 
@@ -84,12 +85,34 @@ sub allowed_methods { 'GET, HEAD, POST' }
 sub get_resource {
     my $self = shift;
     my $q = $self->rest->query;
-    my $atts = $self->hub->attachments->all(
-        page_id => $self->page->id,
-        (map { $_ => scalar $q->param($_) } qw(order limit offset)),
-    );
+
+    my $atts;
+    my %params = map { $_ => scalar $q->param($_) } qw(order limit offset);
+    my $term = $q->param('q') || $q->param('filter');
+
+    if ($term) {
+        my ($hits) = Socialtext::Attachment->Search(
+            search_term => $term,
+            workspace => $self->hub->current_workspace,
+            page_id => $self->page->id,
+            %params,
+        );
+
+        $atts = [
+            map { $self->hub->attachments->load(
+                id => $_->attachment_id,
+                page_id => $self->page->id,
+            ) } @$hits
+        ];
+    }
+    else {
+        $atts = $self->hub->attachments->all(
+            page_id => $self->page->id,
+            %params,
+        );
+    }
+
     return [ map { $self->_entity_hash($_) } @$atts ];
 }
 
 1;
-

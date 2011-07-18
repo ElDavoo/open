@@ -69,3 +69,11 @@
 | json-path-is     | $[0].name          | another-test.txt |
 | json-path-is     | $[1].name          | test.txt         |
 | json-path-is     | $[2].name          | Test.txt         |
+
+# using 'q' for filtering
+| st-process-jobs |
+| GET-json | %%url%%?q=filename:txt&order=alpha |
+| json-response-is | 200       | 3                |
+| json-path-is     | $[0].name | another-test.txt |
+| json-path-is     | $[1].name | test.txt         |
+| json-path-is     | $[2].name | Test.txt         |
