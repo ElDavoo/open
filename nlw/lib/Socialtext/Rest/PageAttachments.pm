@@ -101,7 +101,7 @@ sub get_resource {
         $atts = [
             map { $self->hub->attachments->load(
                 id => $_->attachment_id,
-                page_id => $page_uri,
+                page_id => $_->page_uri,
             ) } @$hits
         ];
     }
