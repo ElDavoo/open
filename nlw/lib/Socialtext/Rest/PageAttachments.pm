@@ -87,7 +87,8 @@ sub get_resource {
     my $q = $self->rest->query;
 
     my $atts;
-    my %params = map { $_ => scalar $q->param($_) } qw(order limit offset);
+    my %params = map { $q->param($_) ? ($_ => $q->param($_)) : () }
+        qw(order limit offset);
     my $term = $q->param('q') || $q->param('filter');
 
     if ($term) {

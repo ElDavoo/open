@@ -16,7 +16,8 @@ sub _entities_for_query {
 
     my $term = $q->param('q') || $q->param('filter');
     if ($term) {
-        my %params = map { $_ => scalar $q->param($_) } qw(order limit offset);
+        my %params = map { $q->param($_) ? ($_ => $q->param($_)) : () }
+            qw(order limit offset);
 
         my ($hits) = Socialtext::Attachment->Search(
             search_term => $term,
