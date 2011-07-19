@@ -30,8 +30,8 @@ BEGIN {
         }
         exec(
             "start_server",
-            "--port=$backend_http_port",
-            "--port=$backend_https_port",
+            "--port=127.0.0.1:$backend_http_port",
+            "--port=127.0.0.1:$backend_https_port",
             "--", 
             "$Bin/".basename(__FILE__),
         )

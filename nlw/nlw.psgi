@@ -12,10 +12,6 @@ use Path::Class;
 use File::Basename;
 
 builder {
-    enable XForwardedFor => (
-        trust => [qw(127.0.0.1/8)],
-    );
-
     enable SizeLimit => (
         max_unshared_size_in_kb => '368640',
     );
@@ -23,7 +19,11 @@ builder {
     enable "ServerStatus::Lite" => (
         path => '/server-status',
         scoreboard => Socialtext::AppConfig->pid_file_dir,
-        allow => [ '127.0.0.1' ],
+        allow => [qw(127.0.0.1/8)],
+    );
+
+    enable XForwardedFor => (
+        trust => [qw(127.0.0.1/8)],
     );
 
     # mount webplugins/
