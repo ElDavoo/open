@@ -68,7 +68,8 @@ proto.clear_inner_html = function() {
     var res = inner_html.match(clear) ? 'true' : 'false';
     if (clear && inner_html.match(clear)) {
         if ($.browser.safari) {
-            this.set_inner_html('<div></div>');
+            this.exec_command('selectall');
+            this.exec_command('delete');
         }
         else {
             this.set_inner_html('');

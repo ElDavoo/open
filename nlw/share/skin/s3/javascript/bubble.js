@@ -9,6 +9,13 @@ Bubble = function (opts) {
         .mouseover(function(){ self.mouseOver() })
         .mouseout(function(){ self.mouseOut() });
 
+    if (self.isTouchDevice()) {
+        $(self.node).click(function(){
+            self.mouseOver();
+            return false;
+        });
+    }
+
     // Help mobile signals hide bubbles
     $(window).scroll(function(){
         $(self.node).mouseout();
@@ -20,6 +27,15 @@ Bubble.prototype = {
         topOffset: 28,
         bottomOffset: 25,
         hoverTimeout: 500
+    },
+
+    isTouchDevice: function() {
+        try {
+            document.createEvent("TouchEvent");
+            return true;
+        } catch (e) {
+            return false;
+        }
     },
 
     mouseOver: function() {
