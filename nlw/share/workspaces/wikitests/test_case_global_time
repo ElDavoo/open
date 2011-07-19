@@ -7,18 +7,19 @@
 | set | demo_pass | socialtext |
 | set | demo_user_2 | socialtextdemo2@gmail.com |
 
+
 | create-account | %%acct%% |  |  |
 | create-workspace | %%wiki%% | %%acct%% |  |
 | create-user | %%user%% | %%password%% | %%acct%% |
 | st-admin | add-member --email %%user%% --workspace %%wiki%% | now has the role |  |
+| st-logoutin | %%user%% | %%password%% |
 
 | *Comment* | Test Case: Global Time | initialize, don't assume fresh installation |
 | include | [Default Global Timezone Values] |  |
 | call | [st default global timezone] | tech_admin=%%user%% |
 
 | *Comment* | Test Case: Global Time check the navigation to the timezone page |  |
-| st-logoutin | %%user%% | %%password%% |
-| open_ok | /st/dashboard |  |
+| open_ok | /?action=workspaces_listall |  |
 | wait_for_element_visible_ok | link=Settings | 30000 |
 | click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Time | 30000 |
@@ -106,7 +107,7 @@
 
 | *Comment* | Test Case: Global Time return %%demo_user%% to default settings |  |
 | st-logoutin | %%demo_user%% | %%demo_pass%% |
-| call | [st_default_timezone] | user=%%demo_user%% |
+| call | [st default timezone] | user=%%demo_user%% |
 
 | *Comment* | Test Case: Global Time TEARDOWN |  |
 | deactivate-user | %%user%% |  |
