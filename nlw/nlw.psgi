@@ -20,6 +20,12 @@ builder {
         max_unshared_size_in_kb => '368640',
     );
 
+    enable "ServerStatus::Lite" => (
+        path => '/server-status',
+        scoreboard => Socialtext::AppConfig->pid_file_dir,
+        allow => [ '127.0.0.1' ],
+    );
+
     # mount webplugins/
     my @webplugin_paths = glob(dir(
         Socialtext::AppConfig->data_root_dir,
