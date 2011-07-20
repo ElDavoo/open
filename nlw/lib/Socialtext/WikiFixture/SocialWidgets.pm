@@ -68,6 +68,7 @@ sub st_empty_container {
         my $widgetlist = $self->{selenium}->get_value("id=widgetList");
         diag "Widgets after empty: $widgetlist\n"; 
     };
+    diag $@ if $@;
     ok( !$@, 'st_empty_container' );
 }
 
