@@ -125,8 +125,6 @@ bin/st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 
 if [ $UPDATE_WIDGETS == 1 ]; then
     set -x
-        bin/st-widgets purge-jobs
-        bin/st-widgets update-all --force --exclude-gallery --verbose
         bin/st-widgets update-gallery --force --verbose
     set +x
 fi
