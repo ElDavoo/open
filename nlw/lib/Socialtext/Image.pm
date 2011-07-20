@@ -5,6 +5,7 @@ use warnings;
 
 use Socialtext::System qw(shell_run backtick);
 use Carp qw/croak confess/;
+use File::Temp qw(tempfile);
 use Readonly;
 use IO::Handle;
 use IO::File;
@@ -116,7 +117,15 @@ sub shrink {
 
 sub get_dimensions {
     my $file = shift;
-    return split ' ', `identify -format '\%w \%h \%n' $file`;
+    my $dims = `identify -format '\%w \%h \%n' $file`;
+    unless ($dims) {
+        my $png = File::Temp->new(SUFFIX => '.png')
+            or confess "can't open storage temp file: $!";
+        local $Socialtext::System::SILENT_RUN = 1;
+        shell_run "convert $file $png";
+        $dims = `identify -format '\%w \%h \%n' $png`;
+    }
+    return split ' ', $dims;
 }
 
 # crop an image using an internal, centered rectangle of the desired size

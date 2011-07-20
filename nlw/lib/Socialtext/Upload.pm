@@ -43,6 +43,7 @@ our @SupportedImageTypes = qw(
     image/gif
     image/png
     image/bmp
+    image/x-ms-bmp
 );
 
 has 'attachment_id' => (is => 'rw', isa => 'Int');
