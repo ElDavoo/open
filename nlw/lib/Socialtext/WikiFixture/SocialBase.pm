@@ -2485,7 +2485,7 @@ sub post_signals {
         my $location = $self->post_signal($message . " $i");
 
         # Separate each signal by 1+ seconds for Solr
-        CORE::sleep(1) until (CORE::time() - $time >= 1);
+        do { CORE::sleep(1) } until (CORE::time() - $time >= 1);
     }
 }
 
