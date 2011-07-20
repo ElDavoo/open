@@ -2480,24 +2480,12 @@ sub post_signals {
     my $message = shift or die;
     my $offset = shift || 1200;
 
-    # All of the signals we send during this test script should be based back
-    # from this start time
-    my $start_time = $self->{_post_signals_start_time}
-                        ||= time() - 60 * 60 * 24 * 30;
-
     for my $i ($offset .. $offset+$count-1) {
+        my $time = CORE::time();
         my $location = $self->post_signal($message . " $i");
 
-        my $signal_time = $start_time + $i;
-        my $delta = time() - $signal_time;
-        # Rewind the date
-        sql_execute(<<EOT, "${delta}s");
-UPDATE signal SET at = at - ?::interval
-    WHERE signal_id = (
-        SELECT signal_id FROM signal
-            ORDER BY signal_id DESC LIMIT 1
-    )
-EOT
+        # Separate each signal by 1+ seconds for Solr
+        CORE::sleep(1) until (CORE::time() - $time >= 1);
     }
 }
 
