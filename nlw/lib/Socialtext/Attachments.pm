@@ -7,6 +7,8 @@ use List::MoreUtils qw/uniq/;
 use Guard;
 use Carp;
 
+use constant class_id => 'attachments';
+
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::Attachment;
@@ -16,8 +18,6 @@ use namespace::clean -except => 'meta';
 
 has 'hub' => (is => 'rw', isa => 'Socialtext::Hub',
     weak_ref => 1, required => 1);
-
-sub class_id { 'attachments' }
 
 use constant COLUMNS =>
     uniq(Socialtext::Attachment->COLUMNS, Socialtext::Upload->COLUMNS);
