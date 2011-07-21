@@ -10,7 +10,7 @@
         [% IF enable_jquery_mobile %]
         <link rel="stylesheet" href="/static/[% app_version %]/skin/common/css/jquery.mobile-1.0a3.min.css" />
         <script src="/static/[% app_version %]/skin/common/javascript/jquery-1.4.4.min.js"></script>
-        <script>
+        <script type="text/javascript">
         $(document).bind("mobileinit", function(){
             [% FILTER decorate('socialtext_js_vars') %]
             window.Socialtext = window.Socialtext || {};
@@ -58,7 +58,7 @@
         </script>
         <script src="/static/[% app_version %]/skin/common/javascript/jquery.mobile-1.0a3.min.js"></script>
         [% ELSE %]
-            <script><!--
+            <script type="text/javascript"><!--
                 [% FILTER decorate('socialtext_js_vars') %]
                 window.Socialtext = window.Socialtext || {};
                 [% END %]
