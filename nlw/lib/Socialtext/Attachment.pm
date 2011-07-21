@@ -107,7 +107,7 @@ sub Search {
     croak __PACKAGE__ ."->Search requires a workspace or workspace_name param"
         if (!$workspace && !$workspace_name);
 
-    use Socialtext::Search::Solr::Factory;
+    require Socialtext::Search::Solr::Factory;
     my $name = $workspace ? $workspace->name : $workspace_name;
     my $searcher = Socialtext::Search::Solr::Factory->create_searcher($name);
 
