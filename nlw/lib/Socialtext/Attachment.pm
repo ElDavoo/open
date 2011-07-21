@@ -104,7 +104,7 @@ sub Search {
     my $workspace_name = delete $params{workspace_name};
     my $term = delete $params{search_term};
 
-    croak __PACKAGE__ ."->Search requires a workspace or workspace_name param"
+    croak $class."->Search requires a workspace or workspace_name param"
         if (!$workspace && !$workspace_name);
 
     require Socialtext::Search::Solr::Factory;
