@@ -57,6 +57,13 @@
         });
         </script>
         <script src="/static/[% app_version %]/skin/common/javascript/jquery.mobile-1.0a3.min.js"></script>
+        [% ELSE %]
+            <script><!--
+                [% FILTER decorate('socialtext_js_vars') %]
+                window.Socialtext = window.Socialtext || {};
+                [% END %]
+                window.Socialtext.mobile = true;
+            --></script>
         [% END %]
         [% INCLUDE element/css_links %]
         <meta name = "viewport" content = "width=device-width, initial-scale=1">
