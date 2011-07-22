@@ -3114,8 +3114,14 @@ proto.create_wafl_string = function(widget, form) {
         replace(/\<\s*\>/, '').
         replace(/\(\s*\)/, '').
         replace(/\s;\s/, ' ').
-        replace(/\s\s+/g, ' ').
+        replace(/^(\{[-\w]+\:)\s\s+/,'$1 ').
         replace(/^\{([-\w]+)\: \}$/,'{$1}');
+
+    /* {bz: 4865}: Allow file and image WAFLs with filenames with multiple spaces. */
+    if (widget != 'file' && widget != 'image') {
+        result = result.replace(/\s\s+/g, ' ');
+    }
+
     if (values.full)
         result = result.replace(/^(\{[-\w]+)/, '$1_full');
     return result;
