@@ -3381,6 +3381,7 @@ proto.hookLookaheads = function() {
 
     jQuery('#st-widget-image_name, #st-widget-file_name')
         .lookahead({
+            fetchAll: true,
             url: function () {
                 var ws = jQuery('#st-widget-workspace_id').val() || Socialtext.wiki_id;
                 var pg = jQuery('#st-widget-page_name').val() || Socialtext.page_id;
