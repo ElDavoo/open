@@ -15,10 +15,10 @@
                 <div class="liker-column">
                     [% FOR liker = col %]
                     <div class="liker">
-                        <a href="/st/profile/[% liker.user_id %]">
-                            <img class="photo" src="/data/people/[% liker.user_id %]/small_photo"/>
+                        <a href="[% base_uri %]/st/profile/[% liker.user_id %]">
+                            <img class="photo" src="[% base_uri %]/data/people/[% liker.user_id %]/small_photo"/>
                         </a>
-                        <a class="name" href="/st/profile/[% liker.user_id %]">
+                        <a class="name" href="[% base_uri %]/st/profile/[% liker.user_id %]">
                             [% liker.best_full_name %]
                         </a>
                     </div>

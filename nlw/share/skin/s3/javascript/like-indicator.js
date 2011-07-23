@@ -213,6 +213,7 @@ LikeIndicator.prototype = {
 $.fn.likeIndicator = function(opts) {
     if (!opts.url) throw new Error('url required');
     if (!opts.type) throw new Error('type required');
+    opts.base_uri = opts.base_uri || '';
     $.each(this, function(_, node) {
         if (node._indicator) {
             node._indicator.update(opts);
