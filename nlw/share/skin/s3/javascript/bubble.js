@@ -128,8 +128,14 @@ Bubble.prototype = {
         if (pop_offset.left + this.popup.width() > $(window).width()) {
             // Move the bubble over to the left
             pop_offset.left
-                = offset.left + $node.width() - this.popup.width() + 20;
+                = offset.left + $node.width() - this.popup.width() + 4;
             this.popup.addClass('left')
+            if (this.popup.hasClass('top')) {
+                pop_offset.top -= 12;
+            }
+            else {
+                pop_offset.top += 12;
+            }
         }
         
         this.popup.css(pop_offset);
