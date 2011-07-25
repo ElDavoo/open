@@ -12,7 +12,7 @@ foreach_attachment(sub {
         workspace_id => $att->{workspace_id},
         page_id => $att->{page_id},
         id => $att->{id},
-        job => { priority => '63' },
+        job => { priority => '-65' },
     });
 });
 
