@@ -1,0 +1,12 @@
+S5:
+  header_color: #aaaaaa
+  header_image: s5-header.png
+  header_image_tiling: none
+  background_color: #ffffff
+  background_image: s5-background.png
+  background_image_tiling: vertical
+  primary_color: #111111
+  secondary_color: #222222
+  tertiary_color: #333333
+  header_font: Arial
+  body_font: Helvetica
