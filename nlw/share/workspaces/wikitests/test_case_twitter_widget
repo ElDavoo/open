@@ -26,7 +26,7 @@
 | wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
 | wait_for_element_visible_ok | `xpath=(//iframe[@class='widgetWindow'])[1]` | 30000 |
 | selectFrame | `xpath=(//iframe[@class='widgetWindow'])[1]` |  |
-| wait_for_text_present_ok | @null has a protected twitter feed which cannot be displayed in this widget. | 30000 |
+| wait_for_text_present_ok | Your twitter username hasn't been added to your profile. Please click "Edit Profile" and enter your twitter username. | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Twitter Widget add a twitter name using edit profile |  |
