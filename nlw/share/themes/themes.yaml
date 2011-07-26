@@ -1,12 +1,14 @@
-S5:
-  header_color: #aaaaaa
-  header_image: s5-header.png
+Starfish:
+  header_color: #cacacaca
+  header_image: starfish-header-31190-25451.png
   header_image_tiling: none
-  background_color: #ffffff
-  background_image: s5-background.png
-  background_image_tiling: vertical
-  primary_color: #111111
-  secondary_color: #222222
-  tertiary_color: #333333
-  header_font: Arial
+  header_image_position: center top
+  background_color: #27430c
+  background_image: starfish-background-5323-12008.png
+  background_image_tiling: both
+  background_image_position: left top
+  primary_color: #6f7c01
+  secondary_color: #c6ba03
+  tertiary_color: #dfebed
+  header_font: Georgia
   body_font: Helvetica
