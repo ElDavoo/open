@@ -81,6 +81,13 @@
         }
     [%- END %]
 
+    location ~ "^/nlw/theme/([^/]+)/style.css$" {
+        alias [% config.cache_dir %]/theme/$1.css;
+        expires 1y;
+        types {}
+        default_type text/css;
+    }
+
     location /nlw/static/ {
         internal;
         alias [% config.static_dir %]/;

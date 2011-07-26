@@ -11,11 +11,6 @@
         '*':                    [Test::Socialtext::Rest, bad_method]
 [%- END %]
 -
-    '/js/:__file__':
-        'GET':
-            '*/*':     &default [Socialtext::Handler::JavaScript, GET]
-        '*':                    [Socialtext::Handler::JavaScript, bad_method]
--
     '/data/jobs':
         'GET':
             '*/*':           &default [Socialtext::Rest::Jobs, GET_html]
@@ -666,6 +661,16 @@
 -
     '/data':
         '*':                    [Socialtext::Rest, redirect_workspaces]
+-
+    '/js/:__file__':
+        'GET':
+            '*/*':     &default [Socialtext::Handler::JavaScript, GET]
+        '*':                    [Socialtext::Handler::JavaScript, bad_method]
+-
+    '/st/theme/:account_id/style.css':
+        'GET':
+            '*/*':     &default [Socialtext::Handler::Theme, GET]
+        '*':                    [Socialtext::Handler::Theme, bad_method]
 -
     '/settings/default_workspace':
         'GET':  
