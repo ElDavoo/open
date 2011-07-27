@@ -18,7 +18,7 @@ use Email::Address;
 use Email::Valid;
 use File::Path ();
 
-our $ENABLE_FRAME_CACHE = 1;
+our $ENABLE_FRAME_CACHE = 0;
 my $PROD_VERSION = Socialtext->product_version;
 my $CODE_BASE = Socialtext::AppConfig->code_base;
 
