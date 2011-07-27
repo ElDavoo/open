@@ -9,6 +9,13 @@ Bubble = function (opts) {
         .mouseover(function(){ self.mouseOver() })
         .mouseout(function(){ self.mouseOut() });
 
+    if (self.isTouchDevice()) {
+        $(self.node).click(function(){
+            self.mouseOver();
+            return false;
+        });
+    }
+
     // Help mobile signals hide bubbles
     $(window).scroll(function(){
         $(self.node).mouseout();
@@ -20,6 +27,15 @@ Bubble.prototype = {
         topOffset: 28,
         bottomOffset: 25,
         hoverTimeout: 500
+    },
+
+    isTouchDevice: function() {
+        try {
+            document.createEvent("TouchEvent");
+            return true;
+        } catch (e) {
+            return false;
+        }
     },
 
     mouseOver: function() {
@@ -112,8 +128,14 @@ Bubble.prototype = {
         if (pop_offset.left + this.popup.width() > $(window).width()) {
             // Move the bubble over to the left
             pop_offset.left
-                = offset.left + $node.width() - this.popup.width() + 20;
+                = offset.left + $node.width() - this.popup.width() + 4;
             this.popup.addClass('left')
+            if (this.popup.hasClass('top')) {
+                pop_offset.top -= 12;
+            }
+            else {
+                pop_offset.top += 12;
+            }
         }
         
         this.popup.css(pop_offset);

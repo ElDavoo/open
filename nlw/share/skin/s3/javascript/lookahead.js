@@ -627,7 +627,13 @@
                 ? this.opts.url() : this.opts.url;
 
         var params = this.opts.params;
-        params[this.opts.filterName] = this.createFilterValue(val);
+
+        if (this.opts.fetchAll) {
+            delete params.count;
+        }
+        else {
+            params[this.opts.filterName] = this.createFilterValue(val);
+        }
 
         this._loading_lookahead = true;
         this.request = $.ajax({

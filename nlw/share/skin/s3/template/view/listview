@@ -146,7 +146,7 @@
       [% END %]
       [% IF ! offset; offset = 0; END %]
       [% IF ! last; last = rows.size; END %]
-    <table class="dataTable" cellspacing="0">
+    <table class="dataTable fixed" cellspacing="0">
       [% FOREACH row = rows %]
         [% row = load_row_times(row) %]
         [% IF !partial_set AND loop.count - 1 < offset %][% NEXT %][% END %]

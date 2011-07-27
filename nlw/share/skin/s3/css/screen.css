@@ -2133,6 +2133,16 @@ table.dataTable {
     width:98%;
 }
 
+table.dataTable.fixed {
+    table-layout: fixed;
+    padding-right: 3px;
+}
+
+table.dataTable.fixed td {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
 table.dataTable .date {
     white-space: nowrap;
 }
@@ -3148,6 +3158,7 @@ div#mainNav ul.level2 li {
 div#mainNav li.scrollingNav {
     overflow-y: auto;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 div#mainNav li.scrollingNav ul {

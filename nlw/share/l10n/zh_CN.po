@@ -9484,25 +9484,20 @@ msgstr "您和 %1 位您关注的人都说这版本赞。"
 msgid "like.liked-this.revision.you=others"
 msgstr "您和其他 %1 个人都说这版本赞。"
 
-#: share/skin/s3/javascript/like-indicator.js:157
 msgid "like.liked-this.signal.not-you=followed"
-msgstr "%quant(%1,person you follow has liked this signal,people you follow have liked this signal,None of the people you follow have liked this signal)."
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这讯息赞。"
 
-#: share/skin/s3/javascript/like-indicator.js:160
 msgid "like.liked-this.signal.not-you=others"
-msgstr "%quant(%1,person has liked this signal,people have liked this signal,Nobody has liked this signal yet)."
+msgstr "%quant(%1,个,个,目前没有)人说这讯息赞。"
 
-#: share/skin/s3/javascript/like-indicator.js:149
 msgid "like.liked-this.signal.only-you"
-msgstr "Only you have liked this signal."
+msgstr "只有您说这讯息赞。"
 
-#: share/skin/s3/javascript/like-indicator.js:149
 msgid "like.liked-this.signal.you=followed"
-msgstr "You and %quant(%1,person you follow,people you follow) have liked this signal."
+msgstr "您和 %1 位您关注的人都说这讯息赞。"
 
-#: share/skin/s3/javascript/like-indicator.js:152
 msgid "like.liked-this.signal.you=others"
-msgstr "You and %quant(%1,other person,other people) have liked this signal."
+msgstr "您和其他 %1 个人都说这讯息赞。"
 
 #: share/plugin/like/template/like/listview-sortby.tt2:1
 msgid "like.likes"

@@ -1,7 +1,8 @@
-#!/usr/bin/env perl
+#!/opt/perl/5.12.2/bin/perl
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Encode ();
 use Socialtext::SQL qw/sql_execute sql_txn/;
 use Socialtext::JSON qw/encode_json decode_json/;
 use Socialtext::Migration::Utils qw/ensure_socialtext_schema/;
@@ -34,7 +35,7 @@ sub cleanup_workspace_prefs {
     for my $row (@$rows) {
         my $user_id = $row->{user_id};
         my $workspace_id = $row->{workspace_id};
-        my $prefs = decode_json($row->{pref_blob});
+        my $prefs = decode_json(Encode::encode_utf8($row->{pref_blob}));
 
         delete $prefs->{timezone};
 
@@ -62,7 +63,7 @@ sub cleanup_workspace_prefs {
 sub set_global_prefs {
     my $row = shift;
 
-    my $prefs = decode_json($row->{pref_blob});
+    my $prefs = decode_json(Encode::encode_utf8($row->{pref_blob}));
     my $timezone = $prefs->{timezone};
 
     # format doesn't contain year, use default instead.

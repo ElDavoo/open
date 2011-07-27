@@ -68,15 +68,31 @@
     left:41px;
     border-width:0 19px 19px;
 }
-.bubbleWrap.left .before,
+.bubbleWrap.left .before {
+    left: auto;
+    right: 3px;
+    bottom: -9px;
+    border-width: 10px 10px 0;
+}
 .bubbleWrap.left.top .before {
     left: auto;
-    right: 9px;
+    right: 3px;
+    border-width: 0 10px 10px;
+    bottom: auto;
+    top: -9px;
 }
-.bubbleWrap.left .after,
+.bubbleWrap.left .after {
+    left: auto;
+    right: 4px;
+    bottom: -6px;
+    border-width: 9px 9px 0;
+}
 .bubbleWrap.left.top .after {
     left: auto;
-    right: 10px;
+    right: 4px;
+    bottom: auto;
+    border-width: 0 9px 9px;
+    top: -6px;
 }
 
 /* Like Indicator */

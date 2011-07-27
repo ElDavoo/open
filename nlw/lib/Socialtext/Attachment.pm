@@ -97,6 +97,26 @@ sub _build_upload {
     return Socialtext::Upload->Get(attachment_id => $att_id);
 }
 
+sub Search {
+    my $class = shift;
+    my %params = @_;
+    my $workspace = delete $params{workspace};
+    my $workspace_name = delete $params{workspace_name};
+    my $term = delete $params{search_term};
+
+    croak $class."->Search requires a workspace or workspace_name param"
+        if (!$workspace && !$workspace_name);
+
+    require Socialtext::Search::Solr::Factory;
+    my $name = $workspace ? $workspace->name : $workspace_name;
+    my $searcher = Socialtext::Search::Solr::Factory->create_searcher($name);
+
+    my ($ref,$num_hits) = $searcher->begin_search(
+        $term, undef, undef, %params, doctype=>'attachment');
+
+    return ($ref->() || [], $num_hits);
+}
+
 # legacy ID generator (new stuff should use UUIDs)
 my $id_counter = 0;
 sub new_id {
