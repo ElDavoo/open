@@ -214,6 +214,7 @@ sub _lookup_group {
     }
 
     # Map the LDAP response back to a proto group
+    $entry->{asn}->{objectName} =~ s/\\#/#/;
     my $response = $self->_map_ldap_entry_to_proto($entry);
     $response->{driver_key} = $self->driver_key();
     $response->{members}    = [ $entry->get_value( $attr_map->{member_dn} ) ];
@@ -409,6 +410,7 @@ sub _update_group_members {
             next unless $attr;
 
             if ($proto_field eq 'driver_unique_id') {
+                $proto_value =~ s/\\#/#/g;
                 $proto_value =~ s/#/\\23/g;
                 $ldap_attrs{$attr} = $proto_value;
             }
@@ -438,6 +440,10 @@ sub _update_group_members {
             }
             else {
                 $proto_value = $entry->get_value( $ldap_attr );
+            }
+
+            if ($proto_field eq 'driver_unique_id') {
+                $proto_value =~ s/CN=\\#/CN=#/;
             }
 
             $proto_group{$proto_field} = $proto_value;
