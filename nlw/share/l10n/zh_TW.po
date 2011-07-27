@@ -3791,6 +3791,9 @@ msgstr "在小工具裡顯示一份網頁。"
 msgid "description.oneimage"
 msgstr "在小工具裡顯示一張圖片。"
 
+msgid "description.page_creator"
+msgstr "從自定的表單欄位來建立頁面。"
+
 msgid "description.page_tracker"
 msgstr "以多欄方式呈現具有特定標籤的頁面。"
 
@@ -12894,6 +12897,9 @@ msgstr "網頁"
 #: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "圖片"
+
+msgid "title.page_creator"
+msgstr "建立頁面"
 
 msgid "title.page_tracker"
 msgstr "頁面看板"

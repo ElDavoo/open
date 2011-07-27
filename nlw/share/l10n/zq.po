@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-28 09:55-0700\n"
+"PO-Revision-Date: 2011-07-27 17:27+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4143,6 +4143,9 @@ msgstr "«Displays a single web page within a Socialtext Widget.»"
 
 msgid "description.oneimage"
 msgstr "«Displays a single spreadsheet within a Socialtext Widget.»"
+
+msgid "description.page_creator"
+msgstr "«Create pages from customized forms.»"
 
 msgid "description.page_tracker"
 msgstr "«Visualize tagged pages in a workspace with multiple columns.»"
@@ -13581,6 +13584,9 @@ msgstr "«Web Page»"
 #: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "«Image»"
+
+msgid "title.page_creator"
+msgstr "«Page Creator»"
 
 msgid "title.page_tracker"
 msgstr "«Page Tracker»"
