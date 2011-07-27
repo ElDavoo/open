@@ -4,17 +4,21 @@ use Moose;
 use Socialtext::HTTP ':codes';
 use Socialtext::Paths;
 use Socialtext::File qw(get_contents set_contents);
-use File::Path qw(mkpath);
 use Socialtext::AppConfig;
+use Socialtext::TT2::Renderer;
+use File::Path qw(mkpath);
+use File::Basename qw(basename);
+use Socialtext::Helpers;
 use namespace::clean -except => 'meta';
 
 my $code_base = Socialtext::AppConfig->code_base;
 my $is_dev_env = Socialtext::AppConfig->is_dev_env;
+my $static_path = Socialtext::Helpers->static_path;
 my $s5 = "$code_base/skin/s5";
 
 extends 'Socialtext::Rest';
 
-my @files = map { "$s5/css/$_" } qw(reset.css text.css 960.css st.css);
+my @files = map { "$s5/css/$_" } qw(reset.css text.css 960.css st.css.tt2);
 
 sub GET {
     my ($self, $rest) = @_;
@@ -51,10 +55,25 @@ sub needs_update {
 
 sub render_css {
     my $self = shift;
+
+    my $renderer = Socialtext::TT2::Renderer->instance;
     
     my $css = '';
     for my $file (@files) {
-        $css .= get_contents($file) . "\n" if -f $file;
+        next unless -f $file;
+        if ($file =~ m{\.tt2$}) {
+            $css .= $renderer->render(
+                template => basename($file),
+                paths => [ "$s5/css" ],
+                vars => {
+                    s5 => "$static_path/skin/s5",
+                }
+            );
+        }
+        else {
+            $css .= get_contents($file);
+        }
+        $css .= "\n";
     }
 
     return $css;
