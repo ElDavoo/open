@@ -2,6 +2,7 @@ package Socialtext::System::TraceTo;
 # @COPYRIGHT@
 use warnings;
 use strict;
+use PerlIO::via::Logger format => '[%d/%b/%Y:%H:%M:%S %z] ';
 
 sub import {
     my $class = shift;
@@ -21,6 +22,11 @@ sub logfile ($) {
     select STDERR; $|=1;
     open STDOUT, '>&', $LogFH;
     select STDOUT; $|=1; # make sure to select STDOUT last
+
+    use POSIX ();
+    POSIX::setlocale(&POSIX::LC_ALL, 'en');
+    PerlIO::via::Logger::logify(*STDERR);
+    PerlIO::via::Logger::logify(*STDOUT);
 }
 
 1;
