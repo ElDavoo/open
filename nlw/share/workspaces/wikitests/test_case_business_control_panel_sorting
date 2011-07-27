@@ -182,5 +182,14 @@
 | st-admin | delete-workspace --workspace 0-sort-3-workspace2-%%start_time%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace 0-sort-3-workspace3-%%start_time%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace ws-n%%start_time%% --no-export | has been deleted |
+| deactivate-user | 0_sort_1_user1@%%start_time%%.com |  |
+| deactivate-user | 0_sort_2_user1@%%start_time%%.com |  |
+| deactivate-user | 0_sort_3_user1@%%start_time%%.com |  |
+| deactivate-user | 0_sort_2_user2@%%start_time%%.com |  |
+| deactivate-user | 0_sort_3_user2@%%start_time%%.com |  |
+| deactivate-user | 0_sort_3_user3@%%start_time%%.com |  |
+| delete-account | 0 sort 1 account %%start_time%% |  |
+| delete-account | 0 sort 2 account %%start_time%% |  |
+| delete-account | 0 sort 3 account %%start_time%% |  |
 
 | *Comment* | Test case: Business Control Panel Sorting COMPLETED |  |

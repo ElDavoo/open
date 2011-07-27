@@ -96,8 +96,11 @@
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace TEARDOWN |  |
 
+| deactivate-user | %%testuseringroup%% |  |
+| deactivate-user | %%testuserinworkspace%% |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%workspaceforadmin%% --no-export | has been deleted |
 | delete-group | %%group_id%% |  |
+| delete-account | %%account%% |  |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace COMPLETED |

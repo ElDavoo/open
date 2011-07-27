@@ -118,4 +118,10 @@
 | click_and_wait | //input[@value='Rename'] |  |
 | text_like | %%new_acct%% account |  |
 
+| *Comment* | Test Cse: Business Control Panel Account TEARDOWN |  |
+| deactivate-user | %%new_user%% |  |
+| delete-account | %%new_acct%% |  |
+| delete-account | %%new_acct_2%% |  |
+| delete-account | %%restrict_acct%% |  |
+
 | *Comment* | Test case: Business Control Panel Account COMPLETED |  |

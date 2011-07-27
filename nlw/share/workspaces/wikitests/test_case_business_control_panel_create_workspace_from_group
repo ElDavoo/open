@@ -127,8 +127,11 @@
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group TEARDOWN |  |
 
 | st-process-jobs |  |  |
+| deactivate-user | %%group_user%% |  |
 | delete-group | %%group_id%% | Deleted group |
 | st-admin | delete-workspace --no-export --w %%wsname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%altname%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%group_ws%% | has been deleted |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group COMPLETED |

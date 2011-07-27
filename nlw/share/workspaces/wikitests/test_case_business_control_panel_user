@@ -115,5 +115,6 @@ TODO: remove user from Workspace and remove user from Account
 | *Comment* | Test case: Business Control Panel User TEARDOWN |  |
 
 | st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
+| delete-account | %%new_acct%% |  |
 
 | *Comment* | Test case: Business Control Panel User COMPLETED |  |
