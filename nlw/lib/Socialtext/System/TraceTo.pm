@@ -24,7 +24,7 @@ sub logfile ($) {
     select STDOUT; $|=1; # make sure to select STDOUT last
 
     use POSIX ();
-    POSIX::setlocale(&POSIX::LC_ALL, 'en');
+    POSIX::setlocale(&POSIX::LC_ALL, 'en_US.UTF-8');
     PerlIO::via::Logger::logify(*STDERR);
     PerlIO::via::Logger::logify(*STDOUT);
 }
