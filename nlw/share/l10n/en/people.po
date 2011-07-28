@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-07-28 11:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -414,12 +414,12 @@ msgid "people.profile"
 msgstr "Profile"
 
 #: share/plugin/people/template/lite/people.html:7
-msgid "people.search"
-msgstr "Search People"
-
-#: share/plugin/people/template/search_box_people:1
 msgid "people.search:"
 msgstr "Search People:"
+
+#: share/plugin/people/template/lite/people.html:7
+msgid "people.search"
+msgstr "People"
 
 #: share/plugin/people/template/lite/profile.html:109 share/plugin/people/template/lite/profile.html:126
 msgid "people.see-all-peers"

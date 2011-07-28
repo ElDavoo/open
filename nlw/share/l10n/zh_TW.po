@@ -8144,6 +8144,10 @@ msgstr "成員"
 msgid "groups.save"
 msgstr "儲存"
 
+#: share/plugin/groups/template/search_box_groups:1
+msgid "groups.search"
+msgstr "Groups"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "groups.search-before-creating"
 msgstr "在建立群組之前，您可以按名字或描述搜尋已有的群組。"
@@ -12400,6 +12404,10 @@ msgid "signals.reply-privately"
 msgstr "私密回覆該訊息。"
 
 #: share/plugin/signals/template/search_box_signals:1
+msgid "signals.search"
+msgstr "Signals"
+
+#: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "搜尋訊息："
 
@@ -14585,6 +14593,14 @@ msgstr "您可以自由查看或編輯這些公開工作區："
 #: lib/Socialtext/Handler/ControlPanel.pm:1527
 msgid "wiki.removed=group"
 msgstr "%1 群組已從此工作區移除"
+
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
+msgid "wiki.search"
+msgstr "This Workspace"
+
+#: share/skin/s3/template/element/search_form:23
+msgid "wiki.search-all"
+msgstr "My Workspaces"
 
 #: share/skin/s3/template/element/search_form:23
 msgid "wiki.search-all:"

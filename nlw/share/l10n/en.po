@@ -79,7 +79,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-07-28 11:14-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-28 09:47-0700\n"
+"PO-Revision-Date: 2011-07-28 11:12-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +103,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-07-28 11:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +135,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 09:22-0700\n"
+"PO-Revision-Date: 2011-07-28 11:14-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -8641,6 +8641,10 @@ msgstr "Member"
 msgid "groups.save"
 msgstr "Save"
 
+#: share/plugin/groups/template/search_box_groups:1
+msgid "groups.search"
+msgstr "Groups"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "groups.search-before-creating"
 msgstr "Before creating a group, you can search names and descriptions for existing groups."
@@ -11241,9 +11245,9 @@ msgstr "Profile"
 
 #: share/plugin/people/template/lite/people.html:7
 msgid "people.search"
-msgstr "Search People"
+msgstr "People"
 
-#: share/plugin/people/template/search_box_people:1
+#: share/plugin/people/template/lite/people.html:7
 msgid "people.search:"
 msgstr "Search People:"
 
@@ -13079,6 +13083,10 @@ msgstr "reply"
 #: share/plugin/signals/template/email/direct-message.html:24
 msgid "signals.reply-privately"
 msgstr "Reply privately to this signal."
+
+#: share/plugin/signals/template/search_box_signals:1
+msgid "signals.search"
+msgstr "Signals"
 
 #: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
@@ -15291,6 +15299,14 @@ msgstr "You have free access to view and contribute to any of these public wikis
 #: lib/Socialtext/Handler/ControlPanel.pm:1527
 msgid "wiki.removed=group"
 msgstr "%1 Group has been removed from this Workspace"
+
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
+msgid "wiki.search"
+msgstr "This Workspace"
+
+#: share/skin/s3/template/element/search_form:23
+msgid "wiki.search-all"
+msgstr "My Workspaces"
 
 #: share/skin/s3/template/element/search_form:23
 msgid "wiki.search-all:"
