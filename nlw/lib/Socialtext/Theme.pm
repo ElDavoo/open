@@ -23,7 +23,7 @@ has $_ => (is=>'ro', isa=>'Socialtext::Upload', lazy_build=>1) for @UPLOADS;
 
 sub _build_header_image {
     my $self = shift;
-    return Socialtext::Upload->new(attachment_id => $self->header_image_id);
+    return Socialtext::Upload->Get(attachment_id => $self->header_image_id);
 }
 
 sub _build_background_image {
@@ -35,9 +35,26 @@ sub as_hash {
     my $self = shift;
     my $p = shift;
 
-    my @fields = @COLUMNS;
+    my %as_hash = map { $_ => $self->$_ } @COLUMNS;
+    if ($p->{set} ne 'minimal') {
+        my $header = $self->header_image;
+        $as_hash{header_image_url} = $self->_attachment_url($header);
+        $as_hash{header_image_filename} = $header->filename;
+        $as_hash{header_image_mime_type} = $header->mime_type;
 
-    return +{ map { $_ => $self->$_ } @fields };
+        my $background = $self->background_image;
+        $as_hash{background_image_url} = $self->_attachment_url($background);
+        $as_hash{background_image_filename} = $background->filename;
+        $as_hash{background_image_mime_type} = $background->mime_type;
+    }
+
+    return \%as_hash;
+}
+
+# Now you need to make this handler and model SignalAttachment -->
+sub _attachment_url {
+    my ($self, $image) = @_;
+    return '/data/theme/:theme_name/attachements/' . $image->attachment_id;
 }
 
 sub All {
