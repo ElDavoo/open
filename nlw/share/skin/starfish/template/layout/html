@@ -1,0 +1,101 @@
+[%# vim: set et sts=2 sw=2: -%]
+[%# This file will create a template that will later be rendered for a user %]
+[%- USE html_encode -%]
+[%- USE decorate -%]
+[%- USE label_ellipsis -%]
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- UserFrame -->
+  <head>
+    <title>[% title || display_title |html %][% IF workspace_present AND wiki.title %] / [% wiki.title |html %][% END %]</title>
+
+    <link rel="stylesheet" type="text/css" href="/st/theme/[% user.primary_account_id %]/style.css" media="screen" />
+
+    [% IF feeds %]
+      [% IF feeds.rss %]
+        [% FOREACH feed IN feeds.rss %]
+    <link rel="alternate" type="application/rss+xml" title="[% feed.value.title | html_encode %]" href="[% feed.value.url %]" />
+        [% END %]
+      [% END %]
+
+      [% IF feeds.atom %]
+        [% FOREACH feed IN feeds.atom %]
+    <link rel="alternate" type="application/atom+xml" title="[% feed.value.title | html_encode %]" href="[% feed.value.url %]" />
+        [% END %]
+      [% END %]
+
+      [% IF feeds.json %]
+        [% FOREACH feed IN feeds.json %]
+    <link rel="alternate" type="application/json" title="[% feed.value.title | html_encode %]" href="[% feed.value.url %]" />
+        [% END %]
+      [% END %]
+    [% END %]
+
+    <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
+
+    <script type="text/javascript" charset="utf-8"
+      src="[% wiki.skin_uri('s3') %]/javascript/l10n-<% loc_lang %>.js.gz">
+    </script>
+
+    <script type="text/javascript" charset="utf-8"
+      src="[% wiki.skin_uri('s3') %]/javascript/socialtext-s3.js.gz">
+    </script>
+
+    [% IF head_template %]
+      [% INCLUDE $head_template %]
+    [% END %]
+
+    [% INCLUDE "element/wiki/js-bootstrap" %]
+
+    <meta name="keywords" content="<% loc('about.keywords') %>"/>
+  </head>
+  <body id="[% id || 'socialtext-wiki' %]" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
+
+    <header>
+      <div class="container_16">
+        <div class="grid_10 title">
+          Your Corp<span class="superscript">&reg;</span> | Unlimited
+        </div>
+        <div class="grid_6 topLinks">
+            <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
+            <span class="padding"></span>
+            <span id="st-wikinav-setting"><a href="/[% current_workspace.name %]?action=users_settings">[% loc('nav.settings') %]</a></span> |
+            <span id="st-wikinav-help"><a href="/help/" target="_blank">[% loc('nav.help') %]</a></span>
+            <span class="padding"></span>
+            [% IF user.is_guest %]
+              [% IF self_registration AND NOT checker.check_permission('self_join') %]
+                <a id="st-wikinav-login" class="button" href="/challenge?[% wiki.uri | html %]">[% loc('nav.login') %]</a>
+                <a class="button" href="/nlw/register.html?redirect_to=[% hub.current_workspace.uri %]">[% loc('do.register') %]</a></li>
+              [% ELSE %]
+                <a class="button" id="st-wikinav-login" href="/challenge?[% wiki.uri | html %]">[% loc('nav.login') %]</a>
+              [% END %]
+            [% ELSE %]
+               <a id="logout_btn" class="button" href="/nlw/submit/logout[% IF wiki.is_public %]?redirect_to=[% wiki.uri | html %][% END %]">[% loc('nav.logout') %]</a>
+            [% END %]
+        </div>
+      </div>
+      <div class="clear"></div>
+    </header>
+
+    <div class="container_16 globalNav">
+      <div class="grid_2 navLink"><a class="dashboard" href="/st/dashboard">Dashboard</a></div>
+      <div class="grid_2 navLink"><a class="spaces" href="#">Spaces</a></div>
+      <div class="grid_2 navLink"><a class="activities" href="/st/activities">Activities</a></div>
+      <div class="grid_2 navLink"><a class="people" href="/st/people">People</a></div>
+      <div class="grid_6 searchBox">
+        [% INCLUDE element/search_form %]
+      </div>
+      <div class="grid_2 widgetButtons">
+        <a class="button addWidget" href="#">+ Widget</a>
+      </div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="container_12">
+      <div class="grid_12 content">
+        [% content %]
+      </div>
+    </div>
+    <div class="clear"></div>
+
+  </body>
+</html>

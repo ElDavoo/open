@@ -1,0 +1,131 @@
+[%# vim: set ft=css: -%]
+body {
+    background: #25410A url([% skin %]/images/background.png) repeat top left;
+    font-size: 11px;
+    font-family: Arial, Gorgia, Helvetica;
+    color: #333;
+}
+
+a {
+    color: #c6b93b;
+}
+
+a.button {
+    padding: 3px 5px;
+    white-space: nowrap;
+    color: #ccc;
+    text-decoration: none;
+
+    /* rounded corners */
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #6f7c01;
+}
+a.button:hover {
+    filter: alpha(opacity = 70);
+}
+
+input {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/**
+ * Some helpful classes
+ */
+.padding {
+    padding: 5px;
+}
+.superscript {
+    font-size: small;
+    vertical-align: top;
+}
+input.hidden { /* For hiding submit buttons */
+    height: 0;
+    width: 0;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+}
+input.initial {
+    color: #999;
+}
+
+/**
+ * Header
+ */
+header {
+    height: 100px;
+    background: #c5c5c5 url('[% skin %]/images/header.png') no-repeat left top;
+
+    /* Drop shadow */
+    -moz-box-shadow: 3px 3px 4px #000000;
+    -webkit-box-shadow: 3px 3px 4px #000000;
+    box-shadow: 3px 3px 4px #000000;
+    /* For IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')";
+}
+header .title {
+    font-family: times;
+    font-size: 35px;
+    padding-top: 25px;
+    color: #fff;
+}
+header a {
+    color: #6d7c24;
+    text-decoration: none;
+}
+header .topLinks {
+    margin-top: 30px;
+    text-align: right;
+}
+
+/**
+ * Global Navigation
+ */
+.globalNav a:visited,
+.globalNav a:active,
+.globalNav a {
+    color: #fff;
+}
+.globalNav .navLink a,
+.globalNav .searchBox,
+.globalNav .widgetButtons {
+    padding: 12px 0 12px 0;
+}
+.globalNav .navLink a {
+    font-size: 14px;
+    display: block;
+    padding-left: 33px;
+    font-weight: bold;
+    text-decoration: none;
+    background: transparent no-repeat 0 10px;
+}
+.globalNav .navLink .dashboard{
+    background-image: url('[% skin %]/images/globalNav/dashboard.png');
+}
+.globalNav .navLink .spaces {
+    background-image: url('[% skin %]/images/globalNav/spaces.png');
+}
+.globalNav .navLink .activities {
+    background-image: url('[% skin %]/images/globalNav/activities.png');
+}
+.globalNav .navLink .people {
+    background-image: url('[% skin %]/images/globalNav/people.png');
+}
+.searchText {
+    padding-left: 18px;
+    width: 100px;
+    background: #fff url('[% skin %]/images/icons/search.png') no-repeat 0 0px;
+}
+.searchBox,
+.widgetButtons {
+    text-align: right;
+}
+
+.content {
+    background-color: #ffffff;
+}
