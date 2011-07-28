@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 63;
+use Test::Socialtext tests => 73;
 
 use_ok("Socialtext::Search::Solr::QueryParser");
 
@@ -50,7 +50,7 @@ valuelookup: {
         [
             q!abc AND def AND colour=blue OR lyz!,
             qq!abc AND def AND annotation:["socialtext","colour","blue"] OR lyz!,
-            qq!abc AND def AND annotation:"socialtext|colour|blue" OR lyz!,
+            qq!abc AND def AND annotation:socialtext|colour|blue OR lyz!,
         ],
           [
               q!abc AND def AND acolour="is red" OR lyz!,
@@ -60,7 +60,7 @@ valuelookup: {
          [
              q!abc AND def AND "the colour"=blue OR lyz!,
              qq!abc AND def AND annotation:["socialtext","the_colour","blue"] OR lyz!,
-             qq!abc AND def AND annotation:"socialtext|the_colour|blue" OR lyz!,
+             qq!abc AND def AND annotation:socialtext|the_colour|blue OR lyz!,
          ],
          [
              q!abc AND def AND "a colour"="is red" OR lyz!,
@@ -95,12 +95,12 @@ valuelookup: {
          [
              q!abc AND def AND "colour one"="is red" OR lyz AND colourtwo=green!,
              q!abc AND def AND annotation:["socialtext","colour_one","is red"] OR lyz AND annotation:["socialtext","colourtwo","green"]!,
-             q!abc AND def AND annotation:"socialtext|colour_one|is red" OR lyz AND annotation:"socialtext|colourtwo|green"!,
+             q!abc AND def AND annotation:"socialtext|colour_one|is red" OR lyz AND annotation:socialtext|colourtwo|green!,
          ],
          [
              q!abc AND def AND "colour one"="is \"the\" red" OR lyz AND colourtwo=green!,
              q!abc AND def AND annotation:["socialtext","colour_one","is \"the\" red"] OR lyz AND annotation:["socialtext","colourtwo","green"]!,
-             q!abc AND def AND annotation:"socialtext|colour_one|is \"the\" red" OR lyz AND annotation:"socialtext|colourtwo|green"!,
+             q!abc AND def AND annotation:"socialtext|colour_one|is \"the\" red" OR lyz AND annotation:socialtext|colourtwo|green!,
          ],
          [
              q!abc AND def AND "colour one"="is red" OR lyz AND "colour two"="was green"!,
@@ -154,8 +154,8 @@ valuelookup: {
           ],
          [
              q!="The Title" AND ns:with_colon:funky="value with = in it" AND acolour="is red"!,
-             q! title:"The Title" AND annotation:["ns with_colon","funky","value with = in it"] AND annotation:["socialtext","acolour","is red"]!,
-             q! title:"The Title" AND annotation:"ns with_colon|funky|value with = in it" AND annotation:"socialtext|acolour|is red"!,
+             q! title:"The Title" AND annotation:["ns_with_colon","funky","value with = in it"] AND annotation:["socialtext","acolour","is red"]!,
+             q! title:"The Title" AND annotation:"ns_with_colon|funky|value with = in it" AND annotation:"socialtext|acolour|is red"!,
          ],
          [
              q!"A bunch of text" AND "colour \"one"="is red" OR lyz!,
@@ -165,12 +165,37 @@ valuelookup: {
          [
              q!"na:key with [] in it"=value!,
              q!annotation:["na","key_with_in_it","value"]!,
-             q!annotation:"na|key_with_in_it|value"!,
+             q!annotation:na|key_with_in_it|value!,
          ],
          [
              q!"na:key"="value with [] in it"!,
              q!annotation:["na","key","value with [\] in it"]!,
              q!annotation:"na|key|value with [] in it"!,
+         ],
+         [
+             q!annotation:["namespace","key","value"]!,
+             q!annotation:["namespace","key","value"]!,
+             q!annotation:namespace|key|value!,
+         ],
+         [
+             q!"just a quote"!,
+             q!"just a quote"!,
+             q!"just a quote"!,
+         ],
+         [
+             q!"a quote" AND stuff!,
+             q!"a quote" AND stuff!,
+             q!"a quote" AND stuff!,
+         ],
+         [
+             q!annotation:["namespace","key"]!,
+             q!annotation:["namespace","key"]!,
+             q!annotation:namespace|key|*!,
+         ],
+         [
+             q!annotation:["namespace"]!,
+             q!annotation:["namespace"]!,
+             q!annotation:namespace|*!,
          ],
     );
 

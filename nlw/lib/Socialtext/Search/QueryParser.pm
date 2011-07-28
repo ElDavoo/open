@@ -55,6 +55,7 @@ sub _build_annotation {
         $key = $2;
     }
     $key = title_to_id($key);
+    $namespace = title_to_id($namespace);
     $value =~ s/\]/\\]/g;
     return qq!annotation:["$namespace","$key","$value"]!;
 }
@@ -122,6 +123,7 @@ sub munge_raw_query_string {
     }
 
     my @parts = split(/(?<!\\)"/, $query);
+
     my $h = 0;
     while ($h < scalar(@parts)) {
         if ($h % 2 == 1) {
@@ -139,14 +141,16 @@ sub munge_raw_query_string {
         }
 
         if ($parts[$i] eq '') {
-            unless ($i==0 and 2 < scalar(@parts) and $parts[2] =~ /^=/) {
-                $parts[$i] = '"' . $parts[$i+1] . '"';
-                $i--;
-            }
+            $nq = '"' . $parts[1] . '"'
+                if ($i==0 and (2 == scalar(@parts) or $parts[2] !~ /^=/));
             $i++;
             next;
         }
+
+        my $grabbed_next = 0;
+        my $had_equal = 0;
         while ($parts[$i] =~ /(?<!\\)=/) {
+            $had_equal = 1;
             if ($parts[$i] =~ /(\S+)=\s+/) {
                 my ($start, $end) = ($-[0], $+[0]);
                 substr($parts[$i],$start, $end-$start, $1 . ' ');
@@ -166,6 +170,7 @@ sub munge_raw_query_string {
                 my ($start, $end) = ($-[0], $+[0]);
                 my $key = $1;
                 my $value = $parts[$i+1];
+                $grabbed_next = 1;
                 my $annotation = $self->_build_annotation($key, $value);
                 substr($parts[$i], $start, $end-$start, $annotation);
             }
@@ -179,12 +184,21 @@ sub munge_raw_query_string {
             elsif ($parts[$i] eq '=') {
                 my $key = $parts[$i-1];
                 my $value = $parts[$i+1];
+                $grabbed_next = 1;
                 my $annotation = $self->_build_annotation($key, $value);
                 $parts[$i] = $annotation;
             }
         }
-        if ($parts[$i] =~ / title:$/) {
+#         if ($parts[$i] =~ / title:$/ or ($i+1 < scalar(@parts) and !$grabbed_next and !$had_equal)) {
+#         if ($parts[$i] =~ / title:$/) {
+        if ($parts[$i] =~ / title:$/ or (!$had_equal and $i+1 < scalar(@parts))) {
+            if ($i+2 < scalar(@parts)) {
+             $parts[$i] .= '"' . $parts[$i+1] . '"'
+             if ($parts[$i+2] !~ /^=/);
+            }
+            else {
              $parts[$i] .= '"' . $parts[$i+1] . '"';
+         }
          }
         $nq .= $parts[$i];
         ++$i;

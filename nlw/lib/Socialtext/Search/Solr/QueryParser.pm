@@ -78,7 +78,8 @@ around 'parse' => sub {
         $new_query .= "|*" if @args < 3;
         $new_query =~ s/(?<!\\)"/\\"/g;
         $new_query =~ s/(?<!\\)\\\]/\]/g;
-        $new_query = 'annotation:"' . $new_query . '"';
+        $new_query = '"' . $new_query . '"' if ($new_query =~ / /);
+        $new_query = 'annotation:' . $new_query;
         substr($query, $start, $end-$start) = $new_query;
     }
 

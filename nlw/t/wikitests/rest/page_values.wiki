@@ -51,7 +51,7 @@ Tests for page values via the REST API
 | json-array-size | 0                                                                      |
 
 | Comment         | Friendly search syntax                             |
-| GET-json        | %%workspace_url%%/pages?q=value:"Lead Dev":Brandon |
+| GET-json        | %%workspace_url%%/pages?q="pagevalues:Lead Dev"=Brandon |
 | code-is         | 200                                                |
 | json-parse      |                                                    |
 | json-array-size | 1                                                  |
