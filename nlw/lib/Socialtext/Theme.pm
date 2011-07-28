@@ -2,6 +2,7 @@ package Socialtext::Theme;
 use Moose;
 use Socialtext::JSON qw(decode_json encode_json);
 use Socialtext::SQL qw(sql_singlevalue sql_execute sql_txn);
+use Socialtext::SQL::Builder qw(sql_insert sql_update sql_nextval);
 use Socialtext::File qw(mime_type);
 use Socialtext::AppConfig;
 use Socialtext::User;
@@ -9,65 +10,128 @@ use Socialtext::Upload;
 use YAML ();
 use namespace::clean -except => 'meta';
 
+my @COLUMNS = qw( theme_id name header_color header_image_id
+    header_image_tiling header_image_position background_color
+    background_image_id background_image_tiling background_image_position
+    primary_color secondary_color tertiary_color header_font body_font
+);
+
+my @UPLOADS = qw(header_image background_image);
+
+has $_ => (is=>'ro', isa=>'Str', required=>1) for @COLUMNS;
+has $_ => (is=>'ro', isa=>'Socialtext::Upload', lazy_build=>1) for @UPLOADS;
+
+sub _build_header_image {
+    my $self = shift;
+    return Socialtext::Upload->new(attachment_id => $self->header_image_id);
+}
+
+sub _build_background_image {
+    my $self = shift;
+    return Socialtext::Upload->new(attachment_id => $self->background_image_id);
+}
+
+sub as_hash {
+    my $self = shift;
+    my $p = shift;
+
+    my @fields = @COLUMNS;
+
+    return +{ map { $_ => $self->$_ } @fields };
+}
+
+sub All {
+    my $class = shift;
+    return [
+        map { $class->new(%$_) } @{$class->_AllThemes()}
+    ];
+}
+
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
     my $themedir = Socialtext::AppConfig->code_base . '/themes';
-    my $json = sql_singlevalue(qq{
-        SELECT value
-          FROM "System"
-         WHERE field = 'themes'
-    });
 
-    my $installed_themes = $json ? decode_json($json) : {};
-    my $all_themes = YAML::LoadFile("$themedir/themes.yaml");
-    my %removed = map { $_ => 1 } keys %$installed_themes;
+    my $installed = { map { $_->{name} => $_ } @{$class->_AllThemes()} };
+    my $all = YAML::LoadFile("$themedir/themes.yaml");
 
-    for my $theme_name (keys %$all_themes) {
-        my $theme = $all_themes->{$theme_name};
+    for my $name (keys %$all) {
+        my $theme = $all->{$name};
+        $theme->{name} = $name;
 
-        delete $removed{$theme_name};
+        if (my $existing = $installed->{$name}) {
+            die "no theme_id for installed theme ($name)?\n"
+                unless $installed->{$name}{theme_id};
 
-        $installed_themes->{$theme_name} = 
-            $class->_GetThemeData($theme_name => $theme, $themedir);
-
+            $class->Update(%$existing, %$theme);
+        }
+        else {
+            $class->Create($theme);
+        }
     }
-
-    delete $installed_themes->{$_} for keys %removed;
-
-    $json = encode_json($installed_themes);
-    sql_txn {
-        sql_execute(qq{
-            DELETE FROM "System" WHERE field = ?
-        }, 'themes');
-        sql_execute(qq{
-            INSERT INTO "System" (field,value) VALUES (?,?)
-        }, 'themes', $json);
-    };
 }
 
-sub _GetThemeData {
+sub Update {
     my $class = shift;
-    my $name = shift;
-    my $data = shift;
-    my $themedir = shift;
+    my $params = (@_ == 1) ? shift : {@_};
+
+    die "no theme_id for installed theme ($params->{name})\n"
+        unless $params->{theme_id};
+    my $to_update = $class->_CleanParams($params);
+
+    sql_update(theme => $to_update, 'theme_id');
+    return $class->new(%$to_update);
+}
+
+sub Create {
+    my $class = shift;
+    my $params = (@_ == 1) ? shift : {@_};
+
+    $params->{theme_id} ||= sql_nextval('theme_theme_id');
+    my $to_insert = $class->_CleanParams($params);
+
+    sql_insert(theme => $to_insert);
+
+    return $class->new(%$to_insert);
+}
+
+sub _CleanParams {
+    my $class = shift;
+    my $params = shift;
+
+    $class->_CreateAttachmentsIfNeeded($params);
+    return +{ map { $_ => $params->{$_} } @COLUMNS };
+
+}
+
+sub _AllThemes {
+    my $class = shift;
+
+    my $sth = sql_execute(qq{
+        SELECT }. join(', ', @COLUMNS) .qq{
+          FROM theme
+    });
+
+    return $sth->fetchall_arrayref({}) || [];
+}
+
+sub _CreateAttachmentsIfNeeded {
+    my $class = shift;
+    my $params = shift;
+
+    my $themedir = Socialtext::AppConfig->code_base . '/themes';
     my $creator = Socialtext::User->SystemUser;
 
-    for my $field (qw(header_image background_image)) {
-        my $filename = delete $data->{$field};
-        my $ids = sql_singlevalue(qq{
-            SELECT array_accum(attachment_id)
-              FROM attachment
-             WHERE filename = ?
-        }, $filename);
+    # Don't worry about breaking links to old upload objects, they'll get
+    # auto-cleaned.
+    for my $temp_field (qw(header_image background_image)) {
+        my $filename = delete $params->{$temp_field};
+        next unless $filename;
 
-        if (scalar(@$ids) == 1) {
-            $data->{$field} = $ids->[0];
-            warn "$name theme: using existing attachment for $field\n";
-            next;
-        }
+        my $db_field = $temp_field . "_id";
 
         my @parts = split(/\./, $filename);
         my $mime_guess = 'image/'. $parts[-1];
+
         my $tempfile = "$themedir/$filename";
         my $file = Socialtext::Upload->Create(
             creator => $creator,
@@ -77,10 +141,8 @@ sub _GetThemeData {
         );
         $file->make_permanent(actor => $creator); 
 
-        $data->{$field} = $file->attachment_id;
+        $params->{$db_field} = $file->attachment_id;
     }
-
-    return $data;
 }
 
 __PACKAGE__->meta->make_immutable;
