@@ -1,0 +1,17 @@
+* Fixture: SocialRest
+
+| set | theme_email | themes%%start_time%%@ken.socialtext.net |
+| create-user | %%theme_email%% | password |
+
+### user is not authorized
+| *Comment* | user is not authorized |
+| http-user-pass |
+| GET-json | /data/themes |
+| code-is  | 401          |
+
+### user is authorized
+| *Comment* | user is authorized |
+| http-user-pass | %%theme_email%% | password |
+| GET-json | /data/themes |
+| code-is | 200 |
+| body-like | ENOSUCH |
