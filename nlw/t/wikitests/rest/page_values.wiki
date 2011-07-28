@@ -10,8 +10,13 @@ Tests for page values via the REST API
 | create-workspace | %%workspace%% |                                    |
 | add-member       | %%username%%  | %%workspace%%                      |
 | set              | page          | PageValues                         |
+| set              | workspace_url | /data/workspaces/%%workspace%%     |
 
-| edit-page        | %%workspace%% | %%page%%                           | Hi there!\n {values: "Story" field_1:Lead Dev:type:"brandon" field_2:Lead QA:type:"Ken"} |
+| st-clear-jobs |               |          |                                                                                          |
+| edit-page     | %%workspace%% | %%page%% | Hi there!\n {values: "Story" field_1:Lead Dev:type:"brandon" field_2:Lead QA:type:"Ken"} |
+| edit-page     | %%workspace%% | Story2   | Hi there!\n {values: "Story" field_1:Branch:type:"pagevalue"}\n {values: "Story" field_1:Lead Dev:type:"au" field_2:Lead QA:type:"Ken"}      |
+| edit-page     | %%workspace%% | Story3   | Hi there!\n {values: "Story" field_1:Lead Dev:type:"kevinj" field_2:Lead QA:type:"Ken"}  |
+| edit-page     | %%workspace%% | Task1    | Hi there!\n {values: "Task" field_1:Customer:type:"CSM"}                                 |
 
 | Comment      | Support JSON                                  |         |
 | GET-json     | /data/workspaces/%%workspace%%/pages/%%page%% |         |
@@ -19,3 +24,34 @@ Tests for page values via the REST API
 | json-parse   |                                               |         |
 | json-path-is | $.values['Lead Dev']                          | brandon |
 | json-path-is | $.values['Lead QA']                           | Ken     |
+
+| Comment         | Pages with page values                   |
+| st-process-jobs |                                                  |
+| GET-json        | %%workspace_url%%/pages?q=annotation:["pagevalues"] |
+| code-is         | 200                                              |
+| json-parse      |                                                  |
+| json-array-size | 4                                                |
+
+| Comment         | Pages with Lead Devs     |
+| GET-json        | %%workspace_url%%/pages?q=annotation:["pagevalues","lead_dev"] |
+| code-is         | 200                                              |
+| json-parse      |                                                  |
+| json-array-size | 3                                                |
+
+| Comment         | Pages with brandon as Lead Dev   |
+| GET-json        | %%workspace_url%%/pages?q=annotation:["pagevalues","lead_dev","Brandon"] |
+| code-is         | 200                                              |
+| json-parse      |                                                  |
+| json-array-size | 1                                                |
+
+| Comment         | Pages with johnt as lead dev         |
+| GET-json        | %%workspace_url%%/pages?q=annotation:["pagevalues","lead_dev","JohnT"] |
+| code-is         | 200                                                                    |
+| json-parse      |                                                                        |
+| json-array-size | 0                                                                      |
+
+| Comment         | Friendly search syntax                             |
+| GET-json        | %%workspace_url%%/pages?q=value:"Lead Dev":Brandon |
+| code-is         | 200                                                |
+| json-parse      |                                                    |
+| json-array-size | 1                                                  |

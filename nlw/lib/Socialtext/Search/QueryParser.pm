@@ -3,6 +3,7 @@ package Socialtext::Search::QueryParser;
 use Moose;
 use Socialtext::People::Fields;
 use namespace::clean -except => 'meta';
+use Socialtext::String qw(title_to_id);
 
 =head1 NAME
 
@@ -43,13 +44,28 @@ sub parse {
     return $query_string;
 }
 
+sub _build_annotation {
+    my $self = shift;
+    my $key = shift;
+    my $value = shift;
+
+    my $namespace = 'socialtext';
+    if ($key =~ /(.+(?<!\\)):(.+)/) {
+        $namespace = $1;
+        $key = $2;
+    }
+    $key = title_to_id($key);
+    $value =~ s/\]/\\]/g;
+    return qq!annotation:["$namespace","$key","$value"]!;
+}
+
 # Raw text manipulations like this are not 100% safe to do, but should be okay
 # considering their esoteric nature (i.e. dealing w/ fields).
 sub munge_raw_query_string {
     my ( $self, $query, $account_ids, %opts) = @_;
 
     # Establish some field synonyms.
-    $query =~ s/=/title:/g;        # Old style title search
+    $query =~ s/(?:\s+|^)=(\S+)/ title:$1/g;        # Old style title search
     $query =~ s/category:/tag:/gi; # Old name for tags
     $query =~ s/tag:\s*/tag:/gi;   # fix capitalization and allow an extra space
     $query =~ s/(?:\s|^)#(\p{IsWord}+)/tag:$1/g; # Allow hashtag searches
@@ -104,6 +120,77 @@ sub munge_raw_query_string {
             push @non_fields, $maybe_field;
         }
     }
+
+    my @parts = split(/(?<!\\)"/, $query);
+    my $h = 0;
+    while ($h < scalar(@parts)) {
+        if ($h % 2 == 1) {
+            $parts[$h] =~ s/=/\\=/g;
+        }
+        $h++;
+    }
+    
+    my $i = 0;
+    my $nq = '';
+    while ($i < scalar(@parts)) {
+        if ($i % 2 == 1) {
+            ++$i;
+            next;
+        }
+
+        if ($parts[$i] eq '') {
+            unless ($i==0 and 2 < scalar(@parts) and $parts[2] =~ /^=/) {
+                $parts[$i] = '"' . $parts[$i+1] . '"';
+                $i--;
+            }
+            $i++;
+            next;
+        }
+        while ($parts[$i] =~ /(?<!\\)=/) {
+            if ($parts[$i] =~ /(\S+)=\s+/) {
+                my ($start, $end) = ($-[0], $+[0]);
+                substr($parts[$i],$start, $end-$start, $1 . ' ');
+            }
+            elsif ($parts[$i] =~ /\s+=\s+/) {
+                my ($start, $end) = ($-[0], $+[0]);
+                substr($parts[$i], $start, $end-$start, ' ');
+            }
+            elsif ($parts[$i] =~ /(\S+)=(\S+)/) {
+                my ($start, $end) = ($-[0], $+[0]);
+                my $key = $1;
+                my $value = $2;
+                my $annotation = $self->_build_annotation($key, $value);
+                substr($parts[$i], $start, $end-$start, $annotation);
+            }
+            elsif ($parts[$i] =~ /(\S+)=$/) {
+                my ($start, $end) = ($-[0], $+[0]);
+                my $key = $1;
+                my $value = $parts[$i+1];
+                my $annotation = $self->_build_annotation($key, $value);
+                substr($parts[$i], $start, $end-$start, $annotation);
+            }
+            elsif ($parts[$i] =~ /^=(\S+)/) {
+                my ($start, $end) = ($-[0], $+[0]);
+                my $key = $parts[$i-1];
+                my $value = $1;
+                my $annotation = $self->_build_annotation($key, $value);
+                substr($parts[$i], $start, $end-$start, $annotation);
+            }
+            elsif ($parts[$i] eq '=') {
+                my $key = $parts[$i-1];
+                my $value = $parts[$i+1];
+                my $annotation = $self->_build_annotation($key, $value);
+                $parts[$i] = $annotation;
+            }
+        }
+        if ($parts[$i] =~ / title:$/) {
+             $parts[$i] .= '"' . $parts[$i+1] . '"';
+         }
+        $nq .= $parts[$i];
+        ++$i;
+    }
+    $nq =~ s/\\=/=/g;
+    $query = $nq;
 
     # If it looks like a field but is not then remove the ":".  This prevents
     # things being treated as fields when they are not fields.

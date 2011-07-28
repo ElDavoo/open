@@ -21,6 +21,8 @@ use Socialtext::l10n;
 
 use namespace::clean -except => 'meta';
 
+with 'Socialtext::Annotations';
+
 enum 'PageType' => qw(wiki spreadsheet);
 
 has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref => 1);
@@ -238,6 +240,7 @@ sub pkey {
 
 sub values {
     my $self = shift;
+    my $as_keys = shift || 0;
 
     my $values = {};
     my $body = ${$self->body_ref};
@@ -245,11 +248,19 @@ sub values {
     while ($body =~ /{values:\s*(.+?)}/g) {
         my $s = $1;
         while ($s =~ /field_\d+:(.+?):(.+?):"(.+?)"/g) {
-            $values->{$1} = $3;
+            my $key = $as_keys ? title_to_id($1) : $1;
+            $values->{$key} = $3;
         }
     }
 
     return $values;
+}
+
+sub _build_annotations {
+    my $self = shift;
+
+    my $values = $self->values(1);
+    return [{pagevalues => $values}];
 }
 
 sub modified_time { $_[0]->edit_time->epoch };

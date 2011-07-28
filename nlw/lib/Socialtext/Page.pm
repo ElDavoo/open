@@ -103,6 +103,7 @@ has 'rev' => (
             body_modified mutable is_spreadsheet is_wiki is_untitled
             has_tag tags_sorted is_recently_modified age_in_minutes
             age_in_seconds age_in_english datetime_for_user datetime_utc
+            annotations annotation_triplets
         )),
     },
 );
