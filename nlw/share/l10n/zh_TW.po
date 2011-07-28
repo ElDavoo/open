@@ -9484,6 +9484,21 @@ msgstr "您和 %1 位您關注的人都說這版本讚。"
 msgid "like.liked-this.revision.you=others"
 msgstr "您和其他 %1 個人都說這版本讚。"
 
+msgid "like.liked-this.signal.not-you=followed"
+msgstr "%quant(%1,位,位,目前沒有)您關注的人說這訊息讚。"
+
+msgid "like.liked-this.signal.not-you=others"
+msgstr "%quant(%1,個,個,目前沒有)人說這訊息讚。"
+
+msgid "like.liked-this.signal.only-you"
+msgstr "只有您說這訊息讚。"
+
+msgid "like.liked-this.signal.you=followed"
+msgstr "您和 %1 位您關注的人都說這訊息讚。"
+
+msgid "like.liked-this.signal.you=others"
+msgstr "您和其他 %1 個人都說這訊息讚。"
+
 #: share/plugin/like/template/like/listview-sortby.tt2:1
 msgid "like.likes"
 msgstr "哪些讚"

@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>402</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-402.air</url>
-<description><![CDATA[[Build 402 - Fri Jun 10 08:37:20 PDT 2011]
+  <version>408</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-408.air</url>
+<description><![CDATA[[Build 408 - Sun Jul 24 00:50:32 PDT 2011]
+* Hide Like indicator for ST servers <4.7.4, or with "like" plugin disabled.
+
+[Build 407 - Sat Jul 23 23:16:47 PDT 2011]
+* Fixed horizontal-overflowing visual glitches for like bubbles.
+* Clicking on users in the like bubble now navigates to their Profile tab.
+
+[Build 406 - Sat Jul 23 10:16:48 PDT 2011]
+* Initial support for Signal Likes (with some small visual glitches).
+
+[Build 405 - Tue Jul 12 23:36:47 PDT 2011]
+* Display Signal Like/Unlike events in Activity tab.
+
+[Build 404 - Tue Jul 12 16:55:33 PDT 2011]
+* Use Yellow Star and Gray Star for page Like/Unlike events respectively.
+
+[Build 403 - Tue Jul 12 04:31:07 PDT 2011]
+* Use Eye icon for "Follow this person" instead of Star icon.
+* Use Eye icon for "Followed" sub-tab in Signals tab.
+
+[Build 402 - Fri Jun 10 08:37:20 PDT 2011]
 * Fix "Flashback spins forever fetching before/after signals". {bz: 5255}
 * Clicking the Signals/Search sub-tab now puts focus into search field.
 

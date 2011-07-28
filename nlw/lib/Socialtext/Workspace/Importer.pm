@@ -177,6 +177,7 @@ sub _create_workspace {
         created_by_user_id => $creator->user_id,
         account_id         => $account->account_id,
         skip_default_pages => 1,
+        dont_add_creator   => 1,
     );
 
     my %update;

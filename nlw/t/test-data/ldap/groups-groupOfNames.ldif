@@ -5,6 +5,13 @@ member: cn=Lemmy Kilmister,dc=example,dc=com
 member: cn=Phil Taylor,dc=example,dc=com
 member: cn=Eddie Clarke,dc=example,dc=com
 
+dn: cn=\23WithHash,dc=example,dc=com
+objectClass: groupOfNames
+cn: With Hash
+member: cn=Lemmy Kilmister,dc=example,dc=com
+member: cn=Phil Taylor,dc=example,dc=com
+member: cn=Eddie Clarke,dc=example,dc=com
+
 dn: cn=Lemmy Kilmister,dc=example,dc=com
 objectClass: inetOrgPerson
 mail: lemmy@example.com

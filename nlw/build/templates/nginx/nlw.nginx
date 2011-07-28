@@ -220,7 +220,7 @@ server {
         }
     [%- END %]
 
-    ssl_ciphers HIGH:MEDIUM:!ADH;
+    ssl_ciphers AES128-SHA:AES:RC4:CAMELLIA128-SHA:!MD5:!ADH:!DH:!ECDH:!PSK:!SSLv2;
     ssl_protocols SSLv3 TLSv1;
     ssl_session_cache shared:SSLTLS:10m;
 

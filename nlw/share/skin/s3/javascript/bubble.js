@@ -8,6 +8,18 @@ Bubble = function (opts) {
         .unbind('mouseout')
         .mouseover(function(){ self.mouseOver() })
         .mouseout(function(){ self.mouseOut() });
+
+    if (self.isTouchDevice()) {
+        $(self.node).click(function(){
+            self.mouseOver();
+            return false;
+        });
+    }
+
+    // Help mobile signals hide bubbles
+    $(window).scroll(function(){
+        $(self.node).mouseout();
+    });
 };
 
 Bubble.prototype = {
@@ -15,6 +27,15 @@ Bubble.prototype = {
         topOffset: 28,
         bottomOffset: 25,
         hoverTimeout: 500
+    },
+
+    isTouchDevice: function() {
+        try {
+            document.createEvent("TouchEvent");
+            return true;
+        } catch (e) {
+            return false;
+        }
     },
 
     mouseOver: function() {
@@ -43,6 +64,10 @@ Bubble.prototype = {
                 self._state = 'hidden';
             }
         }, this.hoverTimeout);
+    },
+
+    isVisible: function() {
+        return this.popup && this.popup.is(':visible');
     },
 
     createPopup: function() {
@@ -81,23 +106,39 @@ Bubble.prototype = {
         var $node = $img.size() ? $img : $(this.node);
         var offset = $node.offset();
 
-        // Check if the avatar is more than half of the way down the page
         var winOffset = $.browser.msie ? document.documentElement.scrollTop 
                                        : window.pageYOffset;
+
+        this.popup.removeClass('top').removeClass('left');
+        var pop_offset = { left: offset.left - 43 };
+
+        // Figure out whether to show the avatar above or below
         if ((offset.top - winOffset) > ($(window).height() / 2)) {
-            this.popup
-                .removeClass('top')
-                .css(
-                    'top', offset.top - this.popup.height() - this.bottomOffset
-                );
+            // Above
+            pop_offset.top
+                = offset.top - this.popup.height() - this.bottomOffset;
         }
         else {
-            this.popup
-                .addClass('top')
-                .css('top', offset.top + $node.height() + this.topOffset);
+            // Below
+            this.popup.addClass('top')
+            pop_offset.top =  offset.top + $node.height() + this.topOffset;
         }
 
-        this.popup.css('left', offset.left - 43 );
+        // Now check if the bubble goes off the page to the right
+        if (pop_offset.left + this.popup.width() > $(window).width()) {
+            // Move the bubble over to the left
+            pop_offset.left
+                = offset.left + $node.width() - this.popup.width() + 4;
+            this.popup.addClass('left')
+            if (this.popup.hasClass('top')) {
+                pop_offset.top -= 12;
+            }
+            else {
+                pop_offset.top += 12;
+            }
+        }
+        
+        this.popup.css(pop_offset);
 
         if ($.browser.msie && this.popup.is(':hidden')) {
             // XXX

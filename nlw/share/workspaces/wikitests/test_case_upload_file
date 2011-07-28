@@ -6,30 +6,14 @@
 | *Comment* | wikitest files should be in %%wikitest_files%% on the browser server |  |
 | *Comment* | *This test only works if selenium_browser has higher powers, i.e. *chrome for firefox* |  |
 
+| st-admin | set-account-config --acc %%defaultaccount%% --index timezone date_display_format mmm_d_yyyy | Updated |
+
 | *Comment* | Test Case: Upload File Create new page |  |
 | st-admin | update-page --w %%workspace%% --e %%email%% --p "Upload File %%start_time%%" < %%wikitest_client_files%%wikitest.txt | created |
 | open_ok | /%%workspace%%/?Upload File %%start_time%% |  |
-
-| *Comment* | Test Case: Upload File Lightbox error checks |  |
-| wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
-| click_ok | st-attachments-uploadbutton |  |
-
-| *Comment* | Test Case: Upload File Lightbox Text |  |
-| wait_for_text_present_ok | Upload Files | 30000 |
-| wait_for_text_present_ok | Maximum file size: 50MB | 30000 |
-
-| *Comment* | Test Case: Upload File Close Upload file lightbox |  |
-| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
-| click_ok | st-attachments-attach-closebutton |  |
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_text_present_ok | Click "Browse" | 30000 |
-| wait_for_element_visible_ok | st-attachments-attach-filename |  |
-| pause | 5000 |  |
-| type_ok | st-attachments-attach-filename | %%wikitest_files%%aintnosuchfile.txt |
-
-| *Comment* | Test Case: Upload File: Selenium can't detect the file does not exist message |  |
-| wait_for_text_not_present_ok | Uploading | 30000 |
 
 | *Comment* | Test Case: Upload File wikitest.doc |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |

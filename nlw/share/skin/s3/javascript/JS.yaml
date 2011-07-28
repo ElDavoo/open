@@ -30,6 +30,7 @@
         - {dir: 'skin/common/javascript', file: 'Socialtext/socialtext-api.js'}
         - 's3.js'
         - 'im.js'
+        - 'html5-file-upload.js'
         - 'bubble.js'
         - 'people-avatar.js'
         - { jemplate: 'template/like-indicator.tt2' }

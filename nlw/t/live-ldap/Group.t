@@ -8,7 +8,7 @@ use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
 use Socialtext::Group::Factory;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 106;
+use Test::Socialtext tests => 117;
 use Test::Differences qw(eq_or_diff);
 use Socialtext::AppConfig;
 
@@ -85,6 +85,38 @@ retrieve_ldap_group: {
 
     # CLEANUP
     Test::Socialtext::Group->delete_recklessly($motorhead);
+}
+
+###############################################################################
+# TEST: retrieve an LDAP Group with a hash
+retrieve_ldap_group_with_hash: {
+    my $guard = Test::Socialtext::User->snapshot();
+
+    my $openldap  = bootstrap_openldap();
+    my $group_dn  = 'cn=#WithHash,dc=example,dc=com';
+    my $group = Socialtext::Group->GetGroup(
+        driver_unique_id => $group_dn,
+    );
+    isa_ok $group, 'Socialtext::Group';
+    isa_ok $group->homunculus, 'Socialtext::Group::LDAP';
+    is $group->driver_group_name, 'With Hash';
+
+    my $users = $group->users;
+    isa_ok $users => 'Socialtext::MultiCursor';
+    is $users->count => '3', '... with correct number of users';
+
+    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
+    my $user = shift @users;
+    is $user->username => 'lemmy kilmister', '... first user has correct name';
+
+    $user = shift @users;
+    is $user->username => 'phil taylor', '... second user has correct name';
+
+    $user = shift @users;
+    is $user->username => 'eddie clarke', '... third user has correct name';
+
+    # CLEANUP
+    Test::Socialtext::Group->delete_recklessly($group);
 }
 
 ###############################################################################
@@ -407,6 +439,12 @@ all_available_ldap_groups: {
             driver_group_name   => 'Motorhead',
             driver_unique_id    => 'cn=Motorhead,dc=example,dc=com',
             already_created     => 1,
+            member_count        => 3,
+        },
+        {   driver_key          => $driver_key,
+            driver_group_name   => 'With Hash',
+            driver_unique_id    => 'cn=#WithHash,dc=example,dc=com',
+            already_created     => 0,
             member_count        => 3,
         },
     );

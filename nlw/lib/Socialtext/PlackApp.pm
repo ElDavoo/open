@@ -24,6 +24,8 @@ sub PerlHandler ($handler, $access_handler) {
     return sub ($env) {
         delete $env->{"psgix.io"};
 
+        $env->{HTTPS} = 'on' if $env->{SERVER_PORT} == $https_port;
+
         local $Request = Socialtext::PlackApp::Request->new($env);
         local $Response = Socialtext::PlackApp::Response->new(200);
         local $CGI = CGI::PSGI->new($env);

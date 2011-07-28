@@ -137,6 +137,17 @@ sub _search {
         if ($opts{doctype} eq 'signal') {
             push @filter_query, "(doctype:signal OR doctype:signal_attachment)";
         }
+        elsif ($opts{doctype} eq 'attachment') {
+            die "attachments need a workspace" unless $self->ws_name;
+            my $ws_id = Socialtext::Workspace->new(
+                name => $self->ws_name)->workspace_id;
+
+            my @filter = ("doctype:$opts{doctype}", "w:$ws_id");
+            push @filter, "page_key:${ws_id}__$opts{page_id}"
+                if $opts{page_id};
+
+            push @filter_query, join(" AND ", @filter);
+        }
         else {
             push @filter_query, "doctype:$opts{doctype}";
         }

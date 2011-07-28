@@ -10,6 +10,16 @@ use Socialtext::Workspace;
 fixtures('empty');
 my $hub = new_hub('empty');
 
+my %tz_prefs = (
+    timezone => {
+        date_display_format => 'mmm_d_yyyy',
+        dst => 'auto-us',
+        time_display_12_24 => '12',
+        time_display_seconds => '0',
+        timezone => '-0800',
+    }
+);
+
 no_prefs: {
     my $workspace = create_test_workspace();
     $hub->current_workspace($workspace);
@@ -21,8 +31,9 @@ no_prefs: {
 
     my $all = $prefs->_load_all_for_user($user);
 
-    eq_or_diff($_, +{}, 'no prefs set')
-        for ($global_prefs, $wksp_prefs, $all);
+    eq_or_diff $global_prefs, \%tz_prefs, 'global prefs are default';
+    eq_or_diff $wksp_prefs, +{}, 'no workspace prefs set';
+    eq_or_diff $all, $global_prefs, 'all prefs match global prefs';
 }
 
 store_prefs: {
@@ -70,7 +81,7 @@ global_overrides_workspace: {
 
     my $all = $prefs->_load_all_for_user($user);
     eq_or_diff $all,
-        { foo => {true=>1}, bar => {true=>1}, baz => {true=>1} },
+        { foo => {true=>1}, bar => {true=>1}, baz => {true=>1}, %tz_prefs },
         'global settings override workspace settings';
 }
 

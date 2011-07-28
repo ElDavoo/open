@@ -14,11 +14,11 @@ my $dir = tempdir(CLEANUP => 1);
 happy_path: {
     my $script = <<'PERL';
         use Socialtext::System::TraceTo '##FILE##';
-        print "redirected!\n";
         warn "warned!\n";
+        print "redirected!\n";
 PERL
     my $o = run_as_script(happy_path => $script);
-    eq_or_diff $o, "before script\nredirected!\nwarned!\n";
+    like $o, qr/before script\n\[.*\] warned!\n\[.*\] redirected!\n/;
 }
 
 late_redir: {
@@ -27,11 +27,11 @@ late_redir: {
         warn "# ignore this\n";
         print "# ignore this\n";
         Socialtext::System::TraceTo::logfile('##FILE##');
-        print "redirected some more!\n";
         warn "warned some more!\n";
+        print "redirected some more!\n";
 PERL
     my $o = run_as_script(late_redir => $script);
-    eq_or_diff $o, "before script\nredirected some more!\nwarned some more!\n";
+    like $o, qr/before script\n\[.*\] warned some more!\n\[.*\] redirected some more!\n/;
     unlike $o, qr/ignore this/m, "pre logfile output not logged";
 }
 

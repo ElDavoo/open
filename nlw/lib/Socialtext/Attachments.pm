@@ -17,7 +17,7 @@ use namespace::clean -except => 'meta';
 has 'hub' => (is => 'rw', isa => 'Socialtext::Hub',
     weak_ref => 1, required => 1);
 
-sub class_id { 'attachments' }
+use constant class_id => 'attachments';
 
 use constant COLUMNS =>
     uniq(Socialtext::Attachment->COLUMNS, Socialtext::Upload->COLUMNS);

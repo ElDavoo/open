@@ -27,6 +27,7 @@ my $test_root = Test::Socialtext::Environment->instance->root_dir;
     my $info = $hub->skin->css_info;
 
     is_deeply($info->{standard}, [
+        "/static/1.0/skin/s3/css/bubble.css",
         "/static/1.0/skin/s3/css/screen.css",
         "/static/1.0/skin/s3/css/screen.ie.css",
         "/static/1.0/skin/s3/css/screen.ie6.css",
@@ -108,6 +109,7 @@ my $test_root = Test::Socialtext::Environment->instance->root_dir;
     my $info = $hub->skin->css_info;
 
     is_deeply($info->{standard}, [
+        "/static/1.0/skin/s3/css/bubble.css",
         "/static/1.0/skin/s3/css/screen.css",
         "/static/1.0/skin/s3/css/screen.ie.css",
         "/static/1.0/skin/s3/css/screen.ie6.css",
@@ -173,6 +175,7 @@ my $info_file = 't/share/uploaded-skin/admin/info.yaml';
     my $info = $hub->skin->css_info;
 
     is_deeply($info->{standard}, [
+        "/static/1.0/skin/s3/css/bubble.css",
         "/static/1.0/skin/s3/css/screen.css",
         "/static/1.0/skin/s3/css/screen.ie.css",
         "/static/1.0/skin/s3/css/screen.ie6.css",
