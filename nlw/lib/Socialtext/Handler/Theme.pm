@@ -11,14 +11,33 @@ use File::Basename qw(basename);
 use Socialtext::Helpers;
 use namespace::clean -except => 'meta';
 
-my $code_base = Socialtext::AppConfig->code_base;
-my $is_dev_env = Socialtext::AppConfig->is_dev_env;
-my $static_path = Socialtext::Helpers->static_path;
-my $s5 = "$code_base/skin/s5";
+use constant code_base => Socialtext::AppConfig->code_base;
+use constant is_dev_env => Socialtext::AppConfig->is_dev_env;
+use constant static_path => Socialtext::Helpers->static_path;
+
+has 'skin_path' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
+sub _build_skin_path {
+    my $self = shift;
+    return join('/', $self->code_base, 'skin', $self->hub->skin->skin_name);
+}
+has 'skin_uri' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
+sub _build_skin_uri {
+    my $self = shift;
+    return join('/', $self->static_path, 'skin', $self->hub->skin->skin_name);
+}
+
+has 'files' => (
+    is => 'ro', isa => 'ArrayRef', lazy_build => 1, auto_deref => 1,
+);
+sub _build_files {
+    my $self = shift;
+    return [
+        map { $self->skin_path . "/css/$_" }
+           qw(reset.css text.css 960.css st.css.tt2)
+    ];
+}
 
 extends 'Socialtext::Rest';
-
-my @files = map { "$s5/css/$_" } qw(reset.css text.css 960.css st.css.tt2);
 
 sub GET {
     my ($self, $rest) = @_;
@@ -33,7 +52,7 @@ sub GET {
 
     $rest->header(
         -status               => HTTP_200_OK,
-        '-content-length'     => -s $file,
+        '-content-length'     => -s $file || 0,
         -type                 => 'text/css',
         -pragma               => undef,
         '-cache-control'      => undef,
@@ -46,8 +65,8 @@ sub needs_update {
     my ($self, $file) = @_;
 
     return 1 unless -f $file;
-    if ($is_dev_env) {
-        my $latest = (sort map { (stat($_))[9] } @files)[-1];
+    if ($self->is_dev_env) {
+        my $latest = (sort map { (stat($_))[9] } $self->files)[-1];
         return $latest > (stat($file))[9];
     }
     return 0;
@@ -59,14 +78,14 @@ sub render_css {
     my $renderer = Socialtext::TT2::Renderer->instance;
     
     my $css = '';
-    for my $file (@files) {
+    for my $file ($self->files) {
         next unless -f $file;
         if ($file =~ m{\.tt2$}) {
             $css .= $renderer->render(
                 template => basename($file),
-                paths => [ "$s5/css" ],
+                paths => [ $self->skin_path . "/css" ],
                 vars => {
-                    s5 => "$static_path/skin/s5",
+                    skin => $self->skin_uri,
                 }
             );
         }
