@@ -177,7 +177,13 @@ TODO: verify cannot actually issue invitations via URL
 | text_like | Cannot give a role to a system-created user |  |
 
 | *Comment* | Test Case: Invite people TEARDOWN |  |
+| deactivate-user | %%emailok%% |  |
+| deactivate-user | %%emailok2%% |  |
+| deactivate-user | %%acct_user%% |  |
+| deactivate-user | %%social%% |  |
 | st-admin | delete-workspace --w %%to_ws%% --no-export | has been deleted |
 | st-admin | remove-accounts-admin --e %%acct_user%% | no longer has accounts admin |
+| delete-account | %%rest_acct%% |  |
+| delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Invite people COMPLETED |  |

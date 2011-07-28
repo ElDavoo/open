@@ -6,4 +6,7 @@
  get-group-id | Motorhead | created_group_id |
 delete-group | %%created_group_id%% | |
 
+| delete-workspace | %%ldapy_ws%% |  |
+| delete-account | %%ldapy_account%% |  |
+
 | *Comment* | Test Case: LDAP Group Teardown COMPLETED |

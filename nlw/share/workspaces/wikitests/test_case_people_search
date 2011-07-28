@@ -95,5 +95,7 @@
 | *Comment* | Test Case: People Search TearDown |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%diffws%% --no-export | has been deleted |
+| delete-account | %%acct%% |  |
+| delete-account | %%diffacct%% |  |
 
 | *Comment* | Test Case: People Search COMPLETED |

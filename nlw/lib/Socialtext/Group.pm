@@ -121,7 +121,7 @@ sub user_can {
     require Socialtext::Authz;
     my $authz = Socialtext::Authz->new();
     return $authz->user_has_permission_for_group(
-        group      => $self,
+        group         => $self,
         %p,
     );
 }

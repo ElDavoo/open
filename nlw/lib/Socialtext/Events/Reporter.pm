@@ -926,7 +926,7 @@ sub _discovery_wrapper {
         $group = Socialtext::Group->GetGroup(group_id => $group)
             unless blessed($group);
         if ($group && !$group->has_user($viewer) &&
-            $group->user_can(user=>$viewer, permission=>$read))
+            $group->user_can(user=>$viewer, permission=>$read, ignore_badmin=>1))
         {
             push @temps, $group;
         }
@@ -967,7 +967,9 @@ sub _discovery_wrapper {
             my $groups = $actor->groups();
             while (my $group = $groups->next) {
                 next if $group->has_user($viewer);
-                next unless $group->user_can(user=>$viewer, permission=>$read);
+                next unless $group->user_can(
+                    user=>$viewer, permission=>$read, ignore_badmin=>1
+                );
                 push @temps, $group;
             }
         }
