@@ -147,7 +147,6 @@ sub munge_raw_query_string {
             next;
         }
 
-        my $grabbed_next = 0;
         my $had_equal = 0;
         while ($parts[$i] =~ /(?<!\\)=/) {
             $had_equal = 1;
@@ -170,7 +169,6 @@ sub munge_raw_query_string {
                 my ($start, $end) = ($-[0], $+[0]);
                 my $key = $1;
                 my $value = $parts[$i+1];
-                $grabbed_next = 1;
                 my $annotation = $self->_build_annotation($key, $value);
                 substr($parts[$i], $start, $end-$start, $annotation);
             }
@@ -184,22 +182,20 @@ sub munge_raw_query_string {
             elsif ($parts[$i] eq '=') {
                 my $key = $parts[$i-1];
                 my $value = $parts[$i+1];
-                $grabbed_next = 1;
                 my $annotation = $self->_build_annotation($key, $value);
                 $parts[$i] = $annotation;
             }
         }
-#         if ($parts[$i] =~ / title:$/ or ($i+1 < scalar(@parts) and !$grabbed_next and !$had_equal)) {
-#         if ($parts[$i] =~ / title:$/) {
-        if ($parts[$i] =~ / title:$/ or (!$had_equal and $i+1 < scalar(@parts))) {
-            if ($i+2 < scalar(@parts)) {
-             $parts[$i] .= '"' . $parts[$i+1] . '"'
-             if ($parts[$i+2] !~ /^=/);
+        if ($parts[$i] =~ / title:$/
+            or (!$had_equal and $i + 1 < scalar(@parts))) {
+            if ($i + 2 < scalar(@parts)) {
+                $parts[$i] .= '"' . $parts[ $i + 1 ] . '"'
+                    if ($parts[ $i + 2 ] !~ /^=/);
             }
             else {
-             $parts[$i] .= '"' . $parts[$i+1] . '"';
-         }
-         }
+                $parts[$i] .= '"' . $parts[ $i + 1 ] . '"';
+            }
+        }
         $nq .= $parts[$i];
         ++$i;
     }
