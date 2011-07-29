@@ -1,4 +1,20 @@
 ---
+'socialtext-container.js':
+    compress: 1
+    parts:
+        -
+            dir: 'plugin/widgets/share/javascript/template'
+            jemplate: 'widget'
+            include_paths: true
+        - shindig-container-default.js
+        - jquery-ui-1.8.5.js
+        - jquery.ui.ipad.altfix.js
+        - Socialtext-Container/drag-and-drop.js
+        - Socialtext-Container/gadgets.js
+        - Socialtext-Container/madlibs.js
+        - {dir: plugin/widgets/share/javascript, file: socialtext-activities.js}
+        - shindig-inline.js
+        - Socialtext-Container/inline.js
 'Socialtext/socialtext-api.js':
     parts:
         - Socialtext/lib/Socialtext/Base.js
