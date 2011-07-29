@@ -55,7 +55,8 @@ sub as_hash {
 # Now you need to make this handler and model SignalAttachment -->
 sub _attachment_url {
     my ($self, $image) = @_;
-    return '/data/theme/:theme_name/attachements/' . $image->attachment_id;
+    my $name = $self->name;
+    return "/data/theme/$name/attachements/" . $image->attachment_id;
 }
 
 sub All {
