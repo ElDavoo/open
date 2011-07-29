@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 73;
+use Test::Socialtext tests => 77;
 
 use_ok("Socialtext::Search::Solr::QueryParser");
 
@@ -196,6 +196,16 @@ valuelookup: {
              q!annotation:["namespace"]!,
              q!annotation:["namespace"]!,
              q!annotation:namespace|*!,
+         ],
+         [
+             q!"just a quote" "and another quote"!,
+             q!"just a quote" "and another quote"!,
+             q!"just a quote" "and another quote"!,
+         ],
+         [
+             q!"just a quote" AND "and another quote"!,
+             q!"just a quote" AND "and another quote"!,
+             q!"just a quote" AND "and another quote"!,
          ],
     );
 
