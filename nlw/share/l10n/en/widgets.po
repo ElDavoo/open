@@ -41,6 +41,14 @@ msgstr "All shared groups"
 msgid "activities.attach-file"
 msgstr "Attach a file"
 
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:6
+msgid "activities.by-you"
+msgstr "By you"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:8
+msgid "activities.by=user"
+msgstr "By %1"
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
 msgid "activities.click-to-collapse"
 msgstr "(click here to collapse)"
@@ -133,6 +141,10 @@ msgstr "people I follow"
 #: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "from"
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
+msgid "activities.info-using-wikilink-popup"
+msgstr "First, start typing a Workspace name, then choose a Workspace from the list that appears. Next, start typing a Page name, then choose a Page from the list that appears. Optionally, add Link text and a Page Section."
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
 msgid "activities.insert:"
@@ -1124,6 +1136,24 @@ msgstr "Insert mention of user:"
 msgid "signals.insert-tag:"
 msgstr "Insert tag:"
 
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:20
+msgid "signals.liked-theirs=uri,snippet"
+msgstr "liked their own <a href=\"%1\">signal</a>, \"%2\"."
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:17
+msgid "signals.liked-yours=uri,snippet"
+msgstr "liked your <a href=\"%1\">signal</a>, \"%2\"."
+
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:22
+msgid "signals.liked=creator,uri,snippet"
+msgstr "liked %1's <a href=\"%2\">signal</a>, \"%3\"."
+
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
 msgid "signals.link-destination:"
 msgstr "Link destination:"
@@ -1149,6 +1179,24 @@ msgstr "primary, %*(%1,user)"
 #: share/plugin/widgets/share/javascript/activities/editor.js:1533
 msgid "signals.private-message-to:"
 msgstr "Create private message to:"
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:32
+msgid "signals.unliked-theirs=uri,snippet"
+msgstr "unliked their own <a href=\"%1\">signal</a>, \"%2\"."
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:29
+msgid "signals.unliked-yours=uri,snippet"
+msgstr "unliked your <a href=\"%1\">signal</a>, \"%2\"."
+
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:34
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "unliked %1's <a href=\"%2\">signal</a>, \"%3\"."
 
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
 msgid "signals.uploaded-files:"
