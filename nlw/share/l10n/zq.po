@@ -301,6 +301,10 @@ msgstr "«Logo removed. The default should be visible immediately.»"
 msgid "account.renamed=old,new"
 msgstr "«Account %1 renamed to %2»"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:453
+msgid "account.settings-updated"
+msgstr "«Account settings updated»"
+
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:562
 msgid "account.skip-missing=plugin"
@@ -407,6 +411,14 @@ msgstr "«All shared groups»"
 msgid "activities.attach-file"
 msgstr "«Attach a file»"
 
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:6
+msgid "activities.by-you"
+msgstr "«By you»"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:8
+msgid "activities.by=user"
+msgstr "«By %1»"
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
 msgid "activities.click-to-collapse"
 msgstr "«(click here to collapse)»"
@@ -499,6 +511,10 @@ msgstr "«people I follow»"
 #: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "«from»"
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
+msgid "activities.info-using-wikilink-popup"
+msgstr "«First, start typing a Workspace name, then choose a Workspace from the list that appears. Next, start typing a Page name, then choose a Page from the list that appears. Optionally, add Link text and a Page Section.»"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
 msgid "activities.insert:"
@@ -2529,6 +2545,10 @@ msgstr "«Time each day:»"
 msgid "console.time-server"
 msgstr "«Time Server»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:172
+msgid "console.time-settings"
+msgstr "«Time Settings»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "«total»"
@@ -3672,6 +3692,10 @@ msgstr "«This will also reset the logo after a fresh login to Socialtext Deskto
 msgid "control.this-will-reset-logo-for-desktop"
 msgstr "«This will reset the logo after a fresh login to Socialtext Desktop.»"
 
+#: share/plugin/control/template/control/account.html:70
+msgid "control.timezone-settings"
+msgstr "«Timezone Settings»"
+
 #: share/plugin/control/template/control/accounts_transform.html:7
 msgid "control.transform"
 msgstr "«Transform»"
@@ -3684,7 +3708,7 @@ msgstr "«Transform Accounts to Groups»"
 msgid "control.transform-to-groups"
 msgstr "«Transform to Groups»"
 
-#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
+#: share/plugin/control/template/control/account.html:80 share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70 ../appliance/libsocialtext-appliance-perl/template/setup.html:182
 msgid "control.update"
 msgstr "«Update»"
 
@@ -8211,6 +8235,14 @@ msgstr "«Delete this attachment»"
 #: share/skin/s3/javascript/lightbox/attachment.tt2:50
 msgid "file.delete=name?"
 msgstr "«Are you sure you want to delete the attachment '%1' from this page?»"
+
+#: share/skin/s3/template/element/page/display/attachments:13
+msgid "file.drop-here-to-upload"
+msgstr "«Drop files here to upload.»"
+
+#: share/skin/s3/javascript/lightbox/attachment.js:367 share/skin/s3/javascript/lightbox/attachment.tt2:65
+msgid "file.duplicate-files"
+msgstr "«Duplicate Files»"
 
 #: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
@@ -12968,6 +13000,27 @@ msgstr "«Insert mention of user:»"
 msgid "signals.insert-tag:"
 msgstr "«Insert tag:»"
 
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:20
+msgid "signals.liked-theirs=uri,snippet"
+msgstr "«liked their own <a href=\"%1\">signal</a>, \"%2\".»"
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:17
+msgid "signals.liked-yours=uri,snippet"
+msgstr "«liked your <a href=\"%1\">signal</a>, \"%2\".»"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:22 share/plugin/signals/template/data/events/signal:26
+msgid "signals.liked=creator,uri,snippet"
+msgstr "«liked %1's <a href=\"%2\">signal</a>, \"%3\".»"
+
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
 msgid "signals.link-destination:"
 msgstr "«Link destination:»"
@@ -13162,6 +13215,27 @@ msgstr "«to %1»"
 #: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
 msgstr "«Please try again:»"
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:32
+msgid "signals.unliked-theirs=uri,snippet"
+msgstr "«unliked their own <a href=\"%1\">signal</a>, \"%2\".»"
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:29
+msgid "signals.unliked-yours=uri,snippet"
+msgstr "«unliked your <a href=\"%1\">signal</a>, \"%2\".»"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:34 share/plugin/signals/template/data/events/signal:28
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "«unliked %1's <a href=\"%2\">signal</a>, \"%3\".»"
 
 #: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"

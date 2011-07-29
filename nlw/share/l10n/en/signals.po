@@ -236,6 +236,11 @@ msgstr "Find and select \"Show Bookmarks Bar\" from the menu in your browser."
 msgid "signals.global-limit=size"
 msgstr "Maximum value for this appliance is %1"
 
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/signals/template/data/events/signal:26
+msgid "signals.liked=creator,uri,snippet"
+msgstr "liked %1's <a href=\"%2\">signal</a>, \"%3\"."
+
 #. (a.user_count)
 #. (g.user_count)
 #: share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
@@ -389,6 +394,11 @@ msgstr "to %1"
 #: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
 msgstr "Please try again:"
+
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/signals/template/data/events/signal:28
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "unliked %1's <a href=\"%2\">signal</a>, \"%3\"."
 
 #: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-22 05:05-0700\n"
+"PO-Revision-Date: 2011-07-29 10:31+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -235,6 +235,9 @@ msgstr "在您的浏览器菜单中找到并且选择“显示书签栏”。"
 msgid "signals.global-limit=size"
 msgstr "该设备的最大值是 %1"
 
+msgid "signals.liked=creator,uri,snippet"
+msgstr "说 %1 的这则<a href=\"%2\">讯息</a>很赞：“%3”。"
+
 #. (a.user_count)
 #. (g.user_count)
 #: share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
@@ -387,6 +390,9 @@ msgstr "给%1"
 #: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
 msgstr "请重新尝试："
+
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "取消对 %1 的这则<a href=\"%2\">讯息</a>说赞：“%3”。"
 
 #: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"
