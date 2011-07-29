@@ -91,55 +91,57 @@ header .topLinks {
  * Global Navigation
  */
 
-/* Replace margin:5px with padding + border */
-.globalNav .navLink {
-    margin: 0;
-    padding: 0 4px;
-    border-left: 1px solid #000;
-    border-right: 1px solid #000;
-}
-.globalNavUnder .navUnder { margin: 0; padding: 0 5px }
-
-/* Slide the whole thing over 10px */
-.globalNav, .globalNavUnder {
+.globalNav {
     padding-left: 10px;
 }
+/* Replace margin:5px with extra width */
+.globalNav .grid_2 { margin: 0; width: 80px }
+.globalNav .grid_3 { margin: 0; width: 120px }
+.globalNav .grid_10 { margin: 0; width: 400px }
 
-.globalNavUnder .navUnder {
-    height: 3px;
-    background-color: #fff;
-    border-top: 2px solid [% secondary_color %];
+.globalNav .navGrid {
+    height: 50px;
 }
-.globalNavUnder .selected {
-    background-color: [% secondary_color %];
+.globalNav .navItem,
+.globalNav .navLink {
+    height: 45px;
 }
+
 
 .globalNav a:visited,
 .globalNav a:active,
 .globalNav a {
     color: #fff;
 }
-.globalNav .navLink,
-.globalNav .searchBox,
-.globalNav .widgetButtons {
-    height: 50px;
+
+.globalNav .navLink {
+    border-left: 2px solid #000;
 }
-.globalNav .padding {
-    padding-top: 18px;
+.globalNav .last .navLink {
+    border-right: 2px solid #000;
 }
+
 .globalNav .navLink a {
-    margin-top: 15px;
-    height: 26px;
+    top: 10px;
+    position: relative;
+}
+.globalNav .searchBox form,
+.globalNav .widgetButtons .button {
+    top: 13px;
+    position: relative;
+}
+
+.globalNav .navLink a {
+    color: #ccc;
     font-size: 12px;
     display: block;
-    padding-left: 29px;
-    padding-top: 5px;
+    padding: 5px 0 0 29px;
     font-weight: bold;
     text-decoration: none;
     background: transparent no-repeat 10px 0;
     text-align: center;
 }
-.globalNav .selected {
+.globalNav .selected .navLink {
     background-color: #000;
     opacity: .3;
 }
@@ -163,6 +165,16 @@ header .topLinks {
 .searchBox,
 .widgetButtons {
     text-align: right;
+}
+
+.navGrid .underline {
+    height: 3px;
+    background-color: #fff;
+    border-top: 2px solid [% secondary_color %];
+    width: 100%;
+}
+.selected .underline {
+    background-color: [% secondary_color %];
 }
 
 .content {
