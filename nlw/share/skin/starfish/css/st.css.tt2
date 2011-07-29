@@ -1,4 +1,8 @@
 [%# vim: set ft=css: -%]
+
+[% SET primary_color = '#6f7c01' %]
+[% SET secondary_color = '#c6b93b' %]
+
 body {
     background: #25410A url([% skin %]/images/background.png) repeat top left;
     font-size: 11px;
@@ -7,7 +11,7 @@ body {
 }
 
 a {
-    color: #c6b93b;
+    color: [% primary_color %];
 }
 
 a.button {
@@ -21,7 +25,7 @@ a.button {
     -moz-border-radius: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    background-color: #6f7c01;
+    background-color: [% primary_color %]
 }
 a.button:hover {
     filter: alpha(opacity = 70);
@@ -75,7 +79,7 @@ header .title {
     color: #fff;
 }
 header a {
-    color: #6d7c24;
+    color: [% primary_color %];
     text-decoration: none;
 }
 header .topLinks {
@@ -86,23 +90,58 @@ header .topLinks {
 /**
  * Global Navigation
  */
+
+/* Replace margin:5px with padding + border */
+.globalNav .navLink {
+    margin: 0;
+    padding: 0 4px;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+}
+.globalNavUnder .navUnder { margin: 0; padding: 0 5px }
+
+/* Slide the whole thing over 10px */
+.globalNav, .globalNavUnder {
+    padding-left: 10px;
+}
+
+.globalNavUnder .navUnder {
+    height: 3px;
+    background-color: #fff;
+    border-top: 2px solid [% secondary_color %];
+}
+.globalNavUnder .selected {
+    background-color: [% secondary_color %];
+}
+
 .globalNav a:visited,
 .globalNav a:active,
 .globalNav a {
     color: #fff;
 }
-.globalNav .navLink a,
+.globalNav .navLink,
 .globalNav .searchBox,
 .globalNav .widgetButtons {
-    padding: 12px 0 12px 0;
+    height: 50px;
+}
+.globalNav .padding {
+    padding-top: 18px;
 }
 .globalNav .navLink a {
-    font-size: 14px;
+    margin-top: 15px;
+    height: 26px;
+    font-size: 12px;
     display: block;
-    padding-left: 33px;
+    padding-left: 29px;
+    padding-top: 5px;
     font-weight: bold;
     text-decoration: none;
-    background: transparent no-repeat 0 10px;
+    background: transparent no-repeat 10px 0;
+    text-align: center;
+}
+.globalNav .selected {
+    background-color: #000;
+    opacity: .3;
 }
 .globalNav .navLink .dashboard{
     background-image: url('[% skin %]/images/globalNav/dashboard.png');
@@ -128,4 +167,5 @@ header .topLinks {
 
 .content {
     background-color: #ffffff;
+    padding: 10px;
 }

@@ -51,11 +51,11 @@
   <body id="[% id || 'socialtext-wiki' %]" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
 
     <header>
-      <div class="container_16">
-        <div class="grid_10 title">
+      <div class="container_24">
+        <div class="grid_15 title">
           Your Corp<span class="superscript">&reg;</span> | Unlimited
         </div>
-        <div class="grid_6 topLinks">
+        <div class="grid_9 topLinks">
             <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
             <span class="padding"></span>
             <span id="st-wikinav-setting"><a href="/[% current_workspace.name %]?action=users_settings">[% loc('nav.settings') %]</a></span> |
@@ -76,23 +76,12 @@
       <div class="clear"></div>
     </header>
 
-    <div class="container_16 globalNav">
-      <div class="grid_2 navLink"><a class="dashboard" href="/st/dashboard">Dashboard</a></div>
-      <div class="grid_2 navLink"><a class="spaces" href="#">Spaces</a></div>
-      <div class="grid_2 navLink"><a class="activities" href="/st/activities">Activities</a></div>
-      <div class="grid_2 navLink"><a class="people" href="/st/people">People</a></div>
-      <div class="grid_6 searchBox">
-        [% INCLUDE element/search_form %]
-      </div>
-      <div class="grid_2 widgetButtons">
-        <a class="button addWidget" href="#">+ Widget</a>
-      </div>
-    </div>
-    <div class="clear"></div>
+    [% INCLUDE element/main_nav %]
 
     <div class="container_12">
       <div class="grid_12 content">
-        [% content %]
+        ok
+        [%# content %]
       </div>
     </div>
     <div class="clear"></div>

@@ -33,7 +33,7 @@ sub _build_files {
     my $self = shift;
     return [
         map { $self->skin_path . "/css/$_" }
-           qw(reset.css text.css 960.css st.css.tt2)
+           qw(reset.css text.css 960.css 960_24_col.css st.css.tt2)
     ];
 }
 
