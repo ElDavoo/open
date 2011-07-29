@@ -31,7 +31,6 @@
   </div>
   <div class="grid_2 navGrid widgetButtons">
     <div class="navItem">
-        <a class="button addWidget" href="#">+ Widget</a>
     </div>
     <div class="underline"></div>
   </div>
