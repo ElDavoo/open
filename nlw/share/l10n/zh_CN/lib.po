@@ -83,6 +83,9 @@ msgstr "标志已移除。默认即时可见。"
 msgid "account.renamed=old,new"
 msgstr "%1 帐户已重命名为 %2"
 
+msgid "account.settings-updated"
+msgstr "帐户设置已更新"
+
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:562
 msgid "account.skip-missing=plugin"

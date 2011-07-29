@@ -593,6 +593,10 @@ msgstr "Time each day:"
 msgid "console.time-server"
 msgstr "Time Server"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:172
+msgid "console.time-settings"
+msgstr "Time Settings"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "total"
@@ -622,6 +626,10 @@ msgstr "Web Service Proxy Address"
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:131
 msgid "console.your-email-address:"
 msgstr "Your email address:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:182
+msgid "control.update"
+msgstr "Update"
 
 #: ../appliance/libsocialtext-appliance-perl/template/popup.html:48
 msgid "do.cancel"
