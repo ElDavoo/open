@@ -36,7 +36,8 @@ sub as_hash {
     my $p = shift;
 
     my %as_hash = map { $_ => $self->$_ } @COLUMNS;
-    if ($p->{set} ne 'minimal') {
+
+    if (!$p->{set} || $p->{set} ne 'minimal') {
         my $header = $self->header_image;
         $as_hash{header_image_url} = $self->_attachment_url($header);
         $as_hash{header_image_filename} = $header->filename;
@@ -97,6 +98,27 @@ sub Update {
 
     sql_update(theme => $to_update, 'theme_id');
     return $class->new(%$to_update);
+}
+
+sub Load {
+    my $class = shift;
+    my $field = shift;
+    my $value = shift;
+
+    die "must use a unique identifier"
+        unless grep { $_ eq $field } qw(theme_id name);
+
+    my $sth = sql_execute(qq{
+        SELECT }. join(',', @COLUMNS) .qq{
+          FROM theme
+         WHERE $field = ?
+    }, $value);
+
+    my $rows = $sth->fetchall_arrayref({});
+
+    return scalar(@$rows)
+        ? $class->new(%{$rows->[0]})
+        : undef;
 }
 
 sub Create {

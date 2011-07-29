@@ -680,6 +680,11 @@
             'application/json': [Socialtext::Rest::Themes, GET_themes]
         '*':                    [Socialtext::Rest::Themes, bad_method]
 -
+    '/data/themes/:theme':
+        'GET':
+            'application/json': [Socialtext::Rest::Themes, GET_theme]
+        '*':                    [Socialtext::Rest::Themes, bad_method]
+-
     '/m':
         'GET':                  [Socialtext::Rest::Lite, homepage]
         '*':                    [Socialtext::Rest::Lite, bad_method]
