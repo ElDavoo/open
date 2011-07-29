@@ -120,6 +120,10 @@ msgstr "標誌已移除。預設即時可見。"
 msgid "account.renamed=old,new"
 msgstr "%1 帳戶已重新命名為 %2"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:453
+msgid "account.settings-updated"
+msgstr "Account settings updated"
+
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:562
 msgid "account.skip-missing=plugin"
@@ -226,6 +230,14 @@ msgstr "所有共用群組"
 msgid "activities.attach-file"
 msgstr "新增附件"
 
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:6
+msgid "activities.by-you"
+msgstr "By you"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:8
+msgid "activities.by=user"
+msgstr "By %1"
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
 msgid "activities.click-to-collapse"
 msgstr "（點選此處收回）"
@@ -318,6 +330,10 @@ msgstr "我關注的人"
 #: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "來自"
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
+msgid "activities.info-using-wikilink-popup"
+msgstr "First, start typing a Workspace name, then choose a Workspace from the list that appears. Next, start typing a Page name, then choose a Page from the list that appears. Optionally, add Link text and a Page Section."
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
 msgid "activities.insert:"
@@ -2237,6 +2253,10 @@ msgstr "每日時間："
 msgid "console.time-server"
 msgstr "時間伺服器"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:172
+msgid "console.time-settings"
+msgstr "Time Settings"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "總計"
@@ -3347,6 +3367,10 @@ msgstr "在更新登入 Socialtext 桌面後也將重置標誌."
 #: share/plugin/control/template/control/design-account.html:52
 msgid "control.this-will-reset-logo-for-desktop"
 msgstr "在更新登入 Socialtext 桌面後將重置標誌"
+
+#: share/plugin/control/template/control/account.html:70
+msgid "control.timezone-settings"
+msgstr "Timezone Settings"
 
 #: share/plugin/control/template/control/accounts_transform.html:7
 msgid "control.transform"
@@ -7724,6 +7748,14 @@ msgstr "刪除這個附件"
 #: share/skin/s3/javascript/lightbox/attachment.tt2:50
 msgid "file.delete=name?"
 msgstr "您確定要從本頁面刪除此附件'%1'？"
+
+#: share/skin/s3/template/element/page/display/attachments:13
+msgid "file.drop-here-to-upload"
+msgstr "Drop files here to upload."
+
+#: share/skin/s3/javascript/lightbox/attachment.js:367 share/skin/s3/javascript/lightbox/attachment.tt2:65
+msgid "file.duplicate-files"
+msgstr "Duplicate Files"
 
 #: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
@@ -12295,6 +12327,27 @@ msgstr "提及用戶："
 msgid "signals.insert-tag:"
 msgstr "插入標籤："
 
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:20
+msgid "signals.liked-theirs=uri,snippet"
+msgstr "liked their own <a href=\"%1\">signal</a>, \"%2\"."
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:17
+msgid "signals.liked-yours=uri,snippet"
+msgstr "liked your <a href=\"%1\">signal</a>, \"%2\"."
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:22 share/plugin/signals/template/data/events/signal:26
+msgid "signals.liked=creator,uri,snippet"
+msgstr "liked %1's <a href=\"%2\">signal</a>, \"%3\"."
+
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
 msgid "signals.link-destination:"
 msgstr "鏈結目的地："
@@ -12481,6 +12534,27 @@ msgstr "給%1"
 #: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
 msgstr "請重新嘗試："
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:32
+msgid "signals.unliked-theirs=uri,snippet"
+msgstr "unliked their own <a href=\"%1\">signal</a>, \"%2\"."
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:29
+msgid "signals.unliked-yours=uri,snippet"
+msgstr "unliked your <a href=\"%1\">signal</a>, \"%2\"."
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:34 share/plugin/signals/template/data/events/signal:28
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "unliked %1's <a href=\"%2\">signal</a>, \"%3\"."
 
 #: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"

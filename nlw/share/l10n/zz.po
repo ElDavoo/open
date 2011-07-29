@@ -301,6 +301,10 @@ msgstr "Zzzz zzzzzzz. Zzz zzzzzzz zzzzzz zz zzzzzzz zzzzzzzzzzz."
 msgid "account.renamed=old,new"
 msgstr "Zzzzzzz %1 zzzzzzz zz %2"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:453
+msgid "account.settings-updated"
+msgstr "Zzzzzzz zzzzzzzz zzzzzzz"
+
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:562
 msgid "account.skip-missing=plugin"
@@ -407,6 +411,14 @@ msgstr "Zzz zzzzzz zzzzzz"
 msgid "activities.attach-file"
 msgstr "Zzzzzz z zzzz"
 
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:6
+msgid "activities.by-you"
+msgstr "Zz zzz"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.metadata.tt2:8
+msgid "activities.by=user"
+msgstr "Zz %1"
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
 msgid "activities.click-to-collapse"
 msgstr "(zzzzz zzzz zz zzzzzzzz)"
@@ -499,6 +511,10 @@ msgstr "zzzzzz Z zzzzzz"
 #: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "zzzz"
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
+msgid "activities.info-using-wikilink-popup"
+msgstr "Zzzzz, zzzzz zzzzzz z Zzzzzzzzz zzzz, zzzz zzzzzz z Zzzzzzzzz zzzz zzz zzzz zzzz zzzzzzz. Zzzz, zzzzz zzzzzz z Zzzz zzzz, zzzz zzzzzz z Zzzz zzzz zzz zzzz zzzz zzzzzzz. Zzzzzzzzzz, zzz Zzzz zzzz zzz z Zzzz Zzzzzzz."
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
 msgid "activities.insert:"
@@ -2529,6 +2545,10 @@ msgstr "Zzzz zzzz zzz:"
 msgid "console.time-server"
 msgstr "Zzzz Zzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:172
+msgid "console.time-settings"
+msgstr "Zzzz Zzzzzzzz"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "zzzzz"
@@ -3672,6 +3692,10 @@ msgstr "Zzzz zzzz zzzz zzzzz zzz zzzz zzzzz z zzzzz zzzzz zz Zzzzzzzzzz Zzzzzzz.
 msgid "control.this-will-reset-logo-for-desktop"
 msgstr "Zzzz zzzz zzzzz zzz zzzz zzzzz z zzzzz zzzzz zz Zzzzzzzzzz Zzzzzzz."
 
+#: share/plugin/control/template/control/account.html:70
+msgid "control.timezone-settings"
+msgstr "Zzzzzzzz Zzzzzzzz"
+
 #: share/plugin/control/template/control/accounts_transform.html:7
 msgid "control.transform"
 msgstr "Zzzzzzzzz"
@@ -3684,7 +3708,7 @@ msgstr "Zzzzzzzzz Zzzzzzzz zz Zzzzzz"
 msgid "control.transform-to-groups"
 msgstr "Zzzzzzzzz zz Zzzzzz"
 
-#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
+#: share/plugin/control/template/control/account.html:80 share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70 ../appliance/libsocialtext-appliance-perl/template/setup.html:182
 msgid "control.update"
 msgstr "Zzzzzz"
 
@@ -8211,6 +8235,14 @@ msgstr "Zzzzzz zzzz zzzzzzzzzz"
 #: share/skin/s3/javascript/lightbox/attachment.tt2:50
 msgid "file.delete=name?"
 msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzz zzz zzzzzzzzzz '%1' zzzz zzzz zzzz?"
+
+#: share/skin/s3/template/element/page/display/attachments:13
+msgid "file.drop-here-to-upload"
+msgstr "Zzzz zzzzz zzzz zz zzzzzz."
+
+#: share/skin/s3/javascript/lightbox/attachment.js:367 share/skin/s3/javascript/lightbox/attachment.tt2:65
+msgid "file.duplicate-files"
+msgstr "Zzzzzzzzz Zzzzz"
 
 #: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
@@ -12968,6 +13000,27 @@ msgstr "Zzzzzz zzzzzzz zz zzzz:"
 msgid "signals.insert-tag:"
 msgstr "Zzzzzz zzz:"
 
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:20
+msgid "signals.liked-theirs=uri,snippet"
+msgstr "zzzzz zzzzz zzz <a href=\"%1\">zzzzzz</a>, \"%2\"."
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:17
+msgid "signals.liked-yours=uri,snippet"
+msgstr "zzzzz zzzz <a href=\"%1\">zzzzzz</a>, \"%2\"."
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:22 share/plugin/signals/template/data/events/signal:26
+msgid "signals.liked=creator,uri,snippet"
+msgstr "zzzzz %1'z <a href=\"%2\">zzzzzz</a>, \"%3\"."
+
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
 msgid "signals.link-destination:"
 msgstr "Zzzz zzzzzzzzzzz:"
@@ -13162,6 +13215,27 @@ msgstr "zz %1"
 #: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
 msgstr "Zzzzzz zzz zzzzz:"
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:32
+msgid "signals.unliked-theirs=uri,snippet"
+msgstr "zzzzzzz zzzzz zzz <a href=\"%1\">zzzzzz</a>, \"%2\"."
+
+#. (event.context.uri, this.signalSnippet(event)
+#. (event.context.uri, this.signalSnippet(event))
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:29
+msgid "signals.unliked-yours=uri,snippet"
+msgstr "zzzzzzz zzzz <a href=\"%1\">zzzzzz</a>, \"%2\"."
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, this.signalSnippet(event)
+#. (creator, event.context.uri, this.signalSnippet(event))
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+#. (creator, event.context.uri, signal_snippet)
+#: share/plugin/widgets/share/javascript/template/activities/event.signal.tt2:34 share/plugin/signals/template/data/events/signal:28
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "zzzzzzz %1'z <a href=\"%2\">zzzzzz</a>, \"%3\"."
 
 #: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"

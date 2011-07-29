@@ -1077,6 +1077,10 @@ msgstr "This will also reset the logo after a fresh login to Socialtext Desktop.
 msgid "control.this-will-reset-logo-for-desktop"
 msgstr "This will reset the logo after a fresh login to Socialtext Desktop."
 
+#: share/plugin/control/template/control/account.html:70
+msgid "control.timezone-settings"
+msgstr "Timezone Settings"
+
 #: share/plugin/control/template/control/accounts_transform.html:7
 msgid "control.transform"
 msgstr "Transform"
@@ -1089,7 +1093,7 @@ msgstr "Transform Accounts to Groups"
 msgid "control.transform-to-groups"
 msgstr "Transform to Groups"
 
-#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
+#: share/plugin/control/template/control/account.html:80 share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "Update"
 
