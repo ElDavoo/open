@@ -7,4 +7,51 @@
         - Socialtext/lib/Socialtext/UserAccountRole.js
         - Socialtext/lib/Socialtext/User.js
         - Socialtext/lib/Socialtext/Workspace.js
-
+'shindig-inline.js':
+    parts:
+        - Shindig/core/util.js
+        - Shindig/core.io/io.js
+        - Shindig/opensocial-reference/opensocial.js
+        - Shindig/opensocial-reference/container.js
+        - Shindig/opensocial-reference/datarequest.js
+        - Shindig/opensocial-reference/dataresponse.js
+        - Shindig/opensocial-reference/environment.js
+        - Shindig/opensocial-reference/idspec.js
+        - Shindig/opensocial-reference/responseitem.js
+        - Shindig/opensocial-current/restfulcontainer.js
+'shindig-container-%.js':
+    compress: 1
+    parts:
+        - { shindig_feature: "%", feature_dir: "Shindig", type: 'container' }
+    expand: 
+        - default
+        - core
+        - ifpc
+        - pubsub
+        - rpc
+'shindig-gadget-%.js':
+    compress: 1
+    parts:
+        - { shindig_feature: "%", feature_dir: "Shindig", type: 'gadget' }
+    expand: 
+        - default
+        - analytics
+        - com.google.gadgets.analytics
+        - core.io
+        - core
+        - flash
+        - ifpc
+        - minimessage
+        - opensocial-0.6
+        - opensocial-0.7
+        - opensocial-current
+        - opensocial-reference
+        - opensocial-templates
+        - pubsub
+        - rpc
+        - setprefs
+        - settitle
+        - skins
+        - tabs
+        - test
+        - views
