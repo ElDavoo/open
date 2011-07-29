@@ -1047,6 +1047,9 @@ msgstr "在刷新登录 Socialtext 桌面后也将重置标志."
 msgid "control.this-will-reset-logo-for-desktop"
 msgstr "在刷新登录 Socialtext 桌面后将重置标志"
 
+msgid "control.timezone-settings"
+msgstr "时区设置"
+
 #: share/plugin/control/template/control/accounts_transform.html:7
 msgid "control.transform"
 msgstr "转换"
