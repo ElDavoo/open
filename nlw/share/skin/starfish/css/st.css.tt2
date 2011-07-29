@@ -173,6 +173,7 @@ header .topLinks {
     border-top: 2px solid [% secondary_color %];
     width: 100%;
 }
+.navGrid:hover .underline, /* CSS3 */
 .selected .underline {
     background-color: [% secondary_color %];
 }
