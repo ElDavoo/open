@@ -1,0 +1,80 @@
+[%- PROCESS activities/macros.tt2 -%]
+[% SET signal_class = this.signalClass(event) %]
+[% SET replies = this.visibleReplies(event) %]
+[% SET older = event.num_replies - replies.size %]
+<div class="icons">
+    [%- try_include("activities/event.${event.event_class}.icons.tt2") -%]
+</div>
+<div class="avatar">
+    <a href="[% event.actor.uri %]" target="_blank">
+        <img class="actor_photo"
+            src="[% this.base_uri %]/data/people/[% event.actor.id %]/photo"/>
+    </a>
+    [%- IF signal_class == 'private' -%]
+        <div class="type">[% loc('activities.private') %]</div>
+    [%- ELSIF signal_class == 'mention' -%]
+        <div class="type">[% loc('activities.mention') %]</div>
+    [%- ELSIF signal_class -%]
+        <div class="type">[% signal_class %]</div>
+    [%- END -%]
+</div>
+<div class="hoverable">
+<div class="outerEventText" [% IF event.context.annotations_pretty %]title="[% event.context.annotations_pretty | html %]"[% END %]>
+    <div class="eventText [% signal_class %]">
+        [%- try_include("activities/event.${event.event_class}.tt2",
+                        "Unknown event class: ${event.event_class}") -%]
+
+        [% IF event.context.annotations.link %]
+            <div class="links">
+                <h3 class="title">Link</h3>
+                <div class="link">
+                    [% event.context.annotations.link.html %]
+                </div>
+            </div>
+        [% END %]
+    </div>
+    <div class="clear"></div>
+</div>
+</div>
+
+[% IF event.num_replies || event.open %]
+    <div class="replies">
+        <div class="older">[% INCLUDE older_replies %]</div>
+        [% FOR reply = replies %]
+            <div class="reply signal[% reply.signal_id %]">
+                [% INCLUDE activities/reply.tt2 event=reply %]
+            </div>
+        [% END %]
+        [% IF this.signals_enabled %]
+        <div class="wikiwygRow">
+            <div class="eventText">
+                <div class="avatar">
+                    <img src="[% this.base_uri %]/data/people/[% this.viewer_id %]/photo"/>
+                </div>
+                <div class="postWrap" style="display:none">
+                    <a href="#" class="btn post postReply">[% loc('activities.post') %]</a>
+                    <div class="count"></div>
+                </div>
+                <div class="wikiwyg" id="[% id("reply-$event.signal_id") %]">
+                    <div class="clearHandler">
+                        [% loc('activities.reply-to-conversation') %]</div>
+                </div>
+                [% INCLUDE lookahead %]
+                <div class="attachmentList"></div>
+                <div class="toolbar" style="display:none">
+                    <div class="buttons">
+                        <div class="label">[% loc('activities.insert:') %]</div>
+                        <a class="insertMention hideOnBlur" title="[% loc('activities.mention-user') %]" href="#"><div class="person"></div></a>
+                        <a class="insertFile hideOnBlur" title="[% loc('activities.attach-file') %]" href="#"><div class="file"></div></a>
+                        <a class="insertTag hideOnBlur" title="[% loc('activities.add-tag') %]" href="#"><div class="tag"></div></a>
+                        <a class="insertWikilink hideOnBlur" title="[% loc('activities.link-to-wiki') %]" href="#"><div class="wikilink"></div></a>
+                        <a class="insertWeblink hideOnBlur" title="[% loc('activities.link-to-web') %]" href="#"><div class="weblink"></div></a>
+                        <a class="insertVideo hideOnBlur" title="[% loc('activities.add-video-link') %]" href="#"><div class="video"></div></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        [% END %]
+    </div>
+[% END %]
+<div class="clear"></div>

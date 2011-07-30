@@ -1,0 +1,16 @@
+[% PROCESS activities/blocks.tt2 %]
+
+<div id="[% id('outer') %]" class='permalink'>
+    <div style="display:none">
+        [% INCLUDE filters %]
+    </div>
+
+    <div id="[% id('main') %]">
+        <div id="[% id('messages') %]" class='messages'></div>
+        <div id="[% id('loading') %]">
+            <img id="[% id('spinner') %]" src="[% this.static_path %]/skin/common/images/ajax-loader.gif"/>
+        </div>
+        <div id="[% id('event_list') %]" class='event_list'>
+        </div>
+    </div>
+</div>
