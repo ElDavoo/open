@@ -654,6 +654,8 @@
 "control.wiki-title":"\u6a19\u984c",
 "control.wiki=name":"[_1] \u5de5\u4f5c\u5340",
 "control.wikis=count":"\u5de5\u4f5c\u5340\uff08[_1]\uff09",
+"creator.page-title:":"\u9801\u9762\u6a19\u984c\uff1a",
+"creator.template:":"\u7bc4\u672c\uff1a",
 "dashboard.add-widget":"\u65b0\u589e\u5c0f\u5de5\u5177",
 "dashboard.admin":"\u7ba1\u7406\u986f\u793a\u677f",
 "dashboard.confirm-revert?":"\u60a8\u78ba\u8a8d\u8981\u6062\u5fa9\u5230Socialtext\u7684\u9810\u8a2d\u8a2d\u5b9a\u9ebc\uff1f",

@@ -652,6 +652,8 @@
 "control.wiki-title":"\u00abTitle\u00bb",
 "control.wiki=name":"\u00ab[_1] workspace\u00bb",
 "control.wikis=count":"\u00abWorkspaces ([_1])\u00bb",
+"creator.page-title:":"\u00abPage Title:\u00bb",
+"creator.template:":"\u00abTemplate:\u00bb",
 "dashboard.add-widget":"\u00abAdd Widget\u00bb",
 "dashboard.admin":"\u00abAdminister Dashboards\u00bb",
 "dashboard.confirm-revert?":"\u00abAre you sure you want to revert to the Socialtext defaults?\u00bb",

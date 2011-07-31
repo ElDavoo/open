@@ -402,6 +402,12 @@ msgstr "分享此页!"
 msgid "bookmarklet.tip"
 msgstr "小秘诀：您可利用“"
 
+msgid "creator.page-title:"
+msgstr "页面标题："
+
+msgid "creator.template:"
+msgstr "模板："
+
 msgid "dashboard.revert"
 msgstr "恢复为默认"
 

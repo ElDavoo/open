@@ -652,6 +652,8 @@
 "control.wiki-title":"Zzzzz",
 "control.wiki=name":"[_1] zzzzzzzzz",
 "control.wikis=count":"Zzzzzzzzzz ([_1])",
+"creator.page-title:":"Zzzz Zzzzz:",
+"creator.template:":"Zzzzzzzz:",
 "dashboard.add-widget":"Zzz Zzzzzz",
 "dashboard.admin":"Zzzzzzzzzz Zzzzzzzzzz",
 "dashboard.confirm-revert?":"Zzz zzz zzzz zzz zzzz zz zzzzzz zz zzz Zzzzzzzzzz zzzzzzzz?",

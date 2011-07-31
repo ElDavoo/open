@@ -3522,6 +3522,12 @@ msgstr "%1 工作區"
 msgid "control.wikis=count"
 msgstr "工作區（%1）"
 
+msgid "creator.page-title:"
+msgstr "頁面標題："
+
+msgid "creator.template:"
+msgstr "範本："
+
 #: share/plugin/dashboard/template/dashboard_links:3
 msgid "dashboard.add-widget"
 msgstr "新增小工具"
