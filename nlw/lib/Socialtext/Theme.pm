@@ -34,11 +34,11 @@ sub _build_background_image {
 
 sub as_hash {
     my $self = shift;
-    my $p = shift;
+    my $params = (@_ == 1) ? shift : {@_};
 
     my %as_hash = map { $_ => $self->$_ } @COLUMNS;
 
-    if (!$p->{set} || $p->{set} ne 'minimal') {
+    if (!$params->{set} || $params->{set} ne 'minimal') {
         my $header = $self->header_image;
         $as_hash{header_image_url} = $self->_attachment_url($header);
         $as_hash{header_image_filename} = $header->filename;
