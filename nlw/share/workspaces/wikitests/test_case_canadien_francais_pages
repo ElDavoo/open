@@ -73,6 +73,8 @@
 | text_like | //body | qr/%%pageA%%.+%%pageL%%.+%%pageM%%.+%%pageN%%.+%%pageX%%/ |
 
 | *Comment* | Test Case: Canadien Francais (Pages) TEARDOWN |  |
+| deactivate-user | %%user%% |  |
 | st-admin | delete-workspace --no-export --w %%ws%% | has been deleted |
+| delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Canadien Francais (Pages) COMPLETED |

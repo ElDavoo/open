@@ -134,5 +134,6 @@
 | st-admin | delete-workspace --no-export --w %%addme_ws%% | been deleted |
 | st-admin | delete-workspace --no-export --w %%createme_ws_name%% | been deleted |
 | delete-group | %%group_id%% | Deleted group %%group_id%% |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace COMPLETED |  |

@@ -118,5 +118,6 @@
 | st-admin | delete-workspace --w %%addme_ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%createme_ws_name%% --no-export | has been deleted |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace COMPLETED |  |

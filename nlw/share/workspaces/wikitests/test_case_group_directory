@@ -93,5 +93,7 @@
 | delete-group | %%second_sj_group_id%% |  |
 | delete-group | %%first_sj_group_id%% |  |
 | delete-group | %%isolated_group_id%% |  |
+| delete-account | %%group_acct%% |  |
+| delete-account | %%isolated_account%% |  |
 
 | *Comment* | Test Case: Group Directory COMPLETED |

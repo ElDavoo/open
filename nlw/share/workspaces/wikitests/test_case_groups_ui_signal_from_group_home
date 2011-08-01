@@ -112,5 +112,6 @@
 | st-process-jobs |  |  |
 | delete-group | %%group_id%% |
 | delete-workspace | %%group_ws%% | Recklessly |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home COMPLETED |

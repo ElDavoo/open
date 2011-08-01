@@ -119,5 +119,6 @@
 | *Comment* | Test Case: Command Line: NEW Teardown |
 | st-admin | deactivate-user --email %%cmd_user%% |
 | st-admin | delete-workspace --workspace %%cmd_ws%% |
+| delete-account | %%cmd_acct%% |  |
 
 | *Comment* | Test Case: Command Line: NEW COMPLETED |

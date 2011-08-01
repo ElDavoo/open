@@ -54,5 +54,7 @@
 | delete-group | %%group11_id%% |  |
 | delete-group | %%group12_id%% |  |
 | delete-group | %%group21_id%% |  |
+| delete-account | %%acct1%% |  |
+| delete-account | %%acct2%% |  |
 
 | *Comment* | Test Case: Mobile Signals to Group COMPLETED |  |
