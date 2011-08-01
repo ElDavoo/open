@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-01 16:25+0800\n"
+"PO-Revision-Date: 2011-08-01 16:33+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -986,7 +986,10 @@ msgid "creator.type-checkbox"
 msgstr "Checkboxes"
 
 msgid "creator.field-type:"
-msgstr "Field Type:"
+msgstr "Input Type:"
+
+msgid "creator.new-field:"
+msgstr "New Field:"
 
 msgid "creator.required"
 msgstr "Required"

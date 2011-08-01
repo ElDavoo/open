@@ -655,6 +655,7 @@
 "creator.create-page":"Zzzzzz Zzzz",
 "creator.field-type:":"Zzzzz Zzzz:",
 "creator.field:":"Zzzzz:",
+"creator.new-field:":"Zzz Zzzzz:",
 "creator.page-title:":"Zzzz Zzzzz:",
 "creator.required":"Zzzzzzzz",
 "creator.tag-with:":"Zzz zzzz:",

@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-01 16:25+0800\n"
+"PO-Revision-Date: 2011-08-01 16:33+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3861,10 +3861,13 @@ msgid "creator.create-page"
 msgstr "«Create Page»"
 
 msgid "creator.field-type:"
-msgstr "«Field Type:»"
+msgstr "«Input Type:»"
 
 msgid "creator.field:"
 msgstr "«Field:»"
+
+msgid "creator.new-field:"
+msgstr "«New Field:»"
 
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "creator.page-title:"

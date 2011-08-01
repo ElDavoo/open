@@ -3526,10 +3526,13 @@ msgid "creator.create-page"
 msgstr "Create Page"
 
 msgid "creator.field-type:"
-msgstr "Field Type:"
+msgstr "Input Type:"
 
 msgid "creator.field:"
 msgstr "Field:"
+
+msgid "creator.new-field:"
+msgstr "New Field:"
 
 msgid "creator.page-title:"
 msgstr "页面标题："
