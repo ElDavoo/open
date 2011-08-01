@@ -15,10 +15,9 @@ use File::Path qw[ make_path ];
 use Socialtext::AppConfig;
 use Socialtext::Paths ();
 
-my ($backend_http_port, $backend_https_port, $log_dir);
+my ($backend_http_port, $log_dir);
 BEGIN {
     $backend_http_port = Socialtext::HTTP::Ports->backend_http_port;
-    $backend_https_port = Socialtext::HTTP::Ports->backend_https_port;
     $log_dir = Socialtext::Paths::log_directory()."/nlw-psgi";
     unless ($ENV{SERVER_STARTER_PORT}) {
         $ENV{PATH} = dirname($^X) . ":$ENV{PATH}";
@@ -31,7 +30,6 @@ BEGIN {
         exec(
             "start_server",
             "--port=127.0.0.1:$backend_http_port",
-            "--port=127.0.0.1:$backend_https_port",
             "--", 
             "$Bin/".basename(__FILE__),
         )
@@ -61,7 +59,6 @@ Socialtext::Daemontools->RunSupervised(
             '--server'              => 'Starman::Socialtext',
             '--host'                => 'localhost',
             '--listen'              => "127.0.0.1:$backend_http_port",
-            '--listen'              => "127.0.0.1:$backend_https_port",
             '--env'                 => 'deployment',
             '--keepalive'           => 0,
             '--app'                 => $psgi,

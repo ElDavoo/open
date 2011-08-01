@@ -27,7 +27,7 @@ default_devenv_backend_http_port: {
 # TEST: default dev-env back-end HTTPS port
 default_devenv_backend_https_port: {
     my $port     = Socialtext::HTTP::Ports->backend_https_port();
-    my $expected = PORTS_START_AT() + BACKEND_PORT_DIFFERENCE() + SSL_PORT_DIFFERENCE() + $>;
+    my $expected = PORTS_START_AT() + BACKEND_PORT_DIFFERENCE() + $>;
     is $port, $expected, 'default dev-env backend HTTPS port';
 }
 
@@ -61,7 +61,7 @@ default_appliance_backend_http_port: {
 default_appliance_backend_https_port: {
     local $ENV{NLW_IS_APPLIANCE} = 1;
     my $port     = Socialtext::HTTP::Ports->backend_https_port();
-    my $expected = STANDARD_BACKEND_PORT() + SSL_PORT_DIFFERENCE();
+    my $expected = STANDARD_BACKEND_PORT();
     is $port, $expected, 'default appliance backend HTTPS port';
 }
 

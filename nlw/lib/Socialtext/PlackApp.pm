@@ -18,13 +18,14 @@ our ($Request, $Response, $CGI);
 sub PerlHandler ($handler, $access_handler) {
     load($handler);
 
-    state $https_port = Socialtext::HTTP::Ports->backend_https_port;
+    state $https_port = Socialtext::HTTP::Ports->https_port;
     my $is_dev_env = Socialtext::AppConfig->is_dev_env;
 
     return sub ($env) {
         delete $env->{"psgix.io"};
 
-        $env->{HTTPS} = 'on' if $env->{SERVER_PORT} == $https_port;
+        my $is_https_request = ($env->{HTTP_X_FORWARDED_PORT} == $https_port);
+        $env->{HTTPS} = 'on' if $is_https_request;
 
         local $Request = Socialtext::PlackApp::Request->new($env);
         local $Response = Socialtext::PlackApp::Response->new(200);
@@ -38,7 +39,7 @@ sub PerlHandler ($handler, $access_handler) {
         local %ENV = (
             %ENV,
             REST_APP_RETURN_ONLY => 1,
-            NLWHTTPSRedirect => ($env->{SERVER_PORT} == $https_port),
+            NLWHTTPSRedirect => $is_https_request,
         );
         map { $ENV{$_} = $env->{$_} }
             grep { /^(?:HTTP|QUERY|REQUEST|REMOTE|SCRIPT|PATH|CONTENT|SERVER)_/ }
