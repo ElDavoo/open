@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-07-31 13:14+0800\n"
+"PO-Revision-Date: 2011-08-01 16:23+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -960,9 +960,42 @@ msgstr "Only members with permission to view this page will receive the signal."
 msgid "info.success"
 msgstr "Success"
 
+msgid "creator.create-page"
+msgstr "Create Page"
+
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "creator.template:"
 msgstr "Template:"
+
+msgid "creator.type-text"
+msgstr "Single line"
+
+msgid "creator.type-textarea"
+msgstr "Multiple lines"
+
+msgid "creator.type-number"
+msgstr "Number"
+
+msgid "creator.type-select"
+msgstr "Dropdown"
+
+msgid "creator.type-radio"
+msgstr "Radio boxes"
+
+msgid "creator.type-checkbox"
+msgstr "Checkboxes"
+
+msgid "creator.field-type:"
+msgstr "Field Type:"
+
+msgid "creator.required"
+msgstr "Required"
+
+msgid "creator.tag-with:"
+msgstr "Tag with:"
+
+msgid "create.field:"
+msgstr "Field:"
 
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "creator.page-title:"

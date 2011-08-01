@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-07-31 13:14+0800\n"
+"PO-Revision-Date: 2011-08-01 16:23+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3857,13 +3857,46 @@ msgstr "%1 zzzzzzzzz"
 msgid "control.wikis=count"
 msgstr "Zzzzzzzzzz (%1)"
 
+msgid "create.field:"
+msgstr "Zzzzz:"
+
+msgid "creator.create-page"
+msgstr "Zzzzzz Zzzz"
+
+msgid "creator.field-type:"
+msgstr "Zzzzz Zzzz:"
+
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "creator.page-title:"
 msgstr "Zzzz Zzzzz:"
 
+msgid "creator.required"
+msgstr "Zzzzzzzz"
+
+msgid "creator.tag-with:"
+msgstr "Zzz zzzz:"
+
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "creator.template:"
 msgstr "Zzzzzzzz:"
+
+msgid "creator.type-checkbox"
+msgstr "Zzzzzzzzzz"
+
+msgid "creator.type-number"
+msgstr "Zzzzzz"
+
+msgid "creator.type-radio"
+msgstr "Zzzzz zzzzz"
+
+msgid "creator.type-select"
+msgstr "Zzzzzzzz"
+
+msgid "creator.type-text"
+msgstr "Zzzzzz zzzz"
+
+msgid "creator.type-textarea"
+msgstr "Zzzzzzzz zzzzz"
 
 #: share/plugin/dashboard/template/dashboard_links:3
 msgid "dashboard.add-widget"

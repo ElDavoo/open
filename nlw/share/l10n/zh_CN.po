@@ -3522,11 +3522,44 @@ msgstr "%1 工作区"
 msgid "control.wikis=count"
 msgstr "工作区（%1）"
 
+msgid "create.field:"
+msgstr "Field:"
+
+msgid "creator.create-page"
+msgstr "Create Page"
+
+msgid "creator.field-type:"
+msgstr "Field Type:"
+
 msgid "creator.page-title:"
 msgstr "页面标题："
 
+msgid "creator.required"
+msgstr "Required"
+
+msgid "creator.tag-with:"
+msgstr "Tag with:"
+
 msgid "creator.template:"
 msgstr "模板："
+
+msgid "creator.type-checkbox"
+msgstr "Checkboxes"
+
+msgid "creator.type-number"
+msgstr "Number"
+
+msgid "creator.type-radio"
+msgstr "Radio boxes"
+
+msgid "creator.type-select"
+msgstr "Dropdown"
+
+msgid "creator.type-text"
+msgstr "Single line"
+
+msgid "creator.type-textarea"
+msgstr "Multiple lines"
 
 #: share/plugin/dashboard/template/dashboard_links:3
 msgid "dashboard.add-widget"
