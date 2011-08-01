@@ -535,6 +535,12 @@
             'application/json': [Socialtext::Rest::AccountPluginPrefs, PUT_json]
         '*':                    [Socialtext::Rest::AccountPluginPrefs, bad_method]
 -
+    '/data/accounts/:acct/theme':
+        'GET':
+            '*/*':              [Socialtext::Rest::AccountTheme, bad_type]
+            'application/json': [Socialtext::Rest::AccountTheme, GET_theme]
+        '*':                    [Socialtext::Rest::AccountTheme, bad_method]
+-
     '/data/networks':
         'GET':
             '*/*':              [Socialtext::Rest::Networks, bad_type]

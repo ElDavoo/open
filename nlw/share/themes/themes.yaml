@@ -12,3 +12,4 @@ Starfish:
   tertiary_color: #dfebed
   header_font: Georgia
   body_font: Helvetica
+  is_default: 1

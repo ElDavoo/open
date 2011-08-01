@@ -15,7 +15,8 @@ CREATE TABLE theme (
     secondary_color text NOT NULL,
     tertiary_color text NOT NULL,
     header_font text NOT NULL,
-    body_font text NOT NULL
+    body_font text NOT NULL,
+    is_default boolean NOT NULL
 );
 
 CREATE SEQUENCE theme_theme_id

@@ -14,6 +14,7 @@ my @COLUMNS = qw( theme_id name header_color header_image_id
     header_image_tiling header_image_position background_color
     background_image_id background_image_tiling background_image_position
     primary_color secondary_color tertiary_color header_font body_font
+    is_default
 );
 
 my @UPLOADS = qw(header_image background_image);
