@@ -1,6 +1,7 @@
 package Socialtext::Rest::AccountTheme;
 use Moose;
 use Socialtext::Theme;
+use Socialtext::Permission qw(ST_READ_PERM);
 use Socialtext::JSON qw(encode_json);
 
 extends 'Socialtext::Rest::Collection';
@@ -15,7 +16,10 @@ sub GET_theme {
     return $self->no_resource('account') unless $self->account;
 
     return $self->not_authorized()
-        unless $self->account->has_user($self->rest->user);
+        unless $self->account->user_can(
+            user => $self->rest->user,
+            permission => ST_READ_PERM,
+        );
 
     my $prefs = $self->account->prefs->all_prefs;
     return encode_json($prefs->{theme});
