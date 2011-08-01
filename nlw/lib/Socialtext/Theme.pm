@@ -32,6 +32,94 @@ sub _build_background_image {
     return Socialtext::Upload->new(attachment_id => $self->background_image_id);
 }
 
+sub ValidSettings {
+    my $class = shift;
+    my $settings = (@_ == 1) ? shift : {@_};
+
+    my %tests = (
+        base_theme_id => \&_valid_theme_id,
+        header_color => \&_valid_hex_color,
+        header_image_id => \&_valid_attachment_id,
+        header_image_tiling => \&_valid_tiling,
+        header_image_position => \&_valid_position,
+        background_color => \&_valid_hex_color,
+        background_image_id => \&_valid_attachment_id,
+        background_image_tiling => \&_valid_tiling,
+        background_image_position => \&_valid_position,
+        primary_color => \&_valid_hex_color,
+        secondary_color => \&_valid_hex_color,
+        tertiary_color => \&_valid_hex_color,
+        header_font => \&_valid_font,
+        body_font => \&_valid_font,
+    );
+
+    for my $name ( keys %$settings ) {
+        my $test = $tests{$name};
+
+        return 0 unless $test;
+        return 0 unless $test->($settings->{$name});
+    }
+
+    return 1;
+}
+
+sub _valid_hex_color {
+    my $color = shift;
+
+    return lc $color =~ /^#[0-9a-f]{6}$/;
+}
+
+sub _valid_position {
+    my $position = shift;
+    my @pos = split(/ /, $position);
+
+    return 0 unless scalar(@pos) == 2;
+    return 0 unless grep { lc $pos[0] eq $_ } qw(left center right);
+    return 0 unless grep { lc $pos[1] eq $_ } qw(top center bottom);
+    return 1;
+}
+
+sub _valid_tiling {
+    my $tiling = shift;
+
+    return grep { lc $tiling eq $_ } qw(horizontal vertical both none);
+}
+
+sub _valid_font {
+    my $font = shift;
+
+    return grep { $font eq $_ }
+        qw(Arial Georgia Helvetica Lucinda Trebuchet Times)
+}
+
+sub _valid_attachment_id {
+    my $id = shift;
+
+    my $count = eval {
+        sql_singlevalue(q{
+            SELECT COUNT(1)
+              FROM attachment
+             WHERE attachment_id = ?
+        }, $id)
+    };
+
+    return $count;
+}
+
+sub _valid_theme_id {
+    my $id = shift;
+
+    my $count = eval {
+        sql_singlevalue(q{
+            SELECT COUNT(1)
+              FROM theme
+             WHERE theme_id = ?
+        }, $id)
+    };
+
+    return $count;
+}
+
 sub as_hash {
     my $self = shift;
     my $params = (@_ == 1) ? shift : {@_};

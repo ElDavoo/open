@@ -539,6 +539,9 @@
         'GET':
             '*/*':              [Socialtext::Rest::AccountTheme, bad_type]
             'application/json': [Socialtext::Rest::AccountTheme, GET_theme]
+        'PUT':
+            '*/*':              [Socialtext::Rest::AccountTheme, bad_type]
+            'application/json': [Socialtext::Rest::AccountTheme, PUT_theme]
         '*':                    [Socialtext::Rest::AccountTheme, bad_method]
 -
     '/data/networks':
