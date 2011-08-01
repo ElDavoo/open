@@ -3522,14 +3522,14 @@ msgstr "%1 工作區"
 msgid "control.wikis=count"
 msgstr "工作區（%1）"
 
-msgid "create.field:"
-msgstr "Field:"
-
 msgid "creator.create-page"
 msgstr "Create Page"
 
 msgid "creator.field-type:"
 msgstr "Field Type:"
+
+msgid "creator.field:"
+msgstr "Field:"
 
 msgid "creator.page-title:"
 msgstr "頁面標題："
