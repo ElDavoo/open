@@ -123,6 +123,22 @@ sub Load {
         : undef;
 }
 
+sub Default {
+    my $class = shift;
+
+    my $sth = sql_execute(qq{
+        SELECT }. join(',', @COLUMNS) .qq{
+          FROM theme
+         WHERE is_default IS true
+    });
+
+    my $rows = $sth->fetchall_arrayref({});
+
+    die "cannot determine default theme" unless scalar(@$rows) == 1;
+
+    return $class->new(%{$rows->[0]})
+}
+
 sub Create {
     my $class = shift;
     my $params = (@_ == 1) ? shift : {@_};
