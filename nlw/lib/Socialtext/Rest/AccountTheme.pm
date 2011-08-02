@@ -9,7 +9,26 @@ use Socialtext::JSON qw(encode_json decode_json);
 extends 'Socialtext::Rest::Collection';
 
 has 'account' => (is=>'ro', isa=>'Maybe[Socialtext::Account]', lazy_build=>1);
-sub _build_account { Socialtext::Account->Resolve(shift->acct) };
+has 'upload' => (is=>'ro', isa=>'Maybe[Socialtext::Upload]', lazy_build=>1);
+
+sub _build_account {
+    my $self = shift;
+    return Socialtext::Account->Resolve($self->acct)
+}
+
+sub _build_upload {
+    my $self = shift;
+
+    return unless $self->filename;
+
+    my $img_name = $self->filename .'_image_id';
+    my $prefs = $self->account->prefs->all_prefs;
+
+    my $id = $prefs->{theme}{$img_name};
+    return unless $id;
+
+    return Socialtext::Upload->Get(attachment_id=>$id);
+}
 
 sub GET_theme {
     my $self = shift;
@@ -64,6 +83,26 @@ sub PUT_theme {
     $prefs->save({theme=>$settings});
 
     $rest->header(-type => 'text/plain', -status => HTTP_204_No_Content);
+}
+
+sub GET_image {
+    my $self = shift;
+    my $rest = shift;
+
+    return $self->no_resource('account') unless $self->account;
+
+    return $self->not_authorized()
+        unless $self->account->user_can(
+            user => $self->rest->user,
+            permission => ST_READ_PERM,
+        );
+
+    my $image = $self->upload;
+    return $self->no_resource('image') unless $image;
+
+    $image->ensure_stored();
+    return $self->serve_file(
+        $rest, $image, $image->protected_uri, $image->content_length);
 }
 
 1;

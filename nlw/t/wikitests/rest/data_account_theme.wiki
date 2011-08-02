@@ -18,40 +18,58 @@
 ### account doesn't exist
 | *Comment* | account doesn't exist |
 | http-user-pass |
-| GET-json | /data/accounts/ENOSUCH/theme |                     |
-| code-is  | 404                          |                     |
-| GET-json | /data/accounts/ENOSUCH/theme | {"base_theme_id":1} |
-| code-is  | 404                          |                     |
+| GET-json | /data/accounts/ENOSUCH/theme               |                     |
+| code-is  | 404                                        |                     |
+| GET-json | /data/accounts/ENOSUCH/theme               | {"base_theme_id":1} |
+| code-is  | 404                                        |                     |
+| GET      | /data/accounts/ENOSUCH/theme/images/header |                     |
+| code-is  | 404                                        |                     |
 
 ### guest user has no privs
 | *Comment* | guest user has no privs |
 | http-user-pass |
-| GET-json | /data/accounts/%%the_acct_id%%/theme |                     |
-| code-is  | 401                                  |                     |
-| PUT-json | /data/accounts/%%the_acct_id%%/theme | {"base_theme_id":1} |
-| code-is  | 401                                  |                     |
+| GET-json | /data/accounts/%%the_acct_id%%/theme               |                     |
+| code-is  | 401                                                |                     |
+| GET-json | /data/accounts/%%the_acct_id%%/theme/images/header |                     |
+| code-is  | 401                                                |                     |
+| PUT-json | /data/accounts/%%the_acct_id%%/theme               | {"base_theme_id":1} |
+| code-is  | 401                                                |                     |
 
 ### user outside account has no privs
 | *Comment* | user outside account has no privs |
 | http-user-pass | %%out_user%% | password |
-| GET-json | /data/accounts/%%the_acct_id%%/theme |
-| code-is  | 403                                  |
-| PUT-json | /data/accounts/%%the_acct_id%%/theme | {"base_theme_id":1} |
-| code-is  | 403                                  |                     |
+| GET-json | /data/accounts/%%the_acct_id%%/theme               |                     |
+| code-is  | 403                                                |                     |
+| GET-json | /data/accounts/%%the_acct_id%%/theme/images/header |                     |
+| code-is  | 403                                                |                     |
+| PUT-json | /data/accounts/%%the_acct_id%%/theme               | {"base_theme_id":1} |
+| code-is  | 403                                                |                     |
 
 ### account member has GET privs
 | *Comment* | account member has GET privs |
 | http-user-pass | %%in_user%% | password |
-| GET-json          | /data/accounts/%%the_acct_id%%/theme |
-| code-is           | 200                                  |
-| json-parse        |                                      |
-| json-path-exists  | $.base_theme_id                      |
-| json-path-exists  | $.header_color                       |
-| json-path-exists  | $.tertiary_color                     |
-| json-path-exists  | $.body_font                          |
-| json-path-missing | $.theme_id                           |
-| json-path-missing | $.name                               |
-| json-path-missing | $.is_default                         |
+| GET-json          | /data/accounts/%%the_acct_id%%/theme |                        |
+| code-is           | 200                                  |                        |
+| header-like       | Content-type                         | qr/^application\/json/ |
+| json-parse        |                                      |                        |
+| json-path-exists  | $.base_theme_id                      |                        |
+| json-path-exists  | $.header_color                       |                        |
+| json-path-exists  | $.tertiary_color                     |                        |
+| json-path-exists  | $.body_font                          |                        |
+| json-path-missing | $.theme_id                           |                        |
+| json-path-missing | $.name                               |                        |
+| json-path-missing | $.is_default                         |                        |
+
+### account member can GET images when they exist
+| http-user-pass | %%in_user%% | password |
+| GET | /data/accounts/%%the_acct_id%%/theme/images/header |
+| code-is | 200 |
+| header-is | Content-type | image/png |
+| GET | /data/accounts/%%the_acct_id%%/theme/images/background |
+| code-is | 200 |
+| header-is | Content-type | image/png |
+| GET | /data/accounts/%%the_acct_id%%/theme/images/ENOSUCH |
+| code-is | 404 |
 
 ### account member does not have PUT privs
 | *Comment* | account member does not have PUT privs |
@@ -66,6 +84,9 @@
 | code-is           | 200                                  |
 | json-parse        |                                      |
 | json-path-exists  | $.base_theme_id                      |
+| GET | /data/accounts/%%the_acct_id%%/theme/images/header |
+| code-is | 200 |
+| header-is | Content-type | image/png |
 
 ### account admin has PUT privs
 | *Comment* | account admin has PUT privs |

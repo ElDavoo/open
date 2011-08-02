@@ -544,6 +544,11 @@
             'application/json': [Socialtext::Rest::AccountTheme, PUT_theme]
         '*':                    [Socialtext::Rest::AccountTheme, bad_method]
 -
+    '/data/accounts/:acct/theme/images/:filename':
+        'GET':
+            '*/*': [Socialtext::Rest::AccountTheme, GET_image]
+        '*':       [Socialtext::Rest::AccountTheme, bad_method]
+-
     '/data/networks':
         'GET':
             '*/*':              [Socialtext::Rest::Networks, bad_type]
