@@ -689,6 +689,11 @@
             'text/html':        [Socialtext::Rest::Settings::DefaultWorkspace, GET_html]
         '*':                    [Socialtext::Rest::Settings::DefaultWorkspace, bad_method]
 -
+    '/data/settings/theme':
+        'GET':
+            'application/json': [Socialtext::Rest::SettingsTheme, GET_theme]
+        '*':                    [Socialtext::Rest::SettingsTheme, bad_method]
+-
     '/data/themes':
         'GET':
             'application/json': [Socialtext::Rest::Themes, GET_themes]
