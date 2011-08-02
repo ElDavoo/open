@@ -64,7 +64,8 @@
 <script>
     gadgets.container.setup({
         env: [% container.env.json.replace('</script>', '</scr" + "ipt>') %],
-        view: "[% container.view %]"
+        view: "[% container.view %]",
+        template: 'widget/s3.tt2'
     });
     [% FOR gadget = container.gadgets %]
         [% SET json = gadget.json %]

@@ -30,6 +30,7 @@ container.nocache_ = 1;
 container.base_url = location.pathname;
 container.onSetPreferences = $.noop;
 container.pendingChanges = {};
+container.template = 'widget/element.tt2';
 
 // signed max int
 container.maxheight_ = 0x7FFFFFFF;
@@ -576,7 +577,7 @@ container.renderGadget = function(data, template_vars, node) {
     });
 
     // Render the widget
-    var html = Jemplate.process('widget/element.tt2', $.extend({
+    var html = Jemplate.process(self.template, $.extend({
         view: self.view,
         share: nlw_make_plugin_path('/widgets'),
         gadget: data,
