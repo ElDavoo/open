@@ -6,6 +6,33 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
 
+has 'obj' => (is => 'ro', isa => 'Maybe[Socialtext::Theme]', lazy_build => 1);
+has 'upload' => (is=>'ro', isa=>'Maybe[Socialtext::Upload]', lazy_build=>1);
+
+sub _build_obj {
+    my $self = shift;
+
+    my $theme;
+    $theme = Socialtext::Theme->Load(theme_id => $self->theme)
+        if $self->theme =~ /^\d+$/;
+
+    $theme ||= Socialtext::Theme->Load(name => $self->theme);
+
+    return $theme;
+}
+
+sub _build_upload {
+    my $self = shift;
+
+    return unless $self->filename;
+
+    my $img_name = $self->filename .'_image_id';
+    my $id = eval { $self->obj->$img_name };
+    return unless $id;
+
+    return Socialtext::Upload->Get(attachment_id=>$id);
+}
+
 sub GET_themes {
     my $self = shift;
     my $rest = shift;
@@ -23,7 +50,7 @@ sub GET_theme {
     my $rest = shift;
 
     return $self->not_authorized() if $self->rest->user->is_guest;
-    my $theme = $self->_get_theme();
+    my $theme = $self->obj;
 
     if ($theme) {
         $rest->header(-type => 'application/json');
@@ -34,16 +61,18 @@ sub GET_theme {
     }
 }
 
-sub _get_theme {
+sub GET_image {
     my $self = shift;
+    my $rest = shift;
 
-    my $theme;
-    $theme = Socialtext::Theme->Load(theme_id => $self->theme)
-        if $self->theme =~ /^\d+$/;
+    return $self->not_authorized() if $self->rest->user->is_guest;
 
-    $theme ||= Socialtext::Theme->Load(name => $self->theme);
+    my $image = $self->upload;
+    return $self->no_resource('image') unless $image;
 
-    return $theme;
+    $image->ensure_stored();
+    return $self->serve_file(
+        $rest, $image, $image->protected_uri, $image->content_length);
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

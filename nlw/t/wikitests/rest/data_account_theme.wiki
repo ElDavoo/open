@@ -62,14 +62,14 @@
 
 ### account member can GET images when they exist
 | http-user-pass | %%in_user%% | password |
-| GET | /data/accounts/%%the_acct_id%%/theme/images/header |
-| code-is | 200 |
-| header-is | Content-type | image/png |
-| GET | /data/accounts/%%the_acct_id%%/theme/images/background |
-| code-is | 200 |
-| header-is | Content-type | image/png |
-| GET | /data/accounts/%%the_acct_id%%/theme/images/ENOSUCH |
-| code-is | 404 |
+| GET       | /data/accounts/%%the_acct_id%%/theme/images/header     |           |
+| code-is   | 200                                                    |           |
+| header-is | Content-type                                           | image/png |
+| GET       | /data/accounts/%%the_acct_id%%/theme/images/background |           |
+| code-is   | 200                                                    |           |
+| header-is | Content-type                                           | image/png |
+| GET       | /data/accounts/%%the_acct_id%%/theme/images/ENOSUCH    |           |
+| code-is   | 404                                                    |           |
 
 ### account member does not have PUT privs
 | *Comment* | account member does not have PUT privs |
@@ -80,13 +80,13 @@
 ### account admin has GET privs
 | *Comment* | account admin has GET privs |
 | http-user-pass | %%admin_user%% | password |
-| GET-json          | /data/accounts/%%the_acct_id%%/theme |
-| code-is           | 200                                  |
-| json-parse        |                                      |
-| json-path-exists  | $.base_theme_id                      |
-| GET | /data/accounts/%%the_acct_id%%/theme/images/header |
-| code-is | 200 |
-| header-is | Content-type | image/png |
+| GET-json         | /data/accounts/%%the_acct_id%%/theme               |           |
+| code-is          | 200                                                |           |
+| json-parse       |                                                    |           |
+| json-path-exists | $.base_theme_id                                    |           |
+| GET              | /data/accounts/%%the_acct_id%%/theme/images/header |           |
+| code-is          | 200                                                |           |
+| header-is        | Content-type                                       | image/png |
 
 ### account admin has PUT privs
 | *Comment* | account admin has PUT privs |
@@ -104,9 +104,9 @@
 
 ### invalid json
 | *Comment* | invalid json |
-| http-user-pass | %%admin_user%% | password |
-| PUT-json | /data/accounts/%%the_acct_id%%/theme | {"header_image_id":50 |
-| code-is  | 400                                  |                       |
+| http-user-pass | %%admin_user%%                       | password              |
+| PUT-json       | /data/accounts/%%the_acct_id%%/theme | {"header_image_id":50 |
+| code-is        | 400                                  |                       |
 
 ### bad data
 | *Comment* | bad data |

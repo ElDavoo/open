@@ -6,10 +6,12 @@
 ### user is not authorized
 | *Comment* | user is not authorized |
 | http-user-pass |
-| GET-json | /data/themes          |
-| code-is  | 401                   |
-| GET-json | /data/themes/Starfish |
-| code-is  | 401                   |
+| GET-json | /data/themes                        |
+| code-is  | 401                                 |
+| GET-json | /data/themes/Starfish               |
+| code-is  | 401                                 |
+| GET-json | /data/themes/Starfish/images/header |
+| code-is  | 401                                 |
 
 ### user is authorized, /data/themes
 | *Comment* | user is authorized, /data/themes |
@@ -47,3 +49,15 @@
 | http-user-pass | %%theme_email%% | password |
 | GET-json | /data/themes/ENOSUCH |
 | code-is  | 404                  |
+
+### images
+| http-user-pass | %%theme_email%% | password |
+| GET       | /data/themes/1/images/header     |           |
+| code-is   | 200                              |           |
+| header-is | Content-type                     | image/png |
+| GET       | /data/themes/1/images/background |           |
+| code-is   | 200                              |           |
+| header-is | Content-type                     | image/png |
+| GET       | /data/themes/1/images/ENOSUCH    |           |
+| code-is   | 404                              |           |
+
