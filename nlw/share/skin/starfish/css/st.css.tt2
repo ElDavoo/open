@@ -29,6 +29,7 @@ a.button {
 }
 a.button:hover {
     filter: alpha(opacity = 70);
+    opacity: .7;
 }
 
 input {
@@ -157,7 +158,9 @@ header .topLinks {
 }
 .globalNav .selected .navLink {
     background-color: #000;
-    opacity: .3;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3);
+    filter: alpha(opacity = 30);
 }
 .globalNav .navLink .dashboard{
     background-image: url('[% skin %]/images/globalNav/dashboard.png');
