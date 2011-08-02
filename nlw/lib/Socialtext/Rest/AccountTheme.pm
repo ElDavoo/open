@@ -24,6 +24,8 @@ sub GET_theme {
         );
 
     my $prefs = $self->account->prefs->all_prefs;
+
+    $rest->header(-type => 'application/json');
     return encode_json($prefs->{theme});
 }
 
