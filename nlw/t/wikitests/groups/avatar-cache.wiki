@@ -5,7 +5,7 @@ Test case to make sure that group photos have good cache-control headers.
 | standard-test-setup |
 | set | gid | %%group_id%% |
 | add-user-to-group | %%user_id%% | %%gid%% | admin |
-| http-user-pass | %%username%% | %%password%% |
+| http-user-pass-and-cookie | %%username%% | %%password%% |
 
 The initial request of a photo (wether the user has set one or not) will prime
 the disk cache.  Subsequent requests will be served from the cache.  It
