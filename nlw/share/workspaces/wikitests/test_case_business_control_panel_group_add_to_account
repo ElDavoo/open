@@ -46,6 +46,7 @@
 | wait_for_text_not_present_ok | %%addl_account%% | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Group Add To Account TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-group | %%group_id%% | Recklessly deleted |
 | delete-account | %%account%% | has been deleted |
 | delete-account | %%addl_account%% | has been deleted |

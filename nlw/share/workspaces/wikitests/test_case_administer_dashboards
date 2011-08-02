@@ -179,6 +179,7 @@ st-name-widget | 1 | topcat |
 st-widget-title-like | topcat | Welcome |
 
 | *Comment* | Test Case: Administer Dashboards TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-account | %%acct%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%mwgmail%% | been deactivated |
 

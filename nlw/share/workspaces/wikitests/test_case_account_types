@@ -87,6 +87,7 @@
 
 | *Comment* | Test Case: Account types TEARDOWN |  |
 | st-appliance-config-set | is_socialtext_hosted 0 |  |
+| st-process-jobs |  |  |
 | delete-account | %%Free50%% |  |
 | delete-account | %%Standard%% |  |
 | delete-account | %%Comped%% |  |

@@ -92,7 +92,8 @@
 | st-logoutin | %%euserone%% | %%password%% |
 | include | [Test Case: People Search Execute Search] |  |
 
-| *Comment* | Test Case: People Search TearDown |
+| *Comment* | Test Case: People Search TEARDOWN |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%diffws%% --no-export | has been deleted |
 | delete-account | %%acct%% |  |

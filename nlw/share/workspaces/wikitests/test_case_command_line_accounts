@@ -86,7 +86,8 @@ get-user-account [--username or --email]
 | st-admin | mass-add-users --csv foo.csv --restriction foo | unknown restriction type, 'foo' |
 | st-admin | mass-add-users --csv foo.csv --restriction password_change | The file you provided could not be read. No users were added. |
 
-| *Comment* | Test Case: Command Line Tests ACCOUNTS teardown |  |
+| *Comment* | Test Case: Command Line Tests ACCOUNTS TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w ws%%start_time%% --no-export | has been deleted |
 | delete-account | %%account%% |  |
 | delete-account | account%%start_time%% |  |

@@ -50,6 +50,7 @@
 | text_like | qr/New signal to %%group11%%.+By you/ism |  |
 
 | *Comment* | Test Case: Mobile Signals to Group TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --email %%msg_user%% | removed |
 | delete-group | %%group11_id%% |  |
 | delete-group | %%group12_id%% |  |

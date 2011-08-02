@@ -100,6 +100,7 @@
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Teardown |  |
 
+| st-process-jobs |  |  |
 | deactivate-user | %%member1%% |  |
 | deactivate-user | %%member2%% |  |
 | deactivate-user | %%member3%% |  |

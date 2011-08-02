@@ -69,7 +69,8 @@
 | wait_for_element_not_present_ok | link=Create New Workspace | 5000 |
 | wait_for_element_not_present_ok | link=Clone This Workspace | 5000 |
 
-| *Comment* | Test Case: User Settings Create Workspace Teardown |  |
+| *Comment* | Test Case: User Settings Create Workspace TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 | delete-account | %%acct%% |  |

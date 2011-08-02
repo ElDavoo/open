@@ -55,7 +55,8 @@
 | text_like | //body | %%new_group_name%% |
 | text_like | //body | %%new_group_description%% |
 
-| *Comment* | Test Case: Groups UI Edit an Existing Group Teardown |
+| *Comment* | Test Case: Groups UI Edit an Existing Group TEARDOWN |
+| st-process-jobs |  |  |
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | delete-account | %%group_acct%% |  |

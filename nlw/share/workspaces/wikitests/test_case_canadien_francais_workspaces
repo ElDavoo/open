@@ -71,7 +71,8 @@
 | text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%(?!Workspace)/ |
 
 
-| *Comment* | Test Case: Canadien Francais (Workspaces) Teardown |  |
+| *Comment* | Test Case: Canadien Francais (Workspaces) TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | st-admin | delete-workspace --no-export --w %%wsAname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%wsAAname%% | has been deleted |

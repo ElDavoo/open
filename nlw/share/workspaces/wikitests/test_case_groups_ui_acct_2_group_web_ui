@@ -71,6 +71,7 @@
 | text_like | //body | Log in to Socialtext |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI Teardown |
+| st-process-jobs |  |  |
 | deactivate-user | %%user_two%% |  |
 | deactivate-user | %%user_three%% |  |
 | delete-group | %%group_id%% |

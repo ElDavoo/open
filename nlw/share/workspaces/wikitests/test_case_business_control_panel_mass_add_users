@@ -26,6 +26,7 @@
 
 
 | *Comment* | Test Case: Business Control Panel Mass Add Users TEARDOWN |
+| st-process-jobs |  |  |
 | delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Business Control Panel Mass Add Users COMPLETED |

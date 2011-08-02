@@ -69,6 +69,7 @@
 | *Comment* | Test Case: Signal Page To Group TODO: Signal to different groups within the widget |  |
 
 | *Comment* | Test Case: Signal Page To Group TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%nonwsuser%% |  |
 | delete-group | %%group2_id%% |  |
 | delete-group | %%group1_id%% |  |
