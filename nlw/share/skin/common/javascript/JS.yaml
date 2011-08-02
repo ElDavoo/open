@@ -3,8 +3,8 @@
     compress: 1
     parts:
         -
-            dir: 'plugin/widgets/share/javascript/template'
-            jemplate: 'widget'
+            dir: 'skin/common/javascript/template'
+            jemplate: widget
             include_paths: true
         - shindig-container-default.js
         - jquery-ui-1.8.5.js
