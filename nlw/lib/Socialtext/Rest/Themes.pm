@@ -14,6 +14,7 @@ sub GET_themes {
 
     my $hashes = [ map { $_->as_hash } @{Socialtext::Theme->All()} ];
 
+    $rest->header(-type => 'application/json');
     return encode_json($hashes);
 }
 
@@ -24,9 +25,13 @@ sub GET_theme {
     return $self->not_authorized() if $self->rest->user->is_guest;
     my $theme = $self->_get_theme();
 
-    return $theme
-        ? encode_json($theme->as_hash)
-        : $self->no_resource('theme');
+    if ($theme) {
+        $rest->header(-type => 'application/json');
+        return encode_json($theme->as_hash);
+    }
+    else {
+        return $self->no_resource('theme');
+    }
 }
 
 sub _get_theme {
