@@ -652,6 +652,7 @@
 "control.wiki-title":"\u00abTitle\u00bb",
 "control.wiki=name":"\u00ab[_1] workspace\u00bb",
 "control.wikis=count":"\u00abWorkspaces ([_1])\u00bb",
+"creator.choices:":"\u00abChoices:\u00bb",
 "creator.create-page":"\u00abCreate Page\u00bb",
 "creator.field-type:":"\u00abInput Type:\u00bb",
 "creator.field:":"\u00abField:\u00bb",

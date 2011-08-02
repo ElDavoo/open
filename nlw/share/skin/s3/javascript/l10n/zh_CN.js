@@ -654,6 +654,7 @@
 "control.wiki-title":"\u6807\u9898",
 "control.wiki=name":"[_1] \u5de5\u4f5c\u533a",
 "control.wikis=count":"\u5de5\u4f5c\u533a\uff08[_1]\uff09",
+"creator.choices:":"Choices:",
 "creator.create-page":"Create Page",
 "creator.field-type:":"Input Type:",
 "creator.field:":"Field:",

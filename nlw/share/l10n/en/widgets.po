@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-01 16:33+0800\n"
+"PO-Revision-Date: 2011-08-02 14:19+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -959,6 +959,9 @@ msgstr "Only members with permission to view this page will receive the signal."
 #: share/plugin/widgets/share/javascript/widgets-lightbox.js:9
 msgid "info.success"
 msgstr "Success"
+
+msgid "creator.choices:"
+msgstr "Choices:"
 
 msgid "creator.create-page"
 msgstr "Create Page"

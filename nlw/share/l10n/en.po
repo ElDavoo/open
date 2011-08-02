@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-01 16:33+0800\n"
+"PO-Revision-Date: 2011-08-02 14:19+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3856,6 +3856,9 @@ msgstr "%1 workspace"
 #: share/plugin/control/template/control/account.html:216 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:272
 msgid "control.wikis=count"
 msgstr "Workspaces (%1)"
+
+msgid "creator.choices:"
+msgstr "Choices:"
 
 msgid "creator.create-page"
 msgstr "Create Page"

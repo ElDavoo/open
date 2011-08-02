@@ -3522,6 +3522,9 @@ msgstr "%1 工作区"
 msgid "control.wikis=count"
 msgstr "工作区（%1）"
 
+msgid "creator.choices:"
+msgstr "Choices:"
+
 msgid "creator.create-page"
 msgstr "Create Page"
 
