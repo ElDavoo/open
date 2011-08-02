@@ -1481,6 +1481,7 @@ sub cond_get {
     my @headers = ( Accept => $accept );
     push @headers, 'If-Modified-Since', $ims if $ims;
     push @headers, 'If-None-Match', $inm if $inm;
+    push @headers, Cookie => $self->{_cookie} if $self->{_cookie};
 
     diag "Calling get on $uri";
     my $start = time();
