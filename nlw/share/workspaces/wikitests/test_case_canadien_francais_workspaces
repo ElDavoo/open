@@ -72,11 +72,13 @@
 
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) Teardown |  |
+| deactivate-user | %%user%% |  |
 | st-admin | delete-workspace --no-export --w %%wsAname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%wsAAname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%wsBname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%wsEname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%wsNname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%wsXname%% | has been deleted |
+| delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) COMPLETED |  |

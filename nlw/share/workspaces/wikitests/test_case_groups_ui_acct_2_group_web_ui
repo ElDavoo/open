@@ -71,7 +71,10 @@
 | text_like | //body | Log in to Socialtext |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI Teardown |
+| deactivate-user | %%user_two%% |  |
+| deactivate-user | %%user_three%% |  |
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%group_ws%% --no-export |
+| delete-account | %%to_acct%% |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group COMPLETED |

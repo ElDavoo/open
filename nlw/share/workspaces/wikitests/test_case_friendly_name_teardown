@@ -6,3 +6,4 @@
 | st-admin | delete-group --group %%fname_group_id%% | Deleted |
 | st-admin | delete-group --group %%fname_group_2_id%% | Deleted |
 | st-admin | delete-workspace --workspace %%fname_wiki%% | deleted |
+| delete-account | %%fname_acct%% |  |

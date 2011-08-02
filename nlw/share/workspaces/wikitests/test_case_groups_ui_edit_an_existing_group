@@ -58,5 +58,6 @@
 | *Comment* | Test Case: Groups UI Edit an Existing Group Teardown |
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group COMPLETED |

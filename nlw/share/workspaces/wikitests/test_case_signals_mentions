@@ -123,4 +123,9 @@
 | st_text_unlike_in_activities_widget | activities_widget | %%shouldnotappear_three%% |
 | st_text_unlike_in_activities_widget | activities_widget | %%shouldnotappear_four%% |
 
+| *Comment* | Test Case: Signals Mentions TEARDOWN |  |
+| deactivate-user | %%convuser%% |  |
+| deactivate-user | %%actor%% |  |
+| delete-account | %%acct%% |  |
+
 | *Comment* | Test Case: Signals Mentions COMPLETED |  |

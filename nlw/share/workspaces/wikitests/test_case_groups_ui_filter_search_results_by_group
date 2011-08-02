@@ -100,8 +100,16 @@
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Teardown |  |
 
+| deactivate-user | %%member1%% |  |
+| deactivate-user | %%member2%% |  |
+| deactivate-user | %%member3%% |  |
+| deactivate-user | %%nonmember%% |  |
+| deactivate-user | %%other_acct_mbr%% |  |
+| deactivate-user | %%other_acct_diff_mbr%% |  |
 | delete-group | %%group_id%% |  |
 | st-admin | delete-workspace --workspace %%other_ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%group_ws%% --no-export | has been deleted |
+| delete-account | %%group_acct%% |  |
+| delete-account | %%other_acct%% |  |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group COMPLETED |  |

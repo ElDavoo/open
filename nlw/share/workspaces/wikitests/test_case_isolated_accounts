@@ -67,5 +67,6 @@
 | *Comment* | Test Case: Isolated Accounts TEARDOWN |  |
 | st-admin | delete-workspace --w %%ws_one%% --no-export | has been deleted |
 | delete-group | %%group_id%% |  |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Isolated Accounts COMPLETED |
