@@ -128,12 +128,12 @@ sub as_hash {
 
     if (!$params->{set} || $params->{set} ne 'minimal') {
         my $header = $self->header_image;
-        $as_hash{header_image_url} = $self->_attachment_url($header);
+        $as_hash{header_image_url} = $self->_attachment_url('header');
         $as_hash{header_image_filename} = $header->filename;
         $as_hash{header_image_mime_type} = $header->mime_type;
 
         my $background = $self->background_image;
-        $as_hash{background_image_url} = $self->_attachment_url($background);
+        $as_hash{background_image_url} = $self->_attachment_url('background');
         $as_hash{background_image_filename} = $background->filename;
         $as_hash{background_image_mime_type} = $background->mime_type;
     }
@@ -141,11 +141,12 @@ sub as_hash {
     return \%as_hash;
 }
 
-# Now you need to make this handler and model SignalAttachment -->
 sub _attachment_url {
-    my ($self, $image) = @_;
+    my $self = shift;
+    my $image = shift;
+
     my $name = $self->name;
-    return "/data/theme/$name/attachements/" . $image->attachment_id;
+    return "/data/theme/$name/images/$image";
 }
 
 sub All {
