@@ -692,7 +692,14 @@
     '/data/settings/theme':
         'GET':
             'application/json': [Socialtext::Rest::SettingsTheme, GET_theme]
+        'PUT':
+            'application/json': [Socialtext::Rest::SettingsTheme, PUT_theme]
         '*':                    [Socialtext::Rest::SettingsTheme, bad_method]
+-
+    '/data/settings/theme/images/:filename':
+        'GET':
+            '*/*': [Socialtext::Rest::SettingsTheme, GET_image]
+        '*':       [Socialtext::Rest::SettingsTheme, bad_method]
 -
     '/data/themes':
         'GET':
