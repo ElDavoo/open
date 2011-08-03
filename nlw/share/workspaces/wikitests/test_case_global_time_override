@@ -135,6 +135,7 @@
 | st_unchecked_ok | timezone__time_display_seconds |  |
 
 | *Comment* | Test Case: Global Time Override TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | deactivate-user | %%user2%% |  |
 | delete-account | %%acct%% | Recklessly deleting |

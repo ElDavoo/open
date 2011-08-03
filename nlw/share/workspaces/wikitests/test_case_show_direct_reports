@@ -171,6 +171,7 @@
 | wait_for_element_not_present_ok | link=%%user12_short%% | 30000 |
 
 | *Comment* | Test Case: Show Direct Reports TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%user1%% |  |
 | st-admin | deactivate-user --e %%user2%% |  |
 | st-admin | deactivate-user --e %%user3%% |  |

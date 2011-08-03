@@ -71,6 +71,7 @@
 | is_element_present_ok | //div[contains(@class,'signal_body')]/b/i/del/a[contains(text(),'Bold Italic Strike link to Socialtext Home at %%start_time%%')] |  |
 
 | *Comment* | Test Case: Signals Wikitext TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%wtuser%% | deactivated |
 | delete-account | %%wtacct%% |  |
 

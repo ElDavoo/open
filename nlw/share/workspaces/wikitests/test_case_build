@@ -29,6 +29,8 @@
 | wait_for_element_visible_ok | weblink | 30000 |
 | wait_for_element_visible_ok | //div[@class='more'] | 30000 |
 | click_ok | //div[@class='more'] |  |
+| wait_for_element_visible_ok | link=Great Trends in Solar Panels and Solar Energy | 30000 |
+| wait_for_element_visible_ok | link=Big Company | 30000 |
 | wait_for_element_visible_ok | link=home_solar_panels.jpg | 30000 |
 | text_like | //div[@class='assetList'] | qr/Great Trends in Solar Panels and Solar Energy.+Big Company.+home_solar_panels.jpg/ |
 

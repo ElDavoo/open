@@ -146,8 +146,10 @@ FOR SOME BIZARRE REASON, THIS create-group OPENS A NEW WINDOW.
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 
 | *Comment* | Test Case: Group Home at Different Levels TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | delete-group | %%self_join_grp_id%% |  |
 | delete-group | %%private_grp_id%% |  |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Group Home at Different Levels COMPLETED |  |

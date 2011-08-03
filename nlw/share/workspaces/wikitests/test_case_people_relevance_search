@@ -76,6 +76,7 @@
 | text-like | `qr/Caroline Kennedy.*Bobby Kennedy.*%%usersix%%.*%%userthree%%.*%%usertwo%%.*%%userfour%%/` |  |
 
 | *Comment* | Test Case: People Relevance Search TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%euserone%% |  |
 | st-admin | deactivate-user --e %%eusertwo%% |  |
 | st-admin | deactivate-user --e %%euserthree%% |  |
