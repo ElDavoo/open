@@ -7,7 +7,8 @@ use Cwd;
 use File::Path qw(rmtree);
 use File::Spec;
 use File::Temp qw(tempdir);
-use Test::Socialtext tests => 40;
+use Test::More;
+use Test::Socialtext;
 use Socialtext::CLI;
 use Socialtext::SQL qw(:exec);
 use Test::Socialtext::CLIUtils qw(expect_success expect_failure);
@@ -303,3 +304,5 @@ import_account_recreates_group_primary_account: {
     # CLEANUP
     rmtree [$export_dir], 0;
 }
+
+done_testing;
