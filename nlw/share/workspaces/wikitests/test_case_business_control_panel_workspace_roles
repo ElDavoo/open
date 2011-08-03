@@ -189,6 +189,7 @@
 
 | *Comment* | Test Case: Business Control Panel Workspace Roles Teardown |
 | setSpeed | 0 |
+| st-process-jobs |  |  |
 | deactivate-user | %%user2%% |  |
 | deactivate-user | %%user3%% |  |
 | deactivate-user | %%user4%% |  |

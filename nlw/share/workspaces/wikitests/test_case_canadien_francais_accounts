@@ -29,6 +29,7 @@
 | text_like | //body | qr/%%acctAA%%.+%%acctA%%.+%%acctB%%.+%%acctE%%.+%%acctN%%.+%%acctX%%/ |
 
 | *Comment* | Test Case: Canadien Français (Accounts) TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-account | %%acctA%% |  |
 | delete-account | %%acctX%% |  |
 | delete-account | %%acctE%% |  |

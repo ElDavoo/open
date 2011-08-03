@@ -129,6 +129,7 @@
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace TEARDOWN |  |
 
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --no-export --w %%test_delete_ws%% | been deleted |
 | st-admin | delete-workspace --no-export --w %%group_ws%% | been deleted |
 | st-admin | delete-workspace --no-export --w %%addme_ws%% | been deleted |

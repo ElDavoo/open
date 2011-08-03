@@ -110,6 +110,7 @@
 | call | [st default timezone] | user=%%demo_user%% |
 
 | *Comment* | Test Case: Global Time TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | delete-workspace | %%wiki%% | Recklessly deleting |
 | delete-account | %%acct%% | Recklessly deleting |

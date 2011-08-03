@@ -177,6 +177,7 @@ TODO: verify cannot actually issue invitations via URL
 | text_like | Cannot give a role to a system-created user |  |
 
 | *Comment* | Test Case: Invite people TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%emailok%% |  |
 | deactivate-user | %%emailok2%% |  |
 | deactivate-user | %%acct_user%% |  |

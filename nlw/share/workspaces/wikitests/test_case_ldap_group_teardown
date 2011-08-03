@@ -6,6 +6,7 @@
  get-group-id | Motorhead | created_group_id |
 delete-group | %%created_group_id%% | |
 
+| st-process-jobs |  |  |
 | delete-workspace | %%ldapy_ws%% |  |
 | delete-account | %%ldapy_account%% |  |
 

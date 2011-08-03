@@ -154,6 +154,7 @@
 
 | *Comment* | Test Case: Business Control Panel Group Role Within A Workspace TEARDOWN |
 | setSpeed | 0 |
+| st-process-jobs |  |  |
 | deactivate-user | %%group_user%% |  |
 | st-admin | delete-group --g %%group_id%% |
 | st-admin | delete-group --g %%group1_id%% |

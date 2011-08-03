@@ -119,6 +119,7 @@
 | text_like | %%new_acct%% account |  |
 
 | *Comment* | Test Cse: Business Control Panel Account TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%new_user%% |  |
 | delete-account | %%new_acct%% |  |
 | delete-account | %%new_acct_2%% |  |

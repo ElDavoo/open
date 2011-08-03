@@ -75,6 +75,7 @@
 | *Comment* | Test Case: Canadien Français (Groups) (/CP is multi-paged and current lacks search capability. Stinks.) |  |
 
 | *Comment* | Test Case: Canadien Français (Groups) TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | st-admin | delete-group --g %%groupaa_id%% | Deleted group id: |
 | st-admin | delete-group --g %%groupa_id%% | Deleted group id: |

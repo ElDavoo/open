@@ -124,6 +124,7 @@
 | pause | 5000 |  |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-workspace | %%ws%% --no-export | Recklessly |
 | delete-account | %%account%% |  |
 

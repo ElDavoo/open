@@ -96,6 +96,7 @@
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace TEARDOWN |  |
 
+| st-process-jobs |  |  |
 | deactivate-user | %%testuseringroup%% |  |
 | deactivate-user | %%testuserinworkspace%% |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
