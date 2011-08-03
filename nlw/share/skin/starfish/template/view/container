@@ -16,7 +16,6 @@
     [% FOR col = container.columns %]
         [% class = col.stuck ? 'stuck' : 'draggable' %]
         <div class="grid_[% col.grids %] widgetColumn [% class %]" id="col[% loop.index %]">
-            <input type="hidden" name="grids" value="[% col.grids %]"/>
             [% FILTER decorate('container_column_' _ loop.index _ '_end') %]
             [% END %]
         </div>
