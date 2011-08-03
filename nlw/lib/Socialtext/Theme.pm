@@ -95,6 +95,8 @@ sub _valid_font {
 sub _valid_attachment_id {
     my $id = shift;
 
+    return 0 unless $id =~ /^\d+$/;
+
     my $count = eval {
         sql_singlevalue(q{
             SELECT COUNT(1)
@@ -108,6 +110,8 @@ sub _valid_attachment_id {
 
 sub _valid_theme_id {
     my $id = shift;
+
+    return 0 unless $id =~ /^\d+$/;
 
     my $count = eval {
         sql_singlevalue(q{
@@ -186,6 +190,43 @@ sub EnsureRequiredDataIsPresent {
     }
 }
 
+sub MakeImportable {
+    my $class = shift;
+    my $data = shift;
+    my $dir = shift;
+
+    my $name = delete $data->{base_theme};
+    my $base_theme = $name
+        ? $class->Load(name=>$name) || $class->Default()
+        : $class->Default();
+    $data->{base_theme_id} = $base_theme->theme_id;
+
+    $class->_CreateAttachmentsIfNeeded($dir, $data);
+
+    return $data;
+}
+
+sub MakeExportable {
+    my $class = shift;
+    my $data = shift;
+    my $themedir = shift;
+
+    my $base_theme = $class->Load(theme_id => delete $data->{base_theme_id});
+    $data->{base_theme} = $base_theme->name;
+
+    for my $image_name (@UPLOADS) {
+        my $id_field = $image_name . "_id";
+        my $image = Socialtext::Upload->Get(attachment_id=>$data->{$id_field});
+        my $copy_to = $themedir . "/" . $image->filename;
+        $image->copy_to_file($copy_to);
+
+        $data->{$image_name} = $image->filename;
+        delete $data->{$id_field};
+    }
+
+    return $data;
+}
+
 sub Update {
     my $class = shift;
     my $params = (@_ == 1) ? shift : {@_};
@@ -230,7 +271,8 @@ sub Default {
 
     my $rows = $sth->fetchall_arrayref({});
 
-    die "cannot determine default theme" unless scalar(@$rows) == 1;
+    die "cannot determine default theme"
+        unless scalar(@$rows) == 1;
 
     return $class->new(%{$rows->[0]})
 }
@@ -250,8 +292,9 @@ sub Create {
 sub _CleanParams {
     my $class = shift;
     my $params = shift;
+    my $themedir = Socialtext::AppConfig->code_base . '/themes';
 
-    $class->_CreateAttachmentsIfNeeded($params);
+    $class->_CreateAttachmentsIfNeeded($themedir, $params);
     return +{ map { $_ => $params->{$_} } @COLUMNS };
 
 }
@@ -269,14 +312,14 @@ sub _AllThemes {
 
 sub _CreateAttachmentsIfNeeded {
     my $class = shift;
+    my $themedir = shift;
     my $params = shift;
 
-    my $themedir = Socialtext::AppConfig->code_base . '/themes';
     my $creator = Socialtext::User->SystemUser;
 
     # Don't worry about breaking links to old upload objects, they'll get
     # auto-cleaned.
-    for my $temp_field (qw(header_image background_image)) {
+    for my $temp_field (@UPLOADS) {
         my $filename = delete $params->{$temp_field};
         next unless $filename;
 
