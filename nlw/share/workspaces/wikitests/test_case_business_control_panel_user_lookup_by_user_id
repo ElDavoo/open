@@ -90,8 +90,13 @@ When we had Users that had an _all numeric_ username, that *could* conflict with
 | *Comment* | Test Case: Business Control Panel USER: Lookup by User Id TEARDOWN |  |
 
 | st-process-jobs |  |  |
+| deactivate-user | %%user_one_email%% |  |
+| deactivate-user | %%user_two_email%% |  |
 | st-admin | delete-workspace --no-export --w %%ws_one%% | deleted |
 | st-admin | delete-workspace --no-export --w %%ws_two%% | deleted |
 | st-admin | delete-workspace --no-export --w %%ws_three%% | deleted |
+| delete-account | %%acct_one%% |  |
+| delete-account | %%acct_two%% |  |
+| delete-account | %%acct_three%% |  |
 
 | *Comment* | Test Case: Business Control Panel USER: Lookup by User Id COMPLETED |  |

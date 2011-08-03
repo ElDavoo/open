@@ -76,6 +76,7 @@
 | wait_for_text_present_ok | 2 minutes ago | 180000 |
 
 | *Comment* | Test Case: Activities Widget Other Signals TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-workspace | %%ws%% |  |
 | deactivate-user | %%signalsuser%% | was deactivated |
 | deactivate-user | %%otheruser%% | was deactivated |

@@ -65,7 +65,9 @@
 | *Comment* | Test Case: Isolated Accounts TODO add a group, check for leaked group events |
 
 | *Comment* | Test Case: Isolated Accounts TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%ws_one%% --no-export | has been deleted |
 | delete-group | %%group_id%% |  |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Isolated Accounts COMPLETED |

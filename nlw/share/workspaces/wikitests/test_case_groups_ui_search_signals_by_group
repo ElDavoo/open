@@ -58,7 +58,8 @@
 | wait_for_text_not_present_ok | %%start_time%% 20 | 30000 |
 | wait_for_text_not_present_ok | %%start_time%% 25 | 30000 |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group Teardown |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-group | %%group_id%% | Recklessly deleting |
 | delete-workspace | %%group_ws%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%grp_mbr%% |  |
