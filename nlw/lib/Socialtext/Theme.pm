@@ -167,9 +167,16 @@ sub EnsureRequiredDataIsPresent {
         my $theme = $all->{$name};
         $theme->{name} = $name;
 
+        my %to_check = %$theme;
+        delete $to_check{$_} for qw(
+            header_image is_default name theme_id background_image);
+        die "theme $name has invalid settings, refusing to install/update"
+            unless $class->ValidSettings(%to_check);
+
+
         if (my $existing = $installed->{$name}) {
             die "no theme_id for installed theme ($name)?\n"
-                unless $installed->{$name}{theme_id};
+                unless $existing->{theme_id};
 
             $class->Update(%$existing, %$theme);
         }
