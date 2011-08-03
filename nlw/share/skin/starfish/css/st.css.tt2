@@ -6,7 +6,7 @@
 body {
     background: #25410A url([% skin %]/images/background.png) repeat top left;
     font-size: 11px;
-    font-family: Arial, Gorgia, Helvetica;
+    font-family: Times;
     color: #333;
 }
 
@@ -42,9 +42,11 @@ input {
 /**
  * Headings
  */
-h1, h2 { color: #333, padding: 0; margin: 0 }
-h1 { font-size: 24px }
+h1, h2, h3, h4 { color: #333, padding: 0; margin: 0 }
+h1 { font-size: 18px }
 h2 { font-size: 16px }
+h3 { font-size: 14px }
+h4 { font-size: 13px }
 
 /**
  * Some helpful classes
@@ -59,7 +61,11 @@ h2 { font-size: 16px }
     font-size: small;
     vertical-align: top;
 }
+.hidden {
+    display: none;
+}
 input.hidden { /* For hiding submit buttons */
+    display: block;
     height: 0;
     width: 0;
     opacity: 0;
@@ -148,13 +154,12 @@ header .topLinks {
 
 .globalNav .navLink a {
     color: #ccc;
-    font-size: 12px;
+    font-size: 14px;
     display: block;
-    padding: 5px 0 0 29px;
+    padding: 5px 0 0 43px;
     font-weight: bold;
     text-decoration: none;
     background: transparent no-repeat 10px 0;
-    text-align: center;
 }
 .globalNav .selected .navLink {
     background-color: #000;
@@ -195,8 +200,58 @@ header .topLinks {
     background-color: [% secondary_color %];
 }
 
+.contentWrapper {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+}
 .content {
+    padding: 10px 0;
     background-color: #ffffff;
-    padding: 10px;
 }
 
+/**
+ * Widgets
+ */
+.widget {
+}
+
+/* Drag-and-drop */
+.draggable .widgetHeader { height: 20px; cursor: move }
+.draggable .widgetTitle { float: left }
+.draggable .placeholder { border: 3px dotted #ccc }
+
+.widget .content {
+    border-top: 1px solid #ccc;
+}
+
+.widget .buttons {
+    float: right;
+}
+
+.widget .buttons .close,
+.widget .buttons .settings,
+.widget .buttons .fix {
+    display: block;
+    float: right;
+    width: 12px;
+    height: 12px;
+    margin: 5px;
+}
+.widget .buttons .close:hover,
+.widget .buttons .settings:hover,
+.widget .buttons .fix:hover {
+    filter: alpha(opacity = 70);
+    opacity: .7;
+}
+
+.widget .buttons .close {
+    background: transparent url([% skin %]/images/icons/exit.png) no-repeat top left;
+}
+.widget .buttons .settings {
+    background: transparent url([% skin %]/images/icons/tools.png) no-repeat top left;
+}
+.widget .buttons .fix {
+    /* XXX */
+}

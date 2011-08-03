@@ -33,18 +33,20 @@
     <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
 
     <script type="text/javascript" charset="utf-8"
-      src="[% wiki.skin_uri('s3') %]/javascript/l10n-<% loc_lang %>.js.gz">
+      src="[% wiki.skin_uri('s3') %]/javascript/l10n-[% loc_lang %].js.gz">
     </script>
 
     <script type="text/javascript" charset="utf-8"
       src="[% wiki.skin_uri('starfish') %]/javascript/socialtext-starfish.js.gz">
     </script>
 
-    [% IF head_template %]
-      [% INCLUDE $head_template %]
-    [% END %]
+    <script>
+        var containerID = "[% container.id %]";
+        loc.all_widgets();
+    </script>
 
-    [% INCLUDE "element/wiki/js-bootstrap" %]
+    [% INCLUDE 'element/wiki/js-bootstrap' %]
+    [% INCLUDE 'widget/syndicator' %]
 
     <meta name="keywords" content="<% loc('about.keywords') %>"/>
   </head>
@@ -78,8 +80,8 @@
 
     [% INCLUDE element/main_nav %]
 
-    <div class="container_12">
-      <div class="content grid_12">[% content %]</div>
+    <div class="contentWrapper">
+      <div class="content">[% content %]</div>
     </div>
 
   </body>

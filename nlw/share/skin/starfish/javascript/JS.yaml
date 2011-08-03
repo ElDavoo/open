@@ -1,0 +1,11 @@
+---
+'socialtext-starfish.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/common/javascript', file: 'jquery-1.4.4.js'}
+        - {dir: 'skin/common/javascript', file: 'jquery-json-1.3.js'}
+        - {dir: 'skin/common/javascript', file: 'utf8.js'}
+        - {jemplate_runtime: jquery}
+        - {dir: skin/s3/javascript, file: 'JemplatePlugin/*.js'}
+        - {dir: 'skin/common/javascript', file: 'socialtext-container.js'}
+        - {dir: 'skin/s3/javascript', file: 'search.js'}

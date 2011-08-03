@@ -4,9 +4,9 @@
 $(function () {
     var newIframeSrc = null;
     var options = {
-        items: 'li.draggable:not(.fixed)',
-        cancel: 'li:not(.draggable), .wiki li.draggable',
-        handle: '.widgetHeader *',
+        items: '.draggable:not(.fixed)',
+        cancel: 'li:not(.draggable), .wiki .draggable',
+        handle: '.widgetHeader',
         zIndex: 10000,
         placeholder: 'placeholder',
         tolerance: 'tolerance',
@@ -46,7 +46,7 @@ $(function () {
             setTimeout(function () {
                 gadgets.container.updateLayout();
                 if ($.fn.addTouch) {
-                    $('li.draggable:not(.fixed) .widgetHeader').addTouch();
+                    $('.draggable:not(.fixed) .widgetHeader').addTouch();
                 }
             },1000);
         }
@@ -63,6 +63,6 @@ $(function () {
     }, options));
 
     if ($.fn.addTouch) {
-        $('li.draggable:not(.fixed) .widgetHeader').addTouch();
+        $('.draggable:not(.fixed) .widgetHeader').addTouch();
     }
 });
