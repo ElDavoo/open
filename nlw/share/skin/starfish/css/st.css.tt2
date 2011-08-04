@@ -3,15 +3,24 @@
 [% SET primary_color = '#6f7c01' %]
 [% SET secondary_color = '#c6b93b' %]
 
+
+.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12, .grid_13, .grid_14, .grid_15, .grid_16, .grid_17, .grid_18, .grid_19, .grid_20, .grid_21, .grid_22, .grid_23, .grid_24 {
+    /* background: rgba(255, 0, 0, 0.3) !important; */
+}
+
 body {
     background: #25410A url([% skin %]/images/background.png) repeat top left;
     font-size: 11px;
-    font-family: Times;
+    font-family: Helvetica;
     color: #333;
 }
 
 a {
     color: [% primary_color %];
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
 
 a.button,
@@ -88,6 +97,8 @@ header {
     background: #c5c5c5 url('[% skin %]/images/header.png') no-repeat left top;
 
     /* Drop shadow */
+    -moz-box-shadow: 3px 3px 4px #000000;
+    -webkit-box-shadow: 3px 3px 4px #000000;
     box-shadow: 3px 3px 4px #000000;
 
     /* For IE 8 */
@@ -108,97 +119,6 @@ header .topLinks {
     text-align: right;
 }
 
-/**
- * Global Navigation
- */
-
-.globalNav {
-    padding-left: 10px;
-}
-/* Replace margin:5px with extra width */
-.globalNav .grid_2 { margin: 0; width: 80px }
-.globalNav .grid_3 { margin: 0; width: 120px }
-.globalNav .grid_10 { margin: 0; width: 400px }
-
-.globalNav .navGrid {
-    height: 50px;
-}
-.globalNav .navItem,
-.globalNav .navLink {
-    height: 45px;
-}
-
-
-.globalNav a:visited,
-.globalNav a:active,
-.globalNav a {
-    color: #fff;
-}
-
-.globalNav .navLink {
-    border-left: 2px solid #000;
-}
-.globalNav .last .navLink {
-    border-right: 2px solid #000;
-}
-
-.globalNav .navLink a {
-    top: 10px;
-    position: relative;
-}
-.globalNav .searchBox form,
-.globalNav .widgetButtons .button {
-    top: 13px;
-    position: relative;
-}
-
-.globalNav .navLink a {
-    color: #ccc;
-    font-size: 14px;
-    display: block;
-    padding: 5px 0 0 43px;
-    font-weight: bold;
-    text-decoration: none;
-    background: transparent no-repeat 10px 0;
-}
-.globalNav .selected .navLink {
-    background-color: #000;
-    background: rgb(0, 0, 0);
-    background: rgba(0, 0, 0, 0.3);
-    filter: alpha(opacity = 30);
-}
-.globalNav .navLink .dashboard{
-    background-image: url('[% skin %]/images/globalNav/dashboard.png');
-}
-.globalNav .navLink .spaces {
-    background-image: url('[% skin %]/images/globalNav/spaces.png');
-}
-.globalNav .navLink .activities {
-    background-image: url('[% skin %]/images/globalNav/activities.png');
-}
-.globalNav .navLink .people {
-    background-image: url('[% skin %]/images/globalNav/people.png');
-}
-.searchText {
-    padding-left: 18px;
-    width: 100px;
-    background: #fff url('[% skin %]/images/icons/search.png') no-repeat 0 0px;
-}
-.searchBox,
-.widgetButtons {
-    text-align: right;
-}
-
-.navGrid .underline {
-    height: 3px;
-    background-color: #fff;
-    border-top: 2px solid [% secondary_color %];
-    width: 100%;
-}
-.navGrid:hover .underline, /* CSS3 */
-.selected .underline {
-    background-color: [% secondary_color %];
-}
 
 .contentWrapper {
     width: 960px;
@@ -209,6 +129,36 @@ header .topLinks {
 .content {
     padding: 10px 0;
     background-color: #ffffff;
+}
+
+/**
+ * Footer
+ */
+footer {
+    color: #ccc;
+    padding: 20px 0;
+    line-height: 18px;
+    font-size: 13px;
+}
+
+footer a {
+    color: [% secondary_color %]
+}
+
+footer .socialtext {
+    font-family: Arial;
+    font-size: 20px;
+    color: #fff;
+}
+
+footer .links {
+    text-align: right;
+}
+
+.divider {
+    height: 10px;
+    margin: 0 10px;
+    border-right: 1px solid #ccc;
 }
 
 /**
@@ -259,575 +209,4 @@ header .topLinks {
 }
 .widget .buttons .fix {
     /* XXX */
-}
-
-/**
- * Activities
- */
-.activitiesWidget {
-}
-
-.activitiesWidget .signals {
-    background-color: #dfebed;
-    padding: 10px;
-}
-.activitiesWidget .signals .pop_out {
-    display: none; /* XXX */
-}
-.activitiesWidget .signals .avatar {
-    display: none;
-}
-
-/* Wikiwyg */
-.activitiesWidget .wikiwyg {
-    cursor: text;
-}
-.activitiesWidget .mainWikiwyg,
-.activitiesWidget .focused .wikiwyg {
-    min-height: 23px;
-    background-color: #fff;
-    padding: 3px;
-    box-shadow: inset 0 2px 2px #ccc;
-}
-.activitiesWidget .signals .mainWikiwyg {
-    margin: 3px 43px 0 0;
-}
-* html .activitiesWidget .mainWikiwyg,
-* html .activitiesWidget .focused .wikiwyg {
-    height: 23px;
-}
-
-.activitiesWidget .wikiwyg textarea {
-    resize: none;
-    border: none;
-}
-.activitiesWidget .wikiwyg .clearHandler {
-    color: #666666;
-    font-size: 110%;
-}
-.activitiesWidget focused .wikiwyg .clearHandler,
-.activitiesWidget .mainWikiwyg .clearHandler {
-    margin: 4px;
-}
-
-/* User lookahead window */
-.activitiesWidget .lookahead {
-    display: none;
-    height: 45px;
-    position: absolute;
-    text-align: left;
-    border: 1px solid black;
-    background: #ffffff;
-    padding: 5px;
-    z-index: 1000;
-}
-.activitiesWidget .replies .lookahead {
-    left: 35px;
-}
-
-.activitiesWidget .lookahead .lookaheadDiv {
-    padding-right: 105px;
-}
-
-.activitiesWidget .lookahead .buttons {
-    position: absolute;
-    padding: 3px;
-    right: 5px;
-    top: 19px;
-    height: 22px;
-}
-
-* html .activitiesWidget .lookahead .buttons {
-    top: 18px;
-    padding: 6px;
-}
-
-.activitiesWidget .lookahead .lookahead-prompt {
-    color: #808080;
-}
-
-.activitiesWidget .lookahead input.private {
-    vertical-align: middle;
-}
-
-.activitiesWidget .postWrap {
-    float: right;
-    text-align: center;
-}
-
-.activitiesWidget .links {
-    position: relative;
-    border: 1px solid #999;
-    text-align: left;
-    padding: 5px;
-    color: #666;
-}
-.activitiesWidget .signals .links {
-    display: none;
-}
-.activitiesWidget .links .thumb {
-    float: left;
-    border: 1px solid #AAA;
-    height: 90px;
-    width: 90px;
-}
-.activitiesWidget .links .link {
-    margin: 5px 0;
-    height: 90px;
-}
-.activitiesWidget .links .info {
-    float: left;
-    padding: 0 5px;
-    width: 150px;
-}
-.activitiesWidget .links h3.title {
-    border-bottom: 1px solid #999;
-    margin-right: 20px;
-}
-.activitiesWidget .links .cancel {
-    border: 1px solid #999;
-    cursor: pointer;
-    position: absolute;
-    right: 3px;
-    top: 3px;
-    padding: 1px 3px;
-    -moz-border-radius:3px;
-    -webkit-border-radius:3px;
-    border-radius: 3px;
-    color: #FFF;
-    background-color: #AAA;
-}
-.activitiesWidget .links .cancel.hover {
-    background-color: #666;
-}
-
-.activitiesWidget .attachmentList {
-    background-color: #EDFAC9;
-    border-bottom: 1px solid #CBCBCB;
-    margin-right: 57px;
-    padding: 3px;
-    display: none;
-}
-.activitiesWidget .attachmentList .remove {
-    color: #E63C21;
-}
-.activitiesWidget .attachmentList .icon {
-    vertical-align: middle;
-}
-
-.activitiesWidget .toolbar {
-    height: 20px;
-    padding-bottom: 2px;
-    margin-right: 56px;
-    /* IE6+7 */
-    *height: 100%;
-}
-.activitiesWidget .replies .toolbar {
-    padding-left: 45px;
-}
-.activitiesWidget .toolbar .buttons {
-    float: left;
-}
-.activitiesWidget .toolbar div {
-    float: left;
-    vertical-align: middle;
-}
-.activitiesWidget .toolbar .label {
-    padding:2px 4px;
-    text-align: right;
-}
-.activitiesWidget .toolbar a div {
-    background: transparent no-repeat;
-    background-position: top right;
-    width: 24px;
-    height: 18px;
-    cursor: pointer;
-}
-.activitiesWidget .toolbar a:hover div {
-    background-position: center right;
-}
-.activitiesWidget .toolbar .weblink {
-    background-image: url('../images/insert-weblink.gif');
-}
-.activitiesWidget .toolbar a:hover .weblink {
-    background-image: url('../images/insert-weblink-hover.gif');
-}
-.activitiesWidget .toolbar .wikilink {
-    background-image: url('../images/insert-wikilink.gif');
-}
-.activitiesWidget .toolbar a:hover .wikilink {
-    background-image: url('../images/insert-wikilink-hover.gif');
-}
-.activitiesWidget .toolbar .private {
-    background-image: url('../images/insert-private.gif');
-}
-.activitiesWidget .toolbar a:hover .private {
-    background-image: url('../images/insert-private-hover.gif');
-}
-.activitiesWidget .toolbar .person {
-    background-image: url('../images/insert-person.gif');
-}
-.activitiesWidget .toolbar a:hover .person {
-    background-image: url('../images/insert-person-hover.gif');
-}
-.activitiesWidget .toolbar .person.disabled,
-.activitiesWidget .toolbar a:hover .person.disabled {
-    background-image: url('../images/insert-person-disabled.gif');
-}
-.activitiesWidget .toolbar .tag {
-    background-image: url('../images/insert-tag.gif');
-}
-.activitiesWidget .toolbar a:hover .tag {
-    background-image: url('../images/insert-tag-hover.png');
-}
-.activitiesWidget .toolbar .file {
-    background-image: url('../images/insert-file.gif');
-}
-.activitiesWidget .toolbar a:hover .file {
-    background-image: url('../images/insert-file-hover.gif');
-}
-.activitiesWidget .toolbar .file.disabled,
-.activitiesWidget .toolbar a:hover .file.disabled {
-    background-image: url('../images/insert-file-disabled.gif');
-}
-.activitiesWidget .toolbar .video {
-    background-image: url('../images/insert-video.gif');
-}
-.activitiesWidget .toolbar a:hover .video {
-    background-image: url('../images/insert-video-hover.gif');
-}
-
-/* Event list */
-.activitiesWidget .event_list {
-    text-align: left;
-    /* Workaround for {bz: 4806} */
-    padding-top: 1px;
-}
-
-.activitiesWidget .event_list .event {
-/*    border-bottom: 1px solid #999;*/
-    padding: 0;
-    position: relative;
-}
-
-/* Event hovering */
-.activitiesWidget .event_list .hoverable  {
-    padding: 0px 8px 0px 8px;
-}
-.activitiesWidget .event_list .hover  {
-    background: #fffcec !important;
-}
-.activitiesWidget .event_list .replies .hover  {
-    background: #d5f5fa !important;
-    border-left: 1px solid black !important;
-    border-right: 1px solid black !important;
-}
-
-/* Event content styling */
-
-.activitiesWidget .event_list .event {
-    padding-bottom: 3px;
-    font-size:15px;
-    color:#333;
-}
-.activitiesWidget .event_list .event a {
-    font-size:15px;
-}
-.activitiesWidget .event_list .event a.btn {
-    font-size:11px;
-}
-
-.activitiesWidget .event_list .event .metadata {
-    position: relative;
-    padding-bottom:2px;
-    font-size:11px;
-    color:#777;
-}
-
-.activitiesWidget .event_list .signal .metadata {
-    padding-bottom: 0px;
-    padding-top: 2px;
-}
-
-.activitiesWidget .event_list .event .metadata a {
-    font-size:11px;
-    color:#777;
-    margin-right:3px;
-}
-
-.activitiesWidget .event_list .event .metadata a:hover {
-    color:#36c;
-}
-
-.activitiesWidget .event_list .last {
-    border-bottom: none;
-}
-
-.activitiesWidget .event_list .event .avatar {
-    position: relative;
-    left: 8px;
-    top: 3px;
-    padding: 0;
-}
-
-.activitiesWidget .event_list .event .avatar img {
-    position: absolute;
-    width: 42px;
-    height: 42px;
-}
-
-.activitiesWidget .event_list .event .outerEventText {
-    margin: 0 40px 0 45px;
-    padding: 2px 0 2px 8px;
-}
-
-/* Event classes: mentions and private messages */
-.activitiesWidget .event_list .mention {
-    border-right: 20px solid #ffb96e;
-}
-.activitiesWidget .event_list .reply .mention {
-    border-right: 20px solid #f5d8b6;
-}
-.activitiesWidget .event_list .private {
-    border-right: 20px solid #999;
-}
-.activitiesWidget .event_list .reply .private {
-    border-right: 20px solid #c8c8d0;
-}
-.activitiesWidget .type {
-    font-size: 70%;
-    font-style: italic;
-    position: absolute;
-    top: 45px;
-    left: 3px;
-}
-
-/* the HTML is all there for replies, let's just not display it. */
-.activitiesWidget .reply .type { display: none; }
-
-/* min-height on events: */
-.activitiesWidget .event_list .event .eventText { min-height: 54px }
-* html .activitiesWidget .event_list .event .eventText { height: 54px }
-.activitiesWidget .event_list .replies .eventText { min-height: 12px }
-* html .activitiesWidget .event_list .replies .eventText { height: 12px }
-.activitiesWidget .event_list .replies .focused .eventText { min-height: 28px }
-* html .activitiesWidget .event_list .replies .focused .eventText { height: 32px }
-
-/* Replies */
-.activitiesWidget .event_list .replies {
-    margin-left: 45px;
-    clear: right;
-}
-
-.activitiesWidget .event_list .event .replies .eventText {
-    padding: 3px 0;
-    position: relative; /* IE Peekaboo bug fix */
-}
-
-.activitiesWidget .event_list .replies .wikiwyg {
-    margin: 1px 52px 0 40px;
-}
-
-.activitiesWidget .postWrap {
-    float: right;
-    position: relative;
-    margin: 0;
-    padding: 6px 9px 0 0;
-}
-
-.activitiesWidget .event_list .replies .postWrap {
-    font-size: 80%;
-}
-.activitiesWidget .event_list .replies .postWrap .count {
-    margin-top: 5px;
-}
-
-.activitiesWidget .event_list .replies .avatar {
-    top: 4px;
-    left: 8px;
-    margin: 0;
-    padding: 0;
-}
-.activitiesWidget .event_list .replies .older,
-.activitiesWidget .event_list .replies .wikiwygRow {
-    margin:0 40px 0 0; 
-}
-
-.activitiesWidget .event_list .replies .wikiwygRow .avatar {
-    top: 0;
-}
-.activitiesWidget .event_list .replies .wikiwygRow .avatar img {
-    width: 13px;
-    height: 13px;
-    margin: 0 4px;
-}
-.activitiesWidget .event_list .replies .avatar img,
-.activitiesWidget .event_list .replies .focused .avatar img {
-    width: 23px;
-    height: 23px;
-    margin: 0;
-}
-
-.activitiesWidget .event_list .replies .reply,
-.activitiesWidget .event_list .replies .older .open,
-.activitiesWidget .event_list .replies .older .closed,
-.activitiesWidget .event_list .replies .wikiwygRow {
-    border-bottom:1px #fff solid;
-}
-.activitiesWidget .event_list .replies .older .open,
-.activitiesWidget .event_list .replies .older .closed,
-.activitiesWidget .event_list .replies .wikiwygRow {
-    background-color: #e6e6e6;
-    font-size:11px;
-    padding-bottom: 2px;
-}
-.activitiesWidget .event_list .replies .older .open,
-.activitiesWidget .event_list .replies .older .closed {
-    border-top-right-radius:8px;
-    -moz-border-radius-topright:8px;
-    -webkit-border-top-right-radius:8px;
-}
-.activitiesWidget .event_list .replies .older .loading {
-    display: none;
-    position:absolute;
-    height:10px;
-    right: 10px;
-}
-.activitiesWidget .event_list .replies .wikiwygRow {
-    border-bottom-right-radius:8px;
-    border-bottom-left-radius:8px;
-    -moz-border-radius-bottomright:8px;
-    -webkit-border-bottom-right-radius:8px;
-    -moz-border-radius-bottomleft:8px;
-    -webkit-border-bottom-left-radius:8px;
-}
-.activitiesWidget .event_list .replies .reply .outerEventText {
-    margin: 0 40px 0 0;
-    padding: 0 0 0 40px;
-    background-color: #E8F8FC;
-    font-size:13px;
-
-    /* this is so adding black borders doesn't cause weird jumping */
-    border-left: 1px solid #e8f8fc;
-    border-right: 1px solid #e8f8fc;
-}
-.activitiesWidget .event_list .replies .selected .outerEventText {
-    background-color: #FFFDD3;
-}
-.activitiesWidget .event_list .replies .reply .outerEventText a {
-    font-size:13px;
-}
-.activitiesWidget .event_list .replies .reply .outerEventText .metadata,
-.activitiesWidget .event_list .replies .reply .outerEventText .metadata a {
-    font-size:11px;
-}
-
-.activitiesWidget .event_list .older .open,
-.activitiesWidget .event_list .older .closed,
-.activitiesWidget .event_list .total {
-    padding: 3px 6px;
-    color: #6E605F;
-    cursor: pointer;
-}
-
-.activitiesWidget .event_list .older .click_to {
-    background: #EBEBEB;
-    font-style: italic;
-}
-* html .event_list .older .click_to {
-    right: 45px; /* IE sucks */
-}
-
-/* Metadata */
-
-.activitiesWidget .metadata .destination,
-.activitiesWidget .metadata .source, 
-.activitiesWidget .metadata .timestamp {
-    color:#555;
-}
-.activitiesWidget .metadata .destinationNetworks {
-    margin-right: 3px;
-    font-weight: bold;
-}
-.activitiesWidget .metadata span {
-    white-space: nowrap;
-}
-.activitiesWidget .metadata .timestamp {
-    font-style: italic;
-}
-
-.activitiesWidget .more {
-    position: relative;
-    text-decoration: none;
-    font-size: 120%;
-    margin: 5px 2px;
-    padding: 2px 0;
-    background: #AAA;
-    color: #fff;
-    cursor: pointer;
-    border: 1px solid #999;
-    -webkit-border-radius: 5px; 
-    -moz-border-radius: 5px; 
-    border-radius: 5px;
-    text-align: center;
-}
-
-.activitiesWidget .more.hover {
-    background: #666;
-}
-
-/* Icons */
-.activitiesWidget .event .icons {
-    position: absolute;
-    right: 0;
-    width: 40px;
-    padding-top: 2px;
-    z-index: 100;
-    -right: 10px !important;
-}
-
-
-.activitiesWidget .event .icons .asset-icon {
-    float: right;
-}
-
-.activitiesWidget .actions {
-    position: absolute;
-    right: 0;
-    top: 2px;
-}
-.activitiesWidget .hoverLink {
-    text-decoration: none;
-}
-.activitiesWidget .hoverLink .hicon {
-    display: none;
-}
-.activitiesWidget .hover .hoverLink span {
-    text-decoration: underline;
-    color: #3ba3ef;
-}
-.activitiesWidget .hover .hoverLink .hicon {
-    display: inline;
-}
-.activitiesWidget .hover .hoverLink .icon {
-    display: none;
-}
-.activitiesWidget .icon,
-.activitiesWidget .hicon {
-    vertical-align: middle;
-}
-
-/* Like */
-.activitiesWidget .event_list .event a.like-indicator {
-    font-size: 8pt;
-}
-.activitiesWidget .like-indicator {
-    background-position: top center;
-    display: block;
-    padding: 20px 0px 0px 0;
-    width: 20px;
-    text-decoration: none;
-    color: #999;
-    text-align: center;
-    height: 20px;
 }
