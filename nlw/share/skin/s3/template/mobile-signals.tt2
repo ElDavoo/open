@@ -1,0 +1,136 @@
+[% USE decorate %]
+<html>
+    <head>
+        [% IF signal_id %]
+        <title>[% loc('activities.signals-permalink') %]</title>
+        [% ELSE %]
+        <title>[% loc('nav.signals') %]</title>
+        [% END %]
+        <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
+        <meta name = "viewport" content = "width=device-width, initial-scale=1">
+        [% INCLUDE element/css_links %]
+        <link rel="stylesheet" type="text/css" href="[% wiki.static_path %]/skin/common/css/jquery.mobile-1.0a3.min.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="[% share %]/css/inline.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="[% share %]/css/mobile.css" media="screen" />
+        <script src="[% share %]/javascript/socialtext-popout.js"></script>
+        <script src="[% wiki.static_path %]/skin/s3/javascript/l10n-[% loc_lang %].js.gz"></script>
+
+        [% INCLUDE widget/syndicator %]
+        <script>
+            $(function() {
+                [% FILTER decorate('socialtext_js_vars') %]
+                window.Socialtext = window.Socialtext || {};
+                Socialtext.loc_lang = '[% loc_lang %]';
+                Socialtext.userid = "[% user.userid %]";
+                [% END %]
+
+                $.mobile = $.mobile || {
+                    silentScroll: function(){
+                        setTimeout(function(){ window.scrollTo(0,0); }, 500);
+                    }
+                };
+                var activities = new Activities.Widget({
+                    [% IF link_dictionary;
+                        "link_dictionary: '$link_dictionary',";
+                       END
+                    %]
+                    [% IF signal_id %]
+                        signal_id: '[% signal_id %]',
+                        ui_template: 'ui.permalink.tt2',
+                        [% IF reply_id %]
+                            reply_id: '[% reply_id %]',
+                        [% END %]
+                    [% ELSE %]
+                        ui_template: 'ui.mobile-signals.tt2',
+                    [% END %]
+                    poll_interval: (5 * 1000),
+                    instance_id: Number([% id %]),
+                    node: $('#content').get(0),
+                    prefix: "[% prefix %]",
+                    base_uri: "[% wiki.uri.replace('/$','') %]",
+                    share: "[% share %]",
+                    static_path: "[% wiki.static_path %]",
+                    viewer: "[% user.userid %]",
+                    viewer_id: [% user.id %],
+                    viewer_name: "[% user.username %]",
+                    owner: "[% user.userid %]",
+                    owner_id: [% user.id %],
+                    owner_name: "[% user.username %]",
+                    display_limit: 20,
+                    fixed_action: 'action-signals',
+                    signals_only: true,
+                    mention_user_id: "",
+                    initial_text: ' ',
+                    mention_user_name: ""
+                });
+                activities.start();
+            });
+        </script>
+    </head>
+    <body class="mobile">
+        [% FILTER decorate('body_begin') %]
+        [% END %]
+        <div class="topnav">
+            <div data-role="header" class="ui-bar-a ui-header" role="banner">
+                <div data-role="navbar" class="ui-navbar ui-navbar-noicons" style="min-height: 34px" role="navigation"><ul class="ui-grid-d">
+                    <li class="ui-block-a">
+<div style="background: [% skin_info.mobile.logo.backgroundColor || '#17417F' %]; height: 34px; text-align: center"><table border=0 height="34" width="100%"><tr><td valign="middle" style="vertical-align: middle !important; text-align: center">
+        [% SET logo = skin_info.mobile.logo.url
+            ? skin_uri(skin_info.mobile.logo.url)
+            : s3_uri('images/miki-logo.png')
+         %]
+        <img src="[% logo %]" style="max-width: 98%; max-height: 26px;"/>
+</td></tr></table></div></li>
+                    [% INCLUDE globalnav %]
+                </ul></div>
+            </div>
+        </div>
+
+
+        <div class="content inlineWidget" style="margin-top: 35px; margin-bottom: 20px">
+            <div id="content" class="activitiesWidget">
+                <img style="margin: 40px" src="[% wiki.static_path %]/skin/common/images/ajax-loader.gif"/>
+            </div>
+        </div>
+
+        <div class="topnav bottom">
+            <div data-role="footer" class="ui-bar-a ui-footer" role="banner">
+                <div data-role="navbar" class="ui-navbar ui-navbar-noicons" role="navigation"><ul class="ui-grid-d">
+<li class="ui-block-a">
+<a href="/nlw/submit/logout?redirect_to=/m/login" rel="external" id="mobile-logout" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.logout') %]</span></span></a>
+    
+</li>
+                    [% INCLUDE globalnav %]
+                </ul></div>
+            </div>
+        </div>
+<!-- <div><em>[% version_tag %]</em></div> -->
+    [% FILTER decorate('body_end') %]
+    [% END %]
+    </body>
+</html>
+
+[% BLOCK globalnav %]
+
+
+    [% IF signal_id %]
+        <li class="ui-block-b"><a href="/m/signals" class="ui-btn ui-btn-up-a" data-theme="a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.signals') %]</span></span></a></li>
+    [% ELSE %]
+        <li class="ui-block-b"><a class="ui-btn-active current ui-btn ui-btn-up-a" data-theme="a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.signals') %]</span></span></a></li>
+    [% END %]
+
+        <li class="ui-block-c"><a href="/m/people" id="mobile-people" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.people') %]</span></span></a></li>
+    
+<li class="ui-block-d">
+    
+        <a href="/m/activities" id="mobile-activities" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.activity') %]</span></span></a>
+    
+</li>
+
+<li class="ui-block-e">
+    
+<a href="/m/workspace_list" rel="external" id="mobile-signals" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.wikis') %]</span></span></a>
+    
+</li>
+
+[% END %]

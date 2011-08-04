@@ -21,6 +21,8 @@ share/l10n/mecab/right-id.def
 share/l10n/mecab/sys.dic
 share/l10n/mecab/unk.dic
 share/workspaces/wikitests/wikitests.1.tar.gz
+share/skin/common/javascript/shindig-*.js
+share/skin/common/javascript/shindig-*.js.gz
 messages.mo
 nlw-en.po
 lib/Socialtext/Handler/ControlPanel.pm

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-28 09:47-0700\n"
+"PO-Revision-Date: 2011-07-28 11:12-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -2399,9 +2399,17 @@ msgstr "You have free access to view and contribute to any of these public wikis
 msgid "wiki.search-all:"
 msgstr "Search My Workspaces:"
 
+#: share/skin/s3/template/element/search_form:23
+msgid "wiki.search-all"
+msgstr "My Workspaces"
+
 #: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
 msgid "wiki.search:"
 msgstr "Search This Workspace:"
+
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
+msgid "wiki.search"
+msgstr "This Workspace"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:35
 msgid "wiki.send-email-notifications?"

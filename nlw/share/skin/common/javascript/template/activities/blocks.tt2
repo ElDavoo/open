@@ -1,0 +1,165 @@
+[% BLOCK lookahead %]
+<div class="lookahead">
+    <div class="message"></div>
+    <div class="lookaheadDiv"><input/></div>
+    <div class="buttons">
+        <a href="#" class="insert btn">[% loc('do.ok') %]</a>
+        <a href="#" class="cancel btn">[% loc('do.cancel') %]</a>
+    </div>
+</div>
+[% END %]
+
+[% BLOCK older_replies %]
+    [% SET replies = this.visibleReplies(event) %]
+    [% SET older = event.num_replies - replies.size %]
+    [% IF older %]
+        <div class="closed">
+            <span class="reply_message">
+                <span class="arrow">&#9658;</span>
+                [% IF event.incomplete_replies %]
+                    [% loc('activities.other-replies=count', older) %]
+                [% ELSE %]
+                    [% loc('activities.other-replies=count', older) %]
+                [% END %]
+            </span>
+            <span class="click_to">[% loc('activities.click-to-expand') %]</span>
+            <img class="loading" src="[% this.static_path %]/skin/common/images/ajax-loader.gif"/>
+        </div>
+    [% ELSIF replies.size > 2 %]
+        <div class="open">
+            <span class="reply_message">
+                <span class="arrow">&#9660;</span>
+                [% loc('activities.all-replies') %]
+            </span>
+            <span class="click_to">[% loc('activities.click-to-collapse') %]</span>
+        </div>
+    [% END %]
+[% END %]
+
+[% BLOCK search_sort %]
+<div style="display: block;" id="[% id('sort') %]">
+    <span id="[% id('sort-prompt') %]">Sort by:</span>
+    <select id="[% id('sort-picker') %]">
+        [% FOR option = this.sortOptions %]
+            <option [% IF option.selected %]selected="selected" [% END %]value="[% option.value %]">[% option.name %]</option>
+        [% END %]
+    </select>
+</div>
+[% END %]
+
+[% BLOCK desktop_download %]
+    <div id="[% id('download-socialtext-desktop') %]">
+        Download <a target="_blank" href="http://socialtext.com/products/desktop.php"
+        onclick="
+            var $_link = $('#st-wikinav-link-desktop', window.top.document);
+            if ($_link.length == 0) { return true; }
+            $_link.click(); return false;
+        ">Socialtext Desktop</a>!
+        <br />
+        Try out the <a target="_blank" href="/?action=signal_this">Signals Bookmarklet</a>!
+    </div>
+[% END %]
+
+[% BLOCK filters %]
+    <div class="filter_bar" id="[% id('filter_bar') %]">
+        <div class="new">12 new</div>
+        <div class="filters">
+            <label id="[% id('selector-label-action') %]">
+                [% loc('activities.showing') %]
+                <span class="select" id="[% id('action') %]">&nbsp;</span>
+            </label>
+            <label id="[% id('selector-label-feed') %]">
+                [% loc('activities.from') %]
+                <span class="select" id="[% id('feed') %]">&nbsp;</span>
+            </label>
+            <label id="[% id('selector-label-network') %]">
+                [% loc('activities.within') %]
+                <span class="select" id="[% id('network') %]"></span>
+            </label>
+        </div>
+    </div>
+[% END %]
+
+[% BLOCK signals %]
+    <div class="avatar">
+        <img src="[% this.base_uri %]/data/people/[% this.viewer_id %]/photo"/>
+    </div>
+    <div class="mainInput">
+        <div>
+            <td colspan="2" style="text-align: right" align="right">
+                <span class="networks">[% post_to_prompt || loc('activities.post-to') %]
+                    <span class="signal_network select" id="[% id('signal_network') %]"></span>
+                </span>
+            </td>
+        </div>
+        <div class="postWrap">
+            [% IF this.show_popout %]
+            <a class="pop_out" href="#" id="[% id('pop_out') %]">
+                <img src="[% this.static_path %]/skin/s3/images/expand-icon.png"/>
+            </a>
+            [% END %]
+            <a href="#" class="btn post" id="[% id('post') %]">[% loc('activities.post') %]</a>
+            <div class="count" id="[% id('count') %]"></div>
+        </div>
+        <div id="[% id('mainWikiwyg') %]" class="mainWikiwyg setupWikiwyg wikiwyg">
+            <div class="clearHandler">[% this.startText %]</div>
+        </div>
+        [% INCLUDE lookahead %]
+        <div class="attachmentList"></div>
+        <div class="toolbar">
+            <div class="buttons">
+                [% IF this.showDirect %]
+                    <div id="[% id('label-private') %]" class="label">[% loc('activities.private-to:') %]</div>
+                    <a id="[% id('startPrivate') %]" title="[% loc('activities.send-private-message') %]" class="setupWikiwyg startPrivate" href="#"><div class="private"></div></a>
+                [% END %]
+                <div id="[% id('label-insert') %]" class="label">[% loc('activities.insert:') %]</div>
+                <a id="[% id('mainInsertMention') %]" title="[% loc('activities.mention-user') %]" class="setupWikiwyg insertMention" href="#"><div class="person"></div></a>
+                <a id="[% id('mainInsertFile') %]" title="[% loc('activities.attach-file') %]" class="setupWikiwyg insertFile" href="#"><div class="file"></div></a>
+                <a id="[% id('mainInsertTag') %]" title="[% loc('activities.add-tag') %]" class="setupWikiwyg insertTag" href="#"><div class="tag"></div></a>
+                <a id="[% id('mainInsertWikilink') %]" title="[% loc('activities.link-to-wiki') %]" class="setupWikiwyg insertWikilink" href="#"><div class="wikilink"></div></a>
+                <a id="[% id('mainInsertWeblink') %]" title="[% loc('activities.link-to-web') %]" class="setupWikiwyg insertWeblink" href="#"><div class="weblink"></div></a>
+                <a id="[% id('mainInsertVideo') %]" title="[% loc('activities.add-video-link') %]" class="setupWikiwyg insertVideo" href="#"><div class="video"></div></a>
+            </div>
+        </div>
+    </div>
+    <div class="links">
+        <h3 class="title">Link</h3>
+        <div class="cancel" href="#">X</div>
+        <div class="link"></div>
+    </div>
+    <div class="clear"></div>
+[% END %]
+
+[% BLOCK mobile_signals %]
+    <div class="mainInput" style="margin: 0">
+        <div>
+            <td colspan="2" style="text-align: right" align="right">
+                <span class="networks">[% post_to_prompt || loc('activities.post-to') %]
+                    <span class="signal_network select" id="[% id('signal_network') %]"></span>
+                </span>
+            </td>
+        </div>
+        <div class="postWrap">
+            [% IF this.show_popout %]
+            <a class="pop_out" href="#" id="[% id('pop_out') %]">
+                <img src="[% this.static_path %]/skin/s3/images/expand-icon.png"/>
+            </a>
+            [% END %]
+            <a href="#" class="btn post" id="[% id('post') %]">[% loc('activities.post') %]</a>
+            <div class="count" id="[% id('count') %]"></div>
+        </div>
+        <div id="[% id('mainWikiwyg') %]" class="mainWikiwyg setupWikiwyg wikiwyg">
+            <div class="clearHandler">[% this.startText %]</div>
+        </div>
+    </div>
+    <div class="links">
+        <h3 class="title">Link</h3>
+        <div class="cancel" href="#">X</div>
+        <div class="link"></div>
+    </div>
+    <div class="clear"></div>
+[% END %]
+
+[% BLOCK enable_notifications_link %]
+    (<a onclick="window.webkitNotifications.requestPermission(); return false" class="enable-notifications" href="#">[% loc('activities.click-to-enable-desktop-notifications') %]</a>)
+[% END %]

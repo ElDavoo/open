@@ -1,0 +1,700 @@
+(function($) {
+
+if (typeof(Activities) == 'undefined') Activities = {};
+
+Activities.AppData = function(opts) {
+    this.extend(opts);
+    this.requires([
+        'instance_id', 'owner', 'viewer', 'owner_id'
+    ]);
+}
+
+Activities.AppData.prototype = new Activities.Base()
+
+$.extend(Activities.AppData.prototype, {
+    toString: function() { return 'Activities.AppData' },
+
+    _defaults: {
+        fields: [ 'sort', 'network', 'action', 'feed', 'signal_network' ]
+    }, 
+
+    load: function(callback) {
+        var self = this;
+
+        var opensocial = rescopedOpensocialObject(self.instance_id);
+
+        var getReq = opensocial.newDataRequest();
+        var viewer = opensocial.newIdSpec({
+            "userId" : opensocial.IdSpec.PersonId.VIEWER
+        });
+        getReq.add(
+            getReq.newFetchPersonAppDataRequest(viewer, self.fields), "get_data"
+        );
+
+        var user = self.owner || self.viewer;
+
+        getReq.add(
+            new RestfulRequestItem(
+                '/data/users/' + user + '?minimal=1', 'GET', null
+            ), 'get_user'
+        );
+
+        getReq.add(
+            new RestfulRequestItem(
+                '/data/people/' + user + "/watchlist", 'GET', null
+            ), 'get_watchlist'
+        );
+
+        getReq.send(function(dataResponse) {
+            var appDataResult = dataResponse.get('get_data');
+            if (appDataResult.hadError()) {
+                self.showError(
+                    "There was a problem getting user preferences"
+                );
+                return;
+            }
+            self.appData = appDataResult.getData();
+
+            var userDataResult = dataResponse.get('get_user');
+            if (userDataResult.hadError()) {
+                self.showError(
+                    "There was a problem getting user data"
+                );
+                return;
+            }
+            self.user_data = userDataResult.getData();
+
+            var watchlistResult = dataResponse.get('get_watchlist');
+            if (userDataResult.hadError()) {
+                self.showError(
+                    "There was a problem getting watchlist"
+                );
+                return;
+            }
+            var watchlistResultData = watchlistResult.getData();
+            if (watchlistResultData) {
+                self.watchlist = $.map(watchlistResult.getData(), function(u) {
+                    return u.id;
+                });
+            }
+            else {
+                self.watchlist = [];
+            }
+            callback();
+        });
+    },
+
+    save: function(key, val) {
+        var self = this;
+        self.appData[key] = val;
+
+        // if instance_id == 0, we're somewhere like the signal-this popup
+        if (!Number(self.instance_id)) return;
+
+        var opensocial = rescopedOpensocialObject(self.instance_id);
+
+        var setReq = opensocial.newDataRequest();
+        setReq.add(
+            setReq.newUpdatePersonAppDataRequest(
+                opensocial.IdSpec.PersonId.VIEWER, key, val 
+            ), 'set_data'
+        );
+        setReq.send(function(dataResponse) {
+            if (dataResponse.hadError())  {
+                self.showError(
+                    "There was a problem setting user preferences"
+                );
+                return;
+            }
+            var dataResult = dataResponse.get('set_data');
+            if (dataResult.hadError()) {
+                self.showError(
+                    "There was a problem setting user preferences"
+                );
+                return;
+            }
+        });
+    },
+
+    isBusinessAdmin: function() {
+        return Number(this.user_data.is_business_admin);
+    },
+
+    accounts: function() {
+        return this.user_data.accounts;
+    },
+
+    groups: function() {
+        return this.user_data.groups;
+    },
+
+    getDefaultFilter: function(type) {
+        var list = this.getList(type);
+        var matches = $.grep(list, function(item) {
+            return item['default'];
+        });
+        if (matches.length) return matches[0];
+    },
+
+    getList: function(key) {
+        if (key == 'network') {
+            return this.networks();
+        }
+        if (key == 'signal_network') {
+            return this.signalNetworks();
+        }
+        else if (key == 'action') {
+            return this.actions();
+        }
+        else if (key == 'feed') {
+            return this.feeds();
+        }
+    },
+
+    getById: function(type, id) {
+        var list = this.getList(type);
+        var matches = $.grep(list, function(item) {
+            return item.id == id;
+        });
+        if (matches.length) return matches[0];
+    },
+
+    getByValue: function(type, value) {
+        var list = this.getList(type);
+        var matches = $.grep(list, function(item) {
+            return item.value == value;
+        });
+        if (matches.length) return matches[0];
+    },
+
+    isShowingSignals: function () {
+        return this.get('action').signals;
+    },
+
+    get: function(type) {
+        var list = this.getList(type);
+
+        // Check the appdata value
+        var value = this['fixed_' + type] || this.appData[type];
+
+        if (!list) return value;
+
+        if (value) {
+            // Value was either present in a cookie or pref, so return it
+            var filter = this.getByValue(type, value)
+                      || this.getById(type, value);
+            if (filter) return filter;
+        }
+
+        // No value is set, so just use the first, default first
+        list = list.slice();
+        list.sort(function(a,b) {
+            return a['default'] ? -1 : b['default'] ? 1 : 0;
+        })
+        return list[0];
+    },
+
+    getValue: function(type) {
+        var filter =  this.get(type);
+        if (!filter) throw new Error("Can't find filter value for " + type);
+        return filter.value;
+    },
+
+    set: function(type, value) {
+        if (!this.getById(type,value)) {
+            throw new Error(
+                "Invalid filter type or value: " + type + ':' + value
+            );
+        }
+        this.save(type, value);
+    },
+
+    networks: function() {
+        var self = this;
+        if (self._networks) return self._networks;
+
+        function name_sort(a,b) {
+            var a_name = a.name || a.account_name;
+            var b_name = b.name || b.account_name;
+            return a_name.toUpperCase().localeCompare(b_name.toUpperCase());
+        };
+
+        var prim_acc_id = self.user_data.primary_account_id
+        var sorted_accounts = self.user_data.accounts.sort(name_sort);
+        var sorted_groups = self.user_data.groups.sort(name_sort);
+
+        var networks = [];
+
+        // Check for a fixed value
+        $.each(sorted_accounts, function(i, acc) {
+            var primary = acc.account_id == prim_acc_id ? true : false;
+            var userlabel = (acc.user_count == 1) ? ' user)': ' users)';
+            var title = acc.account_name + ' ('
+                    + (primary ? loc('signals.primary-account=users', acc.user_count)
+                               : loc('signals.network-count=users', acc.user_count))
+                    + ')';
+
+            $.extend(acc, {
+                'default': primary,
+                value: 'account-' + acc.account_id,
+                id: 'account-' + acc.account_id,
+                title: title,
+                signals_size_limit:
+                    acc.plugin_preferences.signals.signals_size_limit
+            });
+
+            if (self.isCurrentNetwork(acc.value)) {
+                networks.push(acc);
+            }
+
+            // Now find the groups in that account
+            $.each(sorted_groups, function(i, grp) {
+                if (grp.primary_account_id == acc.account_id) {
+                    var title = grp.name + ' (' + loc('signals.network-count=users', grp.user_count) + ')';
+                    $.extend(grp, {
+                        value: 'group-' + grp.group_id,
+                        id: 'group-' + grp.group_id,
+                        optionTitle: '... ' + title,
+                        title: title,
+                        signals_size_limit: acc.signals_size_limit,
+                        plugins_enabled: acc.plugins_enabled
+                    });
+                    if (self.isCurrentNetwork(grp.value)) {
+                        networks.push(grp);
+                    }
+                }
+            });
+        });
+
+        // Add an option for all networks if there's more than one network
+        if (networks.length == 0 && self.fixed_network) {
+            networks = [
+                {
+                    value: self.fixed_network,
+                    id: self.fixed_network,
+                    title: this.group_name,
+                    group_id: Number(self.fixed_network.replace(/group-/,'')),
+                    plugins_enabled: []
+                }
+            ];
+        }
+        else if (networks.length > 1) {
+            var title = this.owner == this.viewer
+                      ? loc('activities.all-my-groups')
+                      : loc('activities.all-shared-groups');
+            networks.unshift({
+                value: 'all',
+                id: 'network-all',
+                title: title,
+                plugins_enabled: ['signals'],
+
+                // Get the shortest signals_size_limit to set as limit
+                // for all networks
+                signals_size_limit: $.map(sorted_accounts, function(a) {
+                    return a.signals_size_limit;
+                }).sort(function (a, b){ return a-b }).shift()
+            });
+        }
+
+        return this._networks = networks;
+    },
+
+    isCurrentNetwork: function(net) {
+        return !this.fixed_network
+            || this.fixed_network == 'all'
+            || this.fixed_network == net;
+    },
+
+    signalNetworks: function() {
+        var self = this;
+        if (self._signal_networks) return self._signal_networks;
+
+        var networks = [];
+        $.each(self.networks(), function(i, network) {
+            if (($.inArray('signals', network.plugins_enabled) != -1) && 
+                (network.value != 'all')) {
+                networks.push(network);
+            }
+        });
+
+        return self._signal_networks = networks;
+    },
+
+    actions: function() {
+        var self = this;
+        if (self._actions) return self._actions;
+
+        var all_events = {
+            error_title: loc('activities.events'),
+            title: loc('activities.all-events'),
+            value: "activity=all-combined;with_my_signals=1",
+            signals: true,
+            'default': true,
+            id: "action-all-events"
+        };
+
+        // {bz: 3950} - Don't show person events on the group homepage
+        if (self.fixed_network) {
+            all_events.value += ";event_class!=person";
+        }
+
+        var actions = [
+            all_events,
+            {
+                title: loc('activities.signals'),
+                value:"action=signal,edit_save,comment;signals=1;with_my_signals=1",
+                id: "action-signals",
+                signals: true,
+                skip: !self.pluginsEnabled('signals', 'people')
+            },
+            {
+                title: loc('activities.contributions'),
+                value: "event_class=page;contributions=1;with_my_signals=1",
+                id: "action-contributions"
+            },
+            {
+                title: loc('activities.edits'),
+                value: "event_class=page;action=edit_save",
+                id: "action-edits"
+            },
+            {
+                title: loc('activities.comments'),
+                value: "event_class=page;action=comment",
+                id: "action-comments"
+            },
+            {
+                title: loc('activities.page-tags'),
+                value: "event_class=page;action=tag_add,tag_delete",
+                id: "action-tags"
+            },
+            {
+                title: loc('activities.people-events'),
+                value: "event_class=person" ,
+                id: "action-people-events",
+                skip: !self.pluginsEnabled('people')
+            }
+        ];
+
+        // Check for a fixed value
+        if (self.fixed_action) {
+            actions = $.grep(actions, function(action) {
+                return action.value == self.fixed_action
+                    || action.id == self.fixed_action;
+            });
+        }
+
+        return this._actions = actions;
+    },
+
+    feeds: function() {
+        var self = this;
+        if (self._feeds) return self._feeds;
+        var feeds = [
+            {
+                title: loc('activities.everyone'),
+                value: '',
+                id: "feed-everyone",
+                signals: true,
+                'default': true
+            },
+            {
+                title: loc('activities.following'),
+                value: "/followed/" + self.viewer,
+                id: "feed-followed",
+                signals: true,
+                skip: self.pluginsEnabled('people')
+            },
+            {
+                title: loc('activities.my-conversations'),
+                value: "/conversations/" + self.viewer,
+                id: "feed-conversations"
+            },
+            {
+                hidden: true,
+                title: (self.viewer == self.owner) ? loc('activities.me') : (self.owner_name || 'Unknown User'),
+                value: '/activities/' + self.owner_id,
+                signals: true,
+                id: 'feed-user'
+            }
+        ];
+
+        // Check for a fixed value
+        if (self.fixed_feed) {
+            feeds = $.grep(feeds, function(feed) {
+                return feed.value == self.fixed_feed
+                    || feed.id == self.fixed_feed;
+            });
+        }
+
+        return this._feeds = feeds;
+    },
+
+    getSignalToNetwork: function () {
+        if (this._signalToNetwork) {
+            return this.getByValue('network', this._signalToNetwork);
+        }
+        else {
+            return this.get('network');
+        }
+    },
+
+    pluginsEnabled: function() {
+        var self = this;
+        // Build a list of enabled plugins
+        if (typeof(self._pluginsEnabled) == 'undefined') {
+            self._pluginsEnabled = {};
+            $.each(self.networks(), function(i, network) {
+                // don't consider the fake "-all" network (which always
+                // forces a fixed set of plugins)
+                if (network.id == 'network-all') return;
+                $.each(network.plugins_enabled, function(i, plugin) {
+                    self._pluginsEnabled[plugin] = true;
+                });
+            });
+        }
+
+        var enabled = true;
+        $.each(arguments, function(i, plugin) {
+            if (!self._pluginsEnabled[plugin]) enabled = false;
+        });
+        return enabled;
+    },
+
+    setupDropdowns: function() {
+        var self = this;
+
+        this.findId('action').dropdown({
+            options: self.actions(),
+            selected: this.getValue('action'),
+            fixed: Boolean(this.fixed_action),
+            hideDisabled: Boolean(this.fixed_feed),
+            onChange: function(option) {
+                if (self.getValue('action') != option.id) {
+                    self.set('action', option.id);
+                }
+                self.checkDisabledOptions();
+                if (self.onRefresh) self.onRefresh();
+            }
+        });
+
+        this.findId('feed').dropdown({
+            options: self.feeds(),
+            selected: this.getValue('feed'),
+            fixed: Boolean(this.fixed_feed),
+            hideDisabled: Boolean(this.fixed_action),
+            onChange: function(option) {
+                if (self.getValue('feed') != option.id) {
+                    self.set('feed', option.id);
+                }
+                self.checkDisabledOptions();
+                if (self.onRefresh) self.onRefresh();
+            }
+        });
+
+        var fixed_network = Boolean(
+            self.fixed_network || self.networks().length <= 1
+        );
+
+        this.findId('network').dropdown({
+            selected: this.getValue('network'),
+            fixed: fixed_network,
+            width: '150px',
+            options: self.networks(),
+            onChange: function(option) {
+                self.selectNetwork(option.id);
+                if (self.onRefresh) self.onRefresh();
+            }
+        });
+
+        var signal_network = this.get('signal_network');
+        if (signal_network) {
+            this.findId('signal_network').dropdown({
+                selected: signal_network.id,
+                fixed: fixed_network,
+                width: (self.workspace_id ? '170px' : '150px'),
+                options: self.signalNetworks(),
+                onChange: function(option) {
+                    if (option.warn) {
+                        self.findId('signal_network_warning').fadeIn('fast');
+                    }
+                    else {
+                        self.findId('signal_network_warning').fadeOut('fast');
+                    }
+                    self.selectSignalToNetwork(option.id);
+                }
+            });
+            this.selectSignalToNetwork(signal_network.value);
+            self.setupSelectSignalToNetworkWarningSigns();
+        }
+                
+        this.checkDisabledOptions();
+    },
+
+    setupSelectSignalToNetworkWarningSigns: function() {
+        var self = this;
+
+        if (!self.workspace_id) {
+            return;
+        }
+
+        if (!self.findId('signal_network').size()) {
+            return;
+        }
+
+        $.getJSON('/data/workspaces/' + self.workspace_id, function(data) {
+            var warningText = loc('info.edit-summary-signal-visibility');
+            var dropdown = self.findId('signal_network').get(0).dropdown;
+            var $firstGroup;
+            var seenWarning = false;
+            $.each(dropdown.options, function(i, option){
+                var val = option.value;
+                var $node = $(option.node);
+
+                if (/^account-/.test(val)) {
+                    if ((data.is_all_users_workspace) && (val == 'account-' + data.account_id)) {
+                        // No warning signs for All-user workspace on the primary account
+                        return;
+                    }
+
+                    option.warn = seenWarning = true;
+                    $node.attr('title', warningText);
+                    return;
+                }
+
+                var id = parseInt(val.substr(6));
+                if ($.grep(data.group_ids, function(g) { return (g == id) }).length == 0) {
+                    option.warn = seenWarning = true;
+                    $node.attr('title', warningText);
+                    return;
+                }
+
+                if (!$firstGroup) {
+                    $firstGroup = $('<li style="font-weight: bold" class="dropdownItem">Non-workspace Groups</li>').css({
+                        fontSize: '11px',
+                        lineHeight: '12px',
+                        fontFamily: 'arial,helvetica,sans-serif',
+                        background: 'url(/static/skin/common/images/warning-icon.png) right top no-repeat'
+                    }).attr('title', warningText).prependTo(dropdown.listNode);
+
+                    $('<li style="font-weight: bold" class="dropdownItem">Workspace Groups</li>').css({
+                        fontSize: '11px',
+                        lineHeight: '12px',
+                        fontFamily: 'arial,helvetica,sans-serif'
+                    }).prependTo(dropdown.listNode);
+
+                    dropdown._selectOption(option);
+                    self.selectSignalToNetwork(option.value);
+                }
+
+                option.warn = false;
+                option.node = $node.parent('li').remove().insertBefore($firstGroup).find('a:first').get(0);
+
+                $(option.node).click(function() {
+                    dropdown.selectOption(option);
+                    return false;
+                });
+            });
+
+            if (!$firstGroup) {
+                $('<li style="font-weight: bold" class="dropdownItem">Non-workspace Groups</li>').css({
+                    fontSize: '11px',
+                    lineHeight: '12px',
+                    fontFamily: 'arial,helvetica,sans-serif',
+                    background: 'url(/static/skin/common/images/warning-icon.png) right top no-repeat'
+                }).attr('title', warningText).prependTo(dropdown.listNode);
+
+                dropdown._selectOption(dropdown.selectedOption());
+            }
+
+            if ($firstGroup && !seenWarning) {
+                $firstGroup.remove();
+            }
+
+            if (dropdown.selectedOption().warn) {
+                self.findId('signal_network_warning').fadeIn('fast');
+            }
+            else {
+                self.findId('signal_network_warning').fadeOut('fast');
+            }
+
+            $(dropdown.listNode).css('overflow-x', 'hidden');
+            if ($('li', dropdown.listNode).size() > 7) {
+                $(dropdown.listNode).height(160).css('overflow-y', 'scroll');
+            }
+        });
+    },
+
+    checkDisabledOptions: function() {
+        var self = this;
+        var action = this.findId('action').dropdownSelectedOption();
+        var feed = this.findId('feed').dropdownSelectedOption();
+        if (!feed || !action) return;
+        var not_conversations = {
+            'action-tags' : 1,
+            'action-people-events' : 1
+        };
+
+        self.findId('feed').dropdownEnable();
+        self.findId('action').dropdownEnable();
+        self.findId('network').dropdownEnable();
+        if (self.signalNetworks().length) {
+            self.findId('signal_network').dropdownEnable();
+        }
+
+        if (not_conversations[action.id]) {
+            $.each(this.feeds(), function(i, option) {
+                if (option.id == 'feed-conversations') {
+                    self.findId('feed').dropdownDisable(option.value);
+                }
+            });
+        }
+        if (feed.id == 'feed-conversations') {
+            $.each(this.actions(), function(i, option) {
+                if (not_conversations[option.id]) {
+                    self.findId('action').dropdownDisable(option.value);
+                }
+            });
+        }
+    },
+
+    selectNetwork: function(network_id) {
+        if (this.getValue('network') != network_id) {
+            this.set('network', network_id);
+        }
+
+        if (this.findId('signals').size() && network_id != 'network-all') {
+            this.selectSignalToNetwork(network_id);
+        }
+
+        if (this.findId('network').dropdownId() != network_id) {
+            this.findId('network').dropdownSelectId(network_id);
+        }
+
+        this.findId('groupscope').text(this.get('network').title);
+    },
+
+    selectSignalToNetwork: function (network_id) {
+        if (this.getValue('signal_network') != network_id) {
+            this.set('signal_network', network_id);
+        }
+
+        var network = this.getById('network', network_id);
+        this._signalToNetwork = network_id;
+        if (this.findId('signal_network').dropdownId() != network_id) {
+            this.findId('signal_network').dropdownSelectId(network_id);
+        }
+        if ($.inArray('signals', network.plugins_enabled) == -1) {
+            this.disableSignals();
+        }
+        else {
+            if (this.findId('signal_network').dropdownId() != network_id) {
+                this.findId('signal_network').dropdownSelectId(network_id);
+            }
+            this._signalToNetwork = network_id;
+            this.onSelectSignalToNetwork(network);
+        }
+    }
+
+});
+
+})(jQuery);

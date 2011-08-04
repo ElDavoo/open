@@ -1,0 +1,40 @@
+[% USE decorate %]
+[% USE JSON %]
+[% WRAPPER $frame_name title=container.title %]
+[% ids = [] %]
+[% FOR g = container.gadgets; ids.push(g.instance_id); END %]
+<input id="widgetList" type="hidden" value="[% ids.join(',') %]"/>
+<input id="containerID" type="hidden" value="[% container.id %]"/>
+
+<div class="notice" [% IF container.notice %]style="display:block"[% END %]>
+[% container.notice %]
+[% FILTER decorate('notice') %]
+[% END %]
+</div>
+
+<div class="container_24">
+    [% FOR col = container.columns %]
+        [% class = col.stuck ? 'stuck' : 'draggable' %]
+        <div class="grid_[% col.grids %] widgetColumn [% class %]" id="col[% loop.index %]">
+            <input type="hidden" name="grids" value="[% col.grids %]"/>
+            [% FILTER decorate('container_column_' _ loop.index _ '_end') %]
+            [% END %]
+        </div>
+    [% END %]
+</div>
+<div class="clear"></div>
+
+<script>
+    gadgets.container.setup({
+        env: [% container.env.json.replace('</script>', '</scr" + "ipt>') %],
+        view: "[% container.view %]"
+    });
+    [% FOR gadget = container.gadgets %]
+        [% SET json = gadget.json %]
+        gadgets.container.renderGadget(
+            [% json.replace('</script>', '</scr" + "ipt>') %]
+        );
+    [% END %]
+</script>
+
+[% END %]

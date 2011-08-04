@@ -1,7 +1,7 @@
 ---
 'socialtext-editor.js':
     parts:
-        - {dir: skin/s2/javascript, file: main.js}
+        - {dir: skin/s3/javascript, file: main.js}
         - {dir: skin/common/javascript, file: 'rangy-core.js'}
         - {dir: skin/common/javascript, file: 'rangy-serializer.js'}
         - {dir: skin/common/javascript, file: 'rangy-init.js'}
@@ -25,7 +25,7 @@
         - lib/Document/Parser/Wikitext.js
 'socialtext-editor-light.js':
     parts:
-        - {dir: skin/s2/javascript, file: main.js}
+        - {dir: skin/s3/javascript, file: main.js}
         - {dir: skin/common/javascript, file: 'rangy-core.js'}
         - {dir: skin/common/javascript, file: 'rangy-serializer.js'}
         - {dir: skin/common/javascript, file: 'rangy-init.js'}

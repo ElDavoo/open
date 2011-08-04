@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>[% loc('activities.socialtext-activities') %]</title>
+        <meta name="viewport" content="width=240" />
+        <link rel="stylesheet" type="text/css" href="[% wiki.static_path %]/skin/s3/css/bubble.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="[% wiki.static_path %]/skin/s3/css/screen.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="[% share %]/css/inline.css" media="screen" />
+        <script src="[% share %]/javascript/socialtext-popout.js"></script>
+        <script src="[% wiki.static_path %]/skin/s3/javascript/l10n-[% loc_lang %].js.gz"></script>
+        [% INCLUDE widget/syndicator %]
+        <script>
+            window.Socialtext = window.Socialtext || {};
+            Socialtext.loc_lang = '[% loc_lang %]';
+            Socialtext.userid = "[% user.userid %]";
+            $(function() {
+                var activities = new Activities.Widget({
+                    [% IF link_dictionary;
+                        "link_dictionary: '$link_dictionary',";
+                       END
+                    %]
+                    show_direct: 1,
+                    ui_template: 'ui.activities.tt2',
+                    instance_id: Number([% id %]),
+                    node: $('#content').get(0),
+                    prefix: "[% prefix %]",
+                    base_uri: "[% wiki.uri.replace('/$','') %]",
+                    share: "[% share %]",
+                    static_path: "[% wiki.static_path %]",
+                    viewer: "[% user.userid %]",
+                    viewer_id: [% user.id %],
+                    viewer_name: "[% user.username %]",
+                    owner: "[% user.userid %]",
+                    owner_id: [% user.id %],
+                    owner_name: "[% user.username %]",
+                    display_limit: 20,
+                    mention_user_id: "",
+                    mention_user_name: ""
+                });
+                activities.start();
+            });
+        </script>
+    </head>
+    <body style="background: white">
+        <div class="inlineWidget">
+            <div id="content" class="activitiesWidget"></div>
+        </div>
+    </body>
+</html>

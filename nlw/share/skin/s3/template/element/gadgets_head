@@ -1,0 +1,4 @@
+<script src="[% share %]/javascript/socialtext-container.js.gz"></script>
+[% INCLUDE widget/syndicator %]
+[% INCLUDE element/container_css %]
+[% INCLUDE element/container_head %]
