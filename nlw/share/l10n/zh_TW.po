@@ -9420,6 +9420,10 @@ msgstr "項目背景色"
 msgid "kanban.item-notes"
 msgstr "項目標注"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:200
+msgid "kanban.likable?"
+msgstr "Show indicator for page likes?"
+
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
 msgstr "標注"
