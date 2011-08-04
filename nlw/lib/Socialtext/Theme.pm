@@ -343,3 +343,16 @@ sub _CreateAttachmentsIfNeeded {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Theme - Manage Socialtext Themes
+
+=head1 SYNOPSIS
+
+    use Socialtext::Theme
+    my $theme = Socialtext::Theme->Load(theme_id=>1);
+
+=head1 DESCRIPTION
+
+Keep default themes up-to-date and manage user editable theme fields.

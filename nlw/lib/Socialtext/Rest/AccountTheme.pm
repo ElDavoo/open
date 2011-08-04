@@ -43,3 +43,19 @@ override 'if_valid_request' => sub {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::AccountTheme - Handler for Account Themes ReST calls
+
+=head1 SYNOPSIS
+
+    GET /data/accounts/:acct/theme
+    PUT /data/accounts/:acct/theme
+    GET /data/accounts/:acct/theme/images/:filename
+
+=head1 DESCRIPTION
+
+View and manipulate Account Theme settings.
+
+=cut

@@ -100,3 +100,19 @@ sub GET_image {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::SettingsTheme - Handler for Global Theme ReST calls
+
+=head1 SYNOPSIS
+
+    GET /data/settings/theme
+    PUT /data/settings/theme
+    GET /data/settings/theme/images/:filename
+
+=head1 DESCRIPTION
+
+View and manipulate Global Theme settings.
+
+=cut

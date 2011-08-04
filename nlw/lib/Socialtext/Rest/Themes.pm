@@ -77,3 +77,18 @@ sub GET_image {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::Themes - Handler for viewing installed Themes
+
+=head1 SYNOPSIS
+
+    GET /data/theme
+    GET /data/theme/images/:filename
+
+=head1 DESCRIPTION
+
+View installed themes.
+
+=cut
