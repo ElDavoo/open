@@ -32,6 +32,133 @@ sub _build_background_image {
     return Socialtext::Upload->Get(attachment_id => $self->background_image_id);
 }
 
+sub Load {
+    my $class = shift;
+    my $field = shift;
+    my $value = shift;
+
+    die "must use a unique identifier"
+        unless grep { $_ eq $field } qw(theme_id name);
+
+    my $sth = sql_execute(qq{
+        SELECT }. join(',', @COLUMNS) .qq{
+          FROM theme
+         WHERE $field = ?
+    }, $value);
+
+    my $rows = $sth->fetchall_arrayref({});
+
+    return scalar(@$rows)
+        ? $class->new(%{$rows->[0]})
+        : undef;
+}
+
+sub All {
+    my $class = shift;
+    return [
+        map { $class->new(%$_) } @{$class->_AllThemes()}
+    ];
+}
+
+sub Default {
+    my $class = shift;
+
+    my $sth = sql_execute(qq{
+        SELECT }. join(',', @COLUMNS) .qq{
+          FROM theme
+         WHERE is_default IS true
+    });
+
+    my $rows = $sth->fetchall_arrayref({});
+
+    die "cannot determine default theme"
+        unless scalar(@$rows) == 1;
+
+    return $class->new(%{$rows->[0]})
+}
+
+sub as_hash {
+    my $self = shift;
+    my $params = (@_ == 1) ? shift : {@_};
+
+    my %as_hash = map { $_ => $self->$_ } @COLUMNS;
+
+    if (!$params->{set} || $params->{set} ne 'minimal') {
+        my $header = $self->header_image;
+        $as_hash{header_image_url} = $self->_attachment_url('header');
+        $as_hash{header_image_filename} = $header->filename;
+        $as_hash{header_image_mime_type} = $header->mime_type;
+
+        my $background = $self->background_image;
+        $as_hash{background_image_url} = $self->_attachment_url('background');
+        $as_hash{background_image_filename} = $background->filename;
+        $as_hash{background_image_mime_type} = $background->mime_type;
+    }
+
+    return \%as_hash;
+}
+
+sub Update {
+    my $class = shift;
+    my $params = (@_ == 1) ? shift : {@_};
+
+    die "no theme_id for installed theme ($params->{name})\n"
+        unless $params->{theme_id};
+    my $to_update = $class->_CleanParams($params);
+
+    sql_update(theme => $to_update, 'theme_id');
+    return $class->new(%$to_update);
+}
+
+sub Create {
+    my $class = shift;
+    my $params = (@_ == 1) ? shift : {@_};
+
+    $params->{theme_id} ||= sql_nextval('theme_theme_id');
+    my $to_insert = $class->_CleanParams($params);
+
+    sql_insert(theme => $to_insert);
+
+    return $class->new(%$to_insert);
+}
+
+sub MakeImportable {
+    my $class = shift;
+    my $data = shift;
+    my $dir = shift;
+
+    my $name = delete $data->{base_theme};
+    my $base_theme = $name
+        ? $class->Load(name=>$name) || $class->Default()
+        : $class->Default();
+    $data->{base_theme_id} = $base_theme->theme_id;
+
+    $class->_CreateAttachmentsIfNeeded($dir, $data);
+
+    return $data;
+}
+
+sub MakeExportable {
+    my $class = shift;
+    my $data = shift;
+    my $themedir = shift;
+
+    my $base_theme = $class->Load(theme_id => delete $data->{base_theme_id});
+    $data->{base_theme} = $base_theme->name;
+
+    for my $image_name (@UPLOADS) {
+        my $id_field = $image_name . "_id";
+        my $image = Socialtext::Upload->Get(attachment_id=>$data->{$id_field});
+        my $copy_to = $themedir . "/" . $image->filename;
+        $image->copy_to_file($copy_to);
+
+        $data->{$image_name} = $image->filename;
+        delete $data->{$id_field};
+    }
+
+    return $data;
+}
+
 sub ValidSettings {
     my $class = shift;
     my $settings = (@_ == 1) ? shift : {@_};
@@ -61,6 +188,36 @@ sub ValidSettings {
     }
 
     return 1;
+}
+
+sub EnsureRequiredDataIsPresent {
+    my $class = shift;
+    my $themedir = Socialtext::AppConfig->code_base . '/themes';
+
+    my $installed = { map { $_->{name} => $_ } @{$class->_AllThemes()} };
+    my $all = YAML::LoadFile("$themedir/themes.yaml");
+
+    for my $name (keys %$all) {
+        my $theme = $all->{$name};
+        $theme->{name} = $name;
+
+        my %to_check = %$theme;
+        delete $to_check{$_} for qw(
+            header_image is_default name theme_id background_image);
+        die "theme $name has invalid settings, refusing to install/update"
+            unless $class->ValidSettings(%to_check);
+
+
+        if (my $existing = $installed->{$name}) {
+            die "no theme_id for installed theme ($name)?\n"
+                unless $existing->{theme_id};
+
+            $class->Update(%$existing, %$theme);
+        }
+        else {
+            $class->Create($theme);
+        }
+    }
 }
 
 sub _valid_hex_color {
@@ -124,169 +281,12 @@ sub _valid_theme_id {
     return $count;
 }
 
-sub as_hash {
-    my $self = shift;
-    my $params = (@_ == 1) ? shift : {@_};
-
-    my %as_hash = map { $_ => $self->$_ } @COLUMNS;
-
-    if (!$params->{set} || $params->{set} ne 'minimal') {
-        my $header = $self->header_image;
-        $as_hash{header_image_url} = $self->_attachment_url('header');
-        $as_hash{header_image_filename} = $header->filename;
-        $as_hash{header_image_mime_type} = $header->mime_type;
-
-        my $background = $self->background_image;
-        $as_hash{background_image_url} = $self->_attachment_url('background');
-        $as_hash{background_image_filename} = $background->filename;
-        $as_hash{background_image_mime_type} = $background->mime_type;
-    }
-
-    return \%as_hash;
-}
-
 sub _attachment_url {
     my $self = shift;
     my $image = shift;
 
     my $name = $self->name;
     return "/data/themes/$name/images/$image";
-}
-
-sub All {
-    my $class = shift;
-    return [
-        map { $class->new(%$_) } @{$class->_AllThemes()}
-    ];
-}
-
-sub EnsureRequiredDataIsPresent {
-    my $class = shift;
-    my $themedir = Socialtext::AppConfig->code_base . '/themes';
-
-    my $installed = { map { $_->{name} => $_ } @{$class->_AllThemes()} };
-    my $all = YAML::LoadFile("$themedir/themes.yaml");
-
-    for my $name (keys %$all) {
-        my $theme = $all->{$name};
-        $theme->{name} = $name;
-
-        my %to_check = %$theme;
-        delete $to_check{$_} for qw(
-            header_image is_default name theme_id background_image);
-        die "theme $name has invalid settings, refusing to install/update"
-            unless $class->ValidSettings(%to_check);
-
-
-        if (my $existing = $installed->{$name}) {
-            die "no theme_id for installed theme ($name)?\n"
-                unless $existing->{theme_id};
-
-            $class->Update(%$existing, %$theme);
-        }
-        else {
-            $class->Create($theme);
-        }
-    }
-}
-
-sub MakeImportable {
-    my $class = shift;
-    my $data = shift;
-    my $dir = shift;
-
-    my $name = delete $data->{base_theme};
-    my $base_theme = $name
-        ? $class->Load(name=>$name) || $class->Default()
-        : $class->Default();
-    $data->{base_theme_id} = $base_theme->theme_id;
-
-    $class->_CreateAttachmentsIfNeeded($dir, $data);
-
-    return $data;
-}
-
-sub MakeExportable {
-    my $class = shift;
-    my $data = shift;
-    my $themedir = shift;
-
-    my $base_theme = $class->Load(theme_id => delete $data->{base_theme_id});
-    $data->{base_theme} = $base_theme->name;
-
-    for my $image_name (@UPLOADS) {
-        my $id_field = $image_name . "_id";
-        my $image = Socialtext::Upload->Get(attachment_id=>$data->{$id_field});
-        my $copy_to = $themedir . "/" . $image->filename;
-        $image->copy_to_file($copy_to);
-
-        $data->{$image_name} = $image->filename;
-        delete $data->{$id_field};
-    }
-
-    return $data;
-}
-
-sub Update {
-    my $class = shift;
-    my $params = (@_ == 1) ? shift : {@_};
-
-    die "no theme_id for installed theme ($params->{name})\n"
-        unless $params->{theme_id};
-    my $to_update = $class->_CleanParams($params);
-
-    sql_update(theme => $to_update, 'theme_id');
-    return $class->new(%$to_update);
-}
-
-sub Load {
-    my $class = shift;
-    my $field = shift;
-    my $value = shift;
-
-    die "must use a unique identifier"
-        unless grep { $_ eq $field } qw(theme_id name);
-
-    my $sth = sql_execute(qq{
-        SELECT }. join(',', @COLUMNS) .qq{
-          FROM theme
-         WHERE $field = ?
-    }, $value);
-
-    my $rows = $sth->fetchall_arrayref({});
-
-    return scalar(@$rows)
-        ? $class->new(%{$rows->[0]})
-        : undef;
-}
-
-sub Default {
-    my $class = shift;
-
-    my $sth = sql_execute(qq{
-        SELECT }. join(',', @COLUMNS) .qq{
-          FROM theme
-         WHERE is_default IS true
-    });
-
-    my $rows = $sth->fetchall_arrayref({});
-
-    die "cannot determine default theme"
-        unless scalar(@$rows) == 1;
-
-    return $class->new(%{$rows->[0]})
-}
-
-sub Create {
-    my $class = shift;
-    my $params = (@_ == 1) ? shift : {@_};
-
-    $params->{theme_id} ||= sql_nextval('theme_theme_id');
-    my $to_insert = $class->_CleanParams($params);
-
-    sql_insert(theme => $to_insert);
-
-    return $class->new(%$to_insert);
 }
 
 sub _CleanParams {
