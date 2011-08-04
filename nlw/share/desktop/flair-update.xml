@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>408</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-408.air</url>
-<description><![CDATA[[Build 408 - Sun Jul 24 00:50:32 PDT 2011]
+  <version>409</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-409.air</url>
+<description><![CDATA[[Build 409 - Wed Aug  3 05:50:11 PDT 2011]
+* "Delete Signal" now properly removes the signal from display.
+
+[Build 408 - Sun Jul 24 00:50:32 PDT 2011]
 * Hide Like indicator for ST servers <4.7.4, or with "like" plugin disabled.
 
 [Build 407 - Sat Jul 23 23:16:47 PDT 2011]
