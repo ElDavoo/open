@@ -83,7 +83,6 @@ sub BuildCoffee {
             my $coffee = $File::Find::name;
             return unless -f $coffee and $coffee =~ /\.coffee$/;
             (my $js = $coffee) =~ s/\.coffee$/.js/;
-            warn $js;
             $class->_js_from_coffee($js);
         },
     }, @_);
@@ -220,12 +219,13 @@ sub _part_last_modified {
 }
 
 sub _js_from_coffee {
-    my $js = shift;
+    my ($class, $js) = @_;
     my $coffee = $js;
     $coffee =~ s/\.js$/.coffee/ or return;
     -f $coffee or return;
     return if -f $js and modified($js) > modified($coffee);
     if ($coffee_compiler) {
+        warn "Building $js from $coffee...\n" if $VERBOSE;
         system $coffee_compiler => -c => $coffee;
         return;
     }
