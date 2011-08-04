@@ -9,11 +9,14 @@ use Socialtext::TT2::Renderer;
 use File::Path qw(mkpath);
 use File::Basename qw(basename);
 use Socialtext::Helpers;
+use YAML;
 use namespace::clean -except => 'meta';
 
 use constant code_base => Socialtext::AppConfig->code_base;
 use constant is_dev_env => Socialtext::AppConfig->is_dev_env;
 use constant static_path => Socialtext::Helpers->static_path;
+
+our $FILES = YAML::LoadFile(code_base . '/skin/starfish/css/order.yaml');
 
 has 'skin_path' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 sub _build_skin_path {
@@ -31,10 +34,7 @@ has 'files' => (
 );
 sub _build_files {
     my $self = shift;
-    return [
-        map { $self->skin_path . "/css/$_" }
-           qw(reset.css text.css 960.css 960_24_col.css st.css.tt2)
-    ];
+    return [ map { $self->skin_path . "/css/$_" } @$FILES ];
 }
 
 extends 'Socialtext::Rest';
