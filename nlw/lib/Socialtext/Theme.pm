@@ -223,7 +223,7 @@ sub EnsureRequiredDataIsPresent {
 sub _valid_hex_color {
     my $color = shift;
 
-    return lc $color =~ /^#[0-9a-f]{6}$/;
+    return lc($color) =~ /^#[0-9a-f]{6}$/;
 }
 
 sub _valid_position {
@@ -231,15 +231,15 @@ sub _valid_position {
     my @pos = split(/ /, $position);
 
     return 0 unless scalar(@pos) == 2;
-    return 0 unless grep { lc $pos[0] eq $_ } qw(left center right);
-    return 0 unless grep { lc $pos[1] eq $_ } qw(top center bottom);
+    return 0 unless grep { lc($pos[0]) eq $_ } qw(left center right);
+    return 0 unless grep { lc($pos[1]) eq $_ } qw(top center bottom);
     return 1;
 }
 
 sub _valid_tiling {
     my $tiling = shift;
 
-    return grep { lc $tiling eq $_ } qw(horizontal vertical both none);
+    return grep { lc($tiling)  eq $_ } qw(horizontal vertical both none);
 }
 
 sub _valid_font {

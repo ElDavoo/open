@@ -20,6 +20,7 @@ valid_settings: {
 
     # exercise _valid_hex_color
     ok $class->ValidSettings(header_color=>'#abcdba'), 'hex color 1';
+    ok $class->ValidSettings(header_color=>'#ABCDBA'), 'hex color 1a';
     ok !$class->ValidSettings(header_color=>'#1234567'), 'hex color 2';
     ok !$class->ValidSettings(header_color=>'red'), 'hex color 3';
     ok !$class->ValidSettings(header_color=>'#qwerty'), 'hex color 4';
