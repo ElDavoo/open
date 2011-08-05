@@ -3,7 +3,7 @@ package Socialtext::Annotations;
 use Moose::Role;
 use Socialtext::JSON qw/encode_json decode_json_utf8/;
 
-has anno_blob => (is => 'rw', isa => 'Str', lazy_build => 1);
+has anno_blob => (is => 'rw', isa => 'Maybe[Str]', lazy_build => 1);
 
 before 'anno_blob' => sub {
     my $self = shift;
@@ -65,5 +65,64 @@ sub _check_annotations {
            if $len > $max_length;
     }
 }
+
+sub MergeAnnotations {
+    my $current_annos = shift;
+    my $new_annos = shift;
+    foreach my $n_anno (@$new_annos) {
+        while (my ($n_type, $n_keyvals) = each %$n_anno) {
+            my $found = 0;
+            foreach my $c_anno (@$current_annos) {
+                while (my ($c_type, $c_keyvals) = each %$c_anno) {
+                    if ($c_type eq $n_type) {
+                        $found = 1;
+                        %$c_keyvals = (%$c_keyvals, %$n_keyvals);
+                        last;
+                    }
+                }
+                last if $found;
+            }
+
+            if (!$found) {
+                push @$current_annos, $n_anno;
+            }
+        }
+    }
+
+    RemoveNullAnnotations($current_annos);
+}
+
+sub RemoveNullAnnotations {
+    my $annotations = shift;
+
+# [{"namespace":{"key1":"value1","key2":"value2"}}]
+    my $i = 0;
+    while ($i < scalar (@$annotations)) {
+        my $no_null = 1;
+        my $anno = $annotations->[$i];
+        if (0 == scalar(keys(%$anno))) {
+            splice(@$annotations, $i, 1);
+            $no_null = 0;
+        }
+        else {
+            while (my ($type, $keyvals) = each %$anno) {
+                if (0 == scalar(keys(%$keyvals)) or !defined($keyvals)) {
+                    $no_null = 0;
+                    delete $anno->{$type};
+                }
+                else {
+                    while (my ($key, $value) = each %$keyvals) {
+                        if (!defined($value)) {
+                            delete $keyvals->{$key};
+                            $no_null = 0;
+                        }
+                    }
+                }
+            }
+        }
+        $i++ if ($no_null);
+    }
+}
+
 1;
 
