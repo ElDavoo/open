@@ -157,8 +157,7 @@ use constant SELECT_COLUMNS_STR => q{
     page.views,
     page.locked,
     page.tags, -- ordered array
-    page.like_count,
-    page.anno_blob
+    page.like_count
 };
 
 # This should be the order they show up in on the actual table:
@@ -283,7 +282,6 @@ my %REV_ROW_MAP = (
     edit_summary => 'edit_summary',
     locked => 'locked',
     tags => 'tags',
-    anno_blob => 'anno_blob',
 );
 
 sub _map_row {
