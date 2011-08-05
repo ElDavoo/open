@@ -99,11 +99,11 @@ has 'rev' => (
         # as-is mappings:
         (map {$_=>$_} qw(
             name revision_num modified_time page_type deleted summary
-            edit_summary locked tags tag_set body_length body_ref values
+            edit_summary locked tags tag_set body_length body_ref 
             body_modified mutable is_spreadsheet is_wiki is_untitled
             has_tag tags_sorted is_recently_modified age_in_minutes
             age_in_seconds age_in_english datetime_for_user datetime_utc
-            annotations annotation_triplets
+            annotations annotation_triplets anno_blob
         )),
     },
 );
@@ -157,7 +157,8 @@ use constant SELECT_COLUMNS_STR => q{
     page.views,
     page.locked,
     page.tags, -- ordered array
-    page.like_count
+    page.like_count,
+    page.anno_blob
 };
 
 # This should be the order they show up in on the actual table:
@@ -213,6 +214,8 @@ sub _find_current {
     # the writer for creator_id is _creator_id:
     $self->_creator_id($creator_id);
 
+    use Data::Dumper;
+    warn Dumper $page_args;
     $self->$_($page_args->{$_}) for keys %$page_args;
     $self->rev($rev); # should assign this last
 
@@ -280,6 +283,7 @@ my %REV_ROW_MAP = (
     edit_summary => 'edit_summary',
     locked => 'locked',
     tags => 'tags',
+    anno_blob => 'anno_blob',
 );
 
 sub _map_row {
@@ -549,7 +553,7 @@ sub hash_representation {
         workspace_title => $self->workspace_title,
         creator_id      => $self->creator->user_id,
         last_editor_id  => $self->last_editor->user_id,
-        values          => $self->values,
+        annotations     => $self->annotations,
 
         ($self->deleted ? (deleted => 1) : ()),
     };
@@ -600,6 +604,7 @@ sub to_result {
     my $editor = $self->last_editor;
     my $creator = $self->creator;
     my $result = {
+        annotations     => $self->annotations,
         Date            => $self->datetime_utc,
         Deleted         => $self->deleted ? 1 : 0,
         From            => $editor->email_address,

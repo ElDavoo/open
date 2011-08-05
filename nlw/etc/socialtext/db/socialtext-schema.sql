@@ -1253,7 +1253,8 @@ CREATE TABLE page_revision (
     locked boolean DEFAULT false NOT NULL,
     tags text[] NOT NULL,
     body_length bigint DEFAULT 0 NOT NULL,
-    body bytea
+    body bytea,
+    anno_blob text
 );
 
 CREATE TABLE page_tag (
@@ -2989,4 +2990,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '146');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '147');

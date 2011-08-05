@@ -6,6 +6,7 @@ use Carp qw/croak carp/;
 use Moose::Util::TypeConstraints;
 use Tie::IxHash;
 use Try::Tiny;
+use Socialtext::JSON qw/encode_json decode_json_utf8/;
 
 use Socialtext::Moose::UserAttribute;
 use Socialtext::MooseX::Types::Pg;
@@ -93,6 +94,7 @@ has 'mutable' => (
 use constant COLUMNS => qw(
     workspace_id page_id revision_id revision_num name editor_id edit_time
     page_type deleted summary edit_summary locked tags body_length
+    anno_blob
 );
 use constant COLUMNS_STR => join(', ',COLUMNS());
 use constant SELECT_COLUMNS_STR => COLUMNS_STR.
@@ -149,6 +151,34 @@ sub Blank {
     $p{__mutable} = ($p{page_id} eq "_") ? 0 : 1;
     
     return Socialtext::PageRevision->new(\%p);
+}
+
+sub _build_anno_blob {
+    my $self = shift;
+
+    my $rev_id = $self->revision_id;
+
+    my $blob;
+    if (!$rev_id && $self->has_prev) {
+        if ($self->prev->has_body_ref) {
+            $blob = ${$self->prev->anno_blob};
+        }
+        else {
+            $rev_id = $self->prev->revision_id;
+        }
+    }
+
+    if ($rev_id && !defined($blob)) {
+        $blob = sql_singlevalue(q{
+            SELECT anno_blob FROM page_revision
+             WHERE workspace_id = $1 AND page_id = $2 AND revision_id = $3
+        }, $self->workspace_id, $self->page_id, $rev_id);
+    }
+
+    $blob = '[]' unless defined $blob;
+    Encode::_utf8_on($blob); # it should always be in the db as utf8
+
+    return $blob;
 }
 
 sub _get_blob {
@@ -236,31 +266,6 @@ sub _body_modded {
 sub pkey {
     my $self = shift;
     return map { $self->$_ } qw(workspace_id page_id revision_id);
-}
-
-sub values {
-    my $self = shift;
-    my $as_keys = shift || 0;
-
-    my $values = {};
-    my $body = ${$self->body_ref};
-
-    while ($body =~ /{values:\s*(.+?)}/g) {
-        my $s = $1;
-        while ($s =~ /field_\d+:(.+?):(.+?):"(.+?)"/g) {
-            my $key = $as_keys ? title_to_id($1) : $1;
-            $values->{$key} = $3;
-        }
-    }
-
-    return $values;
-}
-
-sub _build_annotations {
-    my $self = shift;
-
-    my $values = $self->values(1);
-    return [{pagevalues => $values}];
 }
 
 sub modified_time { $_[0]->edit_time->epoch };

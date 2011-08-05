@@ -210,6 +210,16 @@
             'text/plain':       [Socialtext::Rest::PageRevisions, GET_text]
         '*': [Socialtext::Rest::PageRevisions, bad_method]
 -
+    '/data/workspaces/:ws/pages/:pname/annotations':
+        'GET':
+            '*/*':     &default [Socialtext::Rest::PageAnnotations, GET_html]
+            'application/json': [Socialtext::Rest::PageAnnotations, GET_json]
+            'text/html':        *default
+            'text/plain':       [Socialtext::Rest::PageAnnotations, GET_text]
+        'PUT':
+            'application/json': [Socialtext::Rest::PageAnnotations, PUT_json]
+        '*': [Socialtext::Rest::PageAnnotations, bad_method]
+-
     '/data/workspaces/:ws/pages/:pname/backlinks':
         'GET':
             '*/*':     &default [Socialtext::Rest::Backlinks, GET_html]
