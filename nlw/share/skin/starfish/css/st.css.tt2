@@ -136,19 +136,23 @@ header .topLinks {
  */
 footer {
     color: #ccc;
-    padding: 20px 0;
-    line-height: 18px;
     font-size: 13px;
+    line-height: 19px;
+    height: 40px;
+    position: relative;
 }
 
 footer a {
     color: [% secondary_color %]
 }
 
+
 footer .socialtext {
-    font-family: Arial;
-    font-size: 20px;
-    color: #fff;
+    margin-top: 7px;
+}
+footer .tagline,
+footer .links {
+    margin-top: 10px;
 }
 
 footer .links {
