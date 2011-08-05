@@ -1,7 +1,6 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% USE JSON %]
-[% PROCESS lite/header.html %]
 <script><!--
 var Socialtext = Socialtext || {};
 [% IF user %]
@@ -36,6 +35,8 @@ function nlw_make_plugin_path(rest) {
 [% ELSE %]
 --></script>
 [% END %]
+
+[% PROCESS lite/header.html %]
 
 [% MACRO user_link BLOCK %]
     [% name | decorate('user_link') %]
