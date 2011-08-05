@@ -213,8 +213,6 @@ sub _find_current {
     # the writer for creator_id is _creator_id:
     $self->_creator_id($creator_id);
 
-    use Data::Dumper;
-    warn Dumper $page_args;
     $self->$_($page_args->{$_}) for keys %$page_args;
     $self->rev($rev); # should assign this last
 

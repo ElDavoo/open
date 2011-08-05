@@ -7,7 +7,7 @@ extends 'Socialtext::Rest::Entity';
 
 $JSON::UTF8 = 1;
 
-sub allowed_methods { 'GET', 'PUT' }
+sub allowed_methods { 'GET', 'PUT', 'POST' }
 
 {
     no strict 'refs';
@@ -36,6 +36,59 @@ sub PUT_json {
  
     eval {
         $new_rev->anno_blob($content);
+    };
+    if ($@) {
+        $self->rest->header(
+            -status => HTTP_400_Bad_Request,
+            -type   => 'text/plain',
+        );
+        return $@;
+    }
+
+    $page->store(
+        user => $rest->user,
+    );
+
+    $rest->header(
+        -status => HTTP_200_OK,
+    );
+    return '';
+}
+
+sub POST_json {
+    my ( $self, $rest ) = @_;
+
+    my $unable_to_edit = $self->page_locked_or_unauthorized();
+    return $unable_to_edit if ($unable_to_edit);
+
+    my $page = $self->page;
+    my $new_rev = $page->edit_rev();
+    my $content = $rest->getContent();
+ 
+    eval {
+        my $current_annos = $page->annotations;
+        $new_rev->anno_blob($content);
+        my $new_annos = $new_rev->annotations;
+        foreach my $n_anno (@$new_annos) {
+            while (my ($n_type, $n_keyvals) = each %$n_anno) {
+                my $found = 0;
+                foreach my $c_anno (@$current_annos) {
+                    while (my ($c_type, $c_keyvals) = each %$c_anno) {
+                        if ($c_type eq $n_type) {
+                            $found = 1;
+                            %$c_keyvals = (%$c_keyvals, %$n_keyvals);
+                            last;
+                        }
+                    }
+                    last if $found;
+                }
+
+                if (!$found) {
+                    push @$current_annos, $n_anno;
+                }
+            }
+        }
+        $new_rev->anno_blob(encode_json($current_annos));
     };
     if ($@) {
         $self->rest->header(

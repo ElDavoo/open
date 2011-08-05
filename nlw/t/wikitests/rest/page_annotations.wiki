@@ -14,7 +14,7 @@ Tests for page annotations via the REST API
 | edit-page | %%workspace%% | Page1 | A stub of a page |
 | edit-page | %%workspace%% | Page2 | A stub of a page |
 
-# Put sets the annotations for a page
+# PUT sets the annotations for a page
 | Comment          | Set annotation   |                                    |
 | PUT-json | %%workspace_url%%/pages/page1/annotations | [{"namespace":{"key1":"value1"}}] |
 | code-is  | 200                                 |                                 |
@@ -38,4 +38,31 @@ Tests for page annotations via the REST API
 | code-is   | 200                                                   |
 | body-like | - namespace:                                          |
 | body-like | key1: value1                                          |
+
+# POST updates annotations for a page
+| Comment          | POST updates annotations   |                                    |
+| PUT-json | %%workspace_url%%/pages/page2/annotations | [{"namespace":{"key1":"value1","key2":"value2"}}] |
+| code-is  | 200                                 |                                 |
+| POST-json | %%workspace_url%%/pages/page2/annotations | [{"namespace":{"key1":"value3","key2":"value2"}}] |
+| code-is  | 200                                 |                                 |
+| GET-json        | %%workspace_url%%/pages/page2/annotations |        |
+| code-is         | 200                                       |        |
+| json-parse      |                                           |        |
+| json-array-size | 1                                         |        |
+| json-path-is    | $[0].namespace.key1                       | value3 |
+| json-path-is    | $[0].namespace.key2                       | value2 |
+
+# POST a null removes the annotation
+| Comment          | POST a null to remove annotation  |                                    |
+| PUT-json | %%workspace_url%%/pages/page2/annotations | [{"n1":{"key1":"value1","key2":"value2"}},{"n2":{"key1":"value1"}}] |
+| code-is  | 200                                 |                                 |
+| POST-json | %%workspace_url%%/pages/page2/annotations | [{"n1":{"key1":null}}] |
+| code-is  | 200                                 |                                 |
+| GET-json        | %%workspace_url%%/pages/page2/annotations |        |
+| code-is         | 200                                       |        |
+| json-parse      |                                           |        |
+| json-array-size | 2                                         |        |
+| json-path-is    | $[0].n1.key1                       | value1 |
+| json-path-is    | $[0].n1.key2                       | value2 |
+| json-path-is    | $[0].n2.key1                       | value1 |
 
