@@ -1,0 +1,96 @@
+[%# vim: set ft=css: -%]
+
+[% SET primary_color = '#6f7c01' %]
+[% SET secondary_color = '#c6b93b' %]
+
+/**
+ * Global Navigation
+ */
+
+.globalNav {
+    padding-left: 10px;
+}
+/* Replace margin:5px with extra width */
+.globalNav .grid_2 { margin: 0; width: 80px }
+.globalNav .grid_3 { margin: 0; width: 120px }
+.globalNav .grid_10 { margin: 0; width: 400px }
+
+.globalNav .navGrid {
+    height: 50px;
+}
+.globalNav .navItem,
+.globalNav .navLink {
+    height: 45px;
+}
+
+
+.globalNav a:visited,
+.globalNav a:active,
+.globalNav a {
+    color: #fff;
+}
+
+.globalNav .navLink {
+    border-left: 2px solid #000;
+}
+.globalNav .last .navLink {
+    border-right: 2px solid #000;
+}
+
+.globalNav .navLink a {
+    top: 10px;
+    position: relative;
+}
+.globalNav .searchBox form,
+.globalNav .widgetButtons .button {
+    top: 13px;
+    position: relative;
+}
+
+.globalNav .navLink a {
+    color: #ccc;
+    font-size: 13px;
+    display: block;
+    padding: 5px 0 0 43px;
+    font-weight: bold;
+    text-decoration: none;
+    background: transparent no-repeat 10px 0;
+}
+.globalNav .selected .navLink {
+    background-color: #000;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3);
+    filter: alpha(opacity = 30);
+}
+.globalNav .navLink .dashboard{
+    background-image: url('[% skin %]/images/globalNav/dashboard.png');
+}
+.globalNav .navLink .spaces {
+    background-image: url('[% skin %]/images/globalNav/spaces.png');
+}
+.globalNav .navLink .activities {
+    background-image: url('[% skin %]/images/globalNav/activities.png');
+}
+.globalNav .navLink .people {
+    background-image: url('[% skin %]/images/globalNav/people.png');
+}
+.searchText {
+    padding-left: 18px;
+    width: 100px;
+    background: #fff url('[% skin %]/images/icons/search.png') no-repeat 0 0px;
+}
+.searchBox,
+.widgetButtons {
+    text-align: right;
+}
+
+.navGrid .underline {
+    height: 3px;
+    background-color: #fff;
+    border-top: 2px solid [% secondary_color %];
+    width: 100%;
+}
+.navGrid:hover .underline, /* CSS3 */
+.selected .underline {
+    background-color: [% secondary_color %];
+}
