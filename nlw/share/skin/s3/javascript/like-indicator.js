@@ -102,8 +102,8 @@ LikeIndicator.prototype = {
             // Actions:
             var $node = self.bubble.contentNode;
             if (!$node) {
-                if ($.isFunction(cb)) cb();
-                return;
+                self.bubble.createPopup();
+                $node = self.bubble.contentNode;
             }
 
             self.bubble.html(Jemplate.process('like-bubble', self));
