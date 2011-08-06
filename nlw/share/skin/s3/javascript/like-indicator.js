@@ -17,6 +17,12 @@ LikeIndicator.prototype = {
         $.extend(this, this._defaults, opts);
         this.others = this.isLikedByMe ? this.count - 1 : this.count;
         this.onlyFollows = true;
+        if (this.node) {
+            this.node.find('.like-indicator')
+                .removeClass('me')
+                .removeClass('others')
+                .addClass(this.className());
+        }
     },
 
     render: function ($node) {
@@ -93,10 +99,15 @@ LikeIndicator.prototype = {
             }
             var i = 0;
 
-            self.bubble.html(Jemplate.process('like-bubble', self));
-
             // Actions:
             var $node = self.bubble.contentNode;
+            if (!$node) {
+                if ($.isFunction(cb)) cb();
+                return;
+            }
+
+            self.bubble.html(Jemplate.process('like-bubble', self));
+
             $node.find('.like-indicator').click(function() {
                 self.toggleLike();
                 return false;
