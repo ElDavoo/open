@@ -148,6 +148,13 @@ LikeIndicator.prototype = {
             type: self.isLikedByMe ? 'DELETE' : 'PUT',
             data: "{}",
             success: function() {
+                if (window.signalsBuffer) {
+                    // Socialtext Desktop has a long-poll push-client and
+                    // so does not need immediate update, otherwise we
+                    // run into a race condition.
+                    return;
+                }
+
                 if (self.isLikedByMe) {
                     self.isLikedByMe = false;
                     self.count--;
