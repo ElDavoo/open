@@ -3523,49 +3523,55 @@ msgid "control.wikis=count"
 msgstr "工作區（%1）"
 
 msgid "creator.choices:"
-msgstr "Choices:"
+msgstr "選項："
 
 msgid "creator.create-page"
-msgstr "Create Page"
+msgstr "建立頁面"
 
 msgid "creator.field-type:"
-msgstr "Input Type:"
+msgstr "輸入類別："
 
 msgid "creator.field:"
-msgstr "Field:"
+msgstr "欄位："
+
+msgid "creator.info-default-value"
+msgstr "將此選項設為預設。"
 
 msgid "creator.new-field:"
-msgstr "New Field:"
+msgstr "新增欄位："
 
 msgid "creator.page-title:"
 msgstr "頁面標題："
 
+msgid "creator.really-delete-field?"
+msgstr "您確定要刪除此欄位嗎？"
+
 msgid "creator.required"
-msgstr "Required"
+msgstr "必填"
 
 msgid "creator.tag-with:"
-msgstr "Tag with:"
+msgstr "加上標籤："
 
 msgid "creator.template:"
 msgstr "範本："
 
 msgid "creator.type-checkbox"
-msgstr "Checkboxes"
+msgstr "勾選"
 
 msgid "creator.type-number"
-msgstr "Number"
+msgstr "數值"
 
 msgid "creator.type-radio"
-msgstr "Radio boxes"
+msgstr "單選框"
 
 msgid "creator.type-select"
-msgstr "Dropdown"
+msgstr "下拉列表"
 
 msgid "creator.type-text"
-msgstr "Single line"
+msgstr "單列文字"
 
 msgid "creator.type-textarea"
-msgstr "Multiple lines"
+msgstr "多列文字"
 
 #: share/plugin/dashboard/template/dashboard_links:3
 msgid "dashboard.add-widget"
@@ -6145,6 +6151,9 @@ msgstr "沒有和『%1』符合的項目"
 #: lib/Socialtext/EditPlugin.pm:195
 msgid "error.no-page-body"
 msgstr "儲存頁面時，正文不能為空。"
+
+msgid "error.no-page-creator-for-mobile"
+msgstr "抱歉，建立頁面小工具目前無法在行動裝置上使用。"
 
 #: share/skin/s3/javascript/s3.js:832
 msgid "error.no-page-doc"
@@ -9420,9 +9429,8 @@ msgstr "項目背景色"
 msgid "kanban.item-notes"
 msgstr "項目標注"
 
-#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:200
 msgid "kanban.likable?"
-msgstr "Show indicator for page likes?"
+msgstr "為看板上的頁面顯示『讚』？"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"

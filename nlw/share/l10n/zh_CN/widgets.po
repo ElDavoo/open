@@ -402,11 +402,56 @@ msgstr "分享此页!"
 msgid "bookmarklet.tip"
 msgstr "小秘诀：您可利用“"
 
+msgid "creator.choices:"
+msgstr "选项："
+
+msgid "creator.create-page"
+msgstr "创建页面"
+
+msgid "creator.field-type:"
+msgstr "输入类别："
+
+msgid "creator.field:"
+msgstr "字段："
+
+msgid "creator.info-default-value"
+msgstr "将此选项设为默认。"
+
+msgid "creator.new-field:"
+msgstr "新增字段："
+
 msgid "creator.page-title:"
 msgstr "页面标题："
 
+msgid "creator.really-delete-field?"
+msgstr "您确定要删除此字段吗？"
+
+msgid "creator.required"
+msgstr "必填"
+
+msgid "creator.tag-with:"
+msgstr "加上标签："
+
 msgid "creator.template:"
 msgstr "模板："
+
+msgid "creator.type-checkbox"
+msgstr "勾选"
+
+msgid "creator.type-number"
+msgstr "数值"
+
+msgid "creator.type-radio"
+msgstr "单选框"
+
+msgid "creator.type-select"
+msgstr "下拉列表"
+
+msgid "creator.type-text"
+msgstr "单列文字"
+
+msgid "creator.type-textarea"
+msgstr "多列文字"
 
 msgid "dashboard.revert"
 msgstr "恢复为默认"
@@ -684,6 +729,9 @@ msgstr "没有新的 %1，可能是因为您还没有关注任何人，也可能
 #: share/plugin/widgets/share/javascript/activities/explore.js:15
 msgid "error.no-items-for-explore"
 msgstr "没有可显示的项目。可能是没人发布链接或附件，也可能是您添加了太多过滤器。"
+
+msgid "error.no-page-creator-for-mobile"
+msgstr "抱歉，创建页面小工具目前无法在行动装置上使用。"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
@@ -1028,6 +1076,9 @@ msgstr "项目背景色"
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "项目标注"
+
+msgid "kanban.likable?"
+msgstr "为看板上的页面显示“赞”？"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
