@@ -361,6 +361,7 @@ sub _get_page_info {
 
     return {
         title           => $page->name,
+        new_title       => scalar $self->cgi->new_title,
         display_title   => html_escape($page->name),
         id              => $page->id,
         is_default_page => (
@@ -524,5 +525,9 @@ cgi 'attachment_error';
 cgi 'new_blog_entry';
 cgi 'add_tag';
 cgi 'is_incipient';
+
+# For Page Creator integration
+cgi 'new_title';
+cgi 'variables';
 
 1;
