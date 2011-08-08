@@ -4,6 +4,7 @@ use Moose;
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 extends 'Socialtext::Rest::Entity';
+use Socialtext::Annotations;
 
 $JSON::UTF8 = 1;
 
@@ -88,6 +89,7 @@ sub POST_json {
                 }
             }
         }
+        Socialtext::Annotations::RemoveNullAnnotations($current_annos);
         $new_rev->anno_blob(encode_json($current_annos));
     };
     if ($@) {
@@ -106,6 +108,24 @@ sub POST_json {
         -status => HTTP_200_OK,
     );
     return '';
+}
+
+sub DELETE {
+    my ( $self, $rest ) = @_;
+
+    my $unable_to_edit = $self->page_locked_or_unauthorized();
+    return $unable_to_edit if ($unable_to_edit);
+
+    my $page = $self->page;
+    my $new_rev = $page->edit_rev();
+ 
+    $new_rev->anno_blob('[]');
+
+    $page->store(
+        user => $rest->user,
+    );
+
+    return $self->no_content;
 }
 
 sub get_resource {

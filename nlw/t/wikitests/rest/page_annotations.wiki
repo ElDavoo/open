@@ -62,7 +62,21 @@ Tests for page annotations via the REST API
 | code-is         | 200                                       |        |
 | json-parse      |                                           |        |
 | json-array-size | 2                                         |        |
-| json-path-is    | $[0].n1.key1                       | value1 |
+| json-path-missing | $[0].n1.key1                       |  |
 | json-path-is    | $[0].n1.key2                       | value2 |
-| json-path-is    | $[0].n2.key1                       | value1 |
+| json-path-is    | $[1].n2.key1                       | value1 |
+
+# Delete all page annotations
+| Comment         | DELETE all annotations on a page          |                                                                     |
+| PUT-json        | %%workspace_url%%/pages/page3/annotations | [{"n1":{"key1":"value1","key2":"value2"}},{"n2":{"key1":"value1"}}] |
+| code-is         | 200                                       |                                                                     |
+| GET-json        | %%workspace_url%%/pages/page3/annotations |                                                                     |
+| code-is         | 200                                       |                                                                     |
+| json-parse      |                                           |                                                                     |
+| json-array-size | 2                                         |                                                                     |
+| DELETE          | %%workspace_url%%/pages/page3/annotations |                                                                     |
+| GET-json        | %%workspace_url%%/pages/page3/annotations |                                                                     |
+| code-is         | 200                                       |                                                                     |
+| json-parse      |                                           |                                                                     |
+| json-array-size | 0                                         |                                                                     |
 

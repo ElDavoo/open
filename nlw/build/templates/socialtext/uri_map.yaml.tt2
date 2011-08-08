@@ -220,6 +220,7 @@
             'application/json': [Socialtext::Rest::PageAnnotations, PUT_json]
         'POST':
             'application/json': [Socialtext::Rest::PageAnnotations, POST_json]
+        'DELETE': [Socialtext::Rest::PageAnnotations, DELETE]
         '*': [Socialtext::Rest::PageAnnotations, bad_method]
 -
     '/data/workspaces/:ws/pages/:pname/backlinks':
