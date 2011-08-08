@@ -179,12 +179,18 @@ sub display {
                 my @template_tags = (lc('template'), lc(loc('tag.template')));
                 push @new_tags, grep { not( lc($_) ~~ @template_tags ) }
                                 @{ $tmpl_page->tags };
+                my $content = $tmpl_page->content;
+
+                if (my $variables = $self->cgi->variables) {
+                    $variables = Socialtext::JSON::decode_json_utf8($variables) || {};
+                    $content =~ s/%%(.*?)%%/$variables->{lc $1}/eg;
+                }
+
                 if ($page->mutable) {
-                    $page->content($tmpl_page->content);
+                    $page->content($content);
                 }
                 else {
                     my $rev = $page->mutable ? $page : $page->edit_rev();
-                    my $content = $tmpl_page->content;
                     $rev->body_ref(\$content);
                     $page->store(
                         user => $self->hub->current_user,
