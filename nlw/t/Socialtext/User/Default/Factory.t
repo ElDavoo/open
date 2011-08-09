@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 121;
+use Test::Socialtext tests => 118;
 use Test::Socialtext::User;
 use Socialtext::User;
 use Socialtext::SQL qw(sql_execute);
@@ -419,15 +419,4 @@ bad_driver_key_means_deleted: {
     my $found3 = Socialtext::User->new(email_address => $user->email_address);
     ok $found3, "was still able to find the user...";
     ok $found3->is_deleted(), "... and its a deleted user";
-
-    sql_execute(q{
-        UPDATE users
-        SET driver_key = ?
-        WHERE user_id = ?
-    }, $factory->driver_key, $user->user_id);
-
-    my $found4 = Socialtext::User->new(user_id => $user->user_id);
-    ok $found4, "can find by user_id";
-    isa_ok $found4, 'Socialtext::User';
-    isa_ok $found4->homunculus, 'Socialtext::User::Default';
 }

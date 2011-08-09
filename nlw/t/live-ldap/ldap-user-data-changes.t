@@ -55,6 +55,11 @@ sub bootstrap_openldap {
     # bootstrap OpenLDAP
     my $openldap = Test::Socialtext::Bootstrap::OpenLDAP->new();
 
+    for my $user (Socialtext::User->All->all()) {
+        next if $user->is_system_created;
+        Test::Socialtext::User->delete_recklessly($user);
+    }
+
     # use "employeeNumber" as the username, so we can change it without having
     # to change the "dn" for the user at the same time.
     my $config   = $openldap->ldap_config();
@@ -290,6 +295,7 @@ test_ldap_dn_change: {
         [ 'user_id'                 => sub { user_lookup(user_id => $user->user_id)         } ],
     );
 
+    # XXX:
     # Go run all of our tests
     foreach my $test (@test_cases) {
         my ($title, $cb_lookup_after) = @{$test};

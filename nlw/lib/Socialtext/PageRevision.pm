@@ -205,14 +205,14 @@ sub _body_modded {
 
     try {
         unless ($newref && defined $$newref &&
-                Encode::is_utf8($$newref, Encode::FB_CROAK))
+                Encode::is_utf8($$newref, Encode::FB_CROAK | Encode::LEAVE_SRC))
         {
             try {
-                $$newref = Encode::decode_utf8($$newref, Encode::FB_CROAK);
+                $$newref = Encode::decode_utf8($$newref, Encode::FB_CROAK | Encode::LEAVE_SRC);
             }
             catch {
                 die $_ unless /Modification of a read-?only value/;
-                my $decoded = Encode::decode_utf8($$newref, Encode::FB_CROAK);
+                my $decoded = Encode::decode_utf8($$newref, Encode::FB_CROAK | Encode::LEAVE_SRC);
                 $newref = \$decoded;
                 # XXX: break Moose encapsulation so we don't recurse:
                 $self->{body_ref} = $newref;

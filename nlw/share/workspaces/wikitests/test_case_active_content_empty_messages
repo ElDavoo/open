@@ -29,6 +29,9 @@
 | set | EmptyEmail | The most frequently emailed pages will be listed here. Try emailing a page to a colleague by clicking on the Email icon in the page's toolbar. |
 
 | *Comment* | Test Case: Active Content Empty Messages Check the Empty Content messages |  |
+| *Comment* | Test Case: Active Content Empty Messages clicks don't work if you go too fast |  |
+| set_speed_ok | 2000 |  |
+
 | wait_for_text_present_ok | Viewed | 30000 |
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
@@ -49,6 +52,7 @@
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%empty_member%% |  |
 | delete-account | %%empty_acct%% |  |
 

@@ -51,7 +51,7 @@ sub gadget_vars {
         $overrides{"UP_$name"} = $overrides{$name} if defined $overrides{$name};
 
         my $overridden = $overrides{"UP_$name"} // next;
-        $pref->{value} = $overridden;
+        $pref->{value} = $overridden; # This affects $gadget->requires_preferences
     }
 
     my $renderer = Socialtext::Gadget::Renderer->new(
@@ -63,7 +63,7 @@ sub gadget_vars {
     my $width = $overrides{__width__} // 600;
     $width .= "px" if $width =~ /^\d+$/;
 
-    my $content_type = $renderer->content_type;
+    my $content_type = $renderer->content_type || 'html';
 
     return {
         # Render the preferences so __('') in options localizes correctly.

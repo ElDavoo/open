@@ -18,6 +18,7 @@
 
 | set | signal | Public Hello to %%psshort_two%% from %%psshort%% |
 | set | private | Private Hello to %%psshort_two%% from %%psshort%% |
+| set | private_reply | Private Reply to %%psshort%% from %%psshort_two%% |
 | set | public | Public Hello after Private to %%psshort_two%% from %%psshort%% |
 
 | wait_for_element_visible_ok | link=Signals | 30000 |
@@ -38,15 +39,23 @@
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort_two%% |
 | st-type_signal | %%private%% |  |
 | click_ok | //a[@class='btn post'] |  |
+| wait-for-element-not-present-ok | //div[@class='message private'] | 10000 |
+
+| *Comment* | Test Case: Private Signal %%psshort_two%% replies to private signal |  |
+| st-logoutin | %%psusertwo%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | %%private%% | 30000 |
+| st-send-reply | %%private_reply%% |  |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends pubmsg to %%psshort_two%% |  |
-| wait-for-element-not-present-ok | //div[@class='message private'] | 10000 |
+| st-logoutin | %%psuser%% | %%password%% |
 | open_ok | /st/signals |  |
 | st-send-signal-in-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Private Signal. All signals appear in activities widget |  |
 | st-verify-text-within-activities-widget | %%signal%% |  |
 | st-verify-text-within-activities-widget | %%private%% |  |
+| st-verify-text-within-activities-widget | %%private_reply%% |  |
 | st-verify-text-within-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Private Signal. login as another user, see public but not private signals. |  |
@@ -58,6 +67,7 @@
 | st-verify-text-in-activities-widget | signals | %%signal%% |
 | st-verify-text-in-activities-widget | signals | %%public%% |
 | st-text-unlike-in-activities-widget | signals | %%private%% |
+| st-text-unlike-in-activities-widget | signals | %%private_reply%% |
 
 | *Comment* | Test Case: Private Signal. Start privmsg, cancel, send public msg |  |
 | set | cancel | Public Hello after Cancel to %%psshort%% from %%short_username%% |
@@ -83,11 +93,24 @@
 | *Comment* | Test Case: Private Signal send and verify the public signal |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | %%cancel%% | 30000 |
-| text_like | qr/You.+minute.+ago/ |  |
-| wait_for_text_not_present_ok | You.+private to.+%%psshort%% | 30000 |
+| text_like | qr/By you.+minute.+ago/ |  |
+| wait_for_text_not_present_ok | By you.+private to.+%%psshort%% | 30000 |
+
+| *Comment* | Test Case: Private Signal delete the private signal, verify |  |
+| st-logoutin | %%psuser%% | %%password%% |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | `xpath=(//a[@class='hoverLink hideLink'])[2]` | 30000 |
+| click_ok | `xpath=(//a[@class='hoverLink hideLink'])[2]` |  |
+| pause | 2000 |  |
+| verifyConfirmation | Are you sure you want to delete this entire Conversation?\nYou cannot undelete it. |  |
+| wait_for_text_not_present_ok | %%private%% | 30000 |
+| wait_for_text_not_present_ok | %%private_reply%% | 30000 |
+| open_ok | /st/signals |  |
+| wait_for_text_not_present_ok | %%private%% | 30000 |
+| wait_for_text_not_present_ok | %%private_reply%% | 30000 |
 
 | *Comment* | Test Case: Private Signal TEARDOWN |  |
-| st-logout |  |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%psuser%% |  |
 | st-admin | deactivate-user --e %%psusertwo%% |  |
 

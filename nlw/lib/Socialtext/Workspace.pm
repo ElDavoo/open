@@ -595,7 +595,7 @@ sub _validate_and_clean_data {
 
     my @errors;
     {
-        $p->{name} = Socialtext::String::trim( $p->{name} )
+        $p->{name} = Socialtext::String::scrub( $p->{name} )
             if defined $p->{name};
 
         if ( ( exists $p->{name} or $is_create )
@@ -606,7 +606,7 @@ sub _validate_and_clean_data {
     }
 
     {
-        $p->{title} = Socialtext::String::trim( $p->{title} )
+        $p->{title} = Socialtext::String::scrub( $p->{title} )
             if defined $p->{title};
 
         if ( ( exists $p->{title} or $is_create )

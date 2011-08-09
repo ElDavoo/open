@@ -11,8 +11,8 @@ use Socialtext::Session;
 use Socialtext::HTTP::Ports;
 
 # mod_perl authen handler:
-sub handler($$) {
-    my ($class, $r) = @_;
+sub handler {
+    my $r = pop;
 
     # turn HTTP KeepAlive requests *ON*, only really affects apache2 front-end
     st_log->debug( "turning HTTP Keep-Alives back on" );

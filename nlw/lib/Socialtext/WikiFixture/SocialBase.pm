@@ -1454,6 +1454,15 @@ sub get {
         push @headers, map { split m/\s*=\s*/ } split m/\s*,\s*/, $headers;
     }
     $self->_get($uri, \@headers);
+
+    if ($self->{follow_redirects}) {
+        my $resp = $self->{http}->response;
+        if ($resp->code == 301 or $resp->code == 302) {
+            my $location = $resp->header('Location') || die 'No Location header';
+            diag "Redirect $location";
+            $self->get($location, $accept, $headers);
+        }
+    }
 }
 
 =head2 cond_get ( uri, accept, ims, inm )
@@ -1472,6 +1481,7 @@ sub cond_get {
     my @headers = ( Accept => $accept );
     push @headers, 'If-Modified-Since', $ims if $ims;
     push @headers, 'If-None-Match', $inm if $inm;
+    push @headers, Cookie => $self->{_cookie} if $self->{_cookie};
 
     diag "Calling get on $uri";
     my $start = time();
@@ -1498,7 +1508,7 @@ sub delete {
     my ($self, $uri, $accept) = @_;
     $accept ||= 'text/html';
 
-    $self->_delete($uri, [Accept => $accept]);
+    $self->_call_method('delete', $uri, [Accept => $accept]);
 }
 
 
@@ -1524,6 +1534,28 @@ sub code_is {
              "Status content matches";
     }
     return $code;
+}
+
+=head2 code_like( code [, expected_message])
+
+Check that the return code is correct.
+
+=cut
+
+sub code_like {
+    my ($self, $regex) = @_;
+    $regex = $self->quote_as_regex($regex);
+    my $http = $self->{http};
+    my $resp = $http->response;
+    if ($resp->code =~ $regex) {
+        pass "code is " . $resp->code;
+    }
+    else {
+        diag "Response message: " . ($resp->message || 'None') ."\n";
+        diag "Content: " . (substr($resp->content,0,256) || 'No content') . "\n"
+            unless $resp->code == 200;
+        diag "url(" . $http->request->url . ")\n";
+    }
 }
 
 =head2 dump_http_response 
@@ -1623,6 +1655,18 @@ sub put_form {
     my $self = shift;
     my $uri = shift;
     $self->put($uri, 'Content-Type=application/x-www-form-urlencoded', @_);
+}
+
+=head2 put_wikitext( uri, body )
+
+Post to the specified URI with header 'Content-type=text/x.socialtext-wiki'
+
+=cut
+
+sub put_wikitext {
+    my $self = shift;
+    my $uri = shift;
+    $self->put($uri, 'Content-type=text/x.socialtext-wiki', @_);
 }
 
 =head2 post_file( uri, post_vars, filename_var filename )
@@ -2274,13 +2318,6 @@ sub _get {
     $self->{_last_http_time} = time() - $start;
 }
 
-sub _delete {
-    my ($self, $uri, $opts) = @_;
-    my $start = time();
-    $self->{http}->delete( $self->{browser_url} . $uri, $opts );
-    $self->{_last_http_time} = time() - $start;
-}
-
 sub edit_page {
     my $self = shift;
     my $workspace = shift;
@@ -2444,24 +2481,12 @@ sub post_signals {
     my $message = shift or die;
     my $offset = shift || 1200;
 
-    # All of the signals we send during this test script should be based back
-    # from this start time
-    my $start_time = $self->{_post_signals_start_time}
-                        ||= time() - 60 * 60 * 24 * 30;
-
     for my $i ($offset .. $offset+$count-1) {
+        my $time = CORE::time();
         my $location = $self->post_signal($message . " $i");
 
-        my $signal_time = $start_time + $i;
-        my $delta = time() - $signal_time;
-        # Rewind the date
-        sql_execute(<<EOT, "${delta}s");
-UPDATE signal SET at = at - ?::interval
-    WHERE signal_id = (
-        SELECT signal_id FROM signal
-            ORDER BY signal_id DESC LIMIT 1
-    )
-EOT
+        # Separate each signal by 1+ seconds for Solr
+        do { CORE::sleep(1) } until (CORE::time() - $time >= 1);
     }
 }
 

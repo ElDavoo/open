@@ -150,6 +150,7 @@ sub _add_page_doc {
     my $title = $page->title;
     _scrub_field(\$title);
 
+    my $likes = [ map { $_->user_id } @{$page->likes} ];
     my $tags = $page->tags;
     my @fields = (
         [id => $id], # composite of workspace and page
@@ -167,6 +168,9 @@ sub _add_page_doc {
         [revisions => $revisions],
         [tag_count => scalar(@$tags) ],
         (map { [ tag => $_ ] } @$tags),
+        [has_likes => 1],
+        [like_count => scalar(@$likes) ],
+        (map { [ like => $_ ] } @$likes),
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
     if (my $mtime = _datetime_to_iso($page->last_edit_time)) {
@@ -342,6 +346,8 @@ sub _add_signal_doc {
     my $in_reply_to = $signal->in_reply_to;
     my $is_question = $body =~ m/\?\s*$/ ? 1 : 0;
 
+    my $likes = $signal->likers;
+
     my @fields = (
         [id => $id],
         [doctype => 'signal'], 
@@ -363,6 +369,9 @@ sub _add_signal_doc {
         (map { [tag => $_->tag] } @{$signal->tags}),
         [ tag_count => scalar(@{$signal->tags}) ],
         Socialtext::Search::Solr::BigField->new('body' => \$body),
+        [has_likes => 1],
+        [like_count => scalar(@$likes) ],
+        (map { [ like => $_ ] } @$likes),
     );
 
     for my $triplet (@{ $signal->annotation_triplets }) {

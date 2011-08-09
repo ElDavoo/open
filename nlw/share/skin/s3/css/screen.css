@@ -103,6 +103,10 @@ div.clear {
 	clear: both;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 div#mainWrap {
         min-width: 947px;
 	width: 90%;
@@ -1800,7 +1804,7 @@ table.dataTable tr:hover td,table.dataTable tr.oddRow:hover td {
 
 table.dataTable th.selectColumn {
 	width: 1%;
-	padding:0 15px 0 15px;
+	padding:10px 15px 0 15px;
 	text-align: center;
         white-space: nowrap;
 }
@@ -2069,7 +2073,6 @@ div#header div#globalNav {
 div#controls div#controlsRight ul li a.watch.on {
        background: url(../images/watchingIcon.png) no-repeat center left;
 }
-
 td.listview-watchlist {
     width: 200px;
 }
@@ -2128,6 +2131,16 @@ table.dataTable td img.avatar {
 
 table.dataTable {
     width:98%;
+}
+
+table.dataTable.fixed {
+    table-layout: fixed;
+    padding-right: 3px;
+}
+
+table.dataTable.fixed td {
+    text-overflow: ellipsis;
+    overflow-x: hidden;
 }
 
 table.dataTable .date {
@@ -2267,12 +2280,16 @@ dl.invite dd, #settingsPage dd {
 ul li a.followPersonButton {
     line-height: 16px;
     height: 28px;
-    background: url(../images/followIcon.png) no-repeat top left;
+    background: url(../images/watchIcon.png) no-repeat top left;
     padding-left: 25px;
     color:#333333;
     float:left;
     font-size:9px;
     font-weight:bold;
+}
+
+ul li a.followPersonButton.following {
+    background: url(../images/watchingIcon.png) no-repeat top left;
 }
 
 body#dashBoard div#lastsignal {
@@ -3141,6 +3158,7 @@ div#mainNav ul.level2 li {
 div#mainNav li.scrollingNav {
     overflow-y: auto;
     overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 div#mainNav li.scrollingNav ul {
@@ -4297,6 +4315,10 @@ body#dashBoard .widget.regular .widgetHeader {
     cursor: move;
 }
 
+body#dashBoard .wiki .widget.regular .widgetHeader {
+    cursor: default;
+}
+
 body#dashBoard ul.stuck .widget.regular .widgetHeader,
 body#dashBoard .widget.tan .widgetHeader,
 body#dashBoard .widget.gray .widgetHeader {
@@ -4419,97 +4441,6 @@ body#dashBoard div#controls div#controlsRight ul {
 .galleryWidget.removed {
     opacity: .5;
     filter: alpha(opacity = 50);
-}
-
-.avatarPopup {
-    position: absolute;
-    display: none;
-    font-size: 90%;
-    z-index: 1000;
-    -width: 300px;
-}
-
-.avatarPopup .top, .avatarPopup .bottom {
-    height: 19px;
-    width: 100%;
-}
-
-.avatarPopup .fn {
-    font-weight: bold;
-}
-
-.avatarPopup .inner {
-    background: #FFF;
-    border: 1px solid black;
-    padding: 6px;
-    text-align: left;
-    float: left;
-}
-
-.avatarPopup .inner .vcard {
-    min-height: 62px;
-}
-
-.avatarPopup img.avatarPhoto {
-    float: left;
-    padding: 5px;
-}
-
-.avatarPopup .userinfo {
-    margin-left: 72px;
-}
-
-.avatarPopup .userinfo.web {
-    display: none; /* not a requirement to show web stuff in the popup */
-}
-
-.avatarPopup .vcard .photo {
-    float: left;
-}
-
-.avatarPopup .userinfo img {
-    vertical-align: middle !important;
-}
-
-.avatarPopup ul {
-    list-style-type: none !important;
-    padding-left: 0;
-    margin-left: 0;
-}
-
-.avatarPopup .follow {
-    text-align: left;
-    border-top: 1px solid #CCCBCC;
-    margin-top: 5px;
-    padding: 5px;
-    height: 13px;
-}
-
-.avatarPopup .followPersonButton,
-.avatarPopup .followPersonButton:hover {
-    color: #000;
-    text-decoration: none;
-    height: 18px;
-    float: left;
-}
-
-/* logic for showing the avatar popup under the avatar */
-.avatarPopup .top {
-    display: none;
-}
-.avatarPopup .inner {
-    border-bottom: none;
-}
-
-.avatarPopup.underneath .top {
-    display: block;
-}
-.avatarPopup.underneath .bottom {
-    display: none;
-}
-.avatarPopup.underneath .inner {
-    border-bottom: 1px solid black;
-    border-top: none;
 }
 
 table.st-ss th span {
@@ -4875,4 +4806,26 @@ body#contentPage .widgetHeaderTitleText {
 
 .requiresie {
     color: #666;
+}
+
+/* HTML5 drag and drop */
+#dropbox {
+    display: none;
+    border: 2px solid #DDD;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    background-color: #FEFFEC;
+    text-align: center;
+    color: #BBB;
+    font-size: 2em;
+    margin: 10px 20px;
+    padding: 30px 0;
+}
+#dropbox.over {
+    background-color: #CBCCCB;
+    color: #666;
+}
+.dropbox-progress {
+    margin: 5px 20px;
+    height: 10px !important;
 }

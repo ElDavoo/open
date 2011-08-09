@@ -18,17 +18,7 @@
     <input type="hidden" id="st-attachments-attach-embed" name="embed" value="1"/>
     <input type="hidden" id="st-attachments-attach-replace" name="replace" value="0" />
     <div class="warning" id="st-attachments-duplicate-menu" style="display:none">
-        <p class="tip"> </p>
-        <div class="more" style="display:none">
-         <img src="/static/skin/s3/images/warning.png" />
-         <p></p>
-        </div>
-
-        <ul class="chooser">
-            <li><a class="add" href="#">[% loc("do.add") %]</a></li>
-            <li><a class="replace" href="#">[% loc("do.replace") %]</a></li>
-            <li class="last"><a class="cancel" href="#">[% loc("do.cancel") %]</a></li>
-        </ul>
+        [% INCLUDE duplicate_attachment_warning %]
     </div>
     <div class="error" id="st-attachments-attach-error">&nbsp;</div>
     <div class="message" id="st-attachments-attach-uploadmessage">&nbsp;</div>
@@ -56,3 +46,29 @@
  </ul>
  </div>
 </div>
+
+[% BLOCK duplicate_attachment_warning %]
+    <p class="tip">[% tip %]</p>
+    <div class="more" style="display:none">
+     <img src="/static/skin/s3/images/warning.png" />
+     <p></p>
+    </div>
+
+    <ul class="chooser">
+        <li><a class="add" href="#">[% loc("do.add") %]</a></li>
+        <li><a class="replace" href="#">[% loc("do.replace") %]</a></li>
+        <li class="last"><a class="cancel" href="#">[% loc("do.cancel") %]</a></li>
+    </ul>
+[% END %]
+
+[% BLOCK duplicate_files %]
+    <div class="title" id="st-attachments-duplicates-title">[% loc('file.duplicate-files') %]</div>
+    [% FOR file = files %]
+        <div class="warning" style="margin: 5px 0">
+            <input type="hidden" name="filename" value="[% file.name %]"/>
+            [% INCLUDE duplicate_attachment_warning
+                tip=loc('file.add-or-replace=name?', file.name)
+             %]
+        </div>
+    [% END %]
+[% END %]

@@ -1,7 +1,6 @@
 # @COPYRIGHT@
 package Socialtext::Session;
-
-use strict;
+use 5.12.0;
 use warnings;
 
 our $VERSION = '0.01';
@@ -10,6 +9,8 @@ use Apache::Session::Wrapper 0.28;
 use Data::Dumper ();
 use Socialtext::SQL qw/get_dbh/;
 use Socialtext::AppConfig;
+use HTML::Scrubber;
+use Scalar::Util 'reftype';
 
 Apache::Session::Wrapper->RegisterFlexClass(
     type => 'store',
@@ -50,6 +51,7 @@ sub _wrapper {
             serialize   => 'Base64',
             handle      => get_dbh(),
             commit      => 0, # autocommit
+            ($Socialtext::PlackApp::Response ? (header_object => $Socialtext::PlackApp::Response) : ()),
         );
 
     return $_[0]->{wrapper};
@@ -103,10 +105,32 @@ sub last_workspace_id { $_[0]->_session->{last_workspace_id} }
 sub set_last_workspace_id { $_[0]->_session->{last_workspace_id} = $_[1] }
 
 sub messages { my $s = $_[0]->_session;
-               $s->{__messages__} ? @{ delete $s->{__messages__} } : () }
+               $s->{__messages__} ? map { _scrub($_) } @{ delete $s->{__messages__} } : () }
 
 sub errors   { my $s = $_[0]->_session;
-               $s->{__errors__} ? @{ delete $s->{__errors__} } : () }
+               $s->{__errors__} ? map { _scrub($_) } @{ delete $s->{__errors__} } : () }
+
+sub _scrub {
+    my $obj = shift;
+    given (reftype $obj) {
+        when ('ARRAY') {
+            $_ = _scrub($_) for @$obj;
+            return $obj;
+        }
+        when ('HASH') {
+            $obj->{$_} = _scrub($obj->{$_}) for keys %$obj;
+            return $obj;
+        }
+        when ('SCALAR') {
+            $$obj = _scrub($$obj);
+            return $obj;
+        }
+        default {
+            state $scrubber //= HTML::Scrubber->new( allow => [ qw[ p b i u hr br em strong span ] ] );
+            return $scrubber->scrub($obj);
+        }
+    }
+}
 
 sub has_errors { scalar @{ $_[0]->_session->{__errors__} || [] } }
 

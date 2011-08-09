@@ -54,13 +54,9 @@ sub users_settings {
         $self->status_messages_for_template,
     );
 
-    $self->screen_template('view/settings');
-    return $self->render_screen(
-        settings_table_id => 'settings-table',
-        settings_section  => $settings_section,
-        hub               => $self->hub,
-        display_title     => loc('config.user-settings'),
-        pref_list         => $self->_get_pref_list,
+    return $self->_render_settings(
+        loc('config.user-settings'),
+        $settings_section,
     );
 }
 
@@ -163,13 +159,9 @@ sub users_listall {
         ? loc('config.user-admin')
         : loc('config.user-list');
 
-    $self->screen_template('view/settings');
-    return $self->render_screen(
-        settings_table_id => 'settings-table',
-        settings_section  => $settings_section,
-        hub               => $self->hub,
-        display_title     => $display_title,
-        pref_list         => $self->_get_pref_list,
+    return $self->_render_settings(
+        $display_title,
+        $settings_section,
     );
 }
 
@@ -293,13 +285,9 @@ sub users_invitation {
         $self->status_messages_for_template,
     );
 
-    $self->screen_template('view/settings');
-    return $self->render_screen(
-        settings_table_id => 'settings-table',
-        settings_section  => $settings_section,
-        hub               => $self->hub,
-        display_title     => loc('config.user-invite'),
-        pref_list         => $self->_get_pref_list,
+    return $self->_render_settings(
+        loc('config.user-invite'),
+        $settings_section,
     );
 }
 
@@ -379,13 +367,9 @@ sub users_search {
         search_performed => 1,
     );
 
-    $self->screen_template('view/settings');
-    return $self->render_screen(
-        settings_table_id => 'settings-table',
-        settings_section  => $settings_section,
-        hub               => $self->hub,
-        display_title     => loc('config.user-invite'),
-        pref_list         => $self->_get_pref_list,
+    return $self->_render_settings(
+        loc('config.user-invite'),
+        $settings_section,
     );
 }
 
@@ -482,13 +466,27 @@ sub _invite_users {
         $self->status_messages_for_template,
     );
 
+    return $self->_render_settings(
+        loc('config.user-invite'),
+        $settings_section,
+    );
+}
+
+sub _render_settings {
+    my $self = shift;
+    my $title = shift;
+    my $settings = shift;
+
+    my $cur_ws = $self->hub->current_workspace;
+    my $scope = $cur_ws && $cur_ws->real ? 'workspace' : 'global';
+    
     $self->screen_template('view/settings');
     return $self->render_screen(
         settings_table_id => 'settings-table',
-        settings_section  => $settings_section,
+        settings_section  => $settings,
         hub               => $self->hub,
-        display_title     => loc('config.user-invite'),
-        pref_list         => $self->_get_pref_list,
+        display_title     => $title,
+        pref_list         => $self->_get_pref_list($scope),
     );
 }
 

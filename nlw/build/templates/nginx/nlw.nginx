@@ -29,9 +29,24 @@
     [%- BLOCK image_cache %]
         # image cache: [% cache_name %]
         set $cache_match "no-match";
+
+        [%- IF cache_name == 'wafl' -%]
+        set $uneditable "0";
+        if ($arg_uneditable ~ "1") {
+            set $uneditable "1";
+        }
+        if ($method_uri ~* ^GET[% rest_pattern %]) {
+            set $cache_match "$1$uneditable";
+        }
+        [%- ELSE -%]
         if ($method_uri ~* ^GET[% rest_pattern %]) {
             set $cache_match $1;
         }
+        if ($http_cookie !~* "NLW-user=") {
+            set $cache_match "no-match";
+        }
+        [%- END -%]
+
         if (-f [% config.cache_dir %]/[% cache_name %]/$cache_match[% file_suffix %]) {
           rewrite ^[% rest_pattern %] /[% cache_name %]/$cache_match[%file_suffix%];
         }
@@ -208,7 +223,7 @@ server {
         }
     [%- END %]
 
-    ssl_ciphers HIGH:MEDIUM:!ADH;
+    ssl_ciphers AES128-SHA:AES:RC4:CAMELLIA128-SHA:!MD5:!ADH:!DH:!ECDH:!PSK:!SSLv2;
     ssl_protocols SSLv3 TLSv1;
     ssl_session_cache shared:SSLTLS:10m;
 

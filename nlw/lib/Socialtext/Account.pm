@@ -7,8 +7,8 @@ use Socialtext::Authz;
 use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::Schema;
-use Socialtext::SQL qw( sql_execute sql_singlevalue);
-use Socialtext::SQL::Builder qw(sql_nextval);
+use Socialtext::SQL qw(:exec :txn);
+use Socialtext::SQL::Builder qw(sql_nextval sql_abstract sql_insert_many);
 use Socialtext::Helpers;
 use Socialtext::String;
 use Socialtext::User::Default::Users;
@@ -44,6 +44,7 @@ Readonly our @ACCT_COLS => qw(
     allow_invitation
     account_type
     restrict_to_domain
+    pref_blob
 
     desktop_logo_uri
     desktop_header_gradient_top
@@ -137,21 +138,71 @@ around 'PluginsEnabledForAll' => sub {
     return $orig->($_[0], 'Account');
 };
 
+around 'EnablePluginForAll' => \&sql_txn;
 sub EnablePluginForAll {
     my ($class, $plugin) = @_;
-    my $all = $class->All;
-    while (my $account = $all->next) {
-        $account->enable_plugin($plugin);
+
+    require Socialtext::Pluggable::Adapter;
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    my $plugin_class = $adapter->plugin_class($plugin);
+    $class->_check_plugin_scope($plugin, $plugin_class, 'account');
+
+    my @plugins = (
+        $plugin, $plugin_class->dependencies, $plugin_class->enables,
+    );
+
+    my ($sql, @bind) = sql_abstract->delete(user_set_plugin => {
+        plugin => { -in => \@plugins }
+    });
+    sql_execute($sql, @bind);
+
+    # This makes enabling the people plugin a bit slow because for some reason
+    # it regenerates all the fields
+    if ($plugin_class->can('EnablePlugin')) {
+        my $all = $class->All;
+        while (my $account = $all->next) {
+            $plugin_class->EnablePlugin($account)
+        }
     }
+
+    my $sth = sql_execute(q{SELECT user_set_id, account_id FROM "Account"});
+    my @insert;
+    while (my $account = $sth->fetchrow_hashref) {
+        push @insert, [$account->{user_set_id}, $_] for @plugins;
+    }
+
+    sql_insert_many(user_set_plugin => ['user_set_id', 'plugin'], \@insert);
+
+    Socialtext::Cache->clear('authz_plugin');
+    Socialtext::Cache->clear('user_accts');
     set_system_setting( "$plugin-enabled-all", 1 );
 }
 
+around 'EnablePluginForAll' => \&sql_txn;
 sub DisablePluginForAll {
     my ($class, $plugin) = @_;
-    my $all = $class->All;
-    while (my $account = $all->next) {
-        $account->disable_plugin($plugin);
+
+    require Socialtext::Pluggable::Adapter;
+    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
+    $class->_check_plugin_scope($plugin, $plugin_class, 'account');
+
+    my @plugins = ($plugin, $plugin_class->reverse_dependencies);
+
+    # Noop so far
+    if ($plugin_class->can('DisablePlugin')) {
+        my $all = $class->All;
+        while (my $account = $all->next) {
+            $plugin_class->DisablePlugin($account)
+        }
     }
+
+    my ($sql, @bind) = sql_abstract->delete(user_set_plugin => {
+        plugin => { -in => \@plugins }
+    });
+    sql_execute($sql, @bind);
+
+    Socialtext::Cache->clear('authz_plugin');
+    Socialtext::Cache->clear('user_accts');
     set_system_setting( "$plugin-enabled-all", 0 );
 }
 
@@ -217,6 +268,12 @@ sub reset_skin {
         $workspace->update(skin_name => '');
     }
     return $self->skin_name;
+}
+
+sub prefs {
+    my $self = shift;
+    require Socialtext::Prefs::Account;
+    return Socialtext::Prefs::Account->new(account=>$self);
 }
 
 sub workspaces {
@@ -343,6 +400,7 @@ sub export {
         users                      => $self->all_users_as_hash(want_private_fields => 1),
         logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
+        pref_blob                  => $self->pref_blob,
         plugins                    => [ $self->plugins_enabled ],
         plugin_preferences         =>
             Socialtext::Pluggable::Adapter->new->account_preferences(
@@ -456,6 +514,7 @@ sub import_file {
     my %acct_params = (
         is_system_created          => $hash->{is_system_created},
         skin_name                  => $hash->{skin_name},
+        pref_blob                  => $hash->{pref_blob} || '',
         backup_skin_name           => 's3',
         email_addresses_are_hidden => $hash->{email_addresses_are_hidden} ? 1 : 0,
         allow_invitation           => (
@@ -1104,8 +1163,9 @@ sub _validate_and_clean_data {
 
     my $is_create = ref $self ? 0 : 1;
 
-    $p->{name} = Socialtext::String::trim( $p->{name} )
-        if $p->{name};
+    if (defined $p->{name}) {
+        $p->{name} = Socialtext::String::scrub( $p->{name} );
+    }
 
     my @errors;
     if ( ( exists $p->{name} or $is_create )

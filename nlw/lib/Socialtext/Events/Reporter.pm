@@ -332,6 +332,10 @@ sub decorate_event_set {
         $self->_extract_group($row);
         $self->_extract_tag($row);
 
+        if ($row->{context}{creator_id}) {
+            $self->_extract_person($row->{context}, 'creator');
+        }
+
         delete $row->{person}
             if (!defined($row->{person}) and $row->{event_class} ne 'person');
 
@@ -481,6 +485,11 @@ sub visibility_sql {
         }
         push @parts, "( $class_restriction".
             $self->visible_exists('signals',$opts,\@bind).' )';
+
+        # Like visibility
+        unless ($self->viewer->can_use_plugin('like')) {
+            push @parts, "(evt.action <> 'like'AND evt.action <> 'unlike')";
+        }
     }
     else {
         push @parts, "(evt.event_class <> 'signal')";
@@ -805,8 +814,14 @@ LEFT JOIN (
     SELECT signal_id, hash
     FROM signal
 ) outer_s USING (signal_id)
+LEFT JOIN (
+    SELECT signal_id, array_accum(liker_user_id) AS likers
+    FROM user_like
+    GROUP BY signal_id
+) likes_s USING (signal_id)
 EOSQL
-        push @field_list, [signal_hash => 'outer_s.hash'];
+        push @field_list, [ signal_hash => 'outer_s.hash' ];
+        push @field_list, [ likers  => 'likes_s.likers' ];
     }
 
     my $fields = join(",\n\t", map { "$_->[1] AS $_->[0]" } @field_list);
@@ -911,7 +926,7 @@ sub _discovery_wrapper {
         $group = Socialtext::Group->GetGroup(group_id => $group)
             unless blessed($group);
         if ($group && !$group->has_user($viewer) &&
-            $group->user_can(user=>$viewer, permission=>$read))
+            $group->user_can(user=>$viewer, permission=>$read, ignore_badmin=>1))
         {
             push @temps, $group;
         }
@@ -952,7 +967,9 @@ sub _discovery_wrapper {
             my $groups = $actor->groups();
             while (my $group = $groups->next) {
                 next if $group->has_user($viewer);
-                next unless $group->user_can(user=>$viewer, permission=>$read);
+                next unless $group->user_can(
+                    user=>$viewer, permission=>$read, ignore_badmin=>1
+                );
                 push @temps, $group;
             }
         }
@@ -1138,7 +1155,7 @@ sub get_events_activities {
     if ($classes{page}) {
         push @conditions, q{
             event_class = 'page'
-            AND is_page_contribution(action)
+            AND (is_page_contribution(action) OR action IN ('like', 'unlike'))
             AND actor_id = ?
         };
         $user_ids++;
@@ -1299,11 +1316,13 @@ sub get_events_workspace_activities {
 sub _conversations_where {
     my $visible_ws = shift || $VISIBLE_WORKSPACES;
     return qq{(
-        e.actor_id <> ?
-        AND page_workspace_id IN (
+        page_workspace_id IN (
             $visible_ws
         ) -- end page_workspace_id IN
         AND ( -- start convos clause
+            -- it's my own action
+            (e.actor_id = ?)
+            OR
             -- it's in my watchlist
             EXISTS (
                 SELECT 1
@@ -1348,8 +1367,7 @@ sub _build_convos_sql {
        before after limit count offset
     ));
 
-    my @bind = ($user_id); # the `actor_id <> ?` part of the big convos SQL
-
+    my @bind;
     my @ws_bind;
     my $visible_ws = qq{
     $VISIBLE_WORKSPACES
@@ -1375,7 +1393,7 @@ sub _build_convos_sql {
 
     my @where;
     push @where, _conversations_where($visible_ws);
-    push @bind, ($user_id) x 3;
+    push @bind, ($user_id) x 4;
 
     $opts->{activity} ||= '';
     $opts->{action} ||= [];
@@ -1420,10 +1438,11 @@ sub _build_convos_sql {
         }
 
         # If we are showing page events off the main events table, make sure we
-        # don't accidentally display the edit_start and edit_cancel events.
+        # don't accidentally display the edit_start, edit_cancel, watch_add or
+        # watch_delete events.
         if (!@classes or grep { $_ eq 'page' } @classes) {
             $self->add_outer_condition(
-                "evt.action NOT IN ('edit_start', 'edit_cancel')"
+                "evt.action NOT IN ('edit_start', 'edit_cancel', 'watch_add', 'watch_delete')"
             );
         }
     }

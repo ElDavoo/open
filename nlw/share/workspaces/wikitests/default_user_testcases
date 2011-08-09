@@ -5,22 +5,19 @@ Carefully set up the environment so the tests will run.
 | *Comment* | Set up required Default user values to override possibly being logged in as an LDAP user |  |
 | *Comment* | This test explicitly uses wikitester@ken.socialtext.net as the Default user |  |
 
-
 | set | username | wikitester@ken.socialtext.net |
 | set | password | d3vnu11l |
 | set | email | wikitester@ken.socialtext.net |
 
-| *Comment* | Default User Testcases: Disable LDAP and remove user devnullx from the system |  |
-| include | [Disable LDAP] |  |
+| *Comment* | Default User Testcases: REMOVED call to Disable LDAP because each included test does that anyway |  |
 
 | *Comment* | Default User Testcases: You must immediately logout since your LDAP user is gone |  |
 | st-logout |  |  |
+
 | *Comment* | Default User Testcases: You may now login as default user wikitester |  |
 | st-login | %%username%% | %%password%% |
 
 | *Comment* | Default User Testcases: By INCLUDING these tests, they will run with the overridden username, pwd, and email |  |
-
-| include | [Test Case: User Restrictions] |  |
 | include | [Test case: Login Logout] |  |
 | include | [Test case: User Resets Password] |  |
 | include | [Test case: Admin Resets Password] |  |
@@ -29,3 +26,5 @@ Carefully set up the environment so the tests will run.
 | include | [Enable LDAP] |  |
 
 | *Comment* | Default User Testcases COMPLETED |  |
+
+Test Case: User Restrictions moved to [Stubborn Testcases]

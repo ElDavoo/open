@@ -50,6 +50,7 @@ sub search_for_term {
 
     my $hub    = hub();
     my $search = $hub->search;
+    $search->sortby('relevance');
     $search->search_for_term(search_term => $term);
     my $set = $search->result_set;
 

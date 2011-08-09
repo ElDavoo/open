@@ -18,6 +18,7 @@ const sortdir => {
     username       => 'asc',
     create_time    => 'desc',
     creator        => 'asc',
+    likes          => 'desc',
 };
 
 const listview_extra_columns => {};
@@ -117,6 +118,7 @@ sub ui_sort_to_order_by {
         subject  => 'name',
         username => 'last_editor_id',
         creator  => 'creator_id',
+        likes    => 'like_count',
         map { $_ => $_ } qw/create_time revision_count/
     };
     return join ' ', $sort_map->{lc($sortby)} || 'last_edit_time',

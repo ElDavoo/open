@@ -23,7 +23,7 @@ Person.prototype = {
     },
 
     isSelf: function() {
-        return this.self || (Socialtext.email_address == this.email);
+        return this.self || (Socialtext.real_user_id == this.id);
     },
 
     isFollowing: function() {
@@ -33,6 +33,12 @@ Person.prototype = {
     updateFollowLink: function() {
         var linkText = this.linkText();
         this.node.text(linkText).attr('title', linkText);
+        if (this.isFollowing()) {
+            this.node.addClass('following');
+        }
+        else {
+            this.node.removeClass('following');
+        }
     },
 
     linkText: function() {
@@ -95,11 +101,13 @@ Person.prototype = {
 Avatar = function (node) {
     var self = this;
     this.node = node;
-    $(node)
-        .unbind('mouseover')
-        .unbind('mouseout')
-        .mouseover(function(){ self.mouseOver() })
-        .mouseout(function(){ self.mouseOut() });
+    this.bubble = new Bubble({
+        node: node,
+        onFirstShow: function() {
+            var user_id = $(node).attr('userid');
+            self.getUserInfo(user_id);
+        }
+    });
 };
 
 // Class method for creating all avatar popups
@@ -109,71 +117,6 @@ Avatar.createAll = function() {
 };
 
 Avatar.prototype = {
-    HOVER_TIMEOUT: 500,
-
-    mouseOver: function() {
-        this._state = 'showing';
-        var self = this;
-        setTimeout(function(){
-            if (self._state == 'showing') {
-                self.displayAvatar();
-                self._state = 'shown';
-            }
-        }, this.HOVER_TIMEOUT);
-    },
-
-    mouseOut: function() {
-        this._state = 'hiding';
-        var self = this;
-        setTimeout(function(){
-            if (self._state == 'hiding') {
-                self.hide();
-                self._state = 'hidden';
-            }
-        }, this.HOVER_TIMEOUT);
-    },
-
-    createPopup: function() {
-        var self = this;
-        this.contentNode = $('<div></div>')
-            .addClass('inner');
-
-        this.popup = $('<div></div>')
-            .addClass('avatarPopup')
-            .mouseover(function() { self.mouseOver() })
-            .mouseout(function() { self.mouseOut() })
-            .appendTo('body');
-
-        // Add quote bubbles
-        this.makeBubble('top', '/images/avatarPopupTop.png')
-            .appendTo(this.popup);
-
-        this.popup.append(this.contentNode)
-        this.popup.append('<div class="clear"></div>');
-
-        this.makeBubble('bottom', '/images/avatarPopupBottom.png')
-            .appendTo(this.popup);
-    },
-
-    makeBubble: function(className, src) {
-        var absoluteSrc = (''+document.location.href).replace(
-            /^(\w+:\/+[^\/]+).*/, '$1' + nlw_make_s3_path(src)
-        );
-        var $div = $('<div></div>').addClass(className);
-	if ($.browser.msie && $.browser.version < 7) {
-            var args = "src='" + absoluteSrc + "', sizingMethod='crop'";
-            $div.css(
-                'filter',
-                "progid:DXImageTransform.Microsoft"
-                + ".AlphaImageLoader(" + args + ")"
-            );
-        }
-        else {
-            $div.css('background', 'transparent url('+absoluteSrc+') no-repeat');
-        }
-        return $div;
-    },
-
     getUserInfo: function(userid) {
         this.id = userid;
         var self = this;
@@ -191,38 +134,38 @@ Avatar.prototype = {
     },
 
     showError: function() {
-        this.contentNode
-            .html(loc('error.user-data'));
-        this.mouseOver();
+        this.bubble.showContent( loc('error.user-data') );
     },
 
     showUserInfo: function(html) {
         var self = this;
-        self.contentNode.append(html);
+        self.bubble.html(html);
         self.person = new Person({
             id: self.id,
-            best_full_name: self.popup.find('.fn').text(),
-            email: self.popup.find('.email').text(),
-            restricted: self.popup.find('.vcard').hasClass('restricted')
+            best_full_name: $(self.node).find('.fn').text(),
+            email: $(self.node).find('.email').text(),
+            restricted: $(self.node).find('.vcard').hasClass('restricted')
         });
         self.person.loadWatchlist(function() {
             var followLink = self.person.createFollowLink();
             if (followLink) {
-                $('<div></div>')
-                    .addClass('follow')
-                    .append(
-                        $('<ul></ul>').append($('<li></li>').append(followLink))
-                    )
-                    .appendTo(self.contentNode);
-                }
+                self.bubble.append(
+                    $('<div></div>')
+                        .addClass('follow')
+                        .append(
+                            $('<ul></ul>')
+                                .append($('<li></li>').append(followLink))
+                        )
+                );
+            }
             self.showCommunicatorInfo();
             self.showSametimeInfo();
-            self.mouseOver();
+            self.bubble.mouseOver();
         });
     },
 
     showCommunicatorInfo: function() {
-        var communicator_elem = this.popup.find('.communicator');
+        var communicator_elem = $(this.node).find('.communicator');
         var communicator_elem_parent = communicator_elem.parent();
         var communicator_sn = communicator_elem.text();
 
@@ -232,7 +175,7 @@ Avatar.prototype = {
     showSametimeInfo: function() {
         // Dynamic sametime script hack
 
-        var sametime_elem = this.popup.find('.sametime');
+        var sametime_elem = $(this.node).find('.sametime');
         var sametime_elem_parent = sametime_elem.parent();
         var sametime_sn = sametime_elem.text();
         if (sametime_sn) {
@@ -261,60 +204,7 @@ Avatar.prototype = {
                     }
                 });
         }    
-    },
-
-    displayAvatar: function() {
-        if (!this.popup) {
-            this.createPopup();
-            var user_id = $(this.node).attr('userid');
-            this.getUserInfo(user_id);
-        }
-        else {
-            this.show();
-        }
-    },
-
-    show: function() {
-        // top was calculated based on $node's top, but if there was an
-        // avatar image, we want to position off of the avatar's top
-        var $img = $(this.node).find('img');
-        var $node = $img.size() ? $img : $(this.node);
-        var offset = $node.offset();
-
-        // Check if the avatar is more than half of the way down the page
-        var winOffset = $.browser.msie ? document.documentElement.scrollTop 
-                                       : window.pageYOffset;
-        if ((offset.top - winOffset) > ($(window).height() / 2)) {
-            this.popup
-                .removeClass('underneath')
-                .css('top', offset.top - this.popup.height() - 15);
-        }
-        else {
-            this.popup
-                .addClass('underneath')
-                .css('top', offset.top + $node.height() + 5);
-        }
-
-        this.popup.css('left', offset.left - 43 );
-
-        if ($.browser.msie && this.popup.is(':hidden')) {
-            var $vcard = $('.vcard', this.contentNode);
-            this.popup.fadeIn('def', function() {
-                // min-height: 62px
-                if ($.browser.msie && $vcard.height() < 65) {
-                    $vcard.height(65);
-                }
-            });
-        }
-        else {
-            this.popup.fadeIn();
-        }
-    },
-
-    hide: function() {
-        if (this.popup) this.popup.fadeOut();
     }
-
 };
 
 $(function(){

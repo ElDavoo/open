@@ -87,11 +87,14 @@
 | *Comment* | Test Case: Group Directory TODO Press the join button, join the group |  |
 
 | *Comment* | Test Case: Group Directory TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | delete-group | %%group_id%% |  |
 | delete-group | %%private_group_id%% |  |
 | delete-group | %%second_sj_group_id%% |  |
 | delete-group | %%first_sj_group_id%% |  |
 | delete-group | %%isolated_group_id%% |  |
+| delete-account | %%group_acct%% |  |
+| delete-account | %%isolated_account%% |  |
 
 | *Comment* | Test Case: Group Directory COMPLETED |

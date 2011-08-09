@@ -9,6 +9,9 @@
 <h4>[% loc('info.files') %]</h4>
 </div><!-- widgetHeader END -->
 <div class="widgetContent">
+  <div id="dropbox">
+    [% loc('file.drop-here-to-upload') %]
+  </div>
   <ul id="st-attachment-listing">
   [% FOR file = attachments %]
     [% SET length = "content-length" %]

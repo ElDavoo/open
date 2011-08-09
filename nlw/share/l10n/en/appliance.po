@@ -51,6 +51,10 @@ msgstr "Automatic Backups"
 msgid "backup.automatic-cleanup"
 msgstr "Automatic Cleanup"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:19
+msgid "backup.cannot-delete-last-backup"
+msgstr "It is required that at least one backup exists. If only one backup is present then it cannot be deleted."
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "Automatic Full backups will be initiated on the selected days of the week. Unselect all to disable."
@@ -74,6 +78,10 @@ msgstr "Day(s) of the week:"
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:98
 msgid "backup.delete-expired-files"
 msgstr "Delete expired files"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:10
+msgid "backup.delete=label?"
+msgstr "Delete \"%1\" backup?"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
 msgid "backup.directory"
@@ -164,6 +172,16 @@ msgstr "Please read the Socialtext Admin Guide <a href=\"%1\">Backup</a> documen
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:57
 msgid "backup.schedule:"
 msgstr "Backup schedule:"
+
+#. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
+#. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:18
+msgid "backup.see-admin-guide-about-backup-mode"
+msgstr "See the <a href=\"%1\">Admin Guide</a> for an explanation of Backup Mode. A copy of this documentation is available publically <a href=\"%2\">here</a>."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:6
+msgid "backup.select-backup-to-delete"
+msgstr "You must select a backup to delete."
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:8
 msgid "backup.status"
@@ -575,6 +593,10 @@ msgstr "Time each day:"
 msgid "console.time-server"
 msgstr "Time Server"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:172
+msgid "console.time-settings"
+msgstr "Time Settings"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "total"
@@ -604,6 +626,10 @@ msgstr "Web Service Proxy Address"
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:131
 msgid "console.your-email-address:"
 msgstr "Your email address:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:182
+msgid "control.update"
+msgstr "Update"
 
 #: ../appliance/libsocialtext-appliance-perl/template/popup.html:48
 msgid "do.cancel"

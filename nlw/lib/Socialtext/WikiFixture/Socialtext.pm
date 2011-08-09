@@ -16,6 +16,7 @@ use Socialtext::AppConfig;
 use File::Slurp qw(slurp);
 use List::MoreUtils qw(before after);
 use Socialtext::Account;
+use Socialtext::SQL ();
 
 =head1 NAME
 
@@ -712,15 +713,13 @@ Stops the webserver.
 sub st_stop_webserver {
     my ($self) = @_;
     if ($self->_is_appliance) {
-        diag "/etc/init.d/apache-perl stop";
-        my $output = `sudo /etc/init.d/apache-perl stop`;
-        ok($output=~/done/, 'apache-perl is stopped');
+        diag "sudo /usr/sbin/st-appliance-ctl stop";
+        my $output = `sudo /usr/sbin/st-appliance-ctl stop`;
+        ok($output=~/stop/, 'nlw-psgi is stopped');
     }
     else {
-        diag "st_stop_webserver: killall apache-perl";
-        _run_command("killall apache-perl", 'ignore output');
-        diag "st_stop_webserver: killall -9 apache-perl";
-        _run_command("killall -9 apache-perl", 'ignore output');
+        diag "st_stop_webserver: nlwctl stop -1";
+        _run_command("nlwctl stop -1", "ignore output");
     }
     $self->pause(5000);
 }
@@ -735,9 +734,9 @@ sub st_start_webserver {
     my ($self) = @_;
     if ($self->_is_appliance) {
         # Appliance-specific
-        diag "st_start_webserver: /etc/init.d/apache-perl start";
-        my $output = `sudo /etc/init.d/apache-perl start`;
-        ok($output=~/done/, 'apache-perl is started');
+        diag "sudo /usr/sbin/st-appliance-ctl start";
+        my $output = `sudo /usr/sbin/st-appliance-ctl start`;
+        ok($output=~/start/, 'nlw-psgi is started');
     }
     else {
         diag "st_start_webserver: nlwctl -1 start";
@@ -1004,6 +1003,10 @@ sub _st_admin_in_process {
     # clear any in-memory caches that exist, so that we pick up changes that
     # _may_ have been made outside of this process.
     Socialtext::Cache->clear();
+
+    # mark any cached DBI handles as invalid, so that the DB server can safely
+    # restart between wikiQtest commands.
+    Socialtext::SQL::invalidate_dbh();
 
     # Set up the real @ARGV so that ST::CLI can do proper logging
     local @ARGV = @argv;
@@ -1317,6 +1320,25 @@ sub st_if_ie_check_mobile_signaltypes {
    }
 }
 
+sub st_unlike_signal {
+    my $self = shift;
+    my $signal = shift; # signal ID
+    my $user  = shift; # username or email
+
+    $self->delete("/data/signals/$signal/likes/$user");
+    $self->code_is(204);
+    ok(!$@, "$user unlikes $signal");
+}
+
+sub st_like_signal {
+    my $self = shift;
+    my $signal = shift; # signal ID
+    my $user  = shift; # username or email
+
+    $self->put("/data/signals/$signal/likes/$user");
+    $self->code_is(204);
+    ok(!$@, "$user likes $signal");
+}
 
 sub _click_user_row {
     my ($self, $email, $method_name, $click_col) = @_;

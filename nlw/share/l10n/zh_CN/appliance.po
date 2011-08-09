@@ -45,6 +45,9 @@ msgstr "自动备份"
 msgid "backup.automatic-cleanup"
 msgstr "自动清理"
 
+msgid "backup.cannot-delete-last-backup"
+msgstr "至少需要有一份备份，因此不能删除最后一份备份。"
+
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "完全备份将在每周选定的日子自动进行. 取消所有可以禁用此功能."
 
@@ -62,6 +65,9 @@ msgstr "每周："
 
 msgid "backup.delete-expired-files"
 msgstr "删除过期的文件"
+
+msgid "backup.delete=label?"
+msgstr "删除备份“%1”？"
 
 msgid "backup.directory"
 msgstr "目录"
@@ -128,6 +134,12 @@ msgstr "请在进行备份前阅读 Socialtext 的管理指南<a href=\"%1\">备
 
 msgid "backup.schedule:"
 msgstr "备份计划："
+
+msgid "backup.see-admin-guide-about-backup-mode"
+msgstr "请参考 <a href=\"%1\">管理指南</a> 关于备份模式的说明。该文档可<a href=\"%2\">由此</a>公开获取。"
+
+msgid "backup.select-backup-to-delete"
+msgstr "请选择要删除的备份。"
 
 msgid "backup.status"
 msgstr "备份状态"
@@ -529,6 +541,9 @@ msgstr "每日时间："
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:158 ../appliance/libsocialtext-appliance-perl/template/setup.html:159
 msgid "console.time-server"
 msgstr "时间服务器"
+
+msgid "console.time-settings"
+msgstr "时间设置"
 
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"

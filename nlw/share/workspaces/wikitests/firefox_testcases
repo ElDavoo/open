@@ -9,8 +9,13 @@ Socialcalc enabled is required because we run Calc Testcases
 
 * [Test Case: A Enable LDAP]
 
-* [Stubborn Testcases]
+LDAP groups only works in a pristine environment where the groups are not yet formed
 
+* [Test Case: LDAP Groups]
+
+Stubborn Testcases succeed if run early but sporadically fail in context for no discernable reason
+
+* [Stubborn Testcases]
 
 * [Control Panel Testcases]
 * [Core Testcases]
@@ -18,7 +23,9 @@ Socialcalc enabled is required because we run Calc Testcases
 People tests
 
 * [Profile Testcases]
-* [Test Case: People Search]
+
+Test Case: People Search moved to Stubborn Testcases
+
 * [Test Case: People Relevance Search]
 
 * [User Groups UI Testcases]
@@ -44,5 +51,3 @@ People and Dasboard plugin tests. Keep these two cases together in alpha order.
 * [Test Case: People Dashboard Plugins Reset]
 
 * [Dashboard Testcases]
-
-* [Test Case: Save Race Conditions]

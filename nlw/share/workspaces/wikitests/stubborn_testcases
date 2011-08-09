@@ -1,12 +1,6 @@
 
-* [Test Case: Activities Widget Greeting]
-* [Test Case: Weblog Archive and Navigation]
-* [Test Case: Functional Search Additional Indexes]
-* [Test Case: Active Members Empty Messages]
-
 * [Edit Contention Testcases]
 * [Test Case: People Search]
-* [Test Case: User Creates Group]
-* [Test Case: Calc New Page]
-* [Test Case: Create LDAP Group]
 * [Test Case: User Restrictions]
+* [Test Case: Active Members Widget]
+* [Test Case: Activities Widget Greeting]

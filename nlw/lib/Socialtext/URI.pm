@@ -50,10 +50,8 @@ sub _scheme {
         # we're connected to the system).
         return ( scheme => 'https' );
     }
-    elsif (_running_under_mod_perl()) {
-        # In the mod_perl back-end, we use an ENV var to see whether or not
-        # we're connected via HTTP or HTTPS, and generate an appropriate URI.
-        return ( scheme => $ENV{NLWHTTPSRedirect} ? 'https' : 'http' );
+    elsif ($ENV{NLWHTTPSRedirect}) {
+        return ( scheme => 'https' );
     }
     else {
         return ( scheme => $default_scheme );
@@ -70,10 +68,6 @@ sub _https_port {
     my $port = Socialtext::HTTP::Ports->https_port();
     return () if ($port == Socialtext::HTTP::Ports->STANDARD_HTTPS_PORT());
     return (port => $port);
-}
-
-sub _running_under_mod_perl {
-    return exists $ENV{MOD_PERL} ? 1 : 0;
 }
 
 1;

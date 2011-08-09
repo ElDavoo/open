@@ -523,6 +523,11 @@ sub db_connect_params {
         $connect_params{$k} = $self->$field();
     }
 
+    if (($connect_params{host} eq 'localhost')
+            or (!$connect_params{host} and $^O eq 'darwin')) {
+        $connect_params{host} = '127.0.0.1';
+    }
+
     return %connect_params;
 }
 
@@ -1103,6 +1108,14 @@ Default: /challenge
 
 =for code type => SCALAR_TYPE
 
+=head2 default_user_ttl
+
+The time, in seconds, between DB refreshes for users using the 'Default' driver.
+
+Default: 86400
+
+=for code type => SCALAR_TYPE
+
 =head2 user_factories
 
 The semicolon-separated list of drivers to use for user creation.
@@ -1422,7 +1435,7 @@ Minimum allowable value is "1d".  Maximum is "365d".  Defaults to "14d".
 
 =head2 json_proxy_backend_limit
 
-Set this to limit the number of HTTP connections made to the "back-end" (apache-perl).
+Set this to limit the number of HTTP connections made to the "back-end" (nlw-psgi).
 
 Default: 16
 

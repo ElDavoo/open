@@ -40,7 +40,11 @@ for my $filename ( @checkers ) {
     like( $lines[0], qr/^#!.*perl/, "$filename: First line is a shebang" );
     has_line_like( \@lines, qr/^use warnings/m, "$filename uses warnings" );
     next if $filename =~ m/UserSetGraph/;
-    has_line_like( \@lines, qr/^use strict/m,   "$filename uses strict" );
+    has_line_like(
+        \@lines, 
+        qr/^\s*use (?:strict|Moose|Mouse|Moose::Role|MooseX::Singleton|5\.12\.\d+)(?:\(\))?;\s*$/m,
+        "$filename uses strict"
+    );
 }
 
 sub has_line_like {

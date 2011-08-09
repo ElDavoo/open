@@ -107,15 +107,25 @@
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 
 | *Comment* | Test Case: User Restrictions make sure old password is deactivated |  |
-| st-logoutin | %%emailaddr%% | %%password%% |
-| wait_for_text_present_ok | Wrong email address or password - please try again | 30000 |
+| *Comment* | Test Case: User Restrictions avoid going too fast by using explicit login |  |
+| st-logout |  |  |
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | password | 30000 |
+| wait_for_element_visible_ok | login_btn | 30000 |
+| type_ok | username | %%emailaddr%% |
+| type_ok | password | %%password%% |
+| click_and_wait | login_btn |  |
+
+| *Comment* | Error message may contain 'username' or 'email address' depending on LDAP enabled |  |
+| wait_for_text_present_ok | Wrong | 10000 |
+| text_like | //body | qr/Wrong.+please try again/ |
 | st-login | %%emailaddr%% | %%new_pw%% |
 | wait_for_text_present_ok | You are not authorized to view this workspace. | 30000 |
 
 | *Comment* | Test Case:User Restrictions TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
-| st-admin | deactivate-user --e %%emailaddr%% | removed |
+| st-admin | deactivate-user --e %%emailaddr%% |  |
 | delete-account | %%acct%% | Recklessly deleting |
 
 | *Comment* | Test Case: User Restrictions COMPLETED |  |

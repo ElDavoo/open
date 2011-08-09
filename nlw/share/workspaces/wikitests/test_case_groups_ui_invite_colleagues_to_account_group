@@ -66,5 +66,6 @@
 | delete-group | %%group_id%% |  |
 | delete-workspace | %%group_ws%% |  |
 | delete-workspace | %%to_ws%% |  |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case:Groups UI Invite Colleages to account-group COMPLETED |

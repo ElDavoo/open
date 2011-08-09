@@ -5,13 +5,13 @@
 <script><!--
 var Socialtext = Socialtext || {};
 [% IF user %]
-Socialtext.username = [% user.username.json || '' %];
+Socialtext.username = [% user.username.json || "''" %];
 [% END %]
 [% IF ws %]
-Socialtext.wiki_title = [% ws.title.json || '' %];
+Socialtext.wiki_title = [% ws.title.json || "''" %];
 [% END %]
 
-[% IF page_html.search("gadgets\.container\.renderGadget") %]
+[% IF page_html.search("container\.renderGadget") %]
 function nlw_make_s2_path(rest) {
       return "/static/[% app_version %]/skin/s2" + rest;
 }

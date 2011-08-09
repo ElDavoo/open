@@ -54,8 +54,8 @@ sub print {
         $self->hub->rest->header,   # preserve any existing headers
         -type => $content_type,
     );
-    for my $header qw(Content-Length Content-disposition Expires Pragma 
-                      Cache-control Last-modified Location Status) {
+    for my $header (qw(Content-Length Content-disposition Expires Pragma 
+                      Cache-control Last-modified Location Status)) {
         my $field = lc $header;
         $field =~ tr/-/_/;
 

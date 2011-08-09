@@ -143,6 +143,10 @@ sub import_workspace {
                 . $self->{new_name} . '('
                 . $self->{workspace}->workspace_id
                 . '),[' . $timer->elapsed . ']');
+
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub(Socialtext::User->SystemUser(), $self->{workspace});
+        $adapter->hook('nlw.import_workspace.after', [$self->{workspace}, $self->{info}]);
     };
     if (my $err = $@) {
         if ($self->{workspace}) {
@@ -173,6 +177,7 @@ sub _create_workspace {
         created_by_user_id => $creator->user_id,
         account_id         => $account->account_id,
         skip_default_pages => 1,
+        dont_add_creator   => 1,
     );
 
     my %update;
@@ -204,6 +209,7 @@ sub _create_workspace {
     }
 
     $self->{workspace} = $ws;
+    $self->{info} = $info;
     $self->_set_permissions();
     $adapter->hook('nlw.import_workspace', [$ws, $info]);
 }
@@ -232,7 +238,7 @@ sub Import_user_workspace_prefs {
                     my $prefs = do $f;
                     die "can't load prefs, exception: $@" if $@;
                     die "can't load prefs: $!" unless ref($prefs) eq 'HASH';
-                    Socialtext::PreferencesPlugin->Store_prefs_for_user(
+                    Socialtext::PreferencesPlugin->Store_workspace_user_prefs(
                         $user, $workspace, $prefs);
                 };
                 if ($@) {

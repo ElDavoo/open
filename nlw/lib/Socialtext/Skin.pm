@@ -19,10 +19,10 @@ our $CODE_BASE = Socialtext::AppConfig->code_base;
 our $PROD_VER = Socialtext->product_version();
 our $DEFAULT_PARENT = 's2';
 my %css_files = (
-    standard => [qw(screen.css screen.ie.css screen.ie6.css screen.ie7.css print.css print.ie.css)],
+    standard => [qw(bubble.css screen.css screen.ie.css screen.ie6.css screen.ie7.css print.css print.ie.css)],
     popup    => [qw(popup.css popup.ie.css)],
     wikiwyg  => [qw(wikiwyg.css)],
-    mobile   => [qw(miki.css)],
+    mobile   => [qw(bubble.css miki.css)],
     widget   => [qw(widget.css)],
 );
 
@@ -149,10 +149,23 @@ sub css_info {
         ? $self->parent->css_info
         : {};
 
-    while (my ($sec,$files) = each %css_files) {
-        push @{$css_info->{$sec}}, map  { $self->skin_uri('css',$_) }
-                                   grep { -f $self->skin_path('css',$_) }
-                                   @$files;
+    if ($self->skin_name eq $skin_info->{skin_name}) {
+        while (my ($sec,$files) = each %css_files) {
+            push @{$css_info->{$sec}}, map  { $self->skin_uri('css',$_) }
+                                       grep { -f $self->skin_path('css',$_) }
+                                       @$files;
+        }
+    }
+    else {
+        # {bz: 5366}: During a global search, the search result affects
+        # hub->workspace_name and so we can end up with an inconsistent
+        # result-ws-specific $self->skin_name vs global $skin_info->{skin_name}.
+        # In that case, simply choose the latter.
+        while (my ($sec,$files) = each %css_files) {
+            push @{$css_info->{$sec}}, map  { $self->_uri('skin', $skin_info->{skin_name}, 'css',$_) }
+                                       grep { -f $self->_path('skin', $skin_info->{skin_name}, 'css',$_) }
+                                       @$files;
+        }
     }
 
     # Common CSS
@@ -237,13 +250,7 @@ sub skin_name {
     my $skin_name;
     my $self_uri = Socialtext::URI::uri();
     if ( Apache::Cookie->can('fetch') ) {
-        my $cookies = Apache::Cookie->fetch;
-        if ($cookies) {
-            my $cookie = $cookies->{'socialtext-skin'};
-            if ($cookie) {
-                $skin_name = $cookie->value;
-            }
-        }
+        $skin_name = Apache::Cookie->fetch('socialtext-skin');
     }
 
     return $skin_name if $skin_name;

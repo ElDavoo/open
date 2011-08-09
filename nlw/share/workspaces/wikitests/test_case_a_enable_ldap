@@ -6,11 +6,12 @@
 | st-ldap | stop |  |
 | st-ldap | status | not running |
 | st-ceq-rm | PersonIndex |  |
+| clear-ldap-users |  |  |
 | st-ldap | start | openldap running |
 
-| pause | 20000 |  |
+| st-ldap-vanilla | refresh --force |  |
 
 | st-process-jobs | PersonIndex |  |
-| st-admin | add-workspace-admin --username devnullx --w %%workspace%% | devnullx now has the role of 'admin' in the test-data Workspace |
+| st-admin | add-workspace-admin --username devnullx --w %%workspace%% | qr/.+role of 'admin'/ |
 
 | *Comment* | Test Case: A Enable LDAP COMPLETED |  |

@@ -82,12 +82,16 @@ has 'create_time'  => (
 has 'restored' => (is => 'rw', isa => 'Bool', writer => '_restored');
 has 'full_uri' => (is => 'rw', isa => 'Str', lazy_build => 1);
 
+has 'like_count' => (is => 'rw', isa => 'Int', default => 0);
+
 has 'rev' => (
     is => 'rw', isa => 'Socialtext::PageRevision',
     lazy_build => 1,
     handles => {
         last_editor => 'editor',
         last_editor_id => 'editor_id',
+        has_last_editor => 'has_editor',
+        has_last_editor_id => 'has_editor_id',
         last_edit_time => 'edit_time',
         prev_rev => 'prev',
         has_prev_rev => 'has_prev',
@@ -151,7 +155,8 @@ use constant SELECT_COLUMNS_STR => q{
     page.edit_summary,
     page.views,
     page.locked,
-    page.tags -- ordered array
+    page.tags, -- ordered array
+    page.like_count
 };
 
 # This should be the order they show up in on the actual table:
@@ -250,7 +255,7 @@ my %PAGE_ROW_MAP = (
     views => 'views',
     workspace_name => 'workspace_name',
     workspace_title => 'workspace_title',
-
+    like_count => 'like_count',
 );
 my %PAGE_ROW_SKIP = (
     workspace_name  => 1,
@@ -442,13 +447,13 @@ sub update_from_remote {
             action => 'edit_contention',
             page => $self,
         });
-        $self->_log_page_and_user('EDIT_CONTENTION,PAGE,edit_contention');
+        $self->log_page_and_user('EDIT_CONTENTION,PAGE,edit_contention');
         Socialtext::Exception::Conflict->throw(
             error => "Contention: page has been updated since retrieved\n");
     }
 
     if (!$self->hub->checker->can_modify_locked($self)) {
-        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
+        $self->log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
         die "Page is locked and cannot be edited\n";
     }
 
@@ -547,11 +552,18 @@ sub hash_representation {
         ($self->deleted ? (deleted => 1) : ()),
     };
 
-    $hash->{$_} = $self->$_->masked_email_address(
-        user => $self->hub->current_user,
-        workspace => $self->hub->current_workspace,
-    ) for qw(creator last_editor);
-
+    for my $field (qw(creator last_editor)) {
+        my $field_id = $field . '_id';
+        my $has_field = "has_$field";
+        my $has_field_id = "has_$field_id";
+        if ($self->$has_field_id or $self->$has_field) {
+            $hash->{$field_id} = $self->$field->user_id;
+            $hash->{$field} = $self->$field->masked_email_address(
+                user => $self->hub->current_user,
+                workspace => $self->hub->current_workspace,
+            );
+        }
+    }
 
     return $hash;
 }
@@ -718,7 +730,7 @@ sub add_comment {
     my $t = time_scope 'add_comment';
 
     if (!$self->hub->checker->can_modify_locked($self)) {
-        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
+        $self->log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
         die "Page is locked and cannot be edited\n";
     }
 
@@ -965,7 +977,7 @@ sub store {
         [$self, workspace => $self->hub->current_workspace],
     );
 
-    $self->_log_page_and_user('CREATE,EDIT_SUMMARY,edit_summary', $user)
+    $self->log_page_and_user('CREATE,EDIT_SUMMARY,edit_summary', $user)
         if $self->edit_summary;
 
     # need to return the Signal object if we're signalling-this-edit
@@ -980,7 +992,7 @@ sub store {
     return;
 }
 
-sub _log_page_and_user {
+sub log_page_and_user {
     my ($self, $message, $user) = @_;
     $user //= $self->hub->current_user;
     st_log->info(
@@ -2045,11 +2057,7 @@ sub rename {
         );
         return 0 unless $ok;
 
-        # XXX: is there a better way to put square brackets around the
-        # target name?  Maybe with [sprintf,...] somehow?
         my $localized_str = loc("page.renamed=title", $new_page_title);
-        $localized_str =~ tr/></][/;
-
         my $rev = $self->edit_rev();
         $rev->body_ref(\$localized_str);
         $rev->page_type('wiki');
@@ -2390,6 +2398,13 @@ sub _log_page_action {
        . 'user:'.$user->username.'('.$user->user_id.'),'
        . '[NA]'
     );
+}
+
+sub likes {
+    my $self = shift;
+    eval { require Socialtext::Liked };
+    return [] if $@;
+    return Socialtext::Liked->new(object => $self)->likers;
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);

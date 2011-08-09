@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 00:12-0700\n"
+"PO-Revision-Date: 2011-07-05 14:39-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -82,6 +82,9 @@ msgstr "标志已移除。默认即时可见。"
 #: lib/Socialtext/Handler/ControlPanel.pm:943
 msgid "account.renamed=old,new"
 msgstr "%1 帐户已重命名为 %2"
+
+msgid "account.settings-updated"
+msgstr "帐户设置已更新"
 
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:562
@@ -385,6 +388,9 @@ msgstr "备份共享名"
 
 msgid "backup.starting-recovery=options"
 msgstr "正在开始还原，选项“%1”"
+
+msgid "backup.successfully-deleted=label"
+msgstr "成功删除备份：%1"
 
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:202
@@ -1184,6 +1190,9 @@ msgstr "认证所采用的软限制须低于硬限制。"
 
 msgid "error.backup-already-running"
 msgstr "备份已经开始"
+
+msgid "error.backup-delete-failed=error"
+msgstr "删除备份失败：%1"
 
 msgid "error.backup-failed"
 msgstr "备份失败 ..."
@@ -2908,6 +2917,9 @@ msgstr "活动"
 msgid "nav.groups"
 msgstr "群组"
 
+msgid "nav.likes"
+msgstr "哪些赞"
+
 #: lib/Socialtext/RecentChangesPlugin.pm:268
 msgid "nav.news"
 msgstr "最新更动"
@@ -3074,7 +3086,7 @@ msgstr "已在工作区 %2 中清除 %1 页面。"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "页面重命名为<%1>"
+msgstr "页面重命名为 [%1]"
 
 #. ($revision->revision_num)
 #. ($pretty_revision)
@@ -3369,7 +3381,7 @@ msgstr "我的同事"
 
 #: lib/Socialtext/Rest/Events/Conversations.pm:9
 msgid "rest.my-conversations"
-msgstr "聊天记录"
+msgstr "对话记录"
 
 #. ($signaler->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:116

@@ -9,6 +9,7 @@ use Test::Socialtext;
 use Socialtext::CLI;
 use Socialtext::Account;
 use Test::Socialtext::CLIUtils qw(expect_failure expect_success call_cli_argv);
+use Test::Socialtext::User;
 
 BEGIN {
     require Socialtext::People::Profile;
@@ -162,6 +163,8 @@ change_pwd_ldap_user_fails: {
         qr/\QRemotely sourced passwords cannot be updated via Socialtext.\E/,
         '... who cannot have values updated'
     );
+
+    Test::Socialtext::User->delete_recklessly($user);
 }
 
 ###############################################################################
@@ -312,6 +315,7 @@ ldap_sourced_profile_fields_cannot_be_set: {
     local $Socialtext::People::Fields::AutomaticStockFields    = 1;
     local $Socialtext::Pluggable::Plugin::People::Asynchronous = 0;
 
+
     # Test data
     my $field      = 'work_phone';
     my $username   = 'John Doe';
@@ -339,7 +343,7 @@ ldap_sourced_profile_fields_cannot_be_set: {
 
     # Load up an LDAP User, and put them in a People enabled Account
     my $user = Socialtext::User->new(username => $username);
-    isa_ok $user, 'Socialtext::User', 'Got LDAP sourced User';
+    isa_ok $user->homunculus, 'Socialtext::User::LDAP', 'Got LDAP sourced User';
     $user->primary_account($account);
 
     # Refresh the User, so we know that we've pulled their Profile Data from

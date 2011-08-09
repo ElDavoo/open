@@ -725,6 +725,9 @@ msgstr "从组 %2 中移除 %1。"
 msgid "event.leave=user,wiki"
 msgstr "从工作区 %2 中移除 %1。"
 
+msgid "event.like=page"
+msgstr "说 %1 很赞。"
+
 #. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
@@ -744,6 +747,9 @@ msgstr "为 %1 添加了标签 %2。"
 #: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
 msgstr "未知分类的事件：%1"
+
+msgid "event.unlike=page"
+msgstr "取消对 %1 说赞。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:3

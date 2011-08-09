@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-06-17 01:15-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -120,6 +120,9 @@ msgstr "标志已移除。默认即时可见。"
 msgid "account.renamed=old,new"
 msgstr "%1 帐户已重命名为 %2"
 
+msgid "account.settings-updated"
+msgstr "帐户设置已更新"
+
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:562
 msgid "account.skip-missing=plugin"
@@ -226,6 +229,12 @@ msgstr "所有共享群组"
 msgid "activities.attach-file"
 msgstr "添加附件"
 
+msgid "activities.by-you"
+msgstr "来自您"
+
+msgid "activities.by=user"
+msgstr "来自 %1"
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
 msgid "activities.click-to-collapse"
 msgstr "（点击此处收回）"
@@ -318,6 +327,9 @@ msgstr "我关注的人"
 #: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "来自"
+
+msgid "activities.info-using-wikilink-popup"
+msgstr "请先输入工作区名称的一部分，再从出现的列表中选择工作区。接下来再输入页面名称的一部分，再从出现的列表中选择页面。之后也可以再填入链接文字及页面段落名称。"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
 msgid "activities.insert:"
@@ -926,6 +938,9 @@ msgstr "自动备份"
 msgid "backup.automatic-cleanup"
 msgstr "自动清理"
 
+msgid "backup.cannot-delete-last-backup"
+msgstr "至少需要有一份备份，因此不能删除最后一份备份。"
+
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "完全备份将在每周选定的日子自动进行. 取消所有可以禁用此功能."
 
@@ -943,6 +958,9 @@ msgstr "每周："
 
 msgid "backup.delete-expired-files"
 msgstr "删除过期的文件"
+
+msgid "backup.delete=label?"
+msgstr "删除备份“%1”？"
 
 msgid "backup.directory"
 msgstr "目录"
@@ -1019,6 +1037,12 @@ msgstr "请在进行备份前阅读 Socialtext 的管理指南<a href=\"%1\">备
 msgid "backup.schedule:"
 msgstr "备份计划："
 
+msgid "backup.see-admin-guide-about-backup-mode"
+msgstr "请参考 <a href=\"%1\">管理指南</a> 关于备份模式的说明。该文档可<a href=\"%2\">由此</a>公开获取。"
+
+msgid "backup.select-backup-to-delete"
+msgstr "请选择要删除的备份。"
+
 msgid "backup.share-name"
 msgstr "备份共享名"
 
@@ -1030,6 +1054,9 @@ msgstr "备份状态"
 
 msgid "backup.status-unavailable-check-error-log"
 msgstr "备份状态不可用，请在日志中检查错误"
+
+msgid "backup.successfully-deleted=label"
+msgstr "成功删除备份：%1"
 
 msgid "backup.unwritable"
 msgstr "不可写入"
@@ -2222,6 +2249,9 @@ msgstr "每日时间："
 msgid "console.time-server"
 msgstr "时间服务器"
 
+msgid "console.time-settings"
+msgstr "时间设置"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "总計"
@@ -3333,6 +3363,9 @@ msgstr "在刷新登录 Socialtext 桌面后也将重置标志."
 msgid "control.this-will-reset-logo-for-desktop"
 msgstr "在刷新登录 Socialtext 桌面后将重置标志"
 
+msgid "control.timezone-settings"
+msgstr "时区设置"
+
 #: share/plugin/control/template/control/accounts_transform.html:7
 msgid "control.transform"
 msgstr "转换"
@@ -4074,6 +4107,12 @@ msgstr "加入以编辑"
 msgid "do.leave"
 msgstr "离开"
 
+msgid "do.like"
+msgstr "赞"
+
+msgid "do.like=count"
+msgstr "(%1) 赞"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64
 msgid "do.next"
 msgstr "下一步"
@@ -4144,6 +4183,12 @@ msgstr "项目符号列表"
 #: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "停止关注此人"
+
+msgid "do.unlike"
+msgstr "取消赞"
+
+msgid "do.unlike=count"
+msgstr "(%1) 取消赞"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
@@ -5044,7 +5089,7 @@ msgid "error.at-least-one-admin-required"
 msgstr "您必须至少选择一个管理员"
 
 msgid "error.at-least-one-column-required"
-msgstr "错误：请指定至少一个字段。"
+msgstr "错误：请指定至少一个分栏。"
 
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
@@ -5068,6 +5113,9 @@ msgstr "认证所采用的软限制须低于硬限制。"
 
 msgid "error.backup-already-running"
 msgstr "备份已经开始"
+
+msgid "error.backup-delete-failed=error"
+msgstr "删除备份失败：%1"
 
 msgid "error.backup-failed"
 msgstr "备份失败 ..."
@@ -5165,7 +5213,7 @@ msgstr "清除功能尚未实现。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1955 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1409
 msgid "error.columns-too-big"
-msgstr "列数值过大，最大值为 35。"
+msgstr "栏数过大，最大值为 35。"
 
 #. ($new_ts)
 #: lib/Socialtext/Appliance/Model/Setup.pm:317
@@ -5497,6 +5545,9 @@ msgstr "只能更改群组或工作区的权限。"
 msgid "error.group-required=command"
 msgstr "命令（%1）必须带有 --group 参数。"
 
+msgid "error.groups-member-exists=count:"
+msgstr "下面的 %1 名用户已经是这些群组的成员："
+
 msgid "error.html-report-not-implemented"
 msgstr "HTML 报告未实作"
 
@@ -5547,7 +5598,7 @@ msgstr "认证所采用的软限制须介于 %1 与 %2 天之间。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1401
 msgid "error.invalid-columns"
-msgstr "列数无效。"
+msgstr "栏数无效。"
 
 #: lib/Socialtext/Handler/Authen.pm:486 lib/Socialtext/Handler/Authen.pm:545 lib/Socialtext/Handler/Authen.pm:66
 msgid "error.invalid-confirmation-url"
@@ -6132,6 +6183,9 @@ msgstr "%1 不是 %3 的“%2”"
 msgid "error.no-role=name,role,container,type"
 msgstr "%1 不是 %3 %4 的“%2”。"
 
+msgid "error.no-search-results"
+msgstr "您的搜索没有找到任何结果。"
+
 #: share/plugin/people/template/lite/profile.html:72
 msgid "error.no-signals"
 msgstr "没有人注册。"
@@ -6596,7 +6650,7 @@ msgstr "%1 已是 %3 工作区的 %2"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1405
 msgid "error.rows-and-columns-required"
-msgstr "行与列不能为 0。"
+msgstr "行与栏不能为 0。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1951 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1407
 msgid "error.rows-too-big"
@@ -6827,6 +6881,11 @@ msgstr "parseWidget：小工具 >>%1<< 无效"
 msgid "error.unknown"
 msgstr "未知错误"
 
+#. (type)
+#: share/plugin/like/template/like/indicator.tt2:9
+msgid "error.unknown-like=type"
+msgstr "未知的类型：%1"
+
 msgid "error.unknown-report=type"
 msgstr "未知的报表（%1）"
 
@@ -7006,6 +7065,9 @@ msgstr "用户 %1 未得到查看 %2 工作区的认证"
 #: lib/Socialtext/Handler/ControlPanel.pm:1773
 msgid "error.wiki-id-required=uri"
 msgstr "必须指定一个workspace_id到网址（%1）。"
+
+msgid "error.wiki-member-exists=count:"
+msgstr "下面的 %1 名用户已经是工作区成员："
 
 #: lib/Socialtext/Workspace.pm:600
 msgid "error.wiki-name-required"
@@ -7212,6 +7274,12 @@ msgstr "从组 %2 中移除 %1。"
 msgid "event.leave=user,wiki"
 msgstr "从工作区 %2 中移除 %1。"
 
+msgid "event.like=page"
+msgstr "说 %1 很赞。"
+
+msgid "event.like=page,wiki"
+msgstr "说 %2 里的 %1 很赞。"
+
 #. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
@@ -7236,6 +7304,12 @@ msgstr "停止关注 %1。"
 #: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
 msgstr "未知分类的事件：%1"
+
+msgid "event.unlike=page"
+msgstr "取消对 %1 说赞。"
+
+msgid "event.unlike=page,wiki"
+msgstr "取消对 %2 里的 %1 说赞。"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -7669,6 +7743,12 @@ msgstr "删除这个附件"
 msgid "file.delete=name?"
 msgstr "您确定要从本页面删除此附件'%1'？"
 
+msgid "file.drop-here-to-upload"
+msgstr "将文件拖放到这里即可上传。"
+
+msgid "file.duplicate-files"
+msgstr "文件名称重复"
+
 #: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
 msgstr "提取附件"
@@ -8042,8 +8122,8 @@ msgstr "当前，没有任何工作区关联至本群组。请在下方选择工
 
 #. (button)
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
-msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
-msgstr "提示：点击屏幕底端的<b>%1</b>来保存所做的更改。"
+msgid "groups.note-click-this-to-save-changes=button"
+msgstr "提示：点击<b>%1</b>来保存所做的更改。"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
 msgid "groups.note-message-sent-to-added-members-only"
@@ -8506,6 +8586,9 @@ msgstr "为您的页面输入一个有意义与独特的标题。"
 msgid "info.new-page-title"
 msgstr "提示：您稍后可以使用您选择的标题来查找本页面。"
 
+msgid "info.no-search-results"
+msgstr "请检查搜索拼字是否正确，然后再试一次："
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37
 msgid "info.normal-view"
 msgstr "使编辑区域回到正常视图"
@@ -8810,6 +8893,12 @@ msgstr "由于您已经拥有帐户%1，其它群组的密码将和%1的密码�
 msgid "invite.added-to-group=users:"
 msgstr "下面的 %1 名用户已经被成功的邀请到这个群组："
 
+msgid "invite.added-to-groups=users:"
+msgstr "下面的 %1 名用户已经被成功的邀请到这些群组："
+
+msgid "invite.added-to-wiki=users:"
+msgstr "下面的 %1 名用户已经被成功的邀请到工作区："
+
 #: share/plugin/people/template/invite:47
 msgid "invite.another-example-email-address"
 msgstr "another.friend@example.com"
@@ -8981,6 +9070,9 @@ msgstr "在下面的邀请信中加入个人信息？"
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
 msgstr "主要，%1 名用户"
+
+msgid "invite.request-sent=users:"
+msgstr "已经成功寄出给下面 %1 名用户的邀请函："
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -9222,7 +9314,7 @@ msgstr "基本设置"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:169
 msgid "kanban.bug-columns"
-msgstr "瑕疵字段"
+msgstr "瑕疵栏"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:183
 msgid "kanban.bug-notes"
@@ -9242,7 +9334,7 @@ msgstr "由此分享者 ID…"
 
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:38
 msgid "kanban.columns"
-msgstr "字段"
+msgstr "分栏"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:105
 msgid "kanban.default-color:"
@@ -9375,6 +9467,83 @@ msgstr "上个月"
 #: lib/Socialtext/RecentChangesPlugin.pm:45
 msgid "last.week"
 msgstr "上周"
+
+#: share/plugin/like/template/like/listview-tab.tt2:2
+msgid "like.all-likes"
+msgstr "所有的赞"
+
+msgid "like.all-people"
+msgstr "所有人"
+
+msgid "like.like=count"
+msgstr "%1 个赞"
+
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这页面赞。"
+
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,个,个,目前没有)人说这页面赞。"
+
+msgid "like.liked-this.page.only-you"
+msgstr "只有您说这页面赞。"
+
+msgid "like.liked-this.page.you=followed"
+msgstr "您和 %1 位您关注的人都说这页面赞。"
+
+msgid "like.liked-this.page.you=others"
+msgstr "您和其他 %1 个人都说这页面赞。"
+
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这版本赞。"
+
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,个,个,目前没有)人说这版本赞。"
+
+msgid "like.liked-this.revision.only-you"
+msgstr "只有您说这版本赞。"
+
+msgid "like.liked-this.revision.you=followed"
+msgstr "您和 %1 位您关注的人都说这版本赞。"
+
+msgid "like.liked-this.revision.you=others"
+msgstr "您和其他 %1 个人都说这版本赞。"
+
+msgid "like.liked-this.signal.not-you=followed"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这讯息赞。"
+
+msgid "like.liked-this.signal.not-you=others"
+msgstr "%quant(%1,个,个,目前没有)人说这讯息赞。"
+
+msgid "like.liked-this.signal.only-you"
+msgstr "只有您说这讯息赞。"
+
+msgid "like.liked-this.signal.you=followed"
+msgstr "您和 %1 位您关注的人都说这讯息赞。"
+
+msgid "like.liked-this.signal.you=others"
+msgstr "您和其他 %1 个人都说这讯息赞。"
+
+#: share/plugin/like/template/like/listview-sortby.tt2:1
+msgid "like.likes"
+msgstr "哪些赞"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:6
+msgid "like.look-for-like-on-page-you-like-and-click-it"
+msgstr "请在您觉得赞的页面上按<span style=\"padding:10px 0 10px 20px; font-weight: bold\" class=\"like-indicator\">赞</span>，即可将它加到“我的赞”清单中。"
+
+#: share/plugin/like/template/like/listview-tab.tt2:1
+msgid "like.my-likes"
+msgstr "我的赞"
+
+#: share/plugin/like/template/like/listview-no-results.tt2:2
+msgid "like.no-pages-liked"
+msgstr "您目前还没有觉得哪个页面很赞。"
+
+msgid "like.page:"
+msgstr "页数："
+
+msgid "like.people-i-follow"
+msgstr "我关注的人"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
 msgid "link.add"
@@ -9782,6 +9951,9 @@ msgstr "最后"
 #: share/skin/s3/template/view/paging:27
 msgid "nav.last-page"
 msgstr "末页"
+
+msgid "nav.likes"
+msgstr "哪些赞"
 
 #: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
@@ -10304,7 +10476,7 @@ msgstr "重命名页面"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "页面重命名为<%1>"
+msgstr "页面重命名为 [%1]"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:28
 msgid "page.replace"
@@ -10555,6 +10727,9 @@ msgstr "标记为“%1”的所有成员"
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
 msgstr "工具"
+
+msgid "people.twitter-id"
+msgstr "Twitter 用户名"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"
@@ -11381,7 +11556,7 @@ msgstr "我的同事"
 
 #: lib/Socialtext/Rest/Events/Conversations.pm:9
 msgid "rest.my-conversations"
-msgstr "聊天记录"
+msgstr "对话记录"
 
 #. ($signaler->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:116
@@ -11557,7 +11732,7 @@ msgstr "颜色"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:169
 msgid "sc.column-width"
-msgstr "列宽"
+msgstr "栏宽"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2565
 msgid "sc.confirm-navigate-away?"
@@ -11579,7 +11754,7 @@ msgstr "（默认）"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:191
 msgid "sc.delete-column"
-msgstr "删除列"
+msgstr "删除栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:348
 msgid "sc.delete-name"
@@ -11647,11 +11822,11 @@ msgstr "向右填充"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
 msgid "sc.font"
-msgstr "字体"
+msgstr "字型"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:55 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:46
 msgid "sc.font-family"
-msgstr "系列"
+msgstr "字体"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:96 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
 msgid "sc.format"
@@ -11671,11 +11846,11 @@ msgstr "隐藏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:187
 msgid "sc.insert-column-left"
-msgstr "在左侧插入一列"
+msgstr "在左侧插入一栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:188
 msgid "sc.insert-column-right"
-msgstr "在右侧插入一列"
+msgstr "在右侧插入一栏"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1004 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:216
 msgid "sc.insert-formula"
@@ -11719,11 +11894,11 @@ msgstr "移动"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:189
 msgid "sc.move-column-left"
-msgstr "向左移动一列"
+msgstr "向左移动一栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:190
 msgid "sc.move-column-right"
-msgstr "向右移动一列"
+msgstr "向右移动一栏"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:203
 msgid "sc.move-insert"
@@ -12144,6 +12319,15 @@ msgstr "提及用户："
 msgid "signals.insert-tag:"
 msgstr "插入标签："
 
+msgid "signals.liked-theirs=uri,snippet"
+msgstr "说自己的这则<a href=\"%1\">讯息</a>很赞：“%2”。"
+
+msgid "signals.liked-yours=uri,snippet"
+msgstr "说您的这则<a href=\"%1\">讯息</a>很赞：“%2”。"
+
+msgid "signals.liked=creator,uri,snippet"
+msgstr "说 %1 的这则<a href=\"%2\">讯息</a>很赞：“%3”。"
+
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
 msgid "signals.link-destination:"
 msgstr "链接目的地："
@@ -12275,11 +12459,11 @@ msgstr "显示第 %1 - %2 项，共 %3 项。"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
-msgstr "发送此页！"
+msgstr "分享此页！"
 
 #: share/plugin/signals/template/bookmarklet/index.html:4
 msgid "signals.signal-this-bookmarklet"
-msgstr "“发送此页”书签"
+msgstr "“分享此页”书签"
 
 #: share/plugin/signals/share/widgets/profile/widget.html:19
 msgid "signals.signal-to"
@@ -12330,6 +12514,15 @@ msgstr "给%1"
 #: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
 msgstr "请重新尝试："
+
+msgid "signals.unliked-theirs=uri,snippet"
+msgstr "取消对自己的这则<a href=\"%1\">讯息</a>说赞：“%2”。"
+
+msgid "signals.unliked-yours=uri,snippet"
+msgstr "取消对您的这则<a href=\"%1\">讯息</a>说赞：“%2”。"
+
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "取消对 %1 的这则<a href=\"%2\">讯息</a>说赞：“%3”。"
 
 #: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"
@@ -12467,11 +12660,11 @@ msgstr "工作区"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:39
 msgid "table.add-column-left"
-msgstr "在左侧添加列"
+msgstr "在左侧添加栏"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:40
 msgid "table.add-column-right"
-msgstr "在右侧添加列"
+msgstr "在右侧添加栏"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:26
 msgid "table.add-row-above"
@@ -12483,7 +12676,7 @@ msgstr "在下方添加行"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-create.html:15
 msgid "table.columns:"
-msgstr "列："
+msgstr "栏："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-create.html:1
 msgid "table.create"
@@ -12491,7 +12684,7 @@ msgstr "创建表格"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:15
 msgid "table.current-column:"
-msgstr "当前列："
+msgstr "当前栏："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:5
 msgid "table.current-row:"
@@ -12499,7 +12692,7 @@ msgstr "当前行："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:45
 msgid "table.delete-column"
-msgstr "删除列"
+msgstr "删除栏"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:32
 msgid "table.delete-row"
@@ -12511,7 +12704,7 @@ msgstr "编辑表格"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1919
 msgid "table.enter-columns:"
-msgstr "请输入表格列数："
+msgstr "请输入表格栏数："
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1918
 msgid "table.enter-rows:"
@@ -12519,11 +12712,11 @@ msgstr "请输入表格行数："
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:42
 msgid "table.move-column-left"
-msgstr "将列往左移动"
+msgstr "将栏往左移动"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:43
 msgid "table.move-column-right"
-msgstr "将列往右移动"
+msgstr "将栏往右移动"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:30
 msgid "table.move-row-down"
@@ -14529,11 +14722,11 @@ msgstr "其他工作区："
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:35
 msgid "wikiwyg.add-column-left"
-msgstr "从左侧添加表格列"
+msgstr "从左侧添加表格栏"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:36
 msgid "wikiwyg.add-column-right"
-msgstr "从右侧添加表格列"
+msgstr "从右侧添加表格栏"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:30
 msgid "wikiwyg.add-row-above-current-row"
@@ -14549,7 +14742,7 @@ msgstr "粗体（Ctrl+B）"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:39
 msgid "wikiwyg.delete-table-column"
-msgstr "删除当前表格列"
+msgstr "删除当前表格栏"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:33
 msgid "wikiwyg.delete-table-row"
@@ -14597,11 +14790,11 @@ msgstr "中"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:37
 msgid "wikiwyg.move-column-left"
-msgstr "向左移动当前表格列"
+msgstr "向左移动当前表格栏"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:38
 msgid "wikiwyg.move-column-right"
-msgstr "向右移动当前表格列"
+msgstr "向右移动当前表格栏"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:31
 msgid "wikiwyg.move-row-down"

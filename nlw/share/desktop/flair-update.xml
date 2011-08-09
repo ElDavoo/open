@@ -1,8 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>401</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-401.air</url>
-<description><![CDATA[[Build 401 - Sun May  8 02:05:09 PDT 2011]
+  <version>416</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-416.air</url>
+<description><![CDATA[[Build 416 - Sat Aug  6 02:44:03 PDT 2011]
+* Remove debug statements now things seem to work...
+
+[Build 415 - Sat Aug  6 02:36:18 PDT 2011]
+* Yet another fix for not-yet-hovered-on indicators......
+
+[Build 414 - Sat Aug  6 02:23:10 PDT 2011]
+* Yet another fix for not-yet-hovered-on indicators...
+
+[Build 413 - Sat Aug  6 02:13:17 PDT 2011]
+* Yet another fix for not-yet-hovered-on indicators.
+
+[Build 412 - Sat Aug  6 01:52:12 PDT 2011]
+* An alternate fix for not-yet-hovered-on indicators so it doesn't go out of sequence when hovered on later.
+
+[Build 411 - Fri Aug  5 23:45:58 PDT 2011]
+* Signal Like/Unlike for not-yet-hovered-on indicators are now updated in real time.
+
+[Build 410 - Thu Aug  4 17:42:31 PDT 2011]
+* Signal Like/Unlike from other users are now updated in real time.
+
+[Build 409 - Wed Aug  3 05:50:11 PDT 2011]
+* "Delete Signal" now properly removes the signal from display.
+
+[Build 408 - Sun Jul 24 00:50:32 PDT 2011]
+* Hide Like indicator for ST servers <4.7.4, or with "like" plugin disabled.
+
+[Build 407 - Sat Jul 23 23:16:47 PDT 2011]
+* Fixed horizontal-overflowing visual glitches for like bubbles.
+* Clicking on users in the like bubble now navigates to their Profile tab.
+
+[Build 406 - Sat Jul 23 10:16:48 PDT 2011]
+* Initial support for Signal Likes (with some small visual glitches).
+
+[Build 405 - Tue Jul 12 23:36:47 PDT 2011]
+* Display Signal Like/Unlike events in Activity tab.
+
+[Build 404 - Tue Jul 12 16:55:33 PDT 2011]
+* Use Yellow Star and Gray Star for page Like/Unlike events respectively.
+
+[Build 403 - Tue Jul 12 04:31:07 PDT 2011]
+* Use Eye icon for "Follow this person" instead of Star icon.
+* Use Eye icon for "Followed" sub-tab in Signals tab.
+
+[Build 402 - Fri Jun 10 08:37:20 PDT 2011]
+* Fix "Flashback spins forever fetching before/after signals". {bz: 5255}
+* Clicking the Signals/Search sub-tab now puts focus into search field.
+
+[Build 401 - Sun May  8 02:05:09 PDT 2011]
 * Sync to the latest wiki.css stylesheet. {bz: 5264}
 
 [Build 400 - Wed Mar 23 22:59:54 PDT 2011]

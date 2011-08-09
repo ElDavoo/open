@@ -27,6 +27,7 @@ my @checkers;
 while ( my $filename = $iter->() ) {
     my @types = App::Ack::filetypes( $filename );
     my $keep = grep { $_ eq 'perl' } @types;
+    next if -s $filename <= 3;
     push( @checkers, $filename ) if $keep;
 }
 

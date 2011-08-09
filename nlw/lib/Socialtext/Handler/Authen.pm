@@ -25,6 +25,7 @@ use Socialtext::Helpers;
 use Socialtext::Workspace;
 use Socialtext::Permission qw( ST_SELF_JOIN_PERM );
 use Socialtext::l10n qw( loc loc_lang system_locale );
+use Socialtext::String ();
 use URI::Escape qw(uri_escape_utf8);
 use Captcha::reCAPTCHA;
 
@@ -33,7 +34,7 @@ sub handler ($$) {
     my $r     = shift;
 
     my $self = bless {r => $r}, __PACKAGE__; # new can kiss my ass
-    $self->{args} = { $r->args, $r->content };
+    $self->{args} = { $r->args };
 
     loc_lang( system_locale() );
 
@@ -432,8 +433,11 @@ sub register {
     }
 
     my %args;
-    for (qw(password password2 first_name last_name)) {
+    for (qw(password password2)) {
         $args{$_} = $self->{args}{$_} || '';
+    }
+    for (qw(first_name last_name)) {
+        $args{$_} = Socialtext::String::scrub($self->{args}{$_} || '');
     }
     if ( $args{password} and $args{password} ne $args{password2} ) {
         $self->session->add_error(loc('error.password-mismatch'));

@@ -36,7 +36,7 @@ if [ "$ST_CURRENT" != "" ]; then
 fi
 
 # Clean up dead symlinks
-find -L -type l -delete
+find -L -type l -delete 2>/dev/null || gfind -L -type l -delete
 
 perl -MCwd -le'print "Running ", Cwd::abs_path(shift)' $0
 
@@ -113,15 +113,19 @@ else
 fi
 
 
-bin/st-admin enable-plugin --all-accounts --plugin dashboard \
-    --plugin signals --plugin groups --plugin push --plugin analytics
+bin/st-admin enable-plugin --all-accounts \
+    --plugin dashboard \
+    --plugin signals \
+    --plugin groups \
+    --plugin push \
+    --plugin analytics \
+    --plugin like \
 
 bin/st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 
 if [ $UPDATE_WIDGETS == 1 ]; then
     set -x
-    bin/st-widgets update-all --verbose
-    bin/st-widgets update-gallery --verbose
+        bin/st-widgets update-gallery --force --verbose
     set +x
 fi
 
@@ -130,7 +134,7 @@ if [ $STAGING == 1 ]; then
 fi
 
 # Clean up dead symlinks
-find -L -type l -delete
+find -L -type l -delete  2>/dev/null || gfind -L -type l -delete
 
 # Purge json proxy cache
 bin/st-purge-json-proxy-cache

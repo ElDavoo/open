@@ -33,7 +33,13 @@ sub handler {
 
     my ($size, $shared, $unshared) = Apache::SizeLimit->_check_size();
     Socialtext::Log::st_log()->debug("Size: process $size kiB, shared $shared kiB, unshared $unshared kiB");
-    Apache::SizeLimit->handler($r);
+
+    if (Apache::SizeLimit->VERSION >= 0.95) {
+        Apache::SizeLimit::handler($r);
+    }
+    else {
+        Apache::SizeLimit->handler($r);
+    }
 }
 
 1;

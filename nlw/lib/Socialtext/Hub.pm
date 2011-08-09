@@ -40,6 +40,8 @@ field 'last_prefs_userid' => '';
 use REST::Application;
 field 'rest' => -init => 'REST::Application->new()';
 
+field 'app';
+
 field config_files => [];
 
 =head1 NAME
@@ -103,6 +105,13 @@ sub with_alternate_workspace {
 sub _process {
     my $self = shift;
 
+    # GET requests are interruptable *if* the authen cookie needs to be
+    # renewed.
+    my $req_method = uc($self->rest->getRequestMethod());
+    if (($req_method eq 'GET') && Socialtext::HTTP::Cookie->NeedsRenewal) {
+        Socialtext::WebApp::Exception::AuthRenewal->throw();
+    }
+
     Socialtext::Timer->Continue('hub_process');
     $self->preload;
     return $self->no_plugin_action
@@ -115,12 +124,6 @@ sub _process {
     Socialtext::Timer->Pause('drop_workspace_breadcrumb');
 
     my $html = eval {
-        # GET requests are interruptable *if* the authen cookie needs to be
-        # renewed.
-        my $req_method = uc($self->rest->getRequestMethod());
-        if (($req_method eq 'GET') && Socialtext::HTTP::Cookie->NeedsRenewal) {
-            Socialtext::WebApp::Exception::AuthRenewal->throw();
-        }
         $self->$class_id->$method;
     };
 

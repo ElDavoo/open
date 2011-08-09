@@ -137,6 +137,17 @@ sub _search {
         if ($opts{doctype} eq 'signal') {
             push @filter_query, "(doctype:signal OR doctype:signal_attachment)";
         }
+        elsif ($opts{doctype} eq 'attachment') {
+            die "attachments need a workspace" unless $self->ws_name;
+            my $ws_id = Socialtext::Workspace->new(
+                name => $self->ws_name)->workspace_id;
+
+            my @filter = ("doctype:$opts{doctype}", "w:$ws_id");
+            push @filter, "page_key:${ws_id}__$opts{page_id}"
+                if $opts{page_id};
+
+            push @filter_query, join(" AND ", @filter);
+        }
         else {
             push @filter_query, "doctype:$opts{doctype}";
         }
@@ -201,6 +212,12 @@ sub _search {
         # 1 (any word matches) for compatibility with multi-word "standard"
         # queries, which is used for words like "field:value" and "prefix*"
         mm => 1,
+
+        # [1 TO *] style range queries result in a
+        # org.apache.lucene.search.BooleanQuery$TooManyClauses exception to be
+        # thrown. This is fixed by disabling the Highlighter in these cases.
+        $query =~ /:\[[^]]+ TO \*\]/
+            ? ('hl.usePhraseHighlighter' => 'false') : (),
 
         # fq = Filter Query - superset of docs to return from
         (@filter_query ? (fq => \@filter_query) : ()),
@@ -269,6 +286,7 @@ sub _sort_opts {
         sender         => 'creator_name',
         name           => 'name_asort',
         title          => 'plain_title',
+        likes          => 'has_likes',
     );
     my %default_dir = (
         title => 'asc',
@@ -298,8 +316,16 @@ sub _sort_opts {
     $direction ||= $default_dir{$order} || 'desc';
 
     # If a valid sort order is supplied, then we secondary sort by date,
-    # unless the primary sort is already date.
-    my $sec_sort = $order eq 'date' ? 'score desc' : 'date desc';
+    # unless the primary sort is already date, in which case we tie-break
+    # by ID to accomodate sub-second differences in Signals.
+    # For {bz: 5372}, we also need to sort by has_likes so that all the
+    # pages that have never been liked show up lower than ones that have been
+    # liked
+    my $sec_sort = $order eq 'date'
+        ? "id $direction"
+        : $order eq 'likes'
+            ? "like_count $direction, date desc, id desc"
+            : 'date desc, id desc';
     return ('sort' => "$sortable{$order} $direction, $sec_sort");
 }
 

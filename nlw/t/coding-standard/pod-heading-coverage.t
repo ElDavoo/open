@@ -354,7 +354,7 @@ exit;
 sub all_core_modules {
     my @all_files = `find lib -type f -name "*.pm"`;
     chomp @all_files;
-    return @all_files;
+    return grep { -s $_ > 3 } @all_files;
 }
 
 ###############################################################################

@@ -134,16 +134,15 @@
 
 | http-user-pass   | %%username%%     | password           |
 | GET_json         | %%g1_uri%%       |                    |
-| json-response-is | 200              | 6                  |
-| json-path-is     | $[0].event_class | signal             |
-| json-path-is     | $[0].signal_id   | %%last_signal_id%% |
-| json-path-is     | $[1].event_class | group              |
-| json-path-is     | $[1].action      | add_user           |
-| json-path-is     | $[1].person.id   | %%joey_id%%        |
-| json-path-is     | $[2].action | remove_from_workspace |
-| json-path-is     | $[3].action | add_to_workspace |
-| json-path-is     | $[4].action | remove_user |
-| json-path-is     | $[5].action | add_user |
+| json-response-is | 200              | 5                  |
+
+| json-path-is     | $[0].event_class | group              |
+| json-path-is     | $[0].action      | add_user           |
+| json-path-is     | $[0].person.id   | %%joey_id%%        |
+| json-path-is     | $[1].action | remove_from_workspace |
+| json-path-is     | $[2].action | add_to_workspace |
+| json-path-is     | $[3].action | remove_user |
+| json-path-is     | $[4].action | add_user |
 
 Later on ...
 * group details changed

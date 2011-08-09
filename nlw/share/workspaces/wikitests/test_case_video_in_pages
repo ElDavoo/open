@@ -67,8 +67,7 @@
 | wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
 | type_ok | st-widget-video_url | http://www.xndev.com/ |
 | click_ok | st-widget-savebutton |  |
-| wait_for_text_present_ok | Sorry, this URL is not hosted | 30000 |
-| text_like | //body | qr/Sorry, this URL is not hosted on any of our supported services \(GoogleVideo, SlideShare, Vimeo, YouTube\)/ism |
+| wait_for_text_present_ok | Sorry, this URL is not hosted on any of our supported services (GoogleVideo, SlideShare, Vimeo, YouTube) | 30000 |
 | click_ok | st-widget-cancelbutton |  |
 | wait_for_element_not_visible_ok | st-widget-cancelbutton | 5000 |
 
