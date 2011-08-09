@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-08 18:31+0800\n"
+"PO-Revision-Date: 2011-08-08 21:48-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1966,3 +1966,6 @@ msgstr "Sorry, Page Creator widget is currently unavailable on mobile devices."
 
 msgid "creator.info-default-value"
 msgstr "Make this choice pre-selected."
+
+msgid "error.cannot-create-page-in=wiki"
+msgstr "Sorry, but you cannot create pages in the %1 workspace."

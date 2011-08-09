@@ -884,6 +884,7 @@
 "error.browser-offline":"\u00abThe browser is currently offline; please connect to the internet and try again.\u00bb",
 "error.build-profile-tags":"\u00abUnable to build tag list.\u00bb",
 "error.cannot-change-account-logo-with-custom-skin=name":"\u00abBecause a custom skin is in use, the account logo cannot be changed.  The skin in use is called '[_1]'\u00bb",
+"error.cannot-create-page-in=wiki":"\u00abSorry, but you cannot create pages in the [_1] workspace.\u00bb",
 "error.cannot-embed-page-within-itself":"\u00abError: Cannot embed a page within itself.\u00bb",
 "error.cannot-load-revision":"\u00abCannot load revision\u00bb",
 "error.cannot-reset-pasword":"\u00abThis user's password cannot be reset\u00bb",

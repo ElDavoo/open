@@ -662,6 +662,9 @@ msgstr "是"
 msgid "error.at-least-one-column-required"
 msgstr "错误：请指定至少一个分栏。"
 
+msgid "error.cannot-create-page-in=wiki"
+msgstr "抱歉，您目前无法在 %1 工作区中创建新页面。"
+
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
 msgstr "错误：无法将页面嵌入到自身里。"

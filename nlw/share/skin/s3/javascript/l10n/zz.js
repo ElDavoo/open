@@ -884,6 +884,7 @@
 "error.browser-offline":"Zzz zzzzzzz zz zzzzzzzzz zzzzzzz; zzzzzz zzzzzzz zz zzz zzzzzzzz zzz zzz zzzzz.",
 "error.build-profile-tags":"Zzzzzz zz zzzzz zzz zzzz.",
 "error.cannot-change-account-logo-with-custom-skin=name":"Zzzzzzz z zzzzzz zzzz zz zz zzz, zzz zzzzzzz zzzz zzzzzz zz zzzzzzz.  Zzz zzzz zz zzz zz zzzzzz '[_1]'",
+"error.cannot-create-page-in=wiki":"Zzzzz, zzz zzz zzzzzz zzzzzz zzzzz zz zzz [_1] zzzzzzzzz.",
 "error.cannot-embed-page-within-itself":"Zzzzz: Zzzzzz zzzzz z zzzz zzzzzz zzzzzz.",
 "error.cannot-load-revision":"Zzzzzz zzzz zzzzzzzz",
 "error.cannot-reset-pasword":"Zzzz zzzz'z zzzzzzzz zzzzzz zz zzzzz",

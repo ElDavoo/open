@@ -5215,6 +5215,9 @@ msgstr "無法建立標籤列表。"
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "由於目前使用的是自訂視覺主題，因此帳戶標誌不可更改。正在使用的視覺主題名為『%1』"
 
+msgid "error.cannot-create-page-in=wiki"
+msgstr "抱歉，您目前無法在 %1 工作區中建立新頁面。"
+
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
 msgstr "錯誤：無法將頁面嵌入到自身裡。"

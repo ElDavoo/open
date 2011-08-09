@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-08 18:31+0800\n"
+"PO-Revision-Date: 2011-08-08 21:48-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -5625,6 +5625,9 @@ msgstr "«Unable to build tag list.»"
 #: share/plugin/control/template/control/design-account.html:77
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "«Because a custom skin is in use, the account logo cannot be changed.  The skin in use is called '%1'»"
+
+msgid "error.cannot-create-page-in=wiki"
+msgstr "«Sorry, but you cannot create pages in the %1 workspace.»"
 
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"

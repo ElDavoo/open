@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-08 18:31+0800\n"
+"PO-Revision-Date: 2011-08-08 21:48-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -5625,6 +5625,9 @@ msgstr "Zzzzzz zz zzzzz zzz zzzz."
 #: share/plugin/control/template/control/design-account.html:77
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "Zzzzzzz z zzzzzz zzzz zz zz zzz, zzz zzzzzzz zzzz zzzzzz zz zzzzzzz.  Zzz zzzz zz zzz zz zzzzzz '%1'"
+
+msgid "error.cannot-create-page-in=wiki"
+msgstr "Zzzzz, zzz zzz zzzzzz zzzzzz zzzzz zz zzz %1 zzzzzzzzz."
 
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
