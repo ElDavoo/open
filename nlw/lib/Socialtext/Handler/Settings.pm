@@ -28,7 +28,6 @@ sub get_html {
     my $vars = $self->_settings_vars();
     $vars->{section} = 'global';
 
-    $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->render_template('view/settings', $vars);
 }
 
@@ -89,8 +88,8 @@ sub _space_prefs {
 
     my $is_space = $id && $space->workspace_id == $id;
     my $can_admin = $space->user_can(
-        user=>$self->rest->user,
-        permission=>ST_ADMIN_WORKSPACE_PERM,
+        user => $self->rest->user,
+        permission => ST_ADMIN_WORKSPACE_PERM,
     );
 
     my %abilities = (
