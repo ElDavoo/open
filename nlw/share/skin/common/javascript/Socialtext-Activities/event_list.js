@@ -399,9 +399,9 @@ $.extend(Activities.EventList.prototype, {
         }
 
         /* Don't allow the action icons to overlap with metadata when
-         * the window is shrunk down.
+         * the window is shrunk down. (.outer makes this S3 only)
          */
-        evt.$node.find('.metadata').css(
+        evt.$node.find('.outer .metadata').css(
             'padding-right', evt.$node.find('.actions').width() + 'px'
         );
 
@@ -957,7 +957,7 @@ $.extend(Activities.EventList.prototype, {
         var self = this;
 
         evt.$node.find('.wikiwyg').click(function() {
-            $(this).parents('.wikiwygRow').addClass('focused');
+            $(this).addClass('focused');
             self.setupEditor(evt);
         });
 

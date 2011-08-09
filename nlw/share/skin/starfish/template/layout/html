@@ -87,7 +87,7 @@
     [% INCLUDE element/main_nav %]
 
     <div class="contentWrapper">
-      <div class="content">[% content %]</div>
+      <div class="bodyContent">[% content %]</div>
     </div>
 
     <footer class="container_24">

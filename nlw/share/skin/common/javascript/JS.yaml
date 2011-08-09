@@ -2,10 +2,7 @@
 'socialtext-container.js':
     compress: 1
     parts:
-        -
-            dir: 'skin/common/javascript/template'
-            jemplate: widget
-            include_paths: true
+        - { jemplate: 'template' }
         - shindig-container-default.js
         - jquery-ui-1.8.5.js
         - jquery.ui.ipad.altfix.js
@@ -18,7 +15,6 @@
 'socialtext-activities.js':
     parts:
         - jquery.timers.js
-        - { jemplate: 'template' }
         - Socialtext-Activities/jquery.dropdown.js
         - {dir: skin/s3/javascript, file: socialtext-editor-light.js}
         - {dir: skin/s3/javascript, file: cookie.js}
