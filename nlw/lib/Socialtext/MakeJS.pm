@@ -254,8 +254,12 @@ sub _file_to_text {
     my $text = '';
     for my $file (glob($part->{file})) {
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
-        $text .= slurp($file);
+        $text .= slurp($file, binmode => ':utf8');
     }
+
+    # Ensure text is UTF-8 compatible and without BOM marks
+    $text =~ s/\x{FEFF}//g;
+    utf8::encode($text);
     return $text;
 }
 
