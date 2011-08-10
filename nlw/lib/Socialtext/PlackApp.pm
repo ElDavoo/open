@@ -155,11 +155,16 @@ package Socialtext::PlackApp::Response;
 use parent 'Plack::Response';
 use methods-invoker;
 method err_headers_out { $self }
+method headers_out { $self }
 method add ($key, $val) {
     if (lc $key eq 'set-cookie') {
         $val .= '; HttpOnly';
     }
     $->headers->push_header(lc $key, $val);
+}
+method set ($key, $val) {
+    $->headers->remove_header(lc $key);
+    $->add($key, $val);
 }
 
 package Socialtext::PlackApp::Request;
