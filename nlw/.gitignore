@@ -651,3 +651,4 @@ t/wikitests/like/signal.wiki
 t/Socialtext/People/Profile-listing.t
 t/wikitests/frontend/http-keep-alive.wiki.orig
 lib/Socialtext/XHTML.pm
+lib/Socialtext/Pluggable/Plugin/CKEditor.pm
