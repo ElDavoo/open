@@ -653,3 +653,4 @@ t/wikitests/frontend/http-keep-alive.wiki.orig
 lib/Socialtext/XHTML.pm
 lib/Socialtext/Pluggable/Plugin/CKEditor.pm
 lib/Socialtext/XHTML/Cell.pm
+lib/Socialtext/XHTML/Renderer.pm
