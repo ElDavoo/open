@@ -1,0 +1,13 @@
+[%# vim: set et sts=2 sw=2: %]
+<h3>[% loc('Signals') %]</h3>
+
+[% INCLUDE element/settings/setting_select
+  label=loc('Send Socialtext Signals private messages as email')
+  pref="plugin.signals.dm_sends_email"
+  formats=plugin.signals.dm_sends_email
+  user_setting=plugin.signals.user.dm_sends_email
+%]
+
+<p>[% loc("If checked, each time a user sends you a private message via Signals, we'll send you an email with the message.") %]</p>
+
+<hr />
