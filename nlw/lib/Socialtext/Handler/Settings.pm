@@ -25,9 +25,26 @@ sub get_html {
     my $self = shift;
     my $rest = shift;
 
+    my $user = $self->rest->user;
+    my $prefs = $user->prefs->all_prefs;
+
     my $vars = $self->_settings_vars();
     $vars->{section} = 'global';
+    $vars->{can_update_store} = $user->can_update_store;
 
+    my $timezone = $self->hub->timezone;
+    my $zones = $timezone->zones;
+    $vars->{prefs}{time} = {
+        user => $prefs->{timezone},
+        zones => $timezone->timezone_options,
+        formats => $timezone->date_display_options,
+        dst => $timezone->dst_options,
+        times_12_24 => $timezone->time_display_options,
+        times_seconds => $timezone->seconds_options,
+    };
+
+    my $global = $self->render_template('element/settings/global', $vars);
+    $vars->{main_content} = $global;
     return $self->render_template('view/settings', $vars);
 }
 
@@ -63,14 +80,21 @@ sub _settings_vars {
     my @spaces = ();
     my $i = 0;
 
-    my $vars = {};
+    my $vars = {user_id => $self->rest->user->user_id};
     while (my $space = $cursor->next()) {
         $vars->{active_ix} = $i if $id && $space->workspace_id == $id;
+
+        my $can_admin = $space->user_can(
+            user => $self->rest->user,
+            permission => ST_ADMIN_WORKSPACE_PERM,
+        );
+
         push @spaces, {
             title => $space->title,
             id => $space->workspace_id,
-            prefs => $self->_space_prefs($space),
+            can_admin => $can_admin,
             active => $id && $space->workspace_id == $id ? 1 : 0,
+            prefs => $self->_space_prefs($space),
         };
         $i++;
     }

@@ -14,6 +14,10 @@ jQuery(document).ready(function() {
 
 <style type="text/css">
 
+#settings-main {
+    padding: 3px;
+}
+
 #settings-sidebar {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -37,6 +41,18 @@ jQuery(document).ready(function() {
 #settings-sidebar ul {
     padding-bottom: 0px;
     margin-bottom: 0px;
+}
+
+.input-label {
+    padding-top: 5px;
+    text-align: right;
+}
+
+select {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 </style>
@@ -86,12 +102,21 @@ jQuery(document).ready(function() {
       </div>
     </div>
   </div>
-  <div class="grid_12" style="padding: 3px;">
-    <a class="button" href="#">[% loc('Save') %]</a>
-    <a class="button" href="#">[% loc('Cancel') %]</a>
-    <p>Content</p>
-    <a class="button" href="#">[% loc('Save') %]</a>
-    <a class="button" href="#">[% loc('Cancel') %]</a>
+  <div class="grid_12" id="settings-main">
+  <form method="POST" action="">
+    <p>
+      <a class="button" href="#">[% loc('Save') %]</a>
+      <a class="button" href="#">[% loc('Cancel') %]</a>
+    </p>
+
+    [% main_content %]
+
+    <p>
+      <a class="button" href="#">[% loc('Save') %]</a>
+      <a class="button" href="#">[% loc('Cancel') %]</a>
+    </p>
+  <form method="POST" action="">
   </div>
 </div>
 [% END %]
+
