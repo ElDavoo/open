@@ -1,0 +1,14 @@
+<div class="grid_5 input-label">[% label %]</div>
+<div class="grid_7">
+  <select name="[% pref %]">
+    [% FOREACH format IN formats %]
+      <option value="[% format.setting %]"
+        [% IF format.setting == user_setting %]
+          selected="selected"
+        [% END %]>
+        [% format.display %]
+      </option>
+    [% END %]
+  </select>
+</div>
+<div class="clear"></div>
