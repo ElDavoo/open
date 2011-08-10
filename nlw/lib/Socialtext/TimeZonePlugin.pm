@@ -63,6 +63,16 @@ sub register {
     $registry->add( preference => $self->time_display_seconds );
 }
 
+sub timezone_options {
+    my $self = shift;
+
+    my $zones = $self->zones;
+    return [
+        map { +{setting => $_, display => $zones->{$_}} }
+            sort keys %$zones 
+    ];
+}
+
 sub timezone {
     my $self   = shift;
     my $locale = $self->hub->best_locale;
@@ -85,6 +95,18 @@ sub _default_timezone {
     else {
         return '-0800';
     }
+}
+
+sub dst_options {
+    my $self = shift;
+
+    my $choices = [
+        {setting => 'on', display => __('tz.dst-yes')},
+        {setting => 'off', display => __('tz.dst-no')},
+        {setting => 'auto-us', display => __('tz.auto-us')},
+        {setting => 'never', display => __('tz.dst-never')},
+    ];
+
 }
 
 sub dst {
@@ -121,6 +143,26 @@ sub _default_dst {
     }
 }
 
+sub date_display_options {
+    my $self = shift;
+
+    my $time = $self->_now;
+    my $locale = $self->hub->best_locale;
+    my @raw = Socialtext::Date::l10n->get_all_format_date($locale);
+
+    my @options = ();
+    for my $possible (@raw) {
+        next if $possible eq 'default';
+        my $display_time = $self->_get_date( $time, $possible, $locale );
+
+        push @options, {
+            setting => $possible,
+            display => $display_time,
+        };
+    }
+
+    return \@options;
+}
 sub date_display_format {
     my $self   = shift;
 
@@ -155,6 +197,27 @@ sub date_display_format {
     return $p;
 }
 
+sub time_display_options {
+    my $self = shift;
+
+    my $time = $self->_now;
+    my $locale = $self->hub->best_locale;
+    my @raw = Socialtext::Date::l10n->get_all_format_time($locale);
+
+    my @options = ();
+    for my $possible (@raw) {
+        next if $possible eq 'default';
+        my $display_time = $self->_get_time( $time, $possible, $locale );
+
+        push @options, {
+            setting => $possible,
+            display => $display_time,
+        };
+    }
+
+    return \@options;
+}
+
 sub time_display_12_24 {
     my $self   = shift;
     my $p      = $self->new_dynamic_preference('time_display_12_24');
@@ -186,6 +249,15 @@ sub time_display_12_24 {
     });
 
     return $p;
+}
+
+sub seconds_options {
+    my $self = shift;
+    
+    return [
+        {setting => '1', display => loc('Yes')},
+        {setting => '0', display => loc('No')},
+    ];
 }
 
 sub time_display_seconds {
