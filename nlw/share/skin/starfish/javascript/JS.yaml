@@ -9,3 +9,5 @@
         - {dir: skin/s3/javascript, file: 'JemplatePlugin/*.js'}
         - {dir: 'skin/common/javascript', file: 'socialtext-container.js'}
         - {dir: 'skin/s3/javascript', file: 'search.js'}
+        - { jemplate: 'template' }
+        - {dir: 'skin/s3/javascript', file: 'like-indicator.js'}

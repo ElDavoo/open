@@ -1,0 +1,71 @@
+<div class="topContent">
+
+<div class="tabs">
+    [% FOR tab = tabs %]
+        [% IF tab == action %]
+            <span>[% tabs.$tab.title %]</span>
+        [% ELSE %]
+            <a class="[% tab %]" href="#">[% tabs.$tab.title %]</a>
+        [% END %]
+    [% END %]
+</div>
+
+<div class="vpad3">
+[% IF message %]
+    <strong>[% message %]</strong>
+[% ELSE %]
+    [% loc('widgets.most-active-in=noun,period', tabs.$action.noun, period) %]
+    [% IF tabs.$action.data.meta.account %]
+        [% loc('widgets.from-account') %] <strong>[% tabs.$action.data.meta.account.name %]</strong>
+    [%- END -%]
+    [%- IF context == 'workspace' && tabs.$action.data.meta.workspace -%]:
+        <a href="[% tabs.$action.data.meta.workspace.uri %]">[% tabs.$action.data.meta.workspace.title %]</a>
+    [% END %]
+    [% IF rotating %]<i>[% loc('widgets.rotate-is-on') %]</i>[% END %]
+[% END %]
+</div>
+
+[% IF !rows.size %]
+    <em>[% tabs.$action.none_message || 'None' %]</em>
+[% END %]
+[% FOR row = rows %]
+    [% IF row.count %]
+    <div class="vpad3">
+        <div class="grid_1 alpha avatar">
+            [% IF row.is_spreadsheet %]
+                <img src="/static/skin/s3/images/sheetIcon.png" style="height:12px"/>
+            [% ELSIF row.is_person %]
+                <img src="/data/people/[% row.user_id %]/small_photo" style="height:27px"/>
+            [% ELSE %]
+                <img src="/static/skin/s3/images/docIcon.png" style="height:15px"/>
+            [% END %]
+        </div>
+
+        <div class="grid_2 asset">
+            [% IF row.uri %]
+                <a href="[% row.uri %]">
+                    [% row.title %]
+                </a>
+            [% ELSE %]
+                [% row.title %]
+            [% END %]
+            [% IF needsContext %]
+                <div class="context">
+                    [% loc('activities.from') %] <a href="[% row.context_uri %]">[% row.context_title %]</a>
+                </div>
+            [% END %]
+        </div>
+
+        <div class="grid_minus_3 omega">
+            <div class="progressbar" style="margin-right: 10px">
+                <div class="value"
+                     style="width:[% (row.count / maxCount) * 100 %]%"></div>
+                <span class="text">[% row.count %]
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    [% END %]
+[% END %]
+</div>

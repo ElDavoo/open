@@ -1,0 +1,58 @@
+[% MACRO creator BLOCK %]<a href="[% event.context.creator.uri %]">[% event.context.creator.best_full_name %]</a>[% END %]
+
+[% SWITCH event.action %]
+[% CASE 'signal' %]
+    [% INCLUDE signal_body %]
+    [% INCLUDE activities/event/metadata.tt2 %]
+[% CASE 'like' %]
+    [% INCLUDE activities/event/metadata.tt2 %]
+    [% INCLUDE like_body %]
+[% CASE 'unlike' %]
+    [% INCLUDE activities/event/metadata.tt2 %]
+    [% INCLUDE unlike_body %]
+[% END %]
+
+[% BLOCK like_body %]
+    [% IF this.viewer_id == event.context.creator.user_id %]
+        [% loc('liked your <a href="[_1]">signal</a>, "[_2]".', event.context.uri, this.signalSnippet(event)) %]
+    [% ELSE %]
+        [% IF event.context.creator.user_id == event.actor.id %]
+            [% loc('liked their own <a href="[_1]">signal</a>, "[_2]".', event.context.uri, this.signalSnippet(event)) %]
+        [% ELSE %]
+            [% loc('liked [_1]\'s <a href="[_2]">signal</a>, "[_3]".', creator, event.context.uri, this.signalSnippet(event)) %]
+        [% END %]
+    [% END %]
+[% END %]
+
+[% BLOCK unlike_body %]
+    [% IF this.viewer_id == event.context.creator.user_id %]
+        [% loc('unliked your <a href="[_1]">signal</a>, "[_2]".', event.context.uri, this.signalSnippet(event)) %]
+    [% ELSE %]
+        [% IF user.user_id == event.actor.id %]
+            [% loc('unliked their own <a href="[_1]">signal</a>, "[_2]".', event.context.uri, this.signalSnippet(event)) %]
+        [% ELSE %]
+            [% loc('unliked [_1]\'s <a href="[_2]">signal</a>, "[_3]".', creator, event.context.uri, this.signalSnippet(event)) %]
+        [% END %]
+    [% END %]
+[% END %]
+
+[% BLOCK signal_body %]
+    <div class="signal_event">
+    [% IF event.thumbnails.size > 0 %]
+    <div class ="signal_thumbnails">
+    [% FOR thumbnail IN event.thumbnails %]
+    [% LAST IF loop.index() > 2 %]
+    <a target="_blank" href="[% thumbnail.url.replace('^/', this.base_uri + '/') %]"><img data-width="[% thumbnail.width || '' %]" data-height="[% thumbnail.height || '' %]" class="[% thumbnail.type %]" src="[% thumbnail.image.replace('^/', this.base_uri + '/') %]"[% IF thumbnail.title %] alt="[% thumbnail.title | html_encode %]" title="[% thumbnail.title | html_encode %]"[% END %]></a>
+    [% END %]
+    </div>
+    [% END %]
+    <div class="signal_body">[%- event.context.body -%]</div>
+    </div>
+    [%IF event.context.attachments.size > 0 %]
+    <div class="signal_attachments">
+    [% FOREACH attachment IN event.context.attachments %]
+    <span class="attachment"><img src="[% this.share %]/images/little-doc.gif"><a target="_blank" class="attachment_link" href="[% attachment.uri %]">[% attachment.filename | html_encode %]</a> ([% attachment.pretty_content_length %])</span>
+    [% END %]
+    </div>
+    [% END %]
+[% END %]

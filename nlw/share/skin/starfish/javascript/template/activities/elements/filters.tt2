@@ -1,0 +1,16 @@
+<div class="new grid_2 alpha">12 new</div>
+<div class="filters grid_minus_2 omega">
+    <label id="[% id('selector-label-action') %]">
+        [% loc('activities.showing') %]
+        <span class="select" id="[% id('action') %]">&nbsp;</span>
+    </label>
+    <label id="[% id('selector-label-feed') %]">
+        [% loc('activities.from') %]
+        <span class="select" id="[% id('feed') %]">&nbsp;</span>
+    </label>
+    <label id="[% id('selector-label-network') %]">
+        [% loc('activities.within') %]
+        <span class="select" id="[% id('network') %]"></span>
+    </label>
+</div>
+<div class="clear"></div>

@@ -56,8 +56,7 @@
 
     <meta name="keywords" content="<% loc('about.keywords') %>"/>
   </head>
-  <body id="[% id || 'socialtext-wiki' %]" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
-
+  <body class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
     <header>
       <div class="container_24">
         <div class="grid_15 title">
@@ -65,10 +64,10 @@
         </div>
         <div class="grid_9 topLinks">
             <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
-            <span class="padding"></span>
+            <span class="pad5"></span>
             <span id="st-wikinav-setting"><a href="/st/settings">[% loc('nav.settings') %]</a></span> |
             <span id="st-wikinav-help"><a href="/help/" target="_blank">[% loc('nav.help') %]</a></span>
-            <span class="padding"></span>
+            <span class="pad5"></span>
             [% IF user.is_guest %]
               [% IF self_registration AND NOT checker.check_permission('self_join') %]
                 <a id="st-wikinav-login" class="button" href="/challenge?[% wiki.uri | html %]">[% loc('nav.login') %]</a>
@@ -87,12 +86,14 @@
     [% INCLUDE element/main_nav %]
 
     <div class="contentWrapper">
-      <div class="content">[% content %]</div>
+      <div class="bodyContent">[% content %]</div>
     </div>
 
     <footer class="container_24">
-      <div class="grid_3 socialtext">[% loc('Socialtext') %]</div>
-      <div class="grid_17">
+      <div class="grid_3 socialtext">
+        <img alt="Socialtext Logo" src="[% wiki.skin_uri('starfish') %]/images/socialtext-logo-white.png"/>
+      </div>
+      <div class="grid_17 tagline">
         [% loc('Enterprise Social Software') %] v[% app_version %]
         <span class="divider"></span>
         <a href="http://www.socialtext.com/exchange">[% loc('nav.community') %]</a>

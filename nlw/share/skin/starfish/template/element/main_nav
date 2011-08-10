@@ -27,12 +27,12 @@
   </div>
   <div class="grid_10 navGrid searchBox">
     <div class="navItem">[% INCLUDE element/search_form %]</div>
-    <div class="underline"></div>
+    <div class="staticUnderline"></div>
   </div>
   <div class="grid_2 navGrid widgetButtons">
     <div class="navItem">
     </div>
-    <div class="underline"></div>
+    <div class="staticUnderline"></div>
   </div>
 </div>
 <div class="clear"></div>
