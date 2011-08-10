@@ -3,7 +3,6 @@
 [% SET primary_color = '#6f7c01' %]
 [% SET secondary_color = '#c6b93b' %]
 
-
 .grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12, .grid_13, .grid_14, .grid_15, .grid_16, .grid_17, .grid_18, .grid_19, .grid_20, .grid_21, .grid_22, .grid_23, .grid_24 {
     /* background: rgba(255, 0, 0, 0.3) !important; */
 }
@@ -60,12 +59,18 @@ h4 { font-size: 13px }
 /**
  * Some helpful classes
  */
-.padding {
-    padding: 5px;
-}
-.section {
-    padding: 5px 0;
-}
+
+/* padding */
+.pad3   { padding: 3px }
+.vpad3  { padding-top: 3px;   padding-bottom: 3px }
+.hpad3  { padding-left: 3px;  padding-right: 3px }
+.pad5   { padding: 5px }
+.vpad5  { padding-top: 5px;   padding-bottom: 5px }
+.hpad5  { padding-left: 5px;  padding-right: 5px }
+.pad10  { padding: 5px }
+.vpad10 { padding-top: 10px;  padding-bottom: 10px }
+.hpad10 { padding-left: 10px; padding-right: 10px }
+
 .superscript {
     font-size: small;
     vertical-align: top;
@@ -86,6 +91,49 @@ input.initial {
 
 .error {
     color: #be3b3f;
+}
+
+/**
+ * Text tabs (top content widgets, etc...)
+ */
+.tabs {
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+.tabs a,
+.tabs span {
+    margin: 0 5px;
+}
+.tabs span {
+    font-weight: bold;
+}
+
+.avatar img {
+    border: 1px solid #ccc;
+}
+
+/**
+ * Progress Bar
+ */
+.progressbar {
+    border: 1px solid #ccc;
+    height: 17px;
+    position: relative;
+
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.progressbar .value {
+    background-color: #c6ba03;
+    height: 17px;
+}
+.progressbar .text {
+    position: absolute;
+    top: 1px;
+    left: 5px;
+    color: #fff;
 }
 
 /**
@@ -276,7 +324,6 @@ ul.dropdownOptions li.disabled a {
     cursor: default;
     text-decoration: none;
 }
-
 ul.dropdownOptions li.disabled a:hover {
     text-decoration: none;
 }
