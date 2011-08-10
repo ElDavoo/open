@@ -404,6 +404,9 @@ sub _get_user_info {
     my $user = $self->hub->current_user;
     return {
         username           => $user->guess_real_name,
+        first_name         => $user->first_name,
+        middle_name        => $user->middle_name,
+        last_name          => $user->last_name,
         userid             => $user->username,
         id                 => $user->user_id,
         email_address      => $user->email_address,
