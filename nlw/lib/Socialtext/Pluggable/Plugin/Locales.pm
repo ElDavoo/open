@@ -11,9 +11,39 @@ use constant hidden => 1; # hidden to admins
 use constant read_only => 0; # cannot be disabled/enabled in the control panel
 
 sub register {
+    my $class = shift;
+
+    $class->add_hook('template.usersettings.append' => 'usersettings');
+    $class->add_hook("action.language_settings"   => \&language_settings);
+}
+
+sub usersettings {
     my $self = shift;
 
-    $self->add_hook("action.language_settings"   => \&language_settings);
+    $self->challenge(type => 'settings_requires_account')
+        unless ($self->logged_in);
+
+    my $prefs = $self->get_user_prefs();
+    my $locale = $prefs->{locale} // system_locale();
+    my $languages = available_locales();
+
+    my @locales = map { +{
+        setting => $_,
+        display => $languages->{$_},
+    } } sort {
+        ($languages->{$a} =~ /DEV/ <=> $languages->{$b} =~ /DEV/)
+            or ($a cmp $b)
+    } keys %$languages;
+
+    return $self->template_render(
+        'element/settings/language_settings_section',
+        plugin => {
+            locales => {
+                user => {locale => $locale},
+                locale => \@locales,
+            },
+        },
+    );
 }
 
 sub language_settings {
