@@ -103,6 +103,7 @@ has 'rev' => (
             body_modified mutable is_spreadsheet is_wiki is_untitled
             has_tag tags_sorted is_recently_modified age_in_minutes
             age_in_seconds age_in_english datetime_for_user datetime_utc
+            is_xhtml
         )),
     },
 );
@@ -610,6 +611,7 @@ sub to_result {
         creator         => $creator->username,
         edit_summary    => $self->edit_summary,
         is_spreadsheet  => $self->is_spreadsheet,
+        is_xhtml        => $self->is_xhtml,
         page_id         => $self->page_id,
         page_uri        => $self->uri,
         revision_count  => $self->revision_count,
@@ -1138,9 +1140,11 @@ sub content_or_default {
 
 sub default_content {
     my $self = shift;
-    return $self->is_spreadsheet
-        ? loc('sheet.creating').'   '
-        : loc('edit.default-text').'   ';
+    return ((
+        $self->is_spreadsheet ? loc('sheet.creating')
+      : $self->is_xhtml ? loc('xhtml.creating')
+      : loc('edit.default-text')
+    ).'   ')
 }
 
 sub get_units {
@@ -1303,6 +1307,10 @@ sub to_html {
         [$content_ref, $self]
     ) if $self->is_spreadsheet;
 
+    return $self->hub->pluggable->hook('render.xhtml.html',
+        [$content_ref, $self]
+    ) if $self->is_xhtml;
+
     return $self->hub->viewer->process($content_ref, $page)
         if $DISABLE_CACHING;
 
@@ -1357,7 +1365,7 @@ sub to_html {
 sub _cache_html {
     my $self = shift;
     my $html_ref = shift;
-    return if $self->is_spreadsheet;
+    return if $self->is_spreadsheet or $self->is_xhtml;
 
     my $t = time_scope('cache_wt');
 

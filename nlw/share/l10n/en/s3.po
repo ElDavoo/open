@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-10 00:43+0800\n"
+"PO-Revision-Date: 2011-08-11 08:06-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1874,8 +1874,11 @@ msgstr "Titles"
 msgid "page.top"
 msgstr "Top of page"
 
-msgid "page.type-spreadsheet"
+msgid "page.type-xhtml"
 msgstr "Page (using new editor prototype)"
+
+msgid "page.type-spreadsheet"
+msgstr "Spreadsheet"
 
 #: share/skin/s3/javascript/lightbox/create_content.js:9
 msgid "page.type-wiki"

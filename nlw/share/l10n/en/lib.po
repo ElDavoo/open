@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-10 00:43+0800\n"
+"PO-Revision-Date: 2011-08-11 08:11-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3195,9 +3195,12 @@ msgstr "Revision %1"
 msgid "page.summary-comment"
 msgstr "(comment)"
 
+msgid "page.type-xhtml"
+msgstr "Page (using new editor prototype)"
+
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:23
 msgid "page.type-spreadsheet"
-msgstr "Page (using new editor prototype)"
+msgstr "Spreadsheet"
 
 #: lib/Socialtext/Pluggable/Plugin/Default.pm:45
 msgid "page.type-wiki"
@@ -3526,6 +3529,9 @@ msgstr "%1 - RSS Search for %2"
 
 #: lib/Socialtext/Page.pm:1133
 msgid "sheet.creating"
+msgstr "Creating a New Spreadsheet..."
+
+msgid "xhtml.creating"
 msgstr "Creating a Page using new editor prototype..."
 
 #: lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412

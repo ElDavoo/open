@@ -1657,6 +1657,7 @@
 "page.top":"\u9801\u9762\u9802\u90e8",
 "page.type-spreadsheet":"\u8a66\u7b97\u8868",
 "page.type-wiki":"\u9801\u9762",
+"page.type-xhtml":"Page (using new editor prototype)",
 "page.unlock":"\u89e3\u9396\u9801\u9762",
 "page.untitled":"\u672a\u547d\u540d\u9801\u9762",
 "page.updated=user,date":"\u7531 [_1] \u65bc [_2] \u66f4\u65b0",

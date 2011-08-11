@@ -381,6 +381,7 @@ sub age_in_english {
     return $english;
 }
 
+sub is_xhtml { $_[0]->page_type eq 'xhtml' }
 sub is_spreadsheet { $_[0]->page_type eq 'spreadsheet' }
 sub is_wiki { $_[0]->page_type eq 'wiki' }
 

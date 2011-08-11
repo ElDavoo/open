@@ -10613,6 +10613,9 @@ msgstr "电子表格"
 msgid "page.type-wiki"
 msgstr "页面"
 
+msgid "page.type-xhtml"
+msgstr "Page (using new editor prototype)"
+
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
 msgstr "解锁页面"
@@ -14917,3 +14920,6 @@ msgstr "插入视频"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "插入一个小工具"
+
+msgid "xhtml.creating"
+msgstr "Creating a Page using new editor prototype..."
