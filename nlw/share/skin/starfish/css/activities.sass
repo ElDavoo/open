@@ -1,0 +1,142 @@
+/**
+ * Activities
+
+.activitiesWidget
+  .signals
+    background-color: #dfebed
+  .networks
+    padding: 5px 0 0 8px
+  .mainWikiwyg .wikiwyg
+    margin: 5px
+  .post
+    padding: 10px 0
+  .mainWikiwyg, .wikiwyg.focused
+    font-size: 110%
+    color: #666666
+    background-color: #fff
+    min-height: 23px
+    box-shadow: inset 0 2px 2px #ccc
+    cursor: text
+    padding: 0
+    margin-left: 5px
+    padding: 5px 0 3px 0
+
+/**
+ * Wikiwyg
+
+* html .activitiesWidget
+  .mainWikiwyg, .focused .wikiwyg
+    height: 23px
+
+.activitiesWidget
+  .wikiwyg textarea
+    resize: none
+    border: none
+  .toolbar
+    padding: 5px 0
+  .private span, .insert span
+    margin-left: 5px
+  .filter_bar
+    background-color: $primary_color
+    color: #fff
+    a
+      color: #fff
+  .event_list
+    .event
+      margin: 10px 0
+    .avatar img
+      width: 35px
+      height: 35px
+  .more
+    position: relative
+    text-decoration: none
+    font-size: 120%
+    margin: 5px 2px
+    padding: 2px 0
+    background: #AAA
+    color: #fff
+    cursor: pointer
+    border: 1px solid #999
+    border-radius: 5px
+    text-align: center
+  .event_list
+    .event .metadata
+      position: relative
+      padding-bottom: 2px
+      font-size: 11px
+      color: #777
+    .signal .metadata
+      padding-bottom: 0px
+      padding-top: 2px
+    .event .metadata a
+      color: #777
+      margin-right: 3px
+      &:hover
+        color: #36c
+  .links
+    position: relative
+    border: 1px solid #999
+    text-align: left
+    padding: 5px
+    color: #666
+  .signals .links
+    display: none
+  .lookahead
+    display: none
+    height: 45px
+    position: absolute
+    text-align: left
+    border: 1px solid black
+    background: #ffffff
+    padding: 5px
+    z-index: 1000
+  .replies .lookahead
+    left: 35px
+  .lookahead
+    .lookaheadDiv
+      padding-right: 105px
+    .buttons
+      position: absolute
+      padding: 3px
+      right: 5px
+      top: 19px
+      height: 22px
+
+/**
+ * Toolbar
+
+/**
+ * Filters
+
+/**
+ * Events
+
+/**
+ * Metadata
+
+/* User lookahead window
+
+* html .activitiesWidget .lookahead .buttons
+  top: 18px
+  padding: 6px
+
+.activitiesWidget
+  .lookahead
+    .lookahead-prompt
+      color: #808080
+    input.private
+      vertical-align: middle
+  .replies
+    .top_line
+      border-top: 1px solid #ccc
+      padding-top: 10px
+      margin-top: 10px
+    .older
+      margin-top: 5px
+    .clearHandler
+      color: $primary_color
+      cursor: pointer
+      &:hover
+        text-decoration: underline
+  .loading
+    display: none

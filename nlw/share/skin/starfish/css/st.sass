@@ -1,0 +1,302 @@
+.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12, .grid_13, .grid_14, .grid_15, .grid_16, .grid_17, .grid_18, .grid_19, .grid_20, .grid_21, .grid_22, .grid_23, .grid_24
+  /* background: rgba(255, 0, 0, 0.3) !important;
+
+body
+  background: $background_color url(#{$skin}/images/background.png) $background_image_tiling $background_image_position
+  font-size: 11px
+  font-family: $body_font
+  color: #333
+
+a
+  color: $primary_color
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  &.button
+    padding: 3px 5px
+    white-space: nowrap
+    color: #ccc
+    text-decoration: none
+    /* rounded corners
+    -webkit-border-radius: 5px
+    -moz-border-radius: 5px
+    border-radius: 5px
+    border: 1px solid #ccc
+    background-color: $primary_color
+    &:hover
+      filter: alpha(opacity = 70)
+      opacity: .7
+
+input
+  -webkit-border-radius: 5px
+  -moz-border-radius: 5px
+  border-radius: 5px
+  border: 1px solid #ccc
+
+/**
+ * Headings
+
+h1, h2, h3, h4
+  color: #333
+  padding: 0
+  margin: 0
+
+h1
+  font-size: 18px
+
+h2
+  font-size: 16px
+
+h3
+  font-size: 14px
+
+h4
+  font-size: 13px
+
+/**
+ * Some helpful classes
+
+/* padding
+
+.pad3
+  padding: 3px
+
+.vpad3
+  padding-top: 3px
+  padding-bottom: 3px
+
+.hpad3
+  padding-left: 3px
+  padding-right: 3px
+
+.pad5
+  padding: 5px
+
+.vpad5
+  padding-top: 5px
+  padding-bottom: 5px
+
+.hpad5
+  padding-left: 5px
+  padding-right: 5px
+
+.pad10
+  padding: 5px
+
+.vpad10
+  padding-top: 10px
+  padding-bottom: 10px
+
+.hpad10
+  padding-left: 10px
+  padding-right: 10px
+
+.superscript
+  font-size: small
+  vertical-align: top
+
+.hidden
+  display: none
+
+input
+  &.hidden
+    /* For hiding submit buttons
+    display: block
+    height: 0
+    width: 0
+    opacity: 0
+    filter: alpha(opacity = 0)
+  &.initial
+    color: #999
+
+.error
+  color: #be3b3f
+
+/**
+ * Text tabs (top content widgets, etc...)
+
+.tabs
+  text-align: center
+  padding: 5px 0
+  border-bottom: 1px solid #ccc
+  a
+    margin: 0 5px
+  span
+    margin: 0 5px
+    font-weight: bold
+
+.avatar img
+  border: 1px solid #ccc
+
+/**
+ * Progress Bar
+
+.progressbar
+  border: 1px solid #ccc
+  height: 17px
+  position: relative
+  -webkit-border-radius: 3px
+  -moz-border-radius: 3px
+  border-radius: 3px
+  .value
+    background-color: $secondary_color
+    height: 17px
+  .text
+    position: absolute
+    top: 1px
+    left: 5px
+    color: #fff
+
+/**
+ * Header
+
+header
+  height: 100px
+  background: $header_color url(#{$skin}/images/header.png) $header_image_tiling $header_image_position
+  /* Drop shadow
+  -moz-box-shadow: 3px 3px 4px #000000
+  -webkit-box-shadow: 3px 3px 4px #000000
+  box-shadow: 3px 3px 4px #000000
+  /* For IE 8
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')"
+  .title
+    font-family: times
+    font-size: 35px
+    padding-top: 25px
+    color: #fff
+  a
+    color: $primary_color
+    text-decoration: none
+  .topLinks
+    margin-top: 30px
+    text-align: right
+
+.contentWrapper
+  width: 960px
+  margin-left: auto
+  margin-right: auto
+  padding-left: 10px
+
+.bodyContent
+  padding: 10px 0
+  background-color: #ffffff
+
+/**
+ * Footer
+
+footer
+  color: #ccc
+  font-size: 13px
+  line-height: 19px
+  height: 40px
+  position: relative
+  a
+    color: #c6b93b
+  .socialtext
+    margin-top: 7px
+  .tagline
+    margin-top: 10px
+  .links
+    margin-top: 10px
+    text-align: right
+
+.divider
+  height: 10px
+  margin: 0 10px
+  border-right: 1px solid #ccc
+
+/**
+ * Widgets
+
+.widgetColumn
+  min-height: 300px
+  -height: 300px
+  /* For IE6
+
+/* Drag-and-drop
+
+.draggable
+  .widgetHeader
+    height: 20px
+    cursor: move
+  .widgetTitle
+    float: left
+  .placeholder
+    border: 3px dotted #ccc
+
+.widget
+  .content
+    border-top: 1px solid #ccc
+  .buttons
+    float: right
+    .close, .settings, .fix
+      display: block
+      float: right
+      width: 12px
+      height: 12px
+      margin: 5px
+    .close:hover, .settings:hover, .fix:hover
+      filter: alpha(opacity = 70)
+      opacity: .7
+    .close
+      background: transparent url(/static/skin/starfish/images/icons/exit.png) no-repeat top left
+    .settings
+      background: transparent url(/static/skin/starfish/images/icons/tools.png) no-repeat top left
+    .fix
+      /* XXX
+
+/**
+ * Dropdowns
+
+ul
+  &#network-list, &#signal_network-list
+    width: 150px
+  &.dropdownOptions
+    position: absolute
+    display: none
+    z-index: 3500
+    /* above the signalthis iframe
+    display: block
+    background-color: #FFF
+    padding: 0
+    margin: 0
+    text-align: left
+    width: 100px
+    border: 1px solid black
+    border-top: none
+    li
+      display: block
+      list-style: none
+      margin: 0
+      padding: 3px
+      border-top: 1px solid black
+      overflow: hidden
+    a
+      color: #0E93D8
+      white-space: nowrap
+      /* Styles that are inherited in widgets:
+      font-size: 11px
+      font-family: arial, helvetica, sans-serif
+    li
+      &:hover, &.hover
+        background-color: #F4F0CB
+      &:hover a, &.hover a
+        text-decoration: underline
+      &.selected
+        background-color: #F4F0CB
+      &.disabled
+        background-color: #FFF
+        a
+          color: #CCC
+          cursor: default
+          text-decoration: none
+          &:hover
+            text-decoration: none
+
+/* Hovered option
+
+/* Selected option
+
+/* Disabled option
+
+/* Disabled option's link

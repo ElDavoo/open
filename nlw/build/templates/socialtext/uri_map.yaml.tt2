@@ -533,7 +533,9 @@
     '/data/accounts/:acct/theme':
         'GET':
             '*/*':              [Socialtext::Rest::AccountTheme, bad_type]
-            'application/json': [Socialtext::Rest::AccountTheme, GET_theme]
+            'application/json': [Socialtext::Rest::AccountTheme, GET_json]
+            'text/css':         [Socialtext::Rest::AccountTheme, GET_css]
+            'text/sass':        [Socialtext::Rest::AccountTheme, GET_sass]
         'PUT':
             '*/*':              [Socialtext::Rest::AccountTheme, bad_type]
             'application/json': [Socialtext::Rest::AccountTheme, PUT_theme]
@@ -681,11 +683,6 @@
             '*/*':     &default [Socialtext::Handler::JavaScript, GET]
         '*':                    [Socialtext::Handler::JavaScript, bad_method]
 -
-    '/st/theme/:account_id/style.css':
-        'GET':
-            '*/*':     &default [Socialtext::Handler::Theme, GET]
-        '*':                    [Socialtext::Handler::Theme, bad_method]
--
     '/settings/default_workspace':
         'GET':  
             '*/*': &default     [Socialtext::Rest::Settings::DefaultWorkspace, bad_type]
@@ -696,7 +693,7 @@
 -
     '/data/settings/theme':
         'GET':
-            'application/json': [Socialtext::Rest::SettingsTheme, GET_theme]
+            'application/json': [Socialtext::Rest::SettingsTheme, GET_json]
         'PUT':
             'application/json': [Socialtext::Rest::SettingsTheme, PUT_theme]
         '*':                    [Socialtext::Rest::SettingsTheme, bad_method]
@@ -708,12 +705,12 @@
 -
     '/data/themes':
         'GET':
-            'application/json': [Socialtext::Rest::Themes, GET_themes]
+            'application/json': [Socialtext::Rest::Themes, GET_all]
         '*':                    [Socialtext::Rest::Themes, bad_method]
 -
     '/data/themes/:theme':
         'GET':
-            'application/json': [Socialtext::Rest::Themes, GET_theme]
+            'application/json': [Socialtext::Rest::Themes, GET_json]
         '*':                    [Socialtext::Rest::Themes, bad_method]
 -
     '/data/themes/:theme/images/:filename':

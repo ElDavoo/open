@@ -33,7 +33,7 @@ sub _build_upload {
     return Socialtext::Upload->Get(attachment_id=>$id);
 }
 
-sub GET_themes {
+sub GET_all {
     my $self = shift;
     my $rest = shift;
 
@@ -45,7 +45,7 @@ sub GET_themes {
     return encode_json($hashes);
 }
 
-sub GET_theme {
+sub GET_json {
     my $self = shift;
     my $rest = shift;
 
