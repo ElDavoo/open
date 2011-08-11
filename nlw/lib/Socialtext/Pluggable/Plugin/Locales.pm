@@ -13,11 +13,11 @@ use constant read_only => 0; # cannot be disabled/enabled in the control panel
 sub register {
     my $class = shift;
 
-    $class->add_hook('template.usersettings.append' => 'usersettings');
+    $class->add_hook('template.st_settings.append' => 'st_settings');
     $class->add_hook("action.language_settings"   => \&language_settings);
 }
 
-sub usersettings {
+sub st_settings {
     my $self = shift;
 
     $self->challenge(type => 'settings_requires_account')
