@@ -18,6 +18,10 @@ jQuery(document).ready(function() {
     padding: 3px;
 }
 
+#settings-main hr {
+    margin: 20px 0px;
+}
+
 #settings-sidebar {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;

@@ -1,4 +1,4 @@
-<div class="grid_5 input-label">[% label %]</div>
+<div class="grid_5 input-label">[% label %]:</div>
 <div class="grid_7">
   <select name="[% pref %]">
     [% FOREACH format IN formats %]
