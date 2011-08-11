@@ -68,6 +68,8 @@ sub GET_create {
     my $vars = $self->_settings_vars();
     $vars->{section} = 'create';
 
+    my $create = $self->render_template('element/settings/create_workspace', $vars);
+    $vars->{main_content} = $create;
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->render_template('view/settings', $vars);
 }
