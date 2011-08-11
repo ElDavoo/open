@@ -137,13 +137,13 @@
 | st-widget-title-like | original | I'm new. What do I do? |
 
 | *Comment* | Test Case: New Default Dashboard TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --email %%ndd_user%% | removed |
 | st-admin | deactivate-user --email %%new_user%% | removed |
 | st-admin | deactivate-user --email %%newer_user%% | removed |
 | st-admin | deactivate-user --email %%newest_user%% | removed |
-
-| st-process-jobs |  |  |
 | delete-workspace | %%fake_central%% | Recklessly deleting workspace |
 | delete-workspace | %%central%% | Recklessly deleting workspace (Name: %%central%% |
+| delete-account | %%ndd_acct%% |  |
 
 | *Comment* | Test Case: New Default Dashboard COMPLETED |  |

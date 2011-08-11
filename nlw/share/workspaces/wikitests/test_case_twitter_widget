@@ -65,6 +65,7 @@
 | wait_for_text_present_ok | Your twitter username hasn't been added to your profile. Please click "Edit Profile" and enter your twitter username. | 30000 |
 
 | *Comment* | Test Case: Twitter Widget TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | delete-account | %%acct%% |  |
 

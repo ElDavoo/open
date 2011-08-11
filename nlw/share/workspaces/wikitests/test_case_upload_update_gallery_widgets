@@ -127,6 +127,7 @@
 | st-widget-title-like | boss_spy | Boss Spy |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-account | %%acct%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%mwgmail%% | been deactivated |
 

@@ -137,6 +137,7 @@ Note: Does not work in IE8. If done manually in IE8 it works fine, but when Sel 
 | text_unlike | //body | Zzz zz zz Zzzzzzzzzz |
 
 | *Comment* | Test Case: Settings: Custom Language TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-account | %%acct%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%custom_user%% | been removed |
 | delete-workspace | %%ws%% | Recklessly deleting |

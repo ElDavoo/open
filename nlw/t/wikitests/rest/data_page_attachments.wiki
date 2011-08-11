@@ -35,6 +35,7 @@
 # Sort Order, sleep to ensure that we don't get the same time.
 | POST    | %%url%%?name=Test.txt         | %%hdrs%% | Capital T test                |
 | code-is | 201                           |          |                               |
+| sleep   | 1                             |
 | POST    | %%url%%?name=another-test.txt | %%hdrs%% | Just trying Again big big big |
 | code-is | 201                           |          |                               |
 
