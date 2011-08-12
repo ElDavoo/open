@@ -10,6 +10,7 @@ use YAML;
 use File::chdir;
 use Jemplate;
 use FindBin;
+use Encode qw(encode_utf8 decode_utf8);
 use Compress::Zlib;
 use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
@@ -286,13 +287,12 @@ sub _file_to_text {
     for my $file (glob($part->{file})) {
         $class->_js_from_coffee($file);
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
-        $text .= slurp($file, binmode => ':utf8');
+        $text .= decode_utf8(slurp($file));
     }
 
     # Ensure text is UTF-8 compatible and without BOM marks
     $text =~ s/\x{FEFF}//g;
-    utf8::encode($text);
-    return $text;
+    return encode_utf8($text);
 }
 
 sub _template_to_text {
