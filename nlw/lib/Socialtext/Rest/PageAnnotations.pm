@@ -169,3 +169,20 @@ END_OF_TRAILER
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::PageAnnotations - CRUD for page annotations
+
+=head1 SYNOPSIS
+
+    GET    /data/workspaces/:ws/pages/:pgid/annotations
+    PUT    /data/workspaces/:ws/pages/:pgid/annotations
+    POST   /data/workspaces/:ws/pages/:pgid/annotations
+    DELETE /data/workspaces/:ws/pages/:pgid/annotations
+
+=head1 DESCRIPTION
+
+View and modify the annotations on a workspace page
+
+=cut

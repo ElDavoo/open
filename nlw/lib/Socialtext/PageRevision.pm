@@ -161,7 +161,7 @@ sub _build_anno_blob {
     my $blob;
     if (!$rev_id && $self->has_prev) {
         if ($self->prev->has_body_ref) {
-            $blob = ${$self->prev->anno_blob};
+            $blob = $self->prev->anno_blob;
         }
         else {
             $rev_id = $self->prev->revision_id;

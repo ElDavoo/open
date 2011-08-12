@@ -95,7 +95,6 @@ sub MergeAnnotations {
 sub RemoveNullAnnotations {
     my $annotations = shift;
 
-# [{"namespace":{"key1":"value1","key2":"value2"}}]
     my $i = 0;
     while ($i < scalar (@$annotations)) {
         my $no_null = 1;
@@ -126,3 +125,34 @@ sub RemoveNullAnnotations {
 
 1;
 
+__END__
+
+=head1 NAME
+
+Socialtext::Anotations - Annotation role for Socialtext objects
+
+=head1 SYNOPSIS
+
+A Moose role to add annotaion functionality to a class. Classes that use
+the role will likely need to add a lazy builder for anno_blob to fetch
+the value from storage.
+
+=head1 DESCRIPTION
+
+Moose role for Annotations. Supplies
+
+* annotations
+* annotation_triplets
+
+methods. Annotations are stored as json in the anno_blob field which is parsed
+as needed by annotations and annotation_triplets.
+
+=head1 AUTHOR
+
+Socialtext, C<< <code@socialtext.com> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2011 Socialtext, Inc. All Rights Reserved.
+
+=cut
