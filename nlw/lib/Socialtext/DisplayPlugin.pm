@@ -1,6 +1,6 @@
 # @COPYRIGHT@
 package Socialtext::DisplayPlugin;
-use strict;
+use 5.12.0;
 use warnings;
 
 use base 'Socialtext::Plugin';
@@ -80,9 +80,15 @@ sub new_page {
     $uri = $uri . ';caller_action=' . $self->cgi->caller_action
         if $self->cgi->caller_action;
 
-    if ($self->hub->current_workspace->enable_spreadsheet) {
-        $uri = $uri . ';page_type=' . $self->cgi->page_type
-            if $self->cgi->page_type;
+    given ($self->cgi->page_type) {
+        when ('spreadsheet') {
+            $uri .= ';page_type=' . $self->cgi->page_type
+                if $self->hub->current_workspace->enable_spreadsheet;
+        }
+        when ('xhtml') {
+            $uri .= ';page_type=' . $self->cgi->page_type
+                if $self->hub->current_workspace->enable_xhtml;
+        }
     }
 
     $uri = $uri . ';page_name=' . $page->uri . '#edit';
@@ -169,9 +175,8 @@ sub display {
             $start_in_edit_mode = 1;
         }
         my $page_type = $self->cgi->page_type || '';
-        $page->page_type(
-            $page_type eq 'spreadsheet' && 'spreadsheet' || 'wiki'
-        );
+        $page_type = 'wiki' unless $page_type ~~ ['spreadsheet', 'xhtml'];
+        $page->page_type( $page_type );
         push @new_tags, $self->_new_tags_to_add();
         if (my $template = $self->cgi->template) {
             my $tmpl_page = $self->hub->pages->new_from_name($template);
@@ -408,6 +413,7 @@ sub _get_page_info {
         incoming    => $self->hub->backlinks->all_backlinks_for_page($page),
         caller      => ($self->cgi->caller_action || ''),
         is_active   => $page->active,
+        is_xhtml => $page->is_xhtml,
         is_spreadsheet => $page->is_spreadsheet,
         Socialtext::BrowserDetect::safari()
                 ? (raw_wikitext => $page->content)

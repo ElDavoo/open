@@ -1,6 +1,7 @@
 [%# vim: set et sts=2 sw=2: %]
 [% IF !page_locked_for_user %]
 [% UNLESS page.is_spreadsheet && !current_workspace.enable_spreadsheet %]
+[% UNLESS page.is_xhtml && !current_workspace.enable_xhtml %]
 [% IF checker.check_permission('edit') %]
   <li class="flexButton">
     <a title="[% loc('info.edit') %]" id="st-edit-button-link[% id_suffix %]" class="editButton" href="#">
@@ -17,6 +18,7 @@
   <li class="flexButton" id="st-wikinav-register">
     <a title="[% loc('page.join-to-edit!') %]" class="editButton" href="/nlw/join.html?workspace_name=[% current_workspace.name%];redirect_to=[% current_workspace.uri %]">[% loc('page.join-to-edit') %]</a>
   </li>
+[% END %]
 [% END %]
 [% END %]
 [% END %]

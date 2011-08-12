@@ -468,6 +468,16 @@ $(function() {
         );
     }
 
+    var ckeditor_uri = nlw_make_plugin_path(
+        "/ckeditor/javascript/socialtext-ckeditor.js" + _gz
+    );
+    if (Socialtext.ckeditor_make_time) {
+        ckeditor_uri = ckeditor_uri.replace(
+            /(\d+\.\d+\.\d+\.\d+)/,
+            '$1.' + Socialtext.ckeditor_make_time
+        );
+    }
+
     function get_lightbox (lightbox, cb) {
         Socialtext.lightbox_loaded = Socialtext.lightbox_loaded || {};
         if (Socialtext.lightbox_loaded[lightbox]) {
@@ -758,9 +768,16 @@ $(function() {
 
     Socialtext.load_editor = function () {
         $.ajaxSettings.cache = true;
+
         if (Socialtext.page_type == 'spreadsheet' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_spreadsheet) {
             $.getScript(socialcalc_uri, function () {
                 Socialtext.start_spreadsheet_editor();
+                $('#bootstrap-loader').hide();
+            });
+        }
+        else if (Socialtext.page_type == 'xhtml' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_xhtml) {
+            $.getScript(ckeditor_uri, function () {
+                Socialtext.start_xhtml_editor();
                 $('#bootstrap-loader').hide();
             });
         }

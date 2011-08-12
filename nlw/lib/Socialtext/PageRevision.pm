@@ -21,7 +21,7 @@ use Socialtext::l10n;
 
 use namespace::clean -except => 'meta';
 
-enum 'PageType' => qw(wiki spreadsheet);
+enum 'PageType' => qw(wiki spreadsheet xhtml);
 
 has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref => 1);
 
