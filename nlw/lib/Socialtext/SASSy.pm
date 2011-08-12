@@ -107,6 +107,7 @@ sub render {
     shell_run(
         '/var/lib/gems/1.8/bin/sass',
         '-I', $self->skin_path . '/css', # Add sass files from starfish
+        '-t', 'compressed',
         $self->sass_file,
         $self->css_file,
     );
