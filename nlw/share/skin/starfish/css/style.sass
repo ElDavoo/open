@@ -57,38 +57,15 @@ h4
 
 /* padding
 
-.pad3
-  padding: 3px
-
-.vpad3
-  padding-top: 3px
-  padding-bottom: 3px
-
-.hpad3
-  padding-left: 3px
-  padding-right: 3px
-
-.pad5
-  padding: 5px
-
-.vpad5
-  padding-top: 5px
-  padding-bottom: 5px
-
-.hpad5
-  padding-left: 5px
-  padding-right: 5px
-
-.pad10
-  padding: 5px
-
-.vpad10
-  padding-top: 10px
-  padding-bottom: 10px
-
-.hpad10
-  padding-left: 10px
-  padding-right: 10px
+@for $i from 1 through 50
+  .pad#{$i}
+    padding: #{$i}px
+  .vpad#{$i}
+    padding-top: #{$i}px
+    padding-bottom: #{$i}px
+  .hpad#{$i}
+    padding-left: #{$i}px
+    padding-right: #{$i}px
 
 .superscript
   font-size: small
