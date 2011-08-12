@@ -206,5 +206,6 @@
 | delete-workspace | %%ws10%% | Recklessly deleting workspace |
 | delete-workspace | %%ws11%% | Recklessly deleting workspace |
 | delete-workspace | %%ws_noadmin%% | Recklessly deleting workspace |
+| delete-account | %%agw_acct%% |  |
 
 | *Comment* | Test Case: Associate Group With Workspace COMPLETED |  |

@@ -28,5 +28,13 @@
 | wait_for_element_visible_ok | link=%%acctX%% | 30000 |
 | text_like | //body | qr/%%acctAA%%.+%%acctA%%.+%%acctB%%.+%%acctE%%.+%%acctN%%.+%%acctX%%/ |
 
+| *Comment* | Test Case: Canadien Français (Accounts) TEARDOWN |  |
+| st-process-jobs |  |  |
+| delete-account | %%acctA%% |  |
+| delete-account | %%acctX%% |  |
+| delete-account | %%acctE%% |  |
+| delete-account | %%acctAA%% |  |
+| delete-account | %%acctB%% |  |
+| delete-account | %%acctN%% |  |
 
 | *Comment* | Test Case: Canadien Français (Accounts) COMPLETED |  |

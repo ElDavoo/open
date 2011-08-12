@@ -42,6 +42,9 @@
         if ($method_uri ~* ^GET[% rest_pattern %]) {
             set $cache_match $1;
         }
+        if ($http_cookie !~* "NLW-user=") {
+            set $cache_match "no-match";
+        }
         [%- END -%]
 
         if (-f [% config.cache_dir %]/[% cache_name %]/$cache_match[% file_suffix %]) {

@@ -89,6 +89,9 @@
 | text_like | //body | qr/%%tagAA%%.*%%tagA%%.*%%tagL%%.*%%tagM%%.*%%tagN%%.*%%tagX%%/ |
 
 | *Comment* | Test Case: Canadien Francais Tags TEARDOWN |  |
+| st-process-jobs |  |  |
+| deactivate-user | %%user%% |  |
 | st-admin | delete-workspace --no-export -w %%ws%% | has been deleted |
+| delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Canadien Francais Tags COMPLETED |

@@ -364,7 +364,7 @@ proto.showDuplicateLightbox = function(files, upload_callback) {
         files: files
     });
     $.showLightbox({
-        title: loc('Duplicate Files'),
+        title: loc('file.duplicate-files'),
         html: html
     });
 

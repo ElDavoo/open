@@ -158,10 +158,10 @@ sub _default_backend_https_port {
         : _default_devenv_backend_https_port();
 }
 sub _default_appliance_backend_https_port {
-    return _default_appliance_backend_http_port() + SSL_PORT_DIFFERENCE();
+    return _default_appliance_backend_http_port(); # No SSL_PORT_DIFFERENCE() anymore
 }
 sub _default_devenv_backend_https_port {
-    return _default_devenv_backend_http_port() + SSL_PORT_DIFFERENCE();
+    return _default_devenv_backend_http_port(); # No SSL_PORT_DIFFERENCE() anymore
 }
 
 1;

@@ -141,6 +141,7 @@
 | pause | %%pt%% |  |
 
 | *Comment* | WidgetShow TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%ws_user%% | been removed |
 | delete-group | %%group_id%% | Recklessly deleting |
 | delete-workspace | %%ws_wiki%% | Recklessly deleting |

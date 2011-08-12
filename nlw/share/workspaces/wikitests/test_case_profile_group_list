@@ -158,7 +158,7 @@
 | wait_for_text_present_ok | group not found | 30000 |
 
 | *Comment* | Test Case: Profile Group List TEARDOWN |  |
-| *Comment* | just did st-process-jobs |  |
+| st-process-jobs |  |  |
 | delete-group | %%user_group_id%% | Recklessly deleting |
 | delete-group | %%member_group_id%% | Recklessly deleting |
 | delete-group | %%group_a_id%% | Recklessly deleting |

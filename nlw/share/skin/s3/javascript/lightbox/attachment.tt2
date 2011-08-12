@@ -62,7 +62,7 @@
 [% END %]
 
 [% BLOCK duplicate_files %]
-    <div class="title" id="st-attachments-duplicates-title">[% loc('Duplicate Files') %]</div>
+    <div class="title" id="st-attachments-duplicates-title">[% loc('file.duplicate-files') %]</div>
     [% FOR file = files %]
         <div class="warning" style="margin: 5px 0">
             <input type="hidden" name="filename" value="[% file.name %]"/>

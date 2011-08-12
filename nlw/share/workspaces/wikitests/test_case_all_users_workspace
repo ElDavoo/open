@@ -158,6 +158,7 @@
 | wait_for_text_present_ok | %%auw_admin%% | 30000 |
 
 | *Comment* | Test Case: All Users Workspace TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-account | %%auw_acct%% | Recklessly deleting |
 | delete-workspace | %%auw_wiki%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%auw_user%% |  |

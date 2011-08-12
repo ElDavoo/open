@@ -55,6 +55,7 @@
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | *Comment* | Test Case: Active Members Empty Messages TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%empty_member%% |  |
 | delete-account | %%empty_acct%% |  |
 

@@ -76,6 +76,7 @@
 | verifyValue | desktop_highlight_color | #FFFDD3 |
 
 | *Comment* | Test Case: Custom Skin UI TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | delete-workspace | %%wiki%% | Recklessly deleting |
 | delete-account | %%acct%% | Recklessly deleting |

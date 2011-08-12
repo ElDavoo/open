@@ -160,5 +160,6 @@
 | st-process-jobs |  |  |
 | delete-group | %%group_id%% | Recklessly deleting group |
 | st-admin | deactivate-user --e %%just_a_member%% |  |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Group Home Has Widgets COMPLETED |  |
