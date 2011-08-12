@@ -598,6 +598,7 @@ Revision: $row->{revision_num}
 Type: $row->{page_type}
 Summary: $row->{summary}
 RevisionSummary: $row->{edit_summary}
+anno_blob: $row->{anno_blob}
 Encoding: utf8
 EOH
     print $fh "Locked: 1\n" if $row->{locked};
