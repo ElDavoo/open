@@ -4,7 +4,9 @@ Tests for page annotations via the REST API
 
 | Comment          | Test Setup    |                                    |
 | set              | username      | u%%start_time%%@ken.socialtext.net |
+| set              | orphan      | o%%start_time%%@ken.socialtext.net |
 | create-user      | %%username%%  | %%password%%                       |
+| create-user      | %%orphan%%  | %%password%%                       |
 | http-user-pass   | %%username%%  | %%password%%                       |
 | set              | workspace     | w%%start_time%%                    |
 | create-workspace | %%workspace%% |                                    |
@@ -80,3 +82,14 @@ Tests for page annotations via the REST API
 | json-parse      |                                           |                                                                     |
 | json-array-size | 0                                         |                                                                     |
 
+# No visibility so orhpan user should not be able to CRUD
+| Comment        | Page visbility permissions honoured       |                                                                     |
+| http-user-pass | %%orphan%%                                | %%password%%                                                        |
+| PUT-json       | %%workspace_url%%/pages/page3/annotations | [{"n1":{"key1":"value1","key2":"value2"}},{"n2":{"key1":"value1"}}] |
+| code-is        | 403                                       |                                                                     |
+| DELETE         | %%workspace_url%%/pages/page3/annotations |                                                                     |
+| code-is        | 403                                       |                                                                     |
+| GET-json       | %%workspace_url%%/pages/page3/annotations |                                                                     |
+| code-is        | 403                                       |                                                                     |
+| POST-json      | %%workspace_url%%/pages/page3/annotations | [{"namespace":{"key1":"value3","key2":"value2"}}]                   |
+| code-is        | 403                                       |                                                                     |
