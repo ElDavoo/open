@@ -173,7 +173,7 @@ sub _add_page_doc {
         (map { [ like => $_ ] } @$likes),
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
-   
+
     for my $triplet (@{ $page->annotation_triplets }) {
         push @fields, [annotation => lc join '|', @$triplet];
     }
