@@ -24,6 +24,7 @@ function is_reserved_pagename(pagename) {
     }
 }
 
+(function(){
 // Create a document.hasFocus function that tests whether we've lost focus
 var chrome = /chrome/.test( navigator.userAgent.toLowerCase() );
 if (typeof(document.hasFocus) == 'undefined' || chrome){
@@ -40,6 +41,7 @@ if (typeof(document.hasFocus) == 'undefined' || chrome){
     }
     document.hasFocus = function() { return focus }
 }
+})();
 
 /* DO NOT EDIT THIS FUNCTION! run dev-bin/generate-title-to-id-js.pl instead */
 function page_title_to_page_id (str) {
