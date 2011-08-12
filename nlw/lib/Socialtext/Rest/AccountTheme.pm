@@ -40,7 +40,7 @@ sub GET_css {
             -pragma               => undef,
             '-cache-control'      => undef,
             'Content-Disposition' => q{filename="style.css"},
-            '-X-Accel-Redirect'   => $sass->protected_uri('style.css'),
+            '-X-Accel-Redirect'   => $sass->protected_uri('account.css'),
         );
     });
 }
@@ -66,7 +66,7 @@ sub GET_sass {
             -pragma               => undef,
             '-cache-control'      => undef,
             'Content-Disposition' => q{filename="style.sass.txt"},
-            '-X-Accel-Redirect'   => $sass->protected_uri('style.sass'),
+            '-X-Accel-Redirect'   => $sass->protected_uri('account.sass'),
         );
     });
 }

@@ -41,8 +41,7 @@ has 'files' => (
 );
 sub _build_files {
     my $self = shift;
-    my $files = YAML::LoadFile($self->order_file);
-    return [ map { $self->skin_path . "/css/$_" } @$files ];
+    return [ glob($self->skin_path . '/css/*') ]
 }
 
 has 'dir' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
@@ -62,14 +61,14 @@ has 'sass_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 sub _build_sass_file {
     my $self = shift;
     mkpath $self->cache_dir unless -d $self->cache_dir;
-    return $self->cache_dir . "/style.sass";
+    return $self->cache_dir . "/account.sass";
 }
 
 has 'css_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 sub _build_css_file {
     my $self = shift;
     mkpath $self->cache_dir unless -d $self->cache_dir;
-    return $self->cache_dir . "/style.css";
+    return $self->cache_dir . "/account.css";
 }
 
 sub protected_uri {
@@ -100,23 +99,14 @@ sub render {
     for my $key (keys %$theme) {
         push @lines, "\$$key: $theme->{$key}\n";
     }
-
-    # File includes
-    my $cache_dir = $self->cache_dir;
-    for my $file ($self->files) {
-        my $basename = basename($file);
-        my $link = "$cache_dir/$basename";
-        unless (-l $link) {
-            symlink($file, $link) or die "Error creating $link: $!";
-        }
-        push @lines, "\@import $basename\n";
-    }
+    push @lines, "\@import style.sass\n";
 
     set_contents($self->sass_file, join('', @lines));
 
     $Socialtext::System::SILENT_RUN = 1;
     shell_run(
-        "/var/lib/gems/1.8/bin/sass",
+        '/var/lib/gems/1.8/bin/sass',
+        '-I', $self->skin_path . '/css', # Add sass files from starfish
         $self->sass_file,
         $self->css_file,
     );

@@ -1,6 +1,6 @@
 [% MACRO selected(type) IF type == container.type %] selected [% END %]
 
-<div class="container_24 globalNav">
+<div id="globalNav" class="container_24">
   <div class="[% selected('dashboard') %]grid_3 navGrid">
     <div class="navLink">
         <a class="dashboard" href="/st/dashboard">Dashboard</a>
