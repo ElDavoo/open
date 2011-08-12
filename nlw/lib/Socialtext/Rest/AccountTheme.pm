@@ -92,6 +92,10 @@ override 'if_valid_request' => sub {
         unless $self->account->user_can(
             user=>$self->rest->user,
             permission=>$permission,
+        )
+        or (
+            # Allow the guest user to see its theme
+            $self->rest->user->primary_account_id == $self->account->account_id
         );
 
     return $coderef->();
