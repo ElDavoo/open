@@ -6529,7 +6529,7 @@ msgstr "註冊號被停用。"
 
 #: lib/Socialtext/Handler/Base.pm:122 lib/Socialtext/Handler/ControlPanel.pm:52 lib/Socialtext/Rest.pm:62
 msgid "error.relogin"
-msgstr "登入會話已過期，請重新認証。"
+msgstr "登入階段已過期，請重新認証。"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:230
 msgid "error.remove-account-widget"
@@ -10614,7 +10614,7 @@ msgid "page.type-wiki"
 msgstr "頁面"
 
 msgid "page.type-xhtml"
-msgstr "Page (using new editor prototype)"
+msgstr "頁面（使用新版編輯器）"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -14922,4 +14922,4 @@ msgid "wikiwyg.widget"
 msgstr "插入一個小工具"
 
 msgid "xhtml.creating"
-msgstr "Creating a Page using new editor prototype..."
+msgstr "正在啟動新版編輯器建立頁面..."
