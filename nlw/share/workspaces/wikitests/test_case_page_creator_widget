@@ -18,8 +18,7 @@
 | create-group | %%pcw_grp%% | %%pcw_acct%% | %%pcw_user%% |
 | st-logoutin | %%pcw_user%% | %%password%% |  |
 
-| *Comment* | Test Case: Page Creator Widget check all widget galleries for widget |
-
+| *Comment* | Test Case: Page Creator Widget check all widget galleries for widget |  |
 | open_ok | /st/dashboard |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
 | click_and_wait | link=Add Widget |  |
@@ -48,10 +47,8 @@
 | wait_for_element_visible_ok | st-newpage-pagename-edit |  |
 | type_ok | st-newpage-pagename-edit | %%pcw_template_page%% |
 | click_ok | wikiwyg_wikitext_textarea |  |
-
 | set | pp | `%%` |
 | type_ok | wikiwyg_wikitext_textarea | %%pp%%dev%%pp%% |
-
 | click_ok | st-edit-mode-tagbutton |  |
 | wait_for_element_visible_ok | st-tagqueue-field | 30000 |
 | type_ok | st-tagqueue-field | story |
@@ -94,3 +91,20 @@
 | click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%pcw_template_page_suffix%%')] |  |
 | type_ok | PageTitle | %%pp%%type%%pp%%: %%pp%%title%%pp%% |
 | verifyValue | Title | Page Creator |
+
+| *Comment* | Test Case: Page Creator Widget verify the default "title" field |  |
+| text_like | qr/Field.+New Field/ |  |
+| wait_for_element_visible_ok | //input[@value='title'] | 30000 |
+| verifyValue | //input[@value='title'] | title |
+| wait_for_element_visible_ok | //select[@class='field-type'] | 30000 |
+| is_selected_ok | //select[@class='field-type'] | label=Single line |
+| text_like | Required |  |
+| is_checked_ok | //input[@class='field-required'] |  |
+| text_like | Tag with: |  |
+| st_unchecked_ok | //input[@class='field-tagged'] |  |
+
+| *Comment* | Test Case: Page Creator Widget create and fill out a "type" field |  |
+| type_ok | field-new | type |
+| click_ok | field-row-new |  |
+| wait_for_element_visible_ok | xpath=(//input[@value='title'])[2] | 30000 |
+| verifyValue | //input[@value='title'] | type |
