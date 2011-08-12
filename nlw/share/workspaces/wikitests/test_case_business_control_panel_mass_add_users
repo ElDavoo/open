@@ -13,7 +13,7 @@
 | wait_for_element_visible_ok | link=%%acct%% | 30000 |
 | click_and_wait | link=%%acct%% |  |
 
-| *Comment* | Test Case: Business Control Panel Mass Add Users Add Multiple Users |  |
+| *Comment* | Test Case: Business Control Panel Mass Add Users verify form page |  |
 | wait_for_element_visible_ok | link=Add Multiple Users | 30000 |
 | click_and_wait | link=Add Multiple Users |  |
 | wait_for_element_visible_ok | st-add-users-file | 30000 |
@@ -24,9 +24,17 @@
 | text_like | //body | Socialtext enables you to add multiple users to your account. To add multiple users, download the sample data file, and add your user data. Then upload the file here. Complete documentation about adding multiple users is available here |
 | text_like | //body | When adding/updating Users, you may also specify a series of optional restrictions to be placed on their User records. Until these restrictions have been satisfied and cleared, Users will be unable to log in to the system |
 
+| *Comment* | Test Case: Business Control Panel Mass Add Users Add Multiple Users |  |
+| wait_for_element_visible_ok | st-add-users-file | 10000 |
+| type_ok | st-add-users-file | %%wikitest_files%%wikitest.csv |
+| click_and_wait | st-add-users-submit |  |
 
-| *Comment* | Test Case: Business Control Panel Mass Add Users TEARDOWN |
+| *Comment* | Test case: Business Control Panel Mass Add Users verify Multiple Users |  |
+| wait_for_text_present_ok | Loaded users from wikitest.csv | 10000 |
+| wait_for_text_present_ok | Updated user | 10000 |
+
+| *Comment* | Test Case: Business Control Panel Mass Add Users TEARDOWN |  |
 | st-process-jobs |  |  |
 | delete-account | %%acct%% |  |
 
-| *Comment* | Test Case: Business Control Panel Mass Add Users COMPLETED |
+| *Comment* | Test Case: Business Control Panel Mass Add Users COMPLETED |  |

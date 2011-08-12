@@ -17,6 +17,12 @@ LikeIndicator.prototype = {
         $.extend(this, this._defaults, opts);
         this.others = this.isLikedByMe ? this.count - 1 : this.count;
         this.onlyFollows = true;
+        if (this.node) {
+            this.node.find('.like-indicator')
+                .removeClass('me')
+                .removeClass('others')
+                .addClass(this.className());
+        }
     },
 
     render: function ($node) {
@@ -93,10 +99,15 @@ LikeIndicator.prototype = {
             }
             var i = 0;
 
-            self.bubble.html(Jemplate.process('like-bubble', self));
-
             // Actions:
             var $node = self.bubble.contentNode;
+            if (!$node) {
+                self.bubble.createPopup();
+                $node = self.bubble.contentNode;
+            }
+
+            self.bubble.html(Jemplate.process('like-bubble', self));
+
             $node.find('.like-indicator').click(function() {
                 self.toggleLike();
                 return false;
@@ -137,6 +148,13 @@ LikeIndicator.prototype = {
             type: self.isLikedByMe ? 'DELETE' : 'PUT',
             data: "{}",
             success: function() {
+                if (window.signalsBuffer) {
+                    // Socialtext Desktop has a long-poll push-client and
+                    // so does not need immediate update, otherwise we
+                    // run into a race condition.
+                    return;
+                }
+
                 if (self.isLikedByMe) {
                     self.isLikedByMe = false;
                     self.count--;
