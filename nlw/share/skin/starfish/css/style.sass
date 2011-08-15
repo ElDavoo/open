@@ -4,6 +4,10 @@
 @import 960.sass
 @import 960_24_col.sass
 
+@mixin opacity($percent)
+  filter: alpha(opacity = $percent) // IE
+  opacity: ($percent / 100)
+
 body
   background: $background_color url(#{$skin}/images/background.png) $background_image_tiling $background_image_position
   font-size: 11px
@@ -29,8 +33,7 @@ a.button
   border: 1px solid #ccc
   background-color: $primary_color
   &:hover
-    filter: alpha(opacity = 70)
-    opacity: .7
+    @include opacity(70)
 
 /**
  * Headings
@@ -80,8 +83,7 @@ input
     display: block
     height: 0
     width: 0
-    opacity: 0
-    filter: alpha(opacity = 0)
+    @include opacity(0)
   &.initial
     color: #999
 
@@ -202,8 +204,7 @@ footer
       height: 12px
       margin: 5px
     .close:hover, .settings:hover, .fix:hover
-      filter: alpha(opacity = 70)
-      opacity: .7
+      @include opacity(70)
     .close
       background: transparent url(#{$skin}/images/icons/exit.png) no-repeat top left
     .settings
