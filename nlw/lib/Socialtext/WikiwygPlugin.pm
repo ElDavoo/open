@@ -77,18 +77,23 @@ sub wikiwyg_double_data {
     return {
         title => __('wiki.double-click-to-edit?'),
         binary => 1,
-        options => [ {setting => '1', display => loc('Yes'), default => 1} ],
+        options => [
+            {setting => '1', display => loc('Yes'), default => 1},
+            {setting => '0', display => loc('No')},
+        ],
     }
 }
 
 sub wikiwyg_double {
     my $self = shift;
+
     my $data = $self->wikisyg_double_data();
-    my $default = grep { defined($_->{default}) } $data->{options};
+    my ($choices, $default) = $self->_choices($data);
 
     my $p = $self->new_preference('wikiwyg_double');
     $p->query($data->{title});
-    $p->default($default->{setting}) if $default;
+    $p->type('boolean');
+    $p->default($default);
 
     return $p;
 }
