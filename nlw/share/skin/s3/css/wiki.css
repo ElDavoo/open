@@ -32,6 +32,11 @@
 .wiki td {
   line-height: 15px; }
 
+.xhtml p, .xhtml li {
+  line-height: normal !important; }
+.xhtml td {
+  line-height: normal !important; }
+
 #st-revision-display {
   font-size: 12px !important;
   line-height: 15px; }
