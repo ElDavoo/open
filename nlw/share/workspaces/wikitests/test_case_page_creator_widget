@@ -10,6 +10,7 @@
 | set | pcw_template_page_prefix | pcw |
 | set | pcw_template_page_suffix | template-page-%%start_time%% |
 | set | pcw_form_page | pcw-form-page-%%start_time%% |
+| set | pcw_created_page | pcw-created-page-%%start_time%% |
 
 | create-account | %%pcw_acct%% |  |  |
 | create-workspace | %%pcw_wiki%% | %%pcw_acct%% |  |
@@ -107,4 +108,101 @@
 | type_ok | field-new | type |
 | click_ok | field-row-new |  |
 | wait_for_element_visible_ok | xpath=(//input[@value='title'])[2] | 30000 |
-| verifyValue | //input[@value='title'] | type |
+| verifyValue | xpath=(//input[@value='title'])[2] | type |
+| wait_for_element_visible_ok | xpath=(//select[@class='field-type'])[2] | 30000 |
+| is_selected_ok | xpath=(//select[@class='field-type'])[2] | label=Single line |
+| st_unchecked_ok | xpath=(//input[@class='field-required'])[2] |  |
+| st_unchecked_ok | xpath=(//input[@class='field-tagged'])[2] |  |
+| check_ok | xpath=(//input[@class='field-required'])[2] |  |
+| is_checked_ok | xpath=(//input[@class='field-required'])[2] |  |
+| select_ok | xpath=(//select[@class='field-type'])[2] | label=Dropdown |
+| is_selected_ok | xpath=(//select[@class='field-type'])[2] | label=Dropdown |
+| wait_for_text_present_ok | Choices: | 30000 |
+| wait_for_element_visible_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[2] | 30000 |
+| type_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[2] | Story |
+| click_ok | xpath=(//input[@value='Add'])[2] |  |
+| check_ok | xpath=(//input[@class='field-required'])[2] |  |
+| is_checked_ok | xpath=(//input[@class='field-required'])[2] |  |
+| wait_for_element_visible_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[3] | 30000 |
+| pause | 5000 |  |
+
+*I can't get Sel to type into the second Choices: field, even though it can see it. Right now the test pauses long enough for me to type it in myself*
+type_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[3] | Tech Story |
+
+| click_ok | xpath=(//input[@title='Make this choice pre-selected.'])[2] |  |
+
+
+| *Comment* | Test Case: Page Creator Widget create and fill out a "dev" field |  |
+| click_ok | field-row-new |  |
+| wait_for_element_visible_ok | xpath=(//input[@value='title'])[3] | 30000 |
+| type_ok | xpath=(//input[@value='title'])[3] | dev |
+| is_selected_ok | xpath=(//select[@class='field-type'])[3] | label=Single line |
+| select_ok | xpath=(//select[@class='field-type'])[3] | label=Multiple lines |
+| is_selected_ok | xpath=(//select[@class='field-type'])[3] | label=Multiple lines |
+| check_ok | xpath=(//input[@class='field-tagged'])[3] |  |
+| is_checked_ok | xpath=(//input[@class='field-tagged'])[3] |  |
+| wait_for_element_visible_ok | xpath=(//input[@id='tagPrefix-fixed'])[3] | 30000 |
+| type_ok | xpath=(//input[@id='tagPrefix-fixed'])[3] | dev: |
+
+| *Comment* | Test Case: Page Creator Widget save the widget and page |  |
+| wait_for_element_visible_ok | link-save | 30000 |
+| click_ok | link-save-bottom |  |
+| wait_for_text_present_ok | Workspace: %%pcw_wiki%% | 30000 |
+| select-frame | relative=parent |  |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
+| click_ok | st-widget-opensocial-setup-save |  |
+
+*Something about the WAFL code is not matching up. Maybe it's just too long? Or the page breaks are messing it up?*
+wait_for_text_present_ok | `widget WAFL code goes here` | 20000 |
+
+| st-page-save |  |  |
+
+| *Comment* | Test Case: Page Creator Widget use the widget to create a page |  |
+| wait_for_text_present_ok | Page Creator | 30000 |
+| pause | 5000 |  |
+| selectFrame | //iframe[@class='widgetWindow'] |  |
+
+*When manually tested, the error message popup comes up properly. But inside Sel, it just brings up a blank new browser window*
+wait_for_element_visible_ok | link-create-page | |
+click_ok | link-create-page | |
+pause | 5000 | |
+verifyConfirmation | Required field missing: title | |
+
+| is_selected_ok | var-type | label=Story |
+| select_ok | var-type | label=Tech Story |
+| is_selected_ok | var-type | label=Tech Story |
+| type_ok | var-title | %%pcw_created_page%% |
+| keyPress | var-dev | D |
+| keyPress | var-dev | a |
+| keyPress | var-dev | v |
+| keyPress | var-dev | i |
+| keyPress | var-dev | d |
+| keyPress | var-dev | \013 |
+| keyPress | var-dev | K |
+| keyPress | var-dev | e |
+| keyPress | var-dev | n |
+| click_ok | link-create-page |  |
+
+| *Comment* | Test Case: Page Creator Widget verify the created page |  |
+| pause | 10000 |  |
+| selectWindow | Untitled Page / %%pcw_wiki%% |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | st-newpage-pagename-edit |  |
+| verifyValue | st-newpage-pagename-edit | Tech Story: %%pcw_created_page%% |
+| st-page-save |  |  |
+| text_like | st-page-titletext | Tech Story: %%pcw_created_page%% |
+| text_like | st-page-content | David |
+| text_like | st-page-content | Ken |
+| text_like | st-tags-listing | dev:David |
+| text_like | st-tags-listing | dev:Ken |
+| text_like | st-tags-listing | story |
+
+| *Comment* | Test Case: Page Creator Widget TEARDOWN |  |
+| st-process-jobs |  |  |
+| deactivate-user | %%pcw_user%% |  |
+| delete-group | %%group_id%% |  |
+| delete-workspace | %%pcw_wiki%% |  |
+| delete-account | %%pcw_acct%% |  |
