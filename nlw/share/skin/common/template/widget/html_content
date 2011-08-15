@@ -1,5 +1,5 @@
 <link rel="stylesheet" type="text/css" href="[% share('widgets') %]/css/widget.css" media="screen" />
-<script charset="utf-8" type="text/javascript" src="[% share('widgets') %]/javascript/socialtext-gadget.js.gz"></script>
+<script charset="utf-8" type="text/javascript" src="[% wiki.static_path %]/skin/common/javascript/socialtext-gadget.js.gz"></script>
 <script charset="utf-8" type="text/javascript" src="[% wiki.static_path %]/skin/s3/javascript/l10n-__MSG_LANG__.js.gz"></script>
 
 <style> 
