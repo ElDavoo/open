@@ -1904,6 +1904,10 @@ sub _to_plain_text {
         return $self->_to_spreadsheet_plain_text($content_ref);
     }
 
+    if ($self->is_xhtml) {
+        return $self->_to_xhtml_plain_text($content_ref);
+    }
+
     # Why not go through the chunker? it's slower than returning when you use
     # a 'my' variable in-between.
     if (length $$content_ref < CHUNK_IT_UP_SIZE) {
@@ -1935,6 +1939,17 @@ sub _to_spreadsheet_plain_text {
         sheet => Socialtext::Sheet->new(sheet_source => $content_ref),
         hub   => $self->hub,
     )->sheet_to_text();
+}
+
+sub _to_xhtml_plain_text {
+    my $self = shift;
+    my $content_ref = shift;
+    require Socialtext::XHTML;
+    require Socialtext::XHTML::Renderer;
+    return Socialtext::XHTML::Renderer->new(
+        xhtml => Socialtext::XHTML->new(xhtml_source => $content_ref),
+        hub   => $self->hub,
+    )->xhtml_to_text();
 }
 
 # REVIEW: We should consider throwing exceptions here rather than return codes.
@@ -2134,7 +2149,7 @@ sub send_as_email {
     my $body_content;
 
     my $make_body_content = sub {
-        if ($self->is_spreadsheet) {
+        if ($self->is_spreadsheet or $self->is_xhtml) {
             my $content = $self->to_absolute_html();
             return $content unless $p{body_intro} =~ /\S/;
             my $intro = $self->hub->viewer->process($p{body_intro}, $self);
