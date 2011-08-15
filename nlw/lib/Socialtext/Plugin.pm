@@ -64,6 +64,16 @@ sub class_title {
     return $title;
 }
 
+sub _choices {
+    my $self = shift;
+    my $data = shift;
+
+    my $default = grep { $_->{default} } @{$data->{options}};
+    my @choices = map { $_->{setting} => $_->{display} } @{$data->{options}};
+
+    return (\@choices, $default);
+}
+
 sub new {
     my $class = shift;
     return $class if ref $class;

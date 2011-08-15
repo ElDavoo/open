@@ -263,16 +263,6 @@ sub _set_default {
     return $options;
 }
 
-sub _choices {
-    my $self = shift;
-    my $data = shift;
-
-    my $default = grep { $_->{default} } @{$data->{options}};
-    my @choices = map { $_->{setting} => $_->{display} } @{$data->{options}};
-
-    return (\@choices, $default);
-}
-
 sub _default_timezone {
     my $self = shift;
     my $locale = shift || $self->hub->best_locale;

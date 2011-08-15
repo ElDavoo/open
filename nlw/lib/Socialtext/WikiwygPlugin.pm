@@ -58,13 +58,39 @@ sub register {
     $registry->add(action => 'wikiwyg_dff_diff');
     $registry->add(action => 'wikiwyg_diff');
     $registry->add(action => 'wikiwyg_html');
-    $registry->add(preference => $self->wikiwyg_double);
     $registry->add(wafl => wikiwyg_formatting_test =>
                    'Socialtext::Wikiwyg::FormattingTest');
     $registry->add(wafl => wikiwyg_formatting_test_run_all =>
                    'Socialtext::Wikiwyg::FormattingTestRunAll');
     $registry->add(wafl => wikiwyg_data_validator =>
                    'Socialtext::Wikiwyg::DataValidator');
+
+    $self->_register_prefs($registry);
+}
+
+sub pref_names {
+    return qw(wikiwyg_double);
+}
+
+sub wikiwyg_double_data {
+    my $self = shift;
+    return {
+        title => __('wiki.double-click-to-edit?'),
+        binary => 1,
+        options => [ {setting => '1', display => loc('Yes'), default => 1} ],
+    }
+}
+
+sub wikiwyg_double {
+    my $self = shift;
+    my $data = $self->wikisyg_double_data();
+    my $default = grep { defined($_->{default}) } $data->{options};
+
+    my $p = $self->new_preference('wikiwyg_double');
+    $p->query($data->{title});
+    $p->default($default->{setting}) if $default;
+
+    return $p;
 }
 
 sub wikiwyg_html {
