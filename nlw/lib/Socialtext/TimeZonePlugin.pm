@@ -63,93 +63,86 @@ sub register {
     $registry->add( preference => $self->time_display_seconds );
 }
 
-sub timezone_options {
+
+sub pref_names {
+    return qw(
+        timezone dst date_display_format
+        time_display_12_24 time_display_seconds
+    )
+}
+
+sub timezone_data {
     my $self = shift;
 
     my $zones = $self->zones;
-    return [
-        map { +{setting => $_, display => $zones->{$_}} }
-            sort keys %$zones 
+    my $default = $self->_default_timezone;
+
+    my $options = [
+        map { +{setting => $_, display => $zones->{$_}} } sort keys %$zones
     ];
+    $self->_set_default($default => $options);
+
+    return {
+        title => __('config.time-zone?'),
+        options => $options,
+    };
 }
 
 sub timezone {
-    my $self   = shift;
-    my $locale = $self->hub->best_locale;
-    my $p      = $self->new_preference('timezone');
-    $p->query( __('config.time-zone?') );
+    my $self = shift;
+
+    my $data = $self->timezone_data;
+    my ($choices, $default) = $self->_choices($data);
+    my $p = $self->new_preference('timezone');
+
+    $p->query($data->{title});
     $p->type('pulldown');
-    my $zones = $self->zones;
-    my $choices = [ map { $_ => $zones->{$_} } sort keys %$zones ];
     $p->choices($choices);
-    $p->default( $self->_default_timezone($locale) );
+    $p->default($default);
+
     return $p;
 }
 
-sub _default_timezone {
-    my $self = shift;
-    my $locale = shift;
-    if ( $locale eq 'ja' ) {
-        return '+0900';
-    }
-    else {
-        return '-0800';
-    }
-}
-
-sub dst_options {
+sub dst_data {
     my $self = shift;
 
-    my $choices = [
+    my $default = $self->_default_dst;
+    my $options = [
         {setting => 'on', display => __('tz.dst-yes')},
         {setting => 'off', display => __('tz.dst-no')},
         {setting => 'auto-us', display => __('tz.auto-us')},
         {setting => 'never', display => __('tz.dst-never')},
     ];
+    $self->_set_default($default => $options);
 
+    return {
+        title => __('tz.dst?'),
+        options => $options,
+    };
 }
 
 sub dst {
     my $self = shift;
-    my $p    = $self->new_preference('dst');
 
-    $p->query( __('tz.dst?') );
+    my $data = $self->dst_data;
+    my ($choices, $default) = $self->_choices($data);
+    my $p = $self->new_preference('dst');
+    $p->query($data->{title});
     $p->type('pulldown');
-    my $choices = [
-        'on'      => __('tz.dst-yes'),
-        'off'     => __('tz.dst-no'),
-        'auto-us' => __('tz.auto-us'),
-        'never'   => __('tz.dst-never'),
-    ];
     $p->choices($choices);
-
-
-    my $locale = $self->hub->best_locale;
-    $p->default( $self->_default_dst($locale) );
+    $p->default($default);
 
     return $p;
 }
 
-sub _default_dst {
-    my $self   = shift;
-    my $locale = shift;
-
-    # Only assume DST is "automatic" if the locale is English.
-    if ( $locale and $locale eq 'en' ) {
-        return 'auto-us';
-    }
-    else {
-        return 'never';
-    }
-}
-
-sub date_display_options {
+sub date_display_format_data {
     my $self = shift;
 
     my $time = $self->_now;
     my $locale = $self->hub->best_locale;
-    my @raw = Socialtext::Date::l10n->get_all_format_date($locale);
+    my $default = $self->_default_date_display_format;
 
+    my @raw = Socialtext::Date::l10n->get_all_format_date($locale);
     my @options = ();
     for my $possible (@raw) {
         next if $possible eq 'default';
@@ -160,50 +153,41 @@ sub date_display_options {
             display => $display_time,
         };
     }
+    $self->_set_default($default => \@options);
 
-    return \@options;
+    return {
+        title => __('date.format?'),
+        options => \@options,
+    };
 }
+
 sub date_display_format {
     my $self   = shift;
 
-    my $p = $self->new_dynamic_preference('date_display_format');
-    $p->query( __('date.format?') );
-    $p->type('pulldown');
+    my $data = $self->date_display_format_data;
+    my ($choices, $default) = $self->_choices($data);
 
-    my $time = $self->_now;
-    my $hub = $self->hub;
+    my $p = $self->new_dynamic_preference('date_display_format');
+    $p->query($data->{title});
+    $p->type('pulldown');
     $p->choices_callback(sub {
         my $p = shift;
-        my $choices = [];
-        my $locale = $p->hub->best_locale;
-        my @formats = Socialtext::Date::l10n->get_all_format_date($locale);
-        my $default_pattern = Socialtext::Date::l10n->get_date_format(
-            $locale, 'default')->pattern;
-        for (@formats) {
-            if ( $_ eq 'default' ) {
-                next;
-            }
-            my $format = Socialtext::Date::l10n->get_date_format($locale, $_);
-            if ($format->pattern eq $default_pattern) {
-                $p->default($_);
-            }
-            push @{$choices}, $_;
-            push @{$choices},
-            $self->_get_date( $time, $_, $locale );
-        }
+
+        $p->default($default);
         return $choices;
     });
 
     return $p;
 }
 
-sub time_display_options {
+sub time_display_12_24_data {
     my $self = shift;
 
     my $time = $self->_now;
     my $locale = $self->hub->best_locale;
-    my @raw = Socialtext::Date::l10n->get_all_format_time($locale);
+    my $default = $self->_default_time_display_12_24;
 
+    my @raw = Socialtext::Date::l10n->get_all_format_time($locale);
     my @options = ();
     for my $possible (@raw) {
         next if $possible eq 'default';
@@ -214,59 +198,135 @@ sub time_display_options {
             display => $display_time,
         };
     }
+    $self->_set_default($default => \@options);
 
-    return \@options;
+    return {
+        title => __('date.hour-format?'),
+        options => \@options,
+    };
 }
 
 sub time_display_12_24 {
     my $self   = shift;
-    my $p      = $self->new_dynamic_preference('time_display_12_24');
-    $p->query(
-        __('date.hour-format?') );
 
-    my $time = $self->_now;
+    my $data = $self->time_display_12_24_data;
+    my ($choices, $default) = $self->_choices($data);
+
+    my $p = $self->new_dynamic_preference('time_display_12_24');
+    $p->query($data->{title});
     $p->type('pulldown');
     $p->choices_callback( sub {
         my $p = shift;
-        my $locale = $p->hub->best_locale;
-        my @formats
-            = Socialtext::Date::l10n->get_all_format_time($locale);
-        my $default_pattern = Socialtext::Date::l10n->get_time_format(
-            $locale, 'default')->pattern;
-        my $choices = [];
-        for (@formats) {
-            if ( $_ eq 'default' ) {
-                next;
-            }
-            my $fmt = Socialtext::Date::l10n->get_time_format($locale, $_);
-            if ($fmt->pattern eq $default_pattern) {
-                $p->default($_);
-            }
-            push @{$choices}, $_;
-            push @{$choices}, $self->_get_time( $time, $_, $locale );
-        }
+
+        $p->default($default);
         return $choices;
     });
 
     return $p;
 }
 
-sub seconds_options {
+sub time_display_seconds_data {
     my $self = shift;
     
-    return [
-        {setting => '1', display => loc('Yes')},
-        {setting => '0', display => loc('No')},
-    ];
+    return {
+        title => __('date.include-seconds?'),
+        options => [
+            {setting => '1', display => loc('Yes')},
+            {setting => '0', display => loc('No'), default => 1},
+        ],
+    };
 }
 
 sub time_display_seconds {
     my $self = shift;
-    my $p    = $self->new_preference('time_display_seconds');
-    $p->query( __('date.include-seconds?') );
+
+    my $data = $self->time_display_seconds_data;
+    my ($choices, $default) = $self->_choices($data);
+
+    my $p = $self->new_preference('time_display_seconds');
+    $p->query($data->{title});
     $p->type('boolean');
-    $p->default(0);
+    $p->default($default);
+
     return $p;
+}
+sub _set_default {
+    my $self = shift;
+    my $default = shift;
+    my $options = shift;
+
+    for my $option (@$options) {
+        $option->{default} = 1 if $default eq $option->{setting};
+    }
+
+    return $options;
+}
+
+sub _choices {
+    my $self = shift;
+    my $data = shift;
+
+    my $default = grep { $_->{default} } @{$data->{options}};
+    my @choices = map { $_->{setting} => $_->{display} } @{$data->{options}};
+
+    return (\@choices, $default);
+}
+
+sub _default_timezone {
+    my $self = shift;
+    my $locale = shift || $self->hub->best_locale;
+
+    if ( $locale eq 'ja' ) {
+        return '+0900';
+    }
+    else {
+        return '-0800';
+    }
+}
+
+sub _default_dst {
+    my $self   = shift;
+    my $locale = shift || $self->hub->best_locale;
+
+    # Only assume DST is "automatic" if the locale is English.
+    if ( $locale and $locale eq 'en' ) {
+        return 'auto-us';
+    }
+    else {
+        return 'never';
+    }
+}
+
+sub _default_date_display_format {
+    my $self = shift;
+    my $loc = shift || $self->hub->best_locale;
+
+    my $d = Socialtext::Date::l10n->get_date_format($loc, 'default')->pattern;
+
+    my ($format) = grep {
+         $_ ne 'default' &&
+             Socialtext::Date::l10n->get_date_format($loc, $_)->pattern eq $d
+    } Socialtext::Date::l10n->get_all_format_date($loc);
+
+    die "couldn't load a default date_display_format" unless $format;
+
+    return $format;
+}
+
+sub _default_time_display_12_24 {
+    my $self = shift;
+    my $loc = shift || $self->hub->best_locale;
+
+    my $d = Socialtext::Date::l10n->get_time_format($loc, 'default')->pattern;
+
+    my ($format) = grep {
+         $_ ne 'default' && 
+             Socialtext::Date::l10n->get_time_format($loc, $_)->pattern eq $d
+    } Socialtext::Date::l10n->get_all_format_time($loc);
+
+    die "couldn't load a default time_display_12_24" unless $format;
+
+    return $format;
 }
 
 sub _timezone_offset {
