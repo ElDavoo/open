@@ -39,9 +39,12 @@ sub st_settings {
         'element/settings/language_settings_section',
         plugin => {
             locales => {
-                user => {locale => $locale},
-                locale => \@locales,
+                locale =>  {
+                    title => loc('Display Language'),
+                    options => \@locales,
+                },
             },
+            settings => {locales => {locale => $locale} },
         },
     );
 }

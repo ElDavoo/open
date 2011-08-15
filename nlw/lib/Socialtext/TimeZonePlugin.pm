@@ -230,6 +230,7 @@ sub time_display_seconds_data {
     
     return {
         title => __('date.include-seconds?'),
+        binary => 1,
         options => [
             {setting => '1', display => loc('Yes')},
             {setting => '0', display => loc('No'), default => 1},

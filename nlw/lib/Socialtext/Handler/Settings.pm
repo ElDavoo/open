@@ -1,11 +1,20 @@
 package Socialtext::Handler::Settings;
 use Moose;
-use Socialtext::Permission qw(ST_ADMIN_WORKSPACE_PERM);
+use Socialtext::Permission qw(ST_ADMIN_WORKSPACE_PERM ST_READ_PERM);
+use Socialtext::PreferencesPlugin;
 use Socialtext::l10n qw(loc);
 use namespace::clean -except=>'meta';
 
 with 'Socialtext::Handler::Base';
 extends 'Socialtext::Rest::Entity';
+
+has 'space' => (
+    is => 'ro', isa => 'Maybe[Socialtext::Workspace]', lazy_build => 1);
+
+sub _build_space {
+    my $self = shift;
+    return Socialtext::Workspace->new(workspace_id => $self->workspace_id);
+}
 
 sub if_authorized_to_view {
     my $self = shift;
@@ -32,20 +41,23 @@ sub get_html {
     $vars->{section} = 'global';
     $vars->{can_update_store} = $user->can_update_store;
 
-    my $timezone = $self->hub->timezone;
-    my $zones = $timezone->zones;
-    $vars->{prefs}{time} = {
-        user => $prefs->{timezone},
-        zones => $timezone->timezone_options,
-        formats => $timezone->date_display_options,
-        dst => $timezone->dst_options,
-        times_12_24 => $timezone->time_display_options,
-        times_seconds => $timezone->seconds_options,
-    };
+    my $set = $self->_get_pref_set('timezone');
+    $vars->{prefs} = $self->_get_pref_set('timezone');
+    $vars->{settings} = $user->prefs->all_prefs;
 
     my $global = $self->render_template('element/settings/global', $vars);
     $vars->{main_content} = $global;
     return $self->render_template('view/settings', $vars);
+}
+
+sub _get_pref_set {
+    my $self = shift;
+    my @indexes = @_;
+
+    my $prefs = {};
+    $prefs->{$_} = $self->hub->$_->pref_data() for @indexes;
+
+    return $prefs;
 }
 
 around 'GET_space' => \&wrap_get;
@@ -53,8 +65,26 @@ sub GET_space {
     my $self = shift;
     my $rest = shift;
 
+    my $user = $self->rest->user;
+    my $space = $self->space;
+    return $self->error(loc('Not Found')) unless $space;
+    return $self->error(loc('Not Authorized')) unless $space->user_can(
+        user => $user,
+        permission => ST_READ_PERM,
+    );
+
     my $vars = $self->_settings_vars();
     $vars->{section} = 'space';
+
+    $vars->{prefs} = $self->_get_pref_set('wikiwyg');
+    my $p = Socialtext::PreferencesPlugin->Workspace_user_prefs($user, $space);
+    $vars->{settings} = $p;
+
+    my $template = 'element/settings/'. $self->pref;
+    my $content = eval { $self->render_template($template, $vars) };
+    warn $@ if $@;
+    return $self->error(loc('Not Found')) unless $content;
+    $vars->{main_content} = $content;
 
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->render_template('view/settings', $vars);
