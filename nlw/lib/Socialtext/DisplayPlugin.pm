@@ -176,7 +176,8 @@ sub display {
         if (my $template = $self->cgi->template) {
             my $tmpl_page = $self->hub->pages->new_from_name($template);
             if ($tmpl_page->exists) {
-                push @new_tags, grep { $_ !~ /^template$/i }
+                my @template_tags = (lc('template'), lc(loc('tag.template')));
+                push @new_tags, grep { not( lc($_) ~~ @template_tags ) }
                                 @{ $tmpl_page->tags };
                 if ($page->mutable) {
                     $page->content($tmpl_page->content);
@@ -248,11 +249,7 @@ sub _render_display {
     $self->hub->breadcrumbs->drop_crumb($page);
     $self->hub->hit_counter->hit_counter_increment;
 
-    my $cookies = Apache::Cookie->fetch();
-    my $st_page_accessories = (
-        $cookies && $cookies->{'st-page-accessories'} &&
-        $cookies->{'st-page-accessories'}->value
-    ) || 'show';
+    my $st_page_accessories = Apache::Cookie->fetch('st-page-accessories') || 'show';
 
     my ($attachments, $new_attachments) =
         part { $_->{is_temporary} ? 1 : 0 } 

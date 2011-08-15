@@ -114,25 +114,13 @@ sub Workspace_user_prefs {
 sub Global_user_prefs {
     my $class_or_self = shift;
     my $user          = shift;
-    my $email         = $user->email_address;
 
-    my $cache_key = join ':', 'global-prefs', $email;
+    my $cache_key = join ':', 'global-prefs', $user->email_address;
     my $cache = $class_or_self->_cache;
     my $cached_values = $cache->get($cache_key);
     return $cached_values if $cached_values;
 
-    my $blob = sql_singlevalue(qq{
-        SELECT pref_blob
-          FROM user_pref
-         WHERE user_id = ?
-    }, $user->user_id);
-    return {} unless $blob;
-
-    my $prefs = eval { decode_json($blob) };
-    if (my $e = $@) { 
-        st_log->error("failed to load global prefs blob '$email': $@");
-        return {};
-    }
+    my $prefs = $user->prefs->all_prefs();
    
     $cache->set($cache_key => $prefs);
     return $prefs;
@@ -185,16 +173,7 @@ sub Store_global_user_prefs {
     my $user          = shift;
     my $prefs         = shift;
 
-    my $json = encode_json($prefs);
-    sql_txn {
-        sql_execute(qq{
-            DELETE FROM user_pref WHERE user_id = ?
-        }, $user->user_id);
-
-        sql_execute(qq{
-            INSERT INTO user_pref (user_id, pref_blob) VALUES (?, ?)
-        }, $user->user_id, $json);
-    };
+    $user->prefs->save($prefs);
     $class_or_self->_cache->clear();
 }
 

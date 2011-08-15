@@ -31,7 +31,7 @@
 | click_and_wait | st-duplicate-savelink |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |
-| location_like | `/%%workspace%%/Page_Duplicated_%%start_time%%` |  |
+| location_like | `/%%workspace%%/page_duplicated_%%start_time%%` |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | Duplicate This Tag %%start_time%% |
 | wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |
@@ -72,7 +72,7 @@
 | click_and_wait | st-duplicate-savelink |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. verify 2nd duplicate using space-containing URL |  |
-| location_like | `/%%workspace%%/Page_Duplicated_%%start_time%%` |  |
+| location_like | `/%%workspace%%/page_duplicated_%%start_time%%` |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. verify duplicate of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_duplicated_%%start_time%% |  |

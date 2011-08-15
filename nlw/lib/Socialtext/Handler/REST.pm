@@ -1,7 +1,7 @@
 package Socialtext::Handler::REST;
 # @COPYRIGHT@
 
-use strict;
+use 5.12.0;
 use warnings;
 
 use base 'REST::Application::Routes';
@@ -22,6 +22,7 @@ use Socialtext::Log qw(st_timed_log);
 use Socialtext::Timer;
 use Socialtext::CGI::Scrubbed;
 use Carp qw( croak );
+use URI::Escape qw( uri_unescape );
 
 Readonly my $AUTH_MAP => 'auth_map.yaml';
 Readonly my $AUTH_INFO_DEFAULTS => {
@@ -132,11 +133,11 @@ sub real_handler {
 
     my $handler = __PACKAGE__->new( request => $r, user => $user );
     Socialtext::Timer->Continue('handler_run');
-    $handler->run();
+    my $rv = $handler->run();
     Socialtext::Timer->Pause('handler_run');
 
     $class->log_timings($handler);
-    return OK;
+    return ($handler, $rv);
 }
 
 # record to st_timed_log a record of how long this
@@ -243,7 +244,11 @@ sub log_timings {
 
 sub loadResource {
     my ($self, $path, @extraArgs) = @_;
+
     $path ||= $self->getMatchText();
+    $path = uri_unescape(URI->new($path)->path);
+    $path = Encode::decode_utf8(Encode::encode(latin1 => $path));
+
     my $handler = sub { $self->defaultResourceHandler(@_) };
     my %vars;
 
@@ -300,7 +305,7 @@ sub run {
     }
 
     # Get the headers and then add the representation to to the output stream.
-    my $output = $self->getHeaders();
+    my $output = ''; # $self->getHeaders();
     $self->addRepresentation($repr, \$output);
 
     # Send the output unless we're told not to by the environment.
@@ -321,8 +326,10 @@ sub run {
 sub new {
     my ($proto, %args) = @_;
     my $class = ref($proto) ? ref($proto) : $proto;
+    state $query;
+    $query = $args{query} // $query // do { require CGI; CGI->new };
     my $self = bless(
-        { __defaultQuery => Socialtext::CGI::Scrubbed->new() },
+        { __query => $query },
         $class,
     );
     $self->setup(%args);
@@ -562,7 +569,7 @@ sub _getContent {
 
 sub user        { $_[0]->{_user} }
 sub request     { $_[0]->{_request} }
-sub getPathInfo { decode_utf8( $_[0]->request->uri ) }
+sub getPathInfo { $_[0]->request->uri }
 
 sub do_test {
 }

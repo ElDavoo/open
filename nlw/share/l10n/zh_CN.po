@@ -120,6 +120,9 @@ msgstr "标志已移除。默认即时可见。"
 msgid "account.renamed=old,new"
 msgstr "%1 帐户已重命名为 %2"
 
+msgid "account.settings-updated"
+msgstr "帐户设置已更新"
+
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:562
 msgid "account.skip-missing=plugin"
@@ -226,6 +229,12 @@ msgstr "所有共享群组"
 msgid "activities.attach-file"
 msgstr "添加附件"
 
+msgid "activities.by-you"
+msgstr "来自您"
+
+msgid "activities.by=user"
+msgstr "来自 %1"
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
 msgid "activities.click-to-collapse"
 msgstr "（点击此处收回）"
@@ -318,6 +327,9 @@ msgstr "我关注的人"
 #: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "来自"
+
+msgid "activities.info-using-wikilink-popup"
+msgstr "请先输入工作区名称的一部分，再从出现的列表中选择工作区。接下来再输入页面名称的一部分，再从出现的列表中选择页面。之后也可以再填入链接文字及页面段落名称。"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
 msgid "activities.insert:"
@@ -2237,6 +2249,9 @@ msgstr "每日时间："
 msgid "console.time-server"
 msgstr "时间服务器"
 
+msgid "console.time-settings"
+msgstr "时间设置"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "总計"
@@ -3347,6 +3362,9 @@ msgstr "在刷新登录 Socialtext 桌面后也将重置标志."
 #: share/plugin/control/template/control/design-account.html:52
 msgid "control.this-will-reset-logo-for-desktop"
 msgstr "在刷新登录 Socialtext 桌面后将重置标志"
+
+msgid "control.timezone-settings"
+msgstr "时区设置"
 
 #: share/plugin/control/template/control/accounts_transform.html:7
 msgid "control.transform"
@@ -7725,6 +7743,12 @@ msgstr "删除这个附件"
 msgid "file.delete=name?"
 msgstr "您确定要从本页面删除此附件'%1'？"
 
+msgid "file.drop-here-to-upload"
+msgstr "将文件拖放到这里即可上传。"
+
+msgid "file.duplicate-files"
+msgstr "文件名称重复"
+
 #: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
 msgstr "提取附件"
@@ -9484,6 +9508,21 @@ msgstr "您和 %1 位您关注的人都说这版本赞。"
 msgid "like.liked-this.revision.you=others"
 msgstr "您和其他 %1 个人都说这版本赞。"
 
+msgid "like.liked-this.signal.not-you=followed"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这讯息赞。"
+
+msgid "like.liked-this.signal.not-you=others"
+msgstr "%quant(%1,个,个,目前没有)人说这讯息赞。"
+
+msgid "like.liked-this.signal.only-you"
+msgstr "只有您说这讯息赞。"
+
+msgid "like.liked-this.signal.you=followed"
+msgstr "您和 %1 位您关注的人都说这讯息赞。"
+
+msgid "like.liked-this.signal.you=others"
+msgstr "您和其他 %1 个人都说这讯息赞。"
+
 #: share/plugin/like/template/like/listview-sortby.tt2:1
 msgid "like.likes"
 msgstr "哪些赞"
@@ -10437,7 +10476,7 @@ msgstr "重命名页面"
 #. ($new_page_title)
 #: lib/Socialtext/Page.pm:2036
 msgid "page.renamed=title"
-msgstr "页面重命名为<%1>"
+msgstr "页面重命名为 [%1]"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:28
 msgid "page.replace"
@@ -12280,6 +12319,15 @@ msgstr "提及用户："
 msgid "signals.insert-tag:"
 msgstr "插入标签："
 
+msgid "signals.liked-theirs=uri,snippet"
+msgstr "说自己的这则<a href=\"%1\">讯息</a>很赞：“%2”。"
+
+msgid "signals.liked-yours=uri,snippet"
+msgstr "说您的这则<a href=\"%1\">讯息</a>很赞：“%2”。"
+
+msgid "signals.liked=creator,uri,snippet"
+msgstr "说 %1 的这则<a href=\"%2\">讯息</a>很赞：“%3”。"
+
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
 msgid "signals.link-destination:"
 msgstr "链接目的地："
@@ -12466,6 +12514,15 @@ msgstr "给%1"
 #: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
 msgstr "请重新尝试："
+
+msgid "signals.unliked-theirs=uri,snippet"
+msgstr "取消对自己的这则<a href=\"%1\">讯息</a>说赞：“%2”。"
+
+msgid "signals.unliked-yours=uri,snippet"
+msgstr "取消对您的这则<a href=\"%1\">讯息</a>说赞：“%2”。"
+
+msgid "signals.unliked=creator,uri,snippet"
+msgstr "取消对 %1 的这则<a href=\"%2\">讯息</a>说赞：“%3”。"
 
 #: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"

@@ -68,6 +68,7 @@ sub st_empty_container {
         my $widgetlist = $self->{selenium}->get_value("id=widgetList");
         diag "Widgets after empty: $widgetlist\n"; 
     };
+    diag $@ if $@;
     ok( !$@, 'st_empty_container' );
 }
 
@@ -412,8 +413,8 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 
 sub st_send_reply {
     my ($self, $signaltosend, $is_mobile) = @_;
-    $self->handle_command('wait_for_element_visible_ok', '//a[@class="replyLink"]', 15000);
-    $self->handle_command('click_ok', '//a[@class="replyLink"]');
+    $self->handle_command('wait_for_element_visible_ok', '//a[@class="hoverLink replyLink"]', 15000);
+    $self->handle_command('click_ok', '//a[@class="hoverLink replyLink"]');
 
     $self->handle_command('set_Speed',4000);
     if ($self->_is_wikiwyg() ) { #wikiwyg

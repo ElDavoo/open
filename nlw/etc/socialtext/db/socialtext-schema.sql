@@ -729,7 +729,8 @@ CREATE TABLE "Account" (
     allow_invitation boolean DEFAULT true NOT NULL,
     account_type text DEFAULT 'Standard' NOT NULL,
     restrict_to_domain text DEFAULT '' NOT NULL,
-    user_set_id integer NOT NULL
+    user_set_id integer NOT NULL,
+    pref_blob text DEFAULT '' NOT NULL
 );
 
 CREATE SEQUENCE "Account___account_id"
@@ -2988,8 +2989,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-<<<<<<< HEAD
-INSERT INTO "System" VALUES ('socialtext-schema-version', '140');
-=======
-INSERT INTO "System" VALUES ('socialtext-schema-version', '145');
->>>>>>> upstream/master
+INSERT INTO "System" VALUES ('socialtext-schema-version', '146');

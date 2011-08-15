@@ -29,6 +29,7 @@
         - 'nav-list.js'
         - {dir: 'skin/common/javascript', file: 'Socialtext/socialtext-api.js'}
         - 's3.js'
+        - 'html5-file-upload.js'
         - 'people-avatar.js'
         - 'im.js'
 'info.js':

@@ -41,7 +41,7 @@ sub _new {
     return bless {
         email          => $email,
         workspace      => $workspace,
-        body           => '',
+        body           => \'',
         attachments    => [],
         categories     => ['Email'],
         body_placement => $workspace->incoming_email_placement(),
@@ -673,7 +673,7 @@ sub _make_page_header {
         my $wafl = $att->image_or_file_wafl();
         ( my $re = $wafl ) =~ s/\n//g;
 
-        next if ${$self->{body}} =~ /\Q$re/s;
+        next if ref($self->{body}) and ${$self->{body}} =~ /\Q$re/s;
         next if $self->{no_wafl}{ $att->filename() };
 
         push @header, $wafl . "\n\n";

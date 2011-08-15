@@ -1,7 +1,8 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 58;
+use Test::More;
+use Test::Socialtext;
 use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:txn :exec :time/;
 use File::Temp qw/tempdir tempfile/;
@@ -224,4 +225,15 @@ to_string_temp: {
     like $path, qr#^/tmp#, "copied content to a tempfile (from disk)";
 }
 
-pass "done";
+psd_is_not_image: {
+    my $ul = Socialtext::Upload->Create(
+        created_at => $creation_time,
+        creator => $user,
+        filename => 'smilie.png',
+        mime_type => 'image/vnd.adobe.photoshop',
+        temp_filename => 't/attachments/smilie.psd',
+    );
+    is $ul->is_image, 0, 'PSD file is not an image';
+}
+
+done_testing;

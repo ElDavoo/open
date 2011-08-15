@@ -647,4 +647,10 @@ lib/Socialtext/Pluggable/Plugin/Kanban.pm
 lib/Socialtext/Gadgets/Container/Group.pm.orig
 t/Socialtext/People/Profile-listing.t
 t/wikitests/signals/data_signals_at.wiki
+supervise
+t/wikitests/control/account.wiki
+lib/Socialtext/Rest/Likes.pm
+lib/Socialtext/Rest/Signals/Likes.pm
+t/wikitests/like/signal.wiki
 t/Socialtext/People/Profile-listing.t
+t/wikitests/frontend/http-keep-alive.wiki.orig

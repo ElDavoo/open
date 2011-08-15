@@ -358,6 +358,42 @@ proto.showUploadInterface = function () {
     });
 };
 
+proto.showDuplicateLightbox = function(files, upload_callback) {
+    var html = Jemplate.process('duplicate_files', {
+        loc: loc,
+        files: files
+    });
+    $.showLightbox({
+        title: loc('file.duplicate-files'),
+        html: html
+    });
+
+    $('#lightbox .warning').each(function(_, warning) {
+        var name = $(this).find('input[name=filename]').val();
+        var file = $.grep(files, function(f) { return f.name == name })[0];
+
+        $(warning).find('.cancel').click(function() {
+            $(warning).remove();
+            if (!$('#lightbox .warning').size()) $.hideLightbox();
+            return false;
+        });
+
+        $(warning).find('.add').click(function() {
+            $(warning).remove();
+            upload_callback(file, 0);
+            if (!$('#lightbox .warning').size()) $.hideLightbox();
+            return false;
+        });
+
+        $(warning).find('.replace').click(function() {
+            $(warning).remove();
+            upload_callback(file, 1);
+            if (!$('#lightbox .warning').size()) $.hideLightbox();
+            return false;
+        });
+    });
+}
+
 // Backwards compat
 proto.delete_new_attachments = proto.deleteNewAttachments;
 proto.delete_all_attachments = proto.deleteAllAttachments;

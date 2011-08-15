@@ -786,6 +786,12 @@ msgstr "删除这个附件"
 msgid "file.delete=name?"
 msgstr "您确定要从本页面删除此附件'%1'？"
 
+msgid "file.drop-here-to-upload"
+msgstr "将文件拖放到这里即可上传。"
+
+msgid "file.duplicate-files"
+msgstr "文件名称重复"
+
 #: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
 msgstr "提取附件"
@@ -1241,6 +1247,21 @@ msgstr "您和 %1 位您关注的人都说这版本赞。"
 
 msgid "like.liked-this.revision.you=others"
 msgstr "您和其他 %1 个人都说这版本赞。"
+
+msgid "like.liked-this.signal.not-you=followed"
+msgstr "%quant(%1,位,位,目前没有)您关注的人说这讯息赞。"
+
+msgid "like.liked-this.signal.not-you=others"
+msgstr "%quant(%1,个,个,目前没有)人说这讯息赞。"
+
+msgid "like.liked-this.signal.only-you"
+msgstr "只有您说这讯息赞。"
+
+msgid "like.liked-this.signal.you=followed"
+msgstr "您和 %1 位您关注的人都说这讯息赞。"
+
+msgid "like.liked-this.signal.you=others"
+msgstr "您和其他 %1 个人都说这讯息赞。"
 
 msgid "like.page:"
 msgstr "页数："

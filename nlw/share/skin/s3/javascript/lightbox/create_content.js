@@ -53,10 +53,10 @@ proto.get_from_page = function() {
     }
 }
 
-proto.update_templates = function () {
+proto.update_templates = function (template_tag) {
     var self = this;
     var type = this.selected_page_type();
-    var template = loc('tag.template');
+    var template = template_tag || loc('tag.template');
     $.ajax({
         url: Page.workspaceUrl() + '/tags/' + template + '/pages?type=' + type,
         cache: false,
@@ -64,6 +64,12 @@ proto.update_templates = function () {
         success: function (pages) {
             self.from_template_select().html('');
             if (!pages.length) {
+                if (template_tag != 'template') {
+                    // We don't have anything tagged as loc('tag.template') -
+                    // fallback to look into pages tagged as literal "template".
+                    return self.update_templates('template');
+                }
+
                 if (self.from_template_radio().is(':checked')) {
                     self.from_blank_radio().click();
                 }

@@ -63,6 +63,7 @@ sub renew_authentication {
     $self->session->add_error(
         loc("error.relogin")
     );
+    $self->session->write;
     $self->rest->header(
         -status   => HTTP_302_Found,
         -location => $location,

@@ -23,6 +23,8 @@ use Socialtext::JSON qw/encode_json/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::UUID qw/new_uuid/;
 
+use Carp 'croak';
+use List::MoreUtils 'any';
 use namespace::clean -except => 'meta';
 
 use constant TIDY_FREQUENCY => 60;
@@ -35,6 +37,14 @@ use constant TABLE_REFS => qw(
 # NOTE: if this gets changed to anything other than /tmp, make sure tmpreaper is
 # monitoring that directory.
 our $STORAGE_DIR = Socialtext::AppConfig->data_root_dir."/attachments";
+
+our @SupportedImageTypes = qw(
+    image/jpeg
+    image/gif
+    image/png
+    image/bmp
+    image/x-ms-bmp
+);
 
 has 'attachment_id' => (is => 'rw', isa => 'Int');
 has 'attachment_uuid' => (is => 'rw', isa => 'Str.UUID');
@@ -141,7 +151,7 @@ sub Create {
             warn "Could not detect mime_type of $filename: $_\n";
         };
     }
-    my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
+    my $is_image = (any { $mime_type eq $_ } @SupportedImageTypes) ? 1 : 0;
 
     sql_insert(attachment => {
         attachment_uuid => $uuid,

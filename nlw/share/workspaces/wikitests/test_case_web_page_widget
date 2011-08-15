@@ -21,7 +21,13 @@
 | wait_for_text_present_ok | Web Page %%start_time%% | 30000 |
 | st-widget-title-like | webpage | Web Page %%start_time%% |
 | wait_for_element_visible_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` | 10000 |
-| select_frame_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` |  |
+
+| *Comment* | Test Case: Web Page Widget. Verify divs. Don't use is_text_present, use divs, FF4 has trouble with text ! |
+| pause_ok | 15000 | I hate pause. Wait for the widget to load |
+| selectFrame | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` |  |
+| is_element_present_ok | //body | 10000 |
+| is_element_present_ok | //div[@class='primarymessaging'] | 5000 |
+| is_element_present_ok | //div[@id='sitenavigation'] | 5000 |
 | selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Web Page Widget. Verify scrolling |  |
@@ -33,11 +39,15 @@
 | wait_for_element_not_visible_ok | st-savebutton-%%webpage%% | 30000 |
 | wait_for_element_visible_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` | 10000 |
 
-| *Comment* | Test Case: Web Page Widget. Verify content |
-| select_frame_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` |  |
-| wait_for_text_present_ok | Solutions | 30000 |
-| wait_for_text_present_ok | Products | 10000 |
-| wait_for_text_present_ok | Customers | 10000 |
+| *Comment* | Test Case: Web Page Widget. Verify divs again. Don't use is_text_present, use divs, FF4 has trouble with text ! |
+| selectFrame | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` |  |
+| is_element_present_ok | //body | 10000 |
+| is_element_present_ok | //div[@class='primarymessaging'] | 5000 |
+| is_element_present_ok | //div[@id='sitenavigation'] | 5000 |
+
+| *Comment* | Test Case: Web Page Widget. Verify content. These words might change in the future. |
+| is_element_present_ok | //div[@id='solution1']/h2[contains(text(),'Communicate')] | 5000 |
+| is_element_present_ok | //div[@id='sitenavigation']/a[contains(text(),'Home')] | 5000 |
 | selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Web Page Widget COMPLETED |  |

@@ -1,6 +1,4 @@
-
 | *Comment* | Test Case: Activities Widget Conversations |  |
-
 
 * Fixture: SocialWidgets
 
@@ -131,6 +129,9 @@
 
 | *Comment* | Test Case: Activities Widget Conversations TEARDOWN |  |
 | st-process-jobs |  |  |
-| st-admin | delete-workspace --no-export --w %%wrkspc%% | has been deleted |
+| delete-workspace | %%wrkspc%% |  |
+| deactivate-user | %%convuser%% |  |
+| deactivate-user | %%isolateduser%% |  |
+| deactivate-user | %%actor%% |  |
 
 | *Comment* | Test Case: Activities Widget Conversations COMPLETED |  |

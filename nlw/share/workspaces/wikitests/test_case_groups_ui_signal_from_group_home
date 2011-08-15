@@ -20,7 +20,7 @@
 | st-send-signal-in-activities-widget | %%mysignal_2%% |  |
 
 | st_verify_text_in_activities_widget | activity_widget | %%mysignal_1%% |
-| st_verify_text_in_activities_widget | activity_widget | `qr/You.*minute.*ago\s*to\s*%%group_name%%/` |
+| st_verify_text_in_activities_widget | activity_widget | `qr/%%group_name%%.+By you.*minute.*ago\s*to/ism` |
 | st_verify_text_in_activities_widget | activity_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home Verify Signal in Signal Page |  |
@@ -42,7 +42,7 @@
 
 | st-name-widget | 1 | signals_widget |
 | st_verify_text_within_activities_widget | %%mysignal_1%% |  |
-| st_verify_text_within_activities_widget | `qr/You.*minute.*ago\s*to\s*%%group_name%%/` |  |
+| st_verify_text_within_activities_widget | `qr/%%group_name%%.+By you.*minute.*ago\s*to/ism` |  |
 | st_verify_text_within_activities_widget | %%mysignal_2%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Disable signals, do not see signal option |  |
@@ -112,5 +112,6 @@
 | st-process-jobs |  |  |
 | delete-group | %%group_id%% |
 | delete-workspace | %%group_ws%% | Recklessly |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home COMPLETED |

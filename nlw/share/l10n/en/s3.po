@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-16 10:57-0700\n"
+"PO-Revision-Date: 2011-06-28 09:47-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -794,6 +794,14 @@ msgstr "Delete this attachment"
 msgid "file.delete=name?"
 msgstr "Are you sure you want to delete the attachment '%1' from this page?"
 
+#: share/skin/s3/template/element/page/display/attachments:13
+msgid "file.drop-here-to-upload"
+msgstr "Drop files here to upload."
+
+#: share/skin/s3/javascript/lightbox/attachment.js:367 share/skin/s3/javascript/lightbox/attachment.tt2:65
+msgid "file.duplicate-files"
+msgstr "Duplicate Files"
+
 #: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
 msgstr "Extract this attachment"
@@ -1242,13 +1250,13 @@ msgstr "All People"
 msgid "like.like=count"
 msgstr "%quant(%1,like)"
 
-#: share/skin/s3/javascript/template/like-indicator.tt2:30
-msgid "like.page:"
-msgstr "page:"
+#: share/skin/s3/javascript/like-indicator.js:157
+msgid "like.liked-this.page.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page)."
 
-#: share/skin/s3/javascript/template/like-indicator.tt2:6
-msgid "like.people-i-follow"
-msgstr "People I Follow"
+#: share/skin/s3/javascript/like-indicator.js:160
+msgid "like.liked-this.page.not-you=others"
+msgstr "%quant(%1,person has liked this page,people have liked this page,Nobody has liked this page yet)."
 
 #: share/skin/s3/javascript/like-indicator.js:149
 msgid "like.liked-this.page.only-you"
@@ -1263,12 +1271,12 @@ msgid "like.liked-this.page.you=others"
 msgstr "You and %quant(%1,other person,other people) have liked this page."
 
 #: share/skin/s3/javascript/like-indicator.js:157
-msgid "like.liked-this.page.not-you=followed"
-msgstr "%quant(%1,person you follow has liked this page,people you follow have liked this page,None of the people you follow have liked this page)."
+msgid "like.liked-this.revision.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this revision,people you follow have liked this revision,None of the people you follow have liked this revision)."
 
 #: share/skin/s3/javascript/like-indicator.js:160
-msgid "like.liked-this.page.not-you=others"
-msgstr "%quant(%1,person has liked this page,people have liked this page,Nobody has liked this page yet)."
+msgid "like.liked-this.revision.not-you=others"
+msgstr "%quant(%1,person has liked this revision,people have liked this revision,Nobody has liked this revision yet)."
 
 #: share/skin/s3/javascript/like-indicator.js:149
 msgid "like.liked-this.revision.only-you"
@@ -1283,12 +1291,32 @@ msgid "like.liked-this.revision.you=others"
 msgstr "You and %quant(%1,other person,other people) have liked this revision."
 
 #: share/skin/s3/javascript/like-indicator.js:157
-msgid "like.liked-this.revision.not-you=followed"
-msgstr "%quant(%1,person you follow has liked this revision,people you follow have liked this revision,None of the people you follow have liked this revision)."
+msgid "like.liked-this.signal.not-you=followed"
+msgstr "%quant(%1,person you follow has liked this signal,people you follow have liked this signal,None of the people you follow have liked this signal)."
 
 #: share/skin/s3/javascript/like-indicator.js:160
-msgid "like.liked-this.revision.not-you=others"
-msgstr "%quant(%1,person has liked this revision,people have liked this revision,Nobody has liked this revision yet)."
+msgid "like.liked-this.signal.not-you=others"
+msgstr "%quant(%1,person has liked this signal,people have liked this signal,Nobody has liked this signal yet)."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.signal.only-you"
+msgstr "Only you have liked this signal."
+
+#: share/skin/s3/javascript/like-indicator.js:149
+msgid "like.liked-this.signal.you=followed"
+msgstr "You and %quant(%1,person you follow,people you follow) have liked this signal."
+
+#: share/skin/s3/javascript/like-indicator.js:152
+msgid "like.liked-this.signal.you=others"
+msgstr "You and %quant(%1,other person,other people) have liked this signal."
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:30
+msgid "like.page:"
+msgstr "page:"
+
+#: share/skin/s3/javascript/template/like-indicator.tt2:6
+msgid "like.people-i-follow"
+msgstr "People I Follow"
 
 #: share/skin/s3/template/lite/paging.html:4 share/skin/s3/template/lite/paging.html:6 share/skin/s3/template/lite/paging.html:8
 msgid "lite.first-page"

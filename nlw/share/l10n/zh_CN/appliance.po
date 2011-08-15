@@ -542,6 +542,9 @@ msgstr "每日时间："
 msgid "console.time-server"
 msgstr "时间服务器"
 
+msgid "console.time-settings"
+msgstr "时间设置"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
 msgstr "总計"

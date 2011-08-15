@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.7.3.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.3.0.air</url>
-  <description><![CDATA[[4.7.3.0 - Fri Jun 10 09:18:23 PDT 2011]
+  <version>4.7.4.3</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.4.3.air</url>
+  <description><![CDATA[[4.7.4.3 - Sat Aug  6 00:01:05 PDT 2011]
+(Enhancements)
+* Signals: Deleting a signal now refreshes the display immediately.
+* Signals: Like/Unlike from other users now displays immediately.
+
+[4.7.4.0 - Sun Jul 24 00:17:38 PDT 2011]
+(Features)
+* Signals: Support for "Like a Signal" for ST server version 4.7.4+.
+
+(Enhancements)
+* Signals: Adopted new layout for threaded view.
+
+[4.7.3.0 - Fri Jun 10 09:18:23 PDT 2011]
 (Enhancements)
 * Signals: Clicking the "Search" sub-tab now sets focus on the search field.
 * Signals: Flashback now correctly retrieves "before" and "after" signals again. {bz: 5255}

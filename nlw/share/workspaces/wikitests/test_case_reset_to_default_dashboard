@@ -100,6 +100,7 @@
 | text_like | contentColumns | Learning Resources |
 
 | *Comment* | Test Case: Reset to Default Dashboard TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-account | %%acct%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%mwgmail%% | been deactivated |
 

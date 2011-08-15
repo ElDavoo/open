@@ -342,6 +342,8 @@ sub _add_signal_doc {
     my $in_reply_to = $signal->in_reply_to;
     my $is_question = $body =~ m/\?\s*$/ ? 1 : 0;
 
+    my $likes = $signal->likers;
+
     my @fields = (
         [id => $id],
         [doctype => 'signal'], 
@@ -363,6 +365,9 @@ sub _add_signal_doc {
         (map { [tag => $_->tag] } @{$signal->tags}),
         [ tag_count => scalar(@{$signal->tags}) ],
         Socialtext::Search::Solr::BigField->new('body' => \$body),
+        [has_likes => 1],
+        [like_count => scalar(@$likes) ],
+        (map { [ like => $_ ] } @$likes),
     );
 
     for my $triplet (@{ $signal->annotation_triplets }) {

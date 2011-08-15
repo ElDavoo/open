@@ -1,4 +1,6 @@
+
 | *Comment* | Test case: Business Control Panel Account Google Analytics |  |
+
 
 | st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
 
@@ -36,7 +38,9 @@
 | wait_for_element_visible_ok | st-single-domain | 30000 |
 | wait_for_element_visible_ok | st-multiple-domains | 30000 |
 | type_ok | ga_id | %%gaid%% |
+|  pause_ok |  5000 |  wait before clicking multiple subdomains |
 | click_ok | st-multiple-subdomains |  |
+|  is_checked_ok |  st-multiple-subdomains |  |
 | is_checked_ok | st-mask-analytics |  |
 | uncheck_ok | st-mask-analytics |  |
 | click_ok | analytics-prefs-submit |  |
