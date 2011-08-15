@@ -13,9 +13,8 @@
 </div>
 
 <div class="container_24">
-    [% FOR col = container.columns %]
-        [% class = col.stuck ? 'stuck' : 'draggable' %]
-        <div class="grid_[% col.grids %] widgetColumn [% class %]" id="col[% loop.index %]">
+    [% FOR grid = container.grids %]
+        <div class="[% grid %] widgetColumn" id="col[% loop.index %]">
             [% FILTER decorate('container_column_' _ loop.index _ '_end') %]
             [% END %]
         </div>

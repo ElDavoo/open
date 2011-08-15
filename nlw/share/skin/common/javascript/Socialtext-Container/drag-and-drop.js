@@ -52,14 +52,14 @@ $(function () {
         }
     }
 
-    $("#col0.draggable").sortable($.extend({
-        connectWith: ["#col1.draggable", "#col2.draggable"]
+    $("#col0:not('.stuck')").sortable($.extend({
+        connectWith: ["#col1:not('.stuck')", "#col2:not('.stuck')"]
     }, options)); 
-    $("#col1.draggable").sortable($.extend({
-        connectWith: ["#col0.draggable", "#col2.draggable" ]
+    $("#col1:not('.stuck')").sortable($.extend({
+        connectWith: ["#col0:not('.stuck')", "#col2:not('.stuck')" ]
     }, options));
-    $("#col2.draggable").sortable($.extend({
-        connectWith: ["#col0.draggable", "#col1.draggable" ]
+    $("#col2:not('.stuck')").sortable($.extend({
+        connectWith: ["#col0:not('.stuck')", "#col1:not('.stuck')" ]
     }, options));
 
     if ($.fn.addTouch) {
