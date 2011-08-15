@@ -2,10 +2,10 @@
 
 <h3>[% loc('Language') %]</h3>
 
-  [% INCLUDE element/settings/setting_select
-    pref="plugin.locales.locale"
-    option=plugin.locales.locale
-    user_setting=plugin.settings.locales.locale
-  %]
+[% INCLUDE element/settings/setting_select
+  pref="plugin.locales.locale"
+  option=plugin.locales.locale
+  user_setting=plugin.settings.locales.locale
+%]
 
 <hr />
