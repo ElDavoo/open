@@ -2150,7 +2150,7 @@ sub send_as_email {
 
     my $make_body_content = sub {
         if ($self->is_spreadsheet or $self->is_xhtml) {
-            my $content = $self->to_absolute_html();
+            my $content = $self->to_absolute_html($self->body_ref);
             return $content unless $p{body_intro} =~ /\S/;
             my $intro = $self->hub->viewer->process($p{body_intro}, $self);
             return "$intro<hr/>$content";
