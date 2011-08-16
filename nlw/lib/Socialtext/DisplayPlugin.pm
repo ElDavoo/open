@@ -182,8 +182,12 @@ sub display {
                 my $content = $tmpl_page->content;
 
                 if (my $variables = $self->cgi->variables) {
-                    $variables = Socialtext::JSON::decode_json_utf8($variables) || {};
-                    $content =~ s/%%(.*?)%%/$variables->{lc $1}/eg;
+                    my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
+                    my %vars;
+                    while (my ($key, $val) = each %$decoded_vars) {
+                        $vars{lc $key} = $val;
+                    }
+                    $content =~ s/%%(.*?)%%/$vars{lc $1}/eg;
                 }
 
                 if ($page->mutable) {
