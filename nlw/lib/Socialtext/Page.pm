@@ -2185,7 +2185,7 @@ sub send_as_email {
     );
 
     my $text_body = Text::Autoformat::autoformat(
-        $p{body_intro} . ($self->is_spreadsheet ? "\n" : $self->content), {
+        $p{body_intro} . ($self->is_spreadsheet ? "\n" : $self->is_xhtml ? $self->_to_plain_text : $self->content), {
             all    => 1,
             # This won't actually work properly until the next version
             # of Text::Autoformat, as 1.13 has a bug.
