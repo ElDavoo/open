@@ -3522,6 +3522,57 @@ msgstr "%1 工作區"
 msgid "control.wikis=count"
 msgstr "工作區（%1）"
 
+msgid "creator.choices:"
+msgstr "選項："
+
+msgid "creator.create-page"
+msgstr "建立頁面"
+
+msgid "creator.field-type:"
+msgstr "輸入類別："
+
+msgid "creator.field:"
+msgstr "欄位："
+
+msgid "creator.info-default-value"
+msgstr "將此選項設為預設。"
+
+msgid "creator.new-field:"
+msgstr "新增欄位："
+
+msgid "creator.page-title:"
+msgstr "頁面標題："
+
+msgid "creator.really-delete-field?"
+msgstr "您確定要刪除此欄位嗎？"
+
+msgid "creator.required"
+msgstr "必填"
+
+msgid "creator.tag-with:"
+msgstr "加上標籤："
+
+msgid "creator.template:"
+msgstr "範本："
+
+msgid "creator.type-checkbox"
+msgstr "勾選"
+
+msgid "creator.type-number"
+msgstr "數值"
+
+msgid "creator.type-radio"
+msgstr "單選框"
+
+msgid "creator.type-select"
+msgstr "下拉列表"
+
+msgid "creator.type-text"
+msgstr "單列文字"
+
+msgid "creator.type-textarea"
+msgstr "多列文字"
+
 #: share/plugin/dashboard/template/dashboard_links:3
 msgid "dashboard.add-widget"
 msgstr "新增小工具"
@@ -3808,6 +3859,9 @@ msgstr "在小工具裡顯示一份網頁。"
 
 msgid "description.oneimage"
 msgstr "在小工具裡顯示一張圖片。"
+
+msgid "description.page_creator"
+msgstr "從自定的表單欄位來建立頁面。"
 
 msgid "description.page_tracker"
 msgstr "以多欄方式呈現具有特定標籤的頁面。"
@@ -5161,6 +5215,9 @@ msgstr "無法建立標籤列表。"
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "由於目前使用的是自訂視覺主題，因此帳戶標誌不可更改。正在使用的視覺主題名為『%1』"
 
+msgid "error.cannot-create-page-in=wiki"
+msgstr "抱歉，您目前無法在 %1 工作區中建立新頁面。"
+
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
 msgstr "錯誤：無法將頁面嵌入到自身裡。"
@@ -6097,6 +6154,9 @@ msgstr "沒有和『%1』符合的項目"
 #: lib/Socialtext/EditPlugin.pm:195
 msgid "error.no-page-body"
 msgstr "儲存頁面時，正文不能為空。"
+
+msgid "error.no-page-creator-for-mobile"
+msgstr "抱歉，建立頁面小工具目前無法在行動裝置上使用。"
 
 #: share/skin/s3/javascript/s3.js:832
 msgid "error.no-page-doc"
@@ -9371,6 +9431,9 @@ msgstr "項目背景色"
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "項目標注"
+
+msgid "kanban.likable?"
+msgstr "為看板上的頁面顯示『讚』？"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
@@ -12936,6 +12999,9 @@ msgstr "網頁"
 #: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "圖片"
+
+msgid "title.page_creator"
+msgstr "建立頁面"
 
 msgid "title.page_tracker"
 msgstr "頁面看板"

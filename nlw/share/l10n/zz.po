@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-28 09:55-0700\n"
+"PO-Revision-Date: 2011-08-08 21:48-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3857,6 +3857,59 @@ msgstr "%1 zzzzzzzzz"
 msgid "control.wikis=count"
 msgstr "Zzzzzzzzzz (%1)"
 
+msgid "creator.choices:"
+msgstr "Zzzzzzz:"
+
+msgid "creator.create-page"
+msgstr "Zzzzzz Zzzz"
+
+msgid "creator.field-type:"
+msgstr "Zzzzz Zzzz:"
+
+msgid "creator.field:"
+msgstr "Zzzzz:"
+
+msgid "creator.info-default-value"
+msgstr "Zzzz zzzz zzzzzz zzz-zzzzzzzz."
+
+msgid "creator.new-field:"
+msgstr "Zzz Zzzzz:"
+
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
+msgid "creator.page-title:"
+msgstr "Zzzz Zzzzz:"
+
+msgid "creator.really-delete-field?"
+msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzz zzzz zzzzz?"
+
+msgid "creator.required"
+msgstr "Zzzzzzzz"
+
+msgid "creator.tag-with:"
+msgstr "Zzz zzzz:"
+
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
+msgid "creator.template:"
+msgstr "Zzzzzzzz:"
+
+msgid "creator.type-checkbox"
+msgstr "Zzzzzzzzzz"
+
+msgid "creator.type-number"
+msgstr "Zzzzzz"
+
+msgid "creator.type-radio"
+msgstr "Zzzzz zzzzz"
+
+msgid "creator.type-select"
+msgstr "Zzzzzzzz"
+
+msgid "creator.type-text"
+msgstr "Zzzzzz zzzz"
+
+msgid "creator.type-textarea"
+msgstr "Zzzzzzzz zzzzz"
+
 #: share/plugin/dashboard/template/dashboard_links:3
 msgid "dashboard.add-widget"
 msgstr "Zzz Zzzzzz"
@@ -4167,6 +4220,9 @@ msgstr "Zzzzzzzz z zzzzzz zzz zzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
 
 msgid "description.oneimage"
 msgstr "Zzzzzzzz z zzzzzz zzzzzzzzzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
+
+msgid "description.page_creator"
+msgstr "Zzzzzz zzzzz zzzz zzzzzzzzzz zzzzz."
 
 msgid "description.page_tracker"
 msgstr "Zzzzzzzzz zzzzzz zzzzz zz z zzzzzzzzz zzzz zzzzzzzz zzzzzzz."
@@ -5570,6 +5626,9 @@ msgstr "Zzzzzz zz zzzzz zzz zzzz."
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "Zzzzzzz z zzzzzz zzzz zz zz zzz, zzz zzzzzzz zzzz zzzzzz zz zzzzzzz.  Zzz zzzz zz zzz zz zzzzzz '%1'"
 
+msgid "error.cannot-create-page-in=wiki"
+msgstr "Zzzzz, zzz zzz zzzzzz zzzzzz zzzzz zz zzz %1 zzzzzzzzz."
+
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
 msgstr "Zzzzz: Zzzzzz zzzzz z zzzz zzzzzz zzzzzz."
@@ -6531,6 +6590,9 @@ msgstr "Zz zzzzzzz zzz '%1'"
 #: lib/Socialtext/EditPlugin.pm:195
 msgid "error.no-page-body"
 msgstr "Z zzzz zzzz zzzz z zzzz zz zz zzzzz."
+
+msgid "error.no-page-creator-for-mobile"
+msgstr "Zzzzz, Zzzz Zzzzzzz zzzzzz zz zzzzzzzzz zzzzzzzzzzz zz zzzzzz zzzzzzz."
 
 #: share/skin/s3/javascript/s3.js:832
 msgid "error.no-page-doc"
@@ -9923,6 +9985,10 @@ msgstr "Zzzz Zzzzzzzzzz"
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "Zzzz Zzzzz"
+
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:200
+msgid "kanban.likable?"
+msgstr "Zzzz zzzzzzzzz zzz zzzz zzzzz?"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
@@ -13655,6 +13721,9 @@ msgstr "Zzz Zzzz"
 #: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "Zzzzz"
+
+msgid "title.page_creator"
+msgstr "Zzzz Zzzzzzz"
 
 msgid "title.page_tracker"
 msgstr "Zzzz Zzzzzzz"
