@@ -1,19 +1,17 @@
 /**
  * Global Navigation
 
-.grid_2
-  margin: 0
-  width: 80px
-.grid_3
-  margin: 0
-  width: 120px
-.grid_10
-  margin: 0
-  width: 400px
+// Override grid sizes so they have no padding
+@for $i from 1 through 12
+  .grid_#{$i}
+    width: #{$i * 40}px
+
 .navGrid
+  margin: 0
   height: 50px
 .navItem, .navLink
   height: 45px
+
 a
   &:visited, &:active
     color: #fff
@@ -25,7 +23,7 @@ a
 .navLink a
   top: 10px
   position: relative
-.searchBox form, .widgetButtons .button
+.searchBox form, .buttons .button
   top: 13px
   position: relative
 .navLink a
@@ -58,7 +56,7 @@ a
   width: 100px
   background: white url(#{$skin}/images/icons/search.png) no-repeat 0 0px
 
-.searchBox, .widgetButtons
+.searchBox, .buttons
   text-align: right
 
 .navGrid

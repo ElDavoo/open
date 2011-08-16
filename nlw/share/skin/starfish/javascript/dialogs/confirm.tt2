@@ -1,0 +1,17 @@
+<div id="confirm-lightbox">
+  <div class="title">[% loc('dashboard.revert') %]</div>
+  <br/>
+  [% loc('dashboard.confirm-revert?') %]
+  <div class="buttons">
+    <ul class="widgetButton" style="float:left; padding:10px">
+      <li class="flexButton">
+        <a id="dashboard-revert-yes" href="#" class="yes genericOrangeButton">[% loc('do.yes') %]</a>
+      </li>
+    </ul>
+    <ul class="widgetButton" style="float:left; padding:10px">
+      <li class="flexButton">
+        <a id="dashboard-revert-no" href="#" class="close genericOrangeButton">[% loc('do.no') %]</a>
+      </li>
+    </ul>
+  </div>
+</div>

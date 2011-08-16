@@ -553,7 +553,7 @@ container.renderGadget = function(data, template_vars, node) {
     var before;
     if (!node) {
         node = $('.widgetColumn').get(data.col);
-        before = $(node).find('li').get(data.row);
+        before = $(node).find('.widget').get(data.row);
     }
 
     var accounts = Socialtext.accounts;
