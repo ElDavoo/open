@@ -89,12 +89,12 @@ sub wikiwyg_double {
     my $self = shift;
 
     my $data = $self->wikisyg_double_data();
-    my ($choices, $default) = $self->_choices($data);
+    my $choices = $self->_choices($data);
 
     my $p = $self->new_preference('wikiwyg_double');
     $p->query($data->{title});
     $p->type('boolean');
-    $p->default($default);
+    $p->default($data->{default_setting});
 
     return $p;
 }
