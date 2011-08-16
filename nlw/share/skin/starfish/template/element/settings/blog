@@ -1,0 +1,14 @@
+<h3>[% loc('Create Blog') %]</h3>
+
+<input class="hidden" name="space_id" value="" />
+
+<div class="grid_5 input-label">[% loc('Blog Name') %]:</div>
+<div class="grid_7">
+  <input name="blog.name" type="text" />
+</div>
+<div class="clear"></div>
+
+<div class="push_5 grid_7">[% loc('If the name you provide does not end with "Blog", the system will add "Blog" to the name you provide. After clicking Save, you will be taken right to the your blog.') %]</div>
+<div class="clear"></div>
+
+<hr />

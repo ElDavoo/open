@@ -10,17 +10,27 @@
 [% ELSE %]
   <div class="grid_5 input-label">[% option.title %]:</div>
   <div class="grid_7">
-    <select name="[% pref %]">
+    [% IF option.options.size < 4 %]
       [% FOREACH setting IN option.options %]
-        <option value="[% setting.setting %]"
+        <input type="radio" name="[% pref %]" value="[% setting.setting %]"
           [% IF setting.setting == option.default_setting %]
-            selected="selected"
+            checked="checked"
           [% END %]
-        >
-          [% setting.display %]
-        </option>
+        /> [% setting.display %] <br />
       [% END %]
-    </select>
+    [% ELSE %]
+      <select name="[% pref %]">
+        [% FOREACH setting IN option.options %]
+          <option value="[% setting.setting %]"
+            [% IF setting.setting == option.default_setting %]
+              selected="selected"
+            [% END %]
+          >
+            [% setting.display %]
+          </option>
+        [% END %]
+      </select>
+    [% END %]
   </div>
 [% END %]
 

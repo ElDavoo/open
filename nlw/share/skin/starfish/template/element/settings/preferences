@@ -1,0 +1,77 @@
+<h3>[% loc('Page Editing') %]</h3>
+
+[% FOREACH setting IN prefs.wikiwyg.keys %]
+  [% INCLUDE element/settings/setting_select
+    pref='prefs.wikiwyg.' _ setting
+    option=prefs.wikiwyg.$setting
+  %]
+[% END %]
+
+<hr />
+
+<h3>[% loc('Screen Layout') %]</h3>
+
+[% FOREACH setting IN prefs.display.keys %]
+  [% INCLUDE element/settings/setting_select
+    pref='prefs.display.' _ setting
+    option=prefs.display.$setting
+  %]
+[% END %]
+
+<hr />
+
+<h3>[% loc('Email Notification') %]</h3>
+
+[% FOREACH setting IN prefs.email_notify.keys %]
+  [% INCLUDE element/settings/setting_select
+    pref='prefs.email_notify.' _ setting
+    option=prefs.email_notify.$setting
+  %]
+[% END %]
+
+<hr />
+
+<h3>[% loc("What's New") %]</h3>
+
+[% FOREACH setting IN prefs.recent_changes.keys %]
+  [% INCLUDE element/settings/setting_select
+    pref='prefs.recent_changes.' _ setting
+    option=prefs.recent_changes.$setting
+  %]
+[% END %]
+
+<hr />
+
+<h3>[% loc('Syndicate') %]</h3>
+
+[% FOREACH setting IN prefs.syndicate.keys %]
+  [% INCLUDE element/settings/setting_select
+    pref='prefs.syndicate.' _ setting
+    option=prefs.syndicate.$setting
+  %]
+[% END %]
+
+<hr />
+
+<h3>[% loc('Watchlist') %]</h3>
+
+[% FOREACH setting IN prefs.watchlist.keys %]
+  [% INCLUDE element/settings/setting_select
+    pref='prefs.watchlist.' _ setting
+    option=prefs.watchlist.$setting
+  %]
+[% END %]
+
+<hr />
+
+<h3>[% loc('Blogs') %]</h3>
+
+[% FOREACH setting IN prefs.weblog.keys %]
+  [% INCLUDE element/settings/setting_select
+    pref='prefs.weblog.' _ setting
+    option=prefs.weblog.$setting
+  %]
+[% END %]
+
+<hr />
+

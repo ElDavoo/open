@@ -56,6 +56,7 @@ sub get_html {
     $vars->{prefs} = $self->_decorated_prefs('timezone');
 
     my $global = $self->render_template('element/settings/global', $vars);
+
     $vars->{main_content} = $global;
 
     return $self->render_template('view/settings', $vars);
@@ -76,16 +77,13 @@ sub GET_space {
 
     my $vars = $self->_settings_vars();
     $vars->{section} = 'space';
-
-    my $prefs = $self->_get_pref_set('wikiwyg');
-    my $settings = $self->settings;
-    $vars->{settings} = $settings;
-    $vars->{prefs} = $prefs;
+    $vars->{prefs} = $self->_decorated_prefs(qw(wikiwyg display email_notify recent_changes syndicate watchlist weblog));
 
     my $template = 'element/settings/'. $self->pref;
     my $content = eval { $self->render_template($template, $vars) };
     warn $@ if $@;
     return $self->error(loc('Not Found')) unless $content;
+
     $vars->{main_content} = $content;
 
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
@@ -101,7 +99,9 @@ sub GET_create {
     $vars->{section} = 'create';
 
     my $create = $self->render_template('element/settings/create_workspace', $vars);
+
     $vars->{main_content} = $create;
+
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->render_template('view/settings', $vars);
 }
@@ -113,10 +113,10 @@ sub _decorated_prefs {
     my $settings = $self->settings;
 
     for my $index (keys %$prefs) {
-        next unless $settings->{$index};
+        next unless defined $settings->{$index};
 
         for my $key (keys %{$prefs->{$index}}) {
-            next unless $settings->{$index}{$key};
+            next unless defined $settings->{$index}{$key};
 
             $prefs->{$index}{$key}{default_setting} =
                 $settings->{$index}{$key};

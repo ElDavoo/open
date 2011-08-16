@@ -36,8 +36,12 @@ sub register {
     $registry->add(action => 'display_html');
     $registry->add(action => 'page_info');
     $registry->add(action => 'preview');
-    $registry->add(preference => $self->mouseover_length);
-    $registry->add(preference => $self->include_breadcrumbs);
+
+    $self->_register_prefs($registry);
+}
+
+sub pref_names {
+    return qw(mouseover_length include_breadcrumbs);
 }
 
 sub page_info {
@@ -99,6 +103,21 @@ sub preview {
     $self->hub->viewer->text_to_html($wiki_text);
 }
 
+
+sub mouseover_length_data {
+    my $self = shift;
+
+    return {
+        title => __('wiki.mouseover-link?'),
+        binary => 1,
+        default_setting => 1,
+        options => [
+            {setting => '1', display => loc('Yes')},
+            {setting => '0', display => loc('No')},
+        ],
+    };
+}
+
 # The name mouseover_length is historical. It used to allow users to
 # select how many characters from the page to show. We changed it to a
 # boolean as part of the UJ, but it's easiest to keep the name so that
@@ -106,18 +125,41 @@ sub preview {
 # false.
 sub mouseover_length {
     my $self = shift;
+
+    my $data = $self->mouseover_length_data;
     my $p = $self->new_preference('mouseover_length');
-    $p->query(__('wiki.mouseover-link?'));
-    $p->default(1);
+
+    $p->query($data->{title});
+    $p->type('boolean');
+    $p->default($data->{default_setting});
+
     return $p;
+}
+
+sub include_breadcrumbs_data {
+    my $self = shift;
+
+    return {
+        title => __('wiki.include-breadcrumbs?'),
+        binary => 1,
+        default_setting => 0,
+        options => [
+            {setting => '1', display => loc('Yes')},
+            {setting => '0', display => loc('No')},
+        ],
+    };
 }
 
 sub include_breadcrumbs {
     my $self = shift;
+
+    my $data = $self->include_breadcrumbs_data;
     my $p = $self->new_preference('include_breadcrumbs');
-    $p->query(__('wiki.include-breadcrumbs?'));
+
+    $p->query($data->{title});
     $p->type('boolean');
-    $p->default(0);
+    $p->default($data->{default_setting});
+
     return $p;
 }
 
