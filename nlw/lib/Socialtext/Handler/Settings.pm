@@ -10,10 +10,23 @@ extends 'Socialtext::Rest::Entity';
 
 has 'space' => (
     is => 'ro', isa => 'Maybe[Socialtext::Workspace]', lazy_build => 1);
+has 'settings' => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 sub _build_space {
     my $self = shift;
-    return Socialtext::Workspace->new(workspace_id => $self->workspace_id);
+    return eval {
+        Socialtext::Workspace->new(workspace_id => $self->workspace_id)
+    };
+}
+
+sub _build_settings {
+    my $self = shift;
+
+    my $user = $self->rest->user;
+
+    return $self->space
+        ? Socialtext::PreferencesPlugin->Workspace_user_prefs($user, $self->space)
+        : $user->prefs->all_prefs;
 }
 
 sub if_authorized_to_view {
@@ -40,24 +53,12 @@ sub get_html {
     my $vars = $self->_settings_vars();
     $vars->{section} = 'global';
     $vars->{can_update_store} = $user->can_update_store;
-
-    my $set = $self->_get_pref_set('timezone');
-    $vars->{prefs} = $self->_get_pref_set('timezone');
-    $vars->{settings} = $user->prefs->all_prefs;
+    $vars->{prefs} = $self->_decorated_prefs('timezone');
 
     my $global = $self->render_template('element/settings/global', $vars);
     $vars->{main_content} = $global;
+
     return $self->render_template('view/settings', $vars);
-}
-
-sub _get_pref_set {
-    my $self = shift;
-    my @indexes = @_;
-
-    my $prefs = {};
-    $prefs->{$_} = $self->hub->$_->pref_data() for @indexes;
-
-    return $prefs;
 }
 
 around 'GET_space' => \&wrap_get;
@@ -76,9 +77,10 @@ sub GET_space {
     my $vars = $self->_settings_vars();
     $vars->{section} = 'space';
 
-    $vars->{prefs} = $self->_get_pref_set('wikiwyg');
-    my $p = Socialtext::PreferencesPlugin->Workspace_user_prefs($user, $space);
-    $vars->{settings} = $p;
+    my $prefs = $self->_get_pref_set('wikiwyg');
+    my $settings = $self->settings;
+    $vars->{settings} = $settings;
+    $vars->{prefs} = $prefs;
 
     my $template = 'element/settings/'. $self->pref;
     my $content = eval { $self->render_template($template, $vars) };
@@ -102,6 +104,36 @@ sub GET_create {
     $vars->{main_content} = $create;
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->render_template('view/settings', $vars);
+}
+
+sub _decorated_prefs {
+    my $self = shift;
+
+    my $prefs = $self->_get_pref_set(@_);
+    my $settings = $self->settings;
+
+    for my $index (keys %$prefs) {
+        next unless $settings->{$index};
+
+        for my $key (keys %{$prefs->{$index}}) {
+            next unless $settings->{$index}{$key};
+
+            $prefs->{$index}{$key}{default_setting} =
+                $settings->{$index}{$key};
+        }
+    }
+
+    return $prefs;
+}
+
+sub _get_pref_set {
+    my $self = shift;
+    my @indexes = @_;
+
+    my $prefs = {};
+    $prefs->{$_} = $self->hub->$_->pref_data() for @indexes;
+
+    return $prefs;
 }
 
 sub _settings_vars {

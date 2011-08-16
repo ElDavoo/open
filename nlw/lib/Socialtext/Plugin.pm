@@ -68,10 +68,9 @@ sub _choices {
     my $self = shift;
     my $data = shift;
 
-    my $default = grep { $_->{default} } @{$data->{options}};
     my @choices = map { $_->{setting} => $_->{display} } @{$data->{options}};
 
-    return (\@choices, $default);
+    return \@choices;
 }
 
 sub new {

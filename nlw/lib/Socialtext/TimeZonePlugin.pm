@@ -56,11 +56,8 @@ const zones => {
 sub register {
     my $self     = shift;
     my $registry = shift;
-    $registry->add( preference => $self->timezone );
-    $registry->add( preference => $self->dst );
-    $registry->add( preference => $self->date_display_format );
-    $registry->add( preference => $self->time_display_12_24 );
-    $registry->add( preference => $self->time_display_seconds );
+
+    $self->_register_prefs($registry);
 }
 
 
@@ -75,15 +72,14 @@ sub timezone_data {
     my $self = shift;
 
     my $zones = $self->zones;
-    my $default = $self->_default_timezone;
 
     my $options = [
         map { +{setting => $_, display => $zones->{$_}} } sort keys %$zones
     ];
-    $self->_set_default($default => $options);
 
     return {
         title => __('config.time-zone?'),
+        default_setting => $self->_default_timezone,
         options => $options,
     };
 }
@@ -92,13 +88,12 @@ sub timezone {
     my $self = shift;
 
     my $data = $self->timezone_data;
-    my ($choices, $default) = $self->_choices($data);
     my $p = $self->new_preference('timezone');
 
     $p->query($data->{title});
     $p->type('pulldown');
-    $p->choices($choices);
-    $p->default($default);
+    $p->choices($self->_choices($data));
+    $p->default($data->{default_setting});
 
     return $p;
 }
@@ -113,10 +108,10 @@ sub dst_data {
         {setting => 'auto-us', display => __('tz.auto-us')},
         {setting => 'never', display => __('tz.dst-never')},
     ];
-    $self->_set_default($default => $options);
 
     return {
         title => __('tz.dst?'),
+        default_setting => $self->_default_dst,
         options => $options,
     };
 }
@@ -125,12 +120,12 @@ sub dst {
     my $self = shift;
 
     my $data = $self->dst_data;
-    my ($choices, $default) = $self->_choices($data);
     my $p = $self->new_preference('dst');
+
     $p->query($data->{title});
     $p->type('pulldown');
-    $p->choices($choices);
-    $p->default($default);
+    $p->choices($self->_choices($data));
+    $p->default($data->{default_setting});
 
     return $p;
 }
@@ -140,7 +135,6 @@ sub date_display_format_data {
 
     my $time = $self->_now;
     my $locale = $self->hub->best_locale;
-    my $default = $self->_default_date_display_format;
 
     my @raw = Socialtext::Date::l10n->get_all_format_date($locale);
     my @options = ();
@@ -153,10 +147,10 @@ sub date_display_format_data {
             display => $display_time,
         };
     }
-    $self->_set_default($default => \@options);
 
     return {
         title => __('date.format?'),
+        default_setting => $self->_default_date_display_format,
         options => \@options,
     };
 }
@@ -165,7 +159,6 @@ sub date_display_format {
     my $self   = shift;
 
     my $data = $self->date_display_format_data;
-    my ($choices, $default) = $self->_choices($data);
 
     my $p = $self->new_dynamic_preference('date_display_format');
     $p->query($data->{title});
@@ -173,8 +166,8 @@ sub date_display_format {
     $p->choices_callback(sub {
         my $p = shift;
 
-        $p->default($default);
-        return $choices;
+        $p->default($data->{default_setting});
+        return $self->_choices($data);
     });
 
     return $p;
@@ -185,7 +178,6 @@ sub time_display_12_24_data {
 
     my $time = $self->_now;
     my $locale = $self->hub->best_locale;
-    my $default = $self->_default_time_display_12_24;
 
     my @raw = Socialtext::Date::l10n->get_all_format_time($locale);
     my @options = ();
@@ -198,10 +190,10 @@ sub time_display_12_24_data {
             display => $display_time,
         };
     }
-    $self->_set_default($default => \@options);
 
     return {
         title => __('date.hour-format?'),
+        default => $self->_default_time_display_12_24,
         options => \@options,
     };
 }
@@ -210,7 +202,6 @@ sub time_display_12_24 {
     my $self   = shift;
 
     my $data = $self->time_display_12_24_data;
-    my ($choices, $default) = $self->_choices($data);
 
     my $p = $self->new_dynamic_preference('time_display_12_24');
     $p->query($data->{title});
@@ -218,8 +209,8 @@ sub time_display_12_24 {
     $p->choices_callback( sub {
         my $p = shift;
 
-        $p->default($default);
-        return $choices;
+        $p->default($data->{default_setting});
+        return $self->_choices($data);
     });
 
     return $p;
@@ -231,9 +222,10 @@ sub time_display_seconds_data {
     return {
         title => __('date.include-seconds?'),
         binary => 1,
+        default_setting => 0,
         options => [
             {setting => '1', display => loc('Yes')},
-            {setting => '0', display => loc('No'), default => 1},
+            {setting => '0', display => loc('No')},
         ],
     };
 }
@@ -242,25 +234,13 @@ sub time_display_seconds {
     my $self = shift;
 
     my $data = $self->time_display_seconds_data;
-    my ($choices, $default) = $self->_choices($data);
 
     my $p = $self->new_preference('time_display_seconds');
     $p->query($data->{title});
     $p->type('boolean');
-    $p->default($default);
+    $p->default($data->{default_setting});
 
     return $p;
-}
-sub _set_default {
-    my $self = shift;
-    my $default = shift;
-    my $options = shift;
-
-    for my $option (@$options) {
-        $option->{default} = 1 if $default eq $option->{setting};
-    }
-
-    return $options;
 }
 
 sub _default_timezone {

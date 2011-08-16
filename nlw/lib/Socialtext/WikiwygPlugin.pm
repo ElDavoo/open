@@ -77,8 +77,9 @@ sub wikiwyg_double_data {
     return {
         title => __('wiki.double-click-to-edit?'),
         binary => 1,
+        default_setting => 1,
         options => [
-            {setting => '1', display => loc('Yes'), default => 1},
+            {setting => '1', display => loc('Yes')},
             {setting => '0', display => loc('No')},
         ],
     }

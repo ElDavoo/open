@@ -54,7 +54,6 @@
   [% INCLUDE element/settings/setting_select
     pref='prefs.timezone.' _ setting
     option=prefs.timezone.$setting
-    user_setting=prefs.settings.timezone.${setting}
   %]
 [% END %]
 

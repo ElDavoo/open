@@ -41,10 +41,10 @@ sub st_settings {
             locales => {
                 locale =>  {
                     title => loc('Display Language'),
+                    default_setting => $locale,
                     options => \@locales,
                 },
             },
-            settings => {locales => {locale => $locale} },
         },
     );
 }

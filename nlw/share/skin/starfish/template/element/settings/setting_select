@@ -1,8 +1,9 @@
 [% IF option.binary %]
   <div class="push_5 grid_7">
-    <input type="checkbox" name="[% pref %]"
-      value="1"
-      [% IF user_setting == 1 %]checked="checked"[% END %]
+    <input type="checkbox" name="[% pref %]" value="1"
+      [% IF option.default_setting == 1 %]
+        checked="checked"
+      [% END %]
     />
     [% option.title %]
   </div>
@@ -12,7 +13,9 @@
     <select name="[% pref %]">
       [% FOREACH setting IN option.options %]
         <option value="[% setting.setting %]"
-          [% IF setting.setting == user_setting %]selected="selected"[% END %]
+          [% IF setting.setting == option.default_setting %]
+            selected="selected"
+          [% END %]
         >
           [% setting.display %]
         </option>
