@@ -22,12 +22,10 @@ Socialtext.Dialog = (function($) {
             var $content = opts.content
                 ? $(content)
                 : $('<div></div>').html(opts.html);
-            $content.dialog({
-                title: opts.title || '',
-                width: opts.width || 520,
-                height: opts.height || 'auto',
+            $content.dialog($.extend({
+                width: 520,
                 modal: true
-            });
+            }, opts));
             if ($.isFunction(opts.callback)) opts.callback();
             return new Dialog($content);
         },
