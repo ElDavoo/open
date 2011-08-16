@@ -25,6 +25,7 @@ Socialtext.Dialog = (function($) {
             $content.dialog({
                 title: opts.title || '',
                 width: opts.width || 520,
+                height: opts.height || 'auto',
                 modal: true
             });
             if ($.isFunction(opts.callback)) opts.callback();

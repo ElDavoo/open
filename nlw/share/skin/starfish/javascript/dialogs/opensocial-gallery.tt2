@@ -1,6 +1,6 @@
-<div id="st-widget-opensocial-gallery-widgets" style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; width: 600px; height: 400px; overflow: auto; background: #f0f0f0">
+<div id="st-widget-opensocial-gallery-widgets">
     [% FOR section = widgets %]
-        <div class="title">[% section.title %]</div>
+        <h4 class="vpad10">[% section.title %]</h4>
         <table class="galleryWidget" style="width: 99%; table-layout: fixed">
             [% WHILE section.widgets.size %]
                 [% widget1 = section.widgets.shift() %] 
@@ -22,12 +22,10 @@
     <td style="width:20%">
         <img src="/data/gadgets/[% widget.gadget_id %]/thumbnail" width="90" height="45" onerror="this.src='/nlw/plugin/widgets/images/thumbs/default.png'" />
     </td>
-    <td style="width:30%">
-        <div style="float: left">
-            <input type="hidden" name="gadget_id" value="[% widget.gadget_id %]"/>
-            <input type="hidden" name="src" value="[% widget.src %]"/>
-            <a id="gallery-widget-[% widget.title %]" href="#gallery-widget-[% widget.title %]" class="add-now button">[% loc('widget.add-now') %]</a>
-        </div>
+    <td style="padding:13px 0; width:30%">
+        <input type="hidden" name="gadget_id" value="[% widget.gadget_id %]"/>
+        <input type="hidden" name="src" value="[% widget.src %]"/>
+        <a id="gallery-widget-[% widget.title %]" href="#gallery-widget-[% widget.title %]" class="add-now button">[% loc('widget.add-now') %]</a>
     </td>
 [% END %]
 

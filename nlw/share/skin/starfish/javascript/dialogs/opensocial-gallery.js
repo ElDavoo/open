@@ -28,7 +28,8 @@ proto.showLightbox = function () {
     self.loadAccountGallery(function(widgets) {
         self.dialog = Socialtext.Dialog.Create({
             title: loc('widget.insert'),
-            width: '640px',
+            width: 640,
+            height: 400,
             html: Socialtext.Dialog.Process('opensocial-gallery.tt2', {
                 widgets: widgets
             })
