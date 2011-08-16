@@ -77,7 +77,7 @@
 | click_ok | gallery-widget-Page Creator |  |
 
 | *Comment* | Test Case: Page Creator Widget takes a looooong time for the JS to load ... |  |
-| pause_ok | 10000 | takes a looooong time for the fancy JS to load ... |
+| pause_ok | 8000 | takes a looooong time for the fancy JS to load ... |
 | selectFrame | //iframe[@class='widgetWindow'] |  |
 
 | *Comment* | Test Case: Page Creator Widget verify and fill out the Basics section |  |
@@ -123,12 +123,19 @@
 | click_ok | xpath=(//input[@value='Add'])[2] |  |
 | check_ok | xpath=(//input[@class='field-required'])[2] |  |
 | is_checked_ok | xpath=(//input[@class='field-required'])[2] |  |
+
+| *Comment* | Test Case: Page Creator Widget: Preview, then re-open to get fresh indexes for elements |  |
+| click_ok | link=Preview |  |
+| wait_for_element_visible_ok | link=Create Page | 10000 |
+| selectFrame | relative=parent |  |
+| wait_for_element_visible_ok | //a[@class='settings'] | 10000 |
+| *Comment* | Test Case: Page Creator Widget: Wait to click wrench icon - that makes it work ! |  |
+| pause_ok | 6000 | Wait to click wrench icon - that makes it work ! |
+| click_ok | //a[@class='settings'] |  |
+| wait_for_element_visible_ok | //iframe[@class='widgetWindow'] | 10000 |
+| selectFrame | //iframe[@class='widgetWindow'] |  |
 | wait_for_element_visible_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[3] | 30000 |
-| pause | 5000 |  |
-
-*I can't get Sel to type into the second Choices: field, even though it can see it. Right now the test pauses long enough for me to type it in myself*
-type_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[3] | Tech Story |
-
+| type_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[3] | Tech Story |
 | click_ok | xpath=(//input[@title='Make this choice pre-selected.'])[2] |  |
 
 
@@ -152,23 +159,17 @@ type_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-cor
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
-
-*Something about the WAFL code is not matching up. Maybe it's just too long? Or the page breaks are messing it up?*
-wait_for_text_present_ok | `widget WAFL code goes here` | 20000 |
-
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Page Creator Widget use the widget to create a page |  |
 | wait_for_text_present_ok | Page Creator | 30000 |
-| pause | 5000 |  |
+| pause_ok | 5000 |  |
 | selectFrame | //iframe[@class='widgetWindow'] |  |
+| wait_for_element_visible_ok | link-create-page |  |
+| click_ok | link-create-page |  |
+| verifyAlert | Required field missing: title |  |
 
-*When manually tested, the error message popup comes up properly. But inside Sel, it just brings up a blank new browser window*
-wait_for_element_visible_ok | link-create-page | |
-click_ok | link-create-page | |
-pause | 5000 | |
-verifyConfirmation | Required field missing: title | |
-
+| *Comment* | Test Case: Page Creator Widget fill in the form fields |  |
 | is_selected_ok | var-type | label=Story |
 | select_ok | var-type | label=Tech Story |
 | is_selected_ok | var-type | label=Tech Story |
