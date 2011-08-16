@@ -1253,7 +1253,8 @@ CREATE TABLE page_revision (
     locked boolean DEFAULT false NOT NULL,
     tags text[] NOT NULL,
     body_length bigint DEFAULT 0 NOT NULL,
-    body bytea
+    body bytea,
+    anno_blob text
 );
 
 CREATE TABLE page_tag (
