@@ -6155,6 +6155,9 @@ msgstr "没有和“%1”匹配的项目"
 msgid "error.no-page-body"
 msgstr "保存页面时，正文不能为空。"
 
+msgid "error.no-page-creator-for-ie6"
+msgstr "抱歉，创建页面小工具目前无法在您的浏览器上进行设定。"
+
 msgid "error.no-page-creator-for-mobile"
 msgstr "抱歉，创建页面小工具目前无法在行动装置上使用。"
 

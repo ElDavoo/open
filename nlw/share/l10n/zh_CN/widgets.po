@@ -733,6 +733,9 @@ msgstr "没有新的 %1，可能是因为您还没有关注任何人，也可能
 msgid "error.no-items-for-explore"
 msgstr "没有可显示的项目。可能是没人发布链接或附件，也可能是您添加了太多过滤器。"
 
+msgid "error.no-page-creator-for-ie6"
+msgstr "抱歉，创建页面小工具目前无法在您的浏览器上进行设定。"
+
 msgid "error.no-page-creator-for-mobile"
 msgstr "抱歉，创建页面小工具目前无法在行动装置上使用。"
 

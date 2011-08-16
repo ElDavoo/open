@@ -6155,6 +6155,9 @@ msgstr "沒有和『%1』符合的項目"
 msgid "error.no-page-body"
 msgstr "儲存頁面時，正文不能為空。"
 
+msgid "error.no-page-creator-for-ie6"
+msgstr "抱歉，建立頁面小工具目前無法在您的瀏覽器上進行設定。"
+
 msgid "error.no-page-creator-for-mobile"
 msgstr "抱歉，建立頁面小工具目前無法在行動裝置上使用。"
 
