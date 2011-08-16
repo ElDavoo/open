@@ -77,12 +77,18 @@ sub GET_space {
 
     my $vars = $self->_settings_vars();
     $vars->{section} = 'space';
-    $vars->{prefs} = $self->_decorated_prefs(qw(wikiwyg display email_notify recent_changes syndicate watchlist weblog));
 
-    my $template = 'element/settings/'. $self->pref;
-    my $content = eval { $self->render_template($template, $vars) };
-    warn $@ if $@;
-    return $self->error(loc('Not Found')) unless $content;
+    my $content;
+    eval {
+        $vars->{prefs} = $self->fetch_prefs();
+
+        my $template = 'element/settings/'. $self->pref;
+        $content = $self->render_template($template, $vars);
+    };
+    if (my $e = $@) {
+        warn $e;
+        return $self->error(loc('Not Found')) unless $content;
+    }
 
     $vars->{main_content} = $content;
 
@@ -104,6 +110,23 @@ sub GET_create {
 
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->render_template('view/settings', $vars);
+}
+
+
+sub fetch_prefs {
+    my $self = shift;
+
+    my $pref = $self->pref;
+    my $set = {
+        preferences => [qw(
+            wikiwyg display email_notify
+            recent_changes syndicate watchlist weblog
+        )],
+    }->{$pref};
+
+    die "no set for $pref" unless defined $set;
+
+    return $self->_decorated_prefs(@$set);
 }
 
 sub _decorated_prefs {
