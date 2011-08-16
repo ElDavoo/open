@@ -947,6 +947,7 @@
 "error.no-groups-to-add":"No Groups to Add.",
 "error.no-items-for-explore":"There are no items to show. Either no one has posted any links or attachments, or you have too many filters applied.",
 "error.no-match=lookahead":"No matches for '[_1]'",
+"error.no-page-creator-for-ie6":"Sorry, this browser does not support setting up Page Creator widgets.",
 "error.no-page-creator-for-mobile":"Sorry, Page Creator widget is currently unavailable on mobile devices.",
 "error.no-page-doc":"You must check at least one page in order to create a Word document.",
 "error.no-page-pdf":"You must check at least one page in order to create a PDF.",

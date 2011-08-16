@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-11 08:10-0700\n"
+"PO-Revision-Date: 2011-08-16 12:51+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -6590,6 +6590,9 @@ msgstr "No matches for '%1'"
 #: lib/Socialtext/EditPlugin.pm:195
 msgid "error.no-page-body"
 msgstr "A page must have a body to be saved."
+
+msgid "error.no-page-creator-for-ie6"
+msgstr "Sorry, this browser does not support setting up Page Creator widgets."
 
 msgid "error.no-page-creator-for-mobile"
 msgstr "Sorry, Page Creator widget is currently unavailable on mobile devices."
