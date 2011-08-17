@@ -683,11 +683,6 @@
             '*/*':     &default [Socialtext::Handler::JavaScript, GET]
         '*':                    [Socialtext::Handler::JavaScript, bad_method]
 -
-    '/st/theme/:account_id/style.css':
-        'GET':
-            '*/*':     &default [Socialtext::Handler::Theme, GET]
-        '*':                    [Socialtext::Handler::Theme, bad_method]
--
     '/st/settings':
         'GET':
             'text/html': [Socialtext::Handler::Settings, GET]
