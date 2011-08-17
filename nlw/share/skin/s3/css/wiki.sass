@@ -157,23 +157,6 @@ div#contentColumns div#contentLeft .wiki h3
       font-weight: bold
   dd
     margin-left: 1.5em
-  table
-    border-collapse: collapse
-    width: auto
-    margin-left: 1px
-    &.st-ss
-      border-collapse: inherit
-      margin-bottom: inherit
-      width: inherit
-    th
-      font-weight: bold
-      background: #CCC
-    &.st-ss th
-      font-weight: inherit
-      background: inherit
-    th, td
-      border: 1px solid black
-      padding: 0.2em
   div.inlineWidget table
     th, td
       border: 0px
@@ -181,31 +164,55 @@ div#contentColumns div#contentLeft .wiki h3
 
 // Tables (Wiki only - no XHTML for now)
 
+@mixin table-base
+  border-collapse: collapse
+  width: auto
+  margin-left: 1px
+  &.st-ss
+    border-collapse: inherit
+    margin-bottom: inherit
+    width: inherit
+  th
+    font-weight: bold
+    background: #CCC
+  &.st-ss th
+    font-weight: inherit
+    background: inherit
+  th, td
+    border: 1px solid black
+    padding: 0.2em
+  &.st-ss
+    th, td
+      border: inherit
+      padding: inherit
+      font-size: inherit
+      line-height: inherit
+  &.borderless
+    th, td
+      border: none
+      padding: 0.2em
+  tr.even td
+    background: #E5ECF9
+  tfoot
+    font-style: italic
+  caption
+    background: #eee
+  &.st-ss
+    tr.even td
+      background: inherit
+    tfoot
+      font-style: inherit
+    caption
+      background: inherit
+
 .wiki
   table
-    &.st-ss
-      th, td
-        border: inherit
-        padding: inherit
-        font-size: inherit
-        line-height: inherit
-    &.borderless
-      th, td
-        border: none
-        padding: 0.2em
-    tr.even td
-      background: #E5ECF9
-    tfoot
-      font-style: italic
-    caption
-      background: #eee
-    &.st-ss
-      tr.even td
-        background: inherit
-      tfoot
-        font-style: inherit
-      caption
-        background: inherit
+    @include table-base
+
+.xhtml
+  table.formatter_table
+    @include table-base
+
 
 // Misc classes
 
