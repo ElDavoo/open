@@ -1,1 +1,0 @@
-<option value="search_people" id="st-[%sid%]-people">[% loc("people.search") %]</option>

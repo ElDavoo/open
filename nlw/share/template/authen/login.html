@@ -1,30 +1,50 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
 [% WRAPPER layout/html id="loginPage" title=loc("login.login") %]
-<div id="st-display-mode-container" class="authentication">
-  <div id="controls">
-    <div id="st-editing-tools-edit">
-        <h2 id="st-page-titletext" class="tableTitle">[% loc('login.login-to-socialtext' ) %]</h2>
-    </div>
-    <div id="controlsRight">&nbsp;</div>
-  </div>
+<form id="st-login-form" name="login" method="post" action="/nlw/submit/login">
+  <input type="hidden" name="redirect_to" value="[% redirect_to | html %]" />
+  <input type="hidden" name="lite" value="[% lite | html %]" />
+  [% IF target_workspace %]
+    <input type="hidden" name="workspace_name" value="[% target_workspace.name%]" />
+  [% END %]
 
-  <div id="contentContainer">
-    [% INCLUDE errors_and_messages %]
-
-    <div id="contentColumns">
-      <div id="contentLeft">
-        [% INCLUDE 'authen/element/login_form' %]
-        [% INCLUDE 'authen/element/forgot_password_link' %]
+  <div id="st-display-mode-container" class="container_12">
+    <div class="grid_4">
+      <div class="vpad5">
+        <h2><label for="username">[% username_label %]</label></h2>
+        <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus />
       </div>
-      <div id="contentRight" class="wiki">
-        [% IF login_message %]
-          <div id="login-message">[% login_message %]</div>
+      <div class="vpad5">
+        <h2><label for="password">[% loc('login.password:') %]</label></h2>
+        <input id="password" name="password" type="password" size="30" value="" />
+      </div>
+
+      <div class="vpad5">
+        <input class="checkbox" name="remember" type="checkbox" id="remember" value="1" />
+        [% IF lite %]
+          <span class="description">
+            <label for="remember">[% loc('login.remember-me-on-this-device') %]</label>
+          </span>
+        [% ELSE %]
+          <span class="description">
+            <label for="remember">[% loc('login.remember-me') %]</label>
+          </span>
+          <a id="remember-lightbox" href="#" onclick="$.showLightbox('Checking this box will keep you logged in for up to [% remember_duration %], or until you sign out.  Un-checking this box will cause you to be automatically logged out when you close your browser.')">[?]</a>
         [% END %]
-        [% INCLUDE 'element/workspace_list/public_workspaces' %]
       </div>
+
+      [% IF lite %]
+        <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
+      [% ELSE %]
+        <input type="submit" class="hidden"/>
+        <a style="float:left" id="login_btn" class="button" href="#" onclick="document.forms['login'].submit(); return false">[% loc('login.log-in') %]</a>
+        <div class="clear"></div>
+        [% INCLUDE errors_and_messages %]
+      [% END %]
     </div>
-    <div class="clear"></div>
+
+    <div class="grid_8">
+    </div>
   </div>
-</div>
+</form>
 [% END %]
