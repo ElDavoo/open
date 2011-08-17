@@ -1,6 +1,6 @@
 [% MACRO selected(type) IF type == container.type %] selected [% END %]
 
-<div class="container_24 globalNav">
+<div id="globalNav" class="container_24">
   <div class="[% selected('dashboard') %]grid_3 navGrid">
     <div class="navLink">
         <a class="dashboard" href="/st/dashboard">Dashboard</a>
@@ -25,14 +25,17 @@
     </div>
     <div class="underline"></div>
   </div>
-  <div class="grid_10 navGrid searchBox">
+  <div class="grid_[% 12 - 2 * container.buttons.size %] navGrid searchBox">
     <div class="navItem">[% INCLUDE element/search_form %]</div>
     <div class="staticUnderline"></div>
   </div>
-  <div class="grid_2 navGrid widgetButtons">
+  [% FOR button = container.buttons %]
+  <div class="grid_2 navGrid buttons">
     <div class="navItem">
+      <a id="[% button.0 %]" class="button" href="#">[% button.1 %]</a>
     </div>
     <div class="staticUnderline"></div>
   </div>
+  [% END %]
 </div>
 <div class="clear"></div>

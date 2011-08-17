@@ -1,0 +1,23 @@
+<div id="remove-content-lightbox">
+    <div class="title">
+        [% title %]
+    </div>
+    <br/>
+    [% message %]
+    <div class="buttons">
+        <ul class="widgetButton" style="float:left; padding:10px">
+            <li class="flexButton">
+                <a href="#" id="remove-content-yes" class="genericOrangeButton">
+                    [% loc('do.yes') %]
+                </a>
+            </li>
+        </ul>
+        <ul class="widgetButton" style="float:left; padding:10px">
+            <li class="flexButton">
+                <a href="#" class="close genericOrangeButton">
+                    [% loc('do.no') %]
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

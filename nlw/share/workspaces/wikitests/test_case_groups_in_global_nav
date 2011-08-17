@@ -42,8 +42,12 @@
 | open_ok | /?dashboard |  |
 | wait_for_element_visible_ok | link=Groups | 30000 |
 
-| *Comment* | Test Case: User Groups in Global Nav Teardown |
+| *Comment* | Test Case: User Groups in Global Nav TEARDOWN |
+| st-process-jobs |  |  |
+| deactivate-user | %%group_member%% |  |
+| deactivate-user | %%not_group_member%% |  |
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%grps_ws%% --no-export |
+| delete-account | %%grps_acct%% |  |
 
 | *Comment* | Test Case: Groups in Global Nav COMPLETE |
