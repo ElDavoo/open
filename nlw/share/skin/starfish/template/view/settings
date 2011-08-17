@@ -40,11 +40,12 @@ jQuery(document).ready(function() {
 
 #settings-sidebar .header {
     cursor: pointer;
+    padding-left: 25px;
 }
 
 #settings-sidebar ul {
-    padding-bottom: 0px;
-    margin-bottom: 0px;
+    padding: 0px;
+    margin: 0px;
 }
 
 .input-label {
