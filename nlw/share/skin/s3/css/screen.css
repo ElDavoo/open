@@ -3634,7 +3634,7 @@ div.users-invite-message p {
     margin:1em 0;
     line-height:1.2;
 }
-div.helptext {
+span.helptext {
     font-style: italic;
 }
 
