@@ -239,7 +239,7 @@ sub _valid_position {
 sub _valid_tiling {
     my $tiling = shift;
 
-    return grep { lc($tiling)  eq $_ } qw(repeat no-repeat);
+    return grep { lc($tiling)  eq $_ } qw(repeat no-repeat repeat-x repeat-y);
 }
 
 sub _valid_font {
