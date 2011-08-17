@@ -34,10 +34,11 @@ valid_settings: {
     ok !$class->ValidSettings(header_image_position=>''), 'position 5';
 
     # exercise _valid_tiling
-    ok $class->ValidSettings(header_image_tiling=>'both'), 'tiling 1';
-    ok !$class->ValidSettings(header_image_tiling=>'neither'), 'tiling 2';
+    ok $class->ValidSettings(header_image_tiling=>'repeat'), 'tiling 1';
+    ok $class->ValidSettings(header_image_tiling=>'no-repeat'), 'tiling 2';
     ok !$class->ValidSettings(header_image_tiling=>'both none'), 'tiling 3';
-    ok !$class->ValidSettings(header_image_tiling=>''), 'tiling 4';
+    ok !$class->ValidSettings(header_image_tiling=>'repeat no-repeat'), 'tiling 4';
+    ok !$class->ValidSettings(header_image_tiling=>''), 'tiling 5';
 
     # exercise _valid_font
     ok $class->ValidSettings(body_font=>'Helvetica'), 'font 1';
