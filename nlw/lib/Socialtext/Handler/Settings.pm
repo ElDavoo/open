@@ -23,10 +23,18 @@ sub _build_settings {
     my $self = shift;
 
     my $user = $self->rest->user;
+    my $space = $self->space;
 
-    return $self->space
-        ? Socialtext::PreferencesPlugin->Workspace_user_prefs($user, $self->space)
-        : $user->prefs->all_prefs;
+    return $user->prefs->all_prefs unless $space;
+
+    my $settings = 
+        Socialtext::PreferencesPlugin->Workspace_user_prefs($user, $space);
+
+    $settings->{workspaces_ui} = {
+        map { $_ => $space->$_ } $self->hub->workspaces_ui->pref_names()
+    };
+
+    return $settings;
 }
 
 sub if_authorized_to_view {
@@ -70,9 +78,14 @@ sub GET_space {
     my $user = $self->rest->user;
     my $space = $self->space;
     return $self->error(loc('Not Found')) unless $space;
+
+    my $perm = (grep { $_ eq $self->pref } qw(manage invite features))
+        ? ST_ADMIN_WORKSPACE_PERM
+        : ST_READ_PERM;
+
     return $self->error(loc('Not Authorized')) unless $space->user_can(
         user => $user,
-        permission => ST_READ_PERM,
+        permission => $perm,
     );
 
     my $vars = $self->_settings_vars();
@@ -122,11 +135,12 @@ sub fetch_prefs {
             wikiwyg display email_notify
             recent_changes syndicate watchlist weblog
         )],
+        features => [qw(
+            workspaces_ui
+        )],
     }->{$pref};
 
-    die "no set for $pref" unless defined $set;
-
-    return $self->_decorated_prefs(@$set);
+    return $self->_decorated_prefs(@$set) || {};
 }
 
 sub _decorated_prefs {

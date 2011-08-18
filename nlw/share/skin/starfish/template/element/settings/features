@@ -1,0 +1,36 @@
+<h3>[% loc('Appearance') %]</h3>
+
+<hr />
+
+<h3>[% loc('Features') %]</h3>
+
+[% INCLUDE element/settings/setting_select
+   pref='workspace.setting.incoming_email_placement'
+   option=prefs.workspaces_ui.incoming_email_placement
+%]
+
+[% INCLUDE element/settings/setting_select
+   pref='workspace.setting.email_notify_is_enabled'
+   option=prefs.workspaces_ui.email_notify_is_enabled
+%]
+
+[% INCLUDE element/settings/setting_select
+   pref='workspace.setting.sort_weblogs_by_create'
+   option=prefs.workspaces_ui.sort_weblogs_by_create
+%]
+
+<hr />
+
+<h3>[% loc('Privacy') %]</h3>
+
+[% INCLUDE element/settings/setting_select
+   pref='workspace.permission.guest_has_email_in'
+   option=prefs.workspaces_ui.guest_has_email_in
+%]
+
+[% INCLUDE element/settings/setting_select
+   pref='workspace.setting.allows_page_locking'
+   option=prefs.workspaces_ui.allows_page_locking
+%]
+
+<hr />

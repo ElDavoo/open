@@ -50,12 +50,30 @@
 
 <h3>[% loc('Time') %]</h3>
 
-[% FOREACH setting IN prefs.timezone.keys %]
-  [% INCLUDE element/settings/setting_select
-    pref='prefs.timezone.' _ setting
-    option=prefs.timezone.$setting
-  %]
-[% END %]
+[% INCLUDE element/settings/setting_select
+  pref='prefs.timezone.timezone'
+  option=prefs.timezone.timezone
+%]
+
+[% INCLUDE element/settings/setting_select
+  pref='prefs.timezone.dst'
+  option=prefs.timezone.dst
+%]
+
+[% INCLUDE element/settings/setting_select
+  pref='prefs.timezone.display_format'
+  option=prefs.timezone.display_format
+%]
+
+[% INCLUDE element/settings/setting_select
+  pref='prefs.timezone.time_display_12_24'
+  option=prefs.timezone.time_display_12_24
+%]
+
+[% INCLUDE element/settings/setting_select
+  pref='prefs.timezone.time_display_seconds'
+  option=prefs.timezone.time_display_seconds
+%]
 
 <hr />
 

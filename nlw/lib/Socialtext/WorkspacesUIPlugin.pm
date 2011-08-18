@@ -38,6 +38,101 @@ sub register {
     $registry->add(action => 'workspaces_self_join');
 }
 
+# this is a special case. workspace prefs are actually attrs on the
+# "Workspace" table and, as such, are handled differently.
+sub pref_names {
+    return qw(
+        incoming_email_placement
+        email_notify_is_enabled sort_weblogs_by_create
+        allows_page_locking guest_has_email_in
+    );
+#   No longer supported: enable_unplugged
+#        title homepage_is_dashboard allows_page_locking
+}
+
+sub incoming_email_placement_data {
+    my $self = shift;
+
+    return {
+        title => loc('Placement of emailed content'),
+        default_setting => 'bottom',
+        options => [
+            {setting => 'bottom', display => loc('Bottom of page')},
+            {setting => 'top', display => loc('Top of page')},
+            {setting => 'replace', display => loc('Replace existing page')},
+        ],
+    };
+}
+
+sub enable_unplugged_data {
+    my $self = shift;
+
+    return {
+        title => loc('Socialtext Unplugged'),
+        default_setting => 0,
+        binary => 1,
+        options => [
+            {setting => 1, display => loc('enabled')},
+            {setting => 0, display => loc('disabled')},
+        ],
+    };
+}
+
+sub email_notify_is_enabled_data {
+    my $self = shift;
+
+    return {
+        title => loc('Email Notifications'),
+        default_setting => 1,
+        binary => 1,
+        options => [
+            {setting => 1, display => loc('enabled')},
+            {setting => 0, display => loc('disabled')},
+        ],
+    };
+}
+
+sub sort_weblogs_by_create_data {
+    my $self = shift;
+
+    return {
+        title => loc('Weblog sort order'),
+        additional => loc('You can choose to sort blog entries by the date an entry is updated, or by the date an entry was first posted.'),
+        default_setting => 0,
+        options => [
+            {setting => 1, display => loc('by last updated time')},
+            {setting => 0, display => loc('by create time')},
+        ],
+    };
+}
+
+sub allows_page_locking_data {
+    my $self = shift;
+
+    return {
+        title => loc('Page Locking'),
+        default_setting => 0,
+        binary => 1,
+        options => [
+            {setting => 1, display => loc('enabled')},
+            {setting => 0, display => loc('disabled')},
+        ],
+    };
+}
+
+sub guest_has_email_in_data {
+    my $self = shift;
+
+    return {
+        title => loc('Who can send email to this workspace?'),
+        default_setting => 0,
+        options => [
+            {setting => 1, display => loc('Only Registered Users')},
+            {setting => 0, display => loc('Anyone')},
+        ],
+    };
+}
+
 sub workspaces_listall {
     my $self = shift;
 

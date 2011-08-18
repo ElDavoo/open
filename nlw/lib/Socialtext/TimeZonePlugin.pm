@@ -78,7 +78,7 @@ sub timezone_data {
     ];
 
     return {
-        title => __('config.time-zone?'),
+        title => loc('Timezone'),
         default_setting => $self->_default_timezone,
         options => $options,
     };
@@ -110,7 +110,7 @@ sub dst_data {
     ];
 
     return {
-        title => __('tz.dst?'),
+        title => loc('Daylight Savings/Summer'),
         default_setting => $self->_default_dst,
         options => $options,
     };
@@ -149,7 +149,7 @@ sub date_display_format_data {
     }
 
     return {
-        title => __('date.format?'),
+        title => loc('Date Format'),
         default_setting => $self->_default_date_display_format,
         options => \@options,
     };
@@ -192,7 +192,7 @@ sub time_display_12_24_data {
     }
 
     return {
-        title => __('date.hour-format?'),
+        title => loc('Time Format'),
         default => $self->_default_time_display_12_24,
         options => \@options,
     };
@@ -220,12 +220,12 @@ sub time_display_seconds_data {
     my $self = shift;
     
     return {
-        title => __('date.include-seconds?'),
+        title => '',
         binary => 1,
         default_setting => 0,
         options => [
-            {setting => '1', display => loc('Yes')},
-            {setting => '0', display => loc('No')},
+            {setting => '1', display => loc('Include Seconds in Time Format')},
+            {setting => '0', display => loc('Do not Include Seconds')},
         ],
     };
 }

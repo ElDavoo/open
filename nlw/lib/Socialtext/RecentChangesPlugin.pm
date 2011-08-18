@@ -40,7 +40,7 @@ sub changes_depth_data {
     my $self = shift;
 
     return {
-        title => __('config.changes-depth?'),
+        title => loc('Timeframe for changes'),
         default_setting => 7,
         options => [
             {setting => 1, display => __('last.24hours')},
@@ -71,8 +71,9 @@ sub sidebox_changes_depth_data {
     my $self = shift;
 
     return {
-        title => __('wiki.sidebox-number-of-changes?'),
+        title => loc('Number of items to show'),
         default_setting => 4,
+        depends_on => 'include_in_pages',
         options => [
             map { {setting => $_, display => $_ } } qw(2 4 6 7 10 15 20)
         ],
@@ -97,12 +98,12 @@ sub include_in_pages_data {
     my $self = shift;
 
     return {
-        title => __('wiki.show-sidebox?'),
+        title => loc("What's New sidebar widget"),
         binary => 1,
         default_setting => 0,
         options => [
-            {setting => '1', display => loc('Yes')},
-            {setting => '0', display => loc('No')},
+            {setting => '1', display => loc('enabled')},
+            {setting => '0', display => loc('disabled')},
         ],
     };
 }

@@ -31,7 +31,7 @@ sub notify_frequency_data {
     my $self = shift;
 
     return {
-        title => __('email.frequency?'),
+        title => loc('Frequency of updates'),
         default_setting => $Default_notify_frequency_in_minutes,
         options => [
             {setting => 0, display => __('time.never')},
@@ -65,7 +65,7 @@ sub sort_order_data {
     my $self = shift;
 
     return {
-        title => __('email.page-digest-sort?'),
+        title => loc('Sort order of updates'),
         default_setting => 'chrono',
         options => [
             {setting => 'chrono', display => __('sort.oldest-first')},
@@ -93,7 +93,7 @@ sub links_only_data {
     my $self = shift;
 
     return {
-        title => __('email.page-digest-details?'),
+        title => loc('Email digest information'),
         default_setting => 'expanded',
         options => [
             {setting => 'condensed', display => __('email.page-name-link-only')},

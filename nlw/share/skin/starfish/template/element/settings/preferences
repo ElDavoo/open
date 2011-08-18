@@ -33,16 +33,24 @@
 
 <h3>[% loc("What's New") %]</h3>
 
-[% FOREACH setting IN prefs.recent_changes.keys %]
-  [% INCLUDE element/settings/setting_select
-    pref='prefs.recent_changes.' _ setting
-    option=prefs.recent_changes.$setting
-  %]
-[% END %]
+[% INCLUDE element/settings/setting_select
+  pref='prefs.recent_changes.changes_depth'
+  option=prefs.recent_changes.changes_depth
+%]
+
+[% INCLUDE element/settings/setting_select
+  pref='prefs.recent_changes.include_in_pages'
+  option=prefs.recent_changes.include_in_pages
+%]
+
+[% INCLUDE element/settings/setting_select
+  pref='prefs.recent_changes.sidebox_changes_depth'
+  option=prefs.recent_changes.sidebox_changes_depth
+%]
 
 <hr />
 
-<h3>[% loc('Syndicate') %]</h3>
+<h3>[% loc('RSS') %]</h3>
 
 [% FOREACH setting IN prefs.syndicate.keys %]
   [% INCLUDE element/settings/setting_select

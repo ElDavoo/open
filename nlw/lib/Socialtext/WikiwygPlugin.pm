@@ -75,12 +75,12 @@ sub pref_names {
 sub wikiwyg_double_data {
     my $self = shift;
     return {
-        title => __('wiki.double-click-to-edit?'),
+        title => loc('Double-click to edit page'),
         binary => 1,
         default_setting => 1,
         options => [
-            {setting => '1', display => loc('Yes')},
-            {setting => '0', display => loc('No')},
+            {setting => '1', display => loc('enabled')},
+            {setting => '0', display => loc('disabled')},
         ],
     }
 }

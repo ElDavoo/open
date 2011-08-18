@@ -6,7 +6,4 @@
   option=plugin.signals.dm_sends_email
 %]
 
-<div class="push_5 grid_7">[% loc("If 'Yes', each time a user sends you a private message via Signals, we'll send you an email with the message.") %]</div>
-<div class="clear"></div>
-
 <hr />

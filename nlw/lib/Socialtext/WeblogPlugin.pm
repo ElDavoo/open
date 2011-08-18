@@ -52,7 +52,7 @@ sub weblog_depth_data {
     my $self = shift;
 
     return {
-        title => __('blog.number-of-posts?'),
+        title => loc('Number of posts to show'),
         default_setting => $self->default_weblog_depth,
         options => [
             map { {setting => $_, display => $_ } } qw(5 10 15 20 25 50)
