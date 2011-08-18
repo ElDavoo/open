@@ -37,7 +37,7 @@ Socialtext.Dialog = (function($) {
             else {
                 loaded[name] = true;
                 var uri = nlw_make_static_path(
-                    '/skin/starfish/javascript/dialog-' + name + '.js' + _gz
+                    '/js/dialog-' + name + '.js' + _gz
                 );
                 if (Socialtext.dev_env) {
                     uri = uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);

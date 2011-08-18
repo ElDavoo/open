@@ -1,4 +1,23 @@
 ---
+# 3rd party support:
+'jquery-1.4.2.js':
+    parts:
+        - contrib/jquery-1.4.2.js
+'jquery-1.4.2.min.js':
+    parts:
+        - contrib/jquery-1.4.2.min.js
+'jquery-1.4.4.js':
+    parts:
+        - contrib/jquery-1.4.4.js
+'jquery-1.4.4.min.js':
+    parts:
+        - contrib/jquery-1.4.4.min.js
+'push-client.js':
+    plugin: widgets
+    parts:
+        - push-client.js
+
+# Socialtext files
 'socialtext-starfish.js':
     compress: 1
     parts:

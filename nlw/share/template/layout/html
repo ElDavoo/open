@@ -42,7 +42,7 @@
       src="[% wiki.skin_uri('s3') %]/javascript/l10n-[% loc_lang %].js.gz">
     </script>
 
-    <script type="text/javascript" charset="utf-8" src="/js/socialtext-starfish.js.gz"></script>
+    <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-starfish.js.gz"></script>
 
     <script>
         var containerID = "[% container.id %]";

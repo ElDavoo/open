@@ -9,6 +9,16 @@
         'GET':
             '*/*':     &default [Test::Socialtext::Rest, GET]
         '*':                    [Test::Socialtext::Rest, bad_method]
+-
+    '/js/:file':
+        'GET':
+            '*/*':     &default [Socialtext::Handler::JavaScript, GET]
+        '*':                    [Socialtext::Handler::JavaScript, bad_method]
+-
+    '/js/:version/:file':
+        'GET':
+            '*/*':     &default [Socialtext::Handler::JavaScript, GET]
+        '*':                    [Socialtext::Handler::JavaScript, bad_method]
 [%- END %]
 -
     '/data/jobs':
@@ -677,11 +687,6 @@
 -
     '/data':
         '*':                    [Socialtext::Rest, redirect_workspaces]
--
-    '/js/:__file__':
-        'GET':
-            '*/*':     &default [Socialtext::Handler::JavaScript, GET]
-        '*':                    [Socialtext::Handler::JavaScript, bad_method]
 -
     '/settings/default_workspace':
         'GET':  

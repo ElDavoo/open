@@ -15,30 +15,14 @@ has 'path' => (
     is => 'ro', isa => 'Maybe[Str]', lazy_build => 1,
 );
 
-my %DIR = (
-    'jquery-1.4.2.js' => 'javascript/contrib',
-    'jquery-1.4.2.min.js' => 'javascript/contrib',
-    'jquery-1.4.4.js' => 'javascript/contrib',
-    'jquery-1.4.4.min.js' => 'javascript/contrib',
-    'push-client.js' => 'plugin/widgets/share/javascript',
-);
-
 method GET ($rest) {
-    my $file = $self->__file__;
+    my $file = $self->file;
+
     my $builder = Socialtext::JavaScript::Builder->new;
-
-    my ($url, $path);
-
-    if ($builder->is_target($file)) {
-        $path = $builder->target_path($file);
-        $url = "/nlw/js/$file";
-        $builder->build($file) if !-f $path or $ENV{NLW_DEV_MODE};
-    }
-    elsif (my $dir = $DIR{$file}) {
-        $path = "$code_base/$dir/$file";
-        $url = "/nlw/static/$dir/$file";
-    }
-
+    return $self->no_resource($file) unless $builder->is_target($file);
+    
+    my $path = $builder->target_path($file);
+    $builder->build($file) if !-f $path or $ENV{NLW_DEV_MODE};
     $rest->header(
         -status               => HTTP_200_OK,
         '-content-length'     => -s $path,
@@ -46,7 +30,7 @@ method GET ($rest) {
         -pragma               => undef,
         '-cache-control'      => undef,
         'Content-Disposition' => "filename=\"$file\"",
-        '-X-Accel-Redirect'   => $url,
+        '-X-Accel-Redirect'   => "/nlw/js/$file",
     );
 }
 
