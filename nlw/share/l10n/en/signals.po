@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-08-17 22:09-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -171,8 +171,8 @@ msgid "signals.about-bookmarklet!"
 msgstr "Install it as a bookmark (or favorite) and, when you find a page you want to signal or share, just click or select the bookmark and it will send a signal for you!"
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:15
-msgid "signals.about-email-mentions-checkbox"
-msgstr "If checked, each time another user mentions you in a Signal, we'll send you an email with the message"
+msgid "signals.signal-mentions-to-email"
+msgstr "If checked, each time another user mentions you in a Signal, we'll send you an email with the message."
 
 #: share/plugin/signals/share/javascript/signals.js:820
 msgid "signals.all-groups"
@@ -332,8 +332,8 @@ msgstr "Reply privately to this signal."
 #. ("<a href=\"$webroot$signal.uri\">here</a>")
 #. (('<a href="' _ webroot _ signal.uri _ '">here</a>'))
 #: share/plugin/signals/template/email/mention.html:0 share/plugin/signals/template/email/mention.html:23
-msgid "signals.reply-to-signal-message=here"
-msgstr "This message was sent by Socialtext Signals. You can reply to this message %1."
+msgid "signals.reply-to-signal-message=url"
+msgstr "This message was sent by Socialtext Signals. You can reply to this message <a href=\"%1\">here</a>."
 
 #: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
