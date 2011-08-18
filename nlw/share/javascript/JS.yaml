@@ -1,0 +1,132 @@
+---
+'socialtext-starfish.js':
+    compress: 1
+    parts:
+        - contrib/jquery-1.4.4.js
+        - contrib/jquery-json-1.3.js
+        - contrib/utf8.js
+        - {jemplate_runtime: jquery}
+        - {file: 'JemplatePlugin/*.js'}
+        - {file: 'socialtext-container.js'}
+        - search.js
+        - { jemplate: 'template' }
+        - like-indicator.js
+        - pageview.js
+        - dialog.js
+        - legacy.js
+'socialtext-container.js':
+    compress: 1
+    parts:
+        - { jemplate: 'template' }
+        - shindig-container-default.js
+        - contrib/jquery-ui-1.8.5.js
+        - contrib/jquery.ui.ipad.altfix.js
+        - container/drag-and-drop.js
+        - container/gadgets.js
+        - container/madlibs.js
+        - socialtext-activities.js
+        - shindig-inline.js
+        - container/inline.js
+'socialtext-activities.js':
+    parts:
+        - contrib/jquery.timers.js
+        - activities/jquery.dropdown.js
+        - socialtext-editor-light.js
+        - cookie.js
+        - activities/push-client.js
+        - activities/base.js
+        - activities/appdata.js
+        - activities/editor.js
+        - activities/event_list.js
+        - activities/widget.js
+        - activities/explore_filters.js
+        - activities/explore.js
+        - activities/last_signal.js
+'shindig-inline.js':
+    parts:
+        - contrib/shindig/core/util.js
+        - contrib/shindig/core.io/io.js
+        - contrib/shindig/opensocial-reference/opensocial.js
+        - contrib/shindig/opensocial-reference/container.js
+        - contrib/shindig/opensocial-reference/datarequest.js
+        - contrib/shindig/opensocial-reference/dataresponse.js
+        - contrib/shindig/opensocial-reference/environment.js
+        - contrib/shindig/opensocial-reference/idspec.js
+        - contrib/shindig/opensocial-reference/responseitem.js
+        - contrib/shindig/opensocial-current/restfulcontainer.js
+'dialog-opensocial-gallery.js':
+    compress: 1
+    parts:
+        - { jemplate: 'dialogs/opensocial-gallery.tt2' }
+        - 'dialogs/opensocial-gallery.js'
+'dialog-add-update-content.js':
+    compress: 1
+    parts:
+        - { jemplate: 'dialogs/add-update-content.tt2' }
+        - 'dialogs/add-update-content.js'
+'dialog-remove-content.js':
+    compress: 1
+    parts:
+        - { jemplate: 'dialogs/remove-content.tt2' }
+        - 'dialogs/remove-content.js'
+'dialog-confirm.js':
+    compress: 1
+    parts:
+        - { jemplate: 'dialogs/confirm.tt2' }
+        - 'dialogs/confirm.js'
+'shindig-container-%.js':
+    compress: 1
+    parts:
+        - { shindig_feature: "%", type: 'container' }
+    expand: 
+        - default
+        - core
+        - ifpc
+        - pubsub
+        - rpc
+'shindig-gadget-%.js':
+    compress: 1
+    parts:
+        - { shindig_feature: "%", type: 'gadget' }
+    expand: 
+        - default
+        - analytics
+        - com.google.gadgets.analytics
+        - core.io
+        - core
+        - flash
+        - ifpc
+        - minimessage
+        - opensocial-0.6
+        - opensocial-0.7
+        - opensocial-current
+        - opensocial-reference
+        - opensocial-templates
+        - pubsub
+        - rpc
+        - setprefs
+        - settitle
+        - skins
+        - tabs
+        - test
+        - views
+'socialtext-editor-light.js':
+    compress: 1
+    parts:
+        - 'lookahead.js'
+        - 'jquery.selectOverlap.js'
+        - 'Class.js'
+        - 'loc.js'
+        - main.js
+        - contrib/rangy-core.js
+        - contrib/rangy-serializer.js
+        - contrib/rangy-init.js
+        - contrib/jquery.rangyinputs.js
+        - wikiwyg/Wikiwyg.js
+        - wikiwyg-widgets.js
+        - wikiwyg/Wikiwyg/Widgets.js
+        - wikiwyg/Wikiwyg/Wikitext.js
+        - wikiwyg/Wikiwyg/Wysiwyg.js
+'wikiwyg-widgets.js':
+    parts:
+        - { json: 'wikiwyg/Widgets.yaml', name: 'Wikiwyg.Widgets' }

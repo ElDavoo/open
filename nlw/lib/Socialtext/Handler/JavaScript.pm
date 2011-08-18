@@ -1,8 +1,9 @@
 package Socialtext::Handler::JavaScript;
 # @COPYRIGHT@
 use Moose;
+use methods;
 use Socialtext::HTTP ':codes';
-use Socialtext::MakeJS;
+use Socialtext::JavaScript::Builder;
 use Socialtext::AppConfig;
 use File::Basename qw(basename);
 use namespace::clean -except => 'meta';
@@ -15,60 +16,36 @@ has 'path' => (
 );
 
 my %DIR = (
-    'jquery-1.4.2.js' => 'skin/common',
-    'jquery-1.4.2.min.js' => 'skin/common',
-    'jquery-1.4.4.js' => 'skin/common',
-    'jquery-1.4.4.min.js' => 'skin/common',
-    'push-client.js' => 'plugin/widgets',
+    'jquery-1.4.2.js' => 'javascript/contrib',
+    'jquery-1.4.2.min.js' => 'javascript/contrib',
+    'jquery-1.4.4.js' => 'javascript/contrib',
+    'jquery-1.4.4.min.js' => 'javascript/contrib',
+    'push-client.js' => 'plugin/widgets/share/javascript',
 );
 
-sub _build_path {
-    my $self = shift;
+method GET ($rest) {
+    my $file = $self->__file__;
+    my $builder = Socialtext::JavaScript::Builder->new;
 
-    # Get the mapped version of the file
-    my $file = $DIR{$self->__file__}
-        ? $DIR{$self->__file__} . '/' . $self->__file__
-        : $self->__file__;
+    my ($url, $path);
 
-    $file = "skin/common/$file" if $file =~ m{^[^/]+\.js$};
-
-    # Parse the path to make sure we know what it means
-    $file =~ m{^(skin|plugin)/([^/]+)/(.*)} or return;
-    my $type = $1;
-    my $name = $2;
-    my $path = $3;
-
-    my $dir;
-    $dir = "$type/$name/javascript"       if $type eq 'skin';
-    $dir = "$type/$name/share/javascript" if $type eq 'plugin';
-
-    if ($ENV{NLW_DEV_MODE} and Socialtext::MakeJS->Exists($dir, $path)) {
-        Socialtext::MakeJS->Build($dir, $path);
+    if ($builder->is_target($file)) {
+        $path = $builder->target_path($file);
+        $url = "/nlw/js/$file";
+        $builder->build($file) if !-f $path or $ENV{NLW_DEV_MODE};
+    }
+    elsif (my $dir = $DIR{$file}) {
+        $path = "$code_base/$dir/$file";
+        $url = "/nlw/static/$dir/$file";
     }
 
-    return "$dir/$path";
-}
-
-sub GET {
-    my ($self, $rest) = @_;
-
-    my $path = $self->path || return $self->no_resource('Invalid path');
-    my $url = "/nlw/static/$path";
-    $path = "$code_base/$path";
-
-    unless (-f $path) {
-        warn "Don't know how to build $path";
-        return $self->no_resource($path);
-    }
-
-    my $filename = basename($path);
     $rest->header(
         -status               => HTTP_200_OK,
         '-content-length'     => -s $path,
         -type                 => 'application/javascript',
         -pragma               => undef,
         '-cache-control'      => undef,
-        'Content-Disposition' => "filename=\"$filename\"",
+        'Content-Disposition' => "filename=\"$file\"",
         '-X-Accel-Redirect'   => $url,
     );
 }

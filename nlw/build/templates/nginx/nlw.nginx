@@ -73,20 +73,15 @@
 
 [%# The rewrite file must come before any of the redirect confs below %]
 [% PROCESS 'nginx/rewrite.nginx' %]
-
-    [%- IF config.is_dev %]
-        location ~ "^/static/skin/([^/]+)/javascript/(.*)" {
-            proxy_pass http://localhost:[% apache_perl_port %]/js/skin/$1/$2;
-        }
-
-        location ~ "^/nlw/plugin/([^/]+)/javascript/(.*)" {
-            proxy_pass http://localhost:[% apache_perl_port %]/js/plugin/$1/$2;
-        }
-    [%- END %]
-
     location /nlw/theme {
         internal;
         alias [% config.cache_dir %]/theme/;
+        expires 1y;
+    }
+
+    location /nlw/js {
+        internal;
+        alias [% config.data_root_dir %]/storage/javascript;
         expires 1y;
     }
 

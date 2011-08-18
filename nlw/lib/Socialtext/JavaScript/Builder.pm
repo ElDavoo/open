@@ -1,9 +1,10 @@
-package Socialtext::MakeJS;
+package Socialtext::JavaScript::Builder;
 # @COPYRIGHT@
-use strict;
-use warnings;
+use Moose;
+use methods;
 use Socialtext::System qw(shell_run);
 use Socialtext::JSON qw(encode_json);
+use Socialtext::Paths;
 use JavaScript::Minifier::XS qw(minify);
 use Template;
 use YAML;
@@ -11,41 +12,83 @@ use File::chdir;
 use Jemplate;
 use FindBin;
 use Compress::Zlib;
+use File::Path qw(mkpath);
 use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
 use File::Basename qw(basename dirname);
 use Clone qw(clone);
 use Carp qw(confess);
+use Cwd;
 use lib dirname(__FILE__)."/../../../plugins/widgets/lib";
-
 use namespace::clean -except => 'meta';
 
-our ($VERBOSE, $CODE_BASE, $MINIFY_JS);
+has 'output_directory' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 
-eval {
-    require Socialtext::AppConfig;
-    $CODE_BASE = Socialtext::AppConfig->code_base;
-    $MINIFY_JS = Socialtext::AppConfig->minify_javascript;
-};
-if ($@) {
-    ($CODE_BASE = $FindBin::Bin) =~ s{dev-bin$}{share};
-    $MINIFY_JS = 1;
+method _build_output_directory {
+    my $dir = Socialtext::Paths::storage_directory('javascript');
+    mkpath $dir unless -d $dir;
+    return $dir;
 }
 
-my @dirs = (
-    glob("$CODE_BASE/skin/*/javascript/JS.yaml"),
-    glob("$CODE_BASE/plugin/*/share/javascript/JS.yaml"),
-);
-my %dirs;
-for my $file (@dirs) {
-    my ($subdir) = $file =~ m{$CODE_BASE/(.*)/JS\.yaml};
-    $dirs{$subdir} = YAML::LoadFile($file);
-    expand_collapsed($dirs{$subdir});
+method target_path($target) {
+    return $self->output_directory . '/' . $target
 }
 
-sub expand_collapsed {
-    my $targets = shift;
+method part_directory($part) {
+    return $self->output_directory
+        if $part->{file} and $self->targets->{$part->{file}};
+    my $base = $self->code_base;
+    return "$base/javascript/contrib/shindig" if $part->{shindig_feature};
+    return "$base/plugin/$part->{plugin}/share/javascript" if $part->{plugin};
+    return "$base/javascript";
+}
 
+has 'verbose' => ( is => 'ro', isa => 'Bool' );
+
+has 'code_base' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
+sub _build_code_base {
+    my $base = eval {
+        require Socialtext::AppConfig;
+        Socialtext::AppConfig->code_base;
+    };
+    ($base = $FindBin::Bin) =~ s{dev-bin$}{share} if $@;
+    return $base;
+}
+
+has 'minify_js' => ( is => 'ro', isa => 'Bool', lazy_build => 1 );
+sub _build_minify_js {
+    my $minify = eval {
+        require Socialtext::AppConfig;
+        return Socialtext::AppConfig->minify_javascript eq 'on';
+    };
+    return $@ ? 1 : $minify
+}
+
+has 'targets' => ( is => 'ro', isa => 'HashRef', lazy_build => 1 );
+method _build_targets {
+    my $code_base = $self->code_base;
+    my $data = YAML::LoadFile("$code_base/javascript/JS.yaml");
+    $self->expand_collapsed($data);
+
+    my @plugins = glob("$code_base/plugin/*");
+    for my $plugin_dir (@plugins) {
+        next unless -f "$plugin_dir/share/javascript/JS.yaml";
+        (my $plugin = $plugin_dir) =~ s{$code_base/plugin/}{};
+
+        my $yaml = YAML::LoadFile("$plugin_dir/share/javascript/JS.yaml");
+        $self->expand_collapsed($yaml);
+
+        for my $key (keys %$yaml) {
+            die "Multiple targets for $key!\n" if $data->{$key};
+            $data->{$key} = $yaml->{$key};
+            $data->{$key}{plugin} = $plugin;
+        }
+    }
+
+    return $data;
+}
+
+method expand_collapsed ($targets) {
     # Check if a regex matches the target, and expand it
     for my $target (keys %$targets) {
         my $expands = delete $targets->{$target}{expand} || next;
@@ -66,66 +109,43 @@ sub expand_collapsed {
     }
 }
 
-sub CleanAll {
-    my ($class) = @_;
-    for my $dir (keys %dirs) {
-        warn "Cleaning in directory $dir...\n" if $VERBOSE;
-        $class->CleanDir($dir);
-    }
-}
-
-sub BuildAll {
-    my ($class) = @_;
-    for my $dir (keys %dirs) {
-        warn "Building $dir...\n" if $VERBOSE;
-        $class->BuildDir($dir);
-    }
-}
-
-sub BuildDir {
-    my ($class, $dir) = @_;
-    for my $target (keys %{$dirs{$dir}}) {
-        $class->Build($dir, $target);
-    }
-}
-
-sub CleanDir {
-    my ($class, $dir) = @_;
-    local $CWD = ($dir =~ m{^/} ? $dir : "$CODE_BASE/$dir");
-    warn "Cleaning files in dir $dir...\n" if $VERBOSE;
+method clean ($target) {
     my @toclean;
-    for my $file (keys %{$dirs{$dir}}) {
+    my @targets = $target ? $target : keys %{$self->targets};
+    for my $file (@targets) {
         push @toclean, $file;
-        push @toclean, "$file.gz" if $dirs{$dir}{$file}{compress};
+        push @toclean, "$file.gz" if $self->targets->{$file}{compress};
     }
-    unlink @toclean;
+    warn "Unlinking $_\n" for @toclean;
+    unlink map { $self->target_path($_) } @toclean;
 }
 
-sub Exists {
-    my ($class, $dir, $target) = @_;
-    if ($target) {
-        $target =~ s/\.gz$//; # built anyway
-        return $dirs{$dir}{$target} ? 1 : 0;
-    }
-    else {
-        return $dirs{$dir} ? 1 : 0;
-    }
+method is_built ($target) {
+    return -f $self->target_path($target);
 }
 
-sub Build {
-    my ($class, $dir, $target) = @_;
+method is_target ($target) {
+    return exists $self->targets->{$target};
+}
+
+method build ($target) {
+    my @targets = $target ? $target : keys %{$self->targets};
+    @targets = 'socialtext-starfish.js';
+    $self->build_target($_) for @targets;
+}
+
+method build_target ($target) {
     $target =~ s/\.gz$//; # built anyway
+    local $CWD = $self->code_base;
 
-    local $CWD = ($dir =~ m{^/} ? $dir : "$CODE_BASE/$dir");
-
-    my $info = $dirs{$dir}{$target};
+    my $info = $self->targets->{$target};
     
     unless ($info) {
         if (-f $target) {
             return;
         }
         else {
-            confess "$dir/$target doesn't exist!";
+            confess "Don't know how to build $target";
         }
     }
 
@@ -136,53 +156,49 @@ sub Build {
     for my $part (@$parts) {
         # Clean the data
         $part = ref $part ? $part : { file => $part };
-        $part->{dir} ||= $dir;
+        $part->{plugin} ||= $info->{plugin};
 
-        # Check if this is a built file
-        if ($part->{file} and $dirs{ $part->{dir} }{ $part->{file} }) {
-            $class->Build($part->{dir}, $part->{file});
+        # Check if this is a built target
+        if ($part->{file} and $self->targets->{$part->{file}}) {
+            $self->build_target($part->{file});
         }
-        push @last_modifieds, $class->_part_last_modified($part);
+        push @last_modifieds, $self->_part_last_modified($part);
     }
 
     # Recompile the current part if any files in `if_modifieds` has been
     # modified.
     for my $part (@{$info->{if_modifieds}}) {
         $part = ref $part ? $part : { file => $part };
-        $part->{dir} ||= $dir;
-        push @last_modifieds, $class->_part_last_modified($part);
+        push @last_modifieds, $self->_part_last_modified($part);
     }
 
     # Return if the file is up-to-date
-    return if (modified($target) >= (sort @last_modifieds)[-1]);
-    warn "Building $dir/$target...\n" if $VERBOSE;
+    return if ($self->modified($target) >= (sort @last_modifieds)[-1]);
+    warn "Building $target...\n" if $self->verbose;
     # Now actually build
     my @text;
     for my $part (@$parts) {
-        my $part_text = $class->_part_to_text($part);
+        my $part_text = $self->_part_to_text($part);
         push @text, $part_text if $part_text;
     }
 
     if (@text) {
         my $text = join '', map { "$_;\n" } @text;
-        write_file($target, $text);
-        write_compressed($target, $text) if $info->{compress};
+        $self->write_target($target, $text, $info->{compress});
     }
     else {
         die "Error building $target!\n";
     }
 }
 
-sub _part_last_modified {
-    my ($class, $part) = @_;
+method _part_last_modified ($part) {
     my @files;
-    local $CWD = "$CODE_BASE/$part->{dir}";
-    push @files, "JS.yaml";
+    local $CWD = $self->part_directory($part);
     push @files, glob($part->{file}) if $part->{file};
     push @files, $part->{template} if $part->{template};
     push @files, $part->{config} if $part->{config};
     push @files, $part->{json} if $part->{json};
-    push @files, glob("$part->{shindig_feature}/*") if $part->{shindig_feature};
+    push @files, glob("*/*") if $part->{shindig_feature};
 
     if ($part->{jemplate} and -f $part->{jemplate}) {
         push @files, $part->{jemplate};
@@ -198,50 +214,48 @@ sub _part_last_modified {
         push @files, 'Widgets.yaml';
         push @files, $template;
     }
-    return map { modified($_) } @files;
+    return map { $self->modified($_) } @files;
 }
 
-sub _part_to_text {
-    my ($class, $part) = @_;
-    local $CWD = "$CODE_BASE/$part->{dir}";
+method _part_to_text ($part) {
+    local $CWD = $self->part_directory($part);
     if ($part->{file}) {
-        return $class->_file_to_text($part);
+        return $self->_file_to_text($part);
     }
     if ($part->{template}) {
-        return $class->_template_to_text($part);
+        return $self->_template_to_text($part);
     }
     elsif ($part->{jemplate_runtime}) {
-        return $class->_jemplate_runtime_to_text($part);
+        return $self->_jemplate_runtime_to_text($part);
     }
     elsif ($part->{command}) {
-        return $class->_command_to_text($part);
+        return $self->_command_to_text($part);
     }
     elsif ($part->{jemplate}) {
-        return $class->_jemplate_to_text($part);
+        return $self->_jemplate_to_text($part);
     }
     elsif ($part->{widget_template}) {
-        return $class->_widget_jemplate_to_text($part);
+        return $self->_widget_jemplate_to_text($part);
     }
     elsif ($part->{json}) {
-        return $class->_json_to_text($part);
+        return $self->_json_to_text($part);
     }
     elsif ($part->{shindig_feature}) {
-        return $class->_shindig_feature_to_text($part);
+        return $self->_shindig_feature_to_text($part);
     }
     else {
         die "Do not know how to create part: $part->{dir}";
     }
 }
 
-sub _shindig_feature_to_text {
-    my ($class, $part) = @_;
+method _shindig_feature_to_text ($part) {
     require Socialtext::Gadgets::Feature;
     my $feature = Socialtext::Gadgets::Feature->new(
         type => $part->{type},
         name => $part->{shindig_feature},
     );
     my $text = $feature->js || return;
-    if ($MINIFY_JS and $text) {
+    if ($self->minify_js and $text) {
         warn "Minifying feature $part->{shindig_feature}...\n";
         $text = minify($text);
     }
@@ -249,8 +263,7 @@ sub _shindig_feature_to_text {
         "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
 }
 
-sub _file_to_text {
-    my ($class, $part) = @_;
+method _file_to_text ($part) {
     my $text = '';
     for my $file (glob($part->{file})) {
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
@@ -259,9 +272,7 @@ sub _file_to_text {
     return $text;
 }
 
-sub _template_to_text {
-    my ($class, $part) = @_;
-
+method _template_to_text ($part) {
     my $template = $part->{template} || die 'template file required';
     my $config_file = $part->{config} || '';
     die "template $template doesn't exist!" unless -f $template;
@@ -278,24 +289,21 @@ sub _template_to_text {
     return join '', $begin, $output;
 }
 
-sub _command_to_text {
-    my ($class, $part) = @_;
-    $Socialtext::System::SILENT_RUN = !$VERBOSE;
+method _command_to_text ($part) {
+    $Socialtext::System::SILENT_RUN = !$self->verbose;
     my $text = '';
     $text .= $part->{nocomment} ? '' : "// BEGIN $part->{command}\n";
     return qx/$part->{command}/;
 }
 
-sub _jemplate_runtime_to_text {
-    my ($class, $part) = @_;
+method _jemplate_runtime_to_text ($part) {
     my $text = '';
     $text .= $part->{nocomment} ? '' : "// BEGIN Jemplate Runtime\n";
     $text .= Jemplate->runtime_source_code($part->{jquery_runtime});
     return $text;
 }
 
-sub _jemplate_to_text {
-    my ($class, $part) = @_;
+method _jemplate_to_text ($part) {
     my $text ='';
     if (-d $part->{jemplate}) {
         # Traverse the directory, so we can maintain template names like
@@ -329,8 +337,7 @@ sub _jemplate_to_text {
     return $text;
 }
 
-sub _json_to_text {
-    my ($class, $part) = @_;
+method _json_to_text ($part) {
     my $name = $part->{name} || die "name required";
     my $text = '';
     $text .= $part->{nocomment} ? '' : "// BEGIN $part->{json}\n";
@@ -339,17 +346,15 @@ sub _json_to_text {
 }
 
 # This is a one off for widgets and should only happen in the wikiwyg skin
-sub _widget_jemplate_to_text {
-    my ($class, $part) = @_;
-
-    $Socialtext::System::SILENT_RUN = !$VERBOSE;
+method _widget_jemplate_to_text ($part) {
+    $Socialtext::System::SILENT_RUN = !$self->verbose;
 
     my $yaml = YAML::LoadFile('Widgets.yaml');
 
     my @jemplates;
     if ($part->{all}) {
         for my $widget (@{$yaml->{widgets}}) {
-            $class->_render_widget_jemplate(
+            $self->_render_widget_jemplate(
                 yaml => $yaml,
                 output => "jemplate/widget_${widget}_edit.html",
                 template => $part->{widget_template},
@@ -357,8 +362,8 @@ sub _widget_jemplate_to_text {
             push @jemplates, "jemplate/widget_${widget}_edit.html";
         }
     }
-    elsif ($part->{target}) {
-        $class->_render_widget_jemplate(
+    elsif ($self->{target}) {
+        $self->_render_widget_jemplate(
             yaml => $yaml,
             output => $part->{target},
             template => $part->{widget_template},
@@ -381,8 +386,7 @@ sub _widget_jemplate_to_text {
 {
     my $tt2;
 
-    sub _render_widget_jemplate {
-        my ($class, %vars) = @_;
+    method _render_widget_jemplate(%vars) {
         my $yaml_data = delete $vars{yaml} || die;
         my $output_file = $vars{output} || die;
         my $template = $vars{template} || die;
@@ -419,17 +423,19 @@ sub _widget_jemplate_to_text {
             menu_hierarchy => $yaml_data->{menu_hierarchy},
         };
 
-        warn "Generating $output_file\n" if $VERBOSE;
+        warn "Generating $output_file\n" if $self->verbose;
         $tt2->process($template, $data, $output_file)
             || die $tt2->error(), "\n";
     }
 }
 
-sub write_compressed {
-    my ($target, $text) = @_;
+method write_target ($target, $text, $compress) {
+    my $path = $self->target_path($target);
+    write_file($path, $text);
+    return unless $compress;
 
-    if ($MINIFY_JS) {
-        warn "Minifying $target...\n" if $VERBOSE;
+    if ($self->minify_js) {
+        warn "Minifying $target...\n" if $self->verbose;
         $text = minify($text);
     }
 
@@ -437,42 +443,36 @@ sub write_compressed {
     # misidentified gzipped js as E4X -- Needs more investigation.
     $text =~ s!;(/\*\s*\n.*?\*/)!;\n!sg;
 
-    warn "Gzipping $target...\n" if $VERBOSE;
+    warn "Gzipping $target...\n" if $self->verbose;
     my $gzipped = Compress::Zlib::memGzip($text);
 
-    warn "Writing to $target.gz...\n" if $VERBOSE;
-    write_file("$target.gz", $gzipped);
+    warn "Writing to $path.gz...\n" if $self->verbose;
+    write_file("$path.gz", $gzipped);
 }
 
-sub modified {
-    return (stat $_[0])[9] || 0;
-}
+method modified ($file) { return (stat $file)[9] || 0 }
 
-1;
+no Moose;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 __END__
 
 =head1 NAME
 
-Socialtext::MakeJS - Rebuild JavaScript as needed
+Socialtext::JavaScript::Builder - Rebuild JavaScript as needed
 
 =head1 SYNOPSIS
 
-  use Socialtext::MakeJS;
+  use Socialtext::JavaScript::Builder;
+  my $builder = Socialtext::JavaScript::Builder->new
 
   # Rebuild/clean *all* of the JS
-  Socialtext::MakeJS->BuildAll();
-  Socialtext::MakeJS->CleanAll();
+  $builder->clean();
+  $builder->build();
 
   # Rebuild/clean the JS in just one of the JS dirs
-  Socialtext::MakeJS->BuildDir($dir);
-  Socialtext::MakeJS->CleanDir($dir);
-
-  # Check if a given JS file exists
-  Exists($dir, $js_file);
-
-  # Rebuild a single JS file
-  Build($dir, $js_file);
+  $builder->clean($target);
+  $builder->build($target);
 
 =head1 DESCRIPTION
 
