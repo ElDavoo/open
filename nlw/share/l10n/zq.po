@@ -12922,6 +12922,10 @@ msgstr "«Untitled Spreadsheet»"
 msgid "signals.about-bookmarklet!"
 msgstr "«Install it as a bookmark (or favorite) and, when you find a page you want to signal or share, just click or select the bookmark and it will send a signal for you!»"
 
+#: share/plugin/signals/template/element/settings/signals_settings_section:15
+msgid "signals.about-email-mentions-checkbox"
+msgstr "«If checked, each time another user mentions you in a Signal, we'll send you an email with the message»"
+
 #: share/plugin/signals/share/javascript/signals.js:820
 msgid "signals.all-groups"
 msgstr "«all groups»"
@@ -13034,6 +13038,10 @@ msgstr "«Link text:»"
 msgid "signals.matching=query"
 msgstr "«Signals matching '%1'»"
 
+#: share/plugin/signals/template/element/settings/signals_settings_section:5
+msgid "signals.mentions-of-me"
+msgstr "«Mentions of Me»"
+
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (acc.count)
 #. (this.count)
@@ -13050,6 +13058,10 @@ msgstr "«%*(%1,user)»"
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
 msgstr "«Signal number %1 was originally in reply to signal %2, but that signal is not found.  This signal's new ID is %3»"
+
+#: share/plugin/signals/template/element/settings/private_menu:3
+msgid "signals.notifications"
+msgstr "«Notifications»"
 
 #: share/plugin/signals/share/widgets/profile/prefs.xml:1
 msgid "signals.number-of-signals-to-display"
@@ -13100,6 +13112,10 @@ msgstr "«You have received a private message from %1:»"
 msgid "signals.private-message-sent"
 msgstr "«Private message sent.»"
 
+#: lib/Socialtext/Job/SignalDMNotify.pm:55
+msgid "signals.private-message-sent-to-you=sender:"
+msgstr "«%1 sent you a private message:»"
+
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
 msgstr "«If checked, each time a user sends you a private message via Signals, we'll send you an email with the message.»"
@@ -13133,6 +13149,12 @@ msgstr "«reply»"
 msgid "signals.reply-privately"
 msgstr "«Reply privately to this signal.»"
 
+#. ("<a href=\"$webroot$signal.uri\">here</a>")
+#. (('<a href="' _ webroot _ signal.uri _ '">here</a>'))
+#: share/plugin/signals/template/email/mention.html:0 share/plugin/signals/template/email/mention.html:23
+msgid "signals.reply-to-signal-message=here"
+msgstr "«This message was sent by Socialtext Signals. You can reply to this message %1.»"
+
 #: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "«Search Signals:»"
@@ -13144,6 +13166,14 @@ msgstr "«Selected people»"
 #: share/plugin/signals/share/widgets/profile/widget.html:29
 msgid "signals.send-as-private-message"
 msgstr "«Send as private message»"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:11
+msgid "signals.send-mentions-of-me-as-email"
+msgstr "«Send mentions of me as email»"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:26
+msgid "signals.send-private-messages-as-email"
+msgstr "«Send private messages as email»"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
@@ -13157,6 +13187,10 @@ msgstr "«Share any page on the web via Signals using this handy bookmarklet.»"
 #: share/plugin/signals/template/view/signallist:26
 msgid "signals.showing=from,to,total"
 msgstr "«Showing %1 - %2 of %3 total.»"
+
+#: share/plugin/signals/template/lite/permalink.html:6
+msgid "signals.signal-permalink"
+msgstr "«Signal Permalink»"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
@@ -13248,6 +13282,12 @@ msgstr "«Uploaded files:»"
 #: share/plugin/widgets/share/javascript/activities/widget.js:27 share/plugin/signals/template/lite/signals.html:6
 msgid "signals.what-are-you-working-on?"
 msgstr "«What are you working on?»"
+
+#. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
+#. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
+#: share/plugin/signals/template/email/mention.html:0 share/plugin/signals/template/email/mention.html:5
+msgid "signals.you-were-mentioned-by=sender:"
+msgstr "«You were mentioned by %1:»"
 
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"

@@ -12241,6 +12241,10 @@ msgstr "未命名試算表"
 msgid "signals.about-bookmarklet!"
 msgstr "將其作為書籤（或收藏夾）安裝，當您有網頁要訊息或分享，只需點選或選擇書籤就可以發送訊息了！"
 
+#: share/plugin/signals/template/element/settings/signals_settings_section:15
+msgid "signals.about-email-mentions-checkbox"
+msgstr "If checked, each time another user mentions you in a Signal, we'll send you an email with the message"
+
 #: share/plugin/signals/share/javascript/signals.js:820
 msgid "signals.all-groups"
 msgstr "所有群組"
@@ -12341,6 +12345,10 @@ msgstr "顯示文字："
 msgid "signals.matching=query"
 msgstr "符合『%1』的訊息"
 
+#: share/plugin/signals/template/element/settings/signals_settings_section:5
+msgid "signals.mentions-of-me"
+msgstr "Mentions of Me"
+
 #. (acc.count)
 #. (this.count)
 #. (acc.user_count)
@@ -12353,6 +12361,10 @@ msgstr "%1 名用戶"
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
 msgstr "訊息 %1 是回覆 %2，但被回覆的訊息遺失。更新此訊息為 %3"
+
+#: share/plugin/signals/template/element/settings/private_menu:3
+msgid "signals.notifications"
+msgstr "Notifications"
 
 msgid "signals.number-of-signals-to-display"
 msgstr "顯示訊息數量上限"
@@ -12399,6 +12411,10 @@ msgstr "您收到了 %1 的私人訊息："
 msgid "signals.private-message-sent"
 msgstr "已發送的私人訊息"
 
+#: lib/Socialtext/Job/SignalDMNotify.pm:55
+msgid "signals.private-message-sent-to-you=sender:"
+msgstr "%1 sent you a private message:"
+
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
 msgstr "如果勾選上，每次別人給您發送私人訊息，您將會收到包含該消息的電子郵件。"
@@ -12432,6 +12448,12 @@ msgstr "回覆"
 msgid "signals.reply-privately"
 msgstr "私密回覆該訊息。"
 
+#. ("<a href=\"$webroot$signal.uri\">here</a>")
+#. (('<a href="' _ webroot _ signal.uri _ '">here</a>'))
+#: share/plugin/signals/template/email/mention.html:0 share/plugin/signals/template/email/mention.html:23
+msgid "signals.reply-to-signal-message=here"
+msgstr "This message was sent by Socialtext Signals. You can reply to this message %1."
+
 #: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "搜尋訊息："
@@ -12443,6 +12465,14 @@ msgstr "選定的好友"
 #: share/plugin/signals/share/widgets/profile/widget.html:29
 msgid "signals.send-as-private-message"
 msgstr "發送為私人訊息"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:11
+msgid "signals.send-mentions-of-me-as-email"
+msgstr "Send mentions of me as email"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:26
+msgid "signals.send-private-messages-as-email"
+msgstr "Send private messages as email"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
@@ -12456,6 +12486,10 @@ msgstr "使用這個方便的書籤來通過訊息分享所有網站上的頁面
 #: share/plugin/signals/template/view/signallist:26
 msgid "signals.showing=from,to,total"
 msgstr "顯示第 %1 - %2 項，共 %3 項。"
+
+#: share/plugin/signals/template/lite/permalink.html:6
+msgid "signals.signal-permalink"
+msgstr "Signal Permalink"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
@@ -12535,6 +12569,12 @@ msgstr "已上傳的檔案："
 #: share/plugin/widgets/share/javascript/activities/widget.js:27
 msgid "signals.what-are-you-working-on?"
 msgstr "您在做什麼呢？"
+
+#. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
+#. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
+#: share/plugin/signals/template/email/mention.html:0 share/plugin/signals/template/email/mention.html:5
+msgid "signals.you-were-mentioned-by=sender:"
+msgstr "You were mentioned by %1:"
 
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"

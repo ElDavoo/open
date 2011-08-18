@@ -12922,6 +12922,10 @@ msgstr "Zzzzzzzz Zzzzzzzzzzz"
 msgid "signals.about-bookmarklet!"
 msgstr "Zzzzzzz zz zz z zzzzzzzz (zz zzzzzzzz) zzz, zzzz zzz zzzz z zzzz zzz zzzz zz zzzzzz zz zzzzz, zzzz zzzzz zz zzzzzz zzz zzzzzzzz zzz zz zzzz zzzz z zzzzzz zzz zzz!"
 
+#: share/plugin/signals/template/element/settings/signals_settings_section:15
+msgid "signals.about-email-mentions-checkbox"
+msgstr "Zz zzzzzzz, zzzz zzzz zzzzzzz zzzz zzzzzzzz zzz zz z Zzzzzz, zz'zz zzzz zzz zz zzzzz zzzz zzz zzzzzzz"
+
 #: share/plugin/signals/share/javascript/signals.js:820
 msgid "signals.all-groups"
 msgstr "zzz zzzzzz"
@@ -13034,6 +13038,10 @@ msgstr "Zzzz zzzz:"
 msgid "signals.matching=query"
 msgstr "Zzzzzzz zzzzzzzz '%1'"
 
+#: share/plugin/signals/template/element/settings/signals_settings_section:5
+msgid "signals.mentions-of-me"
+msgstr "Zzzzzzzz zz Zz"
+
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (acc.count)
 #. (this.count)
@@ -13050,6 +13058,10 @@ msgstr "%*(%1,zzzz)"
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
 msgstr "Zzzzzz zzzzzz %1 zzz zzzzzzzzzz zz zzzzz zz zzzzzz %2, zzz zzzz zzzzzz zz zzz zzzzz.  Zzzz zzzzzz'z zzz ZZ zz %3"
+
+#: share/plugin/signals/template/element/settings/private_menu:3
+msgid "signals.notifications"
+msgstr "Zzzzzzzzzzzzz"
 
 #: share/plugin/signals/share/widgets/profile/prefs.xml:1
 msgid "signals.number-of-signals-to-display"
@@ -13100,6 +13112,10 @@ msgstr "Zzz zzzz zzzzzzzz z zzzzzzz zzzzzzz zzzz %1:"
 msgid "signals.private-message-sent"
 msgstr "Zzzzzzz zzzzzzz zzzz."
 
+#: lib/Socialtext/Job/SignalDMNotify.pm:55
+msgid "signals.private-message-sent-to-you=sender:"
+msgstr "%1 zzzz zzz z zzzzzzz zzzzzzz:"
+
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
 msgstr "Zz zzzzzzz, zzzz zzzz z zzzz zzzzz zzz z zzzzzzz zzzzzzz zzz Zzzzzzz, zz'zz zzzz zzz zz zzzzz zzzz zzz zzzzzzz."
@@ -13133,6 +13149,12 @@ msgstr "zzzzz"
 msgid "signals.reply-privately"
 msgstr "Zzzzz zzzzzzzzz zz zzzz zzzzzz."
 
+#. ("<a href=\"$webroot$signal.uri\">here</a>")
+#. (('<a href="' _ webroot _ signal.uri _ '">here</a>'))
+#: share/plugin/signals/template/email/mention.html:0 share/plugin/signals/template/email/mention.html:23
+msgid "signals.reply-to-signal-message=here"
+msgstr "Zzzz zzzzzzz zzz zzzz zz Zzzzzzzzzz Zzzzzzz. Zzz zzz zzzzz zz zzzz zzzzzzz %1."
+
 #: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "Zzzzzz Zzzzzzz:"
@@ -13144,6 +13166,14 @@ msgstr "Zzzzzzzz zzzzzz"
 #: share/plugin/signals/share/widgets/profile/widget.html:29
 msgid "signals.send-as-private-message"
 msgstr "Zzzz zz zzzzzzz zzzzzzz"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:11
+msgid "signals.send-mentions-of-me-as-email"
+msgstr "Zzzz zzzzzzzz zz zz zz zzzzz"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:26
+msgid "signals.send-private-messages-as-email"
+msgstr "Zzzz zzzzzzz zzzzzzzz zz zzzzz"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
@@ -13157,6 +13187,10 @@ msgstr "Zzzzz zzz zzzz zz zzz zzz zzz Zzzzzzz zzzzz zzzz zzzzz zzzzzzzzzzz."
 #: share/plugin/signals/template/view/signallist:26
 msgid "signals.showing=from,to,total"
 msgstr "Zzzzzzz %1 - %2 zz %3 zzzzz."
+
+#: share/plugin/signals/template/lite/permalink.html:6
+msgid "signals.signal-permalink"
+msgstr "Zzzzzz Zzzzzzzzz"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
@@ -13248,6 +13282,12 @@ msgstr "Zzzzzzzz zzzzz:"
 #: share/plugin/widgets/share/javascript/activities/widget.js:27 share/plugin/signals/template/lite/signals.html:6
 msgid "signals.what-are-you-working-on?"
 msgstr "Zzzz zzz zzz zzzzzzz zz?"
+
+#. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
+#. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
+#: share/plugin/signals/template/email/mention.html:0 share/plugin/signals/template/email/mention.html:5
+msgid "signals.you-were-mentioned-by=sender:"
+msgstr "Zzz zzzz zzzzzzzzz zz %1:"
 
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"
