@@ -3522,6 +3522,57 @@ msgstr "%1 工作区"
 msgid "control.wikis=count"
 msgstr "工作区（%1）"
 
+msgid "creator.choices:"
+msgstr "选项："
+
+msgid "creator.create-page"
+msgstr "创建页面"
+
+msgid "creator.field-type:"
+msgstr "输入类别："
+
+msgid "creator.field:"
+msgstr "字段："
+
+msgid "creator.info-default-value"
+msgstr "将此选项设为默认。"
+
+msgid "creator.new-field:"
+msgstr "新增字段："
+
+msgid "creator.page-title:"
+msgstr "页面标题："
+
+msgid "creator.really-delete-field?"
+msgstr "您确定要删除此字段吗？"
+
+msgid "creator.required"
+msgstr "必填"
+
+msgid "creator.tag-with:"
+msgstr "加上标签："
+
+msgid "creator.template:"
+msgstr "模板："
+
+msgid "creator.type-checkbox"
+msgstr "勾选"
+
+msgid "creator.type-number"
+msgstr "数值"
+
+msgid "creator.type-radio"
+msgstr "单选框"
+
+msgid "creator.type-select"
+msgstr "下拉列表"
+
+msgid "creator.type-text"
+msgstr "单列文字"
+
+msgid "creator.type-textarea"
+msgstr "多列文字"
+
 #: share/plugin/dashboard/template/dashboard_links:3
 msgid "dashboard.add-widget"
 msgstr "新增小工具"
@@ -3808,6 +3859,9 @@ msgstr "在小工具里显示一份网页。"
 
 msgid "description.oneimage"
 msgstr "在小工具里显示一张图片。"
+
+msgid "description.page_creator"
+msgstr "从自定的表单栏位来创建页面。"
 
 msgid "description.page_tracker"
 msgstr "以多栏方式呈现具有特定标签的页面。"
@@ -5161,6 +5215,9 @@ msgstr "无法建立标签列表。"
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "由于当前使用的是自定义视觉主题，因此帐户标志不可更改。正在使用的视觉主题名为“%1”"
 
+msgid "error.cannot-create-page-in=wiki"
+msgstr "抱歉，您目前无法在 %1 工作区中创建新页面。"
+
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
 msgstr "错误：无法将页面嵌入到自身里。"
@@ -6097,6 +6154,12 @@ msgstr "没有和“%1”匹配的项目"
 #: lib/Socialtext/EditPlugin.pm:195
 msgid "error.no-page-body"
 msgstr "保存页面时，正文不能为空。"
+
+msgid "error.no-page-creator-for-ie6"
+msgstr "抱歉，创建页面小工具目前无法在您的浏览器上进行设定。"
+
+msgid "error.no-page-creator-for-mobile"
+msgstr "抱歉，创建页面小工具目前无法在行动装置上使用。"
 
 #: share/skin/s3/javascript/s3.js:832
 msgid "error.no-page-doc"
@@ -9371,6 +9434,9 @@ msgstr "项目背景色"
 #: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "项目标注"
+
+msgid "kanban.likable?"
+msgstr "为看板上的页面显示“赞”？"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
@@ -12963,6 +13029,9 @@ msgstr "网页"
 #: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "图片"
+
+msgid "title.page_creator"
+msgstr "创建页面"
 
 msgid "title.page_tracker"
 msgstr "页面看板"
