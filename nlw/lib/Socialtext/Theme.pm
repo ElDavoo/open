@@ -336,8 +336,21 @@ sub _CreateAttachmentsIfNeeded {
             mime_type => mime_type($tempfile, $filename, $mime_guess),
         );
         $file->make_permanent(actor => $creator); 
+        _chown_file_if_needed($file);
 
         $params->{$db_field} = $file->attachment_id;
+    }
+}
+
+sub _chown_file_if_needed {
+    my $file = shift;
+
+    return if $>; # we're running non-root, it's a dev env.
+
+    require Socialtext::System;
+    my $dir = $Socialtext::Upload::STORAGE_DIR;
+    if ($file->disk_filename =~ qr{(\Q$dir\E/[^/]+)/}) {
+        Socialtext::System::shell_run(qw(chown -R www-data:www-data), $1);
     }
 }
 
