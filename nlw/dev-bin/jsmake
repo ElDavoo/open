@@ -25,8 +25,11 @@ for my $target (@targets) {
     elsif ($target eq 'loc') {
         system("$base/nlw/dev-bin/l10n-make-po-js");
     }
-    else {
+    elsif ($target eq 'all') {
         $builder->build();
+    }
+    else {
+        $builder->build($target);
     }
 }
 my $lapsed = (time - $before);

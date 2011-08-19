@@ -79,12 +79,17 @@
         expires 1y;
     }
 
-    [%- UNLESS config.is_dev_install %]
-    location ~ "^/js/(?:[\d\.]+/)?([^/]+)$" {
-        alias [% config.data_root_dir %]/storage/javascript/$1;
-        expires 1y;
-    }
+    rewrite ^/js/[\d\.]+/(.+)$ /js/$1;
+
+    [%- UNLESS config.is_dev %]
+    rewrite ^/js/(.+)$ /nlw/js/$1;
     [%- END %]
+
+    location /nlw/js {
+        alias [% config.data_root_dir %]/storage/javascript;
+        expires 1y;
+        internal;
+    }
 
     location /nlw/static/ {
         internal;

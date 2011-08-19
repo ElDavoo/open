@@ -451,22 +451,8 @@ $(function() {
         _gz = '.gz';
     }
 
-    var timestamp = (new Date).getTime();
-
-    var editor_uri = nlw_make_s3_path('/javascript/socialtext-editor.js' + _gz);
-    if (Socialtext.dev_env) {
-        editor_uri = editor_uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
-    }
-
-    var socialcalc_uri = nlw_make_plugin_path(
-        "/socialcalc/javascript/socialtext-socialcalc.js" + _gz
-    );
-    if (Socialtext.socialcalc_make_time) {
-        socialcalc_uri = socialcalc_uri.replace(
-            /(\d+\.\d+\.\d+\.\d+)/,
-            '$1.' + Socialtext.socialcalc_make_time
-        );
-    }
+    var editor_uri = nlw_make_js_path('socialtext-editor.js' + _gz);
+    var socialcalc_uri = nlw_make_js_path("socialtext-socialcalc.js" + _gz);
 
     function get_lightbox (lightbox, cb) {
         Socialtext.lightbox_loaded = Socialtext.lightbox_loaded || {};
@@ -475,13 +461,7 @@ $(function() {
         }
         else {
             Socialtext.lightbox_loaded[lightbox] = true;
-            var uri = nlw_make_s3_path(
-                '/javascript/lightbox-' + lightbox + '.js' + _gz
-            );
-            if (Socialtext.dev_env) {
-                uri = uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
-            }
-
+            var uri = nlw_make_js_path('lightbox-' + lightbox + '.js' + _gz);
             $.ajaxSettings.cache = true;
             $.getScript(uri, cb);
             $.ajaxSettings.cache = false;

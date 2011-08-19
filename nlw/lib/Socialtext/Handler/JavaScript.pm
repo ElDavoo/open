@@ -16,7 +16,7 @@ has 'path' => (
 );
 
 method GET ($rest) {
-    my $file = $self->file;
+    my $file = $self->__file__;
 
     my $builder = Socialtext::JavaScript::Builder->new;
     return $self->no_resource($file) unless $builder->is_target($file);

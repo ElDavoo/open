@@ -130,7 +130,6 @@ method is_target ($target) {
 
 method build ($target) {
     my @targets = $target ? $target : keys %{$self->targets};
-    @targets = 'socialtext-starfish.js';
     $self->build_target($_) for @targets;
 }
 
