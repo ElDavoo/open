@@ -66,7 +66,7 @@ Page = {
     },
 
     refreshPageContent: function (force_update) {
-        if (Socialtext.page_type != 'wiki') return false;
+        if (Socialtext.page_type == 'spreadsheet') return false;
 
         $.ajax({
             url: this.pageUrl(),

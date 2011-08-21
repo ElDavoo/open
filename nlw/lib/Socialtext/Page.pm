@@ -675,8 +675,17 @@ sub append {
     croak "page isn't mutable" unless $self->mutable;
     my $new = ref($_[1]) ? $_[1] : \$_[1];
     my $body_ref = $self->body_ref;
+    my $hr = "\n---\n";
+
+    if ($self->is_xhtml) {
+        # Minimal Wikitext2HTML before we get append_html implemented
+        $hr = '<hr />';
+        $new = \('<p>' . html_escape($$new) . '</p>');
+        $$new =~ s!$!<br />!mg;
+    }
+
     if ($body_ref && length($$body_ref)) {
-        my $body = "$$body_ref\n---\n$$new"; # deliberate copy
+        my $body = $$body_ref . $hr . $$new; # deliberate copy
         $body_ref = \$body;
     } else {
         $body_ref = $new;
