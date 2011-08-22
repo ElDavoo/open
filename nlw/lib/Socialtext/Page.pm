@@ -1890,7 +1890,12 @@ sub preview_text {
         $content_ref = \$content;
     }
 
+    # Turn all newlines and tabs into plain spaces
     my $excerpt = $self->_to_plain_text($content_ref);
+    $excerpt =~ s/^\s+//g;
+    $excerpt =~ s/\s\s*/ /g;
+    $excerpt =~ s/\s+\z//;
+
     $excerpt = substr($excerpt, 0, $ExcerptLength) . '...'
         if length $excerpt > $ExcerptLength;
     return html_escape($excerpt);
