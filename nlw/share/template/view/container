@@ -25,7 +25,9 @@
 <script>
     gadgets.container.setup({
         env: [% container.env.json.replace('</script>', '</scr" + "ipt>') %],
-        view: "[% container.view %]"
+        type: "[% container.type %]",
+        view: "[% container.view %]",
+        viewer: [% container.viewer.json %]
     });
     [% FOR gadget = container.gadgets %]
         [% SET json = gadget.json %]
@@ -42,6 +44,11 @@
             });
             gallery.showLightbox();
         });
+        return false;
+    });
+
+    $('#st-edit-layout').click(function() {
+        gadgets.container.enterEditMode();
         return false;
     });
 </script>

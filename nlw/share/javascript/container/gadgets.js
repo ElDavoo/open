@@ -31,6 +31,7 @@ container.base_url = location.pathname;
 container.onSetPreferences = $.noop;
 container.pendingChanges = {};
 container.template = 'widget/element.tt2';
+container.viewer = {};
 
 // signed max int
 container.maxheight_ = 0x7FFFFFFF;
@@ -682,14 +683,31 @@ container.makeUneditable = function($widget) {
 
 container.enterEditMode = function() {
     var self = this;
-    $('.widget.tan').each(function(_, widget) {
-        self.makeEditable($(widget));
-    });
     self._in_edit_mode = true;
-    self._orig_layout = _getLayout();
-    $('.notice')
-        .html(loc('widgets.in-layout-mode-click-save-or-cancel'))
-        .show();
+
+    if (self.type == 'dashboard') {
+        self.loadLayout(
+            '/data/accounts/' + self.viewer.primary_account_id
+                + '/dashboard/default'
+        );
+        $('.notice').html(loc('You are editing the default dashboard layout for the [_1] account. Click <a id="st-save-layout" href="#">Save</a> to keep your changes, <a id="st-cancel-layout" href="#">Cancel</a> to discard them.', this.viewer.primary_account_name)).show();
+        $('#st-save-layout').click(function() {
+            return false;
+        });
+        $('#st-cancel-layout').click(function() {
+            self._in_edit_mode = false;
+            $('.notice').hide();
+        });
+    }
+    else {
+        $('.widget.tan').each(function(_, widget) {
+            self.makeEditable($(widget));
+        });
+        self._orig_layout = _getLayout();
+        $('.notice')
+            .html(loc('widgets.in-layout-mode-click-save-or-cancel'))
+            .show();
+    }
 };
 
 container.leaveEditMode = function() {
@@ -711,10 +729,10 @@ container.cancelEditMode = function() {
     this.leaveEditMode();
 };
 
-container.revertLayout = function() {
+container.loadLayout = function(url) {
     var self = this;
-    $.getJSON(self.base_url + '/default', function(gadgets) {
-        $('.widget').parent().remove();
+    $.getJSON(url, function(gadgets) {
+        $('.widget').remove();
         $.each(gadgets, function(_, g) {
             // record this gadget as temporary, if we used that path
             self.pendingChanges[g.instance_id] = {
@@ -727,6 +745,10 @@ container.revertLayout = function() {
             self.makeEditable($gadget.find('.widget'));
         });
     });
+}
+
+container.revertLayout = function() {
+    this.loadLayout(self.base_url + '/default');
 }
 
 container.showNotice = function(notice, redirect) {
