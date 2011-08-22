@@ -590,6 +590,7 @@ sub Export_to_file_from_row {
     $row->{summary} =~ s/\n//g;
     $row->{edit_summary} //= '';
     $row->{edit_summary} =~ s/\n//g;
+    $row->{anno_blob} //= '[]';
 
     print $fh <<EOH;
 Subject: $row->{name}
