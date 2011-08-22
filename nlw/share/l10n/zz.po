@@ -5735,6 +5735,15 @@ msgstr "Zzzzz zzz zzzzzz zzzzzzz %1."
 msgid "error.create=wiki"
 msgstr "Zzzzz zzz zzzzzz zzzzzzzzz %1"
 
+#: share/plugin/widgets/share/widgets/page_creator/widget.coffee:134 share/plugin/widgets/share/widgets/page_creator/widget.js:207
+msgid "error.creator-missing-required=field"
+msgstr "Zzzzzzz zzzzzzzz zzzzz: %1"
+
+#. (f.name)
+#: share/plugin/widgets/share/widgets/page_creator/widget.coffee:138 share/plugin/widgets/share/widgets/page_creator/widget.js:212
+msgid "error.creator-number-required=field"
+msgstr "Zzzzzz zzzzzzzz zz zzzzz: %1"
+
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "Zzzzzzz: Zzzzzzzzzzz zzz zzz zzzzzzz zz zzzz zzzzzz zzzzzz. Zz zzzzz zz zzzzzzzz zzzz Zzzzzzzzzz Zzzzzz, zzz zzzz zzzz zz zzzzzz zzzzzzzzzzz zz zzzz zzzzzzz zzzzzzz."

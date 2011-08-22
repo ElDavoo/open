@@ -669,6 +669,12 @@ msgstr "抱歉，您目前无法在 %1 工作区中创建新页面。"
 msgid "error.cannot-embed-page-within-itself"
 msgstr "错误：无法将页面嵌入到自身里。"
 
+msgid "error.creator-missing-required=field"
+msgstr "此字段为必填：%1"
+
+msgid "error.creator-number-required=field"
+msgstr "请在此字段填入数字：%1"
+
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "error.delete=widget,message"
