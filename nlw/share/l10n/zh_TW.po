@@ -5324,6 +5324,12 @@ msgstr "無法建立帳戶 %1。"
 msgid "error.create=wiki"
 msgstr "無法建立工作區 %1。"
 
+msgid "error.creator-missing-required=field"
+msgstr "此欄位為必填：%1"
+
+msgid "error.creator-number-required=field"
+msgstr "請在此欄位填入數字：%1"
+
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "警告：樣式單在移動設備上無法使用。要正確地查看行動版 Socialtext，您需要在瀏覽器設定裡面啟用樣式單。"

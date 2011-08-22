@@ -5735,6 +5735,15 @@ msgstr "«Could not create account %1.»"
 msgid "error.create=wiki"
 msgstr "«Could not create workspace %1»"
 
+#: share/plugin/widgets/share/widgets/page_creator/widget.coffee:134 share/plugin/widgets/share/widgets/page_creator/widget.js:207
+msgid "error.creator-missing-required=field"
+msgstr "«Missing required field: %1»"
+
+#. (f.name)
+#: share/plugin/widgets/share/widgets/page_creator/widget.coffee:138 share/plugin/widgets/share/widgets/page_creator/widget.js:212
+msgid "error.creator-number-required=field"
+msgstr "«Number required in field: %1»"
+
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "«Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.»"

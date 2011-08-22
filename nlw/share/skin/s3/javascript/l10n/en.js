@@ -893,6 +893,8 @@
 "error.choose-group":"Please choose one or more groups",
 "error.columns-too-big":"Columns is too big. 35 maximum.",
 "error.create-test-file-on-samba-share!":"Cannot create test file on samba share!",
+"error.creator-missing-required=field":"Missing required field: [_1]",
+"error.creator-number-required=field":"Number required in field: [_1]",
 "error.css-disabled":"Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.",
 "error.dashboard-push-widget":"Error pushing to dashboards",
 "error.dashboard-reset":"Error resetting dashboards",
