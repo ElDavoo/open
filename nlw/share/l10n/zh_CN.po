@@ -5324,6 +5324,12 @@ msgstr "无法创建帐户 %1。"
 msgid "error.create=wiki"
 msgstr "无法创建工作区 %1。"
 
+msgid "error.creator-missing-required=field"
+msgstr "此字段为必填：%1"
+
+msgid "error.creator-number-required=field"
+msgstr "请在此字段填入数字：%1"
+
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "警告：样式单在移动设备上无法使用。要正确地查看移动版 Socialtext，您需要在浏览器设置里面启用样式单。"
