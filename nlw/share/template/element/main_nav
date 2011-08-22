@@ -25,17 +25,19 @@
     </div>
     <div class="underline"></div>
   </div>
-  <div class="grid_[% 12 - 2 * container.buttons.size %] navGrid searchBox">
-    <div class="navItem">[% INCLUDE element/search_form %]</div>
-    <div class="staticUnderline"></div>
-  </div>
-  [% FOR button = container.buttons %]
-  <div class="grid_2 navGrid buttons">
+  <div class="grid_12 navGrid">
     <div class="navItem">
-      <a id="[% button.0 %]" class="button" href="#">[% button.1 %]</a>
+      <div class="buttons">
+        [% FOR button = container.buttons %]
+          <a id="[% button.0 %]" class="button" href="#">[% button.1 %]</a>
+        [% END %]
+      </div>
+      <div class="searchBox">
+        [% INCLUDE element/search_form %]
+      </div>
+      <div class="clear"></div>
     </div>
     <div class="staticUnderline"></div>
   </div>
-  [% END %]
 </div>
 <div class="clear"></div>
