@@ -9,7 +9,7 @@
   opacity: ($percent / 100)
 
 body
-  background: $background_color url(#{$skin}/images/background.png) $background_image_tiling $background_image_position
+  background: $background_color url(#{$static}/images/background.png) $background_image_tiling $background_image_position
   font-size: 11px
   font-family: $body_font
   color: #333
@@ -125,7 +125,7 @@ input
 
 header
   height: 100px
-  background: $header_color url(#{$skin}/images/header.png) $header_image_tiling $header_image_position
+  background: $header_color url(#{$static}/images/header.png) $header_image_tiling $header_image_position
   /* Drop shadow
   -moz-box-shadow: 3px 3px 4px #000000
   -webkit-box-shadow: 3px 3px 4px #000000
@@ -207,9 +207,9 @@ footer
     .close:hover, .settings:hover, .fix:hover
       @include opacity(70)
     .close
-      background: transparent url(#{$skin}/images/icons/exit.png) no-repeat top left
+      background: transparent url(#{$static}/images/icons/exit.png) no-repeat top left
     .settings
-      background: transparent url(#{$skin}/images/icons/tools.png) no-repeat top left
+      background: transparent url(#{$static}/images/icons/tools.png) no-repeat top left
     .fix
       /* XXX
 

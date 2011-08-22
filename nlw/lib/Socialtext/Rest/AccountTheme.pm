@@ -24,11 +24,6 @@ sub GET_css {
     my $rest = shift;
 
     return $self->if_valid_request($rest => sub {
-        if ($self->account->skin_name ne 'starfish') {
-            $rest->header(-status => HTTP_400_Bad_Request);
-            return 'Account is not using the starfish skin';
-        }
-
         $rest->header(-type=>'text/css');
         
         my $sass = Socialtext::SASSy->new(account => $self->account);
@@ -50,11 +45,6 @@ sub GET_sass {
     my $rest = shift;
 
     return $self->if_valid_request($rest => sub {
-        if ($self->account->skin_name ne 'starfish') {
-            $rest->header(-status => HTTP_400_Bad_Request);
-            return 'Account is not using the starfish skin';
-        }
-
         $rest->header(-type=>'text/sass');
         
         my $sass = Socialtext::SASSy->new(account => $self->account);

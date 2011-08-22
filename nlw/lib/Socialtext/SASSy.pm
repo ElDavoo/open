@@ -1,6 +1,7 @@
 package Socialtext::SASSy;
 # @COPYRIGHT@
 use Moose;
+use methods;
 use Socialtext::HTTP ':codes';
 use Socialtext::Paths;
 use Socialtext::File qw(get_contents set_contents);
@@ -19,66 +20,39 @@ use constant static_path => Socialtext::Helpers->static_path;
 
 has 'account' => ( is => 'ro', isa => 'Socialtext::Account', required => 1 );
 
-has 'skin_path' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_skin_path {
-    my $self = shift;
-    return join('/', $self->code_base, 'skin', $self->account->skin_name);
-}
-has 'skin_uri' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_skin_uri {
-    my $self = shift;
-    return join('/', $self->static_path, 'skin', $self->account->skin_name);
-}
-
-has 'order_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_order_file {
-    my $self = shift;
-    return $self->skin_path . '/css/order.yaml';
-}
-
 has 'files' => (
     is => 'ro', isa => 'ArrayRef', lazy_build => 1, auto_deref => 1,
 );
-sub _build_files {
-    my $self = shift;
-    return [ glob($self->skin_path . '/css/*') ]
-}
+method _build_files { return [ glob($self->code_base . '/sass/*') ] }
 
 has 'dir' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_dir {
-    my $self = shift;
+method _build_dir {
     my $name = $self->account->name;
     return join('/', 'theme', substr($name, 0, 2), substr($name, 2));
 }
 
 has 'cache_dir' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_cache_dir {
-    my $self = shift;
+method _build_cache_dir {
     return Socialtext::Paths::cache_directory($self->dir);
 }
 
 has 'sass_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_sass_file {
-    my $self = shift;
+method _build_sass_file {
     mkpath $self->cache_dir unless -d $self->cache_dir;
     return $self->cache_dir . "/account.sass";
 }
 
 has 'css_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_css_file {
-    my $self = shift;
+method _build_css_file {
     mkpath $self->cache_dir unless -d $self->cache_dir;
     return $self->cache_dir . "/account.css";
 }
 
-sub protected_uri {
-    my $self = shift;
-    my $file = shift;
+method protected_uri($file) {
     return join('/', '/nlw', $self->dir, $file);
 }
 
-sub needs_update {
-    my $self = shift;
+method needs_update {
     return 1 unless -f $self->css_file;
     if ($self->is_dev_env) {
         my $latest = (sort map { (stat($_))[9] } $self->files)[-1];
@@ -87,11 +61,10 @@ sub needs_update {
     return 0;
 }
 
-sub render {
-    my $self = shift;
+method render {
     my $theme = $self->account->prefs->all_prefs->{theme};
 
-    $theme->{skin} = '"' . $self->skin_uri . '"';
+    $theme->{static} = '"' . $self->static_path . '"';
 
     my @lines;
 
@@ -106,7 +79,7 @@ sub render {
     $Socialtext::System::SILENT_RUN = 1;
     shell_run(
         '/var/lib/gems/1.8/bin/sass',
-        '-I', $self->skin_path . '/css', # Add sass files from starfish
+        '-I', $self->code_base . '/sass', # Add sass files from starfish
         '-t', 'compressed',
         $self->sass_file,
         $self->css_file,
