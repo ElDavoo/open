@@ -13,9 +13,8 @@
     parts:
         - contrib/jquery-1.4.4.min.js
 'push-client.js':
-    plugin: widgets
     parts:
-        - push-client.js
+        - activities/push-client.js
 
 # Socialtext files
 'socialtext-starfish.js':
@@ -141,11 +140,48 @@
         - contrib/rangy-serializer.js
         - contrib/rangy-init.js
         - contrib/jquery.rangyinputs.js
-        - wikiwyg/Wikiwyg.js
+        - wikiwyg/lib/Wikiwyg.js
         - wikiwyg-widgets.js
-        - wikiwyg/Wikiwyg/Widgets.js
-        - wikiwyg/Wikiwyg/Wikitext.js
-        - wikiwyg/Wikiwyg/Wysiwyg.js
+        - wikiwyg/lib/Wikiwyg/Widgets.js
+        - wikiwyg/lib/Wikiwyg/Wikitext.js
+        - wikiwyg/lib/Wikiwyg/Wysiwyg.js
 'wikiwyg-widgets.js':
     parts:
         - { json: 'wikiwyg/Widgets.yaml', name: 'Wikiwyg.Widgets' }
+'socialtext-editor.js':
+    parts:
+        - main.js
+        - contrib/rangy-core.js
+        - contrib/rangy-serializer.js
+        - contrib/rangy-init.js
+        - contrib/jquery.rangyinputs.js
+        - jemplate_wikiwyg.js
+        - jemplate_wikiwyg_edit.js
+        - wikiwyg/lib/Wikiwyg.js
+        - wikiwyg-widgets.js
+        - wikiwyg/lib/Wikiwyg/Widgets.js
+        - wikiwyg/lib/Wikiwyg/Toolbar.js
+        - wikiwyg/lib/Wikiwyg/Preview.js
+        - wikiwyg/lib/Wikiwyg/Wysiwyg.js
+        - wikiwyg/lib/Wikiwyg/HTML.js
+        - wikiwyg/lib/Wikiwyg/MessageCenter.js
+        - wikiwyg/lib/Wikiwyg/Wikitext.js
+        - wikiwyg/lib/Wikiwyg/DataValidator.js
+        - wikiwyg/wikiwyg.js
+        - wikiwyg/lib/Document/Emitter.js
+        - wikiwyg/lib/Document/Emitter/HTML.js
+        - wikiwyg/lib/Document/Parser.js
+        - wikiwyg/lib/Document/Parser/Wikitext.js
+'jemplate_wikiwyg.js':
+    parts:
+        - jemplate: wikiwyg/jemplate_wikiwyg
+        - jemplate: wikiwyg/jemplate
+'jemplate_wikiwyg_edit.js':
+    parts:
+        - widget_template: widget_edit.tt2
+          all: 1
+        - widget_template: widget_menu.tt2
+          target: insert_widget_menu
+'timestamp.js':
+    parts:
+        - template/timestamp.js

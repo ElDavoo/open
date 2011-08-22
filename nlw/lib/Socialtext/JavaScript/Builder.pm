@@ -12,6 +12,7 @@ use File::chdir;
 use Jemplate;
 use FindBin;
 use Compress::Zlib;
+use File::Temp qw(tempdir);
 use File::Path qw(mkpath);
 use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
@@ -38,6 +39,7 @@ method part_directory($part) {
     return $self->output_directory
         if $part->{file} and $self->targets->{$part->{file}};
     my $base = $self->code_base;
+    return "$base/javascript/wikiwyg" if $part->{widget_template};
     return "$base/javascript/contrib/shindig" if $part->{shindig_feature};
     return "$base/plugin/$part->{plugin}/share/javascript" if $part->{plugin};
     return "$base/javascript";
@@ -155,7 +157,7 @@ method build_target ($target) {
     for my $part (@$parts) {
         # Clean the data
         $part = ref $part ? $part : { file => $part };
-        $part->{plugin} ||= $info->{plugin};
+        $part->{plugin} = $info->{plugin} unless exists $part->{plugin};
 
         # Check if this is a built target
         if ($part->{file} and $self->targets->{$part->{file}}) {
@@ -172,7 +174,8 @@ method build_target ($target) {
     }
 
     # Return if the file is up-to-date
-    return if ($self->modified($target) >= (sort @last_modifieds)[-1]);
+    my $target_path = $self->target_path($target);
+    return if ($self->modified($target_path) >= (sort @last_modifieds)[-1]);
     warn "Building $target...\n" if $self->verbose;
     # Now actually build
     my @text;
@@ -349,25 +352,26 @@ method _widget_jemplate_to_text ($part) {
     $Socialtext::System::SILENT_RUN = !$self->verbose;
 
     my $yaml = YAML::LoadFile('Widgets.yaml');
+    my $dir = tempdir( CLEANUP => 1 );
 
     my @jemplates;
     if ($part->{all}) {
         for my $widget (@{$yaml->{widgets}}) {
             $self->_render_widget_jemplate(
                 yaml => $yaml,
-                output => "jemplate/widget_${widget}_edit.html",
+                output => "$dir/widget_${widget}_edit.html",
                 template => $part->{widget_template},
             );
-            push @jemplates, "jemplate/widget_${widget}_edit.html";
+            push @jemplates, "$dir/widget_${widget}_edit.html";
         }
     }
-    elsif ($self->{target}) {
+    elsif ($part->{target}) {
         $self->_render_widget_jemplate(
             yaml => $yaml,
-            output => $part->{target},
-            template => $part->{widget_template},
+            output => "$dir/$part->{target}",
+            template => "$part->{widget_template}",
         );
-        push @jemplates, $part->{target};
+        push @jemplates, "$dir/$part->{target}";
     }
     else {
         die "Don't know how to render widget jemplate";

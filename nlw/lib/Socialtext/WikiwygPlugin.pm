@@ -27,7 +27,7 @@ const class_id => 'wikiwyg';
 const cgi_class => 'Socialtext::Wikiwyg::CGI';
 const class_title => __('class.wikiwyg');
 field widgets_definition => {} => -init => q{
-        my $yaml_path = Socialtext::AppConfig->code_base . "/skin/wikiwyg/javascript/Widgets.yaml";
+        my $yaml_path = Socialtext::AppConfig->code_base . "/javascript/wikiwyg/Widgets.yaml";
         YAML::LoadFile($yaml_path);
 };
 
