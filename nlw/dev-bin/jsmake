@@ -19,7 +19,7 @@ $dir =~ s{^$base/plugins}{plugin};
 my @targets = @ARGV ? @ARGV : ('all');
 my $before = time;
 for my $target (@targets) {
-    if ($target eq 'clean') {
+    if ($target =~ /^clean(:?all)?$/) {
         $builder->clean();
     }
     elsif ($target eq 'loc') {
