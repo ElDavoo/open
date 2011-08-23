@@ -105,8 +105,6 @@ div#contentColumns div#contentLeft .wiki h3 {
 .wiki dfn, .xhtml dfn {
   font-style: italic;
   font-weight: bold; }
-.wiki sup, .wiki sub, .xhtml sup, .xhtml sub {
-  line-height: 0; }
 .wiki abbr, .wiki acronym, .xhtml abbr, .xhtml acronym {
   border-bottom: 1px dotted #666666; }
 .wiki address, .xhtml address {
@@ -158,6 +156,8 @@ div#contentColumns div#contentLeft .wiki h3 {
     font-style: inherit; }
   .wiki table.st-ss caption {
     background: inherit; }
+.wiki sup, .wiki sub {
+  line-height: 0; }
 
 .xhtml table.formatter_table {
   border-collapse: collapse;
@@ -196,6 +196,12 @@ div#contentColumns div#contentLeft .wiki h3 {
     font-style: inherit; }
   .xhtml table.formatter_table.st-ss caption {
     background: inherit; }
+.xhtml sup, .xhtml sub {
+  font-size: smaller; }
+.xhtml sup {
+  vertical-align: super; }
+.xhtml sub {
+  vertical-align: sub; }
 
 .wiki, .xhtml {
   /* {bz: 1445}: Gecko needs this to show left border of collapsed tables. */

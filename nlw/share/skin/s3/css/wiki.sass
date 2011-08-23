@@ -123,8 +123,6 @@ div#contentColumns div#contentLeft .wiki h3
   dfn
     font-style: italic
     font-weight: bold
-  sup, sub
-    line-height: 0
   abbr, acronym
     border-bottom: 1px dotted #666
   address
@@ -208,10 +206,18 @@ div#contentColumns div#contentLeft .wiki h3
 .wiki
   table
     @include table-base
+  sup, sub
+    line-height: 0
 
 .xhtml
   table.formatter_table
     @include table-base
+  sup, sub
+    font-size: smaller
+  sup
+    vertical-align: super
+  sub
+    vertical-align: sub
 
 
 // Misc classes
