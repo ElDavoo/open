@@ -126,7 +126,7 @@
 
 | *Comment* | Test Case: Page Creator Widget: Preview, then re-open to get fresh indexes for elements |  |
 | click_ok | link=Preview |  |
-| wait_for_element_visible_ok | link=Create Page | 10000 |
+| wait_for_element_visible_ok | link=Create | 10000 |
 | selectFrame | relative=parent |  |
 | wait_for_element_visible_ok | //a[@class='settings'] | 10000 |
 | *Comment* | Test Case: Page Creator Widget: Wait to click wrench icon - that makes it work ! |  |
