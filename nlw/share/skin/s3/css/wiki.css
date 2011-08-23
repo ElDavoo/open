@@ -301,53 +301,53 @@ div#contentColumns div#contentLeft div.wafl_box div.wafl_items ul.item_list li p
 td .wafl_box {
   margin-bottom: 0; }
 
-.wiki .wiki-include-page {
+.wiki .wiki-include-page, .xhtml .wiki-include-page {
   margin: 0 0 1em 0;
   padding: 1em 0 1em 0;
   background: white url(../images/includeTile.png) repeat-y scroll top left;
   border: none; }
-.wiki .wiki-include-title {
+.wiki .wiki-include-title, .xhtml .wiki-include-title {
   font-size: 150%;
   margin-left: 1.33em;
   margin-bottom: 0.5em; }
-  .wiki .wiki-include-title a {
+  .wiki .wiki-include-title a, .xhtml .wiki-include-title a {
     color: #33a8ff;
     font-weight: normal; }
-    .wiki .wiki-include-title a.incipient {
+    .wiki .wiki-include-title a.incipient, .xhtml .wiki-include-title a.incipient {
       color: #fc6500; }
-.wiki .wiki-include-content {
+.wiki .wiki-include-content, .xhtml .wiki-include-content {
   margin-left: 2em; }
-.wiki table.sort td.header {
+.wiki table.sort td.header, .xhtml table.sort td.header {
   padding-right: 24px !important;
   background-position: top right;
   background-repeat: no-repeat;
   background-image: url(../images/unsorted.png);
   background-color: #eeeeee; }
-  .wiki table.sort td.header.headerSortUp {
+  .wiki table.sort td.header.headerSortUp, .xhtml table.sort td.header.headerSortUp {
     background-image: url(../images/sorted-up.png); }
-  .wiki table.sort td.header.headerSortDown {
+  .wiki table.sort td.header.headerSortDown, .xhtml table.sort td.header.headerSortDown {
     background-image: url(../images/sorted-down.png); }
-  .wiki table.sort td.header:hover {
+  .wiki table.sort td.header:hover, .xhtml table.sort td.header:hover {
     background-image: url(../images/unsorted-hover.png); }
-  .wiki table.sort td.header.headerSortUp:hover {
+  .wiki table.sort td.header.headerSortUp:hover, .xhtml table.sort td.header.headerSortUp:hover {
     background-image: url(../images/sort-up-hover.png); }
-  .wiki table.sort td.header.headerSortDown:hover {
+  .wiki table.sort td.header.headerSortDown:hover, .xhtml table.sort td.header.headerSortDown:hover {
     background-image: url(../images/sort-down-hover.png); }
-.wiki .syntaxhighlighter {
+.wiki .syntaxhighlighter, .xhtml .syntaxhighlighter {
   overflow-y: hidden !important; }
-  .wiki .syntaxhighlighter .toolbar {
+  .wiki .syntaxhighlighter .toolbar, .xhtml .syntaxhighlighter .toolbar {
     display: none !important; }
-.wiki ul.waflWidget {
+.wiki ul.waflWidget, .xhtml ul.waflWidget {
   list-style: none;
   margin: 0;
   padding: 0; }
-  .wiki ul.waflWidget .widgetHeaderButtons {
+  .wiki ul.waflWidget .widgetHeaderButtons, .xhtml ul.waflWidget .widgetHeaderButtons {
     display: none; }
-.wiki div.widget div.widgetHeaderTitle {
+.wiki div.widget div.widgetHeaderTitle, .xhtml div.widget div.widgetHeaderTitle {
   font-size: 11px;
   padding-left: 12px;
   padding-top: 6px;
   font-weight: bold;
   white-space: nowrap; }
-  .wiki div.widget div.widgetHeaderTitle img {
+  .wiki div.widget div.widgetHeaderTitle img, .xhtml div.widget div.widgetHeaderTitle img {
     display: none; }
