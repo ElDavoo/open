@@ -3526,7 +3526,7 @@ msgid "creator.choices:"
 msgstr "选项："
 
 msgid "creator.create-page"
-msgstr "创建页面"
+msgstr "创建"
 
 msgid "creator.field-type:"
 msgstr "输入类别："

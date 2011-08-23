@@ -653,7 +653,7 @@
 "control.wiki=name":"[_1] zzzzzzzzz",
 "control.wikis=count":"Zzzzzzzzzz ([_1])",
 "creator.choices:":"Zzzzzzz:",
-"creator.create-page":"Zzzzzz Zzzz",
+"creator.create-page":"Zzzzzz",
 "creator.field-type:":"Zzzzz Zzzz:",
 "creator.field:":"Zzzzz:",
 "creator.info-default-value":"Zzzz zzzz zzzzzz zzz-zzzzzzzz.",

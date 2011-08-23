@@ -655,7 +655,7 @@
 "control.wiki=name":"[_1] \u5de5\u4f5c\u533a",
 "control.wikis=count":"\u5de5\u4f5c\u533a\uff08[_1]\uff09",
 "creator.choices:":"\u9009\u9879\uff1a",
-"creator.create-page":"\u521b\u5efa\u9875\u9762",
+"creator.create-page":"\u521b\u5efa",
 "creator.field-type:":"\u8f93\u5165\u7c7b\u522b\uff1a",
 "creator.field:":"\u5b57\u6bb5\uff1a",
 "creator.info-default-value":"\u5c06\u6b64\u9009\u9879\u8bbe\u4e3a\u9ed8\u8ba4\u3002",
