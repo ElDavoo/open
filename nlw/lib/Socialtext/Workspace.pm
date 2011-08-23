@@ -140,6 +140,11 @@ sub enable_spreadsheet {
     return $self->is_plugin_enabled('socialcalc');
 }
 
+sub enable_xhtml {
+    my ($self, $option) = @_;
+    return $self->is_plugin_enabled('ckeditor');
+}
+
 # Special case the "help" workspace.  Since existing Wikitext (and rarely used
 # code) still refer to the "help" workspace, we need to capture that here and
 # call help_workspace(), which should automagically load up the right

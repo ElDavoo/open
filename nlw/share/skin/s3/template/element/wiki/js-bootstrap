@@ -150,5 +150,9 @@ v.hub.current_workspace.allows_html_wafl = true;
 v.hub.current_workspace.enable_spreadsheet = true;
 [% END %]
 
+[% IF current_workspace.enable_xhtml %]
+v.hub.current_workspace.enable_xhtml = true;
+[% END %]
+
 })();
 </script>

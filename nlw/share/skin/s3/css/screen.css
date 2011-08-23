@@ -363,7 +363,7 @@ div #controls.empty {
         height: 8px !important;
 }
 
-body#contentPage div#controls,body#settingsPage div#controls,body#dashBoard div#controls, body#revisions div#controls,body#settingsPage div#controls, #socialcalc-header {
+body#contentPage div#controls,body#settingsPage div#controls,body#dashBoard div#controls, body#revisions div#controls,body#settingsPage div#controls, #socialcalc-header, #ckeditor-header {
 	height: 44px;
 	background: url(../images/contentControlsTile.png) repeat-x top left;
 }

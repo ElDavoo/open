@@ -1190,6 +1190,9 @@ msgstr "电子表格"
 msgid "page.type-wiki"
 msgstr "页面"
 
+msgid "page.type-xhtml"
+msgstr "页面（使用新版编辑器）"
+
 #: share/plugin/widgets/share/javascript/activities/editor.js:1508
 msgid "signals.insert-mention:"
 msgstr "提及用户："

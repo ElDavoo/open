@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "#-#-#-#-#  wikiwyg.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-25 06:04+0800\n"
+"PO-Revision-Date: 2011-06-01 03:35-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-23 11:12+0800\n"
+"PO-Revision-Date: 2011-08-23 11:19+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  socialcalc.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-08-23 14:33+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-28 09:47-0700\n"
+"PO-Revision-Date: 2011-08-11 08:06-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-07-05 14:39-0700\n"
+"PO-Revision-Date: 2011-08-11 08:11-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4826,7 +4826,7 @@ msgstr "Zzzzzz zzzz zzzz zz"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3213
 msgid "edit.spreadsheet-title-required-for-wiki"
-msgstr "Zzzzzzzzzzz Zzzzz zzzzzzzz zz Zzzzzzzzz ZZ zzzzzzzzz"
+msgstr "Zzzz Zzzzz zzzzzzzz zz Zzzzzzzzz ZZ zzzzzzzzz"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:5
 msgid "edit.summarize"
@@ -6448,7 +6448,7 @@ msgstr "Zzz zzzzzzzzz zz zzz zzzzz"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2171
 msgid "error.new-sheet-name-required"
-msgstr "Zzzzzz zzzzzzz z zzzz zzz zzz zzz zzzzz."
+msgstr "Zzzzzz zzzzzzz z zzzz zzz zzz zzz zzzz."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:1139 lib/Socialtext/Handler/ControlPanel.pm:1187
 msgid "error.no-account-id!"
@@ -7320,7 +7320,7 @@ msgstr "Zzz zzzzzz zzzzzz zzz zzzz zz z zzzzzz-zzzzzzz zzzz."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:479
 msgid "error.sheet-contention:"
-msgstr "Zzzzz zzz zzzz zzzzzzz, <span style=\"font-weight: bold\" id=\"st-contention-user\">ZZZ</span> zzzzz z zzzzzzz zz zzzz zzzzz, zzz zz zzz zzzzzz zz zzzzzzzzz zzz zzzzzzz. Zzzzz zzz zzzz zz:"
+msgstr "Zzzzz zzz zzzz zzzzzzz, <span style=\"font-weight: bold\" id=\"st-contention-user\">ZZZ</span> zzzzz z zzzzzzz zz zzzz zzzz, zzz zz zzz zzzzzz zz zzzzzzzzz zzz zzzzzzz. Zzzzz zzz zzzz zz:"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2183
 msgid "error.sheet-name-exists"
@@ -7332,7 +7332,7 @@ msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">ZZZ</a
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2098 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2179
 msgid "error.sheet-title-too-long"
-msgstr "Zzzzzzzzzzz zzzzz zz zzz zzzz. Zzzzzz zzzzzzz zzz zzzz zzz zzz zzzzz."
+msgstr "Zzzz zzzzz zz zzz zzzz. Zzzzzz zzzzzzz zzz zzzz zzz zzz zzzzz."
 
 #: lib/Socialtext/CLI.pm:428
 msgid "error.show-pref-for-multiple-plugins"
@@ -11212,6 +11212,9 @@ msgstr "Zzzzzzzzzzz"
 msgid "page.type-wiki"
 msgstr "Zzzz"
 
+msgid "page.type-xhtml"
+msgstr "Zzzz (zzzzz zzz zzzzzz zzzzzzzzz)"
+
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
 msgstr "Zzzzzz Zzzz"
@@ -12435,7 +12438,7 @@ msgstr "Zzzzz zzzzzzzz zzzzz zz zzz zzzzzzz zzzzzzzzz"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:194
 msgid "sc.apply-sheet-default"
-msgstr "Zzzzz zzzzzzzz zzzzz zz zzz zzzzz zzzzzzz"
+msgstr "Zzzzz zzzzzzzz zzzzz zz zzz zzzz zzzzzzz"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:235
 msgid "sc.apply-to-current-cell"
@@ -12549,11 +12552,11 @@ msgstr "Zzzzzzz:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:439
 msgid "sc.enter-sheet-name"
-msgstr "Zzzzz z Zzz Zzzzzzzzzzz Zzzz"
+msgstr "Zzzzz z Zzz Zzzz Zzzz"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:440
 msgid "sc.enter-sheet-title"
-msgstr "Zzzzz z zzzzzzzzzz zzz zzzzzzzzzzz zzzzz zzz zzzz zzzzzzzzzzz."
+msgstr "Zzzzz z zzzzzzzzzz zzz zzzzzzzzzzz zzzzz zzz zzzz zzzz."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:56
 msgid "sc.erase"
@@ -12754,7 +12757,7 @@ msgstr "Zzzzz"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2496
 msgid "sc.recalc-finished"
-msgstr "Zzzz zzzz zzzz zzzzzzzzzzz zzzzzzz zz zzz zzzzzzz. Zzzz zzz zzzz, zzzzz zzzzzzz zzzz zz zzzzz zz zzzz."
+msgstr "Zzzz zzzz zzzz zzzz zzzzzzz zz zzz zzzzzzz. Zzzz zzz zzzz, zzzzz zzzzzzz zzzz zz zzzzz zz zzzz."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:179
 msgid "sc.recalculation"
@@ -12806,7 +12809,7 @@ msgstr "Zzzz Zz..."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:480
 msgid "sc.save-as-new-revision"
-msgstr "Zzzz zz z zzz zzzzzzzz zz zzz zzzzzzz zzzzz"
+msgstr "Zzzz zz z zzz zzzzzzzz zz zzz zzzzzzz zzzz"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14
 msgid "sc.save-changes"
@@ -12826,19 +12829,19 @@ msgstr "Zzzz zzzz z zzz zzzz:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:455
 msgid "sc.save-with-suggested-name"
-msgstr "Zzzz zzz zzzzzzzzzzz zzzz zzz zzzz \"<span id=\"st-newspreadsheet-duplicate-suggest\">ZZZ</span>\""
+msgstr "Zzzz zzz zzzz zzzz zzz zzzz \"<span id=\"st-newspreadsheet-duplicate-suggest\">ZZZ</span>\""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:451
 msgid "sc.sheet-already-exists"
-msgstr "Zzzzzzzzzzz Zzzzzzz Zzzzzz"
+msgstr "Zzzz Zzzzzzz Zzzzzz"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1029 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:214
 msgid "sc.sheet-settings"
-msgstr "Zzzzz Zzzzzzzz"
+msgstr "Zzzzzzzzzzz Zzzzzzzz"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:442
 msgid "sc.sheet-title:"
-msgstr "Zzzzzzzzzzz Zzzzz:"
+msgstr "Zzzz Zzzzz:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
 msgid "sc.show-preview"
@@ -12994,7 +12997,7 @@ msgstr "Zzzzzzzz z Zzz Zzzzzzzzzzz..."
 
 #: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"
-msgstr "Zzzzzzzz Zzzzzzzzzzz"
+msgstr "Zzzzzzzz Zzzz"
 
 #: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "signals.about-bookmarklet!"
@@ -15673,3 +15676,6 @@ msgstr "Zzzzzz z Zzzzz"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "Zzzzzz z Zzzzzz"
+
+msgid "xhtml.creating"
+msgstr "Zzzzzzzz z Zzzz zzzzz zzz zzzzzz zzzzzzzzz..."
