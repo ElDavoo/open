@@ -185,3 +185,16 @@
 'timestamp.js':
     parts:
         - template/timestamp.js
+'l10n-%.js':
+    compress: 1
+    parts:
+        - l10n/%.js
+    expand: 
+        - en
+        - zz
+        - zq
+        - zh_CN
+        #- fr_CA
+        - zh_TW
+        - xx
+        - xq
