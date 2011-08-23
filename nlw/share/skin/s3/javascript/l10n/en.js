@@ -653,7 +653,7 @@
 "control.wiki=name":"[_1] workspace",
 "control.wikis=count":"Workspaces ([_1])",
 "creator.choices:":"Choices:",
-"creator.create-page":"Create Page",
+"creator.create-page":"Create",
 "creator.field-type:":"Input Type:",
 "creator.field:":"Field:",
 "creator.info-default-value":"Make this choice pre-selected.",
