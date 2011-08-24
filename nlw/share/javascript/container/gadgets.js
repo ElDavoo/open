@@ -680,9 +680,14 @@ container.enterEditMode = function() {
 
     if (!self.admin_url) throw new Error("No admin url is configured");
 
-    self.loadLayout(self.admin_url, function() {
-        $('.notice').html(loc('You are editing the default dashboard layout for the <strong>[_1]</strong> account. Click <strong>Save</strong> to keep your changes, <strong>Cancel</strong> to discard them.', self.viewer.primary_account_name)).show();
+    var html = Jemplate.process(self.notice_template, {
+        loc: loc,
+        container: self,
+        socialtext: Socialtext
+    });
 
+    self.loadLayout(self.admin_url, function() {
+        $('.notice').html(html).show();
         $('#st-edit-layout').hide();
         $('#st-save-layout, #st-cancel-layout, #st-revert-layout').show();
     });
