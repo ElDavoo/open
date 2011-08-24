@@ -32,9 +32,6 @@
           <a id="[% button.0 %]" class="button" href="#">[% button.1 %]</a>
         [% END %]
       </div>
-      <div class="searchBox">
-        [% INCLUDE element/search_form %]
-      </div>
       <div class="clear"></div>
     </div>
     <div class="staticUnderline"></div>
