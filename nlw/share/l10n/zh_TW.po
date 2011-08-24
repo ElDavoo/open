@@ -12416,6 +12416,9 @@ msgstr "顯示文字："
 msgid "signals.matching=query"
 msgstr "符合『%1』的訊息"
 
+msgid "signals.mentions-of-me"
+msgstr "提及我"
+
 #. (acc.count)
 #. (this.count)
 #. (acc.user_count)
@@ -12428,6 +12431,9 @@ msgstr "%1 名用戶"
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
 msgstr "訊息 %1 是回覆 %2，但被回覆的訊息遺失。更新此訊息為 %3"
+
+msgid "signals.notifications"
+msgstr "通知"
 
 msgid "signals.number-of-signals-to-display"
 msgstr "顯示訊息數量上限"
@@ -12474,6 +12480,9 @@ msgstr "您收到了 %1 的私人訊息："
 msgid "signals.private-message-sent"
 msgstr "已發送的私人訊息"
 
+msgid "signals.private-message-sent-to-you=sender:"
+msgstr "%1 傳了一則私人訊息給您："
+
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
 msgstr "如果勾選上，每次別人給您發送私人訊息，您將會收到包含該消息的電子郵件。"
@@ -12507,6 +12516,9 @@ msgstr "回覆"
 msgid "signals.reply-privately"
 msgstr "私密回覆該訊息。"
 
+msgid "signals.reply-to-signal-message=url"
+msgstr "這封郵件由 Socialtext 訊息系統發送。您可以按<a href=\"%1\">這裡</a>來回覆訊息。"
+
 #: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "搜尋訊息："
@@ -12518,6 +12530,12 @@ msgstr "選定的好友"
 #: share/plugin/signals/share/widgets/profile/widget.html:29
 msgid "signals.send-as-private-message"
 msgstr "發送為私人訊息"
+
+msgid "signals.send-mentions-of-me-as-email"
+msgstr "將提及我的訊息用電子郵件發送"
+
+msgid "signals.send-private-messages-as-email"
+msgstr "將給我的私人訊息用電子郵件發送"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
@@ -12531,6 +12549,12 @@ msgstr "使用這個方便的書籤來通過訊息分享所有網站上的頁面
 #: share/plugin/signals/template/view/signallist:26
 msgid "signals.showing=from,to,total"
 msgstr "顯示第 %1 - %2 項，共 %3 項。"
+
+msgid "signals.signal-mentions-to-email"
+msgstr "若勾選此選項，每當其他用戶在訊息上提及您時，系統即會自動發送電子郵件通知您。"
+
+msgid "signals.signal-permalink"
+msgstr "訊息永久鏈結"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
@@ -12610,6 +12634,9 @@ msgstr "已上傳的檔案："
 #: share/plugin/widgets/share/javascript/activities/widget.js:27
 msgid "signals.what-are-you-working-on?"
 msgstr "您在做什麼呢？"
+
+msgid "signals.you-were-mentioned-by=sender:"
+msgstr "%1 在訊息裡提及您："
 
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"
