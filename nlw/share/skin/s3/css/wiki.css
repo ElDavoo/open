@@ -196,6 +196,8 @@ div#contentColumns div#contentLeft .wiki h3 {
     font-style: inherit; }
   .xhtml table.formatter_table.st-ss caption {
     background: inherit; }
+.xhtml table.xhtml_table {
+  margin-bottom: 1.2em; }
 .xhtml sup, .xhtml sub {
   font-size: smaller; }
 .xhtml sup {
