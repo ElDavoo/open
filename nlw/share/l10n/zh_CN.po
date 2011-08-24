@@ -3526,7 +3526,7 @@ msgid "creator.choices:"
 msgstr "选项："
 
 msgid "creator.create-page"
-msgstr "创建页面"
+msgstr "创建"
 
 msgid "creator.field-type:"
 msgstr "输入类别："
@@ -5323,6 +5323,12 @@ msgstr "无法创建帐户 %1。"
 #: lib/Socialtext/Handler/ControlPanel.pm:2333
 msgid "error.create=wiki"
 msgstr "无法创建工作区 %1。"
+
+msgid "error.creator-missing-required=field"
+msgstr "此字段为必填：%1"
+
+msgid "error.creator-number-required=field"
+msgstr "请在此字段填入数字：%1"
 
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"

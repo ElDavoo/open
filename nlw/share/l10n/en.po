@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-16 10:14+0800\n"
+"PO-Revision-Date: 2011-08-23 11:12+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3861,7 +3861,7 @@ msgid "creator.choices:"
 msgstr "Choices:"
 
 msgid "creator.create-page"
-msgstr "Create Page"
+msgstr "Create"
 
 msgid "creator.field-type:"
 msgstr "Input Type:"
@@ -5734,6 +5734,15 @@ msgstr "Could not create account %1."
 #: lib/Socialtext/Handler/ControlPanel.pm:2333
 msgid "error.create=wiki"
 msgstr "Could not create workspace %1"
+
+#: share/plugin/widgets/share/widgets/page_creator/widget.coffee:134 share/plugin/widgets/share/widgets/page_creator/widget.js:207
+msgid "error.creator-missing-required=field"
+msgstr "Missing required field: %1"
+
+#. (f.name)
+#: share/plugin/widgets/share/widgets/page_creator/widget.coffee:138 share/plugin/widgets/share/widgets/page_creator/widget.js:212
+msgid "error.creator-number-required=field"
+msgstr "Number required in field: %1"
 
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
