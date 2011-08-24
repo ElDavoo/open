@@ -38,23 +38,31 @@ Socialtext.Dialog = (function($) {
                 loaded[name] = true;
                 var uri = nlw_make_js_path('dialog-' + name + '.js' + _gz);
                 $.ajaxSettings.cache = true;
-                console.log(uri);
                 $.getScript(uri, cb);
                 $.ajaxSettings.cache = false;
             }
         },
         
         ShowResult: function (msg) {
-            Socialtext.dialog.load('result', function() {
-                var result = new ST.WidgetsAdminResult;
-                result.showResult(loc('info.success'), msg);
+            var $dialog = $('<div></div>').html(msg);
+            $('<a class="button" href="#"></a>')
+                .text(loc('do.close'))
+                .click(function() {
+                    $dialog.dialog('destroy');
+                    return false;
+                })
+                .appendTo($dialog.append('<div class="vpad20"></div>'));
+
+            $dialog.dialog({
+                title: 'Success',
+                width: 400,
+                modal: true
             });
         },
 
         ShowError: function (msg, callback) {
-            Socialtext.dialog.load('simple', function() {
-                errorLightbox(msg, callback);
-            });
+            this.ShowResult(msg);
+            if ($.isFunction(callback)) callback();
         },
 
         Process: function (template, vars) {
@@ -67,6 +75,6 @@ Socialtext.Dialog = (function($) {
 
 // Compat
 $.hideLightbox = $.noop;
-$.showLightbox = Socialtext.Dialog.Show;
+$.showLightbox = Socialtext.Dialog.Create;
 $.pauseLightbox = function() { throw new Error('unimplemented') }
 $.resumeLightbox = function() { throw new Error('unimplemented') }

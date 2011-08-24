@@ -72,26 +72,17 @@
         - contrib/shindig/opensocial-reference/idspec.js
         - contrib/shindig/opensocial-reference/responseitem.js
         - contrib/shindig/opensocial-current/restfulcontainer.js
-'dialog-opensocial-gallery.js':
+'dialog-%.js':
     compress: 1
     parts:
-        - { jemplate: 'dialogs/opensocial-gallery.tt2' }
-        - 'dialogs/opensocial-gallery.js'
-'dialog-add-update-content.js':
-    compress: 1
-    parts:
-        - { jemplate: 'dialogs/add-update-content.tt2' }
-        - 'dialogs/add-update-content.js'
-'dialog-remove-content.js':
-    compress: 1
-    parts:
-        - { jemplate: 'dialogs/remove-content.tt2' }
-        - 'dialogs/remove-content.js'
-'dialog-confirm.js':
-    compress: 1
-    parts:
-        - { jemplate: 'dialogs/confirm.tt2' }
-        - 'dialogs/confirm.js'
+        - { jemplate: "dialogs/%.tt2" }
+        - 'dialogs/%.js'
+    expand:
+        - opensocial-gallery
+        - add-update-content
+        - remove-content
+        - confirm
+        - save-layout
 'shindig-container-%.js':
     compress: 1
     parts:

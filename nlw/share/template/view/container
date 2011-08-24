@@ -23,12 +23,9 @@
 <div class="clear"></div>
 
 <script>
-    gadgets.container.setup({
-        env: [% container.env.json.replace('</script>', '</scr" + "ipt>') %],
-        type: "[% container.type %]",
-        view: "[% container.view %]",
-        viewer: [% container.viewer.json %]
-    });
+    gadgets.container.setup(
+        [% container.json.replace('</script>', '</scr" + "ipt>') %]
+    );
     [% FOR gadget = container.gadgets %]
         [% SET json = gadget.json %]
         gadgets.container.renderGadget(
@@ -39,7 +36,7 @@
     $('#st-add-widget').click(function() {
         Socialtext.Dialog.Load('opensocial-gallery', function () {
             var gallery = new ST.OpenSocialGallery({
-                type: "[% container.type %]",
+                type: [% container.type.json %],
                 account_id: [% container.viewer.primary_account_id || 0 %]
             });
             gallery.showLightbox();
@@ -49,6 +46,25 @@
 
     $('#st-edit-layout').click(function() {
         gadgets.container.enterEditMode();
+        return false;
+    });
+
+    $('#st-save-layout').click(function() {
+        Socialtext.Dialog.Load('save-layout', function () {
+            var dialog = new ST.SaveLayout();
+            dialog.show();
+        });
+        return false;
+    });
+    $('#st-cancel-layout').click(function() {
+        self._in_edit_mode = false;
+        gadgets.container.loadLayout(self.base_url, function() {
+            gadgets.container.leaveEditMode();
+        });
+        return false;
+    });
+    $('#st-revert-layout').click(function() {
+        gadgets.container.loadDefaults();
         return false;
     });
 </script>

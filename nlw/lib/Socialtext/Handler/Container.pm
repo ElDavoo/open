@@ -90,11 +90,15 @@ sub PUT_layout {
         my %gadgets = map { $_->gadget_instance_id => 1 }
                       @{$self->container->gadgets};
 
-        my $layout = decode_json($self->rest->getContent);
+        my $data = decode_json($self->rest->getContent);
+
         my $business_admin = $self->rest->user->is_business_admin;
         my @positions;
-        for my $x (0 .. $#$layout) {
-            my $col = $layout->[$x];
+
+        my $cols = $data->{gadgets};
+
+        for my $x (0 .. $#$cols) {
+            my $col = $cols->[$x];
             for my $y (0 .. $#$col) {
                 my $g = $col->[$y];
 
@@ -140,7 +144,7 @@ sub GET_default_gadgets {
     my @gadgets;
     my $instance_id = 1;
     my @cols;
-    for my $gadget_info ($self->container->default_gadgets) {
+    for my $gadget_info (reverse $self->container->default_gadgets) {
         $cols[$gadget_info->{col}] ||= 0;
         my $row = $cols[$gadget_info->{col}]++;
 
@@ -152,6 +156,12 @@ sub GET_default_gadgets {
             row => $row,
             %$gadget_info,
         );
+
+        # Override preferences in the temporary gadget
+        my $prefs = $gadget_info->{prefs} || [];
+        my %overridden = map { $_->[0] => $_->[1] } @$prefs;
+        $instance->override_preferences(\%overridden);
+
         push @gadgets, $self->container->gadget_vars($instance);
     }
     $self->rest->header(-type => 'application/json; charset=utf-8');

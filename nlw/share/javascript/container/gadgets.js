@@ -514,19 +514,12 @@ function _setLayout (layout) {
     $('.deletedGadget').remove();
 }
 
+// This is called when widgets are moved, etc
 container.updateLayout = function () {
     var self = this;
-
     // Don't update the layout when we are editing the layout
     if (self._in_edit_mode) return;
-
-    var cols = _getLayout();
-    jQuery.ajax({
-        type: 'PUT',
-        contentType: 'application/json',
-        url:  self.base_url,
-        data: gadgets.json.stringify(cols)
-    });
+    self.saveLayout(self.base_url);
 };
 
 container.add_gadget = function(config) {
@@ -685,71 +678,83 @@ container.enterEditMode = function() {
     var self = this;
     self._in_edit_mode = true;
 
-    if (self.type == 'dashboard') {
-        self.loadLayout(
-            '/data/accounts/' + self.viewer.primary_account_id
-                + '/dashboard/default'
-        );
-        $('.notice').html(loc('You are editing the default dashboard layout for the [_1] account. Click <a id="st-save-layout" href="#">Save</a> to keep your changes, <a id="st-cancel-layout" href="#">Cancel</a> to discard them.', this.viewer.primary_account_name)).show();
-        $('#st-save-layout').click(function() {
-            return false;
-        });
-        $('#st-cancel-layout').click(function() {
-            self._in_edit_mode = false;
-            $('.notice').hide();
-        });
-    }
-    else {
-        $('.widget.tan').each(function(_, widget) {
-            self.makeEditable($(widget));
-        });
-        self._orig_layout = _getLayout();
-        $('.notice')
-            .html(loc('widgets.in-layout-mode-click-save-or-cancel'))
-            .show();
-    }
+    if (!self.admin_url) throw new Error("No admin url is configured");
+
+    self.loadLayout(self.admin_url, function() {
+        $('.notice').html(loc('You are editing the default dashboard layout for the <strong>[_1]</strong> account. Click <strong>Save</strong> to keep your changes, <strong>Cancel</strong> to discard them.', self.viewer.primary_account_name)).show();
+
+        $('#st-edit-layout').hide();
+        $('#st-save-layout, #st-cancel-layout, #st-revert-layout').show();
+    });
+    
+    //notice loc('widgets.in-layout-mode-click-save-or-cancel')
 };
+
+container.saveAdminLayout = function(options) {
+    if (!this.admin_url) throw new Error("No admin url is configured");
+    this.saveLayout(this.admin_url, options);
+}
+
+container.loadDefaults = function(callback) {
+    if (!this.defaults_url) throw new Error("No defaults url is configured");
+    this.loadLayout(this.defaults_url, callback, true);
+}
 
 container.leaveEditMode = function() {
     var self = this;
+
+    /* For profile pages:
     $('.widget.regular').each(function(_, widget) {
         self.makeUneditable($(widget));
     });
+    */
+    
+    $('#st-save-layout, #st-cancel-layout, #st-revert-layout, .notice').hide();
+    $('#st-edit-layout').show();
     self._in_edit_mode = false;
-    $('.notice').hide();
 };
 
-container.saveLayout = function() {
-    this.leaveEditMode();
-    this.updateLayout();
-};
-
-container.cancelEditMode = function() {
-    _setLayout(this._orig_layout);
-    this.leaveEditMode();
-};
-
-container.loadLayout = function(url) {
+container.loadLayout = function(url, callback, defaults) {
     var self = this;
     $.getJSON(url, function(gadgets) {
         $('.widget').remove();
         $.each(gadgets, function(_, g) {
-            // record this gadget as temporary, if we used that path
+            var prefs = {};
+            $.each(g.preferences, function(_, pref) {
+                prefs[pref.name] = pref.value;
+            });
             self.pendingChanges[g.instance_id] = {
-                'class': g['class'],
-                'fixed': g['fixed'],
-                preferences: g['preference_hash'],
-                install: true // install this as a new widget
+                'class': g['class'] || '',
+                'fixed': g['fixed'] || false,
+                preferences: prefs,
+                install: defaults // install new versions if these are defaults
             };
             var $gadget = self.renderGadget(g);
             self.makeEditable($gadget.find('.widget'));
         });
+        if ($.isFunction(callback)) callback();
     });
 }
 
-container.revertLayout = function() {
-    this.loadLayout(self.base_url + '/default');
-}
+container.saveLayout = function(url, options) {
+    var self = this;
+
+    if (!url) throw new Error('url required');
+    options = $.extend({
+        gadgets: _getLayout(),
+        success: $.noop,
+        error: $.noop
+    }, options);
+
+    jQuery.ajax({
+        type: 'PUT',
+        contentType: 'application/json',
+        url:  url,
+        data: gadgets.json.stringify(options),
+        success: options.success,
+        error: options.error
+    });
+};
 
 container.showNotice = function(notice, redirect) {
     Cookie.set(
