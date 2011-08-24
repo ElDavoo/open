@@ -1,0 +1,21 @@
+[% id = container.account_id || container.viewer.primary_account_id %]
+[% name = container.account_name || container.viewer.primary_account_name %]
+
+[% loc('dashboard.switch-from=account:', name) %]
+<select id="st-change-account">
+    [% FOR a = socialtext.accounts %]
+    <option [% IF a.account_id == id %]selected="true"[% END %] value="[% a.account_id %]">[% a.name %]</option>
+    [% END %]
+</select>
+<script>
+$('#st-change-account').change(function() {
+    var id = $(this).val();
+    $.extend(gadgets.container, {
+        account_name: $(this).find('*[value=' + id + ']').html(),
+        account_id: id,
+        admin_url: '/data/accounts/' + id + '/dashboard'
+    });
+    gadgets.container.enterEditMode();
+    return false;
+});
+</script>
