@@ -1,0 +1,43 @@
+* Fixture: WebHook
+
+| *Comment*      | Setup  |                                      |
+| set            | u1     | u1-%%start_time%%@ken.socialtext.net |
+| create-user    | %%u1%% | password                             |
+| set            | u2     | u2-%%start_time%%@ken.socialtext.net |
+| create-user    | %%u2%% | password                             |
+| set            | u3     | u3-%%start_time%%@ken.socialtext.net |
+| create-user    | %%u3%% | password                             |
+| set | accnt_id | 
+
+| clear-webhooks |
+| clear-webhook  |
+
+| comment       | No webhooks, deactivate user does not fire webhooks |   |
+| st-clear-jobs |                                                     |   |
+| st-admin      | deactivate-user --email %%u1%%                      |   |
+| job-count     | WebHook                                             | 0 |
+
+| comment               | Deactivate a user                  |               |    |
+| st-clear-jobs         |                                    |               |    |
+| clear-webhook         |                                    |               |    |
+| add-webhook           | user.deactivate                    | http://tou.ch | {} |
+| st-admin              | deactivate-user --email %%u2%%     |               |    |
+| job-count             | WebHook                            | 1             |    |
+| st-process-jobs       |                                    |               |    |
+| job-count             | WebHook                            | 0             |    |
+| webhook-payload-parse |                                    |               |    |
+| json-like             | [{"class":"user.deactivate"}]      |               |    |
+| json-like             | [{"object":{"username":"%%u2%%"}}] |               |    |
+
+| comment               | Reactivate a user                  |               |    |
+| st-clear-jobs         |                                    |               |    |
+| clear-webhook         |                                    |               |    |
+| add-webhook           | user.activate                      | http://tou.ch | {} |
+| reactivate-user       | %%u2%%                             |               |    |
+| job-count             | WebHook                            | 1             |    |
+| st-process-jobs       |                                    |               |    |
+| job-count             | WebHook                            | 0             |    |
+| webhook-payload-parse |                                    |               |    |
+| json-like             | [{"class":"user.activate"}]      |               |    |
+| json-like             | [{"object":{"username":"%%u2%%"}}] |               |    |
+

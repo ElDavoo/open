@@ -5,6 +5,7 @@ use strict;
 use Socialtext::WebHook;
 use base 'Socialtext::Pluggable::Plugin';
 use List::MoreUtils qw/all/;
+use Socialtext::SQL qw(sql_timestamptz_now);
 
 use constant scope => 'account';
 use constant hidden => 1; # hidden to admins
@@ -15,10 +16,34 @@ sub register {
     my $self = shift;
 
     $self->add_hook("nlw.user.deactivate"   => \&deactivate_user);
+    $self->add_hook("nlw.user.activate"   => \&activate_user);
     $self->add_hook("nlw.signal.new"        => \&signal_new);
     $self->add_hook("nlw.page.update"       => \&page_update);
     $self->add_hook("nlw.page.watch"        => \&page_watch);
     $self->add_hook("nlw.page.unwatch"      => \&page_unwatch);
+}
+
+sub activate_user {
+    my $self = shift;
+    my $user = shift;
+
+    my $user_hash = $user->to_hash();
+    delete $user_hash->{password};
+    Socialtext::WebHook->Add_webhooks(
+        class => 'user.activate',
+        user => $user,
+        payload_thunk => sub { 
+            return {
+                class => 'user.activate',
+                actor => {
+                    id             => $self->user->user_id,
+                    best_full_name => $self->user->best_full_name,
+                },
+                at     => sql_timestamptz_now(),
+                object => $user_hash,
+            };
+        },
+    );
 }
 
 sub deactivate_user {
@@ -27,6 +52,24 @@ sub deactivate_user {
 
     # Delete all webhooks created by this user
     $_->delete for @{ Socialtext::WebHook->Find(creator_id => $user->user_id) };
+
+    my $user_hash = $user->to_hash();
+    delete $user_hash->{password};
+    Socialtext::WebHook->Add_webhooks(
+        class => 'user.deactivate',
+        user => $user,
+        payload_thunk => sub { 
+            return {
+                class => 'user.deactivate',
+                actor => {
+                    id             => $self->user->user_id,
+                    best_full_name => $self->user->best_full_name,
+                },
+                at     => sql_timestamptz_now(),
+                object => $user_hash,
+            };
+        },
+    );
 }
 
 sub signal_new {

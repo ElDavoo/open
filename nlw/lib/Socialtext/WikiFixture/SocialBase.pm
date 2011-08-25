@@ -837,9 +837,24 @@ sub delete_user {
 sub deactivate_user {
     my $self = shift;
     my $email = shift;
+
     my $user = Socialtext::User->Resolve($email);
 
     $user->deactivate();
+}
+
+sub reactivate_user {
+    my $self = shift;
+    my $username = shift;
+    my $account_name = shift;
+
+    my $account = $account_name
+        ? Socialtext::Account->new(name => $account_name)
+        : Socialtext::Account->Default();
+
+    my $user = Socialtext::User->Resolve($username);
+
+    $user->reactivate(account => $account);
 }
 
 sub create_group {

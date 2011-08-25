@@ -1036,6 +1036,7 @@ sub reactivate {
     unless ($self->is_externally_sourced) {
         $self->create_password_change_confirmation;
     }
+    $self->_call_hook('nlw.user.activate');
 }
 
 sub _index {
