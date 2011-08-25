@@ -32,6 +32,18 @@
         - pageview.js
         - dialog.js
         - legacy.js
+        - socialtext-api.js
+
+# Socialtext API
+'socialtext-api.js':
+    parts:
+        - Socialtext/Base.js
+        - Socialtext/Account.js
+        - Socialtext/Group.js
+        - Socialtext/UserAccountRole.js
+        - Socialtext/User.js
+        - Socialtext/Workspace.js
+
 'socialtext-container.js':
     compress: 1
     parts:
