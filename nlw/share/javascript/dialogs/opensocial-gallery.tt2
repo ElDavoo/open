@@ -1,10 +1,10 @@
 <div id="st-widget-opensocial-gallery-widgets">
-    [% FOR section = widgets %]
+    [% FOR section = gadgets %]
         <h4 class="vpad10">[% section.title %]</h4>
         <table class="galleryWidget" style="width: 99%; table-layout: fixed">
-            [% WHILE section.widgets.size %]
-                [% widget1 = section.widgets.shift() %] 
-                [% widget2 = section.widgets.shift() %] 
+            [% WHILE section.gadgets.size %]
+                [% widget1 = section.gadgets.shift() %] 
+                [% widget2 = section.gadgets.shift() %] 
                 <tr>
                     [% INCLUDE thumbnail_section widget=widget1 %]
                     [% INCLUDE thumbnail_section widget=widget2 IF widget2 %]

@@ -25,14 +25,14 @@ proto.gadgetVars = {
 
 proto.showLightbox = function () {
     var self = this;
-    self.loadAccountGallery(function(widgets) {
+    self.loadAccountGallery(function(gadgets) {
         self.dialog = Socialtext.Dialog.Create({
             title: loc('widget.insert'),
             width: 640,
             minWidth: 550,
             height: 400,
             html: Socialtext.Dialog.Process('opensocial-gallery.tt2', {
-                widgets: widgets
+                gadgets: gadgets
             })
         });
         self.bindHandlers();
@@ -65,21 +65,20 @@ proto.loadAccountGallery = function (callback) {
     if (typeof(self.type) == 'undefined')
         throw new Error("type is required");
     $.ajax({
-        url: '/data/accounts/' + self.account_id + '/gallery',
+        url: '/data/accounts/' + self.account_id + '/gadgets',
         dataType: 'json',
-        success: function(gallery) {
+        success: function(gadgets) {
             var tables = [
-                { widgets: [], title: loc('widget.socialtext') },
-                { widgets: [], title: loc('widget.third-party') }
+                { gadgets: [], title: loc('widget.socialtext') },
+                { gadgets: [], title: loc('widget.third-party') }
             ];
-            var widgets = gallery.widgets;
-            $.each(widgets, function(){
-                var hidden = !this.src || this.removed || (
-                    this.type && $.inArray(self.type, this.type) == -1
+            $.each(gadgets, function(_, g){
+                var hidden = !g.src || g.removed || (
+                    g.type && $.inArray(self.type, g.type) == -1
                 );
                 if (hidden) return;
 
-                tables[(this.socialtext == true) ? 0 : 1].widgets.push(this);
+                tables[(g.socialtext == true) ? 0 : 1].gadgets.push(g);
             });
 
             callback(tables);
