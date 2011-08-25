@@ -134,10 +134,11 @@
 'socialtext-editor-light.js':
     compress: 1
     parts:
-        - 'lookahead.js'
-        - 'jquery.selectOverlap.js'
-        - 'Class.js'
-        - 'loc.js'
+        - lookahead.js
+        - jquery.selectOverlap.js
+        - jquery.poll.js
+        - Class.js
+        - loc.js
         - main.js
         - contrib/rangy-core.js
         - contrib/rangy-serializer.js
