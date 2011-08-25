@@ -13188,7 +13188,7 @@ msgstr "Private message sent."
 
 #: lib/Socialtext/Job/SignalDMNotify.pm:55
 msgid "signals.private-message-sent-to-you=sender:"
-msgstr "%1 sent you a private message:"
+msgstr "%1 sent you a private message"
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
