@@ -791,7 +791,7 @@ sub delete_recklessly {
     my $user_id = shift;
 
     Test::Socialtext::User->delete_recklessly($user_id);
-    diag "User ${username} deleted recklessly\n";
+    diag "User ${user_id} deleted recklessly\n";
 }
 
 sub user_primary_account {
