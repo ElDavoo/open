@@ -16,6 +16,11 @@ socialtext.dialog.register('save-layout', function() {
         title: loc('dashboard.save-confirmation')
     });
 
+    dialog.find('.cancel').click(function() {
+        dialog.close();
+        return false;
+    });
+
     dialog.find('.save').click(function () {
         var force = dialog.find('#force-update').is(':checked');
         var push_widgets = !force && pushGadgetIds.length;

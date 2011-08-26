@@ -14,10 +14,8 @@
         </div>
     [% END %]
     <div class="vpad10">
+        <a href="#" id="st-save-widget-template" class="save button">[% loc('do.save') %]</a>
         <a href="#" class="cancel button">[% loc('do.cancel') %]</a>
-        <a href="#" id="st-save-widget-template" class="save button">
-            [% loc('do.save') %]
-        </a>
     </div>
     <div class="vpad10">
       <label><input id="force-update" type="checkbox"/>
