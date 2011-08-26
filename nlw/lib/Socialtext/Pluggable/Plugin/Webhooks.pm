@@ -15,12 +15,42 @@ use constant is_hook_enabled => 1;
 sub register {
     my $self = shift;
 
-    $self->add_hook("nlw.user.deactivate"   => \&deactivate_user);
-    $self->add_hook("nlw.user.activate"   => \&activate_user);
-    $self->add_hook("nlw.signal.new"        => \&signal_new);
-    $self->add_hook("nlw.page.update"       => \&page_update);
-    $self->add_hook("nlw.page.watch"        => \&page_watch);
-    $self->add_hook("nlw.page.unwatch"      => \&page_unwatch);
+    $self->add_hook("nlw.user.deactivate"       => \&deactivate_user);
+    $self->add_hook("nlw.user.activate"         => \&activate_user);
+    $self->add_hook("nlw.signal.new"            => \&signal_new);
+    $self->add_hook("nlw.page.update"           => \&page_update);
+    $self->add_hook("nlw.page.watch"            => \&page_watch);
+    $self->add_hook("nlw.page.unwatch"          => \&page_unwatch);
+    $self->add_hook("nlw.add_user_account_role" => \&user_account_join);
+}
+
+sub user_account_join {
+    my $self = shift;
+    my $account = shift;
+    my $user = shift;
+    my $role = shift;
+
+    my $user_hash = $user->to_hash();
+    delete $user_hash->{password};
+    Socialtext::WebHook->Add_webhooks(
+        class => 'user.joinaccount',
+        user => $user,
+        payload_thunk => sub { 
+            return {
+                class => 'user.joinaccount',
+                actor => {
+                    id             => $self->user->user_id,
+                    best_full_name => $self->user->best_full_name,
+                },
+                at     => sql_timestamptz_now(),
+                object => {
+                    user => $user_hash,
+                    account => $account->to_hash,
+                    role => defined($role) ? $role->name : '',
+                },
+            };
+        },
+    );
 }
 
 sub activate_user {
