@@ -1,13 +1,6 @@
-var ST = window.ST = window.ST || {};
 (function($) {
 
-ST.SaveLayout = function () {};
-var proto = ST.SaveLayout.prototype = {
-};
-
-proto.show = function () {
-    var self = this;
-
+socialtext.dialog.register('save-layout', function() {
     var redirect = function () { $.hideLightbox(); document.location = '/'; };
     var $pushWidgets = jQuery('.push-widget:checked');
     var pushGadgetIds = [];
@@ -16,10 +9,9 @@ proto.show = function () {
         pushGadgetIds.push(checkbox.id.match(/_(\d+)$/)[1]);
         pushGadgetTitles.push(checkbox.name);
     });
-    var dialog = Socialtext.Dialog.Create({
-        html: Jemplate.process('save-layout.tt2', {
+    var dialog = socialtext.dialog.createDialog({
+        html: socialtext.dialog.process('save-layout.tt2', {
             'gadget_titles': pushGadgetTitles,
-            'loc': loc
         }),
         title: loc('dashboard.save-confirmation')
     });
@@ -37,12 +29,12 @@ proto.show = function () {
                     gadgets.container.leaveEditMode();
 
                     if (force) {
-                        Socialtext.Dialog.ShowResult(
+                        socialtext.dialog.showResult(
                             loc('dashboard.successfully-reset')
                         );
                     }
                     else {
-                        Socialtext.Dialog.ShowResult(
+                        socialtext.dialog.showResult(
                             loc('dashboard.successfully-saved')
                         );
                     }
@@ -55,6 +47,7 @@ proto.show = function () {
         // loc('error.dashboard-reset'),
         return false;
     });
-};
+});
+
 })(jQuery);
 

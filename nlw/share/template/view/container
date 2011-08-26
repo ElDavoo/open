@@ -34,12 +34,9 @@
     [% END %]
 
     $('#st-add-widget').click(function() {
-        Socialtext.Dialog.Load('opensocial-gallery', function () {
-            var gallery = new ST.OpenSocialGallery({
-                type: [% container.type.json %],
-                account_id: [% container.viewer.primary_account_id || 0 %]
-            });
-            gallery.showLightbox();
+        socialtext.dialog.show('opensocial-gallery', {
+            type: [% container.type.json %],
+            account_id: [% container.viewer.primary_account_id || 0 %]
         });
         return false;
     });
@@ -50,10 +47,7 @@
     });
 
     $('#st-save-layout').click(function() {
-        Socialtext.Dialog.Load('save-layout', function () {
-            var dialog = new ST.SaveLayout();
-            dialog.show();
-        });
+        socialtext.dialog.show('save-layout');
         return false;
     });
     $('#st-cancel-layout').click(function() {

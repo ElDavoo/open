@@ -1,5 +1,6 @@
-Socialtext.Dialog = (function($) {
-    var dialogs = [];
+if (typeof(socialtext) == 'undefined') socialtext = {};
+socialtext.dialog = (function($) {
+    var dialogs = {};
     var loaded = {};
 
     var timestamp = (new Date).getTime();
@@ -17,7 +18,7 @@ Socialtext.Dialog = (function($) {
     };
 
     return {
-        Create: function(opts) {
+        createDialog: function(opts) {
             var opts = typeof(opts) == 'string' ? { html: opts } : opts;
             var $content = opts.content
                 ? $(content)
@@ -30,20 +31,32 @@ Socialtext.Dialog = (function($) {
             return new Dialog($content);
         },
 
-        Load: function(name, cb) {
+        show: function(name, args) {
+            var self = this;
             if (loaded[name]) {
-                cb();
+                self.callDialog(name, args);
             }
             else {
                 loaded[name] = true;
                 var uri = nlw_make_js_path('dialog-' + name + '.js' + _gz);
                 $.ajaxSettings.cache = true;
-                $.getScript(uri, cb);
+                $.getScript(uri, function() {
+                    self.callDialog(name, args);
+                });
                 $.ajaxSettings.cache = false;
             }
         },
+
+        callDialog: function(name, args) {
+            if (!dialogs[name]) throw new Error(name + " didn't register!");
+            dialogs[name].call(this, args);
+        },
+
+        register: function(name, callback) {
+            dialogs[name] = callback;
+        },
         
-        ShowResult: function (msg) {
+        showResult: function (msg) {
             var $dialog = $('<div></div>').html(msg);
             $('<a class="button" href="#"></a>')
                 .text(loc('do.close'))
@@ -60,12 +73,12 @@ Socialtext.Dialog = (function($) {
             });
         },
 
-        ShowError: function (msg, callback) {
+        showError: function (msg, callback) {
             this.ShowResult(msg);
             if ($.isFunction(callback)) callback();
         },
 
-        Process: function (template, vars) {
+        process: function (template, vars) {
             vars = vars || {};
             vars.loc = loc;
             return Jemplate.process(template, vars);
@@ -74,7 +87,7 @@ Socialtext.Dialog = (function($) {
 })(jQuery);
 
 // Compat
-$.hideLightbox = $.noop;
-$.showLightbox = Socialtext.Dialog.Create;
-$.pauseLightbox = function() { throw new Error('unimplemented') }
-$.resumeLightbox = function() { throw new Error('unimplemented') }
+$.hideLightbox = function() { throw new Error('$.hideLightbox deprecated') }
+$.showLightbox = function() { throw new Error('$.showLightbox deprecated') }
+$.pauseLightbox = function() { throw new Error('$.pauseLightbox deprecated') }
+$.resumeLightbox = function() { throw new Error('$.resumeLightbox deprecated') }

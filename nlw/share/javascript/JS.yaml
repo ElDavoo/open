@@ -30,7 +30,7 @@
         - { jemplate: 'template' }
         - like-indicator.js
         - pageview.js
-        - dialog.js
+        - Socialtext/Dialog.js
         - legacy.js
         - socialtext-api.js
 

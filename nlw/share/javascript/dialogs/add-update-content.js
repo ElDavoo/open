@@ -1,118 +1,110 @@
-var ST = window.ST = window.ST || {};
 (function ($) {
 
-ST.AddUpdateContent = function () {};
-var proto = ST.AddUpdateContent.prototype = new ST.WidgetsLightbox;
+var addContent = {
+    onSuccess: $.noop,
+    show: function (opts) {
+        $.extend(this, opts);
+        this.dialog = socialtext.dialog.createDialog({
+            html: socialtext.dialog.process('add-update-content.tt2', {
+                update: this.gadget_id ? true : false,
+                gadget_id: this.gadget_id,
+                src: /^urn:/.test(this.src) ? null : this.src,
+                hasXml: this.hasXml
+            }),
+            title: this.gadget_id
+                ? loc('widgets.update-widget')
+                : loc('widgets.add-widget'),
+        });
+        this.setup();
+        return this.dialog;
+    },
 
-proto.showLightbox = function (gallery_id, gadget_id, src, hasXml) {
-    this.gallery_id = gallery_id;
-    this.gadget_id = gadget_id;
-    this.update = gadget_id ? true : false;
+    setup: function () {
+        var self = this;
+        // Select the appropriate checkbox when either file of url inputs are
+        // clicked
+        self.dialog.find('input[name=url],input[name=file],input[name=editor]')
+            .click(function() {
+                var name = $(this).attr('name');
+                self.dialog.find('input[name=method][value='+name+']').click();
+            });
 
-    $.showLightbox({
-        html: this.process('add-update-content.tt2', {
-            update: this.update,
-            gadget_id: gadget_id,
-            src: /^urn:/.test(src) ? null : src,
-            hasXml: hasXml
-        }),
-        close: '#add-update-content-lightbox .close'
-    });
-
-    this.setup();
-};
-
-proto.setup = function () {
-    var self = this;
-    var lightbox = $('#add-update-content-lightbox');
-
-    // Select the appropriate checkbox when either file of url inputs are
-    // clicked
-    $('input[name=url], input[name=file], input[name=editor]', lightbox)
-        .click(function() {
-            var name = $(this).attr('name');
-            $('input[name=method][value=' + name + ']', lightbox).click();
+        self.dialog.find('form').submit(function() {
+            if (self.dialog.find('input[value=editor]').is(':checked')) {
+                var url = '/st/widget?account_id=' + self.account_id;
+                if (self.gadget_id) url += '&widget_id=' + self.gadget_id;
+                window.location = url;
+                return false;
+            }
         });
 
-    $('form', lightbox).submit(function() {
-        if ($('input[value=editor]', lightbox).is(':checked')) {
-            var url = '/st/widget?account_id=' + self.gallery_id
-            if (self.gadget_id) url += '&widget_id=' + self.gadget_id;
-            window.location = url;
+        self.dialog.find('.submit').click(function() {
+            self.addGadget();
             return false;
-        }
-    });
+        });
+    },
 
-    $('.submit', lightbox).click(function() {
-        self.addGadget();
-        return false;
-    });
-};
+    error: function (error, callback) {
+        error = '<pre class="wrap">' + error + '</pre>';
+        return this.showError(error, callback);
+    },
 
-proto.error = function (error, callback) {
-    error = '<pre class="wrap">' + error + '</pre>';
-    return ST.WidgetsLightbox.prototype.error.call(this, error, callback);
-}
+    success: function () {
+        var message = this.gadget_id
+            ? loc('widgets.updated=widget')
+            : loc('widgets.added');
+        get_lightbox('simple', function () {
+            successLightbox(message, function () { location.reload() });
+        });
+    },
 
-proto.success = function () {
-    var message = this.update
-        ? loc('widgets.updated=widget')
-        : loc('widgets.added');
-    get_lightbox('simple', function () {
-        successLightbox(message, function () { location.reload() });
-    });
-}
+    addGadget: function (form) {
+        var self = this;
+        self.dialog.find('iframe').unbind('load').load(function () {
+            var doc = this.contentDocument || this.contentWindow.document;
+            if (!doc) throw new Error("Can't find iframe");
 
-proto.addGadget = function (form) {
-    var self = this;
-    var lightbox = $('#add-update-content-lightbox');
-    $('iframe', lightbox).unbind('load').load(function () {
-        var doc = this.contentDocument || this.contentWindow.document;
-        if (!doc) throw new Error("Can't find iframe");
+            var content = $('body', doc).text();
+            self.dialog.close();
 
-        var content = $('body', doc).text();
-        $.hideLightbox();
+            var result;
+            try { result = $.secureEvalJSON(content) } catch(e){};
 
-        var result;
-        try { result = $.secureEvalJSON(content) } catch(e){};
-
-        if (!result) {
-            self.error(content);
-        }
-        else if (result.error) {
-            if (result.redirect) {
-                self.error(result.error, function () { location.reload() });
+            if (!result) {
+                self.showError(content);
+            }
+            else if (result.error) {
+                self.showError(result.error);
             }
             else {
-                self.error(result.error);
+                if (self.gadget_id) {
+                    self.onSuccess();
+                }
+                else {
+                    self.addGadgetToGallery(result.gadget_id);
+                }
             }
-        }
-        else {
-            if (self.update) {
-                // Already in the gallery
-                self.success();
-            }
-            else {
-                self.addGadgetToGallery(result.gadget_id);
-            }
-        }
-    });
-    $('form', lightbox).submit();
-}
+        });
+        self.dialog.find('form').submit();
+    },
 
-proto.addGadgetToGallery = function (gadget_id) {
-    var self = this;
-    $.ajax({
-        url: '/data/gadgets/gallery/' + self.gallery_id + '/gadgets',
-        type: 'POST',
-        data: gadget_id,
-        success: function() {
-            self.success();
-        },
-        error: function (response) {
-            self.error(response.responseText);
-        }
-    });
+    addGadgetToGallery: function (gadget_id) {
+        var self = this;
+        $.ajax({
+            url: '/data/accounts/' + self.account_id + '/gadgets/' + gadget_id,
+            type: 'PUT',
+            success: function() {
+                self.onSuccess();
+            },
+            error: function (response) {
+                self.showError(response.responseText);
+            }
+        });
+    }
 };
+
+socialtext.dialog.register('add-update-content', function(args) {
+    addContent.show(args);
+});
 
 })(jQuery);
