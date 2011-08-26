@@ -38,6 +38,7 @@ use YAML qw/LoadFile/;
 use DateTime;
 use File::Basename;
 use File::Spec;
+use Test::Socialtext::User;
 
 # mix-in some commands from the Socialtext fixture
 # XXX move bodies to SocialBase?
@@ -783,6 +784,14 @@ sub create_user {
     $self->{user_id} = $user->user_id;
     $self->{"${name}_id"} = $user->user_id;
     return $user;
+}
+
+sub delete_recklessly {
+    my $self = shift;
+    my $user_id = shift;
+
+    Test::Socialtext::User->delete_recklessly($user_id);
+    diag "User ${username} deleted recklessly\n";
 }
 
 sub user_primary_account {
