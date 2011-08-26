@@ -1134,7 +1134,6 @@ sub add_user_to_account {
     my $role = $role_name
         ? Socialtext::Role->new(name => $role_name)
         : undef;
-
     $acct->assign_role_to_user( user => $user, role => $role );
 
     diag "Added User $user_name"
