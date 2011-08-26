@@ -97,3 +97,29 @@
 | job-count            | WebHook     | 1                                    |    |
 | st-process-jobs      |             |                                      |    |
 | job-count            | WebHook     | 0                                    |    |
+
+# create account
+| comment           | setup for account import        |                                        |        |
+| set               | ie                              | ie%%start_time%%                       |        |
+| create-account    | %%ie%%                          |                                        |        |
+| set               | ieid                            | %%account_id%%                         |        |
+| set               | ieu1                            | ieu1-%%start_time%%@ken.socialtext.net |        |
+| create-user       | %%ieu1%%                        | password                               | %%ie%% |
+| set               | ieu1id                          | %%user_id%%                            |        |
+| set               | ieu2                            | ieu2-%%start_time%%@ken.socialtext.net |        |
+| create-user       | %%ieu2%%                        | password                               | %%ie%% |
+| set               | ieu2id                          | %%user_id%%                            |        |
+| set               | ieu3                            | ieu3-%%start_time%%@ken.socialtext.net |        |
+| create-user       | %%ieu3%%                        | password                               | %%ie%% |
+| st-admin          | export-account --account %%ie%% |                                        |        |
+| delete-recklessly | %%ieu1id%%                      |                                        |        |
+| delete-recklessly | %%ieu2id%%                      |                                        |        |
+
+| comment              | import account should fire 2 user create webhooks                          |               |    |
+| new-webhook-testcase |                                                                            |               |    |
+| add-webhook          | user.create                                                                | http://tou.ch | {} |
+| st-admin             | import-account --directory /tmp/%%ie%%.id-%%ieid%%.export --name new%%ie%% |               |    |
+| job-count            | WebHook                                                                    | 2             |    |
+| st-process-jobs      |                                                                            |               |    |
+| job-count            | WebHook                                                                    | 0             |    |
+
