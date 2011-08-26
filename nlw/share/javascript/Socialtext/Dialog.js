@@ -14,7 +14,9 @@ socialtext.dialog = (function($) {
     };
     Dialog.prototype = {
         close: function() { this.node.dialog('destroy') },
-        find: function(selector) { return this.node.find(selector) }
+        find: function(selector) { return this.node.find(selector) },
+        disable: function() { this.node.dialog('disable') },
+        enable: function() { this.node.dialog('enable') }
     };
 
     return {

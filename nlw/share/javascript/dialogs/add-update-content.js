@@ -40,6 +40,7 @@ var addContent = {
         });
 
         self.dialog.find('.submit').click(function() {
+            self.dialog.disable();
             self.addGadget();
             return false;
         });
@@ -60,9 +61,11 @@ var addContent = {
 
             if (!result) {
                 socialtext.dialog.showError(content);
+                self.dialog.close();
             }
             else if (result.error) {
                 socialtext.dialog.showError(result.error);
+                self.dialog.close();
             }
             else {
                 if (self.opts.gadget_id) {
@@ -88,6 +91,7 @@ var addContent = {
                 self.dialog.close();
             },
             error: function (response) {
+                self.dialog.close();
                 socialtext.dialog.showError(response.responseText);
             }
         });
