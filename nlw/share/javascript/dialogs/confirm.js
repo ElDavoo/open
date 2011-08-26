@@ -1,20 +1,20 @@
-var ST = window.ST = window.ST || {};
 (function ($) {
 
-ST.ConfirmLightbox = function () {};
-var proto = ST.ConfirmLightbox.prototype = new ST.WidgetsLightbox;
-
-proto.showLightbox = function (opts) {
-    $.showLightbox({
-        html: this.process('confirm.tt2'),
-        close: '#confirm-lightbox .close',
-        callback: function () {
-            $('#confirm-lightbox .yes').unbind('click').click(function() {
-                opts.onConfirm();
-                return false;
-            });
-        }
+socialtext.dialog.register('confirm', function(opts) {
+    if (!$.isFunction(opts.onConfirm)) throw Error('onConfirm required');
+    var dialog = socialtext.dialog.createDialog({
+        html: socialtext.dialog.process('confirm.tt2', opts),
+        title: opts.title
     });
-};
+    dialog.find('.yes').click(function() {
+        opts.onConfirm();
+        dialog.close();
+        return false;
+    });
+    dialog.find('.no').click(function() {
+        dialog.close();
+        return false;
+    });
+});
 
 })(jQuery);

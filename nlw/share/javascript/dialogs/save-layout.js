@@ -1,7 +1,6 @@
 (function($) {
 
 socialtext.dialog.register('save-layout', function() {
-    var redirect = function () { $.hideLightbox(); document.location = '/'; };
     var $pushWidgets = jQuery('.push-widget:checked');
     var pushGadgetIds = [];
     var pushGadgetTitles = [];
