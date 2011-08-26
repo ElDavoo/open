@@ -2,16 +2,17 @@
 
 var addContent = {
     onSuccess: $.noop,
+    opts: {},
     show: function (opts) {
-        $.extend(this, opts);
+        this.opts = opts;
         this.dialog = socialtext.dialog.createDialog({
             html: socialtext.dialog.process('add-update-content.tt2', {
-                update: this.gadget_id ? true : false,
-                gadget_id: this.gadget_id,
-                src: /^urn:/.test(this.src) ? null : this.src,
-                hasXml: this.hasXml
+                update: this.opts.gadget_id ? true : false,
+                gadget_id: this.opts.gadget_id,
+                src: /^urn:/.test(this.opts.src) ? null : this.opts.src,
+                hasXml: this.opts.hasXml
             }),
-            title: this.gadget_id
+            title: this.opts.gadget_id
                 ? loc('widgets.update-widget')
                 : loc('widgets.add-widget'),
         });
@@ -31,8 +32,9 @@ var addContent = {
 
         self.dialog.find('form').submit(function() {
             if (self.dialog.find('input[value=editor]').is(':checked')) {
-                var url = '/st/widget?account_id=' + self.account_id;
-                if (self.gadget_id) url += '&widget_id=' + self.gadget_id;
+                var url = '/st/widget?account_id=' + self.opts.account_id;
+                if (self.opts.gadget_id)
+                    url += '&widget_id=' + self.opts.gadget_id;
                 window.location = url;
                 return false;
             }
@@ -50,7 +52,7 @@ var addContent = {
     },
 
     success: function () {
-        var message = this.gadget_id
+        var message = this.opts.gadget_id
             ? loc('widgets.updated=widget')
             : loc('widgets.added');
         get_lightbox('simple', function () {
@@ -77,7 +79,7 @@ var addContent = {
                 self.showError(result.error);
             }
             else {
-                if (self.gadget_id) {
+                if (self.opts.gadget_id) {
                     self.onSuccess();
                 }
                 else {
@@ -91,7 +93,8 @@ var addContent = {
     addGadgetToGallery: function (gadget_id) {
         var self = this;
         $.ajax({
-            url: '/data/accounts/' + self.account_id + '/gadgets/' + gadget_id,
+            url: '/data/accounts/' + self.opts.account_id
+                + '/gadgets/' + gadget_id,
             type: 'PUT',
             success: function() {
                 self.onSuccess();
