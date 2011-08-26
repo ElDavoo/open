@@ -57,25 +57,19 @@ socialtext.dialog = (function($) {
         },
         
         showResult: function (msg) {
-            var $dialog = $('<div></div>').html(msg);
-            $('<a class="button" href="#"></a>')
-                .text(loc('do.close'))
-                .click(function() {
-                    $dialog.dialog('destroy');
-                    return false;
-                })
-                .appendTo($dialog.append('<div class="vpad20"></div>'));
-
-            $dialog.dialog({
-                title: 'Success',
+            this.show('simple', {
+                title: loc('Error'),
+                message: message,
                 width: 400,
-                modal: true
             });
         },
 
-        showError: function (msg, callback) {
-            this.ShowResult(msg);
-            if ($.isFunction(callback)) callback();
+        showError: function (message) {
+            this.show('simple', {
+                title: loc('Error'),
+                message: '<div class="error">' + message + '</div>',
+                width: 400,
+            });
         },
 
         process: function (template, vars) {

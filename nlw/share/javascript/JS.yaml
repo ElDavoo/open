@@ -95,6 +95,7 @@
         - remove-content
         - confirm
         - save-layout
+        - simple
 'shindig-container-%.js':
     compress: 1
     parts:

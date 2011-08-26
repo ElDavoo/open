@@ -1,7 +1,6 @@
 (function ($) {
 
 var addContent = {
-    onSuccess: $.noop,
     opts: {},
     show: function (opts) {
         this.opts = opts;
@@ -46,20 +45,6 @@ var addContent = {
         });
     },
 
-    error: function (error, callback) {
-        error = '<pre class="wrap">' + error + '</pre>';
-        return this.showError(error, callback);
-    },
-
-    success: function () {
-        var message = this.opts.gadget_id
-            ? loc('widgets.updated=widget')
-            : loc('widgets.added');
-        get_lightbox('simple', function () {
-            successLightbox(message, function () { location.reload() });
-        });
-    },
-
     addGadget: function (form) {
         var self = this;
         self.dialog.find('iframe').unbind('load').load(function () {
@@ -67,20 +52,22 @@ var addContent = {
             if (!doc) throw new Error("Can't find iframe");
 
             var content = $('body', doc).text();
-            self.dialog.close();
 
             var result;
             try { result = $.secureEvalJSON(content) } catch(e){};
 
+            $(this).unbind('load');
+
             if (!result) {
-                self.showError(content);
+                socialtext.dialog.showError(content);
             }
             else if (result.error) {
-                self.showError(result.error);
+                socialtext.dialog.showError(result.error);
             }
             else {
                 if (self.opts.gadget_id) {
-                    self.onSuccess();
+                    self.opts.onSuccess();
+                    self.dialog.close();
                 }
                 else {
                     self.addGadgetToGallery(result.gadget_id);
@@ -97,10 +84,11 @@ var addContent = {
                 + '/gadgets/' + gadget_id,
             type: 'PUT',
             success: function() {
-                self.onSuccess();
+                self.opts.onSuccess();
+                self.dialog.close();
             },
             error: function (response) {
-                self.showError(response.responseText);
+                socialtext.dialog.showError(response.responseText);
             }
         });
     }

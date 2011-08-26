@@ -32,14 +32,16 @@ socialtext.dialog.register('save-layout', function() {
                 gadgets.container.leaveEditMode();
 
                 if (force) {
-                    socialtext.dialog.showResult(
-                        loc('dashboard.successfully-reset')
-                    );
+                    socialtext.dialog.showResult({
+                        title: loc('Success'),
+                        message: loc('dashboard.successfully-reset')
+                    });
                 }
                 else {
-                    socialtext.dialog.showResult(
-                        loc('dashboard.successfully-saved')
-                    );
+                    socialtext.dialog.showResult({
+                        title: loc('Success'),
+                        message: loc('dashboard.successfully-saved')
+                    });
                 }
             }
         });
