@@ -129,6 +129,7 @@ sub PUT_layout {
 
         for my $gadget_id (keys %gadgets) {
             my $gadget = $self->container->get_gadget_instance($gadget_id);
+            $gadget->free_children;
             $gadget->delete;
         }
 

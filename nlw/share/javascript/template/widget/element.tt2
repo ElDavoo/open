@@ -9,12 +9,10 @@
 
         <div class="buttons">
             [% UNLESS gadget.classes.cannot_remove %]
-                <a class="close" href="#" onclick="gadgets.container.remove('[% gadget.instance_id %]'); return false"></a>
+                <a class="close" [% IF gadget.fixed %]style="display:none"[% END %] href="#" onclick="gadgets.container.remove('[% gadget.instance_id %]'); return false"></a>
             [% END %]
-            <a class="settings" [% UNLESS gadget.has_prefs %]style="display:none"[% END %] href="#" id="gadget-[% gadget.instance_id %]-settings" onclick="gadgets.container.toggleSetup('[% gadget.instance_id %]'); return false"></a>
-            [% IF editing %]
-                <a class="fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.instance_id %]'); return false"></a>
-            [% END %]
+            <a class="settings" [% UNLESS gadget.has_prefs AND !gadget.fixed %]style="display:none"[% END %] href="#" id="gadget-[% gadget.instance_id %]-settings" onclick="gadgets.container.toggleSetup('[% gadget.instance_id %]'); return false"></a>
+            <a class="hidden fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.instance_id %]'); return false"></a>
         </div>
     </div>
 

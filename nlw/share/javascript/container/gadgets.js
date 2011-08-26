@@ -41,6 +41,7 @@ container.setup = function(options) {
     this.updateIframeNames();
     this.registerServices();
     this.fixGadgetTitles();
+    this.showNotice();
 }
 
 container.updateIframeNames = function() {
@@ -674,50 +675,57 @@ container.makeUneditable = function($widget) {
     $widget.find('.gadgetContent').show();
 };
 
+container.showNotice = function(editing) {
+    if (!this.notice_template) return;
+
+    var html = Jemplate.process(this.notice_template, {
+        loc: loc,
+        container: this,
+        socialtext: Socialtext,
+        editing: editing
+    });
+    $('.notice').html(html).show();
+}
+
 container.enterEditMode = function() {
     var self = this;
     self._in_edit_mode = true;
 
-    if (!self.admin_url) throw new Error("No admin url is configured");
+    self.showNotice(true);
 
-    var html = Jemplate.process(self.notice_template, {
-        loc: loc,
-        container: self,
-        socialtext: Socialtext
-    });
+    // Make widgets editable
+    $('.widgetHeader .settings, .widgetHeader .close').show();
+    $('.widgetColumn').children().removeClass('fixed').addClass('draggable');
 
-    self.loadLayout(self.admin_url, function() {
-        $('.notice').html(html).show();
-        $('#st-edit-layout').hide();
-        $('#st-save-layout, #st-cancel-layout, #st-revert-layout').show();
-    });
+    // Show edit mode buttons
+    $('#globalNav .viewMode').hide();
+    $('#globalNav .editMode').show();
     
     //notice loc('widgets.in-layout-mode-click-save-or-cancel')
 };
 
-container.saveAdminLayout = function(options) {
-    if (!this.admin_url) throw new Error("No admin url is configured");
-    this.saveLayout(this.admin_url, options);
-}
-
-container.loadDefaults = function(callback) {
-    if (!this.defaults_url) throw new Error("No defaults url is configured");
-    this.loadLayout(this.defaults_url, callback, true);
-}
-
 container.leaveEditMode = function() {
     var self = this;
 
-    /* For profile pages:
-    $('.widget.regular').each(function(_, widget) {
-        self.makeUneditable($(widget));
-    });
-    */
+    self.showNotice(false);
+
+    // Make widgets un-editable
+    $('.widgetHeader .settings, .widgetHeader .close').hide();
+    $('.widgetColumn').children().removeClass('draggable').addClass('fixed');
     
-    $('#st-save-layout, #st-cancel-layout, #st-revert-layout, .notice').hide();
-    $('#st-edit-layout').show();
+    // Show view mode buttons
+    $('#globalNav .editMode').hide();
+    $('#globalNav .viewMode').show();
     self._in_edit_mode = false;
 };
+
+container.saveAdminLayout = function(options) {
+    this.saveLayout(this.base_url, options);
+}
+
+container.loadDefaults = function(callback) {
+    this.loadLayout(this.base_url + '/defaults', callback, true);
+}
 
 container.loadLayout = function(url, callback, defaults) {
     var self = this;
@@ -759,20 +767,6 @@ container.saveLayout = function(url, options) {
         success: options.success,
         error: options.error
     });
-};
-
-container.showNotice = function(notice, redirect) {
-    Cookie.set(
-        'notice', notice,
-        new Date(new Date().getTime() + 60 * 1000), //expires in 1 minute
-        '/' // path is global
-    );
-    location = redirect || '/';
-};
-
-container.showErrorNotice = function(notice, redirect) {
-    notice = '<span class="error">' + notice + '</span>';
-    this.showNotice(notice, redirect);
 };
 
 return container;

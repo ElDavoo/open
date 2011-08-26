@@ -4,18 +4,11 @@
 [% loc('dashboard.switch-from=account:', name) %]
 <select id="st-change-account">
     [% FOR a = socialtext.accounts %]
-    <option [% IF a.account_id == id %]selected="true"[% END %] value="[% a.account_id %]">[% a.name %]</option>
+    <option [% IF a.account_id == id %]selected="true"[% END %] value="/st/account/[% a.account_id %]/dashboard">[% a.name %]</option>
     [% END %]
 </select>
 <script>
 $('#st-change-account').change(function() {
-    var id = $(this).val();
-    $.extend(gadgets.container, {
-        account_name: $(this).find('*[value=' + id + ']').html(),
-        account_id: id,
-        admin_url: '/data/accounts/' + id + '/dashboard'
-    });
-    gadgets.container.enterEditMode();
-    return false;
+    location = $(this).val();
 });
 </script>

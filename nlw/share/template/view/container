@@ -23,10 +23,11 @@
 <div class="clear"></div>
 
 <script>
+    [% SET gadgets = container.gadgets; container.gadgets = [] %]
     gadgets.container.setup(
         [% container.json.replace('</script>', '</scr" + "ipt>') %]
     );
-    [% FOR gadget = container.gadgets %]
+    [% FOR gadget = gadgets %]
         [% SET json = gadget.json %]
         gadgets.container.renderGadget(
             [% json.replace('</script>', '</scr" + "ipt>') %]

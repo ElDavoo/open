@@ -25,20 +25,18 @@ socialtext.dialog.register('save-layout', function() {
             purge: force,
             success: function() {
                 dialog.close();
-                gadgets.container.loadLayout('/st/dashboard', function() {
-                    gadgets.container.leaveEditMode();
+                gadgets.container.leaveEditMode();
 
-                    if (force) {
-                        socialtext.dialog.showResult(
-                            loc('dashboard.successfully-reset')
-                        );
-                    }
-                    else {
-                        socialtext.dialog.showResult(
-                            loc('dashboard.successfully-saved')
-                        );
-                    }
-                })
+                if (force) {
+                    socialtext.dialog.showResult(
+                        loc('dashboard.successfully-reset')
+                    );
+                }
+                else {
+                    socialtext.dialog.showResult(
+                        loc('dashboard.successfully-saved')
+                    );
+                }
             }
         });
 
