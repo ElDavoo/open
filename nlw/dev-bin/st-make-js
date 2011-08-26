@@ -12,7 +12,7 @@ echo Updating widgets
 st-widgets update-all --verbose --force >> $TMP 2>&1
 
 echo Updating widget gallery
-st-widgets update-gallery --verbose >> $TMP 2>&1
+st-widgets update-gallery --verbose --force >> $TMP 2>&1
 
 echo Starting ceq
 nlwctl -c start
