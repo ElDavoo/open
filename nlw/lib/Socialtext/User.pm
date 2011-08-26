@@ -352,6 +352,8 @@ sub create {
     $user->_update_profile_with_extra_attrs();
     $user->_index();
 
+    $user->_call_hook('nlw.user.create');
+
     return $user;
 }
 

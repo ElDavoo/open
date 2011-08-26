@@ -9,7 +9,6 @@
 | create-user    | %%u3%% | password                             |
 | set            | u4     | u4-%%start_time%%@ken.socialtext.net |
 | create-user    | %%u4%% | password                             |
-| set | accnt_id |
 
 | clear-webhooks |
 | clear-webhook  |
@@ -82,3 +81,19 @@
 | user-primary-account | %%u3%%                                                          | %%acct2%%           |    |
 | comment              | primary account change does not generate a leaveaccount webhook |                     |    |
 | job-count            | WebHook                                                         | 0                   |    |
+
+| new-webhook-testcase |                  |                                      |    |
+| add-webhook          | user.joinaccount | http://tou.ch                        | {} |
+| set                  | u5               | u5-%%start_time%%@ken.socialtext.net |    |
+| create-user          | %%u5%%           | password                             |    |
+| job-count            | WebHook          | 1                                    |    |
+| st-process-jobs      |                  |                                      |    |
+| job-count            | WebHook          | 0                                    |    |
+
+| new-webhook-testcase |             |                                      |    |
+| add-webhook          | user.create | http://tou.ch                        | {} |
+| set                  | u6          | u6-%%start_time%%@ken.socialtext.net |    |
+| create-user          | %%u6%%      | password                             |    |
+| job-count            | WebHook     | 1                                    |    |
+| st-process-jobs      |             |                                      |    |
+| job-count            | WebHook     | 0                                    |    |

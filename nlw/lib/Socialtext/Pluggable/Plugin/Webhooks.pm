@@ -23,6 +23,30 @@ sub register {
     $self->add_hook("nlw.page.unwatch"          => \&page_unwatch);
     $self->add_hook("nlw.add_user_account_role" => \&user_account_join);
     $self->add_hook("nlw.remove_user_account_role" => \&user_account_leave);
+    $self->add_hook("nlw.user.create"       => \&create_user);
+}
+
+sub create_user {
+    my $self = shift;
+    my $user = shift;
+
+    my $user_hash = $user->to_hash();
+    delete $user_hash->{password};
+    Socialtext::WebHook->Add_webhooks(
+        class => 'user.create',
+        user => $user,
+        payload_thunk => sub { 
+            return {
+                class => 'user.create',
+                actor => {
+                    id             => $self->user->user_id,
+                    best_full_name => $self->user->best_full_name,
+                },
+                at     => sql_timestamptz_now(),
+                object => $user_hash,
+            };
+        },
+    );
 }
 
 sub user_account_leave {
