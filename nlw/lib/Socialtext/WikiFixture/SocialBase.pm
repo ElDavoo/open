@@ -3535,15 +3535,13 @@ sub restart_everything {
 sub jsmake {
     my ($self, $target, $dir) = @_;
     require Socialtext::JavaScript::Builder;
-    my $builder Socialtext::JavaScript::Builder->new;
+    my $builder = Socialtext::JavaScript::Builder->new;
+    if ($target =~ /^clean(:?all)?$/) {
+        $builder->clean();
+    }
+
     if ($target eq 'all') {
-        $builder->build;
-    }
-    elsif ($target eq 'cleanall') {
-        $builder->clean;
-    }
-    elsif ($target eq 'clean') {
-        $builder->clean($target);
+        $builder->build();
     }
     else {
         $builder->build($target);
