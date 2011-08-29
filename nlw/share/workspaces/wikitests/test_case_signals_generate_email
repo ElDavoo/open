@@ -1,3 +1,4 @@
+
 | *Comment* | Test Case: Signals Generate Email |  |
 
 * Fixture: SocialWidgets
@@ -14,54 +15,31 @@
 | st-admin | add-member --workspace %%sge_wiki%% --email %%username%% | now has the role |  |
 
 | *Comment* | Test Case: Signals Generate Email send 1st signal, with mention |  |
-| st-logoutin | %%username%% | %%password%% |
 | open_ok | /st/signals |  |
-| wait_for_text_present_ok | Signal | 30000 |
-| st-name-widget | 1 | signals |
-| st_send_signal_via_activities_widget | signals | `This is the first mention {user: %%sge_user%%}` |
+| st_send_signal_in_activities_widget | `This is the first mention {user: %%sge_user%%}` |  |
 
 | *Comment* | Test Case: Signals Generate Email send 2nd signal, a private message |  |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | Signal | 30000 |
-| wait_for_element_present_ok | //div[@class='private'] | 10000 |
-| click_ok | //div[@class='private'] |  |
-| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 10000 |
-| type-lookahead-ok | //input[@class='lookahead-prompt'] | %%sge_user_prefix%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%sge_user_suffix%%')] | 10000 |
-| st_pause_click | 1000 | //div[@class='lookaheadItem']/a[contains(text(),'%%sge_user_suffix%%')] |
-| wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
-| text_like | //div[@class='message private'] | You are composing a private message to %%sge_wiki%% |
-| st-type_signal | This is just a private message |  |
-| click_ok | //a[@class='btn post'] |  |
-| wait-for-element-not-present-ok | //div[@class='message private'] | 10000 |
-| wait_for_text_present_ok | This is just a private message | 30000 |
+| st-find-user | %%sge_wiki_spaces%% |  |
+| st_send_signal_in_activities_widget | This is just a private message | PRIVATE |
 
 | *Comment* | Test Case: Signals Generate Email send 3rd signal, a private message with a mention |  |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | Signal | 30000 |
-| wait_for_element_present_ok | //div[@class='private'] | 10000 |
-| click_ok | //div[@class='private'] |  |
-| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 10000 |
-| type-lookahead-ok | //input[@class='lookahead-prompt'] | %%sge_user_prefix%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%sge_user_suffix%%')] | 10000 |
-| st_pause_click | 1000 | //div[@class='lookaheadItem']/a[contains(text(),'%%sge_user_suffix%%')] |
-| wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
-| text_like | //div[@class='message private'] | You are composing a private message to %%sge_wiki%% |
-| st-type_signal | `This is a PM with a mention of {user: %%sge_user%%}` |  |
-| click_ok | //a[@class='btn post'] |  |
-| wait-for-element-not-present-ok | //div[@class='message private'] | 10000 |
-| wait_for_text_present_ok | This is a PM with a mention of | 30000 |
+| refresh |  |  |
+| st_send_signal_in_activities_widget | `This is a PM with a mention of {user: %%sge_user%%}` | PRIVATE |
 
 | *Comment* | Test Case: Signals Generate Email wait 90 seconds for email delivery |  |
 | pause | 90000 |  |
 
 | *Comment* | Test Case: Signals Generate Email verify the contents of the received emails |  |
+
+| *Comment* | Test Case: Signals Generate Email verify first mention |  |
 | open_ok | /%%sge_wiki%%/signal_mention_by_%%short_username%% |  |
 | wait_for_text_present_ok | Signal mention by %%short_username%% | 30000 |
 | text_like | You were mentioned by %%short_username%%: |  |
 | text_like | This is the first mention %%sge_wiki_spaces%% |  |
 | text_like | This message was sent by Socialtext Signals. You can reply to this message here. |  |
 | text_like | To stop receiving Socialtext Signals emails or to change your preferences, please visit your settings. |  |
+
+| *Comment* | Test Case: Signals Generate Email verify two emails: "just a private" and "private mention" |  |
 | open_ok | /%%sge_wiki%%/%%short_username%%_sent_you_a_private_message |  |
 | wait_for_text_present_ok | %%short_username%% sent you a private message | 30000 |
 | text_like | You have received a private message from %%short_username%%: |  |
@@ -73,7 +51,7 @@
 | text_like | qr/You have received.+You have received/ |  |
 | text_like | qr/sent from Socialtext.+sent from Socialtext/ |  |
 
-| *Comment* | Test Case: Signals Generate Email verify that only two emails were received |  |
+| *Comment* | Test Case: Signals Generate Email verify that only two private emails were received |  |
 | open_ok | /%%sge_wiki%%/?action=recent_changes |  |
 | wait_for_text_present_ok | Originally created by | 30000 |
 | text_like | st-listview-form | qr/%%sge_wiki%%.+%%sge_wiki%%/ |
@@ -96,6 +74,7 @@
 | wait_for_text_present_ok | Private Messages | 30000 |
 
 | *Comment* | Test Case: Signals Generate Email TEARDOWN |  |
+| st-process-jobs |  |  |
 | deactivate-user | %%sge_user%% |  |
 | delete-workspace | %%sge_wiki%% |  |
 

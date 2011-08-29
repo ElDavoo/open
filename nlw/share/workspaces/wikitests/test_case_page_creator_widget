@@ -169,7 +169,7 @@
 | selectFrame | //iframe[@class='widgetWindow'] |  |
 | wait_for_element_visible_ok | link-create-page |  |
 | click_ok | link-create-page |  |
-| verifyAlert | Required field missing: title |  |
+| verifyAlert | Missing required field: title |  |
 
 | *Comment* | Test Case: Page Creator Widget fill in the form fields |  |
 | is_selected_ok | var-type | label=Story |
