@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-07-05 14:39-0700\n"
+"PO-Revision-Date: 2011-08-12 23:03+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -2173,7 +2173,7 @@ msgstr "注册号被停用。"
 
 #: lib/Socialtext/Handler/Base.pm:122 lib/Socialtext/Handler/ControlPanel.pm:52 lib/Socialtext/Rest.pm:62
 msgid "error.relogin"
-msgstr "登录会话已过期，请重新认证。"
+msgstr "登录阶段已过期，请重新认证。"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:230
 msgid "error.remove-account-widget"
@@ -3106,6 +3106,9 @@ msgstr "电子表格"
 msgid "page.type-wiki"
 msgstr "页面"
 
+msgid "page.type-xhtml"
+msgstr "页面（使用新版编辑器）"
+
 #. ($page->name, $workspace->title()
 #: lib/Socialtext/CLI.pm:2715
 msgid "page.unlocked=name,wiki"
@@ -3452,6 +3455,9 @@ msgstr "讯息 %1 是回复 %2，但被回复的讯息丢失。更新此讯息�
 #: lib/Socialtext/Lite/People.pm:104
 msgid "signals.private-message-sent"
 msgstr "已发送的私人讯息"
+
+msgid "signals.private-message-sent-to-you=sender:"
+msgstr "%1 传了一则私人讯息给您："
 
 #. ($1)
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:653
@@ -4017,3 +4023,6 @@ msgstr "欢迎"
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:62
 msgid "wiki.welcome-confirm=name"
 msgstr "欢迎来到 %1 工作区 - 请确认注册邮箱"
+
+msgid "xhtml.creating"
+msgstr "正在启动新版编辑器创建页面..."

@@ -156,6 +156,7 @@ use Guard ();
 use HTML::FillInForm ();
 use HTML::FillInForm::ForceUTF8 ();
 use HTML::Form ();
+use HTML::FormatText ();
 use HTML::Lint ();
 use HTML::Parser ();
 use HTML::PrettyPrinter ();

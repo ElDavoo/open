@@ -197,6 +197,6 @@ wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
 | deactivate-user | %%x_username%% |  |
 | deactivate-user | %%z_username%% |  |
 | st-admin | remove-member --e %%username%% --account %%sspacct%% | no longer |
-| delete-account | %sspacct%% |  |
+| delete-account | %%sspacct%% |  |
 
 | *Comment* | Test Case: Signals Search Pagination COMPLETED |

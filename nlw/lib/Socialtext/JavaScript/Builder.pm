@@ -11,12 +11,14 @@ use YAML;
 use File::chdir;
 use Jemplate;
 use FindBin;
+use Encode qw(encode_utf8 decode_utf8);
 use Compress::Zlib;
 use File::Temp qw(tempdir);
 use File::Path qw(mkpath);
 use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
 use File::Basename qw(basename dirname);
+use File::Which qw(which);
 use Clone qw(clone);
 use Carp qw(confess);
 use Cwd;
@@ -125,6 +127,19 @@ method clean ($target) {
     unlink map { $self->target_path($_) } @toclean;
 }
 
+my $coffee_compiler = which('coffee');
+sub BuildCoffee {
+    my $class = shift;
+    find({
+        wanted => sub {
+            my $coffee = $File::Find::name;
+            return unless -f $coffee and $coffee =~ /\.coffee$/;
+            (my $js = $coffee) =~ s/\.coffee$/.js/;
+            $class->_js_from_coffee($js);
+        },
+    }, @_);
+}
+
 method is_built ($target) {
     return -f $self->target_path($target);
 }
@@ -155,6 +170,8 @@ method build_target ($target) {
     }
 
     my $parts = $info->{parts} || die "$target has no parts!";
+
+    $class->BuildCoffee($CWD);
 
     # Iterate over parts, building as we go
     my @last_modifieds;
@@ -223,8 +240,23 @@ method _part_last_modified ($part) {
     return map { $self->modified($_) } @files;
 }
 
+sub _js_from_coffee {
+    my ($class, $js) = @_;
+    my $coffee = $js;
+    $coffee =~ s/\.js$/.coffee/ or return;
+    -f $coffee or return;
+    return if -f $js and modified($js) > modified($coffee);
+    if ($coffee_compiler) {
+        warn "Building $js from $coffee...\n" if $VERBOSE;
+        system $coffee_compiler => -c => $coffee;
+        return;
+    }
+    warn "No coffee compiler found in PATH, skipping...\n" if $VERBOSE;
+}
+
 method _part_to_text ($part) {
     local $CWD = $self->part_directory($part);
+
     if ($part->{file}) {
         return $self->_file_to_text($part);
     }
@@ -272,10 +304,14 @@ method _shindig_feature_to_text ($part) {
 method _file_to_text ($part) {
     my $text = '';
     for my $file (glob($part->{file})) {
+        $class->_js_from_coffee($file);
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
-        $text .= slurp($file);
+        $text .= decode_utf8(slurp($file));
     }
-    return $text;
+
+    # Ensure text is UTF-8 compatible and without BOM marks
+    $text =~ s/\x{FEFF}//g;
+    return encode_utf8($text);
 }
 
 method _template_to_text ($part) {
@@ -324,7 +360,7 @@ method _jemplate_to_text ($part) {
                 # Keep the directory name in the template name when
                 # include_paths is set
                 (my $name = $jemplate);
-                $name =~ s{^$part->{jemplate}/}{} unless $part->{include_paths};
+                $name =~ s[^$part->{jemplate}/][] unless $part->{include_paths};
 
                 $text .= $part->{nocomment} ? '' : "// BEGIN $jemplate\n";
                 $text .= Jemplate->compile_template_content(
