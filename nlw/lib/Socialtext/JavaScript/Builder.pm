@@ -116,7 +116,10 @@ method clean ($target) {
     my @targets = $target ? $target : keys %{$self->targets};
     for my $file (@targets) {
         push @toclean, $file;
-        push @toclean, "$file.gz" if $self->targets->{$file}{compress};
+        if ($self->targets->{$file}{compress}) {
+            (my $compressed = $file) =~ s{\.js$}{.jgz};
+            push @toclean, $compressed;
+        }
     }
     warn "Unlinking $_\n" for @toclean;
     unlink map { $self->target_path($_) } @toclean;
@@ -127,6 +130,7 @@ method is_built ($target) {
 }
 
 method is_target ($target) {
+    $target =~ s{\.jgz}{.js};
     return exists $self->targets->{$target};
 }
 
@@ -136,7 +140,7 @@ method build ($target) {
 }
 
 method build_target ($target) {
-    $target =~ s/\.gz$//; # built anyway
+    $target =~ s{\.jgz}{.js};
     local $CWD = $self->code_base;
 
     my $info = $self->targets->{$target};
@@ -450,7 +454,8 @@ method write_target ($target, $text, $compress) {
     my $gzipped = Compress::Zlib::memGzip($text);
 
     warn "Writing to $path.gz...\n" if $self->verbose;
-    write_file("$path.gz", $gzipped);
+    (my $gz_path = $path) =~ s{\.js}{.jgz};
+    write_file($gz_path, $gzipped);
 }
 
 method modified ($file) { return (stat $file)[9] || 0 }

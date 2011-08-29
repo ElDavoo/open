@@ -39,8 +39,8 @@
     <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
 
     [% javascript = javascript || [] %] 
-    [% javascript.unshift("l10n-${loc_lang}.js.gz") %]
-    [% javascript.unshift("socialtext-starfish.js.gz") %]
+    [% javascript.unshift("l10n-${loc_lang}.jgz") %]
+    [% javascript.unshift("socialtext-starfish.jgz") %]
     [% FOR js IN javascript %]
       <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/[% js %]"></script>
     [% END %]
