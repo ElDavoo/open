@@ -15,6 +15,12 @@ var gallery = {
             fixed: false,
             col: 2,
             row: 0
+        },
+
+        account_dashboard: {
+            fixed: false,
+            col: 2,
+            row: 0
         }
     },
 
