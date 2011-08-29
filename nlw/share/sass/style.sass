@@ -101,6 +101,9 @@ input
 .error
   color: #be3b3f
 
+.opaque
+  @include opacity(50)
+
 /**
  * Text tabs (top content widgets, etc...)
 
@@ -298,6 +301,10 @@ ul
 
 .inlineWidget
   @import widgets.sass
+
+.dialogDisabled
+  background: transparent url(#{$static}/images/ajax-loader.gif) no-repeat center
+  position: absolute
 
 @import control.sass
 @import jquery-ui.sass

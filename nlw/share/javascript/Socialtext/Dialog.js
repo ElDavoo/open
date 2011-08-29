@@ -15,8 +15,22 @@ socialtext.dialog = (function($) {
     Dialog.prototype = {
         close: function() { this.node.dialog('destroy') },
         find: function(selector) { return this.node.find(selector) },
-        disable: function() { this.node.dialog('disable') },
-        enable: function() { this.node.dialog('enable') }
+        disable: function() {
+            // image is 16x16
+            this.img = $('<div></div>')
+                .addClass('dialogDisabled')
+                .height(this.node.height())
+                .width(this.node.width())
+                .css({ top: '40px', left: '10px' })
+                .insertAfter(this.node);
+            this.node.addClass('opaque');
+        },
+        enable: function() {
+            if (this.img) {
+                this.img.remove();
+                this.node.removeClass('opaque');
+            }
+        }
     };
 
     return {
