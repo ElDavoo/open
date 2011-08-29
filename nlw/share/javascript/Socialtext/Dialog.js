@@ -72,19 +72,21 @@ socialtext.dialog = (function($) {
             dialogs[name] = callback;
         },
         
-        showResult: function (msg) {
+        showResult: function (message, onClose) {
             this.show('simple', {
                 title: loc('Error'),
                 message: message,
                 width: 400,
+                onClose: onClose
             });
         },
 
-        showError: function (message) {
+        showError: function (message, onClose) {
             this.show('simple', {
                 title: loc('Error'),
                 message: '<div class="error">' + message + '</div>',
                 width: 400,
+                onClose: onClose
             });
         },
 
