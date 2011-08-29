@@ -9,74 +9,92 @@
 | *Comment* | Test Case: External Gadgets. Microsoft Outlook |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Microsoft Outlook'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Microsoft Outlook'] |  |
-| text_like | contentContainer | Microsoft Outlook |
+| click_ok | //a[@id='gallery-widget-Microsoft Outlook'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Microsoft Outlook'] | 30000 |
+| wait_for_text_present_ok | Microsoft Outlook | 30000 |
+| text_like | //div[@class='contentWrapper'] | Microsoft Outlook |
 
 | *Comment* | Test Case: External Gadgets. Youtube Video Player |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Youtube Video Player'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Youtube Video Player'] |  |
-| text_like | contentContainer | Youtube Video Player |
+| click_ok | //a[@id='gallery-widget-Youtube Video Player'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Youtube Video Player'] | 30000 |
+| wait_for_text_present_ok | Youtube Video Player | 30000 |
+| text_like | //div[@class='contentWrapper'] | Youtube Video Player |
 
 | *Comment* | Test Case: External Gadgets. SlideShare Feeds |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-SlideShare Feeds'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-SlideShare Feeds'] |  |
-| text_like | contentContainer | SlideShare Feeds |
+| click_ok | //a[@id='gallery-widget-SlideShare Feeds'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-SlideShare Feeds'] | 30000 |
+| wait_for_text_present_ok | SlideShare Feeds | 30000 |
+| text_like | //div[@class='contentWrapper'] | SlideShare Feeds |
 
 | *Comment* | Test Case: External Gadgets. Wikipedia |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Wikipedia'] |  |
-| text_like | contentContainer | Wikipedia |
+| click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
+| wait_for_text_present_ok | Wikipedia | 30000 |
+| text_like | //div[@class='contentWrapper'] | Wikipedia |
 
 | *Comment* | Test Case: External Gadgets. Flickr Photos - English |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Flickr Photos - English'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Flickr Photos - English'] |  |
-| text_like | contentContainer | Flickr Photos - English |
+| click_ok | //a[@id='gallery-widget-Flickr Photos - English'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Flickr Photos - English'] | 30000 |
+| wait_for_text_present_ok | Flickr Photos - English | 30000 |
+| text_like | //div[@class='contentWrapper'] | Flickr Photos - English |
 
 | *Comment* | Test Case: External Gadgets. LabPixies Calculator |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-LabPixies Calculator'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-LabPixies Calculator'] |  |
-| text_like | contentContainer | LabPixies Calculator |
+| click_ok | //a[@id='gallery-widget-LabPixies Calculator'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-LabPixies Calculator'] | 30000 |
+| wait_for_text_present_ok | LabPixies Calculator | 30000 |
+| text_like | //div[@class='contentWrapper'] | LabPixies Calculator |
 
 | *Comment* | Test Case: External Gadgets. Clock & Date |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[contains(@id,'Date')] | 30000 |
-| click_and_wait | //a[contains(@id,'Date')] |  |
-| text_like | contentContainer | Clock & Date |
+| click_ok | //a[contains(@id,'Date')] |  |
+| wait_for_element_not_visible_ok | //a[contains(@id,'Date')] | 30000 |
+| wait_for_text_present_ok | Clock & Date | 30000 |
+| text_like | //div[@class='contentWrapper'] | Clock & Date |
 
 | *Comment* | Test Case: External Gadgets. ToDo |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-ToDo'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-ToDo'] |  |
-| text_like | contentContainer | ToDo |
+| click_ok | //a[@id='gallery-widget-ToDo'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-ToDo'] | 30000 |
+| wait_for_text_present_ok | ToDo | 30000 |
+| text_like | //div[@class='contentWrapper'] | ToDo |
 
 | *Comment* | Test Case: External Gadgets. Google Calendar. IGNORE ERRORS IN IE. |  |
 | st_empty_container |  |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| click_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Google Calendar'] | 30000 |
-| click_and_wait | //a[@id='gallery-widget-Google Calendar'] |  |
-| text_like | contentContainer | Google Calendar |
+| click_ok | //a[@id='gallery-widget-Google Calendar'] |  |
+| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Google Calendar'] | 30000 |
+| wait_for_text_present_ok | Google Calendar | 30000 |
+| text_like | //div[@class='contentWrapper'] | Google Calendar |
 | st_empty_container |  |  |
 
 | *Comment* | Test Case: External Gadgets COMPLETED |  |
