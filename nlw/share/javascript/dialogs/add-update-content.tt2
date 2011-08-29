@@ -34,7 +34,8 @@
             <div class="clear vpad5"></div>
         [% END %]
 
-        <div class="buttons prefix_1 right vpad20">
+        <div class="buttons right vpad20">
+            <span class="error"></span>
             <a href="#" id="st-add-widget" class="submit button">
               [% gadget_id ? loc('widgets.about-update') : loc('widgets.add') %]
             </a>

@@ -46,6 +46,11 @@ var addContent = {
         });
     },
 
+    showError: function(error) {
+        this.dialog.enable();
+        this.dialog.find('.error').html(error);
+    },
+
     addGadget: function (form) {
         var self = this;
         self.dialog.find('iframe').unbind('load').load(function () {
@@ -60,12 +65,10 @@ var addContent = {
             $(this).unbind('load');
 
             if (!result) {
-                socialtext.dialog.showError(content);
-                self.dialog.close();
+                self.showError(content);
             }
             else if (result.error) {
-                socialtext.dialog.showError(result.error);
-                self.dialog.close();
+                self.showError(result.error);
             }
             else {
                 if (self.opts.gadget_id) {
@@ -91,8 +94,7 @@ var addContent = {
                 self.dialog.close();
             },
             error: function (response) {
-                self.dialog.close();
-                socialtext.dialog.showError(response.responseText);
+                self.showError(response.responseText);
             }
         });
     }
