@@ -128,18 +128,8 @@ method clean ($target) {
     unlink map { $->target_path($_) } @toclean;
 }
 
-my $coffee_compiler = which('coffee');
-sub BuildCoffee {
-    my $class = shift;
-    find({
-        wanted => sub {
-            my $coffee = $File::Find::name;
-            return unless -f $coffee and $coffee =~ /\.coffee$/;
-            (my $js = $coffee) =~ s/\.coffee$/.js/;
-            $class->_js_from_coffee($js);
-        },
-    }, @_);
-}
+has 'coffee_compiler' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
+sub _build_coffee_compiler { which('coffee') }
 
 method is_built ($target) {
     return -f $->target_path($target);
@@ -171,8 +161,6 @@ method build_target ($target) {
     }
 
     my $parts = $info->{parts} || die "$target has no parts!";
-
-    $->BuildCoffee($CWD);
 
     # Iterate over parts, building as we go
     my @last_modifieds;
@@ -222,6 +210,7 @@ method _part_last_modified ($part) {
     push @files, $part->{template} if $part->{template};
     push @files, $part->{config} if $part->{config};
     push @files, $part->{json} if $part->{json};
+    push @files, $part->{coffee} if $part->{coffee};
     push @files, glob("*/*") if $part->{shindig_feature};
 
     if ($part->{jemplate} and -f $part->{jemplate}) {
@@ -241,22 +230,12 @@ method _part_last_modified ($part) {
     return map { $->modified($_) } @files;
 }
 
-method _js_from_coffee ($js) {
-    my $coffee = $js;
-    $coffee =~ s/\.js$/.coffee/ or return;
-    -f $coffee or return;
-    return if -f $js and modified($js) > modified($coffee);
-    if ($coffee_compiler) {
-        warn "Building $js from $coffee...\n" if $->verbose;
-        system $coffee_compiler => -c => $coffee;
-        return;
-    }
-    warn "No coffee compiler found in PATH, skipping...\n" if $->verbose;
-}
-
 method _part_to_text ($part) {
     local $CWD = $->part_directory($part);
 
+    if ($part->{coffee}) {
+        return $self->_coffee_to_text($part);
+    }
     if ($part->{file}) {
         return $->_file_to_text($part);
     }
@@ -301,10 +280,19 @@ method _shindig_feature_to_text ($part) {
         "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
 }
 
+method _coffee_to_text ($part) {
+    if ($self->coffee_compiler) {
+        system $self->coffee_compiler => -c => $part->{coffee};
+        (my $output = $part->{coffee}) =~ s{\.coffee$}{.js};
+        return $self->_file_to_text({ file => $output });
+    }
+    warn "No coffee compiler found in PATH, skipping...\n" if $self->verbose;
+    return '';
+}
+
 method _file_to_text ($part) {
     my $text = '';
     for my $file (glob($part->{file})) {
-        $->_js_from_coffee($file);
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
         $text .= decode_utf8(slurp($file));
     }
