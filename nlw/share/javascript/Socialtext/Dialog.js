@@ -72,12 +72,12 @@ socialtext.dialog = (function($) {
             dialogs[name] = callback;
         },
         
-        showResult: function (message, onClose) {
+        showResult: function (opts) {
             this.show('simple', {
-                title: loc('Error'),
-                message: message,
+                title: opts.title || loc('Result'),
+                message: opts.message,
                 width: 400,
-                onClose: onClose
+                onClose: opts.onClose
             });
         },
 
