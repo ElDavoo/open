@@ -42,12 +42,29 @@ sub register {
 # "Workspace" table and, as such, are handled differently.
 sub pref_names {
     return qw(
-        incoming_email_placement
+        incoming_email_placement homepage_weblog
         email_notify_is_enabled sort_weblogs_by_create
-        allows_page_locking guest_has_email_in
+        allows_page_locking guest_has_email_in title
     );
 #   No longer supported: enable_unplugged
-#        title homepage_is_dashboard allows_page_locking
+#       homepage_is_dashboard allows_page_locking
+}
+
+
+sub homepage_weblog_data {
+    my $self = shift;
+
+    return {
+        title => loc('Workspace Link'),
+        additional => loc('When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a weblog instead, enter that name here.'),
+    };
+}
+
+sub title_data {
+    return {
+        title => loc('Workspace Title'),
+        additional => loc('Example: Acme Widgets Product Development'),
+    };
 }
 
 sub incoming_email_placement_data {

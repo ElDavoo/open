@@ -15,6 +15,10 @@
     [% END %]
   [% END %]
   </div>
+[% ELSIF ! option.options %]
+  <div class="[% IF option.depends_on %]push_5 [% END %]grid_7">
+    <input type="text" name="[% pref %]" value="[% option.default_setting %]" />
+  </div>
 [% ELSE %]
   <div class="[% IF option.depends_on %]push_5 [% END %]grid_7">
     [% IF option.options.size < 4 %]

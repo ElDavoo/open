@@ -1,5 +1,24 @@
 <h3>[% loc('Appearance') %]</h3>
 
+[% INCLUDE element/settings/setting_select
+   pref='workspace.setting.title'
+   option=prefs.workspaces_ui.title
+%]
+
+<div class="grid_5 input-label">
+  [% prefs.workspaces_ui.homepage_weblog.title %]:
+</div>
+<div class="grid_7">
+  <input type="text" name="workspace.settings.homepage_weblog"
+    value="[% prefs.workspaces_ui.homepage_weblog.default_setting %]" />
+</div>
+<div class="clear"></div>
+
+<div class="push_5 grid_7">
+  [% prefs.workspaces_ui.homepage_weblog.additional %]
+</div>
+<div class="clear"></div>
+
 <hr />
 
 <h3>[% loc('Features') %]</h3>
