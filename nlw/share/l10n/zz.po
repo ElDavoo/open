@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-29 16:48-0700\n"
+"PO-Revision-Date: 2011-08-30 12:37-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -6631,7 +6631,7 @@ msgstr "Zz zzzz zzzzz '%1' zzzzzz"
 #. (loc("page.type-"+type)
 #: share/skin/s3/javascript/lightbox/create_content.js:73
 msgid "error.no-page=type,tag"
-msgstr "Zz %1 zzzzz zzzzzz '%2' zzzzz zz zzzzz"
+msgstr "Zzzzz zzz zz zzzzz zzzzzz 'zzzzzzzz' zzz zzz zzzzzzzz zzzz zzzz."
 
 #: lib/Socialtext/User/Factory.pm:465
 msgid "error.no-password-for-new-user"

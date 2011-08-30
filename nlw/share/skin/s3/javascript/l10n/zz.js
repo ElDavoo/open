@@ -954,7 +954,7 @@
 "error.no-page-doc":"Zzz zzzz zzzzz zz zzzzz zzz zzzz zz zzzzz zz zzzzzz z Zzzz zzzzzzzz.",
 "error.no-page-pdf":"Zzz zzzz zzzzz zz zzzzz zzz zzzz zz zzzzz zz zzzzzz z ZZZ.",
 "error.no-page=template":"Zz zzzz zzzzz '[_1]' zzzzzz",
-"error.no-page=type,tag":"Zz [_1] zzzzz zzzzzz '[_2]' zzzzz zz zzzzz",
+"error.no-page=type,tag":"Zzzzz zzz zz zzzzz zzzzzz 'zzzzzzzz' zzz zzz zzzzzzzz zzzz zzzz.",
 "error.no-people-found":"Zz zzzzzz zzzzzzzz zzzz zzzzzzzz.",
 "error.no-recipient":"Zzzzz: Zz zzzz zzzzz, zzz zzzz zzzzzzz z zzzzzzzzz.",
 "error.no-search-results":"Zzzz zzzzzz zzzzzzzz 0 zzzzzzz.",

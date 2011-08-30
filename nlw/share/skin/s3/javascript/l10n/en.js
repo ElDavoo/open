@@ -954,7 +954,7 @@
 "error.no-page-doc":"You must check at least one page in order to create a Word document.",
 "error.no-page-pdf":"You must check at least one page in order to create a PDF.",
 "error.no-page=template":"No page named '[_1]' exists",
-"error.no-page=type,tag":"No [_1] pages tagged '[_2]' could be found",
+"error.no-page=type,tag":"There are no pages tagged 'template' for the selected page type.",
 "error.no-people-found":"No people matching this criteria.",
 "error.no-recipient":"Error: To send email, you must specify a recipient.",
 "error.no-search-results":"Your search returned 0 results.",
