@@ -366,10 +366,12 @@ sub st_single_widget_in_dashboard {
     eval {
         $self->handle_command('st-empty-container');
         $self->handle_command('wait_for_element_visible_ok','link=Add Widget','30000');
-        $self->handle_command('click_and_wait','link=Add Widget');
+        $self->handle_command('click_ok','link=Add Widget');
         my $str = '//a[@id=' . "'" . $linkid . "'" . ']';
-        $self->handle_command('wait_for_element_visible_ok', $str, 30000);
-        $self->handle_command('click_and_wait' ,$str); 
+        $self->handle_command('wait_for_element_present_ok', $str, 30000);
+        $self->handle_command('click_ok' ,$str); 
+        $self->handle_command('wait_for_element_not_visible_ok', $str, 30000);
+        $self->handle_command('pause_ok',4000);
     };
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
