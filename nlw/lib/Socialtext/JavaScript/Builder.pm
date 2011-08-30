@@ -1,7 +1,7 @@
 package Socialtext::JavaScript::Builder;
 # @COPYRIGHT@
 use Moose;
-use methods;
+use methods-invoker;
 use Socialtext::System qw(shell_run);
 use Socialtext::JSON qw(encode_json);
 use Socialtext::Paths;
@@ -34,13 +34,14 @@ method _build_output_directory {
 }
 
 method target_path($target) {
-    return $self->output_directory . '/' . $target
+    return $->output_directory . '/' . $target
 }
 
 method part_directory($part) {
-    return $self->output_directory
-        if $part->{file} and $self->targets->{$part->{file}};
-    my $base = $self->code_base;
+    return $->output_directory
+        if $part->{file} and $->targets->{$part->{file}};
+    my $base = $->code_base;
+    return "$base/$part->{dir}" if $part->{dir};
     return "$base/javascript/wikiwyg" if $part->{widget_template};
     return "$base/javascript/contrib/shindig" if $part->{shindig_feature};
     return "$base/plugin/$part->{plugin}/share/javascript" if $part->{plugin};
@@ -70,9 +71,9 @@ sub _build_minify_js {
 
 has 'targets' => ( is => 'ro', isa => 'HashRef', lazy_build => 1 );
 method _build_targets {
-    my $code_base = $self->code_base;
+    my $code_base = $->code_base;
     my $data = YAML::LoadFile("$code_base/javascript/JS.yaml");
-    $self->expand_collapsed($data);
+    $->expand_collapsed($data);
 
     my @plugins = glob("$code_base/plugin/*");
     for my $plugin_dir (@plugins) {
@@ -80,7 +81,7 @@ method _build_targets {
         (my $plugin = $plugin_dir) =~ s{$code_base/plugin/}{};
 
         my $yaml = YAML::LoadFile("$plugin_dir/share/javascript/JS.yaml");
-        $self->expand_collapsed($yaml);
+        $->expand_collapsed($yaml);
 
         for my $key (keys %$yaml) {
             die "Multiple targets for $key!\n" if $data->{$key};
@@ -115,16 +116,16 @@ method expand_collapsed ($targets) {
 
 method clean ($target) {
     my @toclean;
-    my @targets = $target ? $target : keys %{$self->targets};
+    my @targets = $target ? $target : keys %{$->targets};
     for my $file (@targets) {
         push @toclean, $file;
-        if ($self->targets->{$file}{compress}) {
+        if ($->targets->{$file}{compress}) {
             (my $compressed = $file) =~ s{\.js$}{.jgz};
             push @toclean, $compressed;
         }
     }
     warn "Unlinking $_\n" for @toclean;
-    unlink map { $self->target_path($_) } @toclean;
+    unlink map { $->target_path($_) } @toclean;
 }
 
 my $coffee_compiler = which('coffee');
@@ -141,24 +142,24 @@ sub BuildCoffee {
 }
 
 method is_built ($target) {
-    return -f $self->target_path($target);
+    return -f $->target_path($target);
 }
 
 method is_target ($target) {
     $target =~ s{\.jgz}{.js};
-    return exists $self->targets->{$target};
+    return exists $->targets->{$target};
 }
 
 method build ($target) {
-    my @targets = $target ? $target : keys %{$self->targets};
-    $self->build_target($_) for @targets;
+    my @targets = $target ? $target : keys %{$->targets};
+    $->build_target($_) for @targets;
 }
 
 method build_target ($target) {
     $target =~ s{\.jgz}{.js};
-    local $CWD = $self->code_base;
+    local $CWD = $->code_base;
 
-    my $info = $self->targets->{$target};
+    my $info = $->targets->{$target};
     
     unless ($info) {
         if (-f $target) {
@@ -171,7 +172,7 @@ method build_target ($target) {
 
     my $parts = $info->{parts} || die "$target has no parts!";
 
-    $class->BuildCoffee($CWD);
+    $->BuildCoffee($CWD);
 
     # Iterate over parts, building as we go
     my @last_modifieds;
@@ -181,33 +182,33 @@ method build_target ($target) {
         $part->{plugin} = $info->{plugin} unless exists $part->{plugin};
 
         # Check if this is a built target
-        if ($part->{file} and $self->targets->{$part->{file}}) {
-            $self->build_target($part->{file});
+        if ($part->{file} and $->targets->{$part->{file}}) {
+            $->build_target($part->{file});
         }
-        push @last_modifieds, $self->_part_last_modified($part);
+        push @last_modifieds, $->_part_last_modified($part);
     }
 
     # Recompile the current part if any files in `if_modifieds` has been
     # modified.
     for my $part (@{$info->{if_modifieds}}) {
         $part = ref $part ? $part : { file => $part };
-        push @last_modifieds, $self->_part_last_modified($part);
+        push @last_modifieds, $->_part_last_modified($part);
     }
 
     # Return if the file is up-to-date
-    my $target_path = $self->target_path($target);
-    return if ($self->modified($target_path) >= (sort @last_modifieds)[-1]);
-    warn "Building $target...\n" if $self->verbose;
+    my $target_path = $->target_path($target);
+    return if ($->modified($target_path) >= (sort @last_modifieds)[-1]);
+    warn "Building $target...\n" if $->verbose;
     # Now actually build
     my @text;
     for my $part (@$parts) {
-        my $part_text = $self->_part_to_text($part);
+        my $part_text = $->_part_to_text($part);
         push @text, $part_text if $part_text;
     }
 
     if (@text) {
         my $text = join '', map { "$_;\n" } @text;
-        $self->write_target($target, $text, $info->{compress});
+        $->write_target($target, $text, $info->{compress});
     }
     else {
         die "Error building $target!\n";
@@ -216,7 +217,7 @@ method build_target ($target) {
 
 method _part_last_modified ($part) {
     my @files;
-    local $CWD = $self->part_directory($part);
+    local $CWD = $->part_directory($part);
     push @files, glob($part->{file}) if $part->{file};
     push @files, $part->{template} if $part->{template};
     push @files, $part->{config} if $part->{config};
@@ -237,49 +238,48 @@ method _part_last_modified ($part) {
         push @files, 'Widgets.yaml';
         push @files, $template;
     }
-    return map { $self->modified($_) } @files;
+    return map { $->modified($_) } @files;
 }
 
-sub _js_from_coffee {
-    my ($class, $js) = @_;
+method _js_from_coffee ($js) {
     my $coffee = $js;
     $coffee =~ s/\.js$/.coffee/ or return;
     -f $coffee or return;
     return if -f $js and modified($js) > modified($coffee);
     if ($coffee_compiler) {
-        warn "Building $js from $coffee...\n" if $VERBOSE;
+        warn "Building $js from $coffee...\n" if $->verbose;
         system $coffee_compiler => -c => $coffee;
         return;
     }
-    warn "No coffee compiler found in PATH, skipping...\n" if $VERBOSE;
+    warn "No coffee compiler found in PATH, skipping...\n" if $->verbose;
 }
 
 method _part_to_text ($part) {
-    local $CWD = $self->part_directory($part);
+    local $CWD = $->part_directory($part);
 
     if ($part->{file}) {
-        return $self->_file_to_text($part);
+        return $->_file_to_text($part);
     }
     if ($part->{template}) {
-        return $self->_template_to_text($part);
+        return $->_template_to_text($part);
     }
     elsif ($part->{jemplate_runtime}) {
-        return $self->_jemplate_runtime_to_text($part);
+        return $->_jemplate_runtime_to_text($part);
     }
     elsif ($part->{command}) {
-        return $self->_command_to_text($part);
+        return $->_command_to_text($part);
     }
     elsif ($part->{jemplate}) {
-        return $self->_jemplate_to_text($part);
+        return $->_jemplate_to_text($part);
     }
     elsif ($part->{widget_template}) {
-        return $self->_widget_jemplate_to_text($part);
+        return $->_widget_jemplate_to_text($part);
     }
     elsif ($part->{json}) {
-        return $self->_json_to_text($part);
+        return $->_json_to_text($part);
     }
     elsif ($part->{shindig_feature}) {
-        return $self->_shindig_feature_to_text($part);
+        return $->_shindig_feature_to_text($part);
     }
     else {
         die "Do not know how to create part: $part->{dir}";
@@ -293,7 +293,7 @@ method _shindig_feature_to_text ($part) {
         name => $part->{shindig_feature},
     );
     my $text = $feature->js || return;
-    if ($self->minify_js and $text) {
+    if ($->minify_js and $text) {
         warn "Minifying feature $part->{shindig_feature}...\n";
         $text = minify($text);
     }
@@ -304,7 +304,7 @@ method _shindig_feature_to_text ($part) {
 method _file_to_text ($part) {
     my $text = '';
     for my $file (glob($part->{file})) {
-        $class->_js_from_coffee($file);
+        $->_js_from_coffee($file);
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
         $text .= decode_utf8(slurp($file));
     }
@@ -332,7 +332,7 @@ method _template_to_text ($part) {
 }
 
 method _command_to_text ($part) {
-    $Socialtext::System::SILENT_RUN = !$self->verbose;
+    $Socialtext::System::SILENT_RUN = !$->verbose;
     my $text = '';
     $text .= $part->{nocomment} ? '' : "// BEGIN $part->{command}\n";
     return qx/$part->{command}/;
@@ -389,7 +389,7 @@ method _json_to_text ($part) {
 
 # This is a one off for widgets and should only happen in the wikiwyg skin
 method _widget_jemplate_to_text ($part) {
-    $Socialtext::System::SILENT_RUN = !$self->verbose;
+    $Socialtext::System::SILENT_RUN = !$->verbose;
 
     my $yaml = YAML::LoadFile('Widgets.yaml');
     my $dir = tempdir( CLEANUP => 1 );
@@ -397,7 +397,7 @@ method _widget_jemplate_to_text ($part) {
     my @jemplates;
     if ($part->{all}) {
         for my $widget (@{$yaml->{widgets}}) {
-            $self->_render_widget_jemplate(
+            $->_render_widget_jemplate(
                 yaml => $yaml,
                 output => "$dir/widget_${widget}_edit.html",
                 template => $part->{widget_template},
@@ -406,7 +406,7 @@ method _widget_jemplate_to_text ($part) {
         }
     }
     elsif ($part->{target}) {
-        $self->_render_widget_jemplate(
+        $->_render_widget_jemplate(
             yaml => $yaml,
             output => "$dir/$part->{target}",
             template => "$part->{widget_template}",
@@ -466,19 +466,19 @@ method _widget_jemplate_to_text ($part) {
             menu_hierarchy => $yaml_data->{menu_hierarchy},
         };
 
-        warn "Generating $output_file\n" if $self->verbose;
+        warn "Generating $output_file\n" if $->verbose;
         $tt2->process($template, $data, $output_file)
             || die $tt2->error(), "\n";
     }
 }
 
 method write_target ($target, $text, $compress) {
-    my $path = $self->target_path($target);
+    my $path = $->target_path($target);
     write_file($path, $text);
     return unless $compress;
 
-    if ($self->minify_js) {
-        warn "Minifying $target...\n" if $self->verbose;
+    if ($->minify_js) {
+        warn "Minifying $target...\n" if $->verbose;
         $text = minify($text);
     }
 
@@ -486,10 +486,10 @@ method write_target ($target, $text, $compress) {
     # misidentified gzipped js as E4X -- Needs more investigation.
     $text =~ s!;(/\*\s*\n.*?\*/)!;\n!sg;
 
-    warn "Gzipping $target...\n" if $self->verbose;
+    warn "Gzipping $target...\n" if $->verbose;
     my $gzipped = Compress::Zlib::memGzip($text);
 
-    warn "Writing to $path.gz...\n" if $self->verbose;
+    warn "Writing to $path.gz...\n" if $->verbose;
     (my $gz_path = $path) =~ s{\.js}{.jgz};
     write_file($gz_path, $gzipped);
 }
