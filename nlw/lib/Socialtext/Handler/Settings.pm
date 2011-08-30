@@ -79,7 +79,8 @@ sub GET_space {
     my $space = $self->space;
     return $self->error(loc('Not Found')) unless $space;
 
-    my $perm = (grep { $_ eq $self->pref } qw(manage invite features))
+    my %abilities = $self->AdminAbilities;
+    my $perm = (grep { $_ eq $self->pref } keys %abilities)
         ? ST_ADMIN_WORKSPACE_PERM
         : ST_READ_PERM;
 
@@ -226,9 +227,7 @@ sub _space_prefs {
     if ($can_admin) {
         %abilities = (
             %abilities,
-            manage => loc('Manage All Users'),
-            invite => loc('Invite New Users'),
-            features => loc('Workspace Features'),
+            $self->AdminAbilities,
         );
     }
 
@@ -243,6 +242,14 @@ sub _space_prefs {
     }
 
     return $prefs;
+}
+
+sub AdminAbilities {
+    return (
+        manage => loc('Manage All Users'),
+        # invite => loc('Invite New Users'),
+        features => loc('Workspace Features'),
+    );
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
