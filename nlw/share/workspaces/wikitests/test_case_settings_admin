@@ -33,7 +33,7 @@
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Invite New Users |  |
 | type_ok | users_new_ids | invite_%%start_time%%@ken.socialtext.net |
-| text_like | contentContainer | If you wish, you can include a personal message |
+| text_like | contentWrapper | If you wish, you can include a personal message |
 | click_and_wait | link=Invite |  |
 | st-logoutin | invite_%%start_time%%@ken.socialtext.net |  |
 | text_like | errors-and-messages | You need to confirm |
@@ -43,7 +43,7 @@
 | *Comment* | Test Case: Settings: Admin test Manage All Users functionality |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Manage All Users |  |
-| text_like | contentContainer | invite_%%start_time%%@ken.socialtext.net |
+| text_like | contentWrapper | invite_%%start_time%%@ken.socialtext.net |
 | st-should-be-admin | invite_%%start_time%%@ken.socialtext.net | 1 |
 | st-logoutin | invite_%%start_time%%@ken.socialtext.net | 123456 |
 | text_like | workspaceNav | Add Members |
@@ -56,8 +56,8 @@
 | open_ok | /newspace-%%start_time%% |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Workspace Appearance |  |
-| text_like | contentContainer | When users click |
-| text_like | contentContainer | This is the title of your workspace |
+| text_like | contentWrapper | When users click |
+| text_like | contentWrapper | This is the title of your workspace |
 | type_ok | title | New Title %%start_time%% |
 | click_and_wait | link=Save |  |
 | open_ok | /newspace-%%start_time%% |  |
@@ -87,7 +87,7 @@
 
 | *Comment* | Test Case: Settings: Admin test weblog sort order using newspace-%%start_time%% |  |
 | wait_for_text_present_ok | Blog: %%start_time%% Blog | 30000 |
-| text_like | contentContainer | qr/post2 %%start_time%%.+first post/ |
+| text_like | contentWrapper | qr/post2 %%start_time%%.+first post/ |
 | open_ok | /newspace-%%start_time%%/index.cgi?action=display;page_name=first_post_in_%%start_time%%_blog;caller_action=blog_display;category=%%start_time%%_blog;js=show_edit_div#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -98,7 +98,7 @@
 
 
 | wait_for_text_present_ok | Blog: %%start_time%% Blog | 30000 |
-| text_like | contentContainer | qr/ First Post in %%start_time%% Blog.+post2 %%start_time%%/ |
+| text_like | contentWrapper | qr/ First Post in %%start_time%% Blog.+post2 %%start_time%%/ |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Workspace Features |  |
 | click_ok | document.forms[1].sort_weblogs_by_create[1] |  |
@@ -106,7 +106,7 @@
 
 | click_and_wait | link=Blogs |  |
 | wait_for_text_present_ok | Blog: %%start_time%% Blog | 30000 |
-| text_like | contentContainer | qr/post2 %%start_time%%.+First Post in %%start_time%% Blog/ |
+| text_like | contentWrapper | qr/post2 %%start_time%%.+First Post in %%start_time%% Blog/ |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Workspace Features |  |
 | click_ok | document.forms[1].sort_weblogs_by_create[0] |  |

@@ -9,7 +9,7 @@
 | st-login | %%fname_checker%% | %%password%% |
 | open_ok | /?action=people |  |
 | wait_for_element_visible_ok | link=%%fname%% |  |
-| text_like | contentContainer | qr/%%fname_user_regexp%%.+%%fname_checker_regexp%%/ |
+| text_like | contentWrapper | qr/%%fname_user_regexp%%.+%%fname_checker_regexp%%/ |
 
 | *Comment* | Test Case: Friendly Name 3 check non-workspace Search |  |
 | wait_for_element_visible_ok | st-search-term | 30000 |

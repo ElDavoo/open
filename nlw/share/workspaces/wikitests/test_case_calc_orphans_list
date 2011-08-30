@@ -56,8 +56,8 @@ edit a page to include a link to an orphan sheet | link appears in page
 | *Comment* | Test Case: Calc Orphans List. second sheet should no longer be orphan |  |
 | open_ok | /%%workspace%%/?action=recent_changes |  |
 | click_and_wait | link=Orphaned Pages |  |
-| text_unlike | contentContainer | orphan sheet 2 %%start_time%% |
-| text_like | contentContainer | orphan sheet 1 %%start_time%% |
+| text_unlike | contentWrapper | orphan sheet 2 %%start_time%% |
+| text_like | contentWrapper | orphan sheet 1 %%start_time%% |
 
 | *Comment* | Test Case: Calc Orphans List. Teardown |  |
 

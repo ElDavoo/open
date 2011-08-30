@@ -111,7 +111,7 @@
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-remove-Cheeky')] | 60000 |
 | text_like | //a[contains(@id,'gallery-remove-Cheeky')] | `(remove)` |
 | text_like | //a[contains(@id,'gallery-update-Cheeky')] | `(update)` |
-| text_unlike | contentContainer | `(restore)` |
+| text_unlike | contentWrapper | `(restore)` |
 
 | *Comment* | Test Case: Add Remove Gallery Widgets remove for delete an uploaded widget |  |
 | open_ok | /?dashboard | 60000 |

@@ -11,25 +11,25 @@
 | *Comment* | Test Case: Preferences UI User 4: create new Blog |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
-| text_like | contentContainer | Create A Blog |
+| text_like | contentWrapper | Create A Blog |
 | type_ok | weblog_title | No Brackets %%start_time%% Blog |
 | click_and_wait | link=Save |  |
-| text_like | contentContainer | First Post in No Brackets %%start_time%% Blog |
+| text_like | contentWrapper | First Post in No Brackets %%start_time%% Blog |
 
 | *Comment* | Test Case: Preferences UI User 4: new Blog with brackets |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
-| text_like | contentContainer | Create A Blog |
+| text_like | contentWrapper | Create A Blog |
 | type_ok | weblog_title | `[Brackets] %%start_time%%` |
 | click_and_wait | link=Save |  |
-| text_like | contentContainer | `First Post in [Brackets] %%start_time%% Blog` |
+| text_like | contentWrapper | `First Post in [Brackets] %%start_time%% Blog` |
 
 | *Comment* | Test Case: Preferences UI User 4. What's New. Defaults: Last week, display off, 4 items |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
-| text_like | contentContainer | What time interval |
-| text_like | contentContainer | Display as a side box |
-| text_like | contentContainer | How many items from that time period |
+| text_like | contentWrapper | What time interval |
+| text_like | contentWrapper | Display as a side box |
+| text_like | contentWrapper | How many items from that time period |
 | is_selected_ok | recent_changes__changes_depth | label=Last Week |
 | value_is | recent_changes__include_in_pages | off |
 | is_selected_ok | recent_changes__sidebox_changes_depth | label=4 |
@@ -94,9 +94,9 @@
 | *Comment* | Test Case: Preferences UI User 4. Email Notification. Defaults: Every day, chronologically, full info |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Email Notification |  |
-| text_like | contentContainer | How often |
-| text_like | contentContainer | What order |
-| text_like | contentContainer | What information |
+| text_like | contentWrapper | How often |
+| text_like | contentWrapper | What order |
+| text_like | contentWrapper | What information |
 | is_selected_ok | email_notify__notify_frequency | label=Every Day |
 | verifyValue | //input[@value='chrono'] | on |
 | verifyValue | //input[@value='expanded'] | on |
@@ -149,9 +149,9 @@
 | *Comment* | Test Case: Preferences UI User 4. Email Notification. Navigate away, return, verify values |  |
 | click_and_wait | link=My Settings |  |
 | click_and_wait | link=Email Notification |  |
-| text_like | contentContainer | How often |
-| text_like | contentContainer | What order |
-| text_like | contentContainer | What information |
+| text_like | contentWrapper | How often |
+| text_like | contentWrapper | What order |
+| text_like | contentWrapper | What information |
 | is_selected_ok | email_notify__notify_frequency | label=Every Week |
 | verifyValue | //input[@value='reverse'] | on |
 | verifyValue | //input[@value='condensed'] | on |

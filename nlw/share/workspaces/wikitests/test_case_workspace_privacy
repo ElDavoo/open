@@ -118,10 +118,10 @@
 | clickAndWait | link=Workspace Privacy |  |
 | click_ok | //input[@name='guest_has_email_in' and @value='1'] |  |
 | clickAndWait | link=Save |  |
-| text_like | contentContainer | Anyone can send email to %%wspriv%%. |
+| text_like | contentWrapper | Anyone can send email to %%wspriv%%. |
 | click_ok | //input[@name='guest_has_email_in' and @value='0'] |  |
 | clickAndWait | link=Save |  |
-| text_like | contentContainer | Only registered users can send email to %%wspriv%%. |
+| text_like | contentWrapper | Only registered users can send email to %%wspriv%%. |
 
 | *Comment* | Test Case: Workspace Privacy TEARDOWN |  |
 | st-process-jobs | PageIndex | %%wspriv%% |

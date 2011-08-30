@@ -56,14 +56,14 @@
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | st-search-for | Search People: | %%start_time%% |
 | wait_for_text_present_ok | People matching | 30000 |
-| text_like | contentContainer | qr/Showing 1 - 7 of 7 total/ism |
-| text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
-| text_like | contentContainer | qr/%%member1_short%%/ism |
-| text_like | contentContainer | qr/%%member2_short%%/ism |
-| text_like | contentContainer | qr/%%member3_short%%/ism |
-| text_like | contentContainer | qr/%%nonmember_short%%/ism |
-| text_like | contentContainer | qr/%%other_acct_mbr_short%%/ism |
-| text_like | contentContainer | qr/%%other_acct_diff_mbr_short%%/ism |
+| text_like | contentWrapper | qr/Showing 1 - 7 of 7 total/ism |
+| text_like | contentWrapper | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
+| text_like | contentWrapper | qr/%%member1_short%%/ism |
+| text_like | contentWrapper | qr/%%member2_short%%/ism |
+| text_like | contentWrapper | qr/%%member3_short%%/ism |
+| text_like | contentWrapper | qr/%%nonmember_short%%/ism |
+| text_like | contentWrapper | qr/%%other_acct_mbr_short%%/ism |
+| text_like | contentWrapper | qr/%%other_acct_diff_mbr_short%%/ism |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Search - FILTER see group members |  |
 | wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
@@ -72,11 +72,11 @@
 | text_like | //body | %%other_acct%% (3 People) |
 
 | select_and_wait | //select[@class='account-select'] | index=2 |
-| text_like | contentContainer | qr/Showing 1 - 4 of 4 total/ism |
-| text_like | contentContainer | qr/%%member1_short%%/ism |
-| text_like | contentContainer | qr/%%member2_short%%/ism |
-| text_like | contentContainer | qr/%%member3_short%%/ism |
-| text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
+| text_like | contentWrapper | qr/Showing 1 - 4 of 4 total/ism |
+| text_like | contentWrapper | qr/%%member1_short%%/ism |
+| text_like | contentWrapper | qr/%%member2_short%%/ism |
+| text_like | contentWrapper | qr/%%member3_short%%/ism |
+| text_like | contentWrapper | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Search - Search within group, don't see member3 |  |
 | wait_for_element_visible_ok | st-search-action | 30000 |
@@ -86,17 +86,17 @@
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_ok | st-search-submit |  |
 | wait_for_text_present_ok | People matching 'member' | 30000 |
-| text_like | contentContainer | qr/Showing 1 - 3 of 3 total/ism |
-| text_like | contentContainer | qr/%%member1_short%%/ism |
-| text_like | contentContainer | qr/%%member2_short%%/ism |
-| text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
+| text_like | contentWrapper | qr/Showing 1 - 3 of 3 total/ism |
+| text_like | contentWrapper | qr/%%member1_short%%/ism |
+| text_like | contentWrapper | qr/%%member2_short%%/ism |
+| text_like | contentWrapper | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Search - Two users contain 'member', one does not |  |
 | select_and_wait | //select[@class='account-select'] | %%other_acct%% (3 People) |
 | wait_for_text_present_ok | People matching 'member' | 30000 |
-| text_like | contentContainer | qr/Showing 1 - 2 of 2 total/ism |
-| text_like | contentContainer | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
-| text_like | contentContainer | qr/%%other_acct_mbr_short%%/ism |
+| text_like | contentWrapper | qr/Showing 1 - 2 of 2 total/ism |
+| text_like | contentWrapper | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
+| text_like | contentWrapper | qr/%%other_acct_mbr_short%%/ism |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Teardown |  |
 

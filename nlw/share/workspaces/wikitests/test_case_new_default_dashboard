@@ -43,7 +43,7 @@
 | st-logoutin | %%ndd_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Fill in your | 10000 |
-| is_element_present_ok | contentContainer | link=%%central_page%% |
+| is_element_present_ok | contentWrapper | link=%%central_page%% |
 | st-name-widget | 1 | newbie |
 | st-widget-title-like | newbie | I'm new. What do I do? |
 | st-name-widget | 3 | news |
@@ -60,7 +60,7 @@
 | st-logoutin | %%new_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Fill in your | 10000 |
-| is_element_present_ok | contentContainer | link=%%old_acct_page%% |
+| is_element_present_ok | contentWrapper | link=%%old_acct_page%% |
 | st-name-widget | 1 | newbie |
 | st-widget-title-like | newbie | I'm new. What do I do? |
 | st-name-widget | 3 | news |

@@ -170,10 +170,10 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | open_ok | /%%t_ws%%/?action=recent_changes |  |
 | clickAndWait | link=All Tags |  |
-| text_like | contentContainer | tagtest %%start_time%% |
+| text_like | contentWrapper | tagtest %%start_time%% |
 | clickAndWait | link=tagtest %%start_time%% |  |
-| text_like | contentContainer | tag page 1 %%start_time%% |
-| text_like | contentContainer | tag page 3 %%start_time%% |
+| text_like | contentWrapper | tag page 1 %%start_time%% |
+| text_like | contentWrapper | tag page 3 %%start_time%% |
 
 | *Comment* | Test Case: Tagging test for tags in lookahead |  |
 | open_ok | /%%t_ws%%/index.cgi?action=new_page |  |

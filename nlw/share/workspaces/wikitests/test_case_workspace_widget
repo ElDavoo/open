@@ -20,8 +20,8 @@
 | wait_for_element_visible_ok | link=Workspace Widget %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Workspace Widget. link to wikis is hidden in Workspaces dropdown |  |
-| is_element_present_ok | contentContainer | link=Workspace Widget %%start_time%% |
-| is_element_present_ok | contentContainer | link=Other Wiki %%start_time%% |
+| is_element_present_ok | contentWrapper | link=Workspace Widget %%start_time%% |
+| is_element_present_ok | contentWrapper | link=Other Wiki %%start_time%% |
 
 | *Comment* | Test Case: Workspace Widget. Remove member, see if workspace is gone |  |
 | st-admin | remove-member --username %%ww_user%% --workspace workspacewidget-%%start_time%% | no longer has the role of 'member' |
@@ -35,9 +35,9 @@
 | wait_for_text_present_ok | changes | 30000 |
 | wait_for_text_present_ok | views | 30000 |
 | wait_for_element_visible_ok | link=new page | 30000 |
-| is_element_present_ok | contentContainer | link=Other Wiki %%start_time%% |
-| text_like | contentContainer | Other Wiki %%start_time%% |
-| text_unlike | contentContainer | Workspace Widget |
+| is_element_present_ok | contentWrapper | link=Other Wiki %%start_time%% |
+| text_like | contentWrapper | Other Wiki %%start_time%% |
+| text_unlike | contentWrapper | Workspace Widget |
 
 | *Comment* | Test Case: Workspace Widget TEARDOWN |  |
 | st-process-jobs |  |  |

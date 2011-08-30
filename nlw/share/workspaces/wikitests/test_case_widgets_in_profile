@@ -19,7 +19,7 @@
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_and_wait | st-cancel-layout | 30000 |
-| text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile add widget then cancel, widget is gone |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
@@ -36,9 +36,9 @@
 | wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 3000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | click_and_wait | st-cancel-layout |  |
-| text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 | open_ok | /st/profile |  |
-| text_unlike | contentContainer | Wikipedia |
+| text_unlike | contentWrapper | Wikipedia |
 
 | *Comment* | Test Case: Widgets in Profile add widget, is there |  |
 | wait_for_element_visible_ok | st-edit-layout | 10000 |
@@ -61,7 +61,7 @@
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
-| text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile change widget preferences |  |
 | click_ok | st-edit-layout |  |
@@ -126,7 +126,7 @@
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
-| text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile start to revert to default, click no |  |
 | click_ok | st-edit-layout |  |
@@ -148,7 +148,7 @@
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
-| text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile revert to default |  |
 | click_ok | st-edit-layout |  |

@@ -77,8 +77,8 @@
 | *Comment* | Test Case: Tools: Duplicate Page. verify duplicate of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_duplicated_%%start_time%% |  |
 | click_and_wait | link=Compare Revisions |  |
-| text_like | contentContainer | Duplicate This Page %%start_time%% content |
-| text_like | contentContainer | Duplicate This Page %%start_time%% NEW content |
+| text_like | contentWrapper | Duplicate This Page %%start_time%% content |
+| text_like | contentWrapper | Duplicate This Page %%start_time%% NEW content |
 
 | *Comment* | Test Case: Tools: Duplicate Page TEARDOWN |  |
 | st-process-jobs |  |  |

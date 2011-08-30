@@ -11,7 +11,7 @@
 | click_and_wait | link=Page Editing |  |
 
 | *Comment* | Test Case: Preferences UI User 5. default is on. Turn it off. |  |
-| text_like | contentContainer | Double-click to edit a page? |
+| text_like | contentWrapper | Double-click to edit a page? |
 | value_is | wikiwyg__wikiwyg_double | on |
 | uncheck_ok | wikiwyg__wikiwyg_double |  |
 | value_is | wikiwyg__wikiwyg_double | off |
@@ -42,13 +42,13 @@
 | *Comment* | Test Case: Preferences UI User 5. Page Editing. Navigate away, return, verify value |  |
 | click_and_wait | link=My Settings |  |
 | click_and_wait | link=Page Editing |  |
-| text_like | contentContainer | Double-click to edit a page? |
+| text_like | contentWrapper | Double-click to edit a page? |
 | value_is | wikiwyg__wikiwyg_double | on |
 
 | *Comment* | Test Case: Preferences UI User 5. My Settings. Reset name and pwd |  |
 | click_and_wait | link=My Settings |  |
-| text_like | contentContainer | qr/First Name:/i |
-| text_like | contentContainer | qr/New password:/i |
+| text_like | contentWrapper | qr/First Name:/i |
+| text_like | contentWrapper | qr/New password:/i |
 | type_ok | first_name | First %%start_time%% |
 | type_ok | middle_name | Middle %%start_time%% |
 | type_ok | last_name | Last %%start_time%% |

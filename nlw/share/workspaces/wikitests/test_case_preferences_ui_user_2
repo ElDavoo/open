@@ -10,11 +10,11 @@
 
 | *Comment* | Test Case: Preferences UI User 2. Time. Defaults: Pacific, auto, M-D-Y, 12, no |  |
 | open_ok | /?action=preferences_settings;preferences_class_id=timezone |  |
-| text_like | contentContainer | What time zone should times be displayed in |
-| text_like | contentContainer | How should Daylight Savings/Summer Time be handled |
-| text_like | contentContainer | How should displayed dates be formatted |
-| text_like | contentContainer | Should times be displayed in 12-hour or 24-hour format |
-| text_like | contentContainer | Should seconds be included on displayed times |
+| text_like | contentWrapper | What time zone should times be displayed in |
+| text_like | contentWrapper | How should Daylight Savings/Summer Time be handled |
+| text_like | contentWrapper | How should displayed dates be formatted |
+| text_like | contentWrapper | Should times be displayed in 12-hour or 24-hour format |
+| text_like | contentWrapper | Should seconds be included on displayed times |
 | is_selected_ok | timezone__timezone | label=-0800 Pacific |
 | is_selected_ok | timezone__dst | label=automatic, United States |
 | is_selected_ok | timezone__date_display_format | value=mmm_d_yyyy |
@@ -74,8 +74,8 @@
 | open_ok | /%%new_ws%% |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Watchlist |  |
-| text_like | contentContainer | How frequently would you like to receive watchlist emails |
-| text_like | contentContainer | What information about changed pages do you want in email digests |
+| text_like | contentWrapper | How frequently would you like to receive watchlist emails |
+| text_like | contentWrapper | What information about changed pages do you want in email digests |
 | is_selected_ok | watchlist__watchlist_notify_frequency | label=Every Day |
 | verifyValue | //input[@value='expanded'] | on |
 
@@ -117,8 +117,8 @@
 | *Comment* | Test Case: Preferences UI User 2. Watchlist Notification. Navigate away, return, verify values |  |
 | click_and_wait | link=My Settings |  |
 | click_and_wait | link=Watchlist |  |
-| text_like | contentContainer | How frequently would you like to receive watchlist emails |
-| text_like | contentContainer | What information about changed pages do you want in email digests |
+| text_like | contentWrapper | How frequently would you like to receive watchlist emails |
+| text_like | contentWrapper | What information about changed pages do you want in email digests |
 | is_selected_ok | watchlist__watchlist_notify_frequency | label=Every Week |
 | verifyValue | //input[@value='condensed'] | on |
 

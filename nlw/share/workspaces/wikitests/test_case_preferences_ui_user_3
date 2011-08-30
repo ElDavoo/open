@@ -9,7 +9,7 @@
 | *Comment* | Test Case: Preferences UI User 3 Blogs. Default: 10 posts |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | //a[contains(@href,'preferences_class_id=weblog')] |  |
-| text_like | contentContainer | How many posts should be displayed in blog view |
+| text_like | contentWrapper | How many posts should be displayed in blog view |
 | is_selected_ok | weblog__weblog_depth | label=10 |
 
 | *Comment* | Test Case: Preferences UI User 3 Blogs. 50 posts |  |
@@ -33,13 +33,13 @@
 | *Comment* | Test Case: Preferences UI User 3 Blogs. Navigate away, come back, verify |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | //a[contains(@href,'preferences_class_id=weblog')] |  |
-| text_like | contentContainer | How many posts should be displayed in blog view |
+| text_like | contentWrapper | How many posts should be displayed in blog view |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. Default: 10 posts |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Syndicate |  |
-| text_like | contentContainer | How many posts should be displayed in outgoing feeds |
+| text_like | contentWrapper | How many posts should be displayed in outgoing feeds |
 | is_selected_ok | syndicate__syndication_depth | label=10 |
 
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. 50 posts |  |
@@ -63,7 +63,7 @@
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. Navigate away, come back, verify |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Syndicate |  |
-| text_like | contentContainer | How many posts should be displayed in outgoing feeds |
+| text_like | contentWrapper | How many posts should be displayed in outgoing feeds |
 | is_selected_ok | syndicate__syndication_depth | label=50 |
 
 | include | [Test Case: Preferences UI User Teardown] |  |

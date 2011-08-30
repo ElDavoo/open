@@ -54,7 +54,7 @@ TODO: Figure out a way to test the other config functions
 | st-pause-click | 2000 | st-save-button-link |
 
 | wait_for_text_present_ok | Order post 1 content %%start_time%% | 30000 |
-| text_like | contentContainer | qr/Order post 1 content %%start_time%%.+Order post 1 revision/ |
+| text_like | contentWrapper | qr/Order post 1 content %%start_time%%.+Order post 1 revision/ |
 | st-admin | set_workspace_config --workspace %%workspace%% sort_weblogs_by_create 0 |  |
 
 | *Comment* | Test Case: Workspace Configuration Workspace Skin |  |

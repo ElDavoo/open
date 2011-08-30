@@ -28,7 +28,7 @@
 | text_like | link=side-%%start_time%%-7 | side-%%start_time%%-7 |
 | text_like | link=side-%%start_time%%-2 | side-%%start_time%%-2 |
 | text_like | link=side-%%start_time%%-1 | side-%%start_time%%-1 |
-| text_like | contentContainer | Changes in Last 24 hours |
+| text_like | contentWrapper | Changes in Last 24 hours |
 
  Go to any page and open the sidebar | Sidebar contains What's New section 
  Verify content of What's New section | Correct number of Recent Changes displayed
@@ -61,7 +61,7 @@
 | text_like | link=side-%%start_time%%-3 | side-%%start_time%%-3 |
 | text_like | link=side-%%start_time%%-2 | side-%%start_time%%-2 |
 | text_like | link=side-%%start_time%%-1 | side-%%start_time%%-1 |
-| text_like | contentContainer | Changes in Last Month |
+| text_like | contentWrapper | Changes in Last Month |
 
  Go to any page and open the sidebar | Sidebar contains What's New section 
  Verify content of What's New section | Correct number of Recent Changes displayed

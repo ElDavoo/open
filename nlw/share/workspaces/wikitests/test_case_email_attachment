@@ -80,15 +80,15 @@
 | *Comment* | Test Case: Email attachment email Check Reception with HTML attachment and two other attachments |  |
 | open_ok | /%%workspace%%/index.cgi?emailed page %%start_time%% |  |
 | text_like | st-page-titletext | emailed page %%start_time%% |
-| text_like | contentContainer | Note %%start_time%% from Test Case: Email |
+| text_like | contentWrapper | Note %%start_time%% from Test Case: Email |
 | wait_for_element_visible_ok | link=wikitestzip.zip | 30000 |
 | wait_for_element_visible_ok | link=wikitest.doc | 30000 |
 | text_like | st-attachment-listing | wikitestzip.zip |
 | text_like | st-attachment-listing | wikitest.doc |
 | type_ok | st-search-term | "Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |
-| text_like | contentContainer | qr/emailed\s*page\s*%%start_time%%\s*in\s*%%title%%/ |
-| text_like | contentContainer | qr/attached\s*to\s*page\s*emailed\s*page\s*%%start_time%%/i |
+| text_like | contentWrapper | qr/emailed\s*page\s*%%start_time%%\s*in\s*%%title%%/ |
+| text_like | contentWrapper | qr/attached\s*to\s*page\s*emailed\s*page\s*%%start_time%%/i |
 | pause | 10000 |  |
 
 | *Comment* | Test Case: Email attachment Deleting zip attachment |  |
@@ -109,8 +109,8 @@
 | type_ok | st-search-term | "wikitestzip.zip" |
 | click_and_wait | st-search-submit |  |
 | wait_for_text_present_ok | Pages matching '"wikitestzip.zip"' | 30000 |
-| text_like | contentContainer | Email subject %%start_time%% |
-| text_unlike | contentContainer | emailed page %%start_time%% |
+| text_like | contentWrapper | Email subject %%start_time%% |
+| text_unlike | contentWrapper | emailed page %%start_time%% |
 
 | *Comment* | Test Case: Email attachment TEARDOWN |  |
 | st-process-jobs |  |  |

@@ -43,9 +43,9 @@ edit a page to include a link to an orphan page | link appears in page
 
 | *Comment* | Test Case: Orphans List. second page should no longer be orphan |  |
 | open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
-| text_unlike | contentContainer | orphan %%start_time%% 0002 |
-| text_like | contentContainer | orphan %%start_time%% 0001 |
-| text_like | contentContainer | orphan %%start_time%% 0004 |
+| text_unlike | contentWrapper | orphan %%start_time%% 0002 |
+| text_like | contentWrapper | orphan %%start_time%% 0001 |
+| text_like | contentWrapper | orphan %%start_time%% 0004 |
 
 | *Comment* | Test Case: Orphans List. restore fourth page |  |
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been updated. |
@@ -53,26 +53,26 @@ edit a page to include a link to an orphan page | link appears in page
 
 | *Comment* | Test Case: Orphans List Sorting Title asc |  |
 | select_and_wait | sort-picker | label=Title |
-| text_like | contentContainer | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003.+orphan %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003.+orphan %%start_time%% 0004/ |
 | *Comment* | Test Case: Orphans List Sorting Title desc |  |
 | select_and_wait | sort-picker | label=Title (↓) |
-| text_like | contentContainer | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001/ |
 
 | *Comment* | Test Case: Orphans List Sorting Last Edited By asc |  |
 | select_and_wait | sort-picker | label=Last Edited By |
 
-| text_like | contentContainer | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003/ |
 
 | *Comment* | Test Case: Orphans List Sorting Last Edited By desc |  |
 | select_and_wait | sort-picker | label=Last Edited By (↓) |
 
-| text_like | contentContainer | qr/orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001.+orphan %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001.+orphan %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Orphans List Sorting Date desc |  |
 | select_and_wait | sort-picker | label=Date Last Edited |
-| text_like | contentContainer | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001/ |
 | select_and_wait | sort-picker | label=Date Last Edited (↑) |
-| text_like | contentContainer | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003.+orphan %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003.+orphan %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Orphans List Sorting Revisions. Create rev 2 for page 0002 |  |
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been updated. |
@@ -82,17 +82,17 @@ edit a page to include a link to an orphan page | link appears in page
 
 | *Comment* | Test Case: Orphans List Sorting revisions desc |  |
 | select_and_wait | sort-picker | label=Revisions |
-| text_like | contentContainer | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001.+orphan %%start_time%% 0003/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001.+orphan %%start_time%% 0003/ |
 | *Comment* | Test Case: Orphans List Sorting revisions asc |  |
 | select_and_wait | sort-picker | label=Revisions (↑) |
-| text_like | contentContainer | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Orphans List Sorting Date Created desc |  |
 | select_and_wait | sort-picker | label=Date Created |
-| text_like | contentContainer | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0004.+orphan %%start_time%% 0003.+orphan %%start_time%% 0002.+orphan %%start_time%% 0001/ |
 | *Comment* | Test Case: Orphans List Sorting revisions asc |  |
 | select_and_wait | sort-picker | label=Date Created (↑) |
-| text_like | contentContainer | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003.+orphan %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/orphan %%start_time%% 0001.+orphan %%start_time%% 0002.+orphan %%start_time%% 0003.+orphan %%start_time%% 0004/ |
 
 click on several links | correct page appear
 
@@ -113,8 +113,8 @@ observe Incoming Links in sidepanel | there are no Incoming Links for any orphan
 | *Comment* | Test Case: Orphans list. delete page |  |
 | st-admin | purge-page --w %%ws%% --p orphan_%%start_time%%_0003 | was purged |
 | open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
-| text_unlike | contentContainer | orphan %%start_time%% 0003 |
-| text_like | contentContainer | orphan %%start_time%% 0001 |
+| text_unlike | contentWrapper | orphan %%start_time%% 0003 |
+| text_like | contentWrapper | orphan %%start_time%% 0001 |
 
 | *Comment* | Test Case: Orphans List. Tearing down orphans list data |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |

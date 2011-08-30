@@ -39,15 +39,15 @@
 
 | *Comment* | Test Case: Calc What's New sort Title asc |  |
 | select_and_wait | sort-picker | label=Title |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Calc What's New sort Title desc |  |
 | select_and_wait | sort-picker | label=Title (↓) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0001/ |
 
 | *Comment* | Test Case: Calc What's New sort Title asc |  |
 | select_and_wait | sort-picker | label=Title (↑) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Calc What's New add a new page |  |
 | open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0005#edit |  |
@@ -60,19 +60,19 @@
 
 | *Comment* | Test Case: Calc What's New sort Date desc |  |
 | select_and_wait | sort-picker | Date Last Edited |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0001/ |
 
 | *Comment* | Test Case: Calc What's New sort Date asc |  |
 | select_and_wait | sort-picker | Date Last Edited (↑) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0002.+hey whats new %%start_time%% 0003/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0002.+hey whats new %%start_time%% 0003/ |
 
 | *Comment* | Test Case: Calc What's New sort Date created desc |  |
 | select_and_wait | sort-picker | Date Created |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0001/ |
 
 | *Comment* | Test Case: Calc What's New sort Date created asc |  |
 | select_and_wait | sort-picker | Date Created (↑) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0002.+hey whats new %%start_time%% 0003/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0002.+hey whats new %%start_time%% 0003/ |
 
 | *Comment* | Test Case: Calc What's New create Rev 2 |  |
 | open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0005#edit |  |
@@ -83,15 +83,15 @@
 | *Comment* | Test Case: Calc What's New sort Revisions desc |  |
 | open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
 | select_and_wait | sort-picker | label=Revisions |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0005.+hey whats new %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0005.+hey whats new %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Calc What's New sort Revisions asc |  |
 | select_and_wait | sort-picker | label=Revisions (↑) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0005/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0004.+hey whats new %%start_time%% 0005/ |
 
 | *Comment* | Test Case: Calc What's New sort Revisions desc |  |
 | select_and_wait | sort-picker | label=Revisions (↓) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0005.+hey whats new %%start_time%% 0004/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0005.+hey whats new %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Calc What's New %%anemail%% edits a page |  |
 | st-logoutin | %%anemail%% | %%password%% |
@@ -105,26 +105,26 @@
 
 | *Comment* | Test Case: Calc What's New sort Last Edited By asc |  |
 | select_and_wait | sort-picker | label=Last Edited By |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0003.+hey whats new %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0003.+hey whats new %%start_time%% 0001/ |
 
 | *Comment* | Test Case: Calc What's New sort Last Edited By desc |  |
 | select_and_wait | sort-picker | label=Last Edited By (↓) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0003/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0003/ |
 
 | *Comment* | Test Case: Calc What's New sort Last Edited By asc |  |
 | select_and_wait | sort-picker | label=Last Edited By (↑) |
-| text_like | contentContainer | qr/hey whats new %%start_time%% 0003.+hey whats new %%start_time%% 0001/ |
+| text_like | contentWrapper | qr/hey whats new %%start_time%% 0003.+hey whats new %%start_time%% 0001/ |
 
 | *Comment* | Test Case: Calc What's New delete page |  |
 | st-admin | purge-page --w %%wn_ws%% --p hey_whats_new_%%start_time%%_0004 | was purged |
 
 | open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
-| text_unlike | contentContainer | hey whats new %%start_time%% 0004 |
+| text_unlike | contentWrapper | hey whats new %%start_time%% 0004 |
 
 | open_ok | /%%wn_ws%%/index.cgi?action=revision_list;page_name=hey_whats_new_%%start_time%%_0005 |  |
-| text_like | contentContainer | Revision 2 |
-| text_like | contentContainer | Revision 1 |
-| text_unlike | contentContainer | Revision 3 |
+| text_like | contentWrapper | Revision 2 |
+| text_like | contentWrapper | Revision 1 |
+| text_unlike | contentWrapper | Revision 3 |
 
 | *Comment* | Test Case: Calc What's New TEARDOWN |  |
 | st-process-jobs | PageIndex | %%wn_ws%% |

@@ -19,7 +19,7 @@
 
 | wait_for_element_visible_ok | st-wiki-subnav-link-workspaces | 10000 |
 | click_and_wait | st-wiki-subnav-link-workspaces |  |
-| text_like | contentContainer | qr/Workspace Title\s+Workspace Name/ |
+| text_like | contentWrapper | qr/Workspace Title\s+Workspace Name/ |
 
 | *Comment* | Test Case: Global Navigation top links |  |
 | open_ok | /%%workspace%%/ |  |
@@ -33,11 +33,11 @@
 | *Comment* | Test Case: Global Navigation Profile |  |
 | wait_for_element_visible_ok | link=%%short_username%% | 30000 |
 | click_and_wait | link=%%short_username%% |  |
-| text_like | contentContainer | Profile |
-| text_like | contentContainer | Activities |
-| text_like | contentContainer | Colleagues |
-| text_like | contentContainer | Workspaces |
-| text_like | contentContainer | Tags |
+| text_like | contentWrapper | Profile |
+| text_like | contentWrapper | Activities |
+| text_like | contentWrapper | Colleagues |
+| text_like | contentWrapper | Workspaces |
+| text_like | contentWrapper | Tags |
 | open_ok | /%%workspace%%/ |  |
 
 | *Comment* | Test Case: Global Navigation Mobile |  |

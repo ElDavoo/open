@@ -120,8 +120,8 @@ Go to All Tags | The deleted tag should not appear in list
 
 | *Comment* | Test Case: Tags deleted tag gone from list view |  |
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
-| text_unlike | contentContainer | Tag 1 %%start_time%% |
-| text_like | contentContainer | Tag 2 %%start_time%% |
+| text_unlike | contentWrapper | Tag 1 %%start_time%% |
+| text_like | contentWrapper | Tag 2 %%start_time%% |
 
 Make a new page and add a new tag (a tag not already in use in workspace) | tag is added
 Delete this page. | Page is deleted. This tag now has zero pages.
@@ -137,7 +137,7 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | st_process_jobs | |  |
 
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
-| text_unlike | contentContainer | Tag 2 %%start_time%% |
+| text_unlike | contentWrapper | Tag 2 %%start_time%% |
 
 | *Comment* | Test Case: Tags Teardown |  |
 | st-admin | purge-page --w %%workspace%% --page tag_1_content_title_%%start_time%% | was purged |

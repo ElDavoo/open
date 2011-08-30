@@ -21,12 +21,12 @@
 
 | *Comment* | Test Case: Workspace Navigation What's New |  |
 | click_and_wait | link=What's New |  |
-| text_like | contentContainer | Changes in Last |
+| text_like | contentWrapper | Changes in Last |
 | click_and_wait | link=%%ws_title%% |  |
 
 | *Comment* | Test Case: Workspace Navigation My Watchlist |  |
 | click_and_wait | link=My Watchlist |  |
-| text_like | contentContainer | Pages You're Watching |
+| text_like | contentWrapper | Pages You're Watching |
 | click_and_wait | link=%%ws_title%% |  |
 
 | *Comment* | Test Case: Workspace Navigation Blogs |  |
@@ -43,15 +43,15 @@
 | *Comment* | Test Case: Workspace Navigation All Files/Tags/Pages |  |
 | click_and_wait | link=What's New |  |
 | click_and_wait | link=All Files |  |
-| text_like | contentContainer | All Files |
+| text_like | contentWrapper | All Files |
 | click_and_wait | link=%%ws_title%% |  |
 | click_and_wait | link=What's New |
 | click_and_wait | link=All Tags |  |
-| text_like | contentContainer | All Tags in |
+| text_like | contentWrapper | All Tags in |
 | click_and_wait | link=%%ws_title%% |  |
 | click_and_wait | link=What's New |
 | click_and_wait | link=All Pages |  |
-| text_like | contentContainer | All Pages |
+| text_like | contentWrapper | All Pages |
 
 *Settings => What's New. Choose and save a different number of entries, N.*
 
@@ -61,13 +61,13 @@
 | select_ok | recent_changes__changes_depth | label=Last Month |
 | click_and_wait | link=Save |  |
 | click_and_wait | link=What's New |  |
-| text_like | contentContainer | qr/Changes in Last Month \(\d+\) out of \(\d+\) Total Pages/ |
+| text_like | contentWrapper | qr/Changes in Last Month \(\d+\) out of \(\d+\) Total Pages/ |
 | click_and_wait | link=Settings |  |
 | click_and_wait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
 | select_ok | recent_changes__changes_depth | label=Last Week |
 | click_and_wait | link=Save |  |
 | click_and_wait | link=What's New |  |
-| text_like | contentContainer | qr/Changes in Last Week \(\d+\) out of \(\d+\) Total Pages/ |
+| text_like | contentWrapper | qr/Changes in Last Week \(\d+\) out of \(\d+\) Total Pages/ |
 
 | *Comment* | Test Case: Workspace Navigation set up Notepad |  |
 | *Comment* | Create a unique notepad page |  |
