@@ -4,12 +4,6 @@
 
 | st-single-widget-in-dashboard | gallery-widget-ToDo |  |
 | text_like | contentWrapper | ToDo |
-
-| st-name-widget | 1 | todo_widget |
-| st-widget-title-like | todo_widget | ToDo |
-| st-select-widget-frame | todo_widget |  |
-| text_like | //body | New task |
-
-| select-frame | relative=parent |  |
+| text_like | contentWrapper | New task |
 
 | *Comment* | Test Case: ToDo Widget COMPLETED |  |

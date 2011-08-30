@@ -1,0 +1,78 @@
+| *Comment* | Test Case: Cool Dashboard |  |
+
+| set | cd_acct | cool_dash_account_%%start_time%% |
+| set | cd_acct_2 | cool_dash_account_2_%%start_time%% |
+| set | cd_user | cool.user.%%start_time%%@david.socialtext.net |
+
+| create-account | %%cd_acct%% |  |  |
+| create-account | %%cd_acct_2%% |  |  |
+| create-user | %%cd_user%% | %%password%% | %%cd_acct%% |
+| st-admin | add-member --email %%cd_user%% --account %%cd_acct_2%% | now has the role |  |
+| st-admin | give-accounts-admin --email %%cd_user%% | now has accounts admin |  |
+
+| *Comment* | Test Case: Cool Dashboard verify the widget gallery, add a widget |  |
+| st-logoutin | %%cd_user%% | %%password%% |
+| open_ok | /st/dashboard |  |
+| call | st-add-widget | widget=Image |
+
+| *Comment* | Test Case: Cool Dashboard verify the Administer Dashboard section |  |
+| wait_for_element_visible_ok | st-admin-dashboard | 30000 |
+| click_and_wait | st-admin-dashboard |  |
+| wait_for_text_not_present_ok | Image | 30000 |
+| wait_for_text_present_ok | This is the default dashboard shared among all users for the "%%cd_acct%%" account. | 30000 |
+| wait_for_text_present_ok | Switch to account: | 30000 |
+| is_selected_ok | st-change-account | label=%%cd_acct%% |
+| select_and_wait | st-change-account | label=%%cd_acct_2%% |
+| wait_for_text_present_ok | all users for the "%%cd_acct_2%%" account. | 30000 |
+| is_selected_ok | st-change-account | label=%%cd_acct_2%% |
+
+| *Comment* | Test Case: Cool Dashboard change the default dashboard for primary account, force an update |  |  |
+| select_and_wait | st-change-account | label=%%cd_acct%% |
+| wait_for_text_present_ok | all users for the "%%cd_acct%%" account. | 30000 |
+| is_selected_ok | st-change-account | label=%%cd_acct%% |
+| click_ok | st-edit-layout |  |
+| call | st-add-widget | widget=Active Content |
+| click_ok | st-save-layout |  |
+| wait_for_element_visible_ok | force-update | 30000 |
+| check_ok | force-update |  |
+| click_ok | st-save-widget-template |  |
+
+*Change to something better after error message is fixed*
+
+| pause | 5000 |  |
+
+| *Comment* | Test Case: Cool Dashboard verify the change to new default |  |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | Active Content | 30000 |
+| wait_for_text_not_present_ok | Image | 30000 |
+
+| *Comment* | Test Case: Cool Dashboard revert the account default to Socialtext default, force update |  |
+| click_and_wait | st-admin-dashboard |  |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| is_selected_ok | st-change-account | label=%%cd_acct%% |
+| click_ok | st-edit-layout |  |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
+| click_ok | st-revert-layout |  |
+| wait_for_text_not_present_ok | Active Content | 30000 |
+| click_ok | st-save-layout |  |
+| wait_for_element_visible_ok | force-update | 30000 |
+| check_ok | force-update |  |
+| click_ok | st-save-widget-template |  |
+
+*Change to something better after error message is fixed*
+
+| pause | 5000 |  |
+
+| *Comment* | Test Case: Cool Dashboard verify the change back to ST default |  |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | All People Tags | 30000 |
+| wait_for_text_not_present_ok | Image | 30000 |
+| wait_for_text_not_present_ok | Active Content | 30000 |
+
+| *Comment* | Test Case: Cool Dashboard TEARDOWN |  |
+| st-process-jobs |  |  |
+| deactivate-user | %%cd_user%% |  |
+| delete-account | %%cd_acct%% |  |
+| delete-account | %%cd_acct_2%% |  |
+
+| *Comment* | Test Case: Cool Dashboard COMPLETED |  |

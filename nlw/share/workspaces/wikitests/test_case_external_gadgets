@@ -4,16 +4,16 @@
 
 | st_empty_container |  |  |
 
-| call | [st-add-widget] | widget=Microsoft Outlook |
-| call | [st-add-widget] | widget=Youtube Video Player |
-| call | [st-add-widget] | widget=SlideShare Feeds |
-| call | [st-add-widget] | widget=Wikipedia |
-| call | [st-add-widget] | widget=Flickr Photos - English |
-| call | [st-add-widget] | widget=LabPixies Calculator |
-| call | [st-add-widget] | widget=Clock & Date |
-| call | [st-add-widget] | widget=ToDo |
-| call | [st-add-widget] | widget=Google Calendar |
-| call | [st-add-widget] | widget=theXblogs™ |
+| call | st-add-widget | widget=Microsoft Outlook |
+| call | st-add-widget | widget=Youtube Video Player |
+| call | st-add-widget | widget=SlideShare Feeds |
+| call | st-add-widget | widget=Wikipedia |
+| call | st-add-widget | widget=Flickr Photos - English |
+| call | st-add-widget | widget=LabPixies Calculator |
+| call | st-add-widget | widget=Clock & Date |
+| call | st-add-widget | widget=ToDo |
+| call | st-add-widget | widget=Google Calendar |
+| call | st-add-widget | widget=theXblogs™ |
 
 | st_empty_container |  |  |
 
