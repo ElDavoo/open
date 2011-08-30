@@ -91,6 +91,13 @@ sub GET_space {
 
     my $vars = $self->_settings_vars();
     $vars->{section} = 'space';
+    $vars->{space} = {
+        auw_for => $space->is_all_users_workspace
+            ? $space->account->name
+            : undef,
+        users => [ $space->user_roles(direct => 1)->all() ],
+        groups => [ $space->group_roles(direct => 1)->all() ],
+    };
 
     my $content;
     eval {

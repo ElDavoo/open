@@ -22,6 +22,25 @@ jQuery(document).ready(function() {
     margin: 20px 0px;
 }
 
+#settings-main th {
+    font-weight: bold;
+}
+
+#settings-main th,
+#settings-main td {
+    padding: 5px;
+}
+
+#settings-main th.first,
+#settings-main th.first {
+    padding-left: 0px;
+}
+
+#settings-main th.last,
+#settings-main td.last {
+    padding-right: 0px;
+}
+
 #settings-sidebar {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
