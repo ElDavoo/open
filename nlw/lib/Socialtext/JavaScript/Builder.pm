@@ -190,7 +190,7 @@ method build_target ($target) {
     # Now actually build
     my @text;
     for my $part (@$parts) {
-        my $part_text = $->_part_to_text($part);
+        my $part_text = $->part_to_text($part);
         push @text, $part_text if $part_text;
     }
 
@@ -230,16 +230,16 @@ method _part_last_modified ($part) {
     return map { $->modified($_) } @files;
 }
 
-method _part_to_text ($part) {
+method part_to_text ($part) {
     local $CWD = $->part_directory($part);
 
     if ($part->{coffee}) {
-        return $self->_coffee_to_text($part);
+        return $->_coffee_to_text($part);
     }
-    if ($part->{file}) {
+    elsif ($part->{file}) {
         return $->_file_to_text($part);
     }
-    if ($part->{template}) {
+    elsif ($part->{template}) {
         return $->_template_to_text($part);
     }
     elsif ($part->{jemplate_runtime}) {
@@ -281,12 +281,12 @@ method _shindig_feature_to_text ($part) {
 }
 
 method _coffee_to_text ($part) {
-    if ($self->coffee_compiler) {
-        system $self->coffee_compiler => -c => $part->{coffee};
+    if ($->coffee_compiler) {
+        system $->coffee_compiler => -c => $part->{coffee};
         (my $output = $part->{coffee}) =~ s{\.coffee$}{.js};
-        return $self->_file_to_text({ file => $output });
+        return $->_file_to_text({ file => $output });
     }
-    warn "No coffee compiler found in PATH, skipping...\n" if $self->verbose;
+    warn "No coffee compiler found in PATH, skipping...\n" if $->verbose;
     return '';
 }
 

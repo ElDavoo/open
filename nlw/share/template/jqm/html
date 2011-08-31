@@ -1,0 +1,26 @@
+<script>
+$.extend($.mobile, {
+    hashListeningEnabled: false,
+    ajaxLinksEnabled: false,
+    ajaxEnabled: false
+});
+
+if (window.parent && window.parent.$) {
+    var instanceId = Number("__ENV_pref_instance_id__") || "__MODULE_ID__";
+    var $save = window.parent.$('#st-savebutton-' + instanceId);
+    if ($save.length && $save.is(':visible')) {
+        $save.click();
+        $.reload = true;
+    }
+}
+</script>
+<link rel="stylesheet" href="/static/skin/common/css/jquery.mobile-1.0b2.min.css" />
+<link rel="stylesheet" href="/nlw/plugin/control/colorpicker/css/colorpicker.css" type="text/css" />
+<link rel="stylesheet" href="/static/skin/s3/css/bubble.css" type="text/css" />
+<script type="text/javascript" src="/nlw/plugin/widgets/javascript/socialtext-jqm.js"></script>
+
+[% content %]
+
+<div id="loading" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: white; display: none; z-index: 9999; padding-top: 12px; text-align: center; *width: 100%; *height: 100%">
+    <img src="/static/skin/common/images/ajax-loader.gif" width="16" height="16" />
+</div>
