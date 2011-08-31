@@ -1,7 +1,7 @@
 <h3>[% loc('Unsubscribe') %]</h3>
 
 <div class="grid_5 input-label">
-  [% loc('Unsubscribe from this Space') %]:
+  [% loc('Unsubscribe from this Workspace') %]:
 </div>
 <div class="grid_7">
   <input type="checkbox" name="" value="1" /> [% loc('Yes') %]
