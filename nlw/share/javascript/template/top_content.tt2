@@ -31,7 +31,7 @@
 [% FOR row = rows %]
     [% IF row.count %]
     <div class="vpad3">
-        <div class="grid_1 alpha avatar">
+        <div class="grid_1 alpha assetIcon">
             [% IF row.is_spreadsheet %]
                 <img src="/static/skin/s3/images/sheetIcon.png" style="height:12px"/>
             [% ELSIF row.is_person %]
