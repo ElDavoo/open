@@ -695,12 +695,6 @@
             '*/*':       [Socialtext::Handler::Settings, bad_type]
         '*':             [Socialtext::Handler::Settings, bad_method]
 -
-    '/st/settings/create-workspace':
-        'GET':
-            'text/html': [Socialtext::Handler::Settings, GET_create]
-            '*/*':       [Socialtext::Handler::Settings, bad_type]
-        '*':             [Socialtext::Handler::Settings, bad_method]
--
     '/settings/default_workspace':
         'GET':  
             '*/*': &default     [Socialtext::Rest::Settings::DefaultWorkspace, bad_type]
