@@ -28,6 +28,8 @@ var addContent = {
                 var name = $(this).attr('name');
                 self.dialog.find('input[name=method][value='+name+']').click();
             });
+        
+        self.bindFormTarget();
 
         self.dialog.find('form').submit(function() {
             self.dialog.disable();
@@ -38,7 +40,6 @@ var addContent = {
                 window.location = url;
                 return false;
             }
-            self.bindFormTarget();
         });
 
         self.dialog.find('.submit').click(function() {
@@ -57,8 +58,6 @@ var addContent = {
 
             var result;
             try { result = $.secureEvalJSON(content) } catch(e){};
-
-            self.dialog.find('iframe').unbind('load');
 
             if (!result) {
                 self.showError(content);
