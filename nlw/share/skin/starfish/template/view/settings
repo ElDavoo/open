@@ -8,6 +8,14 @@ jQuery(document).ready(function() {
         active: [% IF active_ix.defined; active_ix; ELSE; 'false'; END %],
         autoHeight: false
     });
+
+    jQuery('#settings-main a.save').unbind('click').bind('click', function() {
+        jQuery('#settings-main form').submit();
+    });
+    
+    jQuery('#settings-main a.cancel').unbind('click').bind('click', function() {
+        jQuery('#settings-main form')[0].reset();
+    });
 });
 
 </script>
@@ -121,17 +129,17 @@ select {
   <div class="grid_12" id="settings-main">
   <form method="POST" action="">
     <p>
-      <a class="button" href="#">[% loc('Save') %]</a>
-      <a class="button" href="#">[% loc('Cancel') %]</a>
+      <a class="button save" href="#">[% loc('Save') %]</a>
+      <a class="button cancel" href="#">[% loc('Cancel') %]</a>
     </p>
 
     [% main_content %]
 
     <p>
-      <a class="button" href="#">[% loc('Save') %]</a>
-      <a class="button" href="#">[% loc('Cancel') %]</a>
+      <a class="button save" href="#">[% loc('Save') %]</a>
+      <a class="button cancel" href="#">[% loc('Cancel') %]</a>
     </p>
-  <form method="POST" action="">
+  </form>
   </div>
 </div>
 [% END %]
