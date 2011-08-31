@@ -216,19 +216,23 @@ sub _space_prefs {
     my $self = shift;
     my $space = shift;
 
+    my $user = $self->rest->user;
     my $pref = eval { $self->pref };
     my $id = eval { $self->workspace_id };
 
     my $is_space = $id && $space->workspace_id == $id;
     my $can_admin = $space->user_can(
-        user => $self->rest->user,
+        user => $user,
         permission => ST_ADMIN_WORKSPACE_PERM,
     );
 
     my %abilities = (
         preferences => loc('Preferences'),
         blog => loc('Create Blog'),
-        unsubscribe => loc('Unsubscribe'),
+        ($space->has_user($user, direct=>1)
+            ? (unsubscribe => loc('Unsubscribe'))
+            : ()
+        ),
     );
 
     if ($can_admin) {
