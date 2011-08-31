@@ -14,11 +14,11 @@ rescopedGadgetsObject = function(instance_id) {
         'window': {
             adjustHeight: function(new_height) { /* NOOP */ },
             setTitle: function(title) {
-                if (title.length >= 40 ) {
-                  title = title.substr(0,37); // same as template
+                if (title.length >= 25 ) {
+                  title = title.substr(0,23); // same as template
                   title = title + ' ...';
                 }
-                $widgetNode.find('.widgetHeaderTitleText').html(
+                $widgetNode.find('.widgetTitle h1').html(
                     title.replace(/&/g, '&amp;').replace(/</g, '&lt;')
                 );
 
