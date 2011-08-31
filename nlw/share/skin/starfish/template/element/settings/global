@@ -61,8 +61,8 @@
 %]
 
 [% INCLUDE element/settings/setting_select
-  pref='prefs.timezone.display_format'
-  option=prefs.timezone.display_format
+  pref='prefs.timezone.date_display_format'
+  option=prefs.timezone.date_display_format
 %]
 
 [% INCLUDE element/settings/setting_select
