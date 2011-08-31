@@ -2,6 +2,7 @@ package Socialtext::Handler::Settings;
 use Moose;
 use Socialtext::Permission qw(ST_ADMIN_WORKSPACE_PERM ST_READ_PERM);
 use Socialtext::PreferencesPlugin;
+use Socialtext::PrefsTable;
 use Socialtext::l10n qw(loc);
 use namespace::clean -except=>'meta';
 
@@ -11,6 +12,7 @@ extends 'Socialtext::Rest::Entity';
 has 'space' => (
     is => 'ro', isa => 'Maybe[Socialtext::Workspace]', lazy_build => 1);
 has 'settings' => (is => 'ro', isa => 'HashRef', lazy_build => 1);
+has 'message' => (is => 'rw', isa => 'Str', default => '');
 
 sub _build_space {
     my $self = shift;
@@ -191,6 +193,7 @@ sub _settings_vars {
         $i++;
     }
     $vars->{spaces} = \@spaces;
+    $vars->{message} = $self->message;
 
     return $vars;
 }
