@@ -93,14 +93,6 @@ select {
           [% END %]
         </div>
       <h4>[% loc('Workspaces') %]</h4>
-      <div class="top">
-          [% IF section == 'create' %]
-            <strong>[% loc('Create New Workspace') %]</strong>
-          [% ELSE %]
-            <a href="/st/settings/create-workspace">
-              [% loc('Create New Workspace') %]</a>
-          [% END %]
-      </div>
       <div id="spaces-accordion">
       [% FOREACH space IN spaces %]
         <div class="top header">
