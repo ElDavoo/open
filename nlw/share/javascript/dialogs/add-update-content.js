@@ -9,7 +9,7 @@ var addContent = {
                 update: this.opts.gadget_id ? true : false,
                 gadget_id: this.opts.gadget_id,
                 src: /^urn:/.test(this.opts.src) ? null : this.opts.src,
-                hasXml: this.opts.hasXml
+                hasXML: this.opts.hasXML
             }),
             title: this.opts.gadget_id
                 ? loc('widgets.update-widget')
@@ -30,6 +30,7 @@ var addContent = {
             });
 
         self.dialog.find('form').submit(function() {
+            self.dialog.disable();
             if (self.dialog.find('input[value=editor]').is(':checked')) {
                 var url = '/st/widget?account_id=' + self.opts.account_id;
                 if (self.opts.gadget_id)
@@ -37,23 +38,18 @@ var addContent = {
                 window.location = url;
                 return false;
             }
+            self.bindFormTarget();
         });
 
         self.dialog.find('.submit').click(function() {
-            self.dialog.disable();
-            self.addGadget();
+            self.dialog.find('form').submit();
             return false;
         });
     },
 
-    showError: function(error) {
-        this.dialog.enable();
-        this.dialog.find('.error').html(error);
-    },
-
-    addGadget: function (form) {
+    bindFormTarget: function() {
         var self = this;
-        self.dialog.find('iframe').unbind('load').load(function () {
+        self.dialog.find('iframe').load(function () {
             var doc = this.contentDocument || this.contentWindow.document;
             if (!doc) throw new Error("Can't find iframe");
 
@@ -62,7 +58,7 @@ var addContent = {
             var result;
             try { result = $.secureEvalJSON(content) } catch(e){};
 
-            $(this).unbind('load');
+            self.dialog.find('iframe').unbind('load');
 
             if (!result) {
                 self.showError(content);
@@ -80,7 +76,11 @@ var addContent = {
                 }
             }
         });
-        self.dialog.find('form').submit();
+    },
+
+    showError: function(error) {
+        this.dialog.enable();
+        this.dialog.find('.error').html(error);
     },
 
     addGadgetToGallery: function (gadget_id) {
