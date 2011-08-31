@@ -133,6 +133,10 @@ select {
       <a class="button cancel" href="#">[% loc('Cancel') %]</a>
     </p>
 
+    [% IF message %]
+      <p>[% message %]</p>
+    [% END %]
+
     [% main_content %]
 
     <p>
