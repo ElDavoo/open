@@ -46,10 +46,23 @@
 | wait_for_text_present_ok | Active Content | 30000 |
 | wait_for_text_not_present_ok | Image | 30000 |
 
+| *Comment* | Test Case: Cool Dashboard navigate to the control panel, verify dashboard controls there |  |
+| open_ok | /nlw/control/account/%%account_id%% |  |
+| wait_for_text_present_ok | Dashboard Gallery | 30000 |
+| wait_for_element_visible_ok | st-gallery-add-widget | 30000 |
+| click_ok | st-gallery-add-widget |  |
+| wait_for_text_present_ok | Upload Widget XML File: | 30000 |
+| wait_for_text_present_ok | Add a Widget with URL: | 30000 |
+| wait_for_text_present_ok | Use the Widget Editor | 30000 |
+| click_ok | //a[@class='ui-dialog-titlebar-close ui-corner-all'] |  |
+| wait_for_element_not_visible_ok | add-widget | 10000 |
+
 | *Comment* | Test Case: Cool Dashboard revert the account default to Socialtext default, force update |  |
-| click_and_wait | st-admin-dashboard |  |
-| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_and_wait | st-edit-layout |  |
+| wait_for_element_visible_ok | st-change-account | 30000 |
+| select_and_wait | st-change-account | label=%%cd_acct%% |
 | is_selected_ok | st-change-account | label=%%cd_acct%% |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 | click_ok | st-revert-layout |  |
