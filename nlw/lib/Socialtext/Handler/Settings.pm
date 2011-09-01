@@ -188,6 +188,57 @@ sub POST_space {
                 }
             }
 
+            if (my @valid = $q->param('workspace.do.valid_user')) {
+                my @remove = $q->param('workspace.do.remove_user');
+                my @admins = $q->param('workspace.do.should_be_admin');
+                my @password_reset = $q->param('workspace.do.reset_password');
+
+                my $admin = Socialtext::Role->Admin;
+                my $member = Socialtext::Role->Member;
+
+                foreach my $id (@valid) {
+                    my $user = Socialtext::User->new(user_id => $id);
+                    next unless $user;
+                    next unless $self->space->has_user($user, direct => 1);
+
+
+                    if (grep { $id == $_ } @remove) {
+                        $self->space->remove_user(
+                            user => $user,
+                            actor => $self->rest->user,
+                        );
+                    }
+                    else {
+                        if (grep { $id eq $_ } @password_reset) {
+                            my $confirmation =
+                                $user->create_password_change_confirmation;
+                            $confirmation->send;
+                        }
+
+                        my $role = $self->space->role_for_user(
+                            $user, direct => 1);
+
+                        if (grep { $id eq $_ } @admins) {
+                            $self->space->assign_role_to_user(
+                                user => $user,
+                                role => $admin,
+                                actor => $self->rest->user,
+                            ) unless $role->name eq 'admin';
+                        }
+                        else {
+                            $self->space->assign_role_to_user(
+                                user => $user,
+                                role => $member,
+                                actor => $self->rest->user,
+                            ) if $role->name eq 'admin';
+
+                            $redirect = '/st/settings'
+                                if $user->user_id == $self->rest->user->user_id;
+                        }
+                    }
+                }
+            }
+
             if (my $blog = $space_settings->{do}{create_blog}) {
                 my $tag = $self->hub->weblog->create_weblog($blog);
                 $redirect = $self->hub->weblog->weblog_url($tag);

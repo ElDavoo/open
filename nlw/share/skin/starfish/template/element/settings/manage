@@ -4,7 +4,7 @@
   [% loc('Email addresses to invite') %]:
 </div>
 <div class="grid_7">
-  <textarea name="" rows="4" cols="30"></textarea>
+  <textarea name="workspace.do.invite" rows="4" cols="30"></textarea>
 </div>
 <div class="clear"></div>
 
@@ -40,18 +40,20 @@
     <tr>
       <td class="first">
         <input type="checkbox" value="[% user.user_id %]"
-          name="remove_user" />
+          name="workspace.do.remove_user" />
       </td>
       <td>[% user.name_and_email | html %] </td>
       <td>
         <input type="checkbox" value="[% user.user_id %]"
-         name="should_be_admin"
+         name="workspace.do.should_be_admin"
          [% IF role.name == 'admin' %]checked="checked"[% END %]
         />
+        <input type="hidden" value="[% user.user_id %]"
+          name="workspace.do.valid_user" />
       </td>
       <td class="last">
         <input type="checkbox" value="[% user.user_id %]"
-          name="reset_password"
+          name="workspace.do.reset_password"
           [% UNLESS user.can_update_store %]disabled="disabled"[%END%]
         />
       </td>
