@@ -3,27 +3,6 @@
 var gallery = {
     hidden: {},
 
-    gadgetVars: {
-        profile: {
-            fixed: true,
-            'class': 'tan',
-            col: 2,
-            row: 0
-        },
-
-        dashboard: {
-            fixed: false,
-            col: 2,
-            row: 0
-        },
-
-        account_dashboard: {
-            fixed: false,
-            col: 2,
-            row: 0
-        }
-    },
-
     show: function (args) {
         var self = this;
         $.extend(self, args);
@@ -47,14 +26,11 @@ var gallery = {
             var $button = $(this);
             var src = $button.siblings('input[name=src]').val();
             var gadget_id = $button.siblings('input[name=gadget_id]').val();
-
-            if (!self.gadgetVars[self.type])
-                throw new Error('No vars for ' + self.type);
-            var vars = $.extend({
+            gadgets.container.add_gadget({
+                col: 2,
+                row: 0,
                 gadget_id: gadget_id
-            }, self.gadgetVars[self.type]);
-
-            gadgets.container.add_gadget(vars);
+            });
             self.dialog.close();
             return false;
         });

@@ -533,14 +533,30 @@ container.add_gadget = function(config) {
     var instance_id = (new Date).getTime();
     config.install = true; // install this as a new widget
 
-    var params = self.allParams(instance_id);
-    var url = '/data/gadgets/' + config.gadget_id + '?' + $.param(params);
-
-    $.getJSON(url, function(data) {
-        self.pendingChanges[instance_id] = config;
-        var $gadget = container.renderGadget($.extend({}, config, data));
-        self.makeEditable($gadget.find('.widget'));
-    });
+    if (self._in_edit_mode) {
+        var params = self.allParams(instance_id);
+        var url = '/data/gadgets/' + config.gadget_id + '?' + $.param(params);
+        $.getJSON(url, function(data) {
+            self.pendingChanges[instance_id] = config;
+            var $gadget = container.renderGadget($.extend({}, config, data));
+            self.makeEditable($gadget.find('.widget'));
+        });
+    }
+    else {
+        $.ajax({
+            url:  self.base_url + '/gadgets',
+            type: 'POST',
+            data: gadgets.json.stringify(config),
+            contentType: 'application/json',
+            dataType: 'json',
+            error: function(xhr, err, errorText) {
+                socialtext.dialog.showError(xhr.responseText);
+            },
+            success: function(data) {
+                container.renderGadget(data);
+            }
+        });
+    }
 };
 
 container.renderGadget = function(data, template_vars, node) {

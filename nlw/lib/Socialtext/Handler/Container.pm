@@ -75,6 +75,16 @@ sub get_html {
     });
 }
 
+sub POST_gadget {
+    my $self = shift;
+    warn $self->rest->getContent;
+    $self->if_authorized_to_edit(sub {
+        my $data = decode_json($self->rest->getContent);
+        my $ginstance = $self->container->install_gadget(%$data);
+        return encode_json($self->container->gadget_vars($ginstance));
+    });
+}
+
 sub install_gadget {
     my $self = shift;
     my %params =$self->rest->query->Vars;
