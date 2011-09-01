@@ -74,6 +74,15 @@ sub weblog_depth {
     return $p;
 }
 
+sub weblog_url {
+    my $self = shift;
+    my $tag = shift;
+    my $encoded = $self->hub->pages->title_to_uri($tag);
+
+    return '/'.$self->hub->current_workspace->name
+        .'/?action=blog_display;tag='.$encoded;
+}
+
 sub weblogs_create {
     my $self = shift;
     return $self->redirect('action=settings')

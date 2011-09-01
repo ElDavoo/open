@@ -165,6 +165,7 @@ sub POST_space {
         $settings->{$object}{$index}{$value} = $q->param($setting);
     }
 
+    my $redirect = '';
     eval {
         $self->hub->current_workspace($self->space);
         if (my $space_settings = $settings->{workspace}) {
@@ -186,6 +187,11 @@ sub POST_space {
                     );
                 }
             }
+
+            if (my $blog = $space_settings->{do}{create_blog}) {
+                my $tag = $self->hub->weblog->create_weblog($blog);
+                $redirect = $self->hub->weblog->weblog_url($tag);
+            }
         }
 
         my $preferences = $self->hub->preferences;
@@ -201,7 +207,9 @@ sub POST_space {
         $self->message(loc('Error when saving settings'));
     }
 
-    return $self->get_space_html($rest);
+    return $redirect
+      ? $self->redirect($redirect)
+      : $self->get_space_html($rest);
 }
 
 sub _user_has_correct_perms {
