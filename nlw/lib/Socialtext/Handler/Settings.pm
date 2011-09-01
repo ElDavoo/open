@@ -4,6 +4,7 @@ use Socialtext::Permission qw(ST_ADMIN_WORKSPACE_PERM ST_READ_PERM);
 use Socialtext::PreferencesPlugin;
 use Socialtext::PrefsTable;
 use Socialtext::l10n qw(loc);
+use Socialtext::Log qw(st_log);
 use namespace::clean -except=>'meta';
 
 with 'Socialtext::Handler::Base';
@@ -51,6 +52,74 @@ sub if_authorized_to_edit {
     my $self = shift;
     my $callback = shift;
     return $self->if_authorized_to_view($callback);
+}
+
+sub POST {
+    my $self = shift;
+    my $rest = shift;
+
+    return $self->not_authenticated if $self->rest->user->is_guest;
+
+    eval {
+        my $user = $self->rest->user;
+        my $q = $self->rest->query;
+        my $new_password = $q->param('user.new_password');
+
+        if ($new_password) {
+            if (!$user->password_is_correct($q->param('user.old_password'))) {
+                $self->message(loc('Current password not correct'));
+            }
+            elsif ($new_password ne $q->param('user.new_password_retype')) {
+                $self->message(loc('New password does not match'));
+            }
+            else {
+                my @messages = $user->ValidatePassword(password => $new_password);
+                $self->message($messages[0]) if (scalar(@messages));
+            }
+            return $self->get_html($rest) if ($self->message);
+        }
+        
+        if ($user->can_update_store) {
+            my %p = (
+                first_name => $q->param('user.first_name'),
+                last_name => $q->param('user.last_name'),
+                middle_name => $q->param('user.middle_name'),
+            );
+            $p{password} = $new_password if ($new_password);
+            $user->update_store(%p);
+        }
+
+        my @params = $self->hub->timezone->pref_names;
+        my $prefs = {
+            map { $_ => $q->param("prefs.timezone.$_") || '0'} @params
+        };
+        $user->prefs->save({timezone => $prefs});
+
+        my $plugin_prefs = {};
+
+        @params = grep { /^checkbox\.plugin\./ } $q->param;
+        for my $param (@params) {
+            my (undef,undef,$plugin,$pref) = split(/\./, $param);
+            $plugin_prefs->{$plugin}{$pref} = $q->param($param);
+        }
+
+        @params = grep { /^plugin\./ } $q->param;
+        for my $param (@params) {
+            my (undef,$plugin,$pref) = split(/\./, $param);
+            $plugin_prefs->{$plugin}{$pref} = $q->param($param);
+        }
+
+        for my $plugin (keys %$plugin_prefs) {
+            my $prefs = $self->_plugin_prefs_table($plugin);
+            $prefs->set(%{ $plugin_prefs->{$plugin} });
+        }
+    };
+    if (my $e = $@) {
+        st_log->error("Could not save settings: $e");
+        $self->message(loc('Error when saving settings'));
+    }
+
+    return $self->get_html($rest);
 }
 
 sub get_html {
@@ -117,6 +186,19 @@ sub GET_space {
 
     $self->rest->header('Content-Type' => 'text/html; charset=utf-8');
     return $self->render_template('view/settings', $vars);
+}
+
+sub _plugin_prefs_table {
+    my $self = shift;
+    my $plugin = shift;
+
+    return Socialtext::PrefsTable->new(
+        table => 'user_plugin_pref',
+        identity => {
+            plugin => $plugin,
+            user_id => $self->rest->user->user_id,
+        },
+    );
 }
 
 sub fetch_prefs {

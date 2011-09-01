@@ -12,6 +12,9 @@
           checked="checked"
         [% END %]
       /> [% setting.display %]
+    [% ELSE %]
+      <input type="hidden" name="checkbox.[% pref %]"
+        value="[% setting.setting %]" />
     [% END %]
   [% END %]
   </div>
