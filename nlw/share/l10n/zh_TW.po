@@ -6192,7 +6192,7 @@ msgstr "名為『%1』的頁面不存在"
 #. (loc("page.type-"+type)
 #: share/skin/s3/javascript/lightbox/create_content.js:73
 msgid "error.no-page=type,tag"
-msgstr "找不到有『%2』標籤的%1"
+msgstr "找不到有『範本』或『template』標籤的頁面"
 
 #: lib/Socialtext/User/Factory.pm:465
 msgid "error.no-password-for-new-user"
