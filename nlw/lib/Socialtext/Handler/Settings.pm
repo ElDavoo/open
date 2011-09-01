@@ -166,6 +166,7 @@ sub POST_space {
     }
 
     eval {
+        $self->hub->current_workspace($self->space);
         if (my $space_settings = $settings->{workspace}) {
             $self->space->update(%{$space_settings->{setting}})
                 if $space_settings->{setting};
@@ -184,6 +185,14 @@ sub POST_space {
                         role => Socialtext::Role->Guest,
                     );
                 }
+            }
+        }
+
+        my $preferences = $self->hub->preferences;
+        if (my $prefs = $settings->{prefs}) {
+            for my $index (keys %$prefs) {
+                $preferences->store(
+                    $self->rest->user, $index, $prefs->{$index});
             }
         }
     };
