@@ -4,7 +4,8 @@
   [% loc('Unsubscribe from this Workspace') %]:
 </div>
 <div class="grid_7">
-  <input type="checkbox" name="" value="1" /> [% loc('Yes') %]
+  <input type="checkbox" name="workspace.do.unsubscribe"
+    value="1" /> [% loc('Yes') %]
 </div>
 <div class="clear"></div>
 

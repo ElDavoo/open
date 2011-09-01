@@ -192,6 +192,12 @@ sub POST_space {
                 my $tag = $self->hub->weblog->create_weblog($blog);
                 $redirect = $self->hub->weblog->weblog_url($tag);
             }
+
+            my $unsubscribe = $space_settings->{do}{unsubscribe};
+            if (defined $unsubscribe && $unsubscribe == 1) {
+                $self->space->remove_user(user => $self->rest->user);
+                $redirect = '/st/settings';
+            }
         }
 
         my $preferences = $self->hub->preferences;
