@@ -9,7 +9,7 @@
   [% prefs.workspaces_ui.homepage_weblog.title %]:
 </div>
 <div class="grid_7">
-  <input type="text" name="workspace.settings.homepage_weblog"
+  <input type="text" name="workspace.setting.homepage_weblog"
     value="[% prefs.workspaces_ui.homepage_weblog.default_setting %]" />
 </div>
 <div class="clear"></div>
