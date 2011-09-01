@@ -1,6 +1,8 @@
 package Socialtext::Handler::Settings;
 use Moose;
-use Socialtext::Permission qw(ST_ADMIN_WORKSPACE_PERM ST_READ_PERM);
+use Socialtext::Permission qw(ST_ADMIN_WORKSPACE_PERM ST_READ_PERM
+                              ST_EMAIL_IN_PERM);
+use Socialtext::Role;
 use Socialtext::PreferencesPlugin;
 use Socialtext::PrefsTable;
 use Socialtext::l10n qw(loc);
@@ -141,25 +143,89 @@ sub get_html {
     return $self->render_template('view/settings', $vars);
 }
 
-around 'GET_space' => \&wrap_get;
-sub GET_space { 
+
+sub POST_space {
     my $self = shift;
     my $rest = shift;
 
-    my $user = $self->rest->user;
-    my $space = $self->space;
-    return $self->error(loc('Not Found')) unless $space;
+    return $self->error(loc('Not Found')) unless $self->space;
+    return $self->error(loc('Not Authorized'))
+        unless $self->_user_has_correct_perms;
+
+    my $q = $self->rest->query;
+
+    my $settings = {};
+    for my $box (grep { /^checkbox\./ } $q->param) {
+        my (undef,$object,$index,$value) = split(/\./, $box);
+        $settings->{$object}{$index}{$value} = $q->param($box);
+    }
+
+    for my $setting (grep { !/^checkbox\./ } $q->param) {
+        my ($object,$index,$value) = split(/\./, $setting);
+        $settings->{$object}{$index}{$value} = $q->param($setting);
+    }
+
+    eval {
+        if (my $space_settings = $settings->{workspace}) {
+            $self->space->update(%{$space_settings->{setting}})
+                if $space_settings->{setting};
+
+            my $email_in = $space_settings->{permission}{guest_has_email_in};
+            if (defined $email_in) {
+                if ($email_in) {
+                    $self->space->permissions->add(
+                        permission => ST_EMAIL_IN_PERM,
+                        role => Socialtext::Role->Guest,
+                    );
+                }
+                else {
+                    $self->space->permissions->remove(
+                        permission => ST_EMAIL_IN_PERM,
+                        role => Socialtext::Role->Guest,
+                    );
+                }
+            }
+        }
+    };
+    if (my $e = $@) {
+        st_log->error("Could not save settings: $e");
+        $self->message(loc('Error when saving settings'));
+    }
+
+    return $self->get_space_html($rest);
+}
+
+sub _user_has_correct_perms {
+    my $self = shift;
 
     my %abilities = $self->AdminAbilities;
     my $perm = (grep { $_ eq $self->pref } keys %abilities)
         ? ST_ADMIN_WORKSPACE_PERM
         : ST_READ_PERM;
 
-    return $self->error(loc('Not Authorized')) unless $space->user_can(
-        user => $user,
+    return $self->space->user_can(
+        user => $self->rest->user,
         permission => $perm,
     );
+}
 
+around 'GET_space' => \&wrap_get;
+sub GET_space { 
+    my $self = shift;
+    my $rest = shift;
+
+    return $self->error(loc('Not Found')) unless $self->space;
+    return $self->error(loc('Not Authorized'))
+        unless $self->_user_has_correct_perms;
+
+    return $self->get_space_html($rest);
+}
+
+sub get_space_html {
+    my $self = shift;
+    my $rest = shift;
+
+    my $space = $self->space;
     my $vars = $self->_settings_vars();
     $vars->{section} = 'space';
     $vars->{space} = {
