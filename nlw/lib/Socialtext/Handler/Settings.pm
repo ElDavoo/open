@@ -326,7 +326,6 @@ sub _space_prefs {
 sub AdminAbilities {
     return (
         manage => loc('Manage Users'),
-        # invite => loc('Invite New Users'),
         features => loc('Features'),
     );
 }
