@@ -229,3 +229,18 @@
         - { jemplate: 'template/dropdown.tt2' }
         - activities/jquery.dropdown.js
         - socialtext-api.js
+
+# jQuery Mobile
+'socialtext-jqm.js':
+    compress: 1
+    parts:
+        - jquery-1.6.2.min.js
+        - {jemplate_runtime: jquery}
+        - contrib/jquery-ui-1.8.5.js
+        - contrib/jquery.mobile-1.0b2.min.js
+        - lookahead.js
+        - contrib/jquery.ui.ipad.altfix.js
+        - contrib/colorpicker/js/colorpicker.js
+        - bubble.js
+        - { jemplate: 'template' }
+        - like-indicator.js
