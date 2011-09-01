@@ -552,12 +552,15 @@
         'GET':
             '*/*':              [Socialtext::Rest::AccountTheme, bad_type]
             'application/json': [Socialtext::Rest::AccountTheme, GET_json]
-            'text/css':         [Socialtext::Rest::AccountTheme, GET_css]
-            'text/sass':        [Socialtext::Rest::AccountTheme, GET_sass]
         'PUT':
             '*/*':              [Socialtext::Rest::AccountTheme, bad_type]
             'application/json': [Socialtext::Rest::AccountTheme, PUT_theme]
         '*':                    [Socialtext::Rest::AccountTheme, bad_method]
+-
+    '/data/accounts/:acct/theme/:filename':
+        'GET':
+            '*/*': [Socialtext::Rest::AccountTheme, GET_css]
+        '*':       [Socialtext::Rest::AccountTheme, bad_method]
 -
     '/data/accounts/:acct/theme/images/:filename':
         'GET':

@@ -24,39 +24,27 @@ sub GET_css {
     my $rest = shift;
 
     return $self->if_valid_request($rest => sub {
-        $rest->header(-type=>'text/css');
-        
-        my $sass = Socialtext::SASSy->new(account => $self->account);
-        $sass->render if $sass->needs_update;
-        $rest->header(
-            -status               => HTTP_200_OK,
-            '-content-length'     => -s $sass->css_file || 0,
-            -type                 => 'text/css',
-            -pragma               => undef,
-            '-cache-control'      => undef,
-            'Content-Disposition' => q{filename="style.css"},
-            '-X-Accel-Redirect'   => $sass->protected_uri('account.css'),
+        my ($filename, $ext) = $self->filename =~ m{^(\w+)\.(sass|css)$};
+        die 'Only .sass and .css are acceptable file extensions' unless $ext;
+
+        $rest->header(-type=>"text/$ext");
+
+        my $sass = Socialtext::SASSy->new(
+            account => $self->account,
+            filename => $filename,
         );
-    });
-}
-
-sub GET_sass {
-    my $self = shift;
-    my $rest = shift;
-
-    return $self->if_valid_request($rest => sub {
-        $rest->header(-type=>'text/sass');
-        
-        my $sass = Socialtext::SASSy->new(account => $self->account);
         $sass->render if $sass->needs_update;
+
+        my $size = $ext eq 'sass' ? -s $sass->sass_file : -s $sass->css_file;
+
         $rest->header(
             -status               => HTTP_200_OK,
-            '-content-length'     => -s $sass->sass_file || 0,
-            -type                 => 'text/plain',
+            '-content-length'     => $size || 0,
+            -type                 => $ext eq 'sass' ? 'text/plain' : 'text/css',
             -pragma               => undef,
             '-cache-control'      => undef,
-            'Content-Disposition' => q{filename="style.sass.txt"},
-            '-X-Accel-Redirect'   => $sass->protected_uri('account.sass'),
+            'Content-Disposition' => qq{filename="$filename.$ext.txt"},
+            '-X-Accel-Redirect'   => $sass->protected_uri("$filename.out.$ext"),
         );
     });
 }

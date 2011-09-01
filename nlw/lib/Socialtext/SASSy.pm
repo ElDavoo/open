@@ -19,6 +19,7 @@ use constant is_dev_env => Socialtext::AppConfig->is_dev_env;
 use constant static_path => Socialtext::Helpers->static_path;
 
 has 'account' => ( is => 'ro', isa => 'Socialtext::Account', required => 1 );
+has 'filename' => ( is => 'ro', isa => 'Str', required => 1 );
 
 has 'files' => (
     is => 'ro', isa => 'ArrayRef', lazy_build => 1, auto_deref => 1,
@@ -39,13 +40,13 @@ method _build_cache_dir {
 has 'sass_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 method _build_sass_file {
     mkpath $self->cache_dir unless -d $self->cache_dir;
-    return $self->cache_dir . "/account.sass";
+    return $self->cache_dir . '/' . $self->filename . '.out.sass';
 }
 
 has 'css_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 method _build_css_file {
     mkpath $self->cache_dir unless -d $self->cache_dir;
-    return $self->cache_dir . "/account.css";
+    return $self->cache_dir . '/' . $self->filename . '.out.css';
 }
 
 method protected_uri($file) {
@@ -72,9 +73,11 @@ method render {
     for my $key (keys %$theme) {
         push @lines, "\$$key: $theme->{$key}\n";
     }
-    push @lines, "\@import style.sass\n";
+    push @lines, "\@import " . $self->filename . ".sass\n";
 
     set_contents($self->sass_file, join('', @lines));
+
+    warn $self->sass_file;
 
     $Socialtext::System::SILENT_RUN = 1;
     shell_run(

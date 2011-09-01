@@ -14,7 +14,7 @@
   <head>
     <title>[% title || display_title |html %][% IF workspace_present AND wiki.title %] / [% wiki.title |html %][% END %]</title>
 
-    <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" media="screen" />
 
     [% IF feeds %]
       [% IF feeds.rss %]
