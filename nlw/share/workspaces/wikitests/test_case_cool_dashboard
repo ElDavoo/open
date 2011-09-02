@@ -26,7 +26,7 @@
 | wait_for_text_present_ok | all users for the "%%cd_acct_2%%" account. | 30000 |
 | is_selected_ok | st-change-account | label=%%cd_acct_2%% |
 
-| *Comment* | Test Case: Cool Dashboard change the default dashboard for primary account, force an update |  |  |
+| *Comment* | Test Case: Cool Dashboard change the default dashboard for primary account, force an update |  |
 | select_and_wait | st-change-account | label=%%cd_acct%% |
 | wait_for_text_present_ok | all users for the "%%cd_acct%%" account. | 30000 |
 | is_selected_ok | st-change-account | label=%%cd_acct%% |
@@ -36,10 +36,9 @@
 | wait_for_element_visible_ok | force-update | 30000 |
 | check_ok | force-update |  |
 | click_ok | st-save-widget-template |  |
-
-*Change to something better after error message is fixed*
-
-| pause | 5000 |  |
+| wait_for_text_present_ok | Successfully reset all dashboards in the selected account | 30000 |
+| click_ok | link=Close |  |
+| wait_for_element_not_visible_ok | confirm-dialog | 10000 |
 
 | *Comment* | Test Case: Cool Dashboard verify the change to new default |  |
 | open_ok | /st/dashboard |  |
@@ -71,10 +70,9 @@
 | wait_for_element_visible_ok | force-update | 30000 |
 | check_ok | force-update |  |
 | click_ok | st-save-widget-template |  |
-
-*Change to something better after error message is fixed*
-
-| pause | 5000 |  |
+| wait_for_text_present_ok | Successfully reset all dashboards in the selected account | 30000 |
+| click_ok | link=Close |  |
+| wait_for_element_not_visible_ok | confirm-dialog | 10000 |
 
 | *Comment* | Test Case: Cool Dashboard verify the change back to ST default |  |
 | open_ok | /st/dashboard |  |
