@@ -41,6 +41,7 @@ TEST_JOBS = 4
 SERIAL_UNIT_TESTS = $(shell grep -l 'fixtures(.*serial.*)' -r t | grep '\.t$$' | grep -v '^t/live/' | dev-bin/fixture-sort)
 PARALLEL_UNIT_TESTS = $(shell grep -L 'fixtures(.*serial.*)' -r t | grep '\.t$$' | grep -v '^t/live/' | dev-bin/fixture-sort)
 JS_TESTS  = $(shell find -L t/ -name '*.t.js')
+COFFEE_TESTS  = $(shell find -L t/ -name '*.t.coffee')
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
 
 # Program locations
@@ -345,7 +346,7 @@ MANIFEST:
 tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
-test: testreports testconsole testunit testwikid testjs
+test: testreports testconsole testunit testwikid testcoffee testjs
 
 testunit: testunit-parallel testunit-serial
 
@@ -360,6 +361,9 @@ testwikid:
 
 testjs:
 	@$(PROVE) --jobs $(TEST_JOBS) $(JS_TESTS)
+
+testcoffee:
+	@$(PROVE) --jobs $(TEST_JOBS) $(COFFEE_TESTS)
 
 testreports:
 	@cd ../socialtext-reports/ && $(PROVE) --jobs 1 t/
