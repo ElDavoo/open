@@ -48,7 +48,7 @@
          name="workspace.do.should_be_admin"
          [% IF role.name == 'admin' %]checked="checked"[% END %]
         />
-        <input type="hidden" value="[% user.user_id %]"
+        <input type="hidden" value="[% user.user_id %].[% role.role_id %]"
           name="workspace.do.valid_user" />
       </td>
       <td class="last">
