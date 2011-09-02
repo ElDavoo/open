@@ -1,7 +1,7 @@
 package Socialtext::UserSetContainer;
 # @COPYRIGHT@
 use Moose::Role;
-use Carp qw/croak/;
+use Carp qw/croak cluck/;
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::l10n qw/loc/;
 use Socialtext::UserSet qw/:const/;
@@ -278,6 +278,14 @@ sub _log_role_change {
     my ($c_short, $c_id) = _log_identifier_for_thing($self);
     my (undef,    $a_id) = _log_identifier_for_thing($actor);
 
+    require Socialtext::Account;
+    my $del_id = Socialtext::Account->Deleted()->account_id;
+    my $is_user = (ref($thing) and ref($thing) eq 'Socialtext::User')
+        and $thing->email_address eq 'devnull1@socialtext.com' ? 1 : 0;
+    my $is_acct = (ref($self) and ref($self) eq 'Socialtext::Account')
+        and $self->account_id eq $del_id ? 1 : 0;
+    
+    cluck('Caught nautiness') if $is_user and $is_acct;
     my $msg = $action . ',' . uc($t_short) . '_ROLE,'.
         "role:$r_name,${t_short}:$t_id,${c_short}:$c_id,".
         "actor:$a_id,".
