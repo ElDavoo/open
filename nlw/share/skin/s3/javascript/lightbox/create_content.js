@@ -6,7 +6,7 @@ ST.CreateContent = function () {}
 var proto = ST.CreateContent.prototype = new ST.Lightbox;
 
 proto.visible_types = {
-    wiki: loc('page.type-wiki')
+    xhtml: loc('page.type-xhtml')
 };
 
 proto.type_radio = function (type) {
@@ -122,7 +122,7 @@ proto.create_page_lookahead = function () {
 
 proto.selected_page_type = function () {
     var self = this;
-    var page_type = 'wiki';
+    var page_type = 'xhtml';
     this.choices().each(function () {
         if ($(this).is(":checked")) {
             page_type = $(this).val();
@@ -183,7 +183,7 @@ proto.show = function () {
         })
 
     // Set the defaults
-    this.type_radio('wiki').click();
+    this.type_radio('xhtml').click();
     this.from_blank_radio().click();
     this.update_templates();
     this.create_page_lookahead();

@@ -121,6 +121,9 @@ bin/st-admin enable-plugin --all-accounts \
     --plugin analytics \
     --plugin like \
 
+bin/st-admin enable-plugin --all-workspaces \
+    --plugin ckeditor \
+
 bin/st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 
 if [ $UPDATE_WIDGETS == 1 ]; then
