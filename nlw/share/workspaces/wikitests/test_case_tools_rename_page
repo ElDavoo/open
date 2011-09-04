@@ -1,13 +1,9 @@
 | *Comment* | Test Case: Tools: Rename Page |
 
 | *Comment* | Test Case: Tools: Rename Page Create test page |  |
-| open_ok | /%%workspace%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Rename This Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Rename This Page %%start_time%% content |
+
+| call | st-edit-fill-page | ws=%%workspace%% | title=Rename This Page %%start_time%% | content=Rename This Page %%start_time%% content |
+
 
 | *Comment* | Test Case: Tools: Rename Page Create test tag |  |
 | wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |

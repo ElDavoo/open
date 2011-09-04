@@ -1,13 +1,12 @@
-| *Comment* | Test Case: Edit This Page content |  |
 | open_ok | /%%ws=%%/index.cgi?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | %%ignore=%% |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | %%ignore=%% |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | %%ignore=%% |
-| type_ok | st-newpage-pagename-edit | Edit This Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Edit This Page content %%start_time%% |
+| type_ok | st-newpage-pagename-edit | %%title=%% |
+| type_ok | wikiwyg_wikitext_textarea | %%content=%% |
 
-| call | st-edit-fill-page | ws=%%ws=%% | title=%%title=%% |  |
+| call | st-edit-fill-page | ws=%%ws=%% | title=%%title=%% | content=%%content=%% |
 
 ----
 
@@ -15,11 +14,11 @@
 | wait_for_element_visible_ok | link=Wiki Text | %%ignore=%% |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | %%ignore=%% |
-| wait_for_element_visible_ok | st-newpage-pagename-edit |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | %%ignore=%% |
 | type_ok | st-newpage-pagename-edit | %%title=%% |
-| type_ok | wikiwyg_wikitext_textarea |  |
+| type_ok | wikiwyg_wikitext_textarea | %%content=%% |
 
-| call | st-edit-fill-page | ws=%%ws=%% | title=%%title=%% |  |
+| call | st-edit-fill-page | ws=%%ws=%% | title=%%title=%% | content=%%content=%% |
 
 ----
 

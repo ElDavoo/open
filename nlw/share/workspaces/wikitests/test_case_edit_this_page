@@ -1,22 +1,13 @@
-
 | *Comment* | Starting Test Case: Edit This Page |  |
 | *Comment* | %%username%% - %%email%% - %%short_username%% |  |
-
-
-
-
 
 | *Comment* | Test Case: Edit This Page wants Dashboard |  |
 | st-admin | enable-plugin --account %%hostname%% --p dashboard |  |
 
 | *Comment* | Test Case: Edit This Page content |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | st-newpage-pagename-edit | Edit This Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Edit This Page content %%start_time%% |
+
+| call | st-edit-fill-page | ws=%%workspace%% | title=Edit This Page %%start_time%% | content=Edit This Page content %%start_time%% |
+
 
 | *Comment* | Test Case: Edit This Page Expand/Normal test |  |
 | wait_for_element_visible_ok | link=Expand | 30000 |
