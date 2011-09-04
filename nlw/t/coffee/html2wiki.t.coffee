@@ -1,2 +1,2 @@
 html2wiki = require('html2wiki')
-eq html2wiki("Hello <b>world</b>"), "Hello *world*\n"
+eq html2wiki("<p>Hello <b>world</b></p>"), "Hello *world*\n"
