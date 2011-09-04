@@ -65,13 +65,9 @@
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Page Creator Widget make a new page, insert the widget |  |
-| open_ok | /%%pcw_wiki%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit |  |
-| type_ok | st-newpage-pagename-edit | %%pcw_form_page%% |
-| type_ok | wikiwyg_wikitext_textarea |  |
+
+| call | st-edit-fill-page | ws=%%pcw_wiki%% | title=%%pcw_form_page%% |  |
+
 | click_ok | link=Widget... |  |
 | wait_for_element_visible_ok | gallery-widget-Page Creator | 30000 |
 | wait_for_text_present_ok | Create pages from customized forms. | 30000 |

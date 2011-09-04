@@ -6,15 +6,9 @@
 | set | comment_signal | Do signal this comment %%start_time%% |
 
 | *Comment* | Test Case: Add Comment Create Test Page |  |
-| open_ok | /%%workspace%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | st-newpage-pagename-edit | Comment Test Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Comment Test Page Content %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-new-page | ws=%%workspace%% | title=Comment Test Page %%start_time%% | content=Comment Test Page Content %%start_time%% |
+
 
 | *Comment* | Test Case: Add Comment top comment button |  |
 | wait_for_element_visible_ok | st-comment-button-link | 30000 |
