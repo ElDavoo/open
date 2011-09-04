@@ -147,15 +147,9 @@ Set default values if they are not defined by the caller
 
 | *Comment* | Test Case: String Use: Your Notepad |  |
 | *Comment* | Your Notepad wants an existing page |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | st-newpage-pagename-edit | %%test_string%% pad |
-| type_ok | wikiwyg_wikitext_textarea | %%test_string%% pad content |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-new-page | ws=%%workspace%% | title=%%test_string%% pad | content=%%test_string%% pad content |
+
 
 | *Comment* | Test Case: String Use: set Your Notepad |  |
 | open_ok | /%%workspace%%/?action=users_settings |  |

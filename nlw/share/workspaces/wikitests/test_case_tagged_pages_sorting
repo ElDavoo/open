@@ -205,15 +205,9 @@ SEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSE
 | text_like | contentWrapper | qr/Search Sort 2.+Search Sort 3.+Search Sort 4.+Search Sort 1/ |
 
 | *Comment* | Test Case: Tagged Page Sorting. Make a more relevant page |  |
-| open_ok | /%%sorting_workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Search Sort 5 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | simple simple more simple most simple |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-new-page | ws=%%sorting_workspace%% | title=Search Sort 5 | content=simple simple more simple most simple |
+
 | st-admin | index-page --w %%sorting_workspace%% --p search_sort_5 | The Search Sort 5 page in the %%sorting_workspace%% workspace has been indexed. |
 
 | *Comment* | Test Case: Tagged Page Sorting. Sorting search results. Do the SEARCH again. |  |
