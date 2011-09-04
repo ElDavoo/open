@@ -56,6 +56,7 @@ CREATE_DB_USER = $(PERL) dev-bin/create-db-user
 INSTALL_BASE = install-html       \
 	       install-template	  \
                install-fonts      \
+               install-node_modules \
                install-migrations \
                install-l10n \
                install-post-install \
