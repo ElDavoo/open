@@ -27,14 +27,9 @@
 
 | *Comment* | Test Case: Create Content: use Blank |  |
 | click_and_wait | st-create-content-savelink |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | st-newpage-pagename-edit | Create Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Have some Create Page %%start_time%% Content |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-save-page | title=Create Page %%start_time%% | content=Have some Create Page %%start_time%% Content |
+
 
 | *Comment* | Test Case: Create Content: tag blank as Template |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |

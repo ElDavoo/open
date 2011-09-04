@@ -1,26 +1,14 @@
 | *Comment* | Test Case: Tools: Delete Page |
 
 | *Comment* | Test Case: Tools: Delete Page: Create test page |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Delete Page Content %%start_time%% |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Delete Page %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-new-page | ws=%%workspace%% | title=Delete Page Content %%start_time%% | content=Delete Page %%start_time%% |
+
 
 | *Comment* | Test Case: Tools: Delete Page: Create backlinking page |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `[Delete Page %%start_time%%]` |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Backlink Page %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-new-page | ws=%%workspace%% | title=`[Delete Page %%start_time%%]` | content=Backlink Page %%start_time%% |
+
 
 | *Comment* | Test Case: Tools: Delete Page: delete the page |  |
 | open_ok | /%%workspace%%/?Delete Page %%start_time%% |  |
