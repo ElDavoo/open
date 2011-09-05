@@ -2,6 +2,8 @@ package Socialtext::JavaScript::Builder;
 # @COPYRIGHT@
 use Moose;
 use methods-invoker;
+use 5.12.0;
+use warnings;
 use Socialtext::System qw(shell_run);
 use Socialtext::JSON qw(encode_json);
 use Socialtext::Paths;
@@ -128,8 +130,24 @@ method clean ($target) {
     unlink map { $->target_path($_) } @toclean;
 }
 
+<<<<<<< HEAD:nlw/lib/Socialtext/JavaScript/Builder.pm
 has 'coffee_compiler' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 sub _build_coffee_compiler { which('coffee') }
+=======
+my $coffee_compiler = which('coffee');
+sub BuildCoffee {
+    my $class = shift;
+    find({
+        wanted => sub {
+            my $coffee = $File::Find::name;
+            return unless -f $coffee and $coffee =~ /\.coffee$/;
+            if ($coffee_compiler) {
+                system $coffee_compiler => -c => $coffee;
+            }
+        },
+    }, @_);
+}
+>>>>>>> * Update Socialtext::JavaScript::Builder to build Coffee Script:nlw/lib/Socialtext/MakeJS.pm
 
 method is_built ($target) {
     return -f $->target_path($target);
@@ -211,7 +229,11 @@ method _part_last_modified ($part) {
     push @files, $part->{config} if $part->{config};
     push @files, $part->{json} if $part->{json};
     push @files, $part->{coffee} if $part->{coffee};
+<<<<<<< HEAD:nlw/lib/Socialtext/JavaScript/Builder.pm
     push @files, glob("*/*") if $part->{shindig_feature};
+=======
+    push @files, glob("$part->{shindig_feature}/*") if $part->{shindig_feature};
+>>>>>>> * Update Socialtext::JavaScript::Builder to build Coffee Script:nlw/lib/Socialtext/MakeJS.pm
 
     if ($part->{jemplate} and -f $part->{jemplate}) {
         push @files, $part->{jemplate};
@@ -230,6 +252,7 @@ method _part_last_modified ($part) {
     return map { $->modified($_) } @files;
 }
 
+<<<<<<< HEAD:nlw/lib/Socialtext/JavaScript/Builder.pm
 method part_to_text ($part) {
     local $CWD = $->part_directory($part);
 
@@ -238,6 +261,16 @@ method part_to_text ($part) {
     }
     elsif ($part->{file}) {
         return $->_file_to_text($part);
+=======
+sub _part_to_text {
+    my ($class, $part) = @_;
+    local $CWD = (($part->{dir} =~ m{^/}) ? $part->{dir} : "$CODE_BASE/$part->{dir}");
+    if ($part->{coffee}) {
+        return $class->_coffee_to_text($part);
+    }
+    if ($part->{file}) {
+        return $class->_file_to_text($part);
+>>>>>>> * Update Socialtext::JavaScript::Builder to build Coffee Script:nlw/lib/Socialtext/MakeJS.pm
     }
     elsif ($part->{template}) {
         return $->_template_to_text($part);
@@ -280,6 +313,7 @@ method _shindig_feature_to_text ($part) {
         "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
 }
 
+<<<<<<< HEAD:nlw/lib/Socialtext/JavaScript/Builder.pm
 method _coffee_to_text ($part) {
     if ($->coffee_compiler) {
         system $->coffee_compiler => -c => $part->{coffee};
@@ -291,6 +325,21 @@ method _coffee_to_text ($part) {
 }
 
 method _file_to_text ($part) {
+=======
+sub _coffee_to_text {
+    my ($class, $part) = @_;
+    if ($coffee_compiler) {
+        system $coffee_compiler => -c => $part->{coffee};
+        (my $output = $part->{coffee}) =~ s{\.coffee$}{.js};
+        return $class->_file_to_text({ file => $output });
+    }
+    warn "No coffee compiler found in PATH, skipping...\n" if $class->verbose;
+    return '';
+}
+
+sub _file_to_text {
+    my ($class, $part) = @_;
+>>>>>>> * Update Socialtext::JavaScript::Builder to build Coffee Script:nlw/lib/Socialtext/MakeJS.pm
     my $text = '';
     for my $file (glob($part->{file})) {
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
