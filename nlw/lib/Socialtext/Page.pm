@@ -1,5 +1,6 @@
 package Socialtext::Page;
 # @COPYRIGHT@
+use 5.12.0;
 use Moose;
 
 use Moose::Util::TypeConstraints;
@@ -30,6 +31,7 @@ use Socialtext::Validate qw(validate :types SCALAR SCALARREF ARRAYREF UNDEF BOOL
 use Socialtext::WikiText::Emitter::SearchSnippets;
 use Socialtext::WikiText::Parser;
 use Socialtext::l10n qw(loc system_locale);
+use Socialtext::Client::Wiki qw( html2wiki wiki2html );
 
 use Digest::SHA1 'sha1_hex';
 use Carp;
@@ -1061,6 +1063,9 @@ sub content_as_type {
     my $type = $p{type} || $WIKITEXT_TYPE;
     if ($type eq $HTML_TYPE) {
         return $self->_content_as_html($p{link_dictionary}, $p{no_cache});
+    }
+    elsif ($type eq $WIKITEXT_TYPE and $self->page_type eq 'xhtml') {
+        return html2wiki(${ $self->body_ref });
     }
     elsif ($type eq $WIKITEXT_TYPE) {
         return ${ $self->body_ref };
