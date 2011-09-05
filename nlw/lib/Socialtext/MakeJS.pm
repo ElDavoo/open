@@ -194,7 +194,7 @@ sub Build {
 sub _part_last_modified {
     my ($class, $part) = @_;
     my @files;
-    local $CWD = "$CODE_BASE/$part->{dir}";
+    local $CWD = (($part->{dir} =~ m{^/}) ? $part->{dir} : "$CODE_BASE/$part->{dir}");
     push @files, "JS.yaml";
     push @files, glob($part->{file}) if $part->{file};
     push @files, $part->{template} if $part->{template};
@@ -235,7 +235,7 @@ sub _js_from_coffee {
 
 sub _part_to_text {
     my ($class, $part) = @_;
-    local $CWD = "$CODE_BASE/$part->{dir}";
+    local $CWD = (($part->{dir} =~ m{^/}) ? $part->{dir} : "$CODE_BASE/$part->{dir}");
     if ($part->{file}) {
         return $class->_file_to_text($part);
     }

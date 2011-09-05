@@ -2,7 +2,7 @@
 argv = require('optimist').argv
 
 require('zappa') argv.port, argv.host || '127.0.0.1', ->
-  def html2wiki: require 'html2wiki-async'
+  def html2wiki: require 'html2wiki'
   def wiki2html: require 'wiki2html'
   view layout: -> html -> body -> @body
 
