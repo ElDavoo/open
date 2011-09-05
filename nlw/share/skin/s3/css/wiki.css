@@ -1,3 +1,6 @@
+body.xhtml {
+  font-family: Verdana, Arial, sans-serif; }
+
 .wiki, .xhtml {
   padding: 0 !important;
   line-height: normal !important;
