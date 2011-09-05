@@ -22,7 +22,7 @@
 | wait_for_element_visible_ok | st-save-button-link | %%ignore=%% |
 | st-page-save |  |  |
 
-| call | st-edit-new-page | ws=%%ws=%% | title=%%title=%% | content=%%content=%% |
+| call | st-edit-new-page | ws=%%ws=%% | content=%%content=%% | title=%%title=%% |
 
 ----
 
@@ -36,7 +36,7 @@
 | wait_for_element_visible_ok | st-save-button-link | %%ignore=%% |
 | st-page-save |  |  |
 
-| call | st-edit-new-page | ws=%%ws=%% | title=%%title=%% | content=%%content=%% |
+| call | st-edit-new-page | ws=%%ws=%% | content=%%content=%% | title=%%title=%% |
 
 ----
 
@@ -254,8 +254,11 @@
 | wait_for_element_visible_ok | st-save-button-link | %%ignore=%% |
 | st-page-save |  |  |
 
-| call | st-edit-save-page | content=%%content=%% | title=%%title=%% | 
----- | wait_for_element_visible_ok | link=Wiki Text | %%ignore=%% |
+| call | st-edit-save-page | content=%%content=%% | title=%%title=%% |
+
+----
+
+| wait_for_element_visible_ok | link=Wiki Text | %%ignore=%% |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | %%ignore=%% |
 | type_ok | wikiwyg_wikitext_textarea | %%content=%% |
@@ -264,8 +267,11 @@
 | wait_for_element_visible_ok | st-save-button-link | %%ignore=%% |
 | st-page-save |  |  |
 
-| call | st-edit-save-page | content=%%content=%% | title=%%title=%% | 
----- | wait_for_element_visible_ok | link=Wiki Text | %%ignore=%% |
+| call | st-edit-save-page | content=%%content=%% | title=%%title=%% |
+
+----
+
+| wait_for_element_visible_ok | link=Wiki Text | %%ignore=%% |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | %%ignore=%% |
 | type_ok | wikiwyg_wikitext_textarea | %%content=%% |
