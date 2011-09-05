@@ -39,6 +39,7 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Post 1 Content %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link |  |
+| *Comment* | Can't fold this because returning to blog view |  |
 | st-pause-click | 2000 | st-save-button-link |
 
 | wait_for_text_present_ok | Permalink | 30000 |
@@ -54,11 +55,13 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | *Comment* | Just SAVED comment |  |
 | wait_for_text_present_ok | Comment 1 %%start_time%% | 30000 |
 | click_and_wait | link=Edit this post |  |
+
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Edit 1 %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
+| *Comment* | Can't fold this because returning to blog view |  |
 | st-pause-click | 2000 | st-save-button-link |
 
 | pause | 10000 |  |

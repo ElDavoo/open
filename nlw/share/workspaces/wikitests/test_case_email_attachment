@@ -3,14 +3,9 @@
 | st-admin | set-account-config --acc %%defaultaccount%% --index timezone date_display_format mmm_d_yyyy | Updated |
 
 | open_ok | /%%workspace%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Original content %%start_time%% |
-| type_ok | st-newpage-pagename-edit | Email subject %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-save-page | title=Original content %%start_time%% | content=Email subject %%start_time%% |
+
 
 | *Comment* | Test Case: Email attachment attach two things to the page |  |
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
@@ -38,12 +33,9 @@
 | *Comment* | Test Case: Email attachment overwrite the page content |  |
 | *Comment* | This must be done because attaching a file also places a link to it in the page content. When the page is emailed, this causes the file to be attached twice. |  |
 | click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | New content %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-save-page | content=New content %%start_time%% |
+
 
 | *Comment* | Test Case: Email attachment open the email-page |  |
 | wait_for_element_visible_ok | link=Email | 30000 |

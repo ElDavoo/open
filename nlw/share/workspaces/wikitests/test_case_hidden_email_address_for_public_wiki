@@ -22,15 +22,9 @@
 | *Comment* | Test Case: Hidden Email Address for Public wiki. Removed file upload test so IE and Safari will succeed. |  |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify user WAFL |  |
-| open_ok | /%%he_ws%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `{user: %%he_mail%%}` |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Hidden Email %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st_pause_click | 2000 | st-save-button-link | and_wait |
+
+| call | st-edit-new-page | ws=%%he_ws%% | title=`{user: %%he_mail%%}` | content=Hidden Email %%start_time%% |
+
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create comment |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |

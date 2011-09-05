@@ -76,14 +76,9 @@
 | wait_for_text_present_ok | New Post | 30000 |
 | wait_for_element_visible_ok | st-weblog-newpost-button | 30000 |
 | click_and_wait | st-weblog-newpost-button |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | post2 %%start_time%% |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | post2 %%start_time%% content |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-pause-click | 2000 | st-save-button-link |
+
+| call | st-edit-save-page | title=post2 %%start_time%% | content=post2 %%start_time%% content |
+
 
 | *Comment* | Test Case: Settings: Admin test weblog sort order using newspace-%%start_time%% |  |
 | wait_for_text_present_ok | Blog: %%start_time%% Blog | 30000 |
