@@ -12,7 +12,7 @@
 | type_ok | wikiwyg_wikitext_textarea | tag page %%start_time%% content |
 | type_ok | st-newpage-pagename-edit | tag page %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Tagging. fog tag added |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |

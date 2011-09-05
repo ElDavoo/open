@@ -5,14 +5,9 @@
 | *Comment* | Test Case: Wiki Page Widget |  |
 
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_present_ok | st-newpage-pagename-edit |  |
-| wait_for_element_present_ok | wikiwyg_wikitext_textarea |  |
-| type_ok | st-newpage-pagename-edit | Wiki Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | I have created a page called Wiki Page %%start_time%%. w00t. |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-save-page | title=Wiki Page %%start_time%% | content=I have created a page called Wiki Page %%start_time%%. w00t. |
+
 
 | *Comment* | Test Case: Wiki Page Widget. Create the widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Wiki Page |  |
