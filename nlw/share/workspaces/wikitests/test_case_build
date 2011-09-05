@@ -126,14 +126,9 @@
 | wait_for_element_visible_ok | st-create-content-savelink | 30000 |
 | click_and_wait | st-create-content-savelink |  |
 
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | page content |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | page title |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-save-page | title=page content | content=page title |
+
 
 | wait_for_text_present_ok | Created by | 30000 |
 | text_like | pageAttribution | qr/Created by.+%%user_with_spaces%%/ |

@@ -36,14 +36,9 @@ TODO: Figure out a way to test the other config functions
 | wait_for_element_visible_ok | st-weblog-newpost-button | 30000 |
 | click_and_wait | st-weblog-newpost-button |  |
 
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Order post 1 %%start_time%% |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Order post 1 content %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-save-page | title=Order post 1 %%start_time%% | content=Order post 1 content %%start_time%% |
+
 | wait_for_text_present_ok | Order post 1 content %%start_time%% | 30000 |
 
 | open_ok | /%%workspace%%/index.cgi?action=display;page_name=first_post_in_order_%%start_time%%_blog;caller_action=blog_display;category=order_%%start_time%%_blog;js=show_edit_div#edit |  |
