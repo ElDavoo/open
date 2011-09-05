@@ -78,7 +78,7 @@ Visit in Firefox:
 * multipage PDF export dialog
 
 | open_ok | /%%wiki%%/?action=recent_changes |  |
-| clickAndWait | link=Recently Viewed |  |
+| click_and_wait | link=Recently Viewed |  |
 | check_ok | page_selected |  |
 | click_ok | st-listview-submit-pdfexport |  |
 | *Comment* | CANCEL PDF Export POPUP |  |

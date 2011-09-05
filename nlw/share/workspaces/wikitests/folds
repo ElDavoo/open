@@ -100,7 +100,7 @@
 | type_ok | st-newpage-pagename-edit | %%title=%% |
 | type_ok | wikiwyg_wikitext_textarea | %%content=%% |
 | wait_for_element_visible_ok | st-save-button-link | %%ignore=%% |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 
 | call | st-edit-new-page | ws=%%ws=%% | title=%%title=%% | content=%%content=%% |
 
@@ -176,7 +176,7 @@
 | type_ok | st-newpage-pagename-edit | %%title=%% |
 | type_ok | wikiwyg_wikitext_textarea | %%content=%% |
 | wait_for_element_visible_ok | st-save-button-link | %%ignore=%% |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 
 | call | st-edit-new-page | ws=%%ws=%% | title=%%title=%% | content=%%content=%% |
 

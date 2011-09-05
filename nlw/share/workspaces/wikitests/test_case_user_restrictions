@@ -26,7 +26,7 @@
 | click_and_wait | link=Workspace Privacy |  |
 | wait_for_element_visible_ok | //input[@name='guest_has_email_in' and @value='1'] | 30000 |
 | click_ok | //input[@name='guest_has_email_in' and @value='1'] |  |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 | text_like | contentWrapper | Anyone can send email to %%ws%%. |
 
 | *Comment* | Test Case: User Restrictions - Create confirmations - this will generate emails (this, wikipages) |  |

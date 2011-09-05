@@ -16,11 +16,11 @@
 
 | *Comment* | Test Case: SRC: 2 entries within 24 hours |  |
 | open_ok | /%%workspace%%/index.cgi?action=users_settings |  |
-| clickAndWait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
+| click_and_wait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
 | select_ok | recent_changes__changes_depth | label=Last 24 hours |
 | check_ok | recent_changes__include_in_pages |  |
 | select_ok | recent_changes__sidebox_changes_depth | label=2 |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | *Comment* | Test Case: SRC: What's New list view 2 new |  |
 | open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
@@ -34,7 +34,7 @@
  Verify content of What's New section | Correct number of Recent Changes displayed
 
 | *Comment* | Test Case: SRC: What's New sidebar |  |
-| clickAndWait | link=side-%%start_time%%-8 |  |
+| click_and_wait | link=side-%%start_time%%-8 |  |
 | text_like | contentRight | What's New |
 | text_like | link=side-%%start_time%%-8 | side-%%start_time%%-8 |
 | text_like | link=side-%%start_time%%-7 | side-%%start_time%%-7 |
@@ -44,12 +44,12 @@
  Select and save a different time interval and a different number of sidebox entries | Settings take effect
 
 | *Comment* | Test Case: SRC: 4 entries within Last Month |  |
-| clickAndWait | link=Settings |  |
-| clickAndWait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
 | select_ok | recent_changes__changes_depth | label=Last Month |
 | check_ok | recent_changes__include_in_pages |  |
 | select_ok | recent_changes__sidebox_changes_depth | label=4 |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | *Comment* | Test Case: SRC: What's New list view 4 new Last Month |  |
 | open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
@@ -67,7 +67,7 @@
  Verify content of What's New section | Correct number of Recent Changes displayed
 
 | *Comment* | Test Case: SRC: What's New sidebar |  |
-| clickAndWait | link=side-%%start_time%%-1 |  |
+| click_and_wait | link=side-%%start_time%%-1 |  |
 | text_like | contentRight | What's New |
 | text_like | link=side-%%start_time%%-8 | side-%%start_time%%-8 |
 | text_like | link=side-%%start_time%%-7 | side-%%start_time%%-7 |
@@ -76,10 +76,10 @@
 | text_unlike | contentRight | side-%%start_time%%-4 |
 
 | *Comment* | Test Case: SRC: What's New uncheck sidebar |  |
-| clickAndWait | link=Settings |  |
-| clickAndWait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
 | uncheck_ok | recent_changes__include_in_pages |  |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 | open_ok | /%%workspace%%/?side-%%start_time%%-8 |  |
 
 | *Comment* | sidebar element should be completely gone, not present |  |

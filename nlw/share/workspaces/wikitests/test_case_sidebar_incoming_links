@@ -40,7 +40,7 @@ navigate to and delete existing page | page is gone
 navigate to new page | Incoming link to old page is gone
 
 | *Comment* | Test Case: Sidebar: Incoming Links. delete TC Incoming Links %%start_time%% |  |
-| clickAndWait | link=TC Incoming Links %%start_time%% |  |
+| click_and_wait | link=TC Incoming Links %%start_time%% |  |
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 20000 |
 | click_and_wait | st-delete-deletelink |  |

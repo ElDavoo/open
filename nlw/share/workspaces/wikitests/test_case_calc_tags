@@ -59,16 +59,16 @@ click on several page links | Pages appear; each page has its that tag displayed
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
 | wait_for_element_present_ok | link=tag2 %%start_time%% |  |
 | text_like | link=tag2 %%start_time%% | tag2 %%start_time%% |
-| clickAndWait | link=tag2 %%start_time%% |  |
-| clickAndWait | link=tag2 content spreadsheet %%start_time%% |  |
+| click_and_wait | link=tag2 %%start_time%% |  |
+| click_and_wait | link=tag2 content spreadsheet %%start_time%% |  |
 | text_like | link=tag2 %%start_time%% | tag2 %%start_time%% |
 
 | *Comment* | Test Case Calc: Tags Checking tag1 links and pages |  |
 
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
 | text_like | link=tag1 %%start_time%% | tag1 %%start_time%% |
-| clickAndWait | link=tag1 %%start_time%% |  |
-| clickAndWait | link=tag1 content spreadsheet %%start_time%% |  |
+| click_and_wait | link=tag1 %%start_time%% |  |
+| click_and_wait | link=tag1 content spreadsheet %%start_time%% |  |
 | text_like | link=tag1 %%start_time%% | tag1 %%start_time%% |
 
 click: View {link: Category as a weblog} | All pages with that tag appear in weblog form

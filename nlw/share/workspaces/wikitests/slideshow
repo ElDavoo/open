@@ -42,17 +42,17 @@ Visit in IE 6 and IE 7 and Safari
 | pause | %%pt%% |  |
 
 | open_ok | /%%wiki%%/ |  |
-| clickAndWait | link=Settings |  |
-| clickAndWait | link=Screen Layout |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | link=Screen Layout |  |
 | check_ok | display__include_breadcrumbs |  |
-| clickAndWait | link=Save |  |
-| clickAndWait | link=Workspace Features |  |
+| click_and_wait | link=Save |  |
+| click_and_wait | link=Workspace Features |  |
 | click_ok | email_notify_is_enabled |  |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | open_ok | /%%wiki%%/?action=preferences_settings;preferences_class_id=recent_changes |  |
 | check_ok | recent_changes__include_in_pages |  |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | *Comment* | STARTING SlideShow |  |
 
@@ -66,7 +66,7 @@ Visit in IE 6 and IE 7 and Safari
 | *Comment* | SEE Stop Watching on page |  |
 | pause | %%pt%% |  |
 
-| clickAndWait | link=My Watchlist |
+| click_and_wait | link=My Watchlist |
 | *Comment* | SEE Announcements and Links on Watchlist |
 | pause | %%pt%% |
 
@@ -79,12 +79,12 @@ Visit in IE 6 and IE 7 and Safari
 
 | *Comment* | SlideShow NOT PAUSING between LIST VIEW pages |  |
 | open_ok | /%%wiki%%/?action=recent_changes |  |
-| clickAndWait | link=Your Watchlist |  |
-| clickAndWait | link=Recently Viewed |  |
-| clickAndWait | link=Orphaned Pages |  |
-| clickAndWait | link=All Pages |  |
-| clickAndWait | link=All Tags |  |
-| clickAndWait | link=All Files |  |
+| click_and_wait | link=Your Watchlist |  |
+| click_and_wait | link=Recently Viewed |  |
+| click_and_wait | link=Orphaned Pages |  |
+| click_and_wait | link=All Pages |  |
+| click_and_wait | link=All Tags |  |
+| click_and_wait | link=All Files |  |
 | *Comment* | SlideShow FINISHED WITH LIST VIEW pages |  |
 
 * tags
@@ -92,20 +92,20 @@ Visit in IE 6 and IE 7 and Safari
 Click on a tag in a page to get tag list
 
 | open_ok | /%%wiki%%/?Start Here |  |
-| clickAndWait | link=Welcome |  |
+| click_and_wait | link=Welcome |  |
 | *Comment* | SEE Tag:Welcome |  |
 | pause | %%pt%% |  |
 
 Click on a tag in All Tags to get tag list
 
-| clickAndWait | link=What's New |  |
-| clickAndWait | link=All Tags |  |
+| click_and_wait | link=What's New |  |
+| click_and_wait | link=All Tags |  |
 | *Comment* | SEE All Tags |  |
 | pause | %%pt%% |  |
 
 Click on a tag in the tag list to get pages with that tag
 
-| clickAndWait | link=Welcome |  |
+| click_and_wait | link=Welcome |  |
 | *Comment* | SEE Tag:Welcome |  |
 | pause | %%pt%% |  |
 
@@ -118,13 +118,13 @@ Click on Post to this tag by Email to get email popup
 
 Click on View As Weblog to see weblog view of tag
 
-| clickAndWait | link=Welcome as a blog |  |
+| click_and_wait | link=Welcome as a blog |  |
 | *Comment* | SEE Blog:Welcome |  |
 | pause | %%pt%% |  |
 
 New Post
 
-| clickAndWait | link=New Post |  |
+| click_and_wait | link=New Post |  |
 | *Comment* | SEE Untitled Page open for editing |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% | extra pause for editing |
@@ -147,26 +147,26 @@ Post by Email popup
 
 | *Comment* | SlideShow NOT PAUSING between SETTINGS pages |  |
 | open_ok | /%%wiki%% |  |
-| clickAndWait | link=Settings |  |
-| clickAndWait | link=My Settings |  |
-| clickAndWait | link=Manage All Users |  |
-| clickAndWait | link=Invite New Users |  |
-| clickAndWait | link=My Workspaces |  |
-| clickAndWait | link=Create New Workspace |  |
-| clickAndWait | link=Unsubscribe |  |
-| clickAndWait | link=Workspace Appearance |  |
-| clickAndWait | link=Workspace Features |  |
-| clickAndWait | link=Workspace Skin |  |
-| clickAndWait | link=Workspace Privacy |  |
-| clickAndWait | link=Create New Blog |  |
-| clickAndWait | link=Page Editing |  |
-| clickAndWait | link=Screen Layout |  |
-| clickAndWait | link=Email Notification |  |
-| clickAndWait | link=Your Notepad |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | link=My Settings |  |
+| click_and_wait | link=Manage All Users |  |
+| click_and_wait | link=Invite New Users |  |
+| click_and_wait | link=My Workspaces |  |
+| click_and_wait | link=Create New Workspace |  |
+| click_and_wait | link=Unsubscribe |  |
+| click_and_wait | link=Workspace Appearance |  |
+| click_and_wait | link=Workspace Features |  |
+| click_and_wait | link=Workspace Skin |  |
+| click_and_wait | link=Workspace Privacy |  |
+| click_and_wait | link=Create New Blog |  |
+| click_and_wait | link=Page Editing |  |
+| click_and_wait | link=Screen Layout |  |
+| click_and_wait | link=Email Notification |  |
+| click_and_wait | link=Your Notepad |  |
 | open_ok | /%%wiki%%/?action=preferences_settings;preferences_class_id=recent_changes |  |
-| clickAndWait | link=Syndicate |  |
-| clickAndWait | link=Watchlist |  |
-| clickAndWait | //a[contains(@href,'?action=preferences_settings;preferences_class_id=weblog')] |  |
+| click_and_wait | link=Syndicate |  |
+| click_and_wait | link=Watchlist |  |
+| click_and_wait | //a[contains(@href,'?action=preferences_settings;preferences_class_id=weblog')] |  |
 
 | *Comment* | SlideShow FINISHED WITH SETTINGS |  |
 
@@ -175,14 +175,14 @@ Post by Email popup
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | st-search-term | 10000 |
 | type | st-search-term | wiki |
-| clickAndWait | st-search-submit |  |
+| click_and_wait | st-search-submit |  |
 | *Comment* | SEE search results with %%wiki%% only |  |
 | pause | %%pt%% |  |
 
 * an interwiki search result
 
 | type | st-search-term | `wiki workspaces:*` |
-| clickAndWait | st-search-submit |  |
+| click_and_wait | st-search-submit |  |
 | *Comment* | SEE interwiki search results with multiple workspace names |  |
 | pause | %%pt%% |  |
 
@@ -221,8 +221,8 @@ Post by Email popup
 
 | *Comment* | SEE "Edit Summary In Slideshow" |  |
 | pause | %%pt%% |  |
-| clickAndWait | st-save-button-link |  |
-| clickAndWait | //a[contains(@href,'?action=revision_list')] |  |
+| click_and_wait | st-save-button-link |  |
+| click_and_wait | //a[contains(@href,'?action=revision_list')] |  |
 
 | *Comment* | SEE Revisions List with Edit Summary at %%start_time%% |  |
 | pause | %%pt%% |  |
@@ -340,32 +340,32 @@ Post by Email popup
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | wait_for_element_visible_ok | st-save-button-link |
-| clickAndWait | link=Save |  |
-| clickAndWait | //a[contains(@href,'?action=revision_list')] |  |
+| click_and_wait | link=Save |  |
+| click_and_wait | //a[contains(@href,'?action=revision_list')] |  |
 | *Comment* | SEE Revisions List |  |
 | pause | %%pt%% |  |
 
 compare two revisions view unformatted
 
-| clickAndWait | link=Compare Revisions |
+| click_and_wait | link=Compare Revisions |
 | *Comment* | SEE two UNFORMATTED Revisions |
 | pause | %%pt%% |
 
 compare two revisions view formatted
 
-| clickAndWait | link=View Formatted |
+| click_and_wait | link=View Formatted |
 | *Comment* | SEE two FORMATTED Revisions with IMAGE |
 | pause | %%pt%% |
 
 compare two revisions view unformatted
 
-| clickAndWait | //a[contains(@href,'mode=source')] |
+| click_and_wait | //a[contains(@href,'mode=source')] |
 | *Comment* | SEE two UNFORMATTED Revisions |
 | pause | %%pt%% |
 
 single revision view formatted
 
-| clickAndWait | //a[contains(@href,'action=revision_view')] |
+| click_and_wait | //a[contains(@href,'action=revision_view')] |
 | *Comment* | SEE one previous FORMATTED Revision |
 | pause | %%pt%% |
 
@@ -377,7 +377,7 @@ single revision view unformatted
 
 back to current revision view
 
-| clickAndWait | link=Back To Current Revision |
+| click_and_wait | link=Back To Current Revision |
 | *Comment* | SEE CURRENT Revision |
 | pause | %%pt%% |
 
@@ -389,7 +389,7 @@ back to current revision view
 
 * forgot password screen
 
-| clickAndWait | link=I don't know my password. |  |
+| click_and_wait | link=I don't know my password. |  |
 | *Comment* | SEE PASSWORD RESET PAGE |  |
 | pause | %%pt%% |  |
 

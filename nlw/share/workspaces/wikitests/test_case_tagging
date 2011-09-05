@@ -73,7 +73,7 @@
 
 | *Comment* | Test Case: Tagging reverify foo bar link |  |
 | text_like | link=foo bar %%start_time%% | foo bar %%start_time%% |
-| clickAndWait | link=foo bar %%start_time%% |  |
+| click_and_wait | link=foo bar %%start_time%% |  |
 
 | *Comment* | Test Case: Tagging tag list view: tag foo bar %%start_time%% |  |
 | text_like | link=foo bar %%start_time%% as a blog | foo bar %%start_time%% as a blog |
@@ -134,16 +134,16 @@ Click Revisions | new revision created for new tag
 Compare top two revisions | only difference is in added tag
 
 | *Comment* | Test Case: Tagging Compare Revisions |  |
-| clickAndWait | controls-right-revisions |  |
-| clickAndWait | link=Compare Revisions |  |
+| click_and_wait | controls-right-revisions |  |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Tags:.+Tags:\s*tagtest %%start_time%%/ |  |
 
 Click on that tag in third page | list appears with correct three pages
 Click on any link in list | that page appears
 
-| clickAndWait | link=Back To Current Revision |  |
-| clickAndWait | link=tagtest %%start_time%% |  |
-| clickAndWait | link=tag page 3 %%start_time%% |  |
+| click_and_wait | link=Back To Current Revision |  |
+| click_and_wait | link=tagtest %%start_time%% |  |
+| click_and_wait | link=tag page 3 %%start_time%% |  |
 | text_like | st-page-titletext | tag page 3 %%start_time%% |
 
 Remove that tag | tag is removed
@@ -159,8 +159,8 @@ Compare top two revisions | only difference is in deleted tag
 
 | *Comment* | Test Case: Tagging. Compare revisions for deleted tag |  |
 | *Comment* | The revision number did not change but the tag should be gone |  |
-| clickAndWait | controls-right-revisions |  |
-| clickAndWait | link=Compare Revisions |  |
+| click_and_wait | controls-right-revisions |  |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Tags:\s*tagtest %%start_time%%/m |  |
 | text_like | qr/Tags:\s*$/m |  |
 
@@ -169,9 +169,9 @@ Observe that tag | tag is still in list
 Click that tag | Tag list page appears with two remaining tagged pages
 
 | open_ok | /%%t_ws%%/?action=recent_changes |  |
-| clickAndWait | link=All Tags |  |
+| click_and_wait | link=All Tags |  |
 | text_like | contentWrapper | tagtest %%start_time%% |
-| clickAndWait | link=tagtest %%start_time%% |  |
+| click_and_wait | link=tagtest %%start_time%% |  |
 | text_like | contentWrapper | tag page 1 %%start_time%% |
 | text_like | contentWrapper | tag page 3 %%start_time%% |
 

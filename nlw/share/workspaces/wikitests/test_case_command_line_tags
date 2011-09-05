@@ -25,7 +25,7 @@
 
 | *Comment* | Test Case: Command Line TAGS Tag save Page 1 |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 | wait_for_element_present_ok | st-edit-button-link |  |
 
 | *Comment* | Test Case: Command Line: TAGS Create Page 2 |  |
@@ -48,7 +48,7 @@
 
 | *Comment* | Test Case: Command Line TAGS Tag save Page 2 |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 | wait_for_element_present_ok | st-edit-button-link |  |
 
 delete-tag
