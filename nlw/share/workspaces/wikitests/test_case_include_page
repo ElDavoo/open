@@ -174,14 +174,9 @@ Incipient include works in browser and MIKI
 
 | *Comment* | Test Case: Include Page. Create an Incipient Include |  |
 | st-login |  |  |
-| open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `{include: [%%tcipii%%]}` |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-this-page | ws=%%tcipw%% | thispage=TC Include Page %%start_time%% | content=`{include: [%%tcipii%%]}` |
+
 | wait_for_element_visible_ok | link=%%tcipii%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%tcipii%% |
 | text_like | //div[@class='wiki-include-content'] | qr/Replace this text with your own/ |
@@ -243,12 +238,9 @@ Include a page from a different workspace. This test assumes the existence of he
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `{include: help-en [socialtext documentation]}` |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-save-page | content=`{include: help-en [socialtext documentation]}` |
+
 | wait_for_element_visible_ok | link=socialtext documentation | 30000 |
 | text_like | st-page-titletext | TC Include Page %%start_time%% |
 | text_like | //div[@class='wiki-include-content'] | This is an index of the help topics available. |

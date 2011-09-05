@@ -42,12 +42,9 @@ TODO: Figure out a way to test the other config functions
 | wait_for_text_present_ok | Order post 1 content %%start_time%% | 30000 |
 
 | open_ok | /%%workspace%%/index.cgi?action=display;page_name=first_post_in_order_%%start_time%%_blog;caller_action=blog_display;category=order_%%start_time%%_blog;js=show_edit_div#edit |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Order post 1 revision |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-save-page | content=Order post 1 revision |
+
 
 | wait_for_text_present_ok | Order post 1 content %%start_time%% | 30000 |
 | text_like | contentWrapper | qr/Order post 1 content %%start_time%%.+Order post 1 revision/ |

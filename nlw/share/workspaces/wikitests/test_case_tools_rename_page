@@ -38,14 +38,9 @@
 | st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Rename Page. Edit the original the page |  |
-| open_ok | /%%workspace%%/?Rename This Page %%start_time%% |  |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Rename This Page %%start_time%% NEW content |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-this-page | ws=%%workspace%% | thispage=Rename This Page %%start_time%% | content=Rename This Page %%start_time%% NEW content |
+
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the edited page and Cancel |  |
 | click_ok | link=Rename Page |  |

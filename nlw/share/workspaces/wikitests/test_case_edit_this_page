@@ -209,12 +209,9 @@
 | *Comment* | Test Case: Edit This Page lower left edit link |  |
 | text_like | bottomButtons | Edit |
 | click_ok | link=Edit | index=1 |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Edit This Page %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-save-page | content=Edit This Page %%start_time%% |
+
 | wait_for_text_present_ok | Edit This Page %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Edit This Page edit tips |  |

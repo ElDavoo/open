@@ -49,14 +49,9 @@ NOT the target WS |  |
 | text_like | contentWrapper | Copy This Page %%start_time%% content |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Edit the original the page |  |
-| open_ok | /%%workspace%%/?Copy This Page %%start_time%% |  |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Copy This Page %%start_time%% NEW content |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-this-page | ws=%%workspace%% | thispage=Copy This Page %%start_time%% | content=Copy This Page %%start_time%% NEW content |
+
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Copy the edited page and Cancel |  |
 | click_ok | link=Copy Page to Workspace |  |

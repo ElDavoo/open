@@ -34,12 +34,9 @@ edit a page to include a link to an orphan page | link appears in page
 | *Comment* | Test Case: Orphans List. Create a link to the second orphan page |  |
 | click_and_wait | link=orphan %%start_time%% 0004 |
 | click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `[orphan %%start_time%% 0002]` |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-save-page | content=`[orphan %%start_time%% 0002]` |
+
 
 | *Comment* | Test Case: Orphans List. second page should no longer be orphan |  |
 | open_ok | /%%ws%%/index.cgi?action=orphans_list |  |

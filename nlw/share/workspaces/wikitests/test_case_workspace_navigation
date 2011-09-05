@@ -69,26 +69,6 @@
 | click_and_wait | link=What's New |  |
 | text_like | contentWrapper | qr/Changes in Last Week \(\d+\) out of \(\d+\) Total Pages/ |
 
-| *Comment* | Test Case: Workspace Navigation set up Notepad |  |
-| *Comment* | Create a unique notepad page |  |
-| click_and_wait | link=%%ws_title%% |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Your Notepad |  |
-| type_ok | favorites__which_page | Notepad for %%start_time%% |
-| click_and_wait | link=Save |  |
-
-| *Comment* | Test Case: Workspace Navigation edit Notepad |  |
-| open_ok | /%%ws%%/?Notepad for %%start_time%% |  |
-| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
-| click_and_wait | st-create-content-savelink |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Notepad entry for %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
-| wait_for_text_present_ok | Notepad entry for %%start_time%% | 30000 |
-
 | *Comment* | Test Case: Workspace Navigation new spreadsheet not tested because of dialog for title |  |
 
 | *Comment* | Test Case: Workspace Navigation TEARDOWN |  |
