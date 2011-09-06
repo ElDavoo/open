@@ -69,12 +69,12 @@ sub _invite_one_user {
     $user->create_email_confirmation()
         unless $user->has_valid_password();
 
-    if (!$wksp->has_user($user, direct => 1)) {
-        $wksp->add_user(
-            user => $user,
-            role => Socialtext::Role->Member(),
-        );
-    }
+    return if $wksp->has_user($user, direct => 1);
+
+    $wksp->add_user(
+        user => $user,
+        role => Socialtext::Role->Member(),
+    );
 
     $self->_log_action( "INVITE_USER", $user->email_address );
     $self->invite_notify( $user );
