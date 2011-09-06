@@ -4,6 +4,7 @@ html2wiki = require('html2wiki')
 tests = [
   ["<p>Hello <b>world</b></p>", "Hello *world*\n"]
   ["<h2>Hello</h2>", "^^ Hello\n"]
+  ["<table>\n<tr><td>Jai guru</td></tr></table>", "| Jai guru |\n"]
 ]
 
 plan tests.length
