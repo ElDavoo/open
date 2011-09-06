@@ -30,6 +30,29 @@
 
 .toolbar
   padding: 5px 0
+  span
+    float: left
+  a.icon
+    display: block
+    float: left
+    width: 15px
+    height: 15px
+    margin: 0 3px
+    background: transparent no-repeat
+    background-position: top left
+    cursor: pointer
+    &.startPrivate
+      background-image: url(#{$static}/images/icons/share-black-15.png)
+    &.insertMention
+      background-image: url(#{$static}/images/icons/person-black-15.png)
+    &.insertVideo
+      background-image: url(#{$static}/images/icons/video-black-15.png)
+    &.insertFile
+      background-image: url(#{$static}/images/icons/document-black-15.png)
+    &.insertWeblink
+      background-image: url(#{$static}/images/icons/link-black-15.png)
+    &.insertTag
+      display: none // Needs input from tracy
 
 .private span, .insert span
   margin-left: 5px
