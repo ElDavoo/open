@@ -53,8 +53,12 @@
 | wait_for_text_present_ok | Upload Widget XML File: | 30000 |
 | wait_for_text_present_ok | Add a Widget with URL: | 30000 |
 | wait_for_text_present_ok | Use the Widget Editor | 30000 |
-| click_ok | //a[@class='ui-dialog-titlebar-close ui-corner-all'] |  |
-| wait_for_element_not_visible_ok | add-widget | 10000 |
+
+| *Comment* | Test Case: Cool Dashboard use the wikitest files to upload a new widget |  |
+| type_ok | widget-file | %%wikitest_files%%bosspy.xml |
+| click_and_wait | st-add-widget |  |
+| wait_for_text_present_ok | Boss Spy | 30000 |
+| is_selected_ok | gallery-table-dropdown-2-4 | label=Visible |
 
 | *Comment* | Test Case: Cool Dashboard revert the account default to Socialtext default, force update |  |
 | click_and_wait | st-edit-layout |  |
