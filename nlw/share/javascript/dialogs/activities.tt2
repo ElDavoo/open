@@ -1,3 +1,4 @@
+[% BLOCK activitiesAddLink %]
 <div class="attachmentPopup">
   <iframe style="display:none"  class="formtarget" name="attach-formtarget" src="[% this.static_path %]/html/blank.html"></iframe>
   <form name="attachForm" method="post" action="[% this.base_uri %]/data/uploads" enctype="multipart/form-data" target="attach-formtarget">
@@ -12,12 +13,11 @@
     </p>
     <div class="error">&nbsp;</div>
     <div class="message">&nbsp;</div>
-    <div class="list">[% loc('signals.uploaded-files:') %] &lt;[% loc('files.none') %]&gt;</div>
 
-    <img class="loader" style="display:none" src="[% this.static_path %]/skin/common/images/ajax-loader.gif"/>
-    <div class="done">
-        <a class="btn" href="#">[% loc('do.done') %]</a>
+    <input type="submit" class="hidden"/>
+    <div class="right">
+        <a class="button submit" href="#">[% loc('do.upload') %]</a>
     </div>
-    <div style="clear:both;">&nbsp;</div>
   </form>
 </div>
+[% END %]

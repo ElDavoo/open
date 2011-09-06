@@ -103,6 +103,7 @@
         - confirm
         - save-layout
         - simple
+        - activities
 'shindig-container-%.js':
     compress: 1
     parts:

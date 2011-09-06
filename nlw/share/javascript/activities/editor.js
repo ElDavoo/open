@@ -18,7 +18,8 @@ $.extend(Activities.Editor.prototype, {
         max_wikiwyg_height: 120,
         max_filesize: 50,
         lastsubmit: 0,
-        minHeight: 0
+        minHeight: 0,
+        _nodes: {}
     },
 
     wikiwygMode: (typeof WW_ADVANCED_MODE == 'undefined') ? null : (
@@ -27,6 +28,17 @@ $.extend(Activities.Editor.prototype, {
             || (navigator.userAgent.toLowerCase().indexOf('mobile') >= 0)
             || (navigator.userAgent.toLowerCase().indexOf('adobeair') >= 0)
     ) ? WW_ADVANCED_MODE : WW_SIMPLE_MODE,
+
+    // Nodes:
+    find: function(selector) {
+        if (!this._signals) {
+            this._signals = this.node.parents('.signals');
+        }
+        if (!this._nodes[selector]) {
+            this._nodes[selector] = this._signals.find(selector);
+        }
+        return this._nodes[selector];
+    },
 
     setupWikiwyg: function() {
         var self = this;
@@ -216,7 +228,7 @@ $.extend(Activities.Editor.prototype, {
     setupToolbar: function() {
         var self = this;
 
-        var $toolbar = self.node.siblings('.toolbar');
+        var $toolbar = self.find('.toolbar');
         $toolbar.show();
         $toolbar.find('.insertMention').unbind('click').click(function (){
             self.showMentionLookahead();
@@ -827,7 +839,9 @@ $.extend(Activities.Editor.prototype, {
                 $dialog.show();
                 var top = $dialog.offset().top;
                 var left = $dialog.offset().left;
-                $dialog = $dialog.remove().insertAfter(self.node.parents('.event:first'));
+                $dialog = $dialog.remove().insertAfter(
+                    self.node.parents('.event:first')
+                );
                 $dialog.css({
                     top: top + 'px',
                     left: left + 'px'
@@ -905,11 +919,11 @@ $.extend(Activities.Editor.prototype, {
     },
 
     cancelAttachments: function() {
-        this.node.siblings('.attachmentList').html('').hide();
+        this.find('.attachmentList').html('').hide();
     },
 
     _attachmentsByAttr: function(attr) {
-        var $alist = this.node.siblings('.attachmentList');
+        var $alist = this.find('.attachmentList');
         var values = [];
         $alist.find('.attachment .' + attr).each(function(i,input) {
             values.push($(input).val());
@@ -927,7 +941,7 @@ $.extend(Activities.Editor.prototype, {
 
     addAttachment: function(filename, temp_id) {
         var self = this;
-        var $alist = self.node.siblings('.attachmentList');
+        var $alist = self.find('.attachmentList');
 
         // Add the new attachment to the new signal
         $alist.append(
@@ -947,109 +961,15 @@ $.extend(Activities.Editor.prototype, {
         $alist.show();
     },
 
-    refreshPopupFromNode: function($popup) {
-        // Also add the entry to the lightbox list
-        var files = [];
-        this.node.siblings('.attachmentList')
-            .find('.attachment .filename').each(function(i,file) {
-                files.push($(file).text());
-        });
-
-        var as_string = files.length > 0
-            ? files.join(', ')
-            : '&lt;none&gt;';
-
-        $popup.find('.list').text(
-            loc('activities.uploaded=files', as_string));
-    },
-
     showUploadAttachmentUI: function() {
         var self = this;
-        var $popup = self.placeInParentWindow(
-            self.processTemplate('activities/attachment_popup.tt2'),
-            'attach-ui'
-        );
-        var $file  = $popup.find('.file');
-
-        setTimeout(function() {
-            $file.unbind('blur').blur(function() {
-                setTimeout(function() {
-                    if (self._accepting) {
-                        self._accepting = false;
-                        $file.focus();
-                    }
-                    else {
-                        $popup.fadeOut();
-                    }
-                }, 50);
-            });
-            $file.focus();
-        }, 1000);
-
-        $.each($popup, function () {
-            $(this).unbind('mousedown').mousedown(function() {
-                self._accepting = true;
-                $file.focus();
-                return false;
-            });
+        socialtext.dialog.show('activities', {
+            template: 'activitiesAddLink',
+            title: loc('Add Attachment'),
+            callback: function(filename, result) {
+                self.addAttachment(filename, result.id);
+            }
         });
-
-        $file.unbind('change').change(function() {
-            var filename = this.value.replace(/^.*\\|\/:/, '');
-            self._accepting = true;
-
-            $popup.find('.formtarget').unbind('load').load(function() {
-                self._accepting = false;
-                var result = this.contentWindow.childSandboxBridge // Socialtext Desktop
-                          || gadgets.json.parse( $(this.contentWindow.document.body).text() ); // Activity Widget
-                if (result && result.status == 'failure') {
-                    var msg = result.message || "Error parsing result";
-                    $popup.find('.error').text(msg).show();
-                }
-                else if (!result) {
-                    var msg = text.match(/entity too large/i)
-                        ? 'File size is too large. ' + self.max_filesize + 'MB maximum, please.'
-                        : 'Error parsing result';
-                    $popup.find('.error').text(msg).show();
-                }
-                else {
-                    self.addAttachment(filename, result.id);
-                    self.refreshPopupFromNode($popup);
-                }
-                if ($.browser.msie) {
-                    $file.parents('form')[0].reset();
-                };
-                $file.attr('value', '')
-                    .attr('disabled', false)
-                    .focus();
-
-                $popup.find('.loader').hide();
-                $popup.find('.done').show();
-            });
-
-            $popup.find('.error').hide();
-            $popup.find('.done').hide();
-            $popup.find('.loader').show();
-
-            $file.parents('form').submit();
-
-            // Selenium doesn't fire .change() events for disabled upload
-            // fields, so let's not disable it here.
-            if (Wikiwyg.is_selenium) { return; }
-
-            // {bz: 4683}: Delay disabling of $file since otherwise IE will
-            // sometimes send out a POST without the "file" field.
-            setTimeout(function(){
-                $file.attr('disabled', true);
-            }, 100);
-        });
-
-        $popup.find('.btn').unbind('click').click(function() {
-            $popup.fadeOut();
-            return false;
-        });
-
-        $popup.show();
     },
 
     showUserLookahead: function(opts) {
