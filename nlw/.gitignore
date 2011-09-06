@@ -21,8 +21,7 @@ share/l10n/mecab/right-id.def
 share/l10n/mecab/sys.dic
 share/l10n/mecab/unk.dic
 share/workspaces/wikitests/wikitests.1.tar.gz
-share/skin/common/javascript/shindig-*.js
-share/skin/common/javascript/shindig-*.js.gz
+share/javascript/l10n
 messages.mo
 nlw-en.po
 lib/Socialtext/Handler/ControlPanel.pm
@@ -652,3 +651,9 @@ lib/Socialtext/Rest/Signals/Likes.pm
 t/wikitests/like/signal.wiki
 t/Socialtext/People/Profile-listing.t
 t/wikitests/frontend/http-keep-alive.wiki.orig
+lib/Socialtext/Rest/AccountGadgets.pm
+lib/Socialtext/XHTML.pm
+lib/Socialtext/Pluggable/Plugin/CKEditor.pm
+lib/Socialtext/XHTML/Cell.pm
+lib/Socialtext/XHTML/Renderer.pm
+lib/Socialtext/Job/SignalMentionNotify.pm

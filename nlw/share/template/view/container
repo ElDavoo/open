@@ -1,0 +1,67 @@
+[% USE decorate %]
+[% USE JSON %]
+[% WRAPPER $frame_name title=container.title %]
+[% ids = [] %]
+[% FOR g = container.gadgets; ids.push(g.instance_id); END %]
+<input id="widgetList" type="hidden" value="[% ids.join(',') %]"/>
+<input id="containerID" type="hidden" value="[% container.id %]"/>
+
+<div class="notice" [% IF container.notice %]style="display:block"[% END %]>
+[% container.notice %]
+[% FILTER decorate('notice') %]
+[% END %]
+</div>
+
+<div class="container_24">
+    [% FOR grid = container.grids %]
+        <div class="[% grid %] widgetColumn" id="col[% loop.index %]">
+            [% FILTER decorate('container_column_' _ loop.index _ '_end') %]
+            [% END %]
+        </div>
+    [% END %]
+</div>
+<div class="clear"></div>
+
+<script>
+    [% SET gadgets = container.gadgets; container.gadgets = [] %]
+    gadgets.container.setup(
+        [% container.json.replace('</script>', '</scr" + "ipt>') %]
+    );
+    [% FOR gadget = gadgets %]
+        [% SET json = gadget.json %]
+        gadgets.container.renderGadget(
+            [% json.replace('</script>', '</scr" + "ipt>') %]
+        );
+    [% END %]
+
+    $('#st-add-widget').click(function() {
+        socialtext.dialog.show('opensocial-gallery', {
+            type: [% container.type.json %],
+            account_id: [% container.viewer.primary_account_id || 0 %]
+        });
+        return false;
+    });
+
+    $('#st-edit-layout').click(function() {
+        gadgets.container.enterEditMode();
+        return false;
+    });
+
+    $('#st-save-layout').click(function() {
+        socialtext.dialog.show('save-layout');
+        return false;
+    });
+    $('#st-cancel-layout').click(function() {
+        self._in_edit_mode = false;
+        gadgets.container.loadLayout(self.base_url, function() {
+            gadgets.container.leaveEditMode();
+        });
+        return false;
+    });
+    $('#st-revert-layout').click(function() {
+        gadgets.container.loadDefaults();
+        return false;
+    });
+</script>
+
+[% END %]

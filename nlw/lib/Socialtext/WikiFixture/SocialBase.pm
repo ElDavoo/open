@@ -3534,18 +3534,17 @@ sub restart_everything {
 
 sub jsmake {
     my ($self, $target, $dir) = @_;
-    require Socialtext::MakeJS;
+    require Socialtext::JavaScript::Builder;
+    my $builder = Socialtext::JavaScript::Builder->new;
+    if ($target =~ /^clean(:?all)?$/) {
+        $builder->clean();
+    }
+
     if ($target eq 'all') {
-        Socialtext::MakeJS->BuildAll;
-    }
-    elsif ($target eq 'cleanall') {
-        Socialtext::MakeJS->CleanAll;;
-    }
-    elsif ($target eq 'clean') {
-        Socialtext::MakeJS->CleanDir($dir);
+        $builder->build();
     }
     else {
-        Socialtext::MakeJS->Build($dir, $target);
+        $builder->build($target);
     }
 }
 

@@ -1,12 +1,16 @@
 | *Comment* | Test Case: Global Time Override |  |
 
+| st-admin | give-system-admin --e %%email%% | now has system admin access |
+
 | set | user | gto.user.%%start_time%%@david.socialtext.net |
-| set | acct | gto_acct_%%start_time%% |
 | set | user2 | gto.user.2.%%start_time%%@david.socialtext.net |
+| set | user3 | gto.user.3.%%start_time%%@david.socialtext.net |
+| set | acct | gto_acct_%%start_time%% |
 
 | create-account | %%acct%% |  |  |
 | create-user | %%user%% | %%password%% | %%acct%% |
 | create-user | %%user2%% | %%password%% | %%acct%% |
+| create-user | %%user3%% | %%password%% | Socialtext |
 
 | *Comment* | Test Case: Global Time Override set the global settings |  |
 | open_ok | /console/?rm=Setup |  |
@@ -99,7 +103,7 @@
 | is_checked_ok | timezone__time_display_seconds |  |
 
 | *Comment* | Test Case: Global Time Override check that a user who does not share the account still has the global-level prefs |  |
-| st-logoutin | %%username%% | %%password%% |
+| st-logoutin | %%user3%% | %%password%% |
 | open_ok | /?action=preferences_settings;preferences_class_id=timezone |  |
 | wait_for_element_visible_ok | timezone__time_display_seconds | 30000 |
 | is_selected_ok | timezone__timezone | label=+0300 Baghdad |
@@ -109,6 +113,7 @@
 | st_unchecked_ok | timezone__time_display_seconds |  |
 
 | *Comment* | Test Case: Global Time Override restore the global settings to default |  |
+| st-logoutin | %%username%% | %%password%% |
 | open_ok | /console/?rm=Setup |  |
 | wait_for_element_visible_ok | timezone__timezone | 30000 |
 | select_ok | timezone__timezone | label=-0800 Pacific |
@@ -138,6 +143,7 @@
 | st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | deactivate-user | %%user2%% |  |
+| deactivate-user | %%user3%% |  |
 | delete-account | %%acct%% | Recklessly deleting |
 
 | *Comment* | Test Case: Global Time Override COMPLETED |  |

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-07-05 14:39-0700\n"
+"PO-Revision-Date: 2011-08-11 08:11-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3195,6 +3195,9 @@ msgstr "Revision %1"
 msgid "page.summary-comment"
 msgstr "(comment)"
 
+msgid "page.type-xhtml"
+msgstr "Page (using new editor prototype)"
+
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:23
 msgid "page.type-spreadsheet"
 msgstr "Spreadsheet"
@@ -3528,9 +3531,12 @@ msgstr "%1 - RSS Search for %2"
 msgid "sheet.creating"
 msgstr "Creating a New Spreadsheet..."
 
+msgid "xhtml.creating"
+msgstr "Creating a Page using new editor prototype..."
+
 #: lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"
-msgstr "Untitled Spreadsheet"
+msgstr "Untitled Page"
 
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:333
 msgid "signals.importing"
@@ -3549,6 +3555,10 @@ msgstr "Signal number %1 was originally in reply to signal %2, but that signal i
 #: lib/Socialtext/Lite/People.pm:104
 msgid "signals.private-message-sent"
 msgstr "Private message sent."
+
+#: lib/Socialtext/Job/SignalDMNotify.pm:55
+msgid "signals.private-message-sent-to-you=sender:"
+msgstr "%1 sent you a private message:"
 
 #. ($1)
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:653

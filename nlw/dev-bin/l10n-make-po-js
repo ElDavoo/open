@@ -107,7 +107,8 @@ sub gen_js {
     if ($lang ne 'en') {
         $lexicon = { %EnglishLexicon, %$lexicon };
     }
-    my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
+    mkdir "share/javascript/l10n" unless -d "share/javascript/l10n";
+    my $js_file = "share/javascript/l10n/$lang.js";
     open my $js, '>:utf8', $js_file;
     print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
     my $json = encode_json $lexicon;

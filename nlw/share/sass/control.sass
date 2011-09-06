@@ -1,0 +1,40 @@
+.sttable
+  border-collapse: collapse
+  margin: 0.1em 0.1em 1em 0.1em
+  border: 1px solid #ccc
+  th
+    border: 1px solid #ccc
+    text-align: left
+  td
+    border-left: 1px dotted #ccc
+    border-right: 1px dotted #ccc
+    border-bottom: 1px solid #ccc
+  tr
+    td, th
+      padding: 0.1em 0.5em
+  thead tr th, tfoot tr th
+    font-weight: bold
+    font-size: 90%
+    text-transform: uppercase
+    background: #e8e8e8
+    padding: 3px 5px
+  thead tr td
+    background: #ffc
+    text-align: center
+  tfoot
+    tr td
+      background: #ffc
+      text-align: center
+    margin-top: 3px
+  tbody tr th
+    font-weight: normal
+  table tbody tr:nth-child(even) td
+    background: #f2f6f1
+  .table_messages
+    margin: 0
+    white-space: nowrap
+    float: right
+    .error
+      color: #FC5555
+    .status
+      color: #36C

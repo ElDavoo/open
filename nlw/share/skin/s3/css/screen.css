@@ -363,7 +363,7 @@ div #controls.empty {
         height: 8px !important;
 }
 
-body#contentPage div#controls,body#settingsPage div#controls,body#dashBoard div#controls, body#revisions div#controls,body#settingsPage div#controls, #socialcalc-header {
+body#contentPage div#controls,body#settingsPage div#controls,body#dashBoard div#controls, body#revisions div#controls,body#settingsPage div#controls, #socialcalc-header, #ckeditor-header {
 	height: 44px;
 	background: url(../images/contentControlsTile.png) repeat-x top left;
 }
@@ -3633,6 +3633,9 @@ div.users-invite-message {
 div.users-invite-message p {
     margin:1em 0;
     line-height:1.2;
+}
+span.helptext {
+    font-style: italic;
 }
 
 /* Blog Stylings

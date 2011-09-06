@@ -1,0 +1,7 @@
+<div id="confirm-dialog">
+    [% message %]
+    <div class="buttons vpad20">
+        <a href="#" id="confirm-yes" class="button yes">[% loc('do.yes') %]</a>
+        <a href="#" class="button no">[% loc('do.no') %]</a>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+/**
+ * Global Navigation
+
+// Override grid sizes so they have no padding
+@for $i from 1 through 12
+  .grid_#{$i}
+    width: #{$i * 40}px
+
+.navGrid
+  margin: 0
+  height: 50px
+.navItem, .navLink
+  height: 45px
+
+a
+  &:visited, &:active
+    color: #fff
+  color: #fff
+
+.last .navLink
+  border-right: 2px solid #000
+
+.navLink
+  border-left: 2px solid #000
+  a
+    top: 10px
+    position: relative
+    color: #ccc
+    font-size: 13px
+    display: block
+    padding: 5px 0 0 43px
+    font-weight: bold
+    text-decoration: none
+    background: transparent no-repeat 10px 0
+    &.dashboard
+      background-image: url(#{$static}/images/globalNav/dashboard.png)
+    &.spaces
+      background-image: url(#{$static}/images/globalNav/spaces.png)
+    &.activities
+      background-image: url(#{$static}/images/globalNav/activities.png)
+    &.people
+      background-image: url(#{$static}/images/globalNav/people.png)
+  .selected .navLink
+    background-color: #000
+    background: rgb(0, 0, 0)
+    background: rgba(0, 0, 0, 0.3)
+    filter: alpha(opacity = 30)
+
+.searchBox
+  width: 250px
+  height: 40px
+  top: 12px
+  position: relative
+  float: right
+  form
+    .searchText
+      padding-left: 18px
+      width: 100px
+      background: white url(#{$static}/images/icons/search.png) no-repeat 0 0px
+
+.buttons
+  float: right
+  .button
+    top: 15px
+    position: relative
+    margin-left: 5px
+  .editMode
+    display: none
+
+.navGrid
+  .staticUnderline, .underline
+    height: 3px
+    background-color: #fff
+    border-top: 2px solid #c6b93b
+    width: 100%
+  &:hover .underline
+    background-color: #c6b93b
+
+.selected .underline
+  background-color: #c6b93b

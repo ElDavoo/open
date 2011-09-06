@@ -1,0 +1,27 @@
+<div id="save-lightbox">
+    <div class="vpad5">
+    [% loc('info.dashboard-save-layout') %]
+    </div>
+    [% IF gadget_titles.size -%]
+        <div class="vpad5">
+            <div>[% loc("info.dashboard-push-widget") %]</div>
+            <div>
+                <b>[% loc('dashboard.widgets-to-push:') %]</b>
+                <ul style="list-style: circle inside none">
+                    [% FOR title IN gadget_titles.sort %]<li>[% title %]</li>[% END %]
+                </ul>
+            </div>
+        </div>
+    [% END %]
+    <div class="vpad10">
+        <a href="#" id="st-save-widget-template" class="save button">[% loc('do.save') %]</a>
+        <a href="#" class="cancel button">[% loc('do.cancel') %]</a>
+    </div>
+    <div class="vpad10">
+      <label><input id="force-update" type="checkbox"/>
+      [% loc('dashboard.force-update') %]</label>
+      <div class="bigHint">
+        [% loc("info.dashboard-force-update") %]
+      </div>
+    </div>
+</div>
