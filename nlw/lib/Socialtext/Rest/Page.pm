@@ -1,7 +1,7 @@
 package Socialtext::Rest::Page;
 # @COPYRIGHT@
 
-use strict;
+use 5.12.0;
 use warnings;
 
 # REVIEW: Can this be made into a Socialtext::Entity?
@@ -47,7 +47,7 @@ sub make_GETter {
                     $self->hub->pages->current($page);
                     my @etag = ();
 
-                    if ( $content_type eq 'text/x.socialtext-wiki' ) {
+                    if ( $content_type ~~ ['text/x.socialtext-wiki', 'application/xhtml+xml'] ) {
                         my $etag = $page->revision_id();
                         @etag = ( -Etag => $etag );
 
@@ -147,6 +147,7 @@ sub _page_type_is_valid { 1 }
     no warnings 'once';
     *GET_wikitext = make_GETter( 'text/x.socialtext-wiki' );
     *GET_html = make_GETter( 'text/html' );
+    *GET_xhtml = make_GETter( 'application/xhtml+xml' );
 }
 
 # look in the link_dictionary query parameter to figure out
@@ -185,6 +186,7 @@ sub GET_json {
             my $wikitext = $rest->query->param('wikitext');
             my $metadata = $rest->query->param('metadata');
             my $html     = $rest->query->param('html');
+            my $xhtml    = $rest->query->param('xhtml');
 
             my $link_dictionary = $self->_link_dictionary($rest);
             my $page = $self->page;
@@ -220,9 +222,15 @@ sub GET_json {
                 my $to_wikitext = sub {
                     $addtional_content->('text/x.socialtext-wiki');
                 };
+                my $to_xhtml = sub {
+                    $addtional_content->('application/xhtml+xml', $link_dictionary);
+                };
                 if ($verbose) {
                     $page_hash->{wikitext} = $to_wikitext->();
                     $page_hash->{html} = $to_html->();
+                    if ($page_hash->{type} eq 'xhtml') {
+                        $page_hash->{xhtml} = $to_xhtml->();
+                    }
                     $page_hash->{last_editor_html} = 
                         $self->hub->viewer->text_to_html(
                             "\n{user: $page_hash->{last_editor}}\n"
@@ -236,6 +244,9 @@ sub GET_json {
                 }
                 elsif ($wikitext) {
                     $page_hash->{wikitext} = $to_wikitext->();
+                }
+                elsif ($xhtml) {
+                    $page_hash->{xhtml} = $to_xhtml->();
                 }
                 elsif ($html) {
                     $page_hash->{html} = $to_html->();
@@ -320,6 +331,10 @@ sub PUT_wikitext {
         -Location => $self->full_url
     );
     return '';
+}
+
+sub PUT_xhtml {
+    die "TODO: Not yet implemented";
 }
 
 sub PUT_html {
