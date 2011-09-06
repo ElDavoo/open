@@ -12,12 +12,40 @@
         <input type="file" name="file" class="file"/>
     </p>
     <div class="error">&nbsp;</div>
-    <div class="message">&nbsp;</div>
 
-    <input type="submit" class="hidden"/>
-    <div class="right">
+    <div class="right pad20">
+        <input type="submit" class="hidden"/>
         <a class="button submit" href="#">[% loc('do.upload') %]</a>
     </div>
+    <div class="clear"></div>
   </form>
+</div>
+[% END %]
+
+[% BLOCK activitiesAddVideo %]
+<div class="videoPopup">
+    <form>
+        <p>[% loc("activities.enter-video-url-here") %]</p>
+
+        <div class="fieldTitle">[% loc('video.url:') %]*</div>
+        <div class="field">
+            <input name="video_url" class="video_url" type="text" value="[% params.video_url %]" />
+        </div>
+        <div class="clear"></div>
+
+        <div class="fieldTitle">[% loc('video.title:') %]</div>
+        <div class="field">
+            <input name="video_title" class="video_title" type="text" value="[% params.video_title %]" />
+        </div>
+        <div class="clear"></div>
+
+        <div class="error">&nbsp;</div>
+
+        <div class="right pad20">
+            <input type="submit" class="hidden"/>
+            <a class="button submit" href="#">[% loc('do.ok') %]</a>
+        </div>
+        <div class="clear"></div>
+    </form>
 </div>
 [% END %]

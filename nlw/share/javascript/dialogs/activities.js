@@ -4,7 +4,8 @@ var activitiesDialog = {
     show: function (opts) {
         this.dialog = socialtext.dialog.createDialog({
             html: socialtext.dialog.process(opts.template, opts),
-            title: opts.title
+            title: opts.title,
+            params: opts.params
         });
 
         if (!$.isFunction(opts.callback))
@@ -47,16 +48,96 @@ var activitiesDialog = {
                     var filename = self.dialog.find('.file').val()
                     filename = filename.replace(/^.*\\|\/:/, '');
                     opts.callback(filename, result);
-                    self.dialog.close();
                 }
             });
         });
 
-        // All
-        self.dialog.find('.submit').click(function() {
-            self.dialog.find('form').submit();
+        // Video Popup
+        if (self.dialog.find('.videoPopup').size()) {
+            self.startCheckingVideoURL();
+        }
+
+        self.dialog.find('.videoPopup form').submit(function() {
+            if (self.dialog.find('.submit').is(':hidden')) return;
+            var url = self.dialog.find('.video_url').val() || '';
+            var title = self.dialog.find('.video_title').val() || '';
+
+            if (opts.callback(url, title) === false) {
+                // cancellable by returning false
+                self.dialog.find('.error')
+                    .text(loc("error.invalid-video-link"))
+                    .show();
+                self.dialog.find('.video_url').focus();
+            }
+            else {
+                clearInterval(self._intervalId);
+                self.dialog.close();
+            }
             return false;
         });
+
+        // All
+        self.dialog.find('.submit').click(function() {
+            $(this).parents('form:first').submit();
+            return false;
+        });
+    },
+
+    startCheckingVideoURL: function(url) {
+        var $url = this.dialog.find('.video_url');
+        var $done = this.dialog.find('.submit');
+        var $title = this.dialog.find('.video_title');
+
+        var previousURL = $url.val() || null;
+        var loading = false;
+        var queued = false;
+
+        self._intervalId = setInterval(function (){
+            var url = $url.val();
+            if (!/^[-+.\w]+:\/\/[^\/]+\//.test(url)) {
+                $title.val('');
+                url = null;
+                $done.hide();
+            }
+            if (url == previousURL) return;
+            previousURL = url;
+            if (loading) { queued = true; return }
+            queued = false;
+            if (!url) return;
+            loading = true;
+            $title
+                .val(loc('activities.loading-video'))
+                .attr('disabled', true);
+
+            $done.hide();
+
+            jQuery.ajax({
+                type: 'get',
+                async: true,
+                url: '/',
+                dataType: 'json',
+                data: {
+                    action: 'check_video_url',
+                    video_url: url.replace(/^<|>$/g, '')
+                },
+                success: function(data) {
+                    loading = false;
+                    if (queued) { return; }
+                    if (data.title) {
+                        $title
+                            .val(data.title)
+                            .attr('disabled', false)
+                            .attr('title', '');
+                        $done.show();
+                    }
+                    else if (data.error) {
+                        $title.val(data.error)
+                            .attr('disabled', true)
+                            .attr('title', data.error);
+                    }
+                }
+            });
+        }, 500);
     }
 }
 

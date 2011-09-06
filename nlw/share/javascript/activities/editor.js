@@ -1277,126 +1277,29 @@ $.extend(Activities.Editor.prototype, {
 
         var wikiwyg = self.wikiwyg.current_mode;
 
-        var $popup = self.placeInParentWindow(
-            self.processTemplate('activities/video_popup.tt2'),
-            'video-ui'
-        );
-        $popup.holdFocus();
+        socialtext.dialog.show('activities', {
+            template: 'activitiesAddVideo',
+            title: loc('Add Video'),
+            params: {
+                video_url: url,
+                video_title: title
+            },
+            callback: function(url, title) {
+                if (!wikiwyg.valid_web_link(url)) return false;
 
-        // clear form values
-        var $url = $popup.find('.video_url').val(url || '');
-        var $title = $popup.find('.video_title').val(title || '');
+                if (/^\s*$/.test(title)) title = url;
 
-        $popup.find('.cancel').unbind('click').click(function() {
-            $popup.guardedFade();
-            return false;
-        });
-
-        var $done = $popup.find('.done').hide();
-        var $error = $popup.find('.error').hide();
-
-        if (url) {
-            $done.show();
-        }
-        else {
-            $title.attr('disabled', true);
-        }
-
-        var previousURL = url || null;
-        var loading = false;
-        var queued = false;
-        var $notice = $popup.find('.notice').hide();
-        var intervalId = setInterval(function (){
-            var url = $url.val();
-            if (!/^[-+.\w]+:\/\/[^\/]+\//.test(url)) {
-                $title.val('');
-                url = null;
-                $done.hide();
-            }
-            if (url == previousURL) { return; }
-            previousURL = url;
-            if (loading) { queued = true; return; }
-            queued = false;
-            if (!url) { return; }
-            loading = true;
-            $title.val(loc('activities.loading-video')).attr('disabled', true);
-            $notice.hide();
-            $done.hide();
-            jQuery.ajax({
-                type: 'get',
-                async: true,
-                url: '/',
-                dataType: 'json',
-                data: {
-                    action: 'check_video_url',
-                    video_url: url.replace(/^<|>$/g, '')
-                },
-                success: function(data) {
-                    loading = false;
-                    if (queued) { return; }
-                    if (data.title) {
-                        $title.val(data.title).attr('disabled', false).attr('title', '');
-                        $done.show();
-                    }
-                    else if (data.error) {
-                        $title.val(data.error).attr('disabled', true).attr('title', data.error);
-                        //$notice.show();
-                        //$error.text(data.error).show();
-                    }
+                var wafl;
+                if (title) {
+                    wafl = '"' + title.replace(/"/g, '') + '"';
                 }
-            });
-        }, 500);
+                wafl += '{video: ' + url + '}';
 
-        $popup.blur(function(){
-            clearInterval(intervalId);
-        });
-        var submit = function() {
-            if ($popup.find('.done').is(':hidden')) {
-                return;
+                self.insertWidget(wafl, el);
+                self.onChange();
             }
-
-            var video_url = $popup.find('.video_url').val();
-            var video_title = $popup.find('.video_title').val();
-
-            if (!wikiwyg.valid_web_link(video_url)) {
-                $popup.find('.error')
-                    .text(loc("error.invalid-video-link")).show();
-                $notice.show();
-                $popup.find('.video_url').focus();
-                return;
-            }
-
-            if (/^\s*$/.test(video_title)) {
-                video_title = video_url;
-            }
-
-            var wafl;
-            if (video_title) {
-                wafl = '"' + video_title.replace(/"/g, '') + '"';
-            }
-            wafl += '{video: ' + video_url + '}';
-
-            self.insertWidget(wafl, el);
-            self.onChange();
-
-            clearInterval(intervalId);
-            $popup.blockFade(false).fadeOut();
-            $popup.find('.video_url').val('');
-            $popup.find('.video_title').val('');
-            $popup.find('.error').text("").hide();
-            return false;
-        };
-
-        $popup.find('.done').unbind('click').click(submit);
-
-        $popup.find(':input').unbind('keyup').keyup(function(e) {
-            // Restore 'Enter' functionality
-            if (e.keyCode == 13 ) submit();
         });
 
-        $popup.find('.error').text("").hide();
-        $popup.show();
-        $popup.find('.video_url').focus();
     },
 
     showTagLookahead: function(el, value) {
