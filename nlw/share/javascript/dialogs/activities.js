@@ -8,8 +8,9 @@ var activitiesDialog = {
             params: opts.params
         });
 
-        if (!$.isFunction(opts.callback))
-            throw new Error('callback required');
+        $.extend({
+            callback: $.noop
+        }, opts);
 
         this.bind(opts);
     },
@@ -17,7 +18,7 @@ var activitiesDialog = {
     bind: function(opts) {
         var self = this;
 
-        // Attachment popup
+        // Add Attachment popup
         self.dialog.find('.attachmentPopup form').submit(function() {
             self.dialog.disable();
 
@@ -52,11 +53,10 @@ var activitiesDialog = {
             });
         });
 
-        // Video Popup
+        // Add Video Popup
         if (self.dialog.find('.videoPopup').size()) {
             self.startCheckingVideoURL();
         }
-
         self.dialog.find('.videoPopup form').submit(function() {
             if (self.dialog.find('.submit').is(':hidden')) return;
             var url = self.dialog.find('.video_url').val() || '';
@@ -75,6 +75,24 @@ var activitiesDialog = {
             }
             return false;
         });
+
+        // Show Video/Image popup
+        if (opts.params.video) {
+            self.dialog.disable();
+            if (opts.params.video) {
+                $.ajax({
+                    method: 'GET',
+                    dataType: 'text',
+                    url: '/?action=get_video_html;autoplay=1;width='
+                        + opts.params.video.width
+                        + ';video_url=' + encodeURIComponent(opts.params.url),
+                    success: function(html) {
+                        self.dialog.enable();
+                        self.dialog.find('.video').html(html);
+                    }
+                });
+            }
+        }
 
         // All
         self.dialog.find('.submit').click(function() {

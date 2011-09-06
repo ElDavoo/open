@@ -805,51 +805,21 @@ $.extend(Activities.EventList.prototype, {
 
     showLightbox: function($a) {
         var self = this;
-        if ($('#lightbox').is(':visible')) { return; }
+        if ($('#lightbox').is(':visible')) return;
 
         var url = $a.attr('href');
         var $video = $a.find('img.video');
-        $('#lightbox').text('');
 
-        var $closeButton =
-            $('<div class="buttons" style="position: absolute; right: 10px; bottom: 10px" />').append(
-                $('<ul style="float: left; padding: 10px;" class="widgetButton" />').append(
-                    $('<li class="flexButton" />').append(
-                        $('<a href="#" id="st-desktop-cancellink" class="close genericOrangeButton" />')
-                            .text(loc('do.close'))
-                            .click(function(){ $.hideLightbox(); return false })
-                    )
-                )
-            );
-
-        if ($video.length) {
-            var width = Math.min(480, $video.data('width') || 400);
-            var height = Math.min(360, $video.data('height') || 300);
-
-            $.showLightbox({
-                html: "<center><img src='"
-                    + self.base_uri
-                    + "/static/skin/common/images/ajax-loader.gif' /></center>"
-            });
-
-            $.ajax({
-                method: 'GET',
-                dataType: 'text',
-                url: self.base_uri
-                    + '/?action=get_video_html;autoplay=1;width=' + width
-                    + ';video_url=' + encodeURIComponent(url),
-                success: function(html) {
-                    $('#lightbox center').html(html);
-                }
-            });
-        }
-        else {
-            $.showLightbox({
-                html: "<center><img style='max-width: 480px; max-height: 360px' src='" + url + "' /></center>"
-            });
-        }
-
-        $('#lightbox center').css('margin-bottom', '35px').after($closeButton);
+        socialtext.dialog.show('activities', {
+            template: 'activitiesShow',
+            title: $video.attr('title') || loc('Attachment'),
+            params: {
+                url: $a.attr('href'),
+                video: $video.size(),
+                width: $video.data('width') || 400,
+                height: $video.data('height') || 300,
+            }
+        });
     },
 
     attachThumbnailActions: function(evt) {
