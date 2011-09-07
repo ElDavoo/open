@@ -181,9 +181,7 @@ $.extend(Activities.Editor.prototype, {
             });
         }
 
-        self.node.siblings('.postWrap')
-            .show()
-            .find('.post')
+        self.find('.post')
             .click(function () {
                 self.submitHandler();
                 return false;
