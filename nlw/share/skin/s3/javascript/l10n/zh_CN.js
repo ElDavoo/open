@@ -1695,7 +1695,7 @@
 "people.showing=from,to,total":"\u663e\u793a\u7b2c [_1] - [_2] \u9879\uff0c\u5171 [_3] \u9879\u3002",
 "people.sort-name":"\u540d\u5b57",
 "people.sort-relevance":"\u76f8\u5173\u5ea6",
-"people.stop-following":"\u505c\u6b62\u4e0b\u9762\u7684",
+"people.stop-following":"\u505c\u6b62\u5173\u6ce8",
 "people.tag-name":"\u6807\u7b7e\u540d\u79f0",
 "people.tools":"\u5de5\u5177",
 "people.twitter-id":"Twitter \u7528\u6237\u540d",
