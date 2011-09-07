@@ -9,11 +9,27 @@ socialtext.dialog = (function($) {
             && Socialtext.accept_encoding.match(/\bgzip\b/) ? '.gz' : '';
 
     // Socialtext adapter class for jQuery dialogs
-    var Dialog = function(node) {
-        this.node = node;
+    var Dialog = function(opts) {
+        this.show(opts);
     };
     Dialog.prototype = {
-        close: function() { this.node.dialog('destroy') },
+        show: function(opts) {
+            var self = this;
+            var opts = typeof(opts) == 'string' ? { html: opts } : opts;
+            self.node = opts.content
+                ? $(content)
+                : $('<div></div>').html(opts.html);
+            self.node.dialog($.extend({
+                width: 520,
+                modal: true,
+                close: function() { self.close() }
+            }, opts));
+            if ($.isFunction(opts.callback)) opts.callback();
+        },
+        close: function() {
+            this.node.find('iframe').attr('src', '/static/html/blank.html');
+            this.node.dialog('destroy');
+        },
         find: function(selector) { return this.node.find(selector) },
         showError: function(err) { this.node.find('.error').html(err) },
         disable: function() {
@@ -36,16 +52,7 @@ socialtext.dialog = (function($) {
 
     return {
         createDialog: function(opts) {
-            var opts = typeof(opts) == 'string' ? { html: opts } : opts;
-            var $content = opts.content
-                ? $(content)
-                : $('<div></div>').html(opts.html);
-            $content.dialog($.extend({
-                width: 520,
-                modal: true
-            }, opts));
-            if ($.isFunction(opts.callback)) opts.callback();
-            return new Dialog($content);
+            return new Dialog(opts);
         },
 
         show: function(name, args) {
