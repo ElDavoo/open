@@ -6,6 +6,7 @@ use warnings;
 
 our $VERSION = '0.01';
 
+use Email::Valid;
 use Socialtext::AppConfig;
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
@@ -52,6 +53,11 @@ sub _invite_one_user {
 
     my $wksp = $self->{workspace};
     my $email = $self->{invitee};
+
+    email_address_exception(
+        message => 'INVALID EMAIL ADDRESS',
+        email_address => $email,
+    ) unless Email::Valid->address($email);
 
     email_address_exception(
         message => 'WORKSPACE INVITATION FILTER',
