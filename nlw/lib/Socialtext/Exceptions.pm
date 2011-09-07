@@ -58,6 +58,12 @@ BEGIN {
             fields      => [qw( email_address )],
         },
 
+        'Socialtext::Exception::User' => {
+            isa         => 'Socialtext::Exception',
+            alias       => 'user_exception',
+            fields      => [qw( username user )],
+        },
+
         'Socialtext::Exception::TooManyResults' => {
             isa         => 'Socialtext::Exception',
             alias       => 'too_many_results',
