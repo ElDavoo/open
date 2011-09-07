@@ -1,15 +1,98 @@
+<script language="javascript">
+
+jQuery(document).ready(function() {
+    var newUsers = [];
+
+    function renderNewUsers() {
+        var ul = jQuery('<ul>');
+        for (var i in newUsers) {
+            li = jQuery('<li>')
+              .append(newUsers[i].best_full_name)
+              .append('<span><a id="' + newUsers[i].user_id + '" href="#" class="remove">x</a></span>')
+              .append('<input type="hidden" name="workspace.do.invite_user" value="' + newUsers[i].user_id + '">'); 
+            ul.append(li);
+        }
+        jQuery('#newUsers').html(ul.html());
+
+        // Bind the remove icon to remove the user from the list
+        jQuery('#newUsers a.remove').click(function() {
+            var user_id = $(this).attr('id');
+            newUsers = $.grep(newUsers, function(u) {
+                return user_id != u.user_id;
+            });
+            renderNewUsers();
+            return false;
+        });
+    };
+
+    jQuery('#user').lookahead({
+        url: '/data/users',
+        clearOnHide: true,
+        requireMatch: [%- IF space.require_registered -%]true[%- ELSE -%]false[%- END -%],
+        params: {accept: 'application/json'},
+        linkText: function (user) {
+            return [user.best_full_name, user.user_id];
+        },
+        getEntryThumbnail: function(user) {
+            return '/data/people/' + user.value + '/small_photo';
+        },
+        displayAs: function(user) { return user.title; },
+        onAccept: function(id, item) {
+            jQuery('#user').val('');
+
+            var user = item.title
+                ? {best_full_name: item.title, user_id: item.value}
+                : {best_full_name: id, user_id: id};
+
+            newUsers.push(user);
+            renderNewUsers();
+        },
+    });
+
+    jQuery(".lookahead-prompt").one('click', function() {
+        $(this).val('');
+    });
+});
+
+</script>
+
 <h3>[% loc('Invite New Users') %]</h3>
+
+[% IF invite_errors %]
+<div class="grid_12">
+  <p>[% loc('There were errors inviting the following users.') %]</p>
+  [% FOREACH error IN invite_errors.keys %]
+    [% IF error == 'ACCOUNT DOMAIN FILTER' %]
+      <p>[% loc('The following users were not invited because their email domain does not match [_1].', space.domain_restriction) %]</p>
+    [% ELSIF error == 'WORKSPACE INVITATION FILTER' %]
+      <p>[% loc('The following users were not invited because their email address does not match the workspace invite filter "[_1]".', space.invitation_filter) %]</p>
+    [% ELSIF error == 'USER DELETED' %]
+      <p>[% loc('The following users were not invited because they have been deleted. If you wish to invite the users you first need to undelete them.') %]</p>
+    [% ELSIF error == 'WORKSPACE RESTRICT TO REGISTERED' %]
+      <p>[% loc('The following users were not invited because they are not registered users of Socialtext.') %]</p>
+    [% ELSIF error == 'INVALID EMAIL ADDRESS' %]
+      <p>[% loc('The following email addresses are not valid.') %]</p>
+    [% ELSE %]
+      <p>[% loc('They following users generated a [_1] error when attempting to invite.', error) %]</p>
+    [% END %]
+    [% PROCESS list_of_emails emails=invite_errors.$error %]
+  [% END %]
+</div>
+[% END %]
+
+<div>FIXME: show a list of groups that are in the workspace, remind the admin that they could, if they so wanted, invite users to the group(s) instead</div>
+
+<p>List restrictions on users showing up in lookahead</p>
 
 <div class="grid_5 input-label">
   [% loc('Email addresses to invite') %]:
 </div>
 <div class="grid_7">
-  <textarea name="workspace.do.invite" rows="4" cols="30"></textarea>
-</div>
-<div class="clear"></div>
+    <input id="user" name="please.ignore.me"
+      class="lookahead-prompt" type="text" value="begin typing name here..."/>
 
-<div class="push_5 grid_7">
-  [% loc('Please enter one email address per line') %]
+    <div class="users" id="newUsers">
+    </div>
 </div>
 <div class="clear"></div>
 
@@ -95,4 +178,13 @@
 <div class="clear"></div>
 
 <hr />
+[% END %]
+
+[% BLOCK  list_of_emails %]
+  <p>[% message %]</p>
+  <ul>
+  [% FOR email IN emails %]
+    <li>[% email | html %]</li>
+  [% END %]
+  </ul>
 [% END %]
