@@ -198,6 +198,15 @@ sub _new {
     return $new_obj;
 }
 
+sub guest_has_email_in {
+    my $self = shift;
+
+    return $self->permissions->role_can(
+        role       => Socialtext::Role->Guest(),
+        permission => ST_EMAIL_IN_PERM,
+    );
+}
+
 sub new_from_hash_ref {
     my ( $class, $row ) = @_;
     return $row unless $row;

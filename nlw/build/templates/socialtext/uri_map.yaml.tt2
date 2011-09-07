@@ -699,6 +699,24 @@
     '/data':
         '*':                    [Socialtext::Rest, redirect_workspaces]
 -
+    '/st/settings':
+        'GET':
+            'text/html': [Socialtext::Handler::Settings, GET]
+            '*/*':       [Socialtext::Handler::Settings, bad_type]
+        'POST':
+            'application/x-www-form-urlencoded': [Socialtext::Handler::Settings, POST]
+            '*/*':       [Socialtext::Handler::Settings, bad_type]
+        '*':             [Socialtext::Handler::Settings, bad_method]
+-
+    '/st/settings/:workspace_id/prefs/:pref':
+        'GET':
+            'text/html': [Socialtext::Handler::Settings, GET_space]
+            '*/*':       [Socialtext::Handler::Settings, bad_type]
+        'POST':
+            'application/x-www-form-urlencoded': [Socialtext::Handler::Settings, POST_space]
+            '*/*':       [Socialtext::Handler::Settings, bad_type]
+        '*':             [Socialtext::Handler::Settings, bad_method]
+-
     '/settings/default_workspace':
         'GET':  
             '*/*': &default     [Socialtext::Rest::Settings::DefaultWorkspace, bad_type]

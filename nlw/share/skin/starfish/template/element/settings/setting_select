@@ -1,0 +1,56 @@
+[% UNLESS option.depends_on %]
+  <div class="grid_5 input-label">[% option.title %]
+    [% IF option.title %]:[% END %]</div>
+[% END %]
+
+[% IF option.binary %]
+  <div class="grid_7">
+  [% FOREACH setting IN option.options %]
+    [% IF setting.setting != 0 %]
+      <input type="checkbox" name="[% pref %]" value="[% setting.setting %]"
+        [% IF setting.setting == option.default_setting %]
+          checked="checked"
+        [% END %]
+      /> [% setting.display %]
+    [% ELSE %]
+      <input type="hidden" name="checkbox.[% pref %]"
+        value="[% setting.setting %]" />
+    [% END %]
+  [% END %]
+  </div>
+[% ELSIF ! option.options %]
+  <div class="[% IF option.depends_on %]push_5 [% END %]grid_7">
+    <input type="text" name="[% pref %]" value="[% option.default_setting %]" />
+  </div>
+[% ELSE %]
+  <div class="[% IF option.depends_on %]push_5 [% END %]grid_7">
+    [% IF option.options.size < 4 %]
+      [% FOREACH setting IN option.options %]
+        <input type="radio" name="[% pref %]" value="[% setting.setting %]"
+          [% IF setting.setting == option.default_setting %]
+            checked="checked"
+          [% END %]
+        /> [% setting.display %] <br />
+      [% END %]
+    [% ELSE %]
+      <select name="[% pref %]">
+        [% FOREACH setting IN option.options %]
+          <option value="[% setting.setting %]"
+            [% IF setting.setting == option.default_setting %]
+              selected="selected"
+            [% END %]
+          >
+            [% setting.display %]
+          </option>
+        [% END %]
+      </select>
+    [% END %]
+    [% IF option.depends_on; option.title; END %]
+  </div>
+[% END %]
+<div class="clear"></div>
+
+[% IF option.additional %]
+  <div class="push_5 grid_7">[% option.additional %]</div>
+  <div class="clear"></div>
+[% END %]

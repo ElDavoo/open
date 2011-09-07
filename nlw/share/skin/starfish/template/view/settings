@@ -1,0 +1,150 @@
+[% WRAPPER layout/html title=loc('User Settings') %]
+
+<script language="javascript">
+
+jQuery(document).ready(function() {
+    jQuery('#spaces-accordion').accordion({
+        header: 'div.header',
+        active: [% IF active_ix.defined; active_ix; ELSE; 'false'; END %],
+        autoHeight: false
+    });
+
+    jQuery('#settings-main a.save').unbind('click').bind('click', function() {
+        jQuery('#settings-main form').submit();
+    });
+    
+    jQuery('#settings-main a.cancel').unbind('click').bind('click', function() {
+        jQuery('#settings-main form')[0].reset();
+    });
+});
+
+</script>
+
+<style type="text/css">
+
+#settings-main {
+    padding: 3px;
+}
+
+#settings-main hr {
+    margin: 20px 0px;
+}
+
+#settings-main th {
+    font-weight: bold;
+}
+
+#settings-main th,
+#settings-main td {
+    padding: 5px;
+}
+
+#settings-main th.first,
+#settings-main th.first {
+    padding-left: 0px;
+}
+
+#settings-main th.last,
+#settings-main td.last {
+    padding-right: 0px;
+}
+
+#settings-sidebar {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #dfebed;
+}
+
+#settings-sidebar .pad {
+    padding: 0px 3px;
+}
+
+#settings-sidebar .top {
+    padding-left: 5px;
+}
+
+#settings-sidebar .header {
+    cursor: pointer;
+    padding-left: 25px;
+}
+
+#settings-sidebar ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.input-label {
+    padding-top: 5px;
+    text-align: right;
+}
+
+select {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+</style>
+
+<div class="container_16">
+  <div id="settings-sidebar" class="grid_4">
+    <div class="pad">
+      <h4>[% loc('Settings') %]</h4>
+        <div class="top">
+          [% IF section == 'global' %]
+            <strong>[% loc('Global Settings') %]</strong>
+          [% ELSE %]
+            <a href="/st/settings">[% loc('Global Settings') %]</a>
+          [% END %]
+        </div>
+      <h4>[% loc('Workspaces') %]</h4>
+      <div id="spaces-accordion">
+      [% FOREACH space IN spaces %]
+        <div class="top header">
+          [% IF space.active %]
+            <strong>[% space.title %]</strong>
+          [% ELSE %]
+            [% space.title %]
+          [% END %]
+        </div>
+        <ul>
+          [% FOREACH pref IN space.prefs %]
+            <li>
+              [% IF pref.active %]
+                <strong>[% pref.title %]</strong>
+              [% ELSE %]
+                <a href="/st/settings/[% space.id %]/prefs/[% pref.name %]">
+                  [% pref.title %]</a>
+              [% END %]
+            </li>
+          [% END %]
+        </ul>
+      [% END %]
+      </div>
+    </div>
+  </div>
+  <div class="grid_12" id="settings-main">
+  <form method="POST" action="">
+    <p>
+      <a class="button save" href="#">[% loc('Save') %]</a>
+      <a class="button cancel" href="#">[% loc('Cancel') %]</a>
+    </p>
+
+    [% IF message %]
+      <p>[% message %]</p>
+    [% END %]
+
+    [% main_content %]
+
+    <p>
+      <a class="button save" href="#">[% loc('Save') %]</a>
+      <a class="button cancel" href="#">[% loc('Cancel') %]</a>
+    </p>
+  </form>
+  </div>
+</div>
+[% END %]
+

@@ -1,0 +1,98 @@
+<h3>[% loc('Invite New Users') %]</h3>
+
+<div class="grid_5 input-label">
+  [% loc('Email addresses to invite') %]:
+</div>
+<div class="grid_7">
+  <textarea name="workspace.do.invite" rows="4" cols="30"></textarea>
+</div>
+<div class="clear"></div>
+
+<div class="push_5 grid_7">
+  [% loc('Please enter one email address per line') %]
+</div>
+<div class="clear"></div>
+
+<hr />
+
+[% IF space.auw_for %]
+  <div class="grid_12">
+    [% loc('Note: All users of the [_1] account are members of this workspace.', space.auw_for) %]
+  </div>
+  <div class="clear"></div>
+[% END %]
+
+[% IF space.users.size > 0 %]
+<div class="grid_12">
+  <h3>[% loc('Manage Users') %]</h3>
+  <table>
+    <tr>
+      <th class="first">[% loc('do.remove') %]</th>
+      <th>[% loc('user.email-address') %]</th>
+      <th>[% loc('user.admin') %]</th>
+      <th class="last">[% loc('password.reset') %]</th>
+    </tr>
+
+  [% FOREACH user_and_role IN space.users %]
+    [% user = user_and_role.0 %]
+    [% role = user_and_role.1 %]
+
+    <tr>
+      <td class="first">
+        <input type="checkbox" value="[% user.user_id %]"
+          name="workspace.do.remove_user" />
+      </td>
+      <td>[% user.name_and_email | html %] </td>
+      <td>
+        <input type="checkbox" value="[% user.user_id %]"
+         name="workspace.do.should_be_admin"
+         [% IF role.name == 'admin' %]checked="checked"[% END %]
+        />
+        <input type="hidden" value="[% user.user_id %].[% role.role_id %]"
+          name="workspace.do.valid_user" />
+      </td>
+      <td class="last">
+        <input type="checkbox" value="[% user.user_id %]"
+          name="workspace.do.reset_password"
+          [% UNLESS user.can_update_store %]disabled="disabled"[%END%]
+        />
+      </td>
+  </tr>
+
+  [% END %]
+  </table>
+</div>
+<div class="clear"></div>
+
+<hr />
+[% END %]
+
+[% IF space.groups.size > 0 %]
+<div class="grid_12">
+  <h3>[% loc('Manage Groups') %]</h3>
+
+  <table>
+    <tr>
+      <th class="first">[% loc('group.name') %]</th>
+      <th>[% loc('config.users') %]</th>
+      <th class="last">[% loc('user.role') %]</th>
+    </tr>
+
+  [% FOREACH group_and_role IN space.groups %]
+    [% group = group_and_role.0 %]
+    [% role = group_and_role.1 %]
+
+    <tr>
+      <td class="first">[% group.driver_group_name | html %]</td>
+      <td>[% group.user_count %]</td>
+      <td class="last">[% role.name | html %]</td>
+    </tr>
+
+  [% END %]
+
+  </table>
+</div>
+<div class="clear"></div>
+
+<hr />
+[% END %]
