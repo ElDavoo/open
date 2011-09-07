@@ -40,8 +40,8 @@ var gallery = {
         var self = this;
         if (typeof(self.account_id) == 'undefined')
             throw new Error("account_id is required");
-        if (typeof(self.type) == 'undefined')
-            throw new Error("type is required");
+        if (typeof(self.view) == 'undefined')
+            throw new Error("view is required");
         $.ajax({
             url: '/data/accounts/' + self.account_id + '/gadgets',
             dataType: 'json',
@@ -52,7 +52,8 @@ var gallery = {
                 ];
                 $.each(gadgets, function(_, g){
                     var hidden = !g.src || g.removed || (
-                        g.type && $.inArray(self.type, g.type) == -1
+                        g.container_types
+                        && $.inArray(self.view, g.container_types) == -1
                     );
                     if (hidden) return;
 

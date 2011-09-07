@@ -36,7 +36,7 @@
 
     $('#st-add-widget').click(function() {
         socialtext.dialog.show('opensocial-gallery', {
-            type: [% container.type.json %],
+            view: [% container.view.json %],
             account_id: [% container.viewer.primary_account_id || 0 %]
         });
         return false;
