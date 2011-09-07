@@ -104,6 +104,7 @@
         - save-layout
         - simple
         - activities
+        - activities-link
 'shindig-container-%.js':
     compress: 1
     parts:

@@ -15,15 +15,24 @@ var activitiesDialog = {
         this.bind(opts);
     },
 
+    close: function() {
+        if (this.dialog) this.dialog.close();
+    },
+
+    showError: function(err) {
+        if (this.dialog) this.dialog.find('.error').text(err);
+    },
+
     bind: function(opts) {
         var self = this;
+        var dialog = self.dialog;
 
         // Add Attachment popup
-        self.dialog.find('.attachmentPopup form').submit(function() {
-            self.dialog.disable();
+        dialog.find('.attachmentPopup form').submit(function() {
+            dialog.disable();
 
-            self.dialog.find('.formtarget').unbind('load').load(function() {
-                self.dialog.find('.formtarget').unbind('load');
+            dialog.find('.formtarget').unbind('load').load(function() {
+                dialog.find('.formtarget').unbind('load');
                 // Socialtext Desktop
                 var result = this.contentWindow.childSandboxBridge;
                 if (!result) {
@@ -34,19 +43,19 @@ var activitiesDialog = {
                 }
                 if (result && result.status == 'failure') {
                     var msg = result.message || "Error parsing result";
-                    self.dialog.find('.error').text(msg).show();
-                    self.dialog.enable();
+                    dialog.find('.error').text(msg).show();
+                    dialog.enable();
                 }
                 else if (!result) {
                     var body = this.contentWindow.document.body
                     var msg = body.match(/entity too large/i)
                         ? loc('File size is too large. 50MB maximum, please.')
                         : loc('Error parsing result');
-                    self.dialog.find('.error').text(msg).show();
-                    self.dialog.enable();
+                    dialog.find('.error').text(msg).show();
+                    dialog.enable();
                 }
                 else {
-                    var filename = self.dialog.find('.file').val()
+                    var filename = dialog.find('.file').val()
                     filename = filename.replace(/^.*\\|\/:/, '');
                     opts.callback(filename, result);
                 }
@@ -54,31 +63,31 @@ var activitiesDialog = {
         });
 
         // Add Video Popup
-        if (self.dialog.find('.videoPopup').size()) {
+        if (dialog.find('.videoPopup').size()) {
             self.startCheckingVideoURL();
         }
-        self.dialog.find('.videoPopup form').submit(function() {
-            if (self.dialog.find('.submit').is(':hidden')) return;
-            var url = self.dialog.find('.video_url').val() || '';
-            var title = self.dialog.find('.video_title').val() || '';
+        dialog.find('.videoPopup form').submit(function() {
+            if (dialog.find('.submit').is(':hidden')) return;
+            var url = dialog.find('.video_url').val() || '';
+            var title = dialog.find('.video_title').val() || '';
 
             if (opts.callback(url, title) === false) {
                 // cancellable by returning false
-                self.dialog.find('.error')
+                dialog.find('.error')
                     .text(loc("error.invalid-video-link"))
                     .show();
-                self.dialog.find('.video_url').focus();
+                dialog.find('.video_url').focus();
             }
             else {
                 clearInterval(self._intervalId);
-                self.dialog.close();
+                dialog.close();
             }
             return false;
         });
 
         // Show Video/Image popup
         if (opts.params.video) {
-            self.dialog.disable();
+            dialog.disable();
             if (opts.params.video) {
                 $.ajax({
                     method: 'GET',
@@ -87,15 +96,15 @@ var activitiesDialog = {
                         + opts.params.video.width
                         + ';video_url=' + encodeURIComponent(opts.params.url),
                     success: function(html) {
-                        self.dialog.enable();
-                        self.dialog.find('.video').html(html);
+                        dialog.enable();
+                        dialog.find('.video').html(html);
                     }
                 });
             }
         }
 
         // All
-        self.dialog.find('.submit').click(function() {
+        dialog.find('.submit').click(function() {
             $(this).parents('form:first').submit();
             return false;
         });

@@ -15,6 +15,7 @@ socialtext.dialog = (function($) {
     Dialog.prototype = {
         close: function() { this.node.dialog('destroy') },
         find: function(selector) { return this.node.find(selector) },
+        showError: function(err) { this.node.find('.error').html(err) },
         disable: function() {
             // image is 16x16
             this.img = $('<div></div>')

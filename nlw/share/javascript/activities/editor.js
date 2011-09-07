@@ -129,7 +129,7 @@ $.extend(Activities.Editor.prototype, {
                     }
                     // matches `"title"{link: ws [page] section}`
                     else if ( widget.match(/(?:"(.*)")?{link:\s*(\S+)\s*\[(.+)\]\s*(.*)}/)) {
-                        self.showWikilinkUI(el, {
+                        self.showLinkUI(el, {
                             label:     RegExp.$1,
                             workspace: RegExp.$2,
                             page:      RegExp.$3,
@@ -279,15 +279,9 @@ $.extend(Activities.Editor.prototype, {
             });
             return false;
         });
-        $toolbar.find('.insertWikilink').unbind('click').click(function() {
+        $toolbar.find('.insertLink').unbind('click').click(function() {
             openDialog(function(){
-                self.showWikilinkUI();
-            });
-            return false;
-        });
-        $toolbar.find('.insertWeblink').unbind('click').click(function() {
-            openDialog(function(){
-                self.showWeblinkUI();
+                self.showLinkUI();
             });
             return false;
         });
@@ -964,7 +958,7 @@ $.extend(Activities.Editor.prototype, {
     showUploadAttachmentUI: function() {
         var self = this;
         socialtext.dialog.show('activities', {
-            template: 'activitiesAddLink',
+            template: 'activitiesAddAttachment',
             title: loc('Add Attachment'),
             callback: function(filename, result) {
                 self.addAttachment(filename, result.id);
@@ -989,107 +983,61 @@ $.extend(Activities.Editor.prototype, {
         }, opts));
     },
 
-    showWikilinkUI: function(el, defaults) {
+    showLinkUI: function(el, defaults) {
         var self = this;
         
         var wikiwyg = self.wikiwyg.current_mode;
 
-        var $popup = self.placeInParentWindow(
-            self.processTemplate('activities/wikilink_popup.tt2'),
-            'wikilink-ui'
-        );
-        $popup.holdFocus();
-
-        // Reset input fields
-        $popup.find('.workspace, .page, .section, .label').val('');
-
-        // Hook up event callbacks.
-        $popup.find('.cancel').unbind('click').click(function() {
-            $popup.guardedFade();
-            return false;
-        });
-
-        $popup.find('.label').val(wikiwyg.get_selection_text());
-
-        $popup.find('.workspace').focus(function() {
-            $(this).lookahead({
-                filterName: 'title_filter', 
-                url: self.base_uri + '/data/workspaces',
-                params: { order: 'title' },
-                linkText: function (i) { 
-                    return [ i.title + ' (' + i.name + ')', i.name ]; 
-                },
-                onAccept: function(id, item) {
-                    $popup.find('.page').attr('disabled', '');
-                    $popup.find('.section').attr('disabled', '');
+        socialtext.dialog.show('activities-link', {
+            title: loc('link.add'),
+            params: defaults,
+            selectionText: wikiwyg.get_selection_text(),
+            callback: function(dialog, args) {
+                if (args.workspace) {
+                    self.make_wikilink({
+                        workspace: args.workspace,
+                        page:  args.page,
+                        label: args.label,
+                        section: args.section,
+                        element: el,
+                        error: function(msg) {
+                            dialog.showError(msg);
+                        },
+                        success: function() {
+                            dialog.close();
+                        }
+                    });
                 }
-            }); 
-        });
+                else {
+                    if (!wikiwyg.valid_web_link(args.destination)) {
+                        dialog.showError(loc('Invalid web link'));
+                        return false;
+                    }
 
-        $popup.find('.page').focus(function() {
-            var workspace = $popup.find('.workspace').val();
-            if (workspace.length == 0) { return; }
-            $(this).lookahead({
-                url: self.base_uri + '/data/workspaces/' + workspace + '/pages',
-                params: { minimal_pages: 1 },
-                linkText: function (i) { return i.name },
-                onError: {
-                    404: function () {
-                             return(loc('error.no-wiki-on-server=wiki', workspace));
-                         }
+                    // check if the link is an internal wikilink
+                    var wiki = self.is_wikilink(args.destination);
+                    if (wiki) {
+                        self.make_wikilink({
+                            workspace: wiki.ws,
+                            page: wiki.page,
+                            label: label,
+                            section: wiki.section,
+                            error: function(msg) {
+                                dialog.showError(msg);
+                            },
+                            success: function() {
+                                dialog.close();
+                            }
+                        });
+                    }
+                    else {
+                        wikiwyg.make_web_link(args.destination, args.label);
+                        self.onChange();
+                        dialog.close();
+                    }
                 }
-            }); 
-        });
-
-
-        var submit = function() {
-            self.make_wikilink({
-                workspace: $popup.find('.workspace').val(),
-                page:  $popup.find('.page').val(),
-                label: $popup.find('.label').val(),
-                section: $popup.find('.section').val(),
-                element: el,
-                error: function(msg) {
-                    $popup.find('.error').text(msg).show();
-                },
-                success: function() {
-                    $popup.blockFade(false).fadeOut();
-                    $popup.find('.label').val('');
-                    $popup.find('.workspace').val('');
-                    $popup.find('.page').val('');
-                    $popup.find('.section').val('');
-                    $popup.find('.error').text("").hide();
-                }
-            });
-            return false;
-        };
-
-        $popup.find('.done').unbind('click').click(submit);
-        $popup.find('.label').unbind('keyup').keyup(function(e) {
-            // Restore Enter functionality
-            if (e.keyCode == 13) submit();
-        });
-        $popup.find('.section').unbind('keyup').keyup(function(e) {
-            // Restore Enter functionality
-            if (e.keyCode == 13) submit();
-        });
-
-        $popup.find('.page').attr('disabled', 'disabled');
-        $popup.find('.section').attr('disabled', 'disabled');
-
-        // add in default values, we're editing an existing link.
-        if (defaults) {
-            for (var field in defaults) {
-                var $el = $popup.find('.' + field);
-                var value = defaults[field];
-
-                if (value.length) $el.val(value).attr('disabled', '');
             }
-        }
-
-        $popup.find('.error').text("").hide();
-        $popup.show();
-        $popup.find('.workspace').focus();
+        });
     },
 
     is_wikilink: function(destination) {
@@ -1198,80 +1146,6 @@ $.extend(Activities.Editor.prototype, {
         return $popup;
     },
 
-    showWeblinkUI: function() {
-        var self = this;
-
-        var wikiwyg = self.wikiwyg.current_mode;
-
-        var $popup = self.placeInParentWindow(
-            self.processTemplate('activities/weblink_popup.tt2'),
-            'weblink-ui'
-        );
-        $popup.holdFocus();
-
-        // clear form values
-        $popup.find('.label').val('');
-        $popup.find('.destination').val('http://');
-
-        $popup.find('.cancel').unbind('click').click(function() {
-            $popup.guardedFade();
-            return false;
-        });
-
-        $popup.find('.label').val(wikiwyg.get_selection_text());
-
-        // will be used in a couple of places.
-        var submit = function() {
-            var destination = $popup.find('.destination').val();
-
-            if (!wikiwyg.valid_web_link(destination)) {
-                $popup.find('.error')
-                    .text(loc("error.invalid-weblink-url")).show();
-                $popup.find('.destination').focus();
-                return;
-            }
-
-            var label = $popup.find('.label').val();
-
-            // check if the link is an internal wikilink
-            var wiki = self.is_wikilink(destination);
-            if (wiki) {
-                self.make_wikilink({
-                    workspace: wiki.ws,
-                    page: wiki.page,
-                    label: label,
-                    section: wiki.section,
-                    error: function(msg) {
-                        $popup.find('.error').text(msg).show();
-                    },
-                    success: function() {}
-                });
-            }
-            else {
-                wikiwyg.make_web_link(destination, label);
-                self.onChange();
-            }
-
-            $popup.blockFade(false).fadeOut();
-            $popup.find('.destination').val('http://');
-            $popup.find('.label').val('');
-            $popup.find('.error').text("").hide();
-            return false;
-        };
-
-        $popup.find('.done').unbind('click').click(submit);
-
-        $popup.find(':input').unbind('keyup').keyup(function(e) {
-            // Restore 'Enter' functionality
-            if (e.keyCode == 13 ) submit();
-        });
-
-
-        $popup.find('.error').text("").hide();
-        $popup.show();
-        $popup.find('.destination').focus();
-    },
-
     showVideoUI: function(el, title, url) {
         var self = this;
 
@@ -1299,7 +1173,6 @@ $.extend(Activities.Editor.prototype, {
                 self.onChange();
             }
         });
-
     },
 
     showTagLookahead: function(el, value) {

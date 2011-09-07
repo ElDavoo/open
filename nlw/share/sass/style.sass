@@ -17,6 +17,9 @@ body
 input
   border-radius: 5px
   border: 1px solid #ccc
+  &.disabled
+    background-color: #eee
+    color: #666
 
 a
   color: $primary_color
@@ -315,11 +318,11 @@ ul
 .ui-dialog-content
   .fieldTitle
     float: left
-    width: 50px
+    width: 125px
   .field
     float: left
     input
-      width: 300px
+      width: 250px
 
 @import control.sass
 @import jquery-ui.sass

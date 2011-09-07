@@ -1,4 +1,4 @@
-[% BLOCK activitiesAddLink %]
+[% BLOCK activitiesAddAttachment %]
 <div class="attachmentPopup">
   <iframe style="display:none"  class="formtarget" name="attach-formtarget" src="[% this.static_path %]/html/blank.html"></iframe>
   <form name="attachForm" method="post" action="[% this.base_uri %]/data/uploads" enctype="multipart/form-data" target="attach-formtarget">

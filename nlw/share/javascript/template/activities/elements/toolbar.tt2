@@ -6,7 +6,7 @@
     <a id="[% id('mainInsertMention') %]" title="[% loc('activities.mention-user') %]" class="setupWikiwyg icon insertMention" href="#"></a>
     <a id="[% id('mainInsertVideo') %]" title="[% loc('activities.add-video-link') %]" class="setupWikiwyg icon insertVideo" href="#"></a>
     <a id="[% id('mainInsertFile') %]" title="[% loc('activities.attach-file') %]" class="setupWikiwyg icon insertFile" href="#"></a>
-    <a id="[% id('mainInsertWeblink') %]" title="[% loc('activities.link-to-web') %]" class="setupWikiwyg icon insertWeblink" href="#"></a>
+    <a id="[% id('mainInsertLink') %]" title="[% loc('Insert Link') %]" class="setupWikiwyg icon insertLink" href="#"></a>
     <a id="[% id('mainInsertTag') %]" title="[% loc('activities.add-tag') %]" class="setupWikiwyg icon insertTag" href="#"></a>
 </div>
 

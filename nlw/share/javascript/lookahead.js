@@ -625,6 +625,7 @@
 
         var url = typeof(this.opts.url) == 'function'
                 ? this.opts.url() : this.opts.url;
+        if (url === false) return;
 
         var params = this.opts.params;
 
