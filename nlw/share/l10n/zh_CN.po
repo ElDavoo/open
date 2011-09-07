@@ -10793,7 +10793,7 @@ msgstr "相关度"
 
 #: share/plugin/people/template/lite/profile.html:13
 msgid "people.stop-following"
-msgstr "停止下面的"
+msgstr "停止关注"
 
 msgid "people.tag-name"
 msgstr "标签名称"
