@@ -3436,7 +3436,7 @@ sub invite_user {
     };
     if (my $e = $@) {
         my $message = 'Invite failed for email address [_1] : [_2]';
-        my $reason = ''
+        my $reason = '';
         if (Exception::Class->caught('Socialtext::Exception::User')) {
             $reason = 'DELETED USER';
         }
