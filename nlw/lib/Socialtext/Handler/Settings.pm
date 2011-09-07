@@ -17,7 +17,7 @@ has 'space' => (
     is => 'ro', isa => 'Maybe[Socialtext::Workspace]', lazy_build => 1);
 has 'settings' => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 has 'message' => (is => 'rw', isa => 'Str', default => '');
-has 'invite_errors' => (is => 'rw', isa => 'HashRef', default => sub { +{} });
+has 'invite_errors' => (is => 'rw', isa => 'Maybe[HashRef]', default => undef);
 
 sub _build_space {
     my $self = shift;
@@ -254,10 +254,11 @@ sub POST_space {
                 my %bad_users = ();
                 for my $invite (@invitees) {
                     eval {
-                        $self->hub->user_settings->invite_one_user(
-                            Socialtext::User->GetProtoUser(user_id => $invite),
-                            '',
-                        );
+                        my $proto = $invite =~ /^\d+$/
+                            ? Socialtext::User->GetProtoUser(user_id => $invite)
+                            : Socialtext::User->GetProtoUser(email_address => $invite);
+                        $proto ||= {email_address => $invite};
+                        $self->hub->user_settings->invite_one_user($proto, '');
                     };
                     if (my $e = $@) {
                         if (Exception::Class->caught('Socialtext::Exception::User')) {
@@ -347,6 +348,7 @@ sub get_space_html {
         groups => [ $space->group_roles(direct => 1)->all() ],
         domain_restriction => $space->account->restrict_to_domain,
         invitation_filter => $space->invitation_filter,
+        require_registered => $space->restrict_invitation_to_search,
     };
 
     my $content;

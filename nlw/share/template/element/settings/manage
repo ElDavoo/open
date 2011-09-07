@@ -28,7 +28,7 @@ jQuery(document).ready(function() {
     jQuery('#user').lookahead({
         url: '/data/users',
         clearOnHide: true,
-        requireMatch: true,
+        requireMatch: [%- IF space.require_registered -%]true[%- ELSE -%]false[%- END -%],
         params: {accept: 'application/json'},
         linkText: function (user) {
             return [user.best_full_name, user.user_id];
@@ -38,7 +38,13 @@ jQuery(document).ready(function() {
         },
         displayAs: function(user) { return user.title; },
         onAccept: function(id, item) {
-            newUsers.push({best_full_name: item.title, user_id: item.value});
+            jQuery('#user').val('');
+
+            var user = item.title
+                ? {best_full_name: item.title, user_id: item.value}
+                : {best_full_name: id, user_id: id};
+
+            newUsers.push(user);
             renderNewUsers();
         },
     });
@@ -54,7 +60,7 @@ jQuery(document).ready(function() {
 
 [% IF invite_errors %]
 <div class="grid_12">
-  <p>[% loc('') %]</p>
+  <p>[% loc('There were errors inviting the following users.') %]</p>
   [% FOREACH error IN invite_errors.keys %]
     [% IF error == 'ACCOUNT DOMAIN FILTER' %]
       <p>[% loc('The following users were not invited because their email domain does not match [_1].', space.domain_restriction) %]</p>
