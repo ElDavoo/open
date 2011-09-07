@@ -822,7 +822,7 @@ $.extend(Activities.Editor.prototype, {
         if (!opts.callback) throw new Error("callback required");
         if (!opts.message) throw new Error("message required");
 
-        var $dialog = self.node.siblings('.lookahead');
+        var $dialog = self.find('.lookahead');
         if ($.browser.msie && !self.node.hasClass('mainWikiwyg')) {
             /* {bz: 4803}: IE needs lookahead div placed on the same level as
              * .event elements, otherwise it will overlap with the next element.
