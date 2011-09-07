@@ -31,7 +31,7 @@
 
 [% IF event.signal_id %]
     <div class="replies">
-        <div class="alpha omega push_1 grid_minus_1 older">[% INCLUDE older_replies %]</div>
+        <div class="alpha omega prefix_1 grid_minus_1 older">[% INCLUDE older_replies %]</div>
 
         <div class="clear"></div>
 
@@ -45,7 +45,7 @@
             <div class="push_1 grid_minus_1 alpha omega top_line"></div>
             <div class="clear"></div>
 
-            <div class="alpha push_1 grid_minus_3">
+            <div class="alpha prefix_1 grid_minus_3">
                 <div class="wikiwyg" id="[% id("reply-$event.signal_id") %]">
                     <div class="clearHandler">
                         [% loc('Reply to conversation »') %]

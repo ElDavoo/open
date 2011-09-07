@@ -32,7 +32,7 @@ $.extend(Activities.Editor.prototype, {
     // Nodes:
     find: function(selector) {
         if (!this._signals) {
-            this._signals = this.node.parents('.signals');
+            this._signals = this.node.parents('.signals, .replies');
         }
         if (!this._nodes[selector]) {
             this._nodes[selector] = this._signals.find(selector);
@@ -182,6 +182,7 @@ $.extend(Activities.Editor.prototype, {
         }
 
         self.find('.post')
+            .show()
             .click(function () {
                 self.submitHandler();
                 return false;
@@ -227,6 +228,7 @@ $.extend(Activities.Editor.prototype, {
         var self = this;
 
         var $toolbar = self.find('.toolbar');
+        console.log('setupToolbar', $toolbar);
         $toolbar.show();
         $toolbar.find('.insertMention').unbind('click').click(function (){
             self.showMentionLookahead();
