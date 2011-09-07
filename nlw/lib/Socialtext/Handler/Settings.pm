@@ -8,6 +8,7 @@ use Socialtext::PrefsTable;
 use Socialtext::l10n qw(loc);
 use Socialtext::Log qw(st_log);
 use namespace::clean -except=>'meta';
+use Socialtext::Exceptions qw(email_address_exception user_exception);
 
 with 'Socialtext::Handler::Base';
 extends 'Socialtext::Rest::Entity';
@@ -16,6 +17,7 @@ has 'space' => (
     is => 'ro', isa => 'Maybe[Socialtext::Workspace]', lazy_build => 1);
 has 'settings' => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 has 'message' => (is => 'rw', isa => 'Str', default => '');
+has 'invite_errors' => (is => 'rw', isa => 'Maybe[HashRef]', default => undef);
 
 sub _build_space {
     my $self = shift;
@@ -248,6 +250,33 @@ sub POST_space {
                 }
             }
 
+            if (my @invitees = $q->param('workspace.do.invite_user')) {
+                my %bad_users = ();
+                for my $invite (@invitees) {
+                    eval {
+                        my $proto = $invite =~ /^\d+$/
+                            ? Socialtext::User->GetProtoUser(user_id => $invite)
+                            : Socialtext::User->GetProtoUser(email_address => $invite);
+                        $proto ||= {email_address => $invite};
+                        $self->hub->user_settings->invite_one_user($proto, '');
+                    };
+                    if (my $e = $@) {
+                        if (Exception::Class->caught('Socialtext::Exception::User')) {
+                            push @{$bad_users{$e->message}}, $e->user->email_address;
+                        }
+                        elsif (Exception::Class->caught('Socialtext::Exception::EmailAddress')) {
+                            push @{$bad_users{$e->message}}, $e->email_address;
+
+                        }
+                        else {
+                            die $e;
+                        }
+                    }
+                }
+
+                $self->invite_errors(\%bad_users);
+            }
+
             if (my $blog = $space_settings->{do}{create_blog}) {
                 my $tag = $self->hub->weblog->create_weblog($blog);
                 $redirect = $self->hub->weblog->weblog_url($tag);
@@ -317,11 +346,15 @@ sub get_space_html {
             : undef,
         users => [ $space->user_roles(direct => 1)->all() ],
         groups => [ $space->group_roles(direct => 1)->all() ],
+        domain_restriction => $space->account->restrict_to_domain,
+        invitation_filter => $space->invitation_filter,
+        require_registered => $space->restrict_invitation_to_search,
     };
 
     my $content;
     eval {
         $vars->{prefs} = $self->fetch_prefs();
+        $vars->{invite_errors} = $self->invite_errors();
 
         my $template = 'element/settings/'. $self->pref;
         $content = $self->render_template($template, $vars);

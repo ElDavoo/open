@@ -3403,11 +3403,6 @@ sub invite_user {
     $self->_error('You must specify an invitee email address')
         if (!$opts{email});
 
-    $self->_ensure_email_passes_filters(
-        $opts{email},
-        { account => $workspace->account, workspace => $workspace },
-    );
-
     $self->_error('You must specify an inviter email address')
         if (!$opts{from});
 
@@ -3426,16 +3421,33 @@ sub invite_user {
         );
     }
 
-    require Socialtext::WorkspaceInvitation;
+    eval {
+        require Socialtext::WorkspaceInvitation;
 
-    my $invitation = Socialtext::WorkspaceInvitation->new(
-        workspace => $workspace,
-        from_user => $from_user,
-        invitee   => $opts{email},
-        extra_text => '',
-        viewer => undef
-    );
-    $invitation->send();
+        my $invitation = Socialtext::WorkspaceInvitation->new(
+            workspace => $workspace,
+            from_user => $from_user,
+            invitee   => $opts{email},
+            extra_text => '',
+            viewer => undef
+        );
+
+        $invitation->send();
+    };
+    if (my $e = $@) {
+        my $message = 'Invite failed for email address [_1] : [_2]';
+        my $reason = '';
+        if (Exception::Class->caught('Socialtext::Exception::User')) {
+            $reason = 'DELETED USER';
+        }
+        elsif (Exception::Class->caught('Socialtext::Exception::EmailAddress')) {
+            $reason = $e->message;
+        }
+        else {
+            $reason = $e;
+        }
+        $self->_error( loc($message, $opts{email}, $reason));
+    }
 
     $self->_success(
         'An invite has been sent to "' . $opts{email}
