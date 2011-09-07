@@ -20,7 +20,6 @@ var linkDialog = {
         var dialog = self.dialog;
 
         dialog.find(".wiki-option").change(function() {
-            console.log('wiki');
             // Disable everything
             dialog.find(".webField, .wikiField")
                 .attr('disabled', 'disabled')
@@ -39,7 +38,6 @@ var linkDialog = {
         });
 
         dialog.find(".web-option").change(function() {
-            console.log('web');
             dialog.find(".wikiField")
                 .attr('disabled', 'disabled')
                 .addClass('disabled');
