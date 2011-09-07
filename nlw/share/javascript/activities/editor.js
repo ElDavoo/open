@@ -228,7 +228,6 @@ $.extend(Activities.Editor.prototype, {
         var self = this;
 
         var $toolbar = self.find('.toolbar');
-        console.log('setupToolbar', $toolbar);
         $toolbar.show();
         $toolbar.find('.insertMention').unbind('click').click(function (){
             self.showMentionLookahead();
