@@ -321,6 +321,7 @@
                 var item = this || {};
                 var li = self.$('<li></li>')
                     .css({
+                        margin: 0,
                         padding: '3px 5px',
                         height: '15px', // overridden when there are thumbnails
                         lineHeight: '15px',

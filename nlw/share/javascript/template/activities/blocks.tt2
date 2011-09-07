@@ -3,8 +3,8 @@
     <div class="message"></div>
     <div class="lookaheadDiv"><input/></div>
     <div class="buttons">
-        <a href="#" class="insert btn">[% loc('do.ok') %]</a>
-        <a href="#" class="cancel btn">[% loc('do.cancel') %]</a>
+        <a href="#" class="insert button">[% loc('do.ok') %]</a>
+        <a href="#" class="cancel button">[% loc('do.cancel') %]</a>
     </div>
 </div>
 [% END %]
