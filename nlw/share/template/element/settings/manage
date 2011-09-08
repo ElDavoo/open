@@ -95,7 +95,9 @@ jQuery(document).ready(function() {
 </div>
 <div class="grid_7">
     <input id="user" name="please.ignore.me"
-      class="lookahead-prompt" type="text" value="begin typing name here..."/>
+      class="lookahead-prompt" type="text"
+      value="[% loc('begin typing name here...') %]"
+    />
 
     <div class="users" id="newUsers">
     </div>
