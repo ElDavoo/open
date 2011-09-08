@@ -46,8 +46,7 @@ sub pref_names {
         email_notify_is_enabled sort_weblogs_by_create
         allows_page_locking guest_has_email_in title
     );
-#   No longer supported: enable_unplugged
-#       homepage_is_dashboard allows_page_locking
+#   No longer supported: enable_unplugged homepage_is_dashboard
 }
 
 
