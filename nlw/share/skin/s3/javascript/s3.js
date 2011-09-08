@@ -770,14 +770,15 @@ $(function() {
 
     Socialtext.load_editor = function () {
         $.ajaxSettings.cache = true;
+        var current_workspace = Socialtext.wikiwyg_variables.hub.current_workspace;
 
-        if (Socialtext.page_type == 'spreadsheet' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_spreadsheet) {
+        if (Socialtext.page_type == 'spreadsheet' && current_workspace.enable_spreadsheet) {
             $.getScript(socialcalc_uri, function () {
                 Socialtext.start_spreadsheet_editor();
                 $('#bootstrap-loader').hide();
             });
         }
-        else if (Socialtext.page_type == 'xhtml' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_xhtml) {
+        else if (current_workspace.enable_xhtml) {
             $.getScript(ckeditor_uri, function () {
                 Socialtext.start_xhtml_editor();
                 $('#bootstrap-loader').hide();
