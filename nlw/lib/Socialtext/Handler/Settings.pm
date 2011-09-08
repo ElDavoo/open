@@ -1,7 +1,7 @@
 package Socialtext::Handler::Settings;
 use Moose;
 use Socialtext::Permission qw(ST_ADMIN_WORKSPACE_PERM ST_READ_PERM
-                              ST_EMAIL_IN_PERM);
+                              ST_EMAIL_IN_PERM ST_EDIT_PERM);
 use Socialtext::Role;
 use Socialtext::PreferencesPlugin;
 use Socialtext::PrefsTable;
@@ -316,6 +316,8 @@ sub _user_has_correct_perms {
         ? ST_ADMIN_WORKSPACE_PERM
         : ST_READ_PERM;
 
+    $perm = ST_EDIT_PERM if $self->pref eq 'blog';
+
     return $self->space->user_can(
         user => $self->rest->user,
         permission => $perm,
@@ -480,12 +482,16 @@ sub _space_prefs {
 
     my %abilities = (
         preferences => loc('Preferences'),
-        blog => loc('Create Blog'),
-        ($space->has_user($user, direct=>1)
-            ? (unsubscribe => loc('Unsubscribe'))
-            : ()
-        ),
     );
+
+    $abilities{unsubscribe} = loc('Unsubscribe')
+       if $space->has_user($user, direct=>1);
+
+    $abilities{blog} = loc('Create Blog')
+        if $space->user_can(
+            user => $user,
+            permission => ST_EDIT_PERM,
+        );
 
     if ($can_admin) {
         %abilities = (
