@@ -171,7 +171,7 @@ jQuery(document).ready(function() {
       <td class="first"><a href="/st/group/[% group.group_id %]">
         [% group.driver_group_name | html %]</a>
       </td>
-      <td>[% group.user_count %]</td>
+      <td class="right">[% group.user_count %]</td>
       <td class="last">[% role.name | html %]</td>
     </tr>
 
