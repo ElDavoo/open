@@ -274,7 +274,8 @@ sub POST_space {
                     }
                 }
 
-                $self->invite_errors(\%bad_users);
+
+                $self->invite_errors(\%bad_users) if keys %bad_users;
             }
 
             if (my $blog = $space_settings->{do}{create_blog}) {
@@ -341,6 +342,7 @@ sub get_space_html {
     my $vars = $self->_settings_vars();
     $vars->{section} = 'space';
     $vars->{space} = {
+        rest_url => '/data/workspaces/'. $space->name,
         auw_for => $space->is_all_users_workspace
             ? $space->account->name
             : undef,
