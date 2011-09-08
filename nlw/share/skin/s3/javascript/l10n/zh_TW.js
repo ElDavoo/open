@@ -1621,6 +1621,7 @@
 "page.duplicate":"\u8907\u88fd\u9801\u9762",
 "page.duplicate=title":"[_1]\u7684\u526f\u672c",
 "page.edit":"\u7de8\u8f2f",
+"page.edit-as-xhtml":"\u8f49\u63db\u683c\u5f0f\u4e26\u7de8\u8f2f<br />\uff08\u4f7f\u7528\u65b0\u7248\u7de8\u8f2f\u5668\uff09",
 "page.edit=title":"\u7de8\u8f2f[_1]",
 "page.editing=ago":"\u5df2\u65bc [_1]\u6253\u958b\u672c\u9801\u9032\u884c\u7de8\u8f2f\u3002",
 "page.email-to-this":"\u767c\u9001\u90f5\u4ef6\u5230\u9019\u500b\u9801\u9762",

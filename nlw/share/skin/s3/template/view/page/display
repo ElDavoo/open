@@ -81,6 +81,9 @@
       <li class="last submenu"><a class="tools" id="st-pagetools-tools" href="#">[% loc('nav.tools') %]</a>
         <ul class="level2">
           [% IF checker.check_permission('edit') AND !page_locked_for_user %]
+              [% IF page.page_type == 'wiki' %]
+                  <li class="separator"><a id="st-pagetools-edit-as-xhtml" href="#">[% loc('page.edit-as-xhtml') %]</a></li>
+              [% END %]
           <li class="first"><a id="st-pagetools-duplicate" href="#">[% loc('page.duplicate') %]</a></li>
           <li><a id="st-pagetools-rename" href="#">[% loc('page.rename') %]</a></li>
           [% END %]

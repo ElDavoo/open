@@ -1618,6 +1618,7 @@
 "page.duplicate":"\u00abDuplicate Page\u00bb",
 "page.duplicate=title":"\u00abDuplicate of [_1]\u00bb",
 "page.edit":"\u00abEdit\u00bb",
+"page.edit-as-xhtml":"\u00abConvert and Edit <i>(with new editor prototype)</i>\u00bb",
 "page.edit=title":"\u00abEdit [_1]\u00bb",
 "page.editing=ago":"\u00abopened this page for editing [_1].\u00bb",
 "page.email-to-this":"\u00abEmail To This Page\u00bb",
