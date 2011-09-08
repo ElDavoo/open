@@ -8,8 +8,12 @@ jQuery(document).ready(function() {
         for (var i in newUsers) {
             li = jQuery('<li>')
               .append(newUsers[i].best_full_name)
-              .append('<span><a id="' + newUsers[i].user_id + '" href="#" class="remove">x</a></span>')
+              .append('<a id="' + newUsers[i].user_id + '" href="#" class="remove icon"><span>remove</span><div class="removeIcon"></div></a>')
               .append('<input type="hidden" name="workspace.do.invite_user" value="' + newUsers[i].user_id + '">'); 
+
+            if (i == 0) {
+                li.addClass('first');
+            }
             ul.append(li);
         }
         jQuery('#newUsers').html(ul.html());
