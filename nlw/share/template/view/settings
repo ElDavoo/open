@@ -91,6 +91,21 @@ select {
     border: 1px solid #ccc;
 }
 
+div.users ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+div.users ul li {
+    position: relative;
+    padding: 5px 0;
+}
+
+div.users ul li span {
+    margin-left: 14px;
+    color: black;
+}
+
 </style>
 
 <div class="container_16">

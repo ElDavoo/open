@@ -16,7 +16,8 @@ jQuery(document).ready(function() {
             }
             ul.append(li);
         }
-        jQuery('#newUsers').html(ul.html());
+        jQuery('#newUsers').html('');
+        jQuery('#newUsers').append(ul);
 
         // Bind the remove icon to remove the user from the list
         jQuery('#newUsers a.remove').click(function() {
