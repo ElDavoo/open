@@ -63,25 +63,28 @@ jQuery(document).ready(function() {
 <h3>[% loc('Invite New Users') %]</h3>
 
 [% IF invite_errors %]
-<div class="grid_12">
-  <p>[% loc('There were errors inviting the following users.') %]</p>
+  <p class="error">
+    [% loc('There were errors inviting the following users.') %]</p>
+    <ul>
   [% FOREACH error IN invite_errors.keys %]
+      <li>
     [% IF error == 'ACCOUNT DOMAIN FILTER' %]
-      <p>[% loc('The following users were not invited because their email domain does not match [_1].', space.domain_restriction) %]</p>
+      [% loc('The following users were not invited because their email domain does not match [_1].', space.domain_restriction) %]
     [% ELSIF error == 'WORKSPACE INVITATION FILTER' %]
-      <p>[% loc('The following users were not invited because their email address does not match the workspace invite filter "[_1]".', space.invitation_filter) %]</p>
+      [% loc('The following users were not invited because their email address does not match the workspace invite filter "[_1]".', space.invitation_filter) %]
     [% ELSIF error == 'USER DELETED' %]
-      <p>[% loc('The following users were not invited because they have been deleted. If you wish to invite the users you first need to undelete them.') %]</p>
+      [% loc('The following users were not invited because they have been deleted. If you wish to invite the users you first need to undelete them.') %]
     [% ELSIF error == 'WORKSPACE RESTRICT TO REGISTERED' %]
-      <p>[% loc('The following users were not invited because they are not registered users of Socialtext.') %]</p>
+      [% loc('The following users were not invited because they are not registered users of Socialtext.') %]
     [% ELSIF error == 'INVALID EMAIL ADDRESS' %]
-      <p>[% loc('The following email addresses are not valid.') %]</p>
+      [% loc('The following email addresses are not valid.') %]
     [% ELSE %]
-      <p>[% loc('They following users generated a [_1] error when attempting to invite.', error) %]</p>
+      [% loc('The following users generated a [_1] error when attempting to invite.', error) %]
     [% END %]
     [% PROCESS list_of_emails emails=invite_errors.$error %]
+    </li>
   [% END %]
-</div>
+    </ul>
 [% END %]
 
 [% IF space.require_registered %]<p>[% loc('Only registered Socialtext users may be invited to this workspace.') %]</p>[% END %]
@@ -191,7 +194,6 @@ jQuery(document).ready(function() {
 [% END %]
 
 [% BLOCK  list_of_emails %]
-  <p>[% message %]</p>
   <ul>
   [% FOR email IN emails %]
     <li>[% email | html %]</li>
