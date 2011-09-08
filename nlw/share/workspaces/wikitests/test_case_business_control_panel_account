@@ -62,7 +62,6 @@
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
-| text_like | Custom Skins: Socialtext 3 default skin |  |
 | text_like | qr/Socialtext People\s+\(click to enable\)/ism |  |
 | text_like | qr/Socialtext Signals\s+\(click to enable\)/ism |  |
 | text_like | qr/Socialtext Dashboard\s+\(click to enable\)/ism |  |

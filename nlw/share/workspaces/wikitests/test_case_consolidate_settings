@@ -12,10 +12,7 @@
 
 | st-admin | add-workspace-admin --workspace %%cs_wiki_1%% --email %%cs_user%% | now has the role |
 | st-admin | add-member --workspace %%cs_wiki_2%% --email %%cs_user%% | now has the role |
-
-| pause | 5000 |  |
-
- st-admin | reset-account-skin --account %%cs_acct%% --skin starfish | something |
+| st-process-jobs |  |  |
 
 | *Comment* | Test Case: Consolidate Settings verify global settings screen text |  |
 | st-logoutin | %%cs_user%% |  |

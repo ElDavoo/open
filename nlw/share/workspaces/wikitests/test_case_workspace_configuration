@@ -45,20 +45,9 @@ TODO: Figure out a way to test the other config functions
 
 | call | st-save-page | content=Order post 1 revision |
 
-
 | wait_for_text_present_ok | Order post 1 content %%start_time%% | 30000 |
 | text_like | contentWrapper | qr/Order post 1 content %%start_time%%.+Order post 1 revision/ |
 | st-admin | set_workspace_config --workspace %%workspace%% sort_weblogs_by_create 0 |  |
-
-| *Comment* | Test Case: Workspace Configuration Workspace Skin |  |
-| st-admin | set_workspace_config --workspace %%workspace%% allows_skin_upload 1 |  |
-| open_ok | /%%workspace%%/?action=users_settings |  |
-| wait_for_element_visible_ok | link=Workspace Skin | 30000 |
-| text_like | contentLeft | Workspace Skin |
-| st-admin | set_workspace_config --workspace %%workspace%% allows_skin_upload 0 |  |
-| open_ok | /%%workspace%%/?action=users_settings |  |
-| text_like | contentLeft | Workspace Appearance |
-| text_unlike | contentLeft | Workspace Skin |
 
 | *Comment* | Test Case: Workspace Configuration Invitation Settings |  |
 | st-admin | set_workspace_config --workspace %%workspace%% invitation_filter %%username%% |  |
@@ -91,6 +80,5 @@ TODO: Figure out a way to test the other config functions
 | st-admin | set_workspace_config --workspace %%workspace%% restrict_invitation_to_search 0 |  |
 | st-admin | set_workspace_config --workspace %%workspace%% sort_weblogs_by_create 0 |  |
 | st-admin | set_workspace_config --workspace %%workspace%% unmasked_email_domain "" |  |
-| st-admin | set_workspace_config --workspace %%workspace%% allows_skin_upload 0 |
 
 | *Comment* | Test Case: Workspace Configuration COMPLETED |

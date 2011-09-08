@@ -1,9 +1,6 @@
 | *Comment* | STARTING Test Case : Hide sidebar |  |
 
-
 | call | st-edit-new-page | ws=%%workspace%% | title=TC Hide Sidebar 1 %%start_time%% | content=TC Hide Sidebar 1 %%start_time%% Content |
-
-
 
 | call | st-edit-fill-page | ws=%%workspace%% | title=TC Hide Sidebar 2 %%start_time%% | content=TC Hide Sidebar 2 %%start_time%% Content |
 
@@ -64,7 +61,6 @@
 
 | *Comment* | Test Case : Hide sidebar. Test public sidebar in help-en |  |
 | st-logout |  |  |
-| st-admin | set-workspace-config --w help-en skin_name s3 |  |
 | open_ok | /help-en |  |
 
 | *Comment* | Test Case : Hide sidebar public sidebar should be open |  |

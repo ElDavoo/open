@@ -26,7 +26,6 @@ Visit in IE 6 and IE 7 and Safari
 
 | *Comment* | enabling unplugged and expanding sidebar |  |
 | st-admin | set-workspace-config --workspace %%wiki%% enable_unplugged 1 |  |
-| st-admin | set-workspace-config --workspace %%wiki%% allows_skin_upload 1 |  |
 
 | wait_for_element_visible_ok | link=Desktop | 30000 |
 | click_ok | link=Desktop |
@@ -145,28 +144,7 @@ Post by Email popup
 
 * all the screens in Settings
 
-| *Comment* | SlideShow NOT PAUSING between SETTINGS pages |  |
-| open_ok | /%%wiki%% |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=My Settings |  |
-| click_and_wait | link=Manage All Users |  |
-| click_and_wait | link=Invite New Users |  |
-| click_and_wait | link=My Workspaces |  |
-| click_and_wait | link=Create New Workspace |  |
-| click_and_wait | link=Unsubscribe |  |
-| click_and_wait | link=Workspace Appearance |  |
-| click_and_wait | link=Workspace Features |  |
-| click_and_wait | link=Workspace Skin |  |
-| click_and_wait | link=Workspace Privacy |  |
-| click_and_wait | link=Create New Blog |  |
-| click_and_wait | link=Page Editing |  |
-| click_and_wait | link=Screen Layout |  |
-| click_and_wait | link=Email Notification |  |
-| click_and_wait | link=Your Notepad |  |
-| open_ok | /%%wiki%%/?action=preferences_settings;preferences_class_id=recent_changes |  |
-| click_and_wait | link=Syndicate |  |
-| click_and_wait | link=Watchlist |  |
-| click_and_wait | //a[contains(@href,'?action=preferences_settings;preferences_class_id=weblog')] |  |
+TODO: replace viewing WS settings individual pages with viewing Consolidated Settings page
 
 | *Comment* | SlideShow FINISHED WITH SETTINGS |  |
 
