@@ -1,6 +1,6 @@
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Socialtext Gadgets |  |
+| *Comment* | Test Case: Socialtext Gadgets uses [st-add-widget] |  |
 | st_empty_container |  |  |
 
 | call | st-add-widget | widget=All People Tags |
@@ -14,5 +14,7 @@
 | call | st-add-widget | widget=Web Page |
 | call | st-add-widget | widget=Spreadsheet Page |
 | call | st-add-widget | widget=Workspace Tags |
+| call | st-add-widget | widget=Page Creator |
+| call | st-add-widget | widget=Page Tracker |
 
 | *Comment* | Test Case: Socialtext Gadgets COMPLETED |  |
