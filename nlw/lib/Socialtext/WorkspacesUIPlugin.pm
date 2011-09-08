@@ -144,8 +144,8 @@ sub guest_has_email_in_data {
         title => loc('Who can send email to this workspace?'),
         default_setting => 0,
         options => [
-            {setting => 1, display => loc('Only Registered Users')},
-            {setting => 0, display => loc('Anyone')},
+            {setting => 0, display => loc('Only Registered Users')},
+            {setting => 1, display => loc('Anyone')},
         ],
     };
 }
