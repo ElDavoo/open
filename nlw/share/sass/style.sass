@@ -8,11 +8,49 @@
   filter: alpha(opacity = $percent) // IE
   opacity: ($percent / 100)
 
+@mixin gradient($from, $to)
+  background-color: $from
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from($from), to($to))
+  background: -moz-linear-gradient(top,  $from,  $to)
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$from}, endColorstr=#{$to})
+
 body
   background: $background_color url(#{$static}/images/background.png) $background_image_tiling $background_image_position
   font-size: 11px
   font-family: $body_font
   color: #333
+
+a
+  color: $primary_color
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  &.button, &.expander
+    margin: 0 5px
+    padding: 3px 5px
+    white-space: nowrap
+    color: #eee
+    text-decoration: none
+    border-radius: 5px
+    border: 1px solid #ccc
+  &.button
+    background-color: $primary_color
+    &:hover
+      @include opacity(70)
+  &.expander
+    color: #000
+    @include gradient(#f9f9f9, #e3e3e3)
+    &:hover
+      border: 1px solid #999
+    .expanded
+      display: none
+
+// When we have multiple buttons, space them out
+.buttons .button
+  margin-right: 10px
+
+.hidden
+  display: none
 
 input
   border-radius: 5px
@@ -20,27 +58,15 @@ input
   &.disabled
     background-color: #eee
     color: #666
-
-a
-  color: $primary_color
-  text-decoration: none
-  &:hover
-    text-decoration: underline
-
-a.button
-  padding: 3px 5px
-  white-space: nowrap
-  color: #eee
-  text-decoration: none
-  border-radius: 5px
-  border: 1px solid #ccc
-  background-color: $primary_color
-  &:hover
-    @include opacity(70)
-
-// When we have multiple buttons, space them out
-.buttons .button
-  margin-right: 10px
+  &.hidden
+    /* For hiding submit buttons
+    display: block
+    height: 0
+    width: 0
+    position: absolute
+    @include opacity(0)
+  &.initial
+    color: #999
 
 /**
  * Headings
@@ -81,25 +107,12 @@ h4
   font-size: small
   vertical-align: top
 
-.hidden
-  display: none
-
 .center
   text-align: center
 .right
   text-align: right
 .left
   text-align: left
-
-input
-  &.hidden
-    /* For hiding submit buttons
-    display: block
-    height: 0
-    width: 0
-    @include opacity(0)
-  &.initial
-    color: #999
 
 .error
   color: #be3b3f
@@ -140,6 +153,11 @@ input
     left: 5px
     color: #fff
 
+/* Search boxes */
+.searchText
+  padding-left: 18px
+  background: white url(#{$static}/images/icons/search-darker-15.png) no-repeat 0 0px
+
 header
   height: 100px
   background: $header_color url(#{$static}/images/header.png) $header_image_tiling $header_image_position
@@ -164,9 +182,7 @@ header
     margin-top: 10px
     text-align: right
     .searchText
-      padding-left: 18px
       width: 100px
-      background: white url(#{$static}/images/icons/search-darker-15.png) no-repeat 0 0px
 
 
 .contentWrapper

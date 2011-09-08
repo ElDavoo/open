@@ -59,7 +59,7 @@ $.extend(Activities.Widget.prototype, {
             fixed_network: self.fixed_network,
             workspace_id: self.workspace_id,
             onSelectSignalToNetwork: function(network) {
-                self.mainEditor.setNetwork(network);
+                if (self.mainEditor) self.mainEditor.setNetwork(network);
             },
             onRefresh: function() {
                 self.forceRefreshEvents();
@@ -69,6 +69,8 @@ $.extend(Activities.Widget.prototype, {
         self.appdata.load(function() {
             try {
                 $(self.node).html(self.processTemplate(template));
+
+                self.appdata.bind();
 
                 if (self.overlap)
                     $(self.node).createSelectOverlap({noPadding: true})
@@ -118,7 +120,6 @@ $.extend(Activities.Widget.prototype, {
                 return;
             }
 
-            self.appdata.setupDropdowns();
             self.bindHandlers();
 
             if (self.draggable) $(self.node).draggable(self.draggable);

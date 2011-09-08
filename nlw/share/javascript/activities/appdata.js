@@ -460,52 +460,33 @@ $.extend(Activities.AppData.prototype, {
         return enabled;
     },
 
-    setupDropdowns: function() {
+    bind: function() {
         var self = this;
 
-        this.findId('action').dropdown({
-            options: self.actions(),
-            selected: this.getValue('action'),
-            fixed: Boolean(this.fixed_action),
-            hideDisabled: Boolean(this.fixed_feed),
-            onChange: function(option) {
-                if (self.getValue('action') != option.id) {
-                    self.set('action', option.id);
-                }
-                self.checkDisabledOptions();
-                if (self.onRefresh) self.onRefresh();
-            }
-        });
+        console.log(self.node);
 
-        this.findId('feed').dropdown({
-            options: self.feeds(),
-            selected: this.getValue('feed'),
-            fixed: Boolean(this.fixed_feed),
-            hideDisabled: Boolean(this.fixed_action),
-            onChange: function(option) {
-                if (self.getValue('feed') != option.id) {
-                    self.set('feed', option.id);
-                }
-                self.checkDisabledOptions();
-                if (self.onRefresh) self.onRefresh();
-            }
+        $.each(['action', 'feed', 'network'], function(_,type) {
+            $(self.node).find('input.'+type)
+                .click(function() {
+                    if (self.getValue(type) != $(this).attr('id')) {
+                        self.set(type, $(this).attr('id'));
+                    }
+                    self.checkDisabledOptions();
+                    if (self.onRefresh) self.onRefresh();
+                })
+                .change(function() {
+                    $(self.node).find('input.'+type)
+                        .parents('.filterOption')
+                        .removeClass('selectedOption');
+                    $(this).parents('.filterOption')
+                        .addClass('selectedOption');
+                });
         });
+        self.findId('filters').find('input:checked').change();
 
         var fixed_network = Boolean(
             self.fixed_network || self.networks().length <= 1
         );
-
-        this.findId('network').dropdown({
-            selected: this.getValue('network'),
-            fixed: fixed_network,
-            width: '150px',
-            options: self.networks(),
-            onChange: function(option) {
-                self.selectNetwork(option.id);
-                if (self.onRefresh) self.onRefresh();
-            }
-        });
-
         var signal_network = this.get('signal_network');
         if (signal_network) {
             this.findId('signal_network').dropdown({
@@ -526,7 +507,22 @@ $.extend(Activities.AppData.prototype, {
             this.selectSignalToNetwork(signal_network.value);
             self.setupSelectSignalToNetworkWarningSigns();
         }
-                
+
+        self.findId('expander').toggle(
+            function() {
+                $(this).find('.collapsed').hide();
+                $(this).find('.expanded').show();
+                self.findId('filters').show();
+                return false;
+            },
+            function() {
+                $(this).find('.expanded').hide();
+                $(this).find('.collapsed').show();
+                self.findId('filters').hide();
+                return false;
+            }
+        );
+
         this.checkDisabledOptions();
     },
 
@@ -626,32 +622,36 @@ $.extend(Activities.AppData.prototype, {
 
     checkDisabledOptions: function() {
         var self = this;
-        var action = this.findId('action').dropdownSelectedOption();
-        var feed = this.findId('feed').dropdownSelectedOption();
+        var action = $(self.node).find('input.action:checked').attr('id');
+        var feed = $(self.node).find('input.feed:checked').attr('id');
         if (!feed || !action) return;
         var not_conversations = {
             'action-tags' : 1,
             'action-people-events' : 1
         };
 
-        self.findId('feed').dropdownEnable();
-        self.findId('action').dropdownEnable();
-        self.findId('network').dropdownEnable();
+        $(self.node)
+            .find('input.action, input.feed, input.network')
+            .attr('disabled', '')
+            .parents('.filterOption').removeClass('disabledOption');
+
         if (self.signalNetworks().length) {
             self.findId('signal_network').dropdownEnable();
         }
 
-        if (not_conversations[action.id]) {
-            $.each(this.feeds(), function(i, option) {
-                if (option.id == 'feed-conversations') {
-                    self.findId('feed').dropdownDisable(option.value);
-                }
-            });
+        if (not_conversations[action]) {
+            $(self.node)
+                .find('input.feed#feed-conversations')
+                .attr('disabled', 'disabled')
+                .parents('.filterOption').addClass('disabledOption');
         }
-        if (feed.id == 'feed-conversations') {
+        if (feed == 'feed-conversations') {
             $.each(this.actions(), function(i, option) {
                 if (not_conversations[option.id]) {
-                    self.findId('action').dropdownDisable(option.value);
+                    $(self.node)
+                        .find('input.action#' + option.id)
+                        .attr('disabled', 'disabled')
+                        .parents('.filterOption').addClass('disabledOption');
                 }
             });
         }
