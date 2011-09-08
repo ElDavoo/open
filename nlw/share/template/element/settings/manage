@@ -80,9 +80,11 @@ jQuery(document).ready(function() {
 </div>
 [% END %]
 
-<div>FIXME: show a list of groups that are in the workspace, remind the admin that they could, if they so wanted, invite users to the group(s) instead</div>
+[% IF space.require_registered %]<p>[% loc('Only registered Socialtext users may be invited to this workspace.') %]</p>[% END %]
 
-<p>List restrictions on users showing up in lookahead</p>
+[% IF space.invitation_filter %]<p>[% loc('Only users whose email address matches the pattern "[_1]" may be invited to this workspace.', space.invitation_filter) %]</p>[% END %]
+
+[% IF space.domain_restriction %]<p>[% loc('Only users whose email address is in the "[_1]" domain may be invited to this workspace.', space.domain_restriction) %]</p>[% END %]
 
 <div class="grid_5 input-label">
   [% loc('Email addresses to invite') %]:
@@ -152,7 +154,7 @@ jQuery(document).ready(function() {
 
 [% IF space.groups.size > 0 %]
 <div class="grid_12">
-  <h3>[% loc('Manage Groups') %]</h3>
+  <h3>[% loc('Member Groups') %]</h3>
 
   <table>
     <tr>
@@ -166,7 +168,9 @@ jQuery(document).ready(function() {
     [% role = group_and_role.1 %]
 
     <tr>
-      <td class="first">[% group.driver_group_name | html %]</td>
+      <td class="first"><a href="/st/group/[% group.group_id %]">
+        [% group.driver_group_name | html %]</a>
+      </td>
       <td>[% group.user_count %]</td>
       <td class="last">[% role.name | html %]</td>
     </tr>
