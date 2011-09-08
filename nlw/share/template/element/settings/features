@@ -1,3 +1,17 @@
+<script type="text/javascript">
+jQuery(document).ready(function() {
+
+    jQuery('input[name=workspace.setting.homepage_weblog]').lookahead({
+        url: '[%- space.rest_url -%]/tags',
+        filterValue: function (val) {
+            return val + '.*(We)?blog$';
+        },
+        linkText: function (i) { return i.name }
+    });
+
+});
+</script>
+
 <h3>[% loc('Appearance') %]</h3>
 
 [% INCLUDE element/settings/setting_select
