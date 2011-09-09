@@ -15,7 +15,7 @@
   </div>
   <div class="[% selected('activities') %]grid_3 navGrid">
     <div class="navLink">
-        <a class="activities" href="/st/activities">[% loc('Activities') %]</a>
+        <a class="activities" href="/st/signals">[% loc('Activities') %]</a>
     </div>
     <div class="underline"></div>
   </div>
