@@ -118,7 +118,7 @@ sub POST {
             $prefs->set(%{ $plugin_prefs->{$plugin} });
         }
 
-        $self->message(loc('pref.saved')) unless $self->message;
+        $self->message(loc('Saved')) unless $self->message;
     };
     if (my $e = $@) {
         st_log->error("Could not save settings: $e");
@@ -305,7 +305,7 @@ sub POST_space {
         $self->message(loc('Error when saving settings'));
     }
     else {
-        $self->message(loc('pref.saved'))
+        $self->message(loc('Saved'))
             unless $self->invite_errors;
     }
 
