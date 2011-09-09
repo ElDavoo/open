@@ -98,8 +98,7 @@ Set default values if they are not defined by the caller
 | click_ok | st-comment-button-link |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%test_string%% comment |
-| click_ok | link=Save |  |
-| pause | 5000 | for comment to save |
+| st-click-pause | link=Save | 5000 |
 
 | *Comment* | Test Case: String Use: verify comment on the rename page |  |
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
