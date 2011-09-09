@@ -1,6 +1,6 @@
 [% WRAPPER layout/html title=loc('User Settings') %]
 
-<script language="javascript">
+<script>
 
 jQuery(document).ready(function() {
     jQuery('#spaces-accordion').accordion({
@@ -9,104 +9,16 @@ jQuery(document).ready(function() {
         autoHeight: false
     });
 
-    jQuery('#settings-main a.save').unbind('click').bind('click', function() {
+    jQuery('#settings-main a.save').click(function() {
         jQuery('#settings-main form').submit();
     });
     
-    jQuery('#settings-main a.cancel').unbind('click').bind('click', function() {
+    jQuery('#settings-main a.cancel').click(function() {
         jQuery('#settings-main form')[0].reset();
     });
 });
 
 </script>
-
-<style type="text/css">
-
-#settings-main {
-    padding: 3px;
-}
-
-#settings-main hr {
-    margin: 20px 0px;
-}
-
-#settings-main th {
-    font-weight: bold;
-}
-
-#settings-main th,
-#settings-main td {
-    padding: 5px;
-}
-
-#settings-main th.first,
-#settings-main th.first {
-    padding-left: 0px;
-}
-
-#settings-main th.last,
-#settings-main td.last {
-    padding-right: 0px;
-}
-
-#settings-main p.error {
-    margin-bottom: 3px;
-}
-
-#settings-sidebar {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #dfebed;
-}
-
-#settings-sidebar .pad {
-    padding: 0px 3px;
-}
-
-#settings-sidebar .top {
-    padding-left: 5px;
-}
-
-#settings-sidebar .header {
-    cursor: pointer;
-    padding-left: 25px;
-}
-
-#settings-sidebar ul {
-    padding: 0px;
-    margin: 0px;
-}
-
-.input-label {
-    padding-top: 5px;
-    text-align: right;
-}
-
-select {
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-div.users ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-div.users ul li {
-    position: relative;
-    padding: 5px 0;
-}
-
-div.users ul li span {
-    margin-left: 14px;
-    color: black;
-}
-
-</style>
 
 <div class="container_16">
   <div id="settings-sidebar" class="grid_4">
