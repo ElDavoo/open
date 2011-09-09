@@ -38,6 +38,7 @@
         - pageview.js
         - Socialtext/Dialog.js
         - legacy.js
+        - nav-list.js
         - socialtext-api.js
 
 # Socialtext API
