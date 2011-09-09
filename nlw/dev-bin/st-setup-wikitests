@@ -20,9 +20,9 @@ echo "DON'T Set up wikitests - use a different plan server"
 echo ENABLING Socialcalc for all workspaces
 $NLW_DEVBIN/st-socialcalc enable
 
-echo "NOT Importing latest help workspace to save time"
-#$NLW_BIN/st-admin delete-workspace --workspace help-en --no-export
-#$NLW_BIN/st-admin import-workspace --tarball $NLW_BIN/../share/l10n/help/help-en.tar.gz
+echo "Importing latest help workspace"
+$NLW_BIN/st-admin delete-workspace --workspace help-en --no-export
+$NLW_BIN/st-admin import-workspace --tarball $NLW_BIN/../share/l10n/help/help-en.tar.gz
 
 if [ ! -e $HOME/wikitests/anycorp.small ]; then
     echo "Unpacking AnyCorp archive"
