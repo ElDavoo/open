@@ -117,6 +117,8 @@ sub POST {
             my $prefs = $self->_plugin_prefs_table($plugin);
             $prefs->set(%{ $plugin_prefs->{$plugin} });
         }
+
+        $self->message(loc('pref.saved')) unless $self->message;
     };
     if (my $e = $@) {
         st_log->error("Could not save settings: $e");
@@ -301,6 +303,10 @@ sub POST_space {
     if (my $e = $@) {
         st_log->error("Could not save settings: $e");
         $self->message(loc('Error when saving settings'));
+    }
+    else {
+        $self->message(loc('pref.saved'))
+            unless $self->invite_errors;
     }
 
     return $redirect
