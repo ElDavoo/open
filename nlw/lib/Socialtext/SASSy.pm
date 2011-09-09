@@ -21,6 +21,9 @@ use constant static_path => Socialtext::Helpers->static_path;
 has 'account' => ( is => 'ro', isa => 'Socialtext::Account', required => 1 );
 has 'filename' => ( is => 'ro', isa => 'Str', required => 1 );
 
+# style an be: compact, compressed, or expanded.
+has 'style' => ( is => 'ro', isa => 'Str', default => 'compressed' );
+
 has 'files' => (
     is => 'ro', isa => 'ArrayRef', lazy_build => 1, auto_deref => 1,
 );
@@ -77,13 +80,11 @@ method render {
 
     set_contents($self->sass_file, join('', @lines));
 
-    warn $self->sass_file;
-
     $Socialtext::System::SILENT_RUN = 1;
     shell_run(
         '/var/lib/gems/1.8/bin/sass',
         '-I', $self->code_base . '/sass', # Add sass files from starfish
-        '-t', 'compressed',
+        '-t', $self->style,
         $self->sass_file,
         $self->css_file,
     );
