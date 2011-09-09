@@ -463,8 +463,6 @@ $.extend(Activities.AppData.prototype, {
     bind: function() {
         var self = this;
 
-        console.log(self.node);
-
         $.each(['action', 'feed', 'network'], function(_,type) {
             $(self.node).find('input.'+type)
                 .click(function() {
