@@ -37,7 +37,6 @@
         - like-indicator.js
         - pageview.js
         - Socialtext/Dialog.js
-        - legacy.js
         - nav-list.js
         - socialtext-api.js
 

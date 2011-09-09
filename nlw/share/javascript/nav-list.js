@@ -36,7 +36,7 @@ $.fn.navList = function(entries) {
 
     fetchData(entries, 0, function() {
         $(self).each(function() {
-            $(this).html(Jemplate.process('nav-list.tt2', {
+            $(this).append(Jemplate.process('nav-list.tt2', {
                 loc: loc,
                 entries: entries
             }));
@@ -53,14 +53,12 @@ $.fn.navList = function(entries) {
 
             $('.scrollingNav', this).each(function() {
                 // Show a maximum of 8 entries (AKA cross-browser max-height)
-                var li_height = $(this).hasClass('has_icons') ? 30 : 20;
-                if ($(this).find('li').size() >= 8) {
-                    $(this).height(li_height * 8);
+                var height = $(this).hasClass('has_icons') ? 30 : 20;
+                if ($(this).find('.navListItem').size() >= 8) {
+                    $(this).height(height * 8);
                     $(this).css('overflow-y', 'scroll');
                 }
             });
-
-            $('li.scrollingNav li:last, li:last', this).addClass('last');
         });
     });
 };

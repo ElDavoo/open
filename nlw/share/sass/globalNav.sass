@@ -9,6 +9,7 @@
 .navGrid
   margin: 0
   height: 50px
+  position: relative
 .navItem, .navLink
   height: 45px
 
@@ -33,13 +34,15 @@ a
     text-decoration: none
     background: transparent no-repeat 10px 0
     &.dashboard
-      background-image: url(#{$static}/images/globalNav/dashboard.png)
+      background-image: url(#{$static}/images/globalNav/home-gray-25.png)
     &.spaces
-      background-image: url(#{$static}/images/globalNav/spaces.png)
+      background-image: url(#{$static}/images/globalNav/spaces-gray-25.png)
     &.activities
-      background-image: url(#{$static}/images/globalNav/activities.png)
+      background-image: url(#{$static}/images/globalNav/activities-gray-25.png)
+    &.groups
+      background-image: url(#{$static}/images/globalNav/groups-gray-25.png)
     &.people
-      background-image: url(#{$static}/images/globalNav/people.png)
+      background-image: url(#{$static}/images/globalNav/people-gray-25.png)
   .selected .navLink
     background-color: #000
     background: rgb(0, 0, 0)
@@ -66,3 +69,29 @@ a
 
 .selected .underline
   background-color: #c6b93b
+
+// Drop downs
+.navGrid
+  .scrollingNav
+    color: #ccc
+    display: none
+    position: absolute
+    top: -5px
+    position: relative
+    width: 118px
+    z-index: 1000
+    border-left: 2px solid #000
+    border-right: 2px solid #000
+    border-bottom: 2px solid #000
+    background: url(#{$static}/images/background.png)
+    overflow-y: auto
+    overflow-x: hidden
+    -webkit-overflow-scrolling: touch
+    div.has_icons li
+      line-height: 30px
+      height: 30px
+    .navListItem
+      margin: 3px
+  &:hover, &.hover
+    .scrollingNav
+      display: block

@@ -3,29 +3,35 @@
 <div id="globalNav" class="container_24">
   <div class="[% selected('dashboard') %]grid_3 navGrid">
     <div class="navLink">
-        <a class="dashboard" href="/st/dashboard">Dashboard</a>
+        <a class="dashboard" href="/st/dashboard">[% loc('Dashboard') %]</a>
     </div>
     <div class="underline"></div>
   </div>
-  <div class="[% selected('spaces') %]grid_3 navGrid">
+  <div id="global-workspace-list" class="[% selected('spaces') %]grid_3 navGrid">
     <div class="navLink">
-        <a class="spaces" href="#">Spaces</a>
+        <a class="spaces" href="#">[% loc('Spaces') %]</a>
     </div>
     <div class="underline"></div>
   </div>
   <div class="[% selected('activities') %]grid_3 navGrid">
     <div class="navLink">
-        <a class="activities" href="/st/activities">Activities</a>
+        <a class="activities" href="/st/activities">[% loc('Activities') %]</a>
     </div>
     <div class="underline"></div>
   </div>
-  <div class="[% selected('people') %]grid_3 navGrid last">
+  <div id="global-groups-directory" class="[% selected('groups') %]grid_3 navGrid">
     <div class="navLink">
-        <a class="people" href="/st/people">People</a>
+        <a class="groups" href="/st/groups">[% loc('Groups') %]</a>
     </div>
     <div class="underline"></div>
   </div>
-  <div class="grid_12 navGrid">
+  <div id="global-people-directory" class="[% selected('people') %]grid_3 navGrid last">
+    <div class="navLink">
+        <a class="people" href="/st/people">[% loc('People') %]</a>
+    </div>
+    <div class="underline"></div>
+  </div>
+  <div class="grid_9 navGrid">
     <div class="navItem">
       <div class="buttons">
         [% FOR button = container.buttons %]
@@ -38,3 +44,54 @@
   </div>
 </div>
 <div class="clear"></div>
+
+<script>
+    $("#global-workspace-list").navList([
+        {  
+            title: loc("wiki.all"),
+            href: "/?action=workspaces_listall"
+        },
+        {  
+            data: Socialtext.workspaces,
+            defaultId: 'default-workspace-link',
+            href: function(w) { return '/' + w.name },
+            title: function(w) { return w.label },
+            sort: function(a,b) {
+                if (a['default']) return -1;
+                if (b['default']) return 1;
+                if (a.name == b.title) return 0;
+                return (a.title < b.title) ? -1 : 1;
+            },
+            emptyMessage:
+                loc("nav.no-wikis")
+        }
+    ]);
+
+    $('#global-people-directory').peopleNavList();
+
+    function showCreateGroupLightbox() {
+      get_plugin_lightbox('groups', 'create-group', function () {
+          var lb = new CreateGroupLightbox();
+          lb.show();
+      });
+  
+    }
+    $("#global-groups-directory").navList([
+      { title: loc("groups.directory"), href: "/st/groups" },
+      {
+        url: "/data/groups?minimal=1",
+        icon: function(g) {
+            return '/data/groups/' + g.group_id + '/small_photo'
+        },
+        href: function(g) { return '/st/group/' + g.group_id },
+        title: function(g) { return g.name },
+        emptyMessage: loc("error.not-member-of-any-groups")
+      }
+      [%- IF can_create_groups -%]
+      ,{
+        title: loc("groups.create-group"),
+        onclick: "showCreateGroupLightbox(); return false;"
+      }
+      [%- END -%]
+    ]);
+</script>
