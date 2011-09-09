@@ -356,3 +356,7 @@ td .wafl_box {
   white-space: nowrap; }
   .wiki div.widget div.widgetHeaderTitle img, .xhtml div.widget div.widgetHeaderTitle img {
     display: none; }
+
+img.st-widget {
+  display: block;
+  clear: both; }
