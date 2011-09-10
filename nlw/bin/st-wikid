@@ -18,5 +18,8 @@ require('zappa') argv.port, argv.host || '127.0.0.1', ->
     if @wiki
       send wiki2html @wiki
     else if @html
-      html2wiki @html, send
+      html2wiki @html, (errors, wikitext) ->
+        if errors
+          response.header "X-Error", JSON.stringify(errors)
+        send wikitext
     else redirect '/'

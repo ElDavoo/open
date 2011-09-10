@@ -9,11 +9,13 @@ tests = [
   ["<ol><li>1<ul><li>1A</li></ul></li><li>2</li></ol>", "# 1\n** 1A\n# 2"]
 ]
 
-plan tests.length
+plan tests.length*2
 
 makeStep = ([html, wiki]) ->
-  (next) -> html2wiki html, (result) ->
-    eq result, "#{wiki}\n", html; next()
+  (next) -> html2wiki html, (error, result) ->
+    ok not error
+    eq result, "#{wiki}\n", html
+    next()
 
 steps = (makeStep t for t in tests)
 async.series steps, done_testing
