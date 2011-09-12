@@ -1,10 +1,10 @@
 @import reset.sass
 @import text.sass
 
-$width: 1080px
+$width: 960px
 $margin: 10px
 $containers: 12, 16, 24
-@import grids.sass
+@import grids.fixed.sass
 
 @mixin opacity($percent)
   filter: alpha(opacity = $percent) // IE
@@ -17,7 +17,6 @@ $containers: 12, 16, 24
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$from}, endColorstr=#{$to})
 
 body
-  min-width: $width
   background: $background_color url(#{$static}/images/background.png) $background_image_tiling $background_image_position
   font-size: 11px
   font-family: $body_font
@@ -192,17 +191,6 @@ header
     text-align: right
     .searchText
       width: 100px
-
-
-.contentWrapper
-  width: $width
-  margin-left: auto
-  margin-right: auto
-  padding-left: 10px
-
-.bodyContent
-  padding: 10px 0
-  background-color: #ffffff
 
 /**
  * Footer
