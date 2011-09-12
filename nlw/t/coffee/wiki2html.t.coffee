@@ -11,9 +11,9 @@ Moose
 <img alt="st-widget-{user: q@q.q}" src="/data/wafl/user%3A%20q%40q.q" class="st-widget" />
   """]
   ["{{Unformatted}}", """
-<img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" />
+<p><img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" /></p>\n
   """]
 ]
 
 for [wiki, html] in tests
-  eq wiki2html(wiki), html, wiki
+  eq wiki2html(wiki), html

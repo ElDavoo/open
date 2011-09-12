@@ -10,7 +10,7 @@ tests = [
   ["<span style='font-family:comic sans ms,cursive; font-weight: bold'>Comical</span>", "*Comical*", true]
   ["<span style='font-family:!important;'>Comical</span>", "Comical"]
   ["<u>Comical</u>", "Comical", true]
-  ['<a name="foo"></a>', "{section: foo}"] # TODO in format_a
+  ['<a name="foo"></a>', "{section: foo}"]
   ["""
 <img alt="st-widget-{user: q@q.q}" src="/data/wafl/user%3A%20q%40q.q" class="st-widget" />
   """, "{user: q@q.q}"]
