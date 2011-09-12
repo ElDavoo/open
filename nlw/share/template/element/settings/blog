@@ -1,12 +1,12 @@
 <h3>[% loc('Create Blog') %]</h3>
 
-<div class="grid_5 input-label">[% loc('Blog Name') %]:</div>
-<div class="grid_7">
+<div class="alpha grid_5 input-label">[% loc('Blog Name') %]:</div>
+<div class="omega grid_7">
   <input name="workspace.do.create_blog" type="text" />
 </div>
 <div class="clear"></div>
 
-<div class="push_5 grid_7">[% loc('If the name you provide does not end with "Blog", the system will add "Blog" to the name you provide. After clicking Save, you will be taken right to the your blog.') %]</div>
+<div class="prefix_5 alpha grid_7">[% loc('If the name you provide does not end with "Blog", the system will add "Blog" to the name you provide. After clicking Save, you will be taken right to the your blog.') %]</div>
 <div class="clear"></div>
 
 <hr />
