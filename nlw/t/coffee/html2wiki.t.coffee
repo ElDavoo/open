@@ -17,6 +17,10 @@ tests = [
   ["""
 <img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" />
   """, "{{Unformatted}}"]
+  ["<table><tr><td colspan='1'>Colspan=1</td></tr></table>", "| Colspan=1 |"]
+  ["<table><tr><td colspan='2'>Colspan=2</td></tr></table>", "| Colspan=2 |", true]
+  ["<table><tr><td rowspan='1'>Rowspan=1</td></tr></table>", "| Rowspan=1 |"]
+  ["<table><tr><td rowspan='2'>Rowspan=2</td></tr></table>", "| Rowspan=2 |", true]
 ]
 
 plan tests.length*2
