@@ -15,5 +15,14 @@ Moose
   """]
 ]
 
+tests = [
+  ["\"label\"{link: [page]}", """
+<img alt="st-widget-&quot;label&quot;{link: [page]}" src="/data/wafl/label" class="st-widget" />
+  """]
+  ["text \"label\"{link: [page]}", """
+<p>text <img alt="st-widget-&quot;label&quot;{link: [page]}" src="/data/wafl/label" class="st-widget" /></p>\n
+  """]
+]
+
 for [wiki, html] in tests
   eq wiki2html(wiki), html, wiki
