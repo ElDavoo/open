@@ -4,7 +4,7 @@
         <base target="_top" /> <!-- iframe widgets open in the main window -->
 
         [% FOR script = features %]
-            <script src="[% script %]"></script>
+            <script src="/js/[% app_version %]/[% script %]"></script>
         [% END %]
         [% INCLUDE widget/syndicator %]
   

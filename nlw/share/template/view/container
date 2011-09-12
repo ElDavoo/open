@@ -1,10 +1,15 @@
 [% USE decorate %]
 [% USE JSON %]
-[% WRAPPER $frame_name title=container.title %]
+[% WRAPPER $frame_name title=container.title javascript=container.features %]
 [% ids = [] %]
 [% FOR g = container.gadgets; ids.push(g.instance_id); END %]
 <input id="widgetList" type="hidden" value="[% ids.join(',') %]"/>
 <input id="containerID" type="hidden" value="[% container.id %]"/>
+
+<script>
+    var containerID = "[% container.id %]";
+    loc.all_widgets();
+</script>
 
 <div class="notice" [% IF container.notice %]style="display:block"[% END %]>
 [% container.notice %]
