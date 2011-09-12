@@ -94,10 +94,9 @@ sub POST {
         }
 
         my @params = $self->hub->timezone->pref_names;
-        my $prefs = {
+        my $tz_prefs = {
             map { $_ => $q->param("prefs.timezone.$_") || '0'} @params
         };
-        $user->prefs->save({timezone => $prefs});
 
         my $plugin_prefs = {};
 
@@ -114,9 +113,20 @@ sub POST {
         }
 
         for my $plugin (keys %$plugin_prefs) {
+            my $updates = $plugin_prefs->{$plugin};
             my $prefs = $self->_plugin_prefs_table($plugin);
-            $prefs->set(%{ $plugin_prefs->{$plugin} });
+
+            if ($plugin eq 'locales') {
+                my $locales = $prefs->get();
+
+                $tz_prefs = undef
+                    if $locales->{locale} eq $updates->{locale};
+            }
+
+            $prefs->set(%$updates);
         }
+
+        $user->prefs->save({timezone => $tz_prefs});
 
         $self->message(loc('Saved')) unless $self->message;
     };
