@@ -89,7 +89,7 @@
     if ($uri ~ ^/+([^/]+)/*(index\.cgi)?$) {
       set $index_cgi_match 1;
     }
-    if ($uri ~ ^/(nlw|challenge|data|feed|js|m|settings|st)(/|$)) {
+    if ($uri ~ ^/(nlw|challenge|data|feed|js|m|lite|settings|st)(/|$)) {
       set $index_cgi_match 0;
     }
     if ($uri ~ ^/(avatar|widget_thumbnail|account_logo|wafl|group-photo|webplugin|widget_thumbnail)(/|$)) {
