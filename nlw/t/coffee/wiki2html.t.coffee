@@ -16,9 +16,6 @@ Moose
   ["|| sort:on border:off\n| Cell |", """
 <table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>Cell</td>\n</tr>\n</table>\n
   """]
-]
-
-tests = [
   ["\"label\"{link: [page]}", """
 <img alt="st-widget-&quot;label&quot;{link: [page]}" src="/data/wafl/label" class="st-widget" />
   """]
