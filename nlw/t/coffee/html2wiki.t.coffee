@@ -10,13 +10,23 @@ tests = [
   ["<span style='font-family:comic sans ms,cursive; font-weight: bold'>Comical</span>", "*Comical*", true]
   ["<span style='font-family:!important;'>Comical</span>", "Comical"]
   ["<u>Comical</u>", "Comical", true]
-  ['<a name="foo"></a>', "{section: foo}"] # TODO in format_a
+  ['<a name="foo"></a>', "{section: foo}"]
   ["""
 <img alt="st-widget-{user: q@q.q}" src="/data/wafl/user%3A%20q%40q.q" class="st-widget" />
   """, "{user: q@q.q}"]
   ["""
 <img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" />
   """, "{{Unformatted}}"]
+  ["<table><tr><td colspan='1'>Colspan=1</td></tr></table>", "| Colspan=1 |"]
+  ["<table><tr><td colspan='2'>Colspan=2</td></tr></table>", "| Colspan=2 |", true]
+  ["<table><tr><td rowspan='1'>Rowspan=1</td></tr></table>", "| Rowspan=1 |"]
+  ["<table><tr><td rowspan='2'>Rowspan=2</td></tr></table>", "| Rowspan=2 |", true]
+]
+
+tests = [
+  ["""
+<table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>Cell</td>\n</tr>\n</table>\n
+  """, "|| sort:on border:off\n| Cell |"]
 ]
 
 plan tests.length*2
