@@ -14,13 +14,13 @@ Moose
 <p><img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" /></p>\n
   """]
   ["|| sort:on border:off\n| Cell |", """
-<table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>Cell</td>\n</tr>\n</table>\n
+<table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>Cell</td>\n</tr>\n</table><p></p>\n
   """]
   ["\"label\"{link: [page]}", """
-<img alt="st-widget-&quot;label&quot;{link: [page]}" src="/data/wafl/label" class="st-widget" />
+<img alt="st-widget-&#34;label&#34;{link: [page]}" src="/data/wafl/label" class="st-widget" />
   """]
   ["text \"label\"{link: [page]}", """
-<p>text <img alt="st-widget-&quot;label&quot;{link: [page]}" src="/data/wafl/label" class="st-widget" /></p>\n
+<p>text <img alt="st-widget-&#34;label&#34;{link: [page]}" src="/data/wafl/label" class="st-widget" /></p>\n
   """]
 ]
 
