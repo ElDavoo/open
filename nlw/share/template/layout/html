@@ -66,6 +66,9 @@
             <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
             <span class="pad5"></span>
             <span id="st-wikinav-setting"><a href="/st/settings">[% loc('nav.settings') %]</a></span> |
+            [% IF user.is_business_admin %]
+                <span><a href="/nlw/control">[% loc('nav.control-panel') %]</a></span> |
+            [% END %]
             <span id="st-wikinav-help"><a href="/help/" target="_blank">[% loc('nav.help') %]</a></span>
             <span class="pad5"></span>
             [% IF user.is_guest %]
