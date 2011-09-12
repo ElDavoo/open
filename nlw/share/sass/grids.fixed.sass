@@ -16,6 +16,9 @@ body
   margin-left: $margin
   margin-right: $margin
 
+.push_1, .push_2, .push_3, .push_4, .push_5, .push_6, .push_7, .push_8, .push_9, .push_10, .push_11, .push_12, .push_13, .push_14, .push_15, .push_16, .push_17, .push_18, .push_19, .push_20, .push_21, .push_22, .push_23, .push_24 .pull_0, .pull_1, .pull_2, .pull_3, .pull_4, .pull_5, .pull_6, .pull_7, .pull_8, .pull_9, .pull_10, .pull_11, .pull_12, .pull_13, .pull_14, .pull_15, .pull_16, .pull_17, .pull_18, .pull_19, .pull_20, .pull_21, .pull_22, .pull_23, .pull_24
+  position: relative
+
 .alpha
   margin-left: 0
 
@@ -48,7 +51,10 @@ body
         padding-left: $g*($width/$columns)
       .suffix_#{$g}
         padding-right: $g*($width/$columns)
-
+      .push_#{$g}
+        left: $g*($width/$columns)
+      .pull_#{$g}
+        right: $g*($width/$columns)
 
 /* Grid minus */
 @each $columns in $containers
