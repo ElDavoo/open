@@ -23,6 +23,12 @@ tests = [
   ["<table><tr><td rowspan='2'>Rowspan=2</td></tr></table>", "| Rowspan=2 |", true]
 ]
 
+tests = [
+  ["""
+<table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>Cell</td>\n</tr>\n</table>\n
+  """, "|| sort:on border:off\n| Cell |"]
+]
+
 plan tests.length*2
 
 makeStep = ([html, wiki, isErrorExpected]) ->

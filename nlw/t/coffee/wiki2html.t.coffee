@@ -13,6 +13,9 @@ Moose
   ["{{Unformatted}}", """
 <p><img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" /></p>\n
   """]
+  ["|| sort:on border:off\n| Cell |", """
+<table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>Cell</td>\n</tr>\n</table>\n
+  """]
 ]
 
 for [wiki, html] in tests
