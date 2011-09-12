@@ -275,7 +275,9 @@ sub _coffee_to_text {
     if ($coffee_compiler) {
         system $coffee_compiler => -c => $part->{coffee};
         (my $output = $part->{coffee}) =~ s{\.coffee$}{.js};
-        return $class->_file_to_text({ file => $output });
+        my $content = $class->_file_to_text({ file => $output });
+        unlink $output;
+        return $content;
     }
     warn "No coffee compiler found in PATH, skipping...\n" if $class->verbose;
     return '';
