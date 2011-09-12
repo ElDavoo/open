@@ -11,6 +11,12 @@ tests = [
   ["<span style='font-family:!important;'>Comical</span>", "Comical"]
   ["<u>Comical</u>", "Comical", true]
   ['<a name="foo"></a>', "{section: foo}"] # TODO in format_a
+  ["""
+<img alt="st-widget-{user: q@q.q}" src="/data/wafl/user%3A%20q%40q.q" class="st-widget" />
+  """, "{user: q@q.q}"]
+  ["""
+<img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" />
+  """, "{{Unformatted}}"]
 ]
 
 plan tests.length*2

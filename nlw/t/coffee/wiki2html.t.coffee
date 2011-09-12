@@ -1,9 +1,19 @@
 wiki2html = require('wiki2html')
 
 tests = [
-  ["Hello *world*", "<p>Hello <b>world</b></p>"]
-  [".code-perl\nMoose\n.code-perl\n", "<p>Hello <b>world</b></p>"]
+  ["Hello *world*", "<p>Hello <b>world</b></p>\n"]
+  [".code-perl\nMoose\n.code-perl\n", """
+<img alt="st-widget-.code-perl
+Moose
+.code-perl" src="/data/wafl/code-perl%20section.%20Edit%20in%20Wiki%20Text%20mode." title="code-perl section. Edit in Wiki Text mode." class="st-widget" />
+  """]
+  ["{user: q@q.q}", """
+<img alt="st-widget-{user: q@q.q}" src="/data/wafl/user%3A%20q%40q.q" class="st-widget" />
+  """]
+  ["{{Unformatted}}", """
+<img alt="st-widget-{{Unformatted}}" src="/data/wafl/Unformatted" class="st-widget" />
+  """]
 ]
 
 for [wiki, html] in tests
-  eq wiki2html(wiki), "#{html}\n", wiki
+  eq wiki2html(wiki), html, wiki
