@@ -72,26 +72,24 @@ a
 
 // Drop downs
 .navGrid
-  .scrollingNav
+  .navList
+    width: 3 * ($width / 24) - 2
     color: #ccc
     display: none
     position: absolute
-    top: -5px
-    position: relative
-    width: 118px
+    top: 42px
     z-index: 1000
+    overflow-y: auto
+    overflow-x: hidden
+    -webkit-overflow-scrolling: touch
+    margin: 0
     border-left: 2px solid #000
     border-right: 2px solid #000
     border-bottom: 2px solid #000
     background: url(#{$static}/images/background.png)
-    overflow-y: auto
-    overflow-x: hidden
-    -webkit-overflow-scrolling: touch
-    div.has_icons li
-      line-height: 30px
-      height: 30px
     .navListItem
       margin: 3px
   &:hover, &.hover
-    .scrollingNav
+    .navList
       display: block
+
