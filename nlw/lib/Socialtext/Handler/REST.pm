@@ -261,7 +261,7 @@ sub loadResource {
                         /^:__/
                             ? '(.+)'
                             : /^:ws$/
-                                ? '(?!(?:nlw|challenge|data|feed|js|m|lite|settings|st)/)([^\/]+)'
+                                ? '(?!(?:nlw|challenge|data|feed|js|m|settings|st)/)([^\/]+)'
                                 : /^:/
                                     ? '([^\/]+)'
                                     : quotemeta $_
