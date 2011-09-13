@@ -120,7 +120,7 @@ sub POST {
                 my $locales = $prefs->get();
 
                 $tz_prefs = undef
-                    if $locales->{locale} eq $updates->{locale};
+                    if $locales->{locale} ne $updates->{locale};
             }
 
             $prefs->set(%$updates);
