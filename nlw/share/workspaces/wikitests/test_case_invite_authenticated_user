@@ -1,0 +1,58 @@
+| *Comment* | Test Case: Invite Authenticated User Invite new users |  |
+
+| set | invite | `//input[@class='lookahead-prompt']` |
+| set | userdotone | user.o |
+| set | userdottwo | user.t |
+| set | userone | user one |
+| set | usertwo | user two |
+| set | useroneE | user.one@ken.socialtext.net |
+| set | usertwoE | user.two@ken.socialtext.net |
+| set | useroneX | "user one".+user\.one\@ken\.socialtext\.net |
+| set | usertwoX | "user two".+user\.two\@ken\.socialtext\.net |
+| include | [Test Case: Preferences UI User Setup] |  |
+
+| *Comment* | Test Case: Invite Authenticated User non-admin not authorized to invite |  |
+| open_ok | /st/settings/%%ui_wiki_id%%/prefs/manage |  |
+| wait_for_text_present_ok | Error |  |
+| text_like | qr/Not Authorized/i |  |
+
+| *Comment* | Test Case: Invite Authenticated User elevate to admin, add users to invite |  |
+| st-admin | add-workspace-admin --w %%new_ws%% --e %%new_user%% |  |
+| st-admin | add-member --account %%new_account%% --e %%useroneE%% | now has the role |
+| st-admin | add-member --account %%new_account%% --e %%usertwoE%% | now has the role |
+
+| *Comment* | Test Case: Invite Authenticated User re-open Manage UI |  |
+| open_ok | /st/settings/%%ui_wiki_id%%/prefs/manage |  |
+| wait_for_text_present_ok | Email address to invite |  |
+| wait_for_element_visible_ok | %%invite%% |  |
+
+| *Comment* | Test Case: Invite Authenticated User add %%userone%% and %%usertwo%% |  |
+| type_lookahead_ok | %%invite%% | %%userdotone%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'ne')] | 10000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'ne')] |  |
+| wait_for_text_present_ok | %%userone%% | 10000 |
+| type_lookahead_ok | %%invite%% | %%userdottwo%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'wo')] | 10000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'wo')] |  |
+| wait_for_text_present_ok | %%usertwo%% | 10000 |
+| click_and_wait | link=Save |  |
+| wait_for_text_present_ok | Saved | 10000 |
+
+| *Comment* | Test Case: Invite Authenticated User verify two users added |  |
+| wait_for_text_present_ok | %%userone%% | 10000 |
+| text_like | qr/%%useroneX%%/ism |  |
+| wait_for_text_present_ok | %%usertwo%% | 10000 |
+| text_like | qr/%%usertwoX%%/ism |  |
+
+| *Comment* | Test Case: Invite Authenticated User TEARDOWN |  |
+| include | Test Case: Preferences UI User Teardown |  |
+
+| *Comment* | Test case: Invite Authenticated User COMPLETED |  |
+
+
+TODO: for some reason typing an unknown user into the lookahead doesn't work. Find a way to test malformed user
+type_ok | %%invite%% | `%%start_time%%.malformed2ken.socialtext.net` |
+click_and_wait | link=Save | |
+wait_for_text_present_ok | Saved | |
+wait_for_text_present_ok | There were errors inviting the following users | |
+text_like | qr/The following email addresses are not valid.+%%start_time%%.malformed2ken.socialtext.net/ism | |

@@ -18,6 +18,7 @@
 
 | *Comment* | Test Case: Preferences UI User Setup login to %%new_ws%% |  |
 | st-logoutin | %%new_user%% | %%password%% |
-| open_ok | /st/dashboard |  |
+
+| *Comment* | Test Case: Preferences UI User Setup don't open /st/dashboard - it's expensive |  |
 
 | *Comment* | Test Case: Preferences UI User Setup COMPLETED |  |
