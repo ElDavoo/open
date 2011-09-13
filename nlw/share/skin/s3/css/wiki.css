@@ -360,3 +360,6 @@ td .wafl_box {
 img.st-widget {
   display: block;
   clear: both; }
+  img.st-widget.st-inline-widget {
+    display: inline;
+    clear: none; }
