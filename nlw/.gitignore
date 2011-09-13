@@ -657,3 +657,4 @@ lib/Socialtext/Pluggable/Plugin/CKEditor.pm
 lib/Socialtext/XHTML/Cell.pm
 lib/Socialtext/XHTML/Renderer.pm
 lib/Socialtext/Job/SignalMentionNotify.pm
+etc/socialtext/socialradar.conf
