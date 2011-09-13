@@ -7,27 +7,27 @@
     </div>
     <div class="underline"></div>
   </div>
-  <div id="global-workspace-list" class="[% selected('spaces') %]grid_3 navGrid">
+  <div id="global-people-directory" class="[% selected('peoplelist') %]grid_3 navGrid last">
     <div class="navLink">
-        <a class="spaces" href="#">[% loc('Spaces') %]</a>
+        <a class="people" href="/st/people">[% loc('People') %]</a>
     </div>
     <div class="underline"></div>
   </div>
-  <div class="[% selected('activities') %]grid_3 navGrid">
-    <div class="navLink">
-        <a class="activities" href="/st/signals">[% loc('Activities') %]</a>
-    </div>
-    <div class="underline"></div>
-  </div>
-  <div id="global-groups-directory" class="[% selected('groups') %]grid_3 navGrid">
+  <div id="global-groups-directory" class="[% selected('group_directory') %]grid_3 navGrid">
     <div class="navLink">
         <a class="groups" href="/st/groups">[% loc('Groups') %]</a>
     </div>
     <div class="underline"></div>
   </div>
-  <div id="global-people-directory" class="[% selected('people') %]grid_3 navGrid last">
+  <div class="[% selected('signals') %]grid_3 navGrid">
     <div class="navLink">
-        <a class="people" href="/st/people">[% loc('People') %]</a>
+        <a class="activities" href="/st/signals">[% loc('Signals') %]</a>
+    </div>
+    <div class="underline"></div>
+  </div>
+  <div id="global-workspace-list" class="[% selected('spaces') %]grid_3 navGrid">
+    <div class="navLink">
+        <a class="spaces" href="#">[% loc('Workspaces') %]</a>
     </div>
     <div class="underline"></div>
   </div>
