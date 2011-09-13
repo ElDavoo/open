@@ -28,8 +28,8 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
-    if ($('#st-watchperson-indicator').size()) {
-        var $indicator = $(this);
+    var $indicator = $('#st-watchperson-indicator');
+    if ($indicator.size()) {
         function updateNetworksWidget() {
             try {
                 gadgets.rpc.call('..', 'pubsub', null, 'publish', 'update');
@@ -44,7 +44,6 @@ gadgets.container.bindButtons = function() {
             onStopFollowing: updateNetworksWidget
         });
         person.loadWatchlist(function() {
-            console.log('creating indicator');
             person.createFollowLink($indicator);
         });
     }

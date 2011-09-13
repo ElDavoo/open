@@ -50,7 +50,6 @@ Person.prototype = {
         var self = this;
         if (!this.isSelf() && !this.restricted) {
             var link_text = this.linkText();
-            console.log($indicator);
             this.node = $indicator
                 .addClass('followPersonButton')
                 .click(function(){ 
@@ -58,7 +57,6 @@ Person.prototype = {
                     return false;
                 });
             this.updateFollowLink();
-            return this.node;
         }
     },
 
