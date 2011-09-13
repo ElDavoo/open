@@ -19,11 +19,11 @@
   [% END %]
   </div>
 [% ELSIF ! option.options %]
-  <div class="[% IF option.depends_on %]prefix_5 [% END %]alpha grid_7">
+  <div class="[% IF option.depends_on %]prefix_5 alpha[% ELSE %]omega [% END %]grid_7">
     <input type="text" name="[% pref %]" value="[% option.default_setting %]" />
   </div>
 [% ELSE %]
-  <div class="[% IF option.depends_on %]prefix_5 [% END %]alpha grid_7">
+  <div class="[% IF option.depends_on %]prefix_5 alpha[% ELSE %]omega [% END %]grid_7">
     [% IF option.options.size < 4 %]
       [% FOREACH setting IN option.options %]
         <input type="radio" name="[% pref %]" value="[% setting.setting %]"

@@ -94,10 +94,10 @@ jQuery(document).ready(function() {
 
 [% IF space.domain_restriction %]<p>[% loc('Only users whose email address is in the "[_1]" domain may be invited to this workspace.', space.domain_restriction) %]</p>[% END %]
 
-<div class="grid_5 input-label">
+<div class="alpha grid_5 input-label">
   [% loc('Email address to invite') %]:
 </div>
-<div class="grid_7">
+<div class="omega grid_7">
     <input id="user" name="please.ignore.me"
       class="lookahead-prompt" type="text"
       value="[% loc('begin typing email here...') %]"
