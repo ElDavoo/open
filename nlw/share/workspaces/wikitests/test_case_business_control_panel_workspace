@@ -1,3 +1,6 @@
+
+*Will convert to TUX when the lookaheads in the Create New Workspace page are functional*
+
 | *Comment* | Test case: Business Control Panel Workspace |  |
 
 | set | new_acct | acct-wstest-%%start_time%% |

@@ -1,3 +1,6 @@
+
+*Will convert to TUX when the Invite to Workspaces link is working*
+
 | *Comment* | Test Case: Business Control Panel Invite To Workspace |  |
 
 | set | email1 | group-1-%%start_time%%@ken.socialtext.com |
