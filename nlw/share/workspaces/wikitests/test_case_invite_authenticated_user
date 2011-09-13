@@ -44,7 +44,37 @@
 | wait_for_text_present_ok | %%usertwo%% | 10000 |
 | text_like | qr/%%usertwoX%%/ism |  |
 
+| set | reset_user | admin_reset_%%start_time%%@ken.socialtext.net |
+
+| *Comment* | Test Case: Invite Authenticated User create and add %%reset_user%% |  |
+| st-admin | create-user --account %%new_account%% --email %%reset_user%% --password %%password%% |  |
+| st-admin | add-member --email %%reset_user%% --workspace %%new_ws%% |  |
+| open_ok | /st/settings/%%ui_wiki_id%%/prefs/manage |  |
+
+| *Comment* | Test Case: Invite Authenticated User check the last Reset Password checkbox |  |
+| set | last_reset | //table/tbody/tr[5]/td[4]/input |
+| wait_for_element_visible_ok | %%last_reset%% |  |
+| check_ok | %%last_reset%% |  |
+| is_checked_ok | %%last_reset%% |  |
+| click_and_wait | link=Save |  |
+| wait_for_text_present_ok | Saved | 10000 |
+
+| *Comment* | Test Case: Invite Authenticated User logoutin, check messages |  |
+| st-logoutin | %%reset_user%% | %%password%% |
+| wait_for_text_present_ok | Password: |  |
+| text_like | You need to set a new password for your account |  |
+| text_like | You should have received an email with a link |  |
+| is_element_present_ok | //input[@class="button" and @value="Resend Change of Password"] |  |
+
+| *Comment* | Test Case: Invite Authenticated User actually change pwd and login |  |
+| st-open-change-password-uri | %%reset_user%% |  |
+| type_ok | password | password |
+| type_ok | password2 | password |
+| click_and_wait | register_btn |  |
+| wait_for_text_present_ok | Dashboard | 10000 |
+
 | *Comment* | Test Case: Invite Authenticated User TEARDOWN |  |
+| st-admin | deactivate-user --e %%reset_user%% |  |
 | include | Test Case: Preferences UI User Teardown |  |
 
 | *Comment* | Test case: Invite Authenticated User COMPLETED |  |
