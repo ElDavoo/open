@@ -28,6 +28,7 @@
 <div class="clear"></div>
 
 <script>
+    [%# Render the container with widgets %]
     [% SET gadgets = container.gadgets; container.gadgets = [] %]
     gadgets.container.setup(
         [% container.json.replace('</script>', '</scr" + "ipt>') %]
@@ -39,34 +40,7 @@
         );
     [% END %]
 
-    $('#st-add-widget').click(function() {
-        socialtext.dialog.show('opensocial-gallery', {
-            view: [% container.view.json %],
-            account_id: [% container.viewer.primary_account_id || 0 %]
-        });
-        return false;
-    });
-
-    $('#st-edit-layout').click(function() {
-        gadgets.container.enterEditMode();
-        return false;
-    });
-
-    $('#st-save-layout').click(function() {
-        socialtext.dialog.show('save-layout');
-        return false;
-    });
-    $('#st-cancel-layout').click(function() {
-        self._in_edit_mode = false;
-        gadgets.container.loadLayout(self.base_url, function() {
-            gadgets.container.leaveEditMode();
-        });
-        return false;
-    });
-    $('#st-revert-layout').click(function() {
-        gadgets.container.loadDefaults();
-        return false;
-    });
+    gadgets.container.bindButtons();
 </script>
 
 [% END %]
