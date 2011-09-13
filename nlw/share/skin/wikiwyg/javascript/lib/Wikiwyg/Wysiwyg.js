@@ -1062,14 +1062,18 @@ proto.enableThis = function() {
         if (!self.config.noTableSorting) {
             jQuery.poll(
                 function() {
-                    return jQuery("table.sort", self.get_edit_document())
-                        .size() > 0
+                    var tableSize = 1;
+                    try {
+                        tableSize = jQuery("table.sort", self.get_edit_document()).size()
+                    } catch (e) {};
+                    return tableSize > 0
                 },
-                function() {
+                function() { try {
                     jQuery('table.sort', self.get_edit_document())
                         .each(function() {
                             Socialtext.make_table_sortable(this);
                         });
+                    } catch (e) {};
                 }, 500, 10000
             );
         }

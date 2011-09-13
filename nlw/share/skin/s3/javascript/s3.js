@@ -606,7 +606,7 @@ $(function() {
 
     $("#st-pagetools-edit-as-xhtml").click(function () {
         Socialtext.auto_convert_wiki_to_html = true;
-        jQuery("#st-edit-button-link").click();
+        Socialtext.load_editor();
         return false;
     });
 
