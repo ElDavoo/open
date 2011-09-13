@@ -13,6 +13,7 @@ my $builder = Socialtext::JavaScript::Builder->new(
 
 pod2usage() unless (@ARGV);
 while (my $command = shift) {
+    no warnings 'once';
     $Socialtext::MakeJS::VERBOSE = $command !~ m/^\@/;
     $command =~ s/^[\@-]+//;
     if ($command eq 'clean') {
