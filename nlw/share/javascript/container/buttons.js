@@ -12,6 +12,8 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
+    $('#st-edit-profile').attr('href', '/st/edit_profile');
+
     $('#st-save-layout').click(function() {
         socialtext.dialog.show('save-layout');
         return false;
