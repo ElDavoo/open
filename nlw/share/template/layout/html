@@ -58,10 +58,10 @@
   <body class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
     <header>
       <div class="container_24">
-        <div class="grid_15 title">
+        <div class="grid_12 title">
           Your Corp<span class="superscript">&reg;</span> | Unlimited
         </div>
-        <div class="grid_9">
+        <div class="grid_12">
           <div class="topLinks right">
             <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
             <span class="pad5"></span>
