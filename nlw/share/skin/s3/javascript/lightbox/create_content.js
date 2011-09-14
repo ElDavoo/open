@@ -122,7 +122,7 @@ proto.create_page_lookahead = function () {
 
 proto.selected_page_type = function () {
     var self = this;
-    var page_type = 'xhtml';
+    var page_type = 'wiki';
     this.choices().each(function () {
         if ($(this).is(":checked")) {
             page_type = $(this).val();
@@ -183,7 +183,7 @@ proto.show = function () {
         })
 
     // Set the defaults
-    this.type_radio('xhtml').click();
+    this.type_radio('wiki').click();
     this.from_blank_radio().click();
     this.update_templates();
     this.create_page_lookahead();
