@@ -681,10 +681,9 @@ sub append {
     my $hr = "\n---\n";
 
     if ($self->is_xhtml) {
-        # Minimal Wikitext2HTML before we get append_html implemented
+        # Run wiki2html before we get append_html implemented
         $hr = '<hr />';
-        $new = \('<p>' . html_escape($$new) . '</p>');
-        $$new =~ s!$!<br />!mg;
+        $new = \(scalar wiki2html($$new));
     }
 
     if ($body_ref && length($$body_ref)) {
