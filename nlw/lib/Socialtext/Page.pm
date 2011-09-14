@@ -1066,10 +1066,15 @@ sub content_as_type {
         return $self->_content_as_html($p{link_dictionary}, $p{no_cache});
     }
     elsif ($type eq $XHTML_TYPE and $self->page_type eq 'xhtml') {
-        return ${ $self->body_ref };
+        return '<div xmlns="http://www.w3.org/1999/xhtml" class="xhtml">'
+             . ${ $self->body_ref }
+             . '</div>';
     }
     elsif ($type eq $XHTML_TYPE and $self->page_type eq 'wiki') {
-        return wiki2html(${ $self->body_ref });
+        return '<div xmlns="http://www.w3.org/1999/xhtml" class="wiki">'
+             . wiki2html(${ $self->body_ref })
+             . '</div>';
+
     }
     elsif ($type eq $WIKITEXT_TYPE and $self->page_type eq 'xhtml') {
         return html2wiki(${ $self->body_ref });
