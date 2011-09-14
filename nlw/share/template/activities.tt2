@@ -2,11 +2,11 @@
     <head>
         <title>[% loc('activities.socialtext-activities') %]</title>
         <meta name="viewport" content="width=240" />
-        <link rel="stylesheet" type="text/css" href="[% wiki.static_path %]/skin/s3/css/bubble.css" media="screen" />
-        <link rel="stylesheet" type="text/css" href="[% wiki.static_path %]/skin/s3/css/screen.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="[% static_path %]/skin/s3/css/bubble.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="[% static_path %]/skin/s3/css/screen.css" media="screen" />
         <link rel="stylesheet" type="text/css" href="[% share %]/css/inline.css" media="screen" />
         <script src="[% share %]/javascript/socialtext-popout.js"></script>
-        <script src="[% wiki.static_path %]/skin/s3/javascript/l10n-[% loc_lang %].js.gz"></script>
+        <script src="[% static_path %]/skin/s3/javascript/l10n-[% loc_lang %].js.gz"></script>
         [% INCLUDE widget/syndicator %]
         <script>
             window.Socialtext = window.Socialtext || {};
@@ -25,7 +25,7 @@
                     prefix: "[% prefix %]",
                     base_uri: "[% wiki.uri.replace('/$','') %]",
                     share: "[% share %]",
-                    static_path: "[% wiki.static_path %]",
+                    static_path: "[% static_path %]",
                     viewer: "[% user.userid %]",
                     viewer_id: [% user.id %],
                     viewer_name: "[% user.username %]",

@@ -99,7 +99,7 @@
 
     <footer class="container_24">
       <div class="grid_3 socialtext">
-        <img alt="Socialtext Logo" src="[% wiki.static_path %]/images/socialtext-logo-white.png"/>
+        <img alt="Socialtext Logo" src="[% static_path %]/images/socialtext-logo-white.png"/>
       </div>
       <div class="grid_17 tagline">
         [% loc('Enterprise Social Software') %] v[% app_version %]

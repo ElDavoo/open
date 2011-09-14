@@ -9,11 +9,11 @@
         <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1">
         [% INCLUDE element/css_links %]
-        <link rel="stylesheet" type="text/css" href="[% wiki.static_path %]/skin/common/css/jquery.mobile-1.0a3.min.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="[% static_path %]/skin/common/css/jquery.mobile-1.0a3.min.css" media="screen" />
         <link rel="stylesheet" type="text/css" href="[% share %]/css/inline.css" media="screen" />
         <link rel="stylesheet" type="text/css" href="[% share %]/css/mobile.css" media="screen" />
         <script src="[% share %]/javascript/socialtext-popout.js"></script>
-        <script src="[% wiki.static_path %]/skin/s3/javascript/l10n-[% loc_lang %].js.gz"></script>
+        <script src="[% static_path %]/skin/s3/javascript/l10n-[% loc_lang %].js.gz"></script>
 
         [% INCLUDE widget/syndicator %]
         <script>
@@ -49,7 +49,7 @@
                     prefix: "[% prefix %]",
                     base_uri: "[% wiki.uri.replace('/$','') %]",
                     share: "[% share %]",
-                    static_path: "[% wiki.static_path %]",
+                    static_path: "[% static_path %]",
                     viewer: "[% user.userid %]",
                     viewer_id: [% user.id %],
                     viewer_name: "[% user.username %]",
@@ -89,7 +89,7 @@
 
         <div class="content inlineWidget" style="margin-top: 35px; margin-bottom: 20px">
             <div id="content" class="activitiesWidget">
-                <img style="margin: 40px" src="[% wiki.static_path %]/skin/common/images/ajax-loader.gif"/>
+                <img style="margin: 40px" src="[% static_path %]/skin/common/images/ajax-loader.gif"/>
             </div>
         </div>
 
