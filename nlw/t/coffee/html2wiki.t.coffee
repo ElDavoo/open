@@ -27,6 +27,7 @@ tests = [
 <table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>Cell</td>\n</tr>\n</table>\n
   """, "|| sort:on border:off\n| Cell |"]
   ['<a href="foo">foo</a>', "[foo]"]
+  ['<a href="Disable%20Google%20Analytics">Disable Google Analytics</a></li>', '[Disable Google Analytics]']
 ]
 
 plan tests.length*2
