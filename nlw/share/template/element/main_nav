@@ -27,7 +27,7 @@
   </div>
   <div id="global-workspace-list" class="[% selected('spaces') %]grid_3 navGrid">
     <div class="navLink">
-        <a class="spaces" href="#">[% loc('Workspaces') %]</a>
+        <a class="spaces" href="/?action=workspaces_listall">[% loc('Workspaces') %]</a>
     </div>
     <div class="underline"></div>
   </div>
