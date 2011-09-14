@@ -34,6 +34,7 @@
   <div class="grid_9 navGrid">
     <div class="navItem">
       <div class="buttons">
+      [% IF invite_url %]<a class="button invite" id="st-wiki-subnav-link-invite" href="[% invite_url %]">[% loc("nav.invite!") %]</a>[% END %]
         [% FOR button = container.buttons %]
           <a id="[% button.0 %]" class="button[% IF button.2 %] [% button.2 %][% END %]" href="[% button.3 || '#' %]">[% button.1 %]</a>
         [% END %]
