@@ -521,7 +521,7 @@ $.extend(Activities.AppData.prototype, {
             }
         );
 
-        this.checkDisabledOptions();
+        self.checkDisabledOptions();
     },
 
     setupSelectSignalToNetworkWarningSigns: function() {

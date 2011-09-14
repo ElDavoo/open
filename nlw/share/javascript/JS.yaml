@@ -32,11 +32,12 @@
         - {jemplate_runtime: jquery}
         - JemplatePlugin/*.js
         - socialtext-container.js
-        - search.js
         - { jemplate: 'template' }
+        - Socialtext/UI.js
+        - Socialtext/Dialog.js
+        - Socialtext/Search.js
         - like-indicator.js
         - pageview.js
-        - Socialtext/Dialog.js
         - nav-list.js
         - socialtext-api.js
 

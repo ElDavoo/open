@@ -6,8 +6,9 @@
 </div>
 
 <div class="grid_3 omega vpad7">
-    <form>
-      <input class="initial searchText" type="text" value="[% loc('Search') %]" />
+    <form action="/" method="get">
+      <input class="initial searchText" name="search_term" type="text" value="[% loc('Search') %]" />
+      <input type="hidden" name="action" value="search_signals"/>
       <input type="submit" class="hidden"/>
     </form>
 </div>
