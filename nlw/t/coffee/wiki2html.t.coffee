@@ -23,7 +23,7 @@ Moose
 <p>text <img alt="st-widget-&#34;label&#34;{link: [page]}" src="/data/wafl/label" class="st-widget st-inline-widget" /></p>\n
   """]
   ["| multi\nline |", """
-<table style="border-collapse: collapse" options="sort:on border:off" class="formatter_table sort borderless"><tr>\n<td>multi</td>\n</tr>\n<tr>\n<td>line</td>\n</tr>\n</table><p></p>\n
+<table style="border-collapse: collapse" options="" class="formatter_table" border="1"><tr>\n<td><p>multi<br />\nline</p>\n</td>\n</tr>\n</table><p></p>\n
   """]
 ]
 
