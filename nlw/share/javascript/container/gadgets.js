@@ -697,7 +697,7 @@ container.showNotice = function(editing) {
     var html = Jemplate.process(this.notice_template, {
         loc: loc,
         container: this,
-        socialtext: Socialtext,
+        st: st,
         editing: editing
     });
     $('.notice').html(html).show();
