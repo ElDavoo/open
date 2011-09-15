@@ -236,7 +236,7 @@ sub time_display_seconds {
     my $data = $self->time_display_seconds_data;
 
     my $p = $self->new_preference('time_display_seconds');
-    $p->query($data->{title});
+    $p->query($data->{options}[0]{display});
     $p->type('boolean');
     $p->default($data->{default_setting});
 
