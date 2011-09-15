@@ -17,14 +17,13 @@
 [% END %]
 </div>
 
-<div class="container_24">
-    [% FOR grid = container.grids %]
-        <div class="[% grid %] widgetColumn" id="col[% loop.index %]">
-            [% FILTER decorate('container_column_' _ loop.index _ '_end') %]
-            [% END %]
-        </div>
-    [% END %]
-</div>
+<div class="clear"></div>
+[% FOR grid = container.grids %]
+    <div class="[% grid %] widgetColumn" id="col[% loop.index %]">
+        [% FILTER decorate('container_column_' _ loop.index _ '_end') %]
+        [% END %]
+    </div>
+[% END %]
 <div class="clear"></div>
 
 <script>

@@ -1,23 +1,38 @@
 /**
  * Global Navigation
 
+// paddingless positioning of the global nav
 .navGrid
-  margin: 0
   height: 50px
   position: relative
-.navItem, .navLink
-  height: 45px
+  margin: 0
+  padding-left: 2 * $margin
+  .navItem, .navLink
+    height: 45px
+    position: absolute
+    border-left: 2px solid #000
+    left: 0
+    width: 100%
+  .staticUnderline, .underline
+    height: 3px
+    position: absolute
+    top: 45px
+    left: 0
+    background-color: #fff
+    border-top: 2px solid #c6b93b
+    width: 100%
+  &:hover .underline
+    background-color: #c6b93b
+
+.selected .underline
+  background-color: #c6b93b
 
 a
   &:visited, &:active
     color: #fff
   color: #fff
 
-.last .navLink
-  border-right: 2px solid #000
-
 .navLink
-  border-left: 2px solid #000
   a
     top: 10px
     position: relative
@@ -52,18 +67,6 @@ a
     margin-left: 5px
   .editMode
     display: none
-
-.navGrid
-  .staticUnderline, .underline
-    height: 3px
-    background-color: #fff
-    border-top: 2px solid #c6b93b
-    width: 100%
-  &:hover .underline
-    background-color: #c6b93b
-
-.selected .underline
-  background-color: #c6b93b
 
 // Drop downs
 .navGrid
