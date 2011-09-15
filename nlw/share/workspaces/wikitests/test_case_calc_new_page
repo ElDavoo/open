@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Calc New Page |  |
+
 
 | st-admin | enable-plugin --p socialcalc --w %%workspace%% |  |
 | st-admin | update-page --email %%email%% --workspace %%workspace%% --page "np ss %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "np ss %%start_time%%" page has been created. |
@@ -35,7 +37,7 @@
 | is_checked_ok | st-newspreadsheet-duplicate-option-different |  |
 | wait_for_element_visible_ok | st-newspreadsheet-duplicate-pagename | 30000 |
 | type_ok | st-newspreadsheet-duplicate-pagename | np ss %%start_time%% Two |
-| wait_for_element_present_ok | st-newpage-duplicate-okbutton | 30000 |
+| wait_for_element_present_ok | st-newspreadsheet-duplicate-okbutton | 30000 |
 | click_and_wait | st-newspreadsheet-duplicate-okbutton |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | np ss %%start_time%% Two |
@@ -54,7 +56,7 @@
 | wait_for_element_visible_ok | st-newspreadsheet-duplicate-option-suggest | 30000 |
 | check_ok | st-newspreadsheet-duplicate-option-suggest |  |
 | is_checked_ok | st-newspreadsheet-duplicate-option-suggest |  |
-| wait_for_element_present_ok | st-newpage-duplicate-okbutton | 30000 |
+| wait_for_element_present_ok | st-newspreadsheet-duplicate-okbutton | 30000 |
 | click_and_wait | st-newspreadsheet-duplicate-okbutton |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | qr/%%short_username%%.+np ss %%start_time%% Two/ism |
