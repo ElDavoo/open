@@ -25,7 +25,7 @@ Socialtext.prototype = {
 
     // Paths
     nlw_make_path: function(path) {
-      return this.dev_env
+      return this.dev_mode
           ? path.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+(new Date).getTime())
           : path;
     },
