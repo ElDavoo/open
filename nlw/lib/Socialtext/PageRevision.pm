@@ -44,7 +44,7 @@ has 'edit_time'   => (
     default => sub { Socialtext::Date->now(hires=>1, timezone=>'GMT') },
 );
 
-has 'page_type' => (is => 'rw', isa => 'PageType', default => 'wiki');
+has 'page_type' => (is => 'rw', isa => 'PageType', default => 'xhtml');
 has 'deleted'   => (is => 'rw', isa => 'Bool');
 has 'locked'    => (is => 'rw', isa => 'Bool');
 

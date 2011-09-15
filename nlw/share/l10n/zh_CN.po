@@ -10413,7 +10413,7 @@ msgid "page.edit"
 msgstr "编辑"
 
 msgid "page.edit-as-xhtml"
-msgstr "转换格式并编辑<br />（使用新版编辑器）"
+msgstr "编辑"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
@@ -10626,7 +10626,7 @@ msgid "page.type-wiki"
 msgstr "页面"
 
 msgid "page.type-xhtml"
-msgstr "页面（使用新版编辑器）"
+msgstr "页面"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -14961,4 +14961,4 @@ msgid "wikiwyg.widget"
 msgstr "插入一个小工具"
 
 msgid "xhtml.creating"
-msgstr "正在启动新版编辑器创建页面..."
+msgstr "正在创建页面..."

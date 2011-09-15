@@ -377,11 +377,11 @@ sub PUT_html {
     return '';
 }
 
-sub _default_page_type { 'wiki' }
+sub _default_page_type { 'xhtml' }
 sub _acceptable_page_types {
     my $self = shift;
     my $type = shift;
-    return $type =~ m/^wiki|spreadsheet$/;
+    return $type =~ m/^wiki|spreadsheet|xhtml$/;
 }
 
 sub PUT_json {
