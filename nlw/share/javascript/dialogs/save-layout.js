@@ -9,10 +9,11 @@ socialtext.dialog.register('save-layout', function() {
         pushGadgetTitles.push(checkbox.name);
     });
     var dialog = socialtext.dialog.createDialog({
+        title: loc('dashboard.save-confirmation'),
         html: socialtext.dialog.process('save-layout.tt2', {
-            'gadget_titles': pushGadgetTitles,
-        }),
-        title: loc('dashboard.save-confirmation')
+            gadget_titles: pushGadgetTitles,
+            type: gadgets.container.type,
+        })
     });
 
     dialog.find('.cancel').click(function() {

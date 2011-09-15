@@ -1,6 +1,11 @@
 <div id="save-lightbox">
     <div class="vpad5">
-    [% loc('info.dashboard-save-layout') %]
+        [% IF type == 'account_dashboard';
+            loc('info.dashboard-save-layout');
+           ELSE; 
+            loc('Click Save below to save this layout.');
+           END;
+        %]
     </div>
     [% IF gadget_titles.size -%]
         <div class="vpad5">
@@ -17,11 +22,13 @@
         <a href="#" id="st-save-widget-template" class="save button">[% loc('do.save') %]</a>
         <a href="#" class="cancel button">[% loc('do.cancel') %]</a>
     </div>
-    <div class="vpad10">
-      <label><input id="force-update" type="checkbox"/>
-      [% loc('dashboard.force-update') %]</label>
-      <div class="bigHint">
-        [% loc("info.dashboard-force-update") %]
-      </div>
-    </div>
+    [% IF type == 'account_dashboard' %]
+        <div class="vpad10">
+          <label><input id="force-update" type="checkbox"/>
+          [% loc('dashboard.force-update') %]</label>
+          <div class="bigHint">
+            [% loc("info.dashboard-force-update") %]
+          </div>
+        </div>
+    [% END %]
 </div>
