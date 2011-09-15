@@ -24,6 +24,11 @@ sub make_GETter {
     return sub {
         my ( $self, $rest ) = @_;
 
+        # If the UA has no preference other than '*/*', default to text/html.
+        unless (grep { $_ ne '*/*' } $rest->getContentPrefs) {
+            $content_type = 'text/html';
+        }
+
         $self->if_authorized(
             'GET',
             sub {

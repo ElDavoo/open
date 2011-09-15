@@ -556,7 +556,7 @@ $(function() {
                 oncomplete: function () {
                     $.get(Page.pageUrl(page_id), function (html) {
                         $('#content_'+page_id).html(html);
-                    });
+                    }, 'html');
                 }
             });
             ge.show();
