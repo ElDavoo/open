@@ -58,6 +58,7 @@ var activitiesDialog = {
                     var filename = dialog.find('.file').val()
                     filename = filename.replace(/^.*\\|\/:/, '');
                     opts.callback(filename, result);
+                    dialog.close();
                 }
             });
         });
@@ -86,7 +87,7 @@ var activitiesDialog = {
         });
 
         // Show Video/Image popup
-        if (opts.params.video) {
+        if (opts.params && opts.params.video) {
             dialog.disable();
             if (opts.params.video) {
                 $.ajax({
