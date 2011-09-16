@@ -25,6 +25,24 @@ Moose
   ["| multi\nline |", """
 <table style="border-collapse: collapse" options="" class="formatter_table" border="1"><tr>\n<td><p>multi<br />\nline</p>\n</td>\n</tr>\n</table><p></p>\n
   """]
+  ["""
+| x | y z
+[w] |
+  """, """
+<table style="border-collapse: collapse" options="" class="formatter_table" border="1"><tr>
+<td>x</td>
+<td><p>y z<br />
+<a href="w">w</a></p>
+</td>
+</tr>
+</table><p></p>\n
+  """]
+  ["""
+"Test" <mailto:foo@bar.org>
+  """, """
+<p><a href="mailto:foo@bar.org">Test</a></p>\n
+"""
+  ]
 ]
 
 for [wiki, html] in tests
