@@ -97,7 +97,7 @@ jQuery(document).ready(function() {
 <div class="alpha grid_5 input-label">
   [% loc('Email address to invite') %]:
 </div>
-<div class="omega grid_7">
+<div class="omega grid_15">
     <input id="user" name="please.ignore.me"
       class="lookahead-prompt" type="text"
       value="[% loc('begin typing email here...') %]"

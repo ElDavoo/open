@@ -4,43 +4,43 @@
   <h3>[% loc('My Settings') %]</h3>
 
   <div class="alpha grid_5 input-label">[% loc('First Name') %]:</div>
-  <div class="omega grid_7">
+  <div class="omega grid_15">
     <input type="text" name="user.first_name"
       value="[% user.first_name %]" />
   </div>
   <div class="clear"></div>
 
   <div class="alpha grid_5 input-label">[% loc('Middle Name') %]:</div>
-  <div class="omega grid_7">
+  <div class="omega grid_15">
     <input type="text" name="user.middle_name"
       value="[% user.middle_name %]" />
   </div>
   <div class="clear"></div>
 
   <div class="alpha grid_5 input-label">[% loc('Last Name') %]:</div>
-  <div class="omega grid_7">
+  <div class="omega grid_15">
     <input type="text" name="user.last_name"
       value="[% user.last_name %]" />
   </div>
   <div class="clear"></div>
   
-  <div class="prefix_5 alpha grid_7">[% loc('New passwords must be at least 6 characters long. Use your email address and new password to log in again.') %]</div>
+  <div class="prefix_5 alpha grid_15">[% loc('New passwords must be at least 6 characters long. Use your email address and new password to log in again.') %]</div>
   <div class="clear"></div>
 
   <div class="alpha grid_5 input-label">[% loc('Current Password') %]:</div>
-  <div class="omega grid_7">
+  <div class="omega grid_15">
     <input type="password" name="user.old_password" value="" />
   </div>
   <div class="clear"></div>
 
   <div class="alpha grid_5 input-label">[% loc('New Password') %]:</div>
-  <div class="omega grid_7">
+  <div class="omega grid_15">
     <input type="password" name="user.new_password" value="" />
   </div>
   <div class="clear"></div>
 
   <div class="alpha grid_5 input-label">[% loc('Retype New Password') %]:</div>
-  <div class="omega grid_7">
+  <div class="omega grid_15">
     <input type="password" name="user.new_password_retype" value="" />
   </div>
   <div class="clear"></div>
