@@ -37,6 +37,12 @@ Moose
 </tr>
 </table><p></p>\n
   """]
+  ["""
+"Test" <mailto:foo@bar.org>
+  """, """
+<p><a href="mailto:foo@bar.org">Test</a></p>\n
+"""
+  ]
 ]
 
 for [wiki, html] in tests
