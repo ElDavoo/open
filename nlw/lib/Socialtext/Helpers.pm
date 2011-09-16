@@ -296,6 +296,10 @@ method global_template_vars {
     return %result;
 }
 
+method add_js_bootstrap ($vars) {
+    $->js_bootstrap({ %{$->js_bootstrap}, %$vars });
+}
+
 method js_bootstrap {
     return {
         version => Socialtext->product_version,
