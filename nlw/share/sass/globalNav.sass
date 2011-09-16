@@ -71,10 +71,14 @@ a
 // Drop downs
 .navGrid
   .navList
-    color: #ccc
-    display: none
+    width: 100%
     position: absolute
     top: 42px
+    left: 0
+    width: 112px // XXX Based on fixed grids
+    padding: 3px
+    color: #ccc
+    display: none
     z-index: 1000
     overflow-y: auto
     overflow-x: hidden
@@ -84,9 +88,6 @@ a
     border-right: 2px solid #000
     border-bottom: 2px solid #000
     background: url(#{$static}/images/background.png)
-    .navListItem
-      margin: 3px
   &:hover, &.hover
     .navList
       display: block
-

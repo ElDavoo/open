@@ -42,7 +42,7 @@ $.fn.navList = function(entries) {
             }));
 
             if ($.browser.msie && $.browser.version < 7) {
-                $(this).parents('.submenu')
+                $(this).parents('.navList')
                     .mouseover(function() {
                         $(this).addClass('hover');
                     })
