@@ -3,7 +3,7 @@
 
 [% loc('dashboard.switch-from=account:', name) %]
 <select id="st-change-account">
-    [% FOR a = socialtext.accounts %]
+    [% FOR a = st.viewer.accounts %]
     <option [% IF a.account_id == id %]selected="true"[% END %] value="/st/account/[% a.account_id %]/dashboard">[% a.name %]</option>
     [% END %]
 </select>

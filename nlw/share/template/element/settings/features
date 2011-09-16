@@ -22,13 +22,13 @@ jQuery(document).ready(function() {
 <div class="alpha grid_5 input-label">
   [% prefs.workspaces_ui.homepage_weblog.title %]:
 </div>
-<div class="omega grid_7">
+<div class="omega grid_15">
   <input type="text" name="workspace.setting.homepage_weblog"
     value="[% prefs.workspaces_ui.homepage_weblog.default_setting %]" />
 </div>
 <div class="clear"></div>
 
-<div class="prefix_5 alpha grid_7">
+<div class="prefix_5 alpha grid_15">
   [% prefs.workspaces_ui.homepage_weblog.additional %]
 </div>
 <div class="clear"></div>

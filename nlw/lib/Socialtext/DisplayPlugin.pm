@@ -316,15 +316,37 @@ sub _render_display {
     push @$new_attachments, map {
         $_->to_hash(formatted => 1)
     } @$template_attachments if $template_attachments;
+            
+    # Update js_bootstrap for pages
+    my $accept_encoding => eval {
+        $self->hub->rest->request->header_in('Accept-Encoding');
+    };
+    $self->hub->helpers->add_js_bootstrap({
+        template_name      => $self->cgi->template,
+        start_in_edit_mode => $start_in_edit_mode,
+        accept_encoding    => $accept_encoding,
+        page => {
+            id              => $page->page_id,
+            title           => $page->title,
+            type            => $page->type,
+            size            => $page->size,
+            attachments     => $attachments,
+            new_title       => scalar $self->cgi->new_title,
+            new_attachments => $new_attachments,
+            revision_id     => $page->revision_id,
+            is_new          => $is_new_page,
+            is_incipient    => ($self->cgi->is_incipient ? 1 : 0),
+            new_tags        => $new_tags,
+            caller          => ($self->cgi->caller_action || ''),
+            display_title   => html_escape($page->name),
+        },
+    });
 
     # TODO: Thunk like in global_template_vars?
     return $self->template_render(
         template => 'view/page/display',
         vars     => {
             $self->hub->helpers->global_template_vars,
-            accept_encoding         => eval {
-                $self->hub->rest->request->header_in( 'Accept-Encoding' )
-            } || '',
             local_time              => sub {
                 loc(
                     "time.at=date,time",
@@ -344,10 +366,6 @@ sub _render_display {
                   and $page->page_id eq title_to_id(
                       $self->hub->current_workspace->title)
             ),
-            is_new                  => $is_new_page,
-            is_incipient            => ($self->cgi->is_incipient ? 1 : 0),
-            start_in_edit_mode      => $start_in_edit_mode,
-            new_tags                => $new_tags,
             attachments             => $attachments,
             new_attachments         => $new_attachments,
             watching                => $self->hub->watchlist->page_watched,
@@ -418,7 +436,6 @@ sub _get_page_info {
 
     return {
         title           => $page->name,
-        new_title       => scalar $self->cgi->new_title,
         display_title   => html_escape($page->name),
         id              => $page->id,
         is_default_page => (
@@ -457,7 +474,6 @@ sub _get_page_info {
         },
         is_original => $page->revision_num <= 1 ? 1 : 0,
         incoming    => $self->hub->backlinks->all_backlinks_for_page($page),
-        caller      => ($self->cgi->caller_action || ''),
         is_active   => $page->active,
         is_xhtml => $page->is_xhtml,
         is_spreadsheet => $page->is_spreadsheet,

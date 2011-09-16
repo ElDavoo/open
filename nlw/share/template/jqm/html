@@ -14,7 +14,7 @@ if (window.parent && window.parent.$) {
     }
 }
 </script>
-<link rel="stylesheet" href="[% wiki.static_path %]/javascript/contrib/colorpicker/css/colorpicker.css" type="text/css" />
+<link rel="stylesheet" href="[% static_path %]/javascript/contrib/colorpicker/css/colorpicker.css" type="text/css" />
 <link rel="stylesheet" href="/static/skin/s3/css/bubble.css" type="text/css" />
 <script type="text/javascript" src="/js/[% app_version %]/socialtext-jqm.js"></script>
 

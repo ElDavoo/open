@@ -39,9 +39,6 @@ DEFAULT
           // Search pages should not be sticky
           sticky: [% search_scope && !search ? 'true' : 'false' %]
       });
-      $('.searchText.initial').one('click', function() {
-          $(this).removeClass('initial').val('');
-      });
   </script>
   <input id="st-[%sid%]-submit" class="hidden"  type="submit" value="" />
   [% END %]

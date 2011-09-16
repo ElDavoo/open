@@ -1,23 +1,38 @@
 /**
  * Global Navigation
 
+// paddingless positioning of the global nav
 .navGrid
-  margin: 0
   height: 50px
   position: relative
-.navItem, .navLink
-  height: 45px
+  margin: 0
+  padding-left: 2 * $margin
+  .navItem, .navLink
+    height: 45px
+    position: absolute
+    border-left: 2px solid #000
+    left: 0
+    width: 100%
+  .staticUnderline, .underline
+    height: 3px
+    position: absolute
+    top: 45px
+    left: 0
+    background-color: #fff
+    border-top: 2px solid #c6b93b
+    width: 100%
+  &:hover .underline
+    background-color: #c6b93b
+
+.selected .underline
+  background-color: #c6b93b
 
 a
   &:visited, &:active
     color: #fff
   color: #fff
 
-.last .navLink
-  border-right: 2px solid #000
-
 .navLink
-  border-left: 2px solid #000
   a
     top: 10px
     position: relative
@@ -53,25 +68,17 @@ a
   .editMode
     display: none
 
-.navGrid
-  .staticUnderline, .underline
-    height: 3px
-    background-color: #fff
-    border-top: 2px solid #c6b93b
-    width: 100%
-  &:hover .underline
-    background-color: #c6b93b
-
-.selected .underline
-  background-color: #c6b93b
-
 // Drop downs
 .navGrid
   .navList
-    color: #ccc
-    display: none
+    width: 100%
     position: absolute
     top: 42px
+    left: 0
+    width: 112px // XXX Based on fixed grids
+    padding: 3px
+    color: #ccc
+    display: none
     z-index: 1000
     overflow-y: auto
     overflow-x: hidden
@@ -81,9 +88,6 @@ a
     border-right: 2px solid #000
     border-bottom: 2px solid #000
     background: url(#{$static}/images/background.png)
-    .navListItem
-      margin: 3px
   &:hover, &.hover
     .navList
       display: block
-

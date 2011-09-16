@@ -20,66 +20,65 @@ jQuery(document).ready(function() {
 
 </script>
 
-<div class="container_16">
-  <div class="grid_4">
-    <div id="settings-sidebar">
-      <div class="pad">
-        <h4>[% loc('Settings') %]</h4>
-          <div class="top">
-            [% IF section == 'global' %]
-              <strong>[% loc('Global Settings') %]</strong>
-            [% ELSE %]
-              <a href="/st/settings">[% loc('Global Settings') %]</a>
-            [% END %]
-          </div>
-        <h4>[% loc('Workspaces') %]</h4>
-        <div id="spaces-accordion">
-        [% FOREACH space IN spaces %]
-          <div class="top header">
-            [% IF space.active %]
-              <strong>[% space.title %]</strong>
-            [% ELSE %]
-              [% space.title %]
-            [% END %]
-          </div>
-          <ul>
-            [% FOREACH pref IN space.prefs %]
-              <li>
-                [% IF pref.active %]
-                  <strong>[% pref.title %]</strong>
-                [% ELSE %]
-                  <a href="/st/settings/[% space.id %]/prefs/[% pref.name %]">
-                    [% pref.title %]</a>
-                [% END %]
-              </li>
-            [% END %]
-          </ul>
-        [% END %]
+<div class="grid_4">
+  <div id="settings-sidebar">
+    <div class="pad">
+      <h4>[% loc('Settings') %]</h4>
+        <div class="top">
+          [% IF section == 'global' %]
+            <strong>[% loc('Global Settings') %]</strong>
+          [% ELSE %]
+            <a href="/st/settings">[% loc('Global Settings') %]</a>
+          [% END %]
         </div>
+      <h4>[% loc('Workspaces') %]</h4>
+      <div id="spaces-accordion">
+      [% FOREACH space IN spaces %]
+        <div class="top header">
+          [% IF space.active %]
+            <strong>[% space.title %]</strong>
+          [% ELSE %]
+            [% space.title %]
+          [% END %]
+        </div>
+        <ul>
+          [% FOREACH pref IN space.prefs %]
+            <li>
+              [% IF pref.active %]
+                <strong>[% pref.title %]</strong>
+              [% ELSE %]
+                <a href="/st/settings/[% space.id %]/prefs/[% pref.name %]">
+                  [% pref.title %]</a>
+              [% END %]
+            </li>
+          [% END %]
+        </ul>
+      [% END %]
       </div>
     </div>
   </div>
-  <div class="grid_12">
-    <div id="settings-main">
-      <form method="POST" action="">
-        <p>
-          <a class="button save" href="#">[% loc('Save') %]</a>
-          <a class="button cancel" href="#">[% loc('Cancel') %]</a>
-        </p>
+</div>
+<div class="grid_20">
+  <div id="settings-main">
+    <form method="POST" action="">
+      <p>
+        <a class="button save" href="#">[% loc('Save') %]</a>
+        <a class="button cancel" href="#">[% loc('Cancel') %]</a>
+      </p>
 
-        [% IF message %]
-          <p>[% message %]</p>
-        [% END %]
+      [% IF message %]
+        <p>[% message %]</p>
+      [% END %]
 
-        [% main_content %]
+      [% main_content %]
 
-        <p>
-          <a class="button save" href="#">[% loc('Save') %]</a>
-          <a class="button cancel" href="#">[% loc('Cancel') %]</a>
-        </p>
-      </form>
-    </div>
+      <p>
+        <a class="button save" href="#">[% loc('Save') %]</a>
+        <a class="button cancel" href="#">[% loc('Cancel') %]</a>
+      </p>
+    </form>
   </div>
 </div>
+<div class="clear"></div>
 [% END %]
 

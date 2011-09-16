@@ -3,7 +3,7 @@
 <div class="alpha grid_5 input-label">
   [% loc('Unsubscribe from this Workspace') %]:
 </div>
-<div class="omega grid_7">
+<div class="omega grid_15">
   <input type="checkbox" name="workspace.do.unsubscribe"
     value="1" /> [% loc('Yes') %]
 </div>
