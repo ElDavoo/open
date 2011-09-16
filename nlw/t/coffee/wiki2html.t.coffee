@@ -41,8 +41,12 @@ Moose
 "Test" <mailto:foo@bar.org>
   """, """
 <p><a href="mailto:foo@bar.org">Test</a></p>\n
-"""
-  ]
+  """]
+  ["""
+foo@bar.org
+  """, """
+<p><a href="mailto:foo@bar.org">foo@bar.org</a></p>\n
+  """]
 ]
 
 for [wiki, html] in tests
