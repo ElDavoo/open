@@ -31,19 +31,6 @@ socialtext.dialog.register('save-layout', function() {
             success: function() {
                 dialog.close();
                 gadgets.container.leaveEditMode();
-
-                if (force) {
-                    socialtext.dialog.showResult({
-                        title: loc('Success'),
-                        message: loc('dashboard.successfully-reset')
-                    });
-                }
-                else {
-                    socialtext.dialog.showResult({
-                        title: loc('Success'),
-                        message: loc('dashboard.successfully-saved')
-                    });
-                }
             }
         });
 
