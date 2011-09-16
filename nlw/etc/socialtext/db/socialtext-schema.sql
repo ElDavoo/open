@@ -1134,6 +1134,19 @@ CREATE TABLE group_photo (
     small bytea
 );
 
+CREATE TABLE user_set_include (
+    from_set_id integer NOT NULL,
+    into_set_id integer NOT NULL,
+    role_id integer NOT NULL,
+    CONSTRAINT no_self_includes
+            CHECK (from_set_id <> into_set_id)
+);
+
+CREATE VIEW group_workspaces AS
+ SELECT DISTINCT user_set_include.from_set_id AS user_set_id, user_set_include.into_set_id AS workspace_set_id
+   FROM user_set_include
+  WHERE user_set_include.into_set_id >= B'00100000000000000000000000000001'::"bit"::integer AND user_set_include.into_set_id <= B'00110000000000000000000000000000'::"bit"::integer AND user_set_include.from_set_id >= B'00010000000000000000000000000001'::"bit"::integer AND user_set_include.from_set_id <= B'00100000000000000000000000000000'::"bit"::integer;
+
 CREATE TABLE groups (
     group_id bigint NOT NULL,
     driver_key text NOT NULL,
@@ -1495,13 +1508,11 @@ CREATE TABLE user_restrictions (
     workspace_id bigint
 );
 
-CREATE TABLE user_set_include (
-    from_set_id integer NOT NULL,
-    into_set_id integer NOT NULL,
-    role_id integer NOT NULL,
-    CONSTRAINT no_self_includes
-            CHECK (from_set_id <> into_set_id)
-);
+CREATE VIEW user_set_group_count AS
+ SELECT user_set_include.into_set_id AS user_set_id, count(DISTINCT user_set_include.from_set_id) AS group_count
+   FROM user_set_include
+  WHERE user_set_include.from_set_id >= B'00010000000000000000000000000001'::"bit"::integer AND user_set_include.from_set_id <= B'00100000000000000000000000000000'::"bit"::integer
+  GROUP BY user_set_include.into_set_id;
 
 CREATE VIEW user_set_include_tc AS
  SELECT DISTINCT user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id
@@ -1533,6 +1544,13 @@ UNION ALL
            FROM user_set_path path
       JOIN user_set_plugin plug ON path.into_set_id = plug.user_set_id;
 
+CREATE VIEW user_set_user_count AS
+ SELECT user_set_include.into_set_id AS user_set_id, count(DISTINCT user_set_include.from_set_id) AS user_count
+   FROM user_set_include
+   JOIN all_users ON all_users.user_id = user_set_include.from_set_id
+  WHERE user_set_include.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer AND all_users.is_deleted = false
+  GROUP BY user_set_include.into_set_id;
+
 CREATE VIEW user_use_plugin AS
  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_plugin.plugin
    FROM user_set_path
@@ -1544,6 +1562,11 @@ CREATE TABLE user_workspace_pref (
     last_updated timestamptz DEFAULT now() NOT NULL,
     pref_blob text NOT NULL
 );
+
+CREATE VIEW user_workspaces AS
+ SELECT DISTINCT user_set_include.from_set_id AS user_set_id, user_set_include.into_set_id AS workspace_set_id
+   FROM user_set_include
+  WHERE user_set_include.into_set_id >= B'00100000000000000000000000000001'::"bit"::integer AND user_set_include.into_set_id <= B'00110000000000000000000000000000'::"bit"::integer AND user_set_include.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer;
 
 CREATE VIEW users AS
  SELECT all_users.user_id, all_users.driver_key, all_users.driver_unique_id, all_users.driver_username, all_users.email_address, all_users.password, all_users.first_name, all_users.middle_name, all_users.last_name, all_users.cached_at, all_users.last_profile_update, all_users.is_profile_hidden, all_users.display_name, all_users.missing, all_users.private_external_id
@@ -3033,4 +3056,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '148');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '149');

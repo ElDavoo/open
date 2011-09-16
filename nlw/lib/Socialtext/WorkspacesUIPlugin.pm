@@ -16,6 +16,7 @@ use Socialtext::File::Copy::Recursive qw(dircopy);
 use Socialtext::Log 'st_log';
 use Socialtext::Group ();
 use YAML qw(LoadFile);
+use Socialtext::SQL qw(sql_execute);
 
 sub class_id { 'workspaces_ui' }
 const cgi_class => 'Socialtext::WorkspacesUI::CGI';
@@ -157,19 +158,30 @@ sub workspaces_listall {
     $self->_update_selected_workspaces()
         if $self->cgi->Button;
 
-    my $settings_section = $self->template_process(
-        'element/settings/workspaces_listall_section',
-        workspaces => $self->hub->current_user->workspaces,
-        $self->status_messages_for_template,
-    );
+    my $sql = qq{
+        SELECT
+          w.workspace_id id,
+          w.name,
+          w.title,
+          coalesce(usuc.user_count,0) user_count,
+          coalesce(usgc.group_count,0) group_count
+        FROM
+          "Workspace" w
+          JOIN user_workspaces uw on uw.workspace_set_id = w.user_set_id
+          LEFT OUTER JOIN user_set_user_count usuc on usuc.user_set_id = w.user_set_id
+          LEFT OUTER JOIN user_set_group_count usgc on usgc.user_set_id = w.user_set_id
+        WHERE
+          uw.user_set_id = ?
+        ORDER BY
+          w.title
+    };
+    my $sth = sql_execute($sql, $self->hub->current_user->user_id);
+    my $workspaces = $sth->fetchall_arrayref({});
 
-    $self->screen_template('view/settings');
+    $self->screen_template('view/user_workspacelist');
     return $self->render_screen(
-        settings_table_id => 'settings-table',
-        settings_section  => $settings_section,
-        hub               => $self->hub,
-        display_title     => loc('config.wiki-list'),
-        pref_list         => $self->_get_pref_list('global'),
+        display_title => loc('My Workspaces'),
+        workspaces => $workspaces,
     );
 }
 
