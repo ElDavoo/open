@@ -112,6 +112,7 @@
         - activities
         - activities-link
         - control-create-workspace
+        - control-create-group
 'shindig-container-%.js':
     compress: 1
     parts:
