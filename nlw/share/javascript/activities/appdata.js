@@ -630,7 +630,7 @@ $.extend(Activities.AppData.prototype, {
 
         $(self.node)
             .find('input.action, input.feed, input.network')
-            .attr('disabled', '')
+            .removeAttr('disabled')
             .parents('.filterOption').removeClass('disabledOption');
 
         if (self.signalNetworks().length) {
