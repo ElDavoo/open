@@ -1,0 +1,32 @@
+[%# vim: set et sts=2 sw=2: %]
+[%# @COPYRIGHT@ -%]
+[% USE decorate %]
+[% WRAPPER $frame_name id="listPage" %]
+  [% INCLUDE element/listview_tabs %]
+  <div id="controls">
+    <div id="st-editing-tools-edit">
+    </div><!-- controlsLeft END -->
+    <div id="controlsRight">
+    </div><!-- controlsRight END -->
+  </div><!-- controls END -->
+  <div id="contentContainer">
+    <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
+    <table class="dataTable workspacelist">
+      <tr>
+        <th>[% loc('Title') %]</th>
+        <th class="numeric">[% loc('Users') %]</th>
+        <th class="numeric">[% loc('Groups') %]</th>
+      </tr>
+      [% FOREACH workspace = workspaces %]
+        [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
+        <td>
+          <a href="/[% workspace.name %]">[% workspace.title | html %]</a>
+        </td>
+        <td class="numeric">[% workspace.user_count %]</td>
+        <td class="numeric">[% workspace.group_count %]</td>
+        </tr>
+      [% END %]
+    </table><!-- dataTable END -->
+  </div><!-- contentContainer -->
+[% END %]
+
