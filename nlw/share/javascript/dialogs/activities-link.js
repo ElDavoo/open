@@ -27,12 +27,12 @@ var linkDialog = {
 
             // Re-enable valid inputs
             dialog.find(".wiki-link-label, .wiki-link-workspace")
-                .attr('disabled', '')
+                .removeAttr('disabled')
                 .removeClass('disabled');
 
             if (dialog.find('.wiki-link-workspace').val()) {
                 dialog.find(".wiki-link-page, .wiki-link-section")
-                    .attr('disabled', '')
+                    .removeAttr('disabled')
                     .removeClass('disabled');
             }
         });
@@ -42,7 +42,7 @@ var linkDialog = {
                 .attr('disabled', 'disabled')
                 .addClass('disabled');
             dialog.find(".webField")
-                    .attr('disabled', '')
+                .removeAttr('disabled')
                 .removeClass('disabled');
         });
 
@@ -56,7 +56,7 @@ var linkDialog = {
                 return [ i.title + ' (' + i.name + ')', i.name ]; 
             },
             onAccept: function(id, item) {
-                dialog.find('.wiki-option').click();
+                dialog.find('.wiki-option').change();
             }
         });
 
