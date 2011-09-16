@@ -1,5 +1,5 @@
 
-*Not converting to TUX until User tables in Workspace Control Panel is fixed*
+*Not converting to TUX until confirmation messages are restored or confirmed deliberately deleted*
 
 | *Comment* | Test case: Business Control Panel USER |  |
 | set | new_acct | acct-usertest-%%start_time%% |
@@ -50,7 +50,7 @@
 | type_ok | mobile_phone | mobile phone |
 | type_ok | home_phone | home phone |
 | click_and_wait | //input[contains(@id,'add_user')] |  |
-| wait_for_text_present_ok | Added user foo%%start_time%%@bar.com | 30000 |
+| wait_for_text_present_ok | firstname lastname <foo%%start_time%%@bar.com> | 30000 |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |
 | wait_for_element_visible_ok | link=firstname lastname <foo%%start_time%%@bar.com> |  |
