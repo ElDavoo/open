@@ -9,7 +9,9 @@
     <div id="controlsRight">
     </div><!-- controlsRight END -->
   </div><!-- controls END -->
-  <div id="contentContainer">
+  <div id="contentContainer" class="container_24">
+  <div class="grid_1 alpha omega">
+  <div class="grid_23">
     <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
     <table class="dataTable workspacelist">
       <tr>
@@ -27,6 +29,7 @@
         </tr>
       [% END %]
     </table><!-- dataTable END -->
+    </div>
   </div><!-- contentContainer -->
 [% END %]
 
