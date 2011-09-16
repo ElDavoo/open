@@ -1216,6 +1216,10 @@ sub get_units {
             $chunker->(\$dval);
         }
     }
+    elsif ($self->is_xhtml) {
+        my $wikitext = html2wiki($$body_ref);
+        $chunker->(\$wikitext);
+    }
     else {
         $chunker->($body_ref);
     }
