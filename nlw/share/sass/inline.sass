@@ -67,22 +67,22 @@
       font-size: 13px
 
 .profileTagsWidget
-  div.tagList
-    margin: 0pt auto
+  .tagList
+    margin: 10px 0
     text-align: left
-    ul
-      width: 100%
-      margin-left: 0
-      padding-left: 0
-      li
-        color: #005295
-        list-style: none
-        margin-right: 1em
-        display: inline
-        a img
-          border: 0px
-        &.oddRow
-          background: #F1FBEA none repeat scroll 0% 0%
+    .tag
+      color: #005295
+      list-style: none
+      margin-right: 1em
+      float: left
+      a
+        white-space: nowrap
+        float: left
+        &.icon-delete
+          display: block
+          margin: 3px
+      &.oddRow
+        background: #F1FBEA none repeat scroll 0% 0%
   .entry
     white-space: nowrap
     height: 30px
