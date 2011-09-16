@@ -400,13 +400,13 @@ has legacy_user_info => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 method _build_legacy_user_info {
     my $info = $->user_info;
     return {
+        %{$->user_info},
         username => $info->{guess_real_name},
         userid => $info->{username},
         id => $info->{user_id},
         can_use_plugin     => sub {
             $->hub->current_user->can_use_plugin(@_);
         },
-        %{$->user_info},
     }
 }
 
