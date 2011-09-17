@@ -377,7 +377,7 @@ sub PUT_html {
     return '';
 }
 
-sub _default_page_type { 'xhtml' }
+sub _default_page_type { 'wiki' }
 sub _acceptable_page_types {
     my $self = shift;
     my $type = shift;
