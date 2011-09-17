@@ -322,7 +322,7 @@ sub _render_display {
         $self->hub->rest->request->header_in('Accept-Encoding');
     };
     $self->hub->helpers->add_js_bootstrap({
-        template_name      => $self->cgi->template,
+        template_name      => scalar $self->cgi->template,
         start_in_edit_mode => $start_in_edit_mode,
         accept_encoding    => $accept_encoding,
         page => {
