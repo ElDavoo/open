@@ -604,12 +604,6 @@ $(function() {
         return false;
     });
 
-    $("#st-pagetools-edit-as-xhtml").click(function () {
-        Socialtext.auto_convert_wiki_to_html = true;
-        Socialtext.load_editor();
-        return false;
-    });
-
     var page_lock_rollover = function() {
         var img = $(this).find('img');
         var src = img.attr('src');
@@ -784,13 +778,8 @@ $(function() {
                 $('#bootstrap-loader').hide();
             });
         }
-        else if (Socialtext.page_type == 'xhtml' && current_workspace.enable_xhtml) {
-            $.getScript(ckeditor_uri, function () {
-                Socialtext.start_xhtml_editor();
-                $('#bootstrap-loader').hide();
-            });
-        }
-        else if (Socialtext.auto_convert_wiki_to_html && current_workspace.enable_xhtml) {
+        else if (current_workspace.enable_xhtml) {
+            // Always auto-convert "wiki" pages to xhtml
             $.getScript(ckeditor_uri, function () {
                 Socialtext.start_xhtml_editor();
                 $('#bootstrap-loader').hide();
