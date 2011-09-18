@@ -184,15 +184,19 @@ sub display {
                 my @template_tags = (lc('template'), lc(loc('tag.template')));
                 push @new_tags, grep { not( lc($_) ~~ @template_tags ) }
                                 @{ $tmpl_page->tags };
-                my $content = $tmpl_page->content;
 
-                if ($page_type eq 'wiki' and my $variables = $self->cgi->variables) {
-                    my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
-                    my %vars;
-                    while (my ($key, $val) = each %$decoded_vars) {
-                        $vars{lc $key} = $val;
+                my $content = '';
+                if ($page_type eq 'wiki') {
+                    $content = $tmpl_page->to_wikitext;
+
+                    if (my $variables = $self->cgi->variables) {
+                        my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
+                        my %vars;
+                        while (my ($key, $val) = each %$decoded_vars) {
+                            $vars{lc $key} = $val;
+                        }
+                        $content =~ s/%%(.*?)%%/$vars{lc $1}/eg;
                     }
-                    $content =~ s/%%(.*?)%%/$vars{lc $1}/eg;
                 }
 
                 if ($page->mutable) {
