@@ -246,12 +246,13 @@ This assumes that the currently selected frame is the "parent" container frame.
 
 =cut
 
-sub st_widget_title_like {
-    my ($self, $logical, $opt1) = @_;
+sub st_widget_title {
+    my ($self, $logical, $title) = @_;
+    my $cmdx = "//div[\@class='widgetTitle']/h1[text()='" . $title . "']";
     eval {
-        $self->{selenium}->text_like_ok("//span[\@class='widgetHeaderTitleText' and \@id='gadget-".$self->{_widgets}{$logical}."-title-text']", $opt1);
+        $self->handle_command('wait_for_element_present_ok',$cmdx,'5000');
     };
-    ok( !$@, "st-widget-title-like" );
+    ok( !$@, "st-widget-title" );
 
 }
 
