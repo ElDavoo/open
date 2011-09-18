@@ -1057,6 +1057,16 @@ sub content {
     return ${$self->body_ref};
 }
 
+sub to_wikitext {
+    my $self = shift;
+    $self->content_as_type(@_, type => $WIKITEXT_TYPE)
+}
+
+sub to_xhtml {
+    my $self = shift;
+    $self->content_as_type(@_, type => $XHTML_TYPE)
+}
+
 sub content_as_type {
     my $self = shift;
     my %p    = @_;
