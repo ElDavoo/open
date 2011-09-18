@@ -186,7 +186,7 @@ sub display {
                                 @{ $tmpl_page->tags };
                 my $content = $tmpl_page->content;
 
-                if (my $variables = $self->cgi->variables) {
+                if ($page_type eq 'wiki' and my $variables = $self->cgi->variables) {
                     my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
                     my %vars;
                     while (my ($key, $val) = each %$decoded_vars) {
@@ -308,6 +308,9 @@ sub _render_display {
             new_tags                => $new_tags,
             attachments             => $attachments,
             new_attachments         => $new_attachments,
+            variables               => (Socialtext::JSON::decode_json_utf8(
+                $self->cgi->variables || '{}'
+            ) || {}),
             watching                => $self->hub->watchlist->page_watched,
             login_and_edit_path => '/challenge?'
                 . uri_escape(
