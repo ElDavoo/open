@@ -33,7 +33,7 @@
 | st-admin | add-group-admin --e %%username%% --g %%group_id%% |  |
 | open_ok | /?group/%%group_id%%/ |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Membership |
+| st-widget-title | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_visible_ok | link=%%short_username%% | 30000 |
 | wait_for_element_visible_ok | link=%%short_grp_mbr%% | 30000 |
@@ -46,7 +46,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | pause | 5000 |  |
 | st-name-widget | 3 | membership_widget |
-| st-widget-title-like | membership_widget | Members |
+| st-widget-title | membership_widget | Members |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | link=%%short_username%% | 30000 |
 | text_like | //body | %%short_username%% |
@@ -73,7 +73,7 @@
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group Confirm |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Membership |
+| st-widget-title | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_visible_ok | link=%%short_non_grp_mbr%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_user_short%% | 30000 |
@@ -86,7 +86,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | pause | 5000 |  |
 | st-name-widget | 3 | membership_widget |
-| st-widget-title-like | membership_widget | Members |
+| st-widget-title | membership_widget | Members |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | link=%%short_username%% | 30000 |
 | text_like | //body | %%short_username%% |
@@ -113,7 +113,7 @@
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. Inspect; DO NOT see changes |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Membership |
+| st-widget-title | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_visible_ok | link=%%short_non_grp_mbr%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_user_short%% | 30000 |
@@ -126,7 +126,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | pause | 5000 |  |
 | st-name-widget | 3 | membership_widget |
-| st-widget-title-like | membership_widget | Members |
+| st-widget-title | membership_widget | Members |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type_lookahead_ok | lookahead | %%email_user_prefix%% |

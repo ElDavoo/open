@@ -26,7 +26,7 @@
 | *Comment* | Test Case: Reset to Default Dashboard - Test for RSS Viewer |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 | st-name-widget | 5 | rssv |
-| st-widget-title-like | rssv | Enterprise Social Software Blog |
+| st-widget-title | rssv | Enterprise Social Software Blog |
 | text_like | Push to all dashboards |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Add Wikipedia |  |
@@ -38,7 +38,7 @@
 | *Comment* | Test Case: Reset to Default Dashboard - Test for Wikipedia |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-name-widget | 5 | wikipedia |
-| st-widget-title-like | wikipedia | Wikipedia |
+| st-widget-title | wikipedia | Wikipedia |
 | text_like | Push to all dashboards |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Save... and force update |  |
@@ -54,7 +54,7 @@
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-name-widget | 5 | wikipedia |
-| st-widget-title-like | wikipedia | Wikipedia |
+| st-widget-title | wikipedia | Wikipedia |
 | st-select-widget-frame | wikipedia |  |
 | text_unlike | //body | Push to all dashboards |
 | text_like | Wiki Search |  |

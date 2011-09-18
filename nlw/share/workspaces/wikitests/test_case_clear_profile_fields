@@ -23,7 +23,7 @@
 | *Comment* | Test Case: Clear Profile Fields. Verify old names |  |
 | open_ok | /st/profile |  |
 | st-name-widget | 1 | profile |
-| st-widget-title-like | profile | Profile |
+| st-widget-title | profile | Profile |
 | st-select-widget-frame | profile |  |
 | text_like | %%fname%% %%mname%% %%lname%% |  |
 | select-frame | relative=parent |  |
@@ -52,7 +52,7 @@
 | *Comment* | Test Case: Clear Profile Fields. Verify old names GONE |  |
 | open_ok | /st/profile |  |
 | st-name-widget | 1 | profile |
-| st-widget-title-like | profile | Profile |
+| st-widget-title | profile | Profile |
 | st-select-widget-frame | profile |  |
 | text_unlike | //body | %%fname%% %%mname%% %%lname%% |
 | text_unlike | //body | %%fname%% |

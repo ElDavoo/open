@@ -257,7 +257,7 @@
 | *Comment* | Test Case: User Likes a Page check dashboard activities widget for liking posts |  |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 4 | ticker |
-| st-widget-title-like | ticker | Activities |
+| st-widget-title | ticker | Activities |
 | st-select-widget-frame | ticker |  |
 | wait_for_text_present_ok | liked %%wiki%% in %%wiki%% | 30000 |
 | wait_for_text_present_ok | unliked %%wiki%% in %%wiki%% | 30000 |

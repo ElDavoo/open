@@ -89,7 +89,7 @@
 | open_ok | /st/group/%%group_id%% |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | st-name-widget | 5 | wiki |
-| st-widget-title-like | wiki | Wikipedia |
+| st-widget-title | wiki | Wikipedia |
 | st-select-widget-frame | wiki |  |
 | text_like | //body | Wiki Search (French) |
 | select-frame | relative=parent |  |

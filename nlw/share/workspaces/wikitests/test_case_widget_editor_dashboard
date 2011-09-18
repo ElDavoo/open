@@ -18,7 +18,7 @@
 | *Comment* | Test Case: Widget Editor Dashboard check elements |  |
 | wait_for_text_present_ok | Hello World! | 30000 |
 | st-name-widget | 2 | preview |
-| st-widget-title-like | preview | Hello World! |
+| st-widget-title | preview | Hello World! |
 | st-select-widget-frame | preview |  |
 | wait_for_text_present_ok | Hello, world! | 30000 |
 | select-frame | relative=parent |  |

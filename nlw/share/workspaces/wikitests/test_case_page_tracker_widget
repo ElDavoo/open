@@ -115,7 +115,7 @@
 | wait_for_element_visible_ok | //div[@class='regular widget'] | 30000 |
 | wait_for_text_present_ok | %%title%% | 30000 |
 | st-name-widget | 1 | tracker |
-| st-widget-title-like | tracker | %%title%% |
+| st-widget-title | tracker | %%title%% |
 | st-select-widget-frame | tracker |  |
 | wait_for_text_present_ok | %%other_note%% | 30000 |
 | wait_for_text_present_ok | %%page%% | 30000 |

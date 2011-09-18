@@ -15,7 +15,7 @@
 | *Comment* | Test Case: Active Members Empty Messages get an empty Active People widget |  |
 | st_single_widget_in_dashboard | gallery-widget-Active People |  |
 | st-name-widget | 1 | active_members |
-| st-widget-title-like | active_members | Active People |
+| st-widget-title | active_members | Active People |
 | st-widget-settings | active_members |  |
 | uncheck_ok | rotate |  |
 | click_ok | st-savebutton-%%active_members%% |  |

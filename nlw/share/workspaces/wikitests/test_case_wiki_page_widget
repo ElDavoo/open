@@ -14,7 +14,7 @@
 
 | *Comment* | Test Case: Wiki Page Widget. Load the widget |  |
 | st-name-widget | 1 | wikipage |
-| st-widget-title-like | wikipage | Wiki Page |
+| st-widget-title | wikipage | Wiki Page |
 
 | wait_for_element_visible_ok | workspace_name | 30000 |
 | wait_for_element_visible_ok | //input[contains(@name,'page_title')] | 30000 |
@@ -27,7 +27,7 @@
 | *Comment* | Test Case: Wiki Page Widget. Use the widget |  |
 | wait_for_text_present_ok | Wiki Page %%start_time%% | 30000 |
 | st-name-widget | 1 | wikipage |
-| st-widget-title-like | wikipage | Wiki Page %%start_time%% |
+| st-widget-title | wikipage | Wiki Page %%start_time%% |
 | wait_for_element_present_ok | link=Edit | 30000 |
 | wait_for_element_present_ok | link=View | 30000 |
 | wait_for_text_present_ok | I have created a page called Wiki Page %%start_time%%. w00t. | 30000 |

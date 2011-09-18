@@ -72,7 +72,7 @@
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
-| st-widget-title-like | wiki | Workspaces |
+| st-widget-title | wiki | Workspaces |
 | st-select-widget-frame | wiki |  |
 | wait_for_text_present_ok | Currently, there are no workspaces associated with this group. | 30000 |
 | text_like | qr/Use the input above to select workspaces to associate with this.+group./ |  |
@@ -133,7 +133,7 @@
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
-| st-widget-title-like | wiki | Workspaces |
+| st-widget-title | wiki | Workspaces |
 | st-select-widget-frame | wiki |  |
 | wait_for_element_visible_ok | link=%%ws11%% | 30000 |
 | wait_for_element_visible_ok | link=%%ws2%% | 30000 |
@@ -146,7 +146,7 @@
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
-| st-widget-title-like | wiki | Workspaces |
+| st-widget-title | wiki | Workspaces |
 | st-select-widget-frame | wiki |  |
 | wait_for_element_visible_ok | link=%%ws2%% | 30000 |
 | wait_for_element_not_present_ok | link=%%ws10%% | 30000 |
@@ -168,7 +168,7 @@
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
-| st-widget-title-like | wiki | Workspaces |
+| st-widget-title | wiki | Workspaces |
 | st-select-widget-frame | wiki |  |
 | wait_for_element_visible_ok | link=%%ws1%% | 30000 |
 | wait_for_element_visible_ok | link=%%ws2%% | 30000 |

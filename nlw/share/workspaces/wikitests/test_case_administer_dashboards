@@ -44,7 +44,7 @@
 | *Comment* | Test Case: Administer Dashboards - Test for RSS Viewer, then remove it |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 | st-name-widget | 5 | rssv |
-| st-widget-title-like | rssv | Enterprise Social Software Blog |
+| st-widget-title | rssv | Enterprise Social Software Blog |
 | text_like | Push to all dashboards |  |
 | wait_for_element_visible_ok | xpath=(//a[contains(@class,'close')])[5] | 30000 |
 | click_ok | xpath=(//a[contains(@class,'close')])[5] |  |
@@ -61,7 +61,7 @@
 | *Comment* | Test Case: Administer Dashboards - Test for Wikipedia |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-name-widget | 5 | wikipedia |
-| st-widget-title-like | wikipedia | Wikipedia |
+| st-widget-title | wikipedia | Wikipedia |
 | text_like | Push to all dashboards |  |
 
 | *Comment* | Test Case: Administer Dashboards - Save... and force update |  |
@@ -82,7 +82,7 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-name-widget | 5 | wikipedia |
-| st-widget-title-like | wikipedia | Wikipedia |
+| st-widget-title | wikipedia | Wikipedia |
 | st-select-widget-frame | wikipedia |  |
 | text_unlike | //body | Push to all dashboards |  |
 | text_like | Wiki Search |  |
@@ -117,13 +117,13 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 | st-name-widget | 5 | rssv |
-| st-widget-title-like | rssv | Enterprise Social Software Blog |
+| st-widget-title | rssv | Enterprise Social Software Blog |
 
 | *Comment* | Test Case: Administer Dashboards - verify no force update occurred |  |
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-name-widget | 5 | topdog |
-| st-widget-title-like | topdog | Wikipedia |
+| st-widget-title | topdog | Wikipedia |
 | st-select-widget-frame | topdog |  |
 | text_unlike | //body | Push to all dashboards |
 | text_unlike | //body | Enterprise Social Software Blog |
@@ -176,7 +176,7 @@ wait_for_element_visible_ok | link=Revert to Default... | |
 wait_for_text_not_present_ok | Wikipedia | 30000 |
 wait_for_text_not_present_ok | Enterprise Social Software Blog | 30000 |
 st-name-widget | 1 | topcat |
-st-widget-title-like | topcat | Welcome |
+st-widget-title | topcat | Welcome |
 
 | *Comment* | Test Case: Administer Dashboards TEARDOWN |  |
 | st-process-jobs |  |  |

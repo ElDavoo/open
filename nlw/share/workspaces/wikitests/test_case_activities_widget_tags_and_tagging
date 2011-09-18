@@ -55,7 +55,7 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 | open_ok | /?dashboard |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
+| st-widget-title | activities_widget | Activities |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Verify Tags in activities widget |
 

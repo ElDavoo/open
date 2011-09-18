@@ -56,7 +56,7 @@
 | wait_for_element_visible_ok | update_profile | 30000 |
 | click_and_wait | update_profile | 30000 |
 | st-name-widget | 1 | profile_widget |
-| st-widget-title-like | profile_widget | Profile |
+| st-widget-title | profile_widget | Profile |
 | st-select-widget-frame | profile_widget |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 | select-frame | relative=parent |  |

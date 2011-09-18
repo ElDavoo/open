@@ -24,7 +24,7 @@
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Make %%group_mbr%% an admin |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
@@ -43,7 +43,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | pause | 5000 |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_mbr_short%%\s+Admin/ |
 
@@ -64,7 +64,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | pause | 5000 |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
@@ -81,7 +81,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | pause | 5000 |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |

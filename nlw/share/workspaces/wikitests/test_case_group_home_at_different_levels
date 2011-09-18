@@ -56,7 +56,7 @@
 
 | open_ok | /st/group/%%self_join_grp_id%% |  |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 | text_like | //body | (private) |

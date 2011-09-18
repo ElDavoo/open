@@ -52,7 +52,7 @@
 
 | *Comment* | Test Case: Group No Change Link Self-Join group is open for editing |  |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | Change | 30000 |
 | wait_for_element_visible_ok | permission-change | 30000 |
@@ -115,7 +115,7 @@
 | open_ok | /st/edit_group/%%other_priv_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_not_present_ok | permission-change | 15000 |
 | text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
@@ -126,7 +126,7 @@
 | open_ok | /st/edit_group/%%private_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_not_present_ok | permission-change | 15000 |
 | text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
@@ -141,7 +141,7 @@
 | open_ok | /st/edit_group/%%other_priv_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 15000 |
 | text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
@@ -152,7 +152,7 @@
 | open_ok | /st/edit_group/%%private_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 15000 |
 | text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |

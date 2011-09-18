@@ -27,7 +27,7 @@
 | *Comment* | Test Case: SJ Groups UI Create New Workspace Get to Workspaces Widget |  |
 | open_ok | /?group/%%group_id%%/ |  |
 | st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
+| st-widget-title | workspaces_widget | Workspaces |
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace Is the %%test_delete_ws%% workspace there? |  |
 | st-select-widget-frame | workspaces_widget |  |
@@ -46,7 +46,7 @@
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace Get to Workspaces Widget |  |
 | st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
+| st-widget-title | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace Get to Workspaces Widget check for %%group_ws%% |  |
@@ -78,7 +78,7 @@
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace Look for Workspace name in widget |  |
 | st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
+| st-widget-title | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 
 | *Comment* | Test Case: Groups UI Create New Workspace FAILS IN IE7 due to 3540 |  |
@@ -106,7 +106,7 @@
 | open_ok | /st/edit_group/%%group_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
+| st-widget-title | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | %%delete_ws_id%% | 30000 |
 | text_like | //body | %%test_delete_ws_title%% |
@@ -121,7 +121,7 @@
 | *Comment* | Test Case: SJ Groups UI Create New Workspace Verify deleted %%test_delete_ws%% from group |  |
 | open_ok | /?group/%%group_id%%/ |  |
 | st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
+| st-widget-title | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 | text_unlike | //body | %%test_delete_ws%% |
 | text_unlike | //body | %%test_delete_ws_title%% |

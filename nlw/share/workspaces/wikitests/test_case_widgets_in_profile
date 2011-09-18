@@ -89,7 +89,7 @@
 | wait_for_text_present_ok | Wikipedia | 10000 |
 | wait_for_text_present_ok | Colleagues | 10000 |
 | st-name-widget | 4 | wiki |
-| st-widget-title-like | wiki | Wikipedia |
+| st-widget-title | wiki | Wikipedia |
 | st-select-widget-frame | wiki |  |
 | wait_for_text_present_ok | Wiki Search (French) | 10000 |
 | select-frame | relative=parent |  |

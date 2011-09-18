@@ -34,7 +34,7 @@
 
 | *Comment* | Test Case: Self Join Group - Change permission to private |  |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
@@ -78,7 +78,7 @@
 
 | *Comment* | Test Case: Self Join Group - Save Private Group |  |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | text_like | //span[@id='permission-set-loc'] | qr/private/ism |
 | text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
@@ -103,7 +103,7 @@
 | open_ok | /st/edit_group/%%second_id%% |
 
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
@@ -156,7 +156,7 @@
 | wait_for_element_visible_ok | st-leave-group | 30000 |
 
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Membership |
+| st-widget-title | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | %%user_short%% |
 | text_like | //body | %%joiner_short%% |
@@ -167,7 +167,7 @@
 | wait_for_element_visible_ok | st-join-group | 30000 |
 
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Membership |
+| st-widget-title | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | %%user_short%% |
 | text_unlike | //body | %%joiner_short%% |
@@ -185,7 +185,7 @@
 | open_ok | /st/edit_group/%%second_id%% |
 
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
