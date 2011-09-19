@@ -8,43 +8,42 @@
     <input type="hidden" name="workspace_name" value="[% target_workspace.name%]" />
   [% END %]
 
-  <div id="st-display-mode-container" class="container_12">
-    <div class="grid_4">
-      <div class="vpad5">
-        <h2><label for="username">[% username_label %]</label></h2>
-        <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus="autofocus" />
-      </div>
-      <div class="vpad5">
-        <h2><label for="password">[% loc('login.password:') %]</label></h2>
-        <input id="password" name="password" type="password" size="30" value="" />
-      </div>
+  <div class="grid_8">
+    <div class="vpad5">
+      <h2><label for="username">[% username_label %]</label></h2>
+      <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus="autofocus" />
+    </div>
+    <div class="vpad5">
+      <h2><label for="password">[% loc('login.password:') %]</label></h2>
+      <input id="password" name="password" type="password" size="30" value="" />
+    </div>
 
-      <div class="vpad5">
-        <input class="checkbox" name="remember" type="checkbox" id="remember" value="1" />
-        [% IF lite %]
-          <span class="description">
-            <label for="remember">[% loc('login.remember-me-on-this-device') %]</label>
-          </span>
-        [% ELSE %]
-          <span class="description">
-            <label for="remember">[% loc('login.remember-me') %]</label>
-          </span>
-          <a id="remember-lightbox" href="#" onclick="$.showLightbox('Checking this box will keep you logged in for up to [% remember_duration %], or until you sign out.  Un-checking this box will cause you to be automatically logged out when you close your browser.')">[?]</a>
-        [% END %]
-      </div>
-
+    <div class="vpad5">
+      <input class="checkbox" name="remember" type="checkbox" id="remember" value="1" />
       [% IF lite %]
-        <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
+        <span class="description">
+          <label for="remember">[% loc('login.remember-me-on-this-device') %]</label>
+        </span>
       [% ELSE %]
-        <input type="submit" class="hidden"/>
-        <a style="float:left" id="login_btn" class="button" href="#" onclick="document.forms['login'].submit(); return false">[% loc('login.log-in') %]</a>
-        <div class="clear"></div>
-        [% INCLUDE errors_and_messages %]
+        <span class="description">
+          <label for="remember">[% loc('login.remember-me') %]</label>
+        </span>
+        <a id="remember-lightbox" href="#" onclick="$.showLightbox('Checking this box will keep you logged in for up to [% remember_duration %], or until you sign out.  Un-checking this box will cause you to be automatically logged out when you close your browser.')">[?]</a>
       [% END %]
     </div>
 
-    <div class="grid_8">
-    </div>
+    [% IF lite %]
+      <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
+    [% ELSE %]
+      <input type="submit" class="hidden"/>
+      <a style="float:left" id="login_btn" class="button" href="#" onclick="document.forms['login'].submit(); return false">[% loc('login.log-in') %]</a>
+      <div class="clear"></div>
+      [% INCLUDE errors_and_messages %]
+    [% END %]
   </div>
+
+  <div class="grid_16">
+  </div>
+  <div class="clear vpad10"></div>
 </form>
 [% END %]
