@@ -3,14 +3,12 @@
         [% IF entry.data %]
             [% IF entry.data.size %]
                 [%- FOR item = entry.data -%]
-                    <div class="navListItem [% IF item.default %]default[% END %]">
-                        <a [% IF entry.defaultId AND item.default %] id="[% entry.defaultId %]"[% END %]href="[% entry.href(item) %]">
-                            [%- IF entry.exists('icon') -%]
-                                <img src="[% entry.icon(item) %]"/>
-                            [%- END -%]
-                            [%- entry.title(item) | label_ellipsis(25) | html_encode %][% IF item.default %] ([% loc("nav.default") %])[% END -%]
-                        </a>
-                    </div>
+                    [%- IF entry.exists('icon') -%]
+                        <div class="grid_1 alpha"><img src="[% entry.icon(item) %]"/></div>
+                        <div class="grid_2 omega">[% INCLUDE navListLink %]</div>
+                    [%- ELSE -%]
+                        <div>[% INCLUDE navListLink %]</div>
+                    [%- END -%]
                 [%- END -%]
             [% ELSE %]
                 <div class="navListItem emptynotice">[% entry.emptyMessage %]</div>
@@ -28,3 +26,9 @@
         [% END %]
     [%- END -%]
 </div>
+
+[% BLOCK navListLink %]
+    <a [% IF entry.defaultId AND item.default %] id="[% entry.defaultId %]"[% END %]href="[% entry.href(item) %]">
+        [%- entry.title(item) | label_ellipsis(20) | html_encode %][% IF item.default %] ([% loc("nav.default") %])[% END -%]
+    </a>
+[% END %]
