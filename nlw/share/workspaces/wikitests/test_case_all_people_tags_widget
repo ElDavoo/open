@@ -3,6 +3,7 @@
 | *Comment* | Test Case: All People Tags Widget. Create the widget |  |
 | st-single-widget-in-dashboard | gallery-widget-All People Tags |  |
 
+
 | *Comment* | Test Case: All People Tags Widget. Configure the widget for 10 |  |
 | st-name-widget | 1 | apt |
 | st-widget-title | apt | All People Tags |

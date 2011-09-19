@@ -3,7 +3,8 @@
 * Fixture: SocialWidgets
 
 | st-single-widget-in-dashboard | gallery-widget-ToDo |  |
-| text_like | contentWrapper | ToDo |
-| text_like | contentWrapper | New task |
+| st-widget-title | none | ToDo |
+| select_frame_ok | //iframe |  |
+| wait_for_text_present_ok | New task | 5000 |
 
 | *Comment* | Test Case: ToDo Widget COMPLETED |  |
