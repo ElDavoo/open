@@ -19,7 +19,6 @@ gadgets.container.bindButtons = function() {
         return false;
     });
     $('#st-cancel-layout').click(function() {
-        self._in_edit_mode = false;
         gadgets.container.loadLayout(gadgets.container.base_url, function() {
             gadgets.container.leaveEditMode();
         });

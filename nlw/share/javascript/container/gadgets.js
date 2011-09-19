@@ -41,7 +41,7 @@ container.setup = function(options) {
     this.updateIframeNames();
     this.registerServices();
     this.fixGadgetTitles();
-    this.showNotice();
+    this.showNotice(false);
 }
 
 container.updateIframeNames = function() {
@@ -700,7 +700,12 @@ container.showNotice = function(editing) {
         st: st,
         editing: editing
     });
-    $('.notice').html(html).show();
+    if (html.match(/\S/)) {
+        $('.notice').html(html).show();
+    }
+    else {
+        $('.notice').hide();
+    }
 }
 
 container.enterEditMode = function() {
