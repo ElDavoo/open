@@ -1,0 +1,19 @@
+<div id="confirm-dialog">
+
+<div id="delete-group-lightbox">
+
+    <br/>
+
+    <p>[% loc('groups.delete=name', group_name) %]</p>
+
+    <p>[% loc('groups.confirm-delete?') %]</p>
+
+    <p>[% loc("groups.delete-is-final") %]</p>
+
+    <span class="error"></span>
+
+    <div class="buttons vpad20">
+        <a href="#" class="button delete">[% loc('do.delete') %]</a>
+        <a href="#" class="button cancel">[% loc('do.close') %]</a>
+    </div>
+</div>

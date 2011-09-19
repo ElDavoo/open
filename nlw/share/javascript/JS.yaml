@@ -114,6 +114,8 @@
         - control-create-workspace
         - control-create-group
         - groups-leave
+        - groups-create
+        - groups-delete
 'shindig-container-%.js':
     compress: 1
     parts:

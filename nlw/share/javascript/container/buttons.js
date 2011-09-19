@@ -1,6 +1,10 @@
 gadgets.container.bindButtons = function() {
 
-    // Most Containers - Gallery
+    /**
+     * Most Containers
+     */
+
+    // gallery
     $('#st-add-widget').click(function() {
         socialtext.dialog.show('opensocial-gallery', {
             view: gadgets.container.view,
@@ -9,7 +13,7 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
-    // Most Containers - Layouts
+    // layouts
     $('#st-edit-layout').click(function() {
         gadgets.container.enterEditMode();
         return false;
@@ -29,14 +33,18 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
-    // Group Container - Edit Group
+    /**
+     * Group Container
+     */
+
+    // edit
     if (gadgets.container.group) {
         $('#st-edit-group').attr(
             'href', '/st/edit_group/' + gadgets.container.group.id
         );
     }
 
-    // Group Container - Leave Group
+    // leave
     $('#st-leave-group').click(function() {
         socialtext.dialog.show('groups-leave', {
             onConfirm: function() { leave('/st/dashboard') }
@@ -44,10 +52,42 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
-    // People Container - Edit Profile
+    // join XXX
+
+    /**
+     * Edit Group Container
+     */
+    
+    // delete
+    $('#st-delete-group').click(function() {
+        socialtext.dialog.show('groups-delete', {
+            group_id: gadgets.container.group.id,
+            group_name: gadgets.container.group.name
+        });
+        return false;
+    });
+
+    // Create/Save
+    $('#create-group').click(function() {
+        socialtext.dialog.show('groups-create', { });
+        return false;
+    });
+
+    // Cancel
+    $('#st-cancel-create-group').attr('href',
+        gadgets.container.group
+            ? '/st/group/' + gadgets.container.group.id
+            : '/st/dashboard'
+    );
+
+    /**
+     * Profile Container
+     */
+
+    // edit
     $('#st-edit-profile').attr('href', '/st/edit_profile');
 
-    // People Container - Watch / UnWatch
+    // follow / unfollow
     var $indicator = $('#st-watchperson-indicator');
     if ($indicator.size()) {
         function updateNetworksWidget() {
