@@ -54,15 +54,14 @@ table
 /* CSS Style Reset End
 
 body
-  text-align: center
-  font-family: Verdana, Arial, sans-serif
-  font-size: 10px
+  font-size: 11px
+  font-family: $body_font
+  color: #333
 
 td, li
 
 a
-  color: #0e93d8
-  font-size: 10px
+  color: $primary_color
   &:hover
     text-decoration: none
 
@@ -268,6 +267,7 @@ div
 /* tag widget End
 
 .tablib_selected, .tablib_unselected
+  color: $primary_color
   -moz-border-radius-topright: 5px
   -webkit-border-top-right-radius: 5px
   -moz-border-radius-topleft: 5px
@@ -279,7 +279,7 @@ div
   .value
     white-space: nowrap
   .fakeLink
-    color: #0e93d8
+    color: $primary_color
     text-decoration: underline
     z-index: 1000
   select
