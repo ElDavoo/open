@@ -32,7 +32,7 @@ socialtext.dialog.register('control-create-group', function(opts) {
                     args.ldap_dn = dialog.find('select[name=ldap_group]').val();
                 }
                 else {
-                    args.permission_set = dialog.find('input[name=permission_set]').val();
+                    args.permission_set = dialog.find('input[name=permission_set]:checked').val();
                     args.name = dialog.find('input[name=name]').val();
                 }
 
