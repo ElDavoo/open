@@ -11852,7 +11852,7 @@ msgstr "向下"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2527
 msgid "sc.edit-more"
-msgstr "編輯更多"
+msgstr "繼續編輯"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:254
 msgid "sc.edit-revision"

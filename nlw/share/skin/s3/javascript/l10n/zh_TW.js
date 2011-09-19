@@ -1835,7 +1835,7 @@
 "sc.delete-row":"\u522a\u9664\u884c",
 "sc.description":"\u63cf\u8ff0",
 "sc.down":"\u5411\u4e0b",
-"sc.edit-more":"\u7de8\u8f2f\u66f4\u591a",
+"sc.edit-more":"\u7e7c\u7e8c\u7de8\u8f2f",
 "sc.edit-revision":"\u7de8\u8f2f\u4fee\u6539",
 "sc.edit-this-revision-instead":"\u7de8\u8f2f\u672c\u6b21\u4fee\u8a02\uff0c\u800c\u4e0d\u662f\u76ee\u524d\u7de8\u8f2f\u5668\u7684\u5167\u5bb9",
 "sc.editing:":"\u7de8\u8f2f\uff1a",
