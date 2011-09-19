@@ -2,14 +2,17 @@
     [%- FOR entry = entries -%]
         [% IF entry.data %]
             [% IF entry.data.size %]
+                <div class="navListItems">
                 [%- FOR item = entry.data -%]
                     [%- IF entry.exists('icon') -%]
                         <div class="grid_1 alpha"><img src="[% entry.icon(item) %]"/></div>
                         <div class="grid_2 omega">[% INCLUDE navListLink %]</div>
+                        <div class="clear vpad3"></div>
                     [%- ELSE -%]
                         <div>[% INCLUDE navListLink %]</div>
                     [%- END -%]
                 [%- END -%]
+                </div>
             [% ELSE %]
                 <div class="navListItem emptynotice">[% entry.emptyMessage %]</div>
             [% END %]
@@ -29,6 +32,6 @@
 
 [% BLOCK navListLink %]
     <a [% IF entry.defaultId AND item.default %] id="[% entry.defaultId %]"[% END %]href="[% entry.href(item) %]">
-        [%- entry.title(item) | label_ellipsis(20) | html_encode %][% IF item.default %] ([% loc("nav.default") %])[% END -%]
+        [%- entry.title(item) | label_ellipsis(25) | html_encode %][% IF item.default %] ([% loc("nav.default") %])[% END -%]
     </a>
 [% END %]

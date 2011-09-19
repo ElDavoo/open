@@ -75,19 +75,21 @@ a
     position: absolute
     top: 42px
     left: 0
-    width: 112px // XXX Based on fixed grids
     padding: 3px
     color: #ccc
     display: none
     z-index: 1000
-    overflow-y: auto
-    overflow-x: hidden
     -webkit-overflow-scrolling: touch
     margin: 0
     border-left: 2px solid #000
     border-right: 2px solid #000
     border-bottom: 2px solid #000
     background: url(#{$static}/images/background.png)
+    .navListItems
+      height: 300px
+      min-height: 300px
+      overflow-y: auto
+      overflow-x: hidden
   &:hover, &.hover
     .navList
       display: block
