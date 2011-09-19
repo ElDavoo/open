@@ -71,14 +71,6 @@ div#contentColumns div#contentLeft .wiki h3 {
   font-size: 1.4em;
   margin-bottom: 0.5em; }
 
-.wiki p {
-  margin-bottom: 1.2em !important;
-  margin-top: 0 !important; }
-
-.xhtml p {
-  margin-bottom: 0.6em !important;
-  margin-top: 0 !important; }
-
 .wiki h4, .xhtml h4 {
   font-size: 1.2em;
   margin-bottom: 0.5em; }
@@ -91,13 +83,16 @@ div#contentColumns div#contentLeft .wiki h3 {
   font-weight: bold; }
 .wiki h1 img, .wiki h2 img, .wiki h3 img, .wiki h4 img, .wiki h5 img, .wiki h6 img, .xhtml h1 img, .xhtml h2 img, .xhtml h3 img, .xhtml h4 img, .xhtml h5 img, .xhtml h6 img {
   margin: 0; }
-  .wiki h1 img img.left, .wiki h2 img img.left, .wiki h3 img img.left, .wiki h4 img img.left, .wiki h5 img img.left, .wiki h6 img img.left, .xhtml h1 img img.left, .xhtml h2 img img.left, .xhtml h3 img img.left, .xhtml h4 img img.left, .xhtml h5 img img.left, .xhtml h6 img img.left {
+.wiki p, .xhtml p {
+  margin-bottom: 1.2em !important;
+  margin-top: 0 !important; }
+  .wiki p img.left, .xhtml p img.left {
     padding: 0;
     border: 1px #999999 solid;
     margin: 1.5em;
     float: left;
     margin: 1.5em 1.5em 1.5em 0; }
-  .wiki h1 img img.right, .wiki h2 img img.right, .wiki h3 img img.right, .wiki h4 img img.right, .wiki h5 img img.right, .wiki h6 img img.right, .xhtml h1 img img.right, .xhtml h2 img img.right, .xhtml h3 img img.right, .xhtml h4 img img.right, .xhtml h5 img img.right, .xhtml h6 img img.right {
+  .wiki p img.right, .xhtml p img.right {
     float: right;
     margin: 1.5em 0 1.5em 1.5em; }
 .wiki span.nlw_phrase img, .xhtml span.nlw_phrase img {
