@@ -15,7 +15,7 @@
         <div class="type">[% signal_class %]</div>
     [%- END -%]
 </div>
-<div class="grid_minus_1 omega">
+<div class="grid_minus_2 omega">
     [%- try_include("activities/event/${event.event_class}.tt2",
                     "Unknown event class: ${event.event_class}") -%]
 
@@ -27,6 +27,10 @@
             </div>
         </div>
     [% END %]
+</div>
+<div class="grid_1 omega">
+    [%- try_include("activities/event/${event.event_class}.icons.tt2",
+                    "Unknown event class: ${event.event_class}.icons") -%]
 </div>
 
 [% IF event.signal_id %]
