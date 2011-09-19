@@ -36,6 +36,14 @@ gadgets.container.bindButtons = function() {
         );
     }
 
+    // Group Container - Leave Group
+    $('#st-leave-group').click(function() {
+        socialtext.dialog.show('groups-leave', {
+            onConfirm: function() { leave('/st/dashboard') }
+        });
+        return false;
+    });
+
     // People Container - Edit Profile
     $('#st-edit-profile').attr('href', '/st/edit_profile');
 
