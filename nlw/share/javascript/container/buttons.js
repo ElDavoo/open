@@ -1,4 +1,6 @@
 gadgets.container.bindButtons = function() {
+
+    // Most Containers - Gallery
     $('#st-add-widget').click(function() {
         socialtext.dialog.show('opensocial-gallery', {
             view: gadgets.container.view,
@@ -7,13 +9,11 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
+    // Most Containers - Layouts
     $('#st-edit-layout').click(function() {
         gadgets.container.enterEditMode();
         return false;
     });
-
-    $('#st-edit-profile').attr('href', '/st/edit_profile');
-
     $('#st-save-layout').click(function() {
         socialtext.dialog.show('save-layout');
         return false;
@@ -30,6 +30,17 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
+    // Group Container - Edit Group
+    if (gadgets.container.group) {
+        $('#st-edit-group').attr(
+            'href', '/st/edit_group/' + gadgets.container.group.id
+        );
+    }
+
+    // People Container - Edit Profile
+    $('#st-edit-profile').attr('href', '/st/edit_profile');
+
+    // People Container - Watch / UnWatch
     var $indicator = $('#st-watchperson-indicator');
     if ($indicator.size()) {
         function updateNetworksWidget() {
