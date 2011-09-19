@@ -53,14 +53,10 @@ div#contentColumns div#contentLeft .wiki p {
 html .wiki a:hover, html .xhtml a:hover {
   color: #33a8ff; }
 
-.xhtml h1, .xhtml h2, .xhtml h3, .xhtml h4, .xhtml h5, .xhtml h6 {
+.wiki h1, .wiki h2, .wiki h3, .wiki h4, .wiki h5, .wiki h6, .xhtml h1, .xhtml h2, .xhtml h3, .xhtml h4, .xhtml h5, .xhtml h6 {
   font-weight: normal;
   color: #0a94df;
-  line-height: 1.2 !important;
-  margin-top: 0.5em; }
-.xhtml h1, .xhtml h2, .xhtml h3 {
-  margin-bottom: 0.5em; }
-
+  line-height: 1.2 !important; }
 .wiki h1, .xhtml h1 {
   font-size: 2em; }
 .wiki h2, .xhtml h2 {
@@ -68,16 +64,13 @@ html .wiki a:hover, html .xhtml a:hover {
 .wiki h3, .xhtml h3 {
   font-size: 1.4em; }
 
-.wiki h1, .wiki h2, .wiki h3, .wiki h4, .wiki h5, .wiki h6 {
-  font-weight: normal;
-  color: #0a94df;
-  line-height: 1.2 !important; }
-.wiki h1 {
+.xhtml h1, .xhtml h2, .xhtml h3 {
+  margin-bottom: 0.5em; }
+
+.wiki h1, .wiki h3 {
   margin-bottom: 0.5em; }
 .wiki h2 {
   margin-bottom: 0.75em; }
-.wiki h3 {
-  margin-bottom: 0.5em; }
 
 div#contentColumns div#contentLeft .wiki h3 {
   font-size: 1.4em;
