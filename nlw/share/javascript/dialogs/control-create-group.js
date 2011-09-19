@@ -28,15 +28,14 @@ socialtext.dialog.register('control-create-group', function(opts) {
             try {
                 var on = dialog.find('input[name=driver_class]:checked');
 
-                if (on.val() == 'Default') {
+                if (on && on.val() == 'LDAP') {
+                    args.ldap_dn = dialog.find('select[name=ldap_group]').val();
+                }
+                else {
                     args.permission_set = dialog.find('input[name=permission_set]').val();
                     args.name = dialog.find('input[name=name]').val();
                 }
-                else {
-                    args.ldap_dn = dialog.find('select[name=ldap_group]').val();
-                }
 
-                console.log(args);
                 Socialtext.Group.Create(args, function(group) {
                     if (group.errors) {
                         dialog.enable();
