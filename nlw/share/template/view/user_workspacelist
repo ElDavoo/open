@@ -3,15 +3,7 @@
 [% USE decorate %]
 [% WRAPPER $frame_name id="listPage" %]
   [% INCLUDE element/listview_tabs %]
-  <div id="controls">
-    <div id="st-editing-tools-edit">
-    </div><!-- controlsLeft END -->
-    <div id="controlsRight">
-    </div><!-- controlsRight END -->
-  </div><!-- controls END -->
-  <div id="contentContainer" class="container_24">
-  <div class="grid_1 alpha omega">
-  <div class="grid_23">
+  <div class="grid_23 prefix_1">
     <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
     <table class="dataTable workspacelist">
       <tr>
@@ -29,7 +21,7 @@
         </tr>
       [% END %]
     </table><!-- dataTable END -->
-    </div>
-  </div><!-- contentContainer -->
+  </div>
+  <div class="clear vpad10"></div>
 [% END %]
 
