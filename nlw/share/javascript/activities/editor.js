@@ -956,9 +956,7 @@ $.extend(Activities.Editor.prototype, {
 
     showUploadAttachmentUI: function() {
         var self = this;
-        socialtext.dialog.show('activities', {
-            template: 'activitiesAddAttachment',
-            title: loc('Add Attachment'),
+        socialtext.dialog.show('activities-add-attachment', {
             callback: function(filename, result) {
                 self.addAttachment(filename, result.id);
             }
@@ -987,8 +985,7 @@ $.extend(Activities.Editor.prototype, {
         
         var wikiwyg = self.wikiwyg.current_mode;
 
-        socialtext.dialog.show('activities-link', {
-            title: loc('link.add'),
+        socialtext.dialog.show('activities-add-link', {
             params: defaults,
             selectionText: wikiwyg.get_selection_text(),
             callback: function(dialog, args) {
@@ -1150,9 +1147,7 @@ $.extend(Activities.Editor.prototype, {
 
         var wikiwyg = self.wikiwyg.current_mode;
 
-        socialtext.dialog.show('activities', {
-            template: 'activitiesAddVideo',
-            title: loc('Add Video'),
+        socialtext.dialog.show('activities-add-video', {
             params: {
                 video_url: url,
                 video_title: title

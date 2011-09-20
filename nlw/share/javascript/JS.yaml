@@ -109,8 +109,10 @@
         - confirm
         - save-layout
         - simple
-        - activities
-        - activities-link
+        - activities-add-attachment
+        - activities-add-video
+        - activities-add-link
+        - activities-show-video
         - control-create-workspace
         - control-create-group
         - groups-leave

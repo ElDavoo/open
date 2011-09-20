@@ -805,13 +805,9 @@ $.extend(Activities.EventList.prototype, {
 
     showLightbox: function($a) {
         var self = this;
-        if ($('#lightbox').is(':visible')) return;
-
         var url = $a.attr('href');
         var $video = $a.find('img.video');
-
-        socialtext.dialog.show('activities', {
-            template: 'activitiesShow',
+        socialtext.dialog.show('activities-show-video', {
             title: $video.attr('title') || loc('Attachment'),
             params: {
                 url: $a.attr('href'),

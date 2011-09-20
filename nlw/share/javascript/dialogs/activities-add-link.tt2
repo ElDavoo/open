@@ -70,12 +70,6 @@
     %]
 
     <div id="add-a-link-error" class="error"></div>
-    <div class="right pad20">
-
-    <div class="right pad20">
-        <input type="submit" class="hidden"/>
-        <a class="button submit" href="#">[% loc('do.ok') %]</a>
-    </div>
-
+    <input type="submit" class="hidden"/>
     </form>
 </div>
