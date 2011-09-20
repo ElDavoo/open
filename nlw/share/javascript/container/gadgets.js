@@ -661,13 +661,11 @@ container.fix = function (id) {
         success: function (url) {
             if (fixed) {
                 jQuery('#gadget-'+id+' img.icon').show();
-                $widget.addClass('regular').removeClass('tan');
                 $li.addClass('draggable').removeClass('fixed');
                 $button.addClass('unfixed').removeClass('fixed');
             }
             else {
                 jQuery('#gadget-'+id+' img.icon').hide();
-                $widget.addClass('tan').removeClass('regular');
                 $li.addClass('fixed').removeClass('draggable');
                 $button.addClass('fixed').removeClass('unfixed');
             }
@@ -677,15 +675,15 @@ container.fix = function (id) {
 };
 
 container.makeEditable = function($widget) {
-    $widget.find('img.icon, .widgetHeaderButtons').show();
-    $widget.find('.minimize').hide();
-    $widget.addClass('regular').removeClass('tan');
-    $widget.parent().addClass('draggable').removeClass('fixed');
+    if (!$widget.hasClass('cannot_move')) {
+        $widget.find('img.icon, .widgetHeaderButtons').show();
+        $widget.find('.minimize').hide();
+        $widget.parent().addClass('draggable').removeClass('fixed');
+    }
 };
 
 container.makeUneditable = function($widget) {
     $widget.find('img.icon, .widgetHeaderButtons').hide();
-    $widget.addClass('tan').removeClass('regular');
     $widget.parent().addClass('fixed').removeClass('draggable');
     $widget.find('.preferences').hide();
     $widget.find('.gadgetContent').show();
@@ -716,7 +714,9 @@ container.enterEditMode = function() {
 
     // Make widgets editable
     $('.widgetHeader .settings, .widgetHeader .close').show();
-    $('.widgetColumn').children().removeClass('fixed').addClass('draggable');
+    $('.widgetColumn')
+        .children('.widget:not(.cannot_move)')
+        .removeClass('fixed').addClass('draggable');
 
     // Show edit mode buttons
     $('#globalNav .viewMode').hide();

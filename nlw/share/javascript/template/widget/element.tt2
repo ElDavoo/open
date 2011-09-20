@@ -1,4 +1,4 @@
-<div id="gadget-[% gadget.instance_id %]" class="widget [% gadget.fixed ? "fixed" : "draggable" %]">
+<div id="gadget-[% gadget.instance_id %]" class="widget[% gadget.classes.cannot_move ? ' cannot_move' : '' %][% gadget.fixed ? " fixed" : " draggable" %]">
     <input type="hidden" name="instance_id" value="[% gadget.instance_id %]"/>
     <input type="hidden" name="gadget_id" value="[% gadget.gadget_id %]"/>
 
@@ -11,7 +11,9 @@
             [% UNLESS gadget.classes.cannot_remove %]
                 <a class="close" [% IF gadget.fixed %]style="display:none"[% END %] href="#" onclick="gadgets.container.remove('[% gadget.instance_id %]'); return false"></a>
             [% END %]
-            <a class="settings" [% UNLESS gadget.has_prefs AND !gadget.fixed %]style="display:none"[% END %] href="#" id="gadget-[% gadget.instance_id %]-settings" onclick="gadgets.container.toggleSetup('[% gadget.instance_id %]'); return false"></a>
+            [% IF gadget.has_prefs %]
+                <a class="settings" [% IF gadget.fixed %]style="display:none"[% END %] href="#" id="gadget-[% gadget.instance_id %]-settings" onclick="gadgets.container.toggleSetup('[% gadget.instance_id %]'); return false"></a>
+            [% END %]
             <a class="hidden fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.instance_id %]'); return false"></a>
         </div>
     </div>
