@@ -34,11 +34,6 @@
             <div class="clear vpad5"></div>
         [% END %]
 
-        <div class="buttons right vpad20">
-            <span class="error"></span>
-            <a href="#" id="st-add-widget" class="submit button">
-              [% gadget_id ? loc('widgets.about-update') : loc('widgets.add') %]
-            </a>
-        </div>
+        <span class="error"></span>
     </form>
 </div>

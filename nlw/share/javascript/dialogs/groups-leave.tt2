@@ -1,14 +1,8 @@
 <div id="leave-group-dialog">
-
     [% IF selfJoin %]
         <div>[% loc("Are you sure you'd like to leave this group?") %]</div>
     [% ELSE %]
         <div>[% loc('groups.confirm-leave?') %]</div>
     [% END %]
     <div class="error" id="group-error"></div>
-
-    <div class="buttons vpad20">
-        <a href="#" id="st-lightbox-leave-group" class="leave button">[% loc('do.leave') %]</a>
-        <a href="#" class="cancel button" id="st-lightbox-cancel-leave-group">[% loc('do.cancel') %]</a>
-    </div>
 </div>

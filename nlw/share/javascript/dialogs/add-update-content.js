@@ -3,20 +3,36 @@
 var addContent = {
     opts: {},
     show: function (opts) {
-        this.opts = opts;
-        this.dialog = socialtext.dialog.createDialog({
+        var self = this;
+        self.opts = opts;
+        self.dialog = socialtext.dialog.createDialog({
             html: socialtext.dialog.process('add-update-content.tt2', {
-                update: this.opts.gadget_id ? true : false,
-                gadget_id: this.opts.gadget_id,
-                src: /^urn:/.test(this.opts.src) ? null : this.opts.src,
-                hasXML: this.opts.hasXML
+                update: self.opts.gadget_id ? true : false,
+                gadget_id: self.opts.gadget_id,
+                src: /^urn:/.test(self.opts.src) ? null : self.opts.src,
+                hasXML: self.opts.hasXML
             }),
-            title: this.opts.gadget_id
+            title: self.opts.gadget_id
                 ? loc('widgets.update-widget')
                 : loc('widgets.add-widget'),
+            buttons: [
+                {
+                    name: self.opts.gadget_id
+                        ? loc('widgets.about-update')
+                        : loc('widgets.add'),
+                    id: 'st-add-widget',
+                    callback: function() {
+                        self.dialog.find('form').submit();
+                    }
+                },
+                {
+                    name: loc('do.cancel'),
+                    callback: function() { self.dialog.close() }
+                }
+            ]
         });
-        this.setup();
-        return this.dialog;
+        self.setup();
+        return self.dialog;
     },
 
     setup: function () {
@@ -40,11 +56,6 @@ var addContent = {
                 window.location = url;
                 return false;
             }
-        });
-
-        self.dialog.find('.submit').click(function() {
-            self.dialog.find('form').submit();
-            return false;
         });
     },
 
