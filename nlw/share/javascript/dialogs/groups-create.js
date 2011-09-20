@@ -1,32 +1,33 @@
 (function ($) {
 
 socialtext.dialog.register('groups-create', function(opts) {
-    var buttons = {};
-
-    buttons[ loc('groups.next-step') ] = function() {
-        var type = dialog.find('input[name=new-group-type]:checked').val(); 
-        if ($.isFunction(opts.onChange)) {
-            opts.onChange(type);
-            dialog.close();
-        }
-        else {
-            document.location='/st/create_group?type=' + type;
-        }
-    };
-
-    buttons[ loc('do.cancel') ] = function() {
-        dialog.close();
-    };
-
     var dialog = socialtext.dialog.createDialog({
-        buttons: buttons,
         html: Jemplate.process('groups-create.tt2', {
-            permission_set: opts ? opts.permission_set : undefined,
+            permission_set: opts ? opts.permission_set : '',
             loc: loc
         }),
         title: opts && opts.permission_set
             ? loc('groups.change-type')
-            : loc('groups.create')
+            : loc('groups.create'),
+        buttons: [
+            {
+                name: loc('groups.next-step'),
+                callback: function() {
+                    var type = dialog.find('input[name=new-group-type]:checked').val(); 
+                    if ($.isFunction(opts.onChange)) {
+                        opts.onChange(type);
+                        dialog.close();
+                    }
+                    else {
+                        document.location='/st/create_group?type=' + type;
+                    }
+                }
+            },
+            {
+                name: loc('do.cancel'),
+                callback: function() { dialog.close() }
+            }
+        ]
     });
 
     dialog.find('.lookahead input').lookahead({
