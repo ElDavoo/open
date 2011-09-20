@@ -28,9 +28,8 @@
         <td class="numeric">[% workspace.group_count %]</td>
         </tr>
       [% END %]
-    </table>
+    </table><!-- dataTable END -->
     </div>
-  </div>
-  <div class="clear"></div>
+  </div><!-- contentContainer -->
 [% END %]
 
