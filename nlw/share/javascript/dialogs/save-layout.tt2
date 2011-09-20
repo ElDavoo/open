@@ -18,17 +18,16 @@
             </div>
         </div>
     [% END %]
-    <div class="vpad10">
-        <a href="#" id="st-save-widget-template" class="save button">[% loc('do.save') %]</a>
-        <a href="#" class="cancel button">[% loc('do.cancel') %]</a>
-    </div>
     [% IF type == 'account_dashboard' %]
         <div class="vpad10">
-          <label><input id="force-update" type="checkbox"/>
-          [% loc('dashboard.force-update') %]</label>
-          <div class="bigHint">
-            [% loc("info.dashboard-force-update") %]
+          <div class="checkbox"><input id="force-update" type="checkbox"/></div>
+          <div class="checkboxDesc">
+            <label>[% loc('dashboard.force-update') %]</label>
+            <div class="hint">
+              [% loc("info.dashboard-force-update") %]
+            </div>
           </div>
+          <div class="clear"></div>
         </div>
     [% END %]
 </div>

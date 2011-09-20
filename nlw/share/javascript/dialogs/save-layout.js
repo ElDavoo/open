@@ -13,31 +13,32 @@ socialtext.dialog.register('save-layout', function() {
         html: socialtext.dialog.process('save-layout.tt2', {
             gadget_titles: pushGadgetTitles,
             type: gadgets.container.type,
-        })
-    });
+        }),
+        buttons: [
+            {
+                name: loc('do.save'),
+                id: 'st-save-widget-template',
+                callback: function() {
+                    var force = dialog.find('#force-update').is(':checked');
+                    var push_widgets = !force && pushGadgetIds.length;
 
-    dialog.find('.cancel').click(function() {
-        dialog.close();
-        return false;
-    });
-
-    dialog.find('.save').click(function () {
-        var force = dialog.find('#force-update').is(':checked');
-        var push_widgets = !force && pushGadgetIds.length;
-
-        gadgets.container.saveAdminLayout({
-            push: push_widgets,
-            purge: force,
-            success: function() {
-                dialog.close();
-                gadgets.container.leaveEditMode();
+                    gadgets.container.saveAdminLayout({
+                        push: push_widgets,
+                        purge: force,
+                        success: function() {
+                            dialog.close();
+                            gadgets.container.leaveEditMode();
+                        }
+                    });
+                }
+            },
+            {
+                name: loc('do.cancel'),
+                callback: function() {
+                    dialog.close();
+                }
             }
-        });
-
-        // Error handling???
-        // loc('error.dashboard-push-widget'),
-        // loc('error.dashboard-reset'),
-        return false;
+        ]
     });
 });
 
