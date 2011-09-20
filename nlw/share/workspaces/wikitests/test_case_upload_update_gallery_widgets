@@ -92,6 +92,7 @@
 | click_and_pause | //a[contains(@id,'gallery-widget-Cheeky')] | 5000 |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | open_ok | /st/dashboard |  |
+| st-name-widget | 5 | cheeky_quote | Cheeky Quotes |
 | st-widget-title | cheeky_quote | Cheeky Quotes |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets add a Boss Spy to the dashboard |  |
@@ -101,6 +102,7 @@
 | click_and_pause | //a[@id='gallery-widget-Boss Spy'] | 5000 |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | open_ok | /st/dashboard |  |
+| st-name-widget | 5 | cheeky_quote | boss_spy |
 | st-widget-title | boss_spy | Boss Spy |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets TEARDOWN |  |
