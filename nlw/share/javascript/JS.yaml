@@ -117,6 +117,7 @@
         - control-create-group
         - groups-leave
         - groups-create
+        - groups-create-workspace
         - groups-delete
         - groups-save
 'shindig-container-%.js':
