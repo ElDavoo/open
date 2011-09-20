@@ -7,14 +7,14 @@ socialtext.dialog.register('activities-add-video', function(opts) {
         params: opts.params,
         buttons: [
             {
-                name: loc('do.ok'),
-                callback: function() {
+                text: loc('do.ok'),
+                click: function() {
                     dialog.find('form').submit();
                 }
             },
             {
-                name: loc('do.cancel'),
-                callback: function() {
+                text: loc('do.cancel'),
+                click: function() {
                     dialog.close();
                 }
             }

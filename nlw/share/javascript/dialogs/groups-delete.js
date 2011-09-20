@@ -6,8 +6,8 @@ socialtext.dialog.register('groups-delete', function(opts) {
         title: loc('groups.delete=name', opts.group_name),
         buttons: [
             {
-                name: loc('do.delete'),
-                callback: function() {
+                text: loc('do.delete'),
+                click: function() {
                     dialog.disable();
                     var group = new Socialtext.Group({
                         group_id: opts.group_id
@@ -25,8 +25,8 @@ socialtext.dialog.register('groups-delete', function(opts) {
                 }
             },
             {
-                name: loc('do.cancel'),
-                callback: function() {
+                text: loc('do.cancel'),
+                click: function() {
                     dialog.close();
                 }
             }

@@ -17,17 +17,17 @@ var addContent = {
                 : loc('widgets.add-widget'),
             buttons: [
                 {
-                    name: self.opts.gadget_id
+                    text: self.opts.gadget_id
                         ? loc('widgets.about-update')
                         : loc('widgets.add'),
                     id: 'st-add-widget',
-                    callback: function() {
+                    click: function() {
                         self.dialog.find('form').submit();
                     }
                 },
                 {
-                    name: loc('do.cancel'),
-                    callback: function() { self.dialog.close() }
+                    text: loc('do.cancel'),
+                    click: function() { self.dialog.close() }
                 }
             ]
         });

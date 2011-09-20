@@ -8,9 +8,9 @@ socialtext.dialog.register('groups-leave', function(opts) {
         title: loc('groups.leave'),
         buttons: [
             {
-                name: loc('do.leave'),
+                text: loc('do.leave'),
                 id: 'st-lightbox-leave-group',
-                callback: function() {
+                click: function() {
                     dialog.disable();
 
                     var group = new Socialtext.Group({
@@ -36,9 +36,9 @@ socialtext.dialog.register('groups-leave', function(opts) {
                 }
             },
             {
-                name: loc('do.cancel'),
+                text: loc('do.cancel'),
                 id: 'st-lightbox-cancel-leave-group',
-                callback: function() {
+                click: function() {
                     dialog.close();
                 }
             }

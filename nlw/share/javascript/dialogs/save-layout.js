@@ -16,9 +16,9 @@ socialtext.dialog.register('save-layout', function() {
         }),
         buttons: [
             {
-                name: loc('do.save'),
+                text: loc('do.save'),
                 id: 'st-save-widget-template',
-                callback: function() {
+                click: function() {
                     var force = dialog.find('#force-update').is(':checked');
                     var push_widgets = !force && pushGadgetIds.length;
 
@@ -33,8 +33,8 @@ socialtext.dialog.register('save-layout', function() {
                 }
             },
             {
-                name: loc('do.cancel'),
-                callback: function() {
+                text: loc('do.cancel'),
+                click: function() {
                     dialog.close();
                 }
             }

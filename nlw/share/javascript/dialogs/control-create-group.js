@@ -14,15 +14,15 @@ socialtext.dialog.register('control-create-group', function(opts) {
             title: loc('control.create-a-group'),
             buttons: [
                 {
-                    name: loc('do.create'),
+                    text: loc('do.create'),
                     id: 'st-group-create-submit',
-                    callback: function() {
+                    click: function() {
                         dialog.find('#createGroup').submit();
                     }
                 },
                 {
-                    name: loc('do.cancel'),
-                    callback: function() {
+                    text: loc('do.cancel'),
+                    click: function() {
                         if ($.isFunction(opts.onClose)) opts.onClose();
                         dialog.close()
                     }

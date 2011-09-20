@@ -8,12 +8,12 @@ socialtext.dialog.register('activities-add-link', function(opts) {
         params: opts.params,
         buttons: [
             {
-                name: loc('do.ok'),
-                callback: function() { dialog.find('form').submit() }
+                text: loc('do.ok'),
+                click: function() { dialog.find('form').submit() }
             },
             {
-                name: loc('do.cancel'),
-                callback: function() { dialog.close() }
+                text: loc('do.cancel'),
+                click: function() { dialog.close() }
             }
         ]
     });

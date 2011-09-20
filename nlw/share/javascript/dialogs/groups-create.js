@@ -11,8 +11,8 @@ socialtext.dialog.register('groups-create', function(opts) {
             : loc('groups.create'),
         buttons: [
             {
-                name: loc('groups.next-step'),
-                callback: function() {
+                text: loc('groups.next-step'),
+                click: function() {
                     var type = dialog.find('input[name=new-group-type]:checked').val(); 
                     if ($.isFunction(opts.onChange)) {
                         opts.onChange(type);
@@ -24,8 +24,8 @@ socialtext.dialog.register('groups-create', function(opts) {
                 }
             },
             {
-                name: loc('do.cancel'),
-                callback: function() { dialog.close() }
+                text: loc('do.cancel'),
+                click: function() { dialog.close() }
             }
         ]
     });

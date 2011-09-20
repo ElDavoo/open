@@ -7,15 +7,15 @@ socialtext.dialog.register('control-create-workspace', function(opts) {
         height: 175,
         buttons: [
             {
-                name: loc('do.next'),
+                text: loc('do.next'),
                 id: 'new-workspace-next',
-                callback: function() {
+                click: function() {
                     dialog.find('form').submit();
                 }
             },
             {
-                name: loc('do.cancel'),
-                callback: function() {
+                text: loc('do.cancel'),
+                click: function() {
                     if ($.isFunction(opts.onClose)) opts.onClose();
                     dialog.close();
                 }
