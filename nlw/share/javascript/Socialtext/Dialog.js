@@ -20,15 +20,6 @@ socialtext.dialog = (function($) {
             self.node = opts.content
                 ? $(content)
                 : $('<div></div>').html(opts.html);
-                
-            // convert buttons to a hash
-            if (opts.buttons) {
-                var buttonHash = {};
-                $.each(opts.buttons, function(_, button) {
-                    buttonHash[button.name] = button.callback;
-                });
-                opts.buttons = buttonHash
-            }
 
             self.node.dialog($.extend({
                 width: 520,
