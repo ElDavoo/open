@@ -3,12 +3,24 @@
 socialtext.dialog.register('control-create-workspace', function(opts) {
     var dialog = socialtext.dialog.createDialog({
         html: socialtext.dialog.process('control-create-workspace.tt2', opts),
-        title: loc('control.create-new-wiki')
-    });
-    dialog.find('.close').click(function() {
-        if ($.isFunction(opts.onClose)) opts.onClose();
-        dialog.close();
-        return false;
+        title: loc('control.create-new-wiki'),
+        height: 175,
+        buttons: [
+            {
+                name: loc('do.next'),
+                id: 'new-workspace-next',
+                callback: function() {
+                    dialog.find('form').submit();
+                }
+            },
+            {
+                name: loc('do.cancel'),
+                callback: function() {
+                    if ($.isFunction(opts.onClose)) opts.onClose();
+                    dialog.close();
+                }
+            }
+        ]
     });
 
     dialog.find('#create-workspace').submit(function() {

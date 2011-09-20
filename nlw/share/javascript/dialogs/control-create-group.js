@@ -11,13 +11,23 @@ socialtext.dialog.register('control-create-group', function(opts) {
 
         var dialog = socialtext.dialog.createDialog({
             html: socialtext.dialog.process('control-create-group.tt2', opts),
-            title: loc('control.create-a-group')
-        });
-
-        dialog.find('.close').click(function() {
-            if ($.isFunction(opts.onClose)) opts.onClose();
-            dialog.close();
-            return false;
+            title: loc('control.create-a-group'),
+            buttons: [
+                {
+                    name: loc('do.create'),
+                    id: 'st-group-create-submit',
+                    callback: function() {
+                        dialog.find('#createGroup').submit();
+                    }
+                },
+                {
+                    name: loc('do.cancel'),
+                    callback: function() {
+                        if ($.isFunction(opts.onClose)) opts.onClose();
+                        dialog.close()
+                    }
+                }
+            ]
         });
 
         dialog.find('#createGroup').submit(function() {

@@ -38,12 +38,6 @@
           [% loc('control.about-wiki-id') %]
       </div>
     </div>
-
-    <div class="buttons">
-      <input type="submit" name="submit"
-             id="new-workspace-next" value="[% loc('do.next') %]"/>
-      <input type="button" id="new-workspace-cancel"
-             class="close" value="[% loc('do.cancel') %]"/>
-    </div>
+    <input type="submit" class="hidden"/>
   </form>
 </div>

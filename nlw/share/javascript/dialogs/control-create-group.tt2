@@ -76,9 +76,5 @@
         </tr>
     [% END %]
     </table>
-    <div class="buttons">
-        <input id="st-group-create-submit"
-               type="submit" value="[% loc('do.create') %]"/>
-        <input type="button" class="close" value="[% loc('do.cancel') %]"/>
-    </div>
+    <input type="submit" class="hidden"/>
 </form>
