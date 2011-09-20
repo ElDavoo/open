@@ -43,27 +43,23 @@
 | st-logoutin | %%ndd_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Fill in your | 10000 |
-| is_element_present_ok | contentWrapper | link=%%central_page%% |
-| st-name-widget | 1 | newbie |
-| st-widget-title | newbie | I'm new. What do I do? |
-| st-name-widget | 3 | news |
+| is_element_present_ok | content | link=%%central_page%% |
+| is_text_present_ok | I'm new. What do I do? |
 | st-widget-title | news | News and Announcements |
 | wait_for_element_visible_ok | link=Creating Your Socialtext Solution | 30000 |
 
 | *Comment* | Test Case: New Default Dashboard check for page locking in central workspace |  |
 | st-admin | add-workspace-admin --workspace %%central%% --email %%ndd_user%% | has the role |
-| open_ok | /%%central%%/?action=workspaces_permissions |  |
-| wait_for_element_visible_ok | settings-lock-pages | 30000 |
-| is_checked_ok | settings-lock-pages |  |
+| call | [st-spaces-accordion] | index=1 | section=Features |
+| wait_for_element_visible_ok | //input[@name="workspace.setting.allows_page_locking" | 5000 |
+| is_checked_ok | //input[@name="workspace.setting.allows_page_locking" |  |
 
 | *Comment* | Test Case: New Default Dashboard login to old account as new member, create central wiki |  |
 | st-logoutin | %%new_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Fill in your | 10000 |
-| is_element_present_ok | contentWrapper | link=%%old_acct_page%% |
-| st-name-widget | 1 | newbie |
-| st-widget-title | newbie | I'm new. What do I do? |
-| st-name-widget | 3 | news |
+| is_element_present_ok | content | link=%%old_acct_page%% |
+| is_text_present_ok | I'm new. What do I do? |
 | st-widget-title | news | News and Announcements |
 | wait_for_element_visible_ok | link=Creating Your Socialtext Solution | 30000 |
 
@@ -76,52 +72,10 @@
 | open_ok | /%%old_acct%%-central |  |
 | wait_for_text_present_ok | %%old_acct_name%% Central | 30000 |
 
-| *Comment* | Test Case: New Default Dashboard login as new member, change default dashboard |  |
-| st-logoutin | %%new_user%% | %%password%% |
-| open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
-| click_and_wait | link=Administer Dashboards |  |
-| wait_for_text_present_ok | This is the default dashboard | 30000 |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
-| wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
-| click_and_wait | gallery-widget-Active Content |  |
-| wait_for_element_visible_ok | dashboard-save-layout | 30000 |
-| click_ok | dashboard-save-layout |  |
-| wait_for_element_visible_ok | st-save-widget-template | 30000 |
-| click_ok | st-save-widget-template |  |
-| wait_for_element_visible_ok | link=Close | 30000 |
-| click_and_wait | link=Close |  |
-
-| *Comment* | Test Case: New Default Dashboard login as newer member, see new dashboard |  |
-| st-logoutin | %%newer_user%% | %%password%% |
-| open_ok | /st/dashboard |  |
-| st-name-widget | 5 | new |
-| st-widget-title | new | Active Content |
-
-| *Comment* | Test Case: New Default Dashboard revert to default dashboard |  |
-| st-logoutin | %%new_user%% | %%password%% |
-| open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
-| click_and_wait | link=Administer Dashboards |  |
-| wait_for_text_present_ok | This is the default dashboard | 30000 |
-| wait_for_element_visible_ok | dashboard-revert-layout | 30000 |
-| click_ok | dashboard-revert-layout |  |
-| wait_for_element_visible_ok | dashboard-revert-yes | 30000 |
-| pause | 5000 |  |
-| click_and_wait | dashboard-revert-yes |  |
-| wait_for_element_visible_ok | dashboard-save-layout | 30000 |
-| click_ok | dashboard-save-layout |  |
-| wait_for_element_visible_ok | st-save-widget-template | 30000 |
-| click_ok | st-save-widget-template |  |
-| wait_for_element_visible_ok | link=Close | 30000 |
-| click_and_wait | link=Close |  |
-
 | *Comment* | Test Case: New Default Dashboard login as newest user, see default dashboard |  |
 | st-logoutin | %%newest_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| st-name-widget | 1 | original |
-| st-widget-title | original | I'm new. What do I do? |
+| is_text_present_ok | I'm new. What do I do? |
 
 | *Comment* | Test Case: New Default Dashboard login as old member, still see old dashboard |  |
 | st-logoutin | %%old_user%% | %%old_pass%% |
