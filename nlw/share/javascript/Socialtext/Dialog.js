@@ -15,16 +15,26 @@ socialtext.dialog = (function($) {
     Dialog.prototype = {
         show: function(opts) {
             var self = this;
+            // content
             var opts = typeof(opts) == 'string' ? { html: opts } : opts;
             self.node = opts.content
                 ? $(content)
                 : $('<div></div>').html(opts.html);
+                
+            // convert buttons to a hash
+            if (opts.buttons) {
+                var buttonHash = {};
+                $.each(opts.buttons, function(_, button) {
+                    buttonHash[button.name] = button.callback;
+                });
+                opts.buttons = buttonHash
+            }
+
             self.node.dialog($.extend({
                 width: 520,
                 modal: true,
                 close: function() { self.close() }
             }, opts));
-            if ($.isFunction(opts.callback)) opts.callback();
         },
         close: function() {
             this.node.find('iframe').attr('src', '/static/html/blank.html');
