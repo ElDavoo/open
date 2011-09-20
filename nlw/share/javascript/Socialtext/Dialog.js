@@ -72,10 +72,17 @@ socialtext.dialog = (function($) {
             }
             else {
                 loaded[name] = true;
-                var uri = nlw_make_js_path('dialog-' + name + '.js' + _gz);
                 $.ajaxSettings.cache = true;
-                $.getScript(uri, function() {
-                    self.callDialog(name, args);
+                $.ajax({
+                    url: st.nlw_make_js_path('dialog-' + name + '.js' + _gz),
+                    dataType: 'script',
+                    success: function() {
+                        console.log('success');
+                        self.callDialog(name, args)
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        throw errorThrown;
+                    }
                 });
                 $.ajaxSettings.cache = false;
             }
