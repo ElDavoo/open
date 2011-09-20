@@ -806,25 +806,19 @@ jQuery(function() {
 });
 
 // Add some global rpc handlers
-gadgets.rpc.register('showLightbox', function(vars) {
-    $.showLightbox(vars);
-    return $('#lightbox');
-});
+var dialog;
 
-gadgets.rpc.register('createPluginLightbox', function(vars) {
-    get_plugin_lightbox(vars.plugin, vars.template, function () {
-        var lb = eval(vars.constructor);
-        vars.callback(lb);
-    });
-}
-);
+gadgets.rpc.register('showDialog', function(vars) {
+    dialog = socialtext.dialog.show(vars.name, vars);
+    return dialog;
+});
 
 gadgets.rpc.register('hideLightbox', function() {
-    $.hideLightbox();
+    if (dialog) dialog.close();
 });
 gadgets.rpc.register('pauseLightbox', function() {
-    $.pauseLightbox();
+    if (dialog) dialog.disable();
 });
 gadgets.rpc.register('resumeLightbox', function() {
-    $.resumeLightbox();
+    if (dialog) dialog.enable();
 });

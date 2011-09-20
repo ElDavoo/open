@@ -69,7 +69,7 @@ gadgets.container.bindButtons = function() {
 
     // Create/Save
     $('#create-group').click(function() {
-        socialtext.dialog.show('groups-create', { });
+        socialtext.dialog.show('groups-save', { });
         return false;
     });
 

@@ -116,6 +116,7 @@
         - groups-leave
         - groups-create
         - groups-delete
+        - groups-save
 'shindig-container-%.js':
     compress: 1
     parts:
