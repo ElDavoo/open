@@ -1,0 +1,10 @@
+@mixin opacity($percent)
+  filter: alpha(opacity = $percent) // IE
+  opacity: ($percent / 100)
+
+@mixin gradient($from, $to)
+  background-color: $from
+  background: -webkit-gradient(linear, 0% 40%, 0% 70%, from($from), to($to))
+  background: -moz-linear-gradient(top,  $from,  $to)
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$from}, endColorstr=#{$to})
+
