@@ -142,20 +142,21 @@ var button_handler = {
  
 Socialtext.prototype.buttons = {
     show: function(buttons) {
+        if (!buttons) return;
         $.each(buttons, function(_, b) {
             var button_id = b[0]
             var button_text = b[1]
             var button_class = b[2]
 
-            var handler = button_handler[button_id];
-            if (!handler) throw new Error('No handler for ' + button_id);
             $('<button/>')
                 .addClass(button_class)
                 .attr('id', button_id)
                 .button({
                     label: button_text,
                 })
-                .click(handler)
+                .click(button_handler[button_id] || function() {
+                    throw new Error(button_id + ' has no handler');
+                })
                 .appendTo('#globalNav .buttons');
         });
     }
