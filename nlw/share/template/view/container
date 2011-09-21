@@ -38,8 +38,6 @@
             [% json.replace('</script>', '</scr" + "ipt>') %]
         );
     [% END %]
-
-    gadgets.container.bindButtons();
 </script>
 
 [% END %]

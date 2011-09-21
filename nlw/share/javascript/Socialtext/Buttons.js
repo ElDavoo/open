@@ -1,23 +1,19 @@
-gadgets.container.bindButtons = function() {
-    /**
-     * Most Containers
-     */
+(function($) {
 
+var button_handler = {
     // gallery
-    $('#st-add-widget').click(function() {
+    'st-add-widget': function() {
         socialtext.dialog.show('opensocial-gallery', {
             view: gadgets.container.view,
             account_id: gadgets.container.viewer.primary_account_id || 0
         });
-        return false;
-    });
+    },
 
     // layouts
-    $('#st-edit-layout').click(function() {
+    'st-edit-layout':  function() {
         gadgets.container.enterEditMode();
-        return false;
-    });
-    $('#st-save-layout').click(function() {
+    },
+    'st-save-layout': function() {
         if (gadgets.container.type == 'account_dashboard') {
             // Show a confirmation dialog
             socialtext.dialog.show('save-layout');
@@ -30,40 +26,35 @@ gadgets.container.bindButtons = function() {
                 }
             });
         }
-        return false;
-    });
-    $('#st-cancel-layout').click(function() {
-        gadgets.container.loadLayout(gadgets.container.base_url, function() {
-            gadgets.container.leaveEditMode();
-        });
-        return false;
-    });
-    $('#st-revert-layout').click(function() {
+    },
+    'st-cancel-layout': function() {
+        gadgets.container.loadLayout(
+            gadgets.container.base_url,
+            function() { gadgets.container.leaveEditMode() }
+        );
+    },
+    'st-revert-layout': function() {
         gadgets.container.loadDefaults();
-        return false;
-    });
+    },
 
     /**
      * Group Container
      */
 
     // edit
-    if (gadgets.container.group) {
-        $('#st-edit-group').attr(
-            'href', '/st/edit_group/' + gadgets.container.group.id
-        );
-    }
+    'st-edit-group': function() {
+        location = '/st/edit_group/' + gadgets.container.group.id;
+    },
 
     // leave
-    $('#st-leave-group').click(function() {
+    'st-leave-group': function() {
         socialtext.dialog.show('groups-leave', {
             onConfirm: function() { leave('/st/dashboard') }
         });
-        return false;
-    });
+    },
 
     // join
-    $('#st-join-group').click(function() {
+    'st-join-group': function() {
         var group = new Socialtext.Group({
             group_id: gadgets.container.group.id,
             permission_set: gadgets.container.group.permission_set
@@ -75,48 +66,50 @@ gadgets.container.bindButtons = function() {
         group.addMembers(group_data, function(data) {
             if (data.errors) {
                 socialtext.dialog.showError(data.errors[0]);
-                return false;
             }
-            window.location =
-                '/st/group/' + gadgets.container.group.id + '?_=self-joined';
+            else {
+                window.location = '/st/group/'
+                    + gadgets.container.group.id + '?_=self-joined';
+            }
         });
-        return false;
-    });
+    },
 
     /**
      * Edit Group Container
      */
     
     // delete
-    $('#st-delete-group').click(function() {
+    'st-delete-group': function() {
         socialtext.dialog.show('groups-delete', {
             group_id: gadgets.container.group.id,
             group_name: gadgets.container.group.name
         });
-        return false;
-    });
+    },
 
     // Create/Save
-    $('#create-group').click(function() {
+    'create-group': function() {
         socialtext.dialog.show('groups-save', { });
-        return false;
-    });
+    },
 
     // Cancel
-    $('#st-cancel-create-group').attr('href',
-        gadgets.container.group
+    'st-cancel-create-group': function() {
+        window.location = gadgets.container.group
             ? '/st/group/' + gadgets.container.group.id
-            : '/st/dashboard'
-    );
+            : '/st/dashboard';
+    },
 
     /**
      * Profile Container
      */
 
     // edit
-    $('#st-edit-profile').attr('href', '/st/edit_profile');
+    'st-edit-profile': function() {
+        window.location = '/st/edit_profile';
+    }
+}
 
     // follow / unfollow
+/*
     var $indicator = $('#st-watchperson-indicator');
     if ($indicator.size()) {
         function updateNetworksWidget() {
@@ -136,4 +129,26 @@ gadgets.container.bindButtons = function() {
             person.createFollowLink($indicator);
         });
     }
-};
+*/
+ 
+Socialtext.prototype.buttons = {
+    show: function(buttons) {
+        $.each(buttons, function(_, b) {
+            var button_id = b[0]
+            var button_text = b[1]
+            var button_class = b[2]
+
+            var handler = button_handler[button_id];
+            if (!handler) throw new Error('No handler for ' + button_id);
+            $('<button/>')
+                .addClass(button_class)
+                .button({
+                    label: button_text,
+                })
+                .click(handler)
+                .appendTo('#globalNav .buttons');
+        });
+    }
+}
+
+})(jQuery);

@@ -130,4 +130,9 @@ nlw_make_static_path = function(rest) { return st.nlw_make_static_path(rest) }
 nlw_make_js_path = function(file) { return st.nlw_make_js_path(file) }
 nlw_make_plugin_path = function(rest) { return st.nlw_make_plugin_path(rest) }
 
+// Handy stuff
+$('input.initial').live('click', function() {
+  $(this).removeClass('initial').val('');
+});
+
 })(jQuery);

@@ -32,7 +32,7 @@
         - {jemplate_runtime: jquery}
         - JemplatePlugin/*.js
         - Socialtext.js
-        - Socialtext/UI.js
+        - Socialtext/Buttons.js
         - Socialtext/Dialog.js
         - Socialtext/Search.js
         - socialtext-container.js
@@ -68,7 +68,6 @@
         - shindig-inline.js
         - container/top_content.js
         - container/inline.js
-        - container/buttons.js
 
 'socialtext-activities.js':
     parts:
