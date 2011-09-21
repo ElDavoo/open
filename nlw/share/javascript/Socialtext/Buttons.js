@@ -47,6 +47,15 @@ var button_handler = {
     },
 
     /**
+     * Group Directory
+     */
+
+    // create group
+    'st-create-group': function() {
+        socialtext.dialog.show('groups-create');
+    },
+
+    /**
      * Group Container
      */
 
