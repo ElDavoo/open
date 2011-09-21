@@ -163,16 +163,18 @@ Socialtext.prototype.buttons = {
         }
 
         var $indicator = $('#st-watchperson-indicator');
-        var person = new Person({
-            id: gadgets.container.owner.user_id,
-            best_full_name: gadgets.container.owner.name,
-            self: false,
-            onFollow: updateNetworksWidget,
-            onStopFollowing: updateNetworksWidget
-        });
-        person.loadWatchlist(function() {
-            person.createFollowLink($indicator);
-        });
+        if ($indicator.size()) {
+            var person = new Person({
+                id: gadgets.container.owner.user_id,
+                best_full_name: gadgets.container.owner.name,
+                self: false,
+                onFollow: updateNetworksWidget,
+                onStopFollowing: updateNetworksWidget
+            });
+            person.loadWatchlist(function() {
+                person.createFollowLink($indicator);
+            });
+        }
     }
 }
 
