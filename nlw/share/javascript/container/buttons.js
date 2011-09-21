@@ -1,5 +1,4 @@
 gadgets.container.bindButtons = function() {
-
     /**
      * Most Containers
      */
@@ -63,7 +62,26 @@ gadgets.container.bindButtons = function() {
         return false;
     });
 
-    // join XXX
+    // join
+    $('#st-join-group').click(function() {
+        var group = new Socialtext.Group({
+            group_id: gadgets.container.group.id,
+            permission_set: gadgets.container.group.permission_set
+        });
+
+        var group_data = {
+            users: [ {user_id: st.viewer.user_id} ]
+        };
+        group.addMembers(group_data, function(data) {
+            if (data.errors) {
+                socialtext.dialog.showError(data.errors[0]);
+                return false;
+            }
+            window.location =
+                '/st/group/' + gadgets.container.group.id + '?_=self-joined';
+        });
+        return false;
+    });
 
     /**
      * Edit Group Container
