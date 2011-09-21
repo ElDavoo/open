@@ -14,7 +14,7 @@ socialtext.dialog.register('groups-create', function(opts) {
                 text: loc('groups.next-step'),
                 click: function() {
                     var type = dialog.find('input[name=new-group-type]:checked').val(); 
-                    if ($.isFunction(opts.onChange)) {
+                    if (opts && $.isFunction(opts.onChange)) {
                         opts.onChange(type);
                         dialog.close();
                     }
