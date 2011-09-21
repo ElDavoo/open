@@ -68,7 +68,6 @@ socialtext.dialog = (function($) {
                     url: st.nlw_make_js_path('dialog-' + name + '.js' + _gz),
                     dataType: 'script',
                     success: function() {
-                        console.log('success');
                         self.callDialog(name, args)
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
