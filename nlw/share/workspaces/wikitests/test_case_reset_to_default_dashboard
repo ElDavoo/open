@@ -16,23 +16,23 @@
 | st-admin | give-accounts-admin --e %%mwgmail%% --account "%%acct%%" | now has accounts admin access |
 | st-logoutin | %%mwgmail%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
-| click_and_wait | link=Administer Dashboards |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| wait_for_element_visible_ok | st-admin-dashboard | 5000 |
+| click_and_wait | st-admin-dashboard |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Add RSS Viewer |  |
-| wait_for_element_visible_ok | link=Edit Layout | 10000 |
-| click_ok | link=Edit Layout |  |
-| wait_for_element_visible_ok | link=Add Widget | 5000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-edit-layout | 10000 |
+| click_ok | st-edit-layout |  |
+| wait_for_element_visible_ok | st-add-widget | 5000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-RSS Viewer'] | 10000 |
 | click_ok | //a[@id='gallery-widget-RSS Viewer'] |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Test for RSS Viewer |  |
 | wait_for_text_present_ok | %%rss_header_text%% | 10000 |
 | st-widget-title | rssv | %%rss_header_text%% |
-| wait_for_element_visible_ok | //a[contains(text(),'Save')] | 5000 |
-| click_ok | //a[contains(text(),'Save')] |  |
+| wait_for_element_visible_ok | st-save-layout | 5000 |
+| click_ok | st-save-layout |  |
 | wait_for_text_present_ok | Save Confirmation | 10000 |
 | wait_for_text_present_ok | Force update this dashboard | 5000 |
 | wait_for_element_visible_ok | st-save-widget-template | 10000 |
@@ -43,21 +43,21 @@
 
 | *Comment* | Test Case: Reset to Default Dashboard - Add Wikipedia |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
-| click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Edit Layout | 10000 |
-| click_ok | link=Edit Layout |  |
-| wait_for_element_visible_ok | link=Add Widget | 10000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| wait_for_element_visible_ok | st-admin-dashboard | 5000 |
+| click_and_wait | st-admin-dashboard |  |
+| wait_for_element_visible_ok | st-edit-layout | 10000 |
+| click_ok | st-edit-layout |  |
+| wait_for_element_visible_ok | st-add-widget | 10000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 10000 |
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Test for Wikipedia |  |
 | wait_for_text_present_ok | Wikipedia | 10000 |
 | st-widget-title | wikipedia | Wikipedia |
-| wait_for_element_visible_ok | //a[contains(text(),'Save')] |  |
-| click_ok | //a[contains(text(),'Save')] |  |
+| wait_for_element_visible_ok | st-save-layout |  |
+| click_ok | st-save-layout |  |
 | wait_for_text_present_ok | Force update this dashboard | 5000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Save... and force update |  |
@@ -88,27 +88,27 @@
 | *Comment* | Test Case: Reset to Default Dashboard Revert to Default... |  |
 | st-admin | give-accounts-admin --e %%mwgmail%%-2 --account "%%acct%%" | now has accounts admin access |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
-| click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Edit Layout | 5000 |
-| click_ok | link=Edit Layout |  |
-| wait_for_element_visible_ok | //a[contains(text(),'Revert to Default')] |  |
-| click_ok | //a[contains(text(),'Revert to Default')] |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| wait_for_element_visible_ok | st-admin-dashboard | 5000 |
+| click_and_wait | st-admin-dashboard |  |
+| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| click_ok | st-edit-layout |  |
+| wait_for_element_visible_ok | st-revert-layout |  |
+| click_ok | st-revert-layout |  |
 | wait_for_text_not_present_ok | Wikipedia | 30000 |
 | wait_for_text_not_present_ok | %%rss_header_text%% | 5000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard Revert to Default... and force update |  |
-| wait_for_element_visible_ok | //a[contains(text(),'Save')] |  |
-| click_ok | //a[contains(text(),'Save')] |  |
+| wait_for_element_visible_ok | st-save-layout |  |
+| click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-save-widget-template | 10000 |
 | click_and_pause | st-save-widget-template | 2000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard Wikipedia and RSS are gone |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
-| click_and_wait | link=Administer Dashboards |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| wait_for_element_visible_ok | st-admin-dashboard | 5000 |
+| click_and_wait | st-admin-dashboard |  |
 | wait_for_text_not_present_ok | Wikipedia | 5000 |
 | wait_for_text_not_present_ok | %%rss_header_text%% | 5000 |
 
