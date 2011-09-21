@@ -36,6 +36,7 @@
         - Socialtext/Dialog.js
         - Socialtext/Search.js
         - socialtext-container.js
+        - bubble.js
         - like-indicator.js
         - pageview.js
         - nav-list.js

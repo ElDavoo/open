@@ -185,7 +185,7 @@ LikeIndicator.prototype = {
         switch(this.display) {
             case 'light-count':
             case 'count':
-                return this.count || '';
+                return '(' + this.count + ')';
             case 'light-button':
             case 'button':
                 return loc(

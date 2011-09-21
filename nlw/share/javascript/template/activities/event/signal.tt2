@@ -14,9 +14,8 @@
 [% END %]
 
 [% BLOCK signal_actions %]
-<div class="actions">
-    <a href="#" class="hideLink">[% loc('signals.delete') %]</a>
-</div>
+<a href="#" class="hideLink">[% loc('signals.delete') %]</a>
+<div class="like-signal right"></div>
 [% END %]
 
 [% BLOCK like_body %]
