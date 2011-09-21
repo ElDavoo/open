@@ -68,13 +68,6 @@
 
     $('#global-people-directory').peopleNavList();
 
-    function showCreateGroupLightbox() {
-      get_plugin_lightbox('groups', 'create-group', function () {
-          var lb = new CreateGroupLightbox();
-          lb.show();
-      });
-  
-    }
     $("#global-groups-directory").navList([
       { title: loc("groups.directory"), href: "/st/groups" },
       {
@@ -89,7 +82,7 @@
       [%- IF can_create_groups -%]
       ,{
         title: loc("groups.create-group"),
-        onclick: "showCreateGroupLightbox(); return false;"
+        onclick: "socialtext.dialog.show('groups-create'); return false;"
       }
       [%- END -%]
     ]);

@@ -288,6 +288,12 @@ method global_template_vars {
         $thunker->(is_workspace_admin => sub {
                 $hub->checker->check_permission('admin_workspace') ? 1 : 0 }),
         $thunker->(js_bootstrap => sub { $->js_bootstrap }),
+        $thunker->(can_create_groups => sub {
+            !$->user_info->{is_guest} &&
+                Socialtext::Group->User_can_create_group(
+                    $->hub->current_user
+                ) ? 1 : 0
+        }),
 
         $hub->pluggable->hooked_template_vars,
     );

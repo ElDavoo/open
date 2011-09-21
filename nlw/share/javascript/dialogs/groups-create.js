@@ -30,7 +30,7 @@ socialtext.dialog.register('groups-create', function(opts) {
         ]
     });
 
-    dialog.find('.lookahead input').lookahead({
+    dialog.find('.lookahead input').blur().lookahead({
         clearOnHide: true,
         requireMatch: true,
         filterType: 'solr',
