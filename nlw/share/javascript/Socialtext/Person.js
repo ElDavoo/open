@@ -32,7 +32,7 @@ Person.prototype = {
 
     updateFollowLink: function() {
         var linkText = this.linkText();
-        this.node.text(linkText).attr('title', linkText);
+        this.node.button('option', 'label', linkText).attr('title', linkText);
         if (this.isFollowing()) {
             this.node.addClass('following');
         }
@@ -52,6 +52,7 @@ Person.prototype = {
             var link_text = this.linkText();
             this.node = $indicator
                 .addClass('followPersonButton')
+                .unbind('click')
                 .click(function(){ 
                     self.isFollowing() ? self.stopFollowing() : self.follow();
                     return false;

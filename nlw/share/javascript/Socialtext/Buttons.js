@@ -115,40 +115,22 @@ var button_handler = {
     'st-edit-profile': function() {
         window.location = '/st/edit_profile';
     }
-}
+};
 
+var button_setup = {
     // follow / unfollow
-/*
-    var $indicator = $('#st-watchperson-indicator');
-    if ($indicator.size()) {
-        function updateNetworksWidget() {
-            try {
-                gadgets.rpc.call('..', 'pubsub', null, 'publish', 'update');
-            } catch (e) {}
-        }
-
-        var person = new Person({
-            id: gadgets.container.owner.user_id,
-            best_full_name: gadgets.container.owner.name,
-            self: false,
-            onFollow: updateNetworksWidget,
-            onStopFollowing: updateNetworksWidget
-        });
-        person.loadWatchlist(function() {
-            person.createFollowLink($indicator);
-        });
-    }
-*/
+};
  
 Socialtext.prototype.buttons = {
     show: function(buttons) {
+        var self = this;
         if (!buttons) return;
         $.each(buttons, function(_, b) {
             var button_id = b[0]
             var button_text = b[1]
             var button_class = b[2]
 
-            $('<button/>')
+            var $button = $('<button/>')
                 .addClass(button_class)
                 .attr('id', button_id)
                 .button({
@@ -158,6 +140,29 @@ Socialtext.prototype.buttons = {
                     throw new Error(button_id + ' has no handler');
                 })
                 .appendTo('#globalNav .buttons');
+        });
+
+        // Deferr some setup stuff until we're ready
+        $(function() { self.setup() });
+    },
+
+    setup: function() {
+        function updateNetworksWidget() {
+            try {
+                gadgets.rpc.call('..', 'pubsub', null, 'publish', 'update');
+            } catch (e) {}
+        }
+
+        var $indicator = $('#st-watchperson-indicator');
+        var person = new Person({
+            id: gadgets.container.owner.user_id,
+            best_full_name: gadgets.container.owner.name,
+            self: false,
+            onFollow: updateNetworksWidget,
+            onStopFollowing: updateNetworksWidget
+        });
+        person.loadWatchlist(function() {
+            person.createFollowLink($indicator);
         });
     }
 }
