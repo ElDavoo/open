@@ -1,11 +1,6 @@
 <div id="save-lightbox">
     <div class="vpad5">
-        [% IF type == 'account_dashboard';
-            loc('info.dashboard-save-layout');
-           ELSE; 
-            loc('Click Save below to save this layout.');
-           END;
-        %]
+        [% loc('info.dashboard-save-layout') %]
     </div>
     [% IF gadget_titles.size -%]
         <div class="vpad5">
@@ -18,16 +13,14 @@
             </div>
         </div>
     [% END %]
-    [% IF type == 'account_dashboard' %]
-        <div class="vpad10">
-          <div class="checkbox"><input id="force-update" type="checkbox"/></div>
-          <div class="checkboxDesc">
-            <label>[% loc('dashboard.force-update') %]</label>
-            <div class="hint">
-              [% loc("info.dashboard-force-update") %]
-            </div>
-          </div>
-          <div class="clear"></div>
+    <div class="vpad10">
+      <div class="checkbox"><input id="force-update" type="checkbox"/></div>
+      <div class="checkboxDesc">
+        <label>[% loc('dashboard.force-update') %]</label>
+        <div class="hint">
+          [% loc("info.dashboard-force-update") %]
         </div>
-    [% END %]
+      </div>
+      <div class="clear"></div>
+    </div>
 </div>

@@ -19,7 +19,18 @@ gadgets.container.bindButtons = function() {
         return false;
     });
     $('#st-save-layout').click(function() {
-        socialtext.dialog.show('save-layout');
+        if (gadgets.container.type == 'account_dashboard') {
+            // Show a confirmation dialog
+            socialtext.dialog.show('save-layout');
+        }
+        else {
+            // Just save
+            gadgets.container.saveAdminLayout({
+                success: function() {
+                    gadgets.container.leaveEditMode();
+                }
+            });
+        }
         return false;
     });
     $('#st-cancel-layout').click(function() {
