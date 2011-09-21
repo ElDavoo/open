@@ -155,7 +155,7 @@ sub GET_default_gadgets {
     my @gadgets;
     my $instance_id = 1;
     my @cols;
-    for my $gadget_info (reverse $self->container->default_gadgets) {
+    for my $gadget_info ($self->container->default_gadgets) {
         $cols[$gadget_info->{col}] ||= 0;
         my $row = $cols[$gadget_info->{col}]++;
 
