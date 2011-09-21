@@ -35,7 +35,7 @@
 
 [% IF event.signal_id %]
     <div class="replies">
-        <div class="alpha omega prefix_1 grid_minus_1 older">[% INCLUDE older_replies %]</div>
+        <div class="alpha omega prefix_1 suffix_1 grid_minus_2 older">[% INCLUDE older_replies %]</div>
 
         <div class="clear"></div>
 
