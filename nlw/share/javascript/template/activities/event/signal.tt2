@@ -4,12 +4,19 @@
 [% CASE 'signal' %]
     [% INCLUDE signal_body %]
     [% INCLUDE activities/event/metadata.tt2 %]
+    [% INCLUDE signal_actions %]
 [% CASE 'like' %]
     [% INCLUDE activities/event/metadata.tt2 %]
     [% INCLUDE like_body %]
 [% CASE 'unlike' %]
     [% INCLUDE activities/event/metadata.tt2 %]
     [% INCLUDE unlike_body %]
+[% END %]
+
+[% BLOCK signal_actions %]
+<div class="actions">
+    <a href="#" class="hideLink">[% loc('signals.delete') %]</a>
+</div>
 [% END %]
 
 [% BLOCK like_body %]
