@@ -142,6 +142,7 @@ Socialtext.prototype.buttons = {
             if (!handler) throw new Error('No handler for ' + button_id);
             $('<button/>')
                 .addClass(button_class)
+                .attr('id', button_id)
                 .button({
                     label: button_text,
                 })
