@@ -38,6 +38,15 @@ var button_handler = {
     },
 
     /**
+     * Dashboards
+     */
+
+    // Manage
+    'st-admin-dashboard': function() {
+        location = '/st/account/' + st.viewer.primary_account_id + '/dashboard'
+    },
+
+    /**
      * Group Container
      */
 
