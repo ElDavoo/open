@@ -7,13 +7,11 @@
   [% IF checker.check_permission('delete') %]
     <form action="[% script_name %]" method="post">
   [% END %]
-  <h1>[% display_title | html %]</h1>
-  <div class="container_12">
-    <div class="grid_4">
-      [% INCLUDE element/listview_account_filter %]
-    </div>
-
-    <div class="grid_2">
+  <div id="peopleDirectory">
+    <div class="grid_10"><h1>[% display_title | html %]</h1></div>
+    <div class="clear"></div>
+    <div class="grid_13">
+      [% INCLUDE element/listview_account_filter %] &mdash;
       <span><b>[% loc('people.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b></span>
 
       [% IF is_search %]
@@ -26,34 +24,33 @@
         </div>
       [% END %]
     </div>
-    <div class="grid_6">
+
+    <div class="grid_6 alpha peopleCount">
+    </div>
+    <div class="clear"></div>
+    <div class="prefix_1 grid_22">
       [% INCLUDE "view/paging" %]
     </div>
     <div class="clear"></div>
     [% FOREACH row = rows %]
-      [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
-      <div class="grid_1">
-        [% row.id | decorate('user_photo') %]
-      </div>
-      <div class="grid_3"> 
-        [% row.id | decorate('user_link') %]
-        [% FOR field = ['email','position','location','work_phone'] %]
-          [% IF row.$field %]<div style="line-height: 1.5em">[% row.$field %]</div>[% END %]
-        [% END %]
+      <div class="grid_13 peoplelist-row [% IF loop.count % 2 %] oddRow[% END %]">
+        <div class="alpha grid_2 peoplelist-photo">
+          [% row.id | decorate('user_photo') %]
+        </div>
+        <div class="grid_8 peoplelist-desc"> 
+          [% row.id | decorate('user_link') %]
+          [% FOR field = ['email','position','location','work_phone'] %]
+            [% IF row.$field %]<div style="line-height: 1.5em">[% row.$field %]</div>[% END %]
+          [% END %]
+        </div>
       </div>
       <div class="clear"></div>
     [% END %]
     [% IF pager && pager.total_entries %]
-    <table class="dataTable pagelist" cellspacing="0">
-      <tr>
-        <th width="30" style="border-right: 0">
-        &nbsp;
-        </th>
-        <th class="toggle">
-        [% INCLUDE "view/paging" %]
-        </th>
-      </tr>
-    </table>
+    <div class="grid_24">
+      [% INCLUDE "view/paging" %]
+    </div>
+    <div class="clear"></div>
     [% END %]
   </div><!-- contentContainer -->
 
