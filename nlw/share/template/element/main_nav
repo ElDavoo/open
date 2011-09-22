@@ -42,7 +42,7 @@
 <div class="clear"></div>
 
 <script>
-    st.buttons.show([% container.buttons.json %]);
+    st.buttons.show([% container.buttons.json || buttons.json %]);
 
     $("#global-workspace-list").navList([
         {  

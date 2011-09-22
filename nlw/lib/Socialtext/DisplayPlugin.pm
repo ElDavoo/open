@@ -329,6 +329,7 @@ sub _render_display {
             id              => $page->page_id,
             title           => $page->title,
             type            => $page->type,
+            full_uri        => $page->full_uri,
             size            => $page->size,
             attachments     => $attachments,
             new_title       => scalar $self->cgi->new_title,
@@ -336,6 +337,7 @@ sub _render_display {
             revision_id     => $page->revision_id,
             is_new          => $is_new_page,
             is_incipient    => ($self->cgi->is_incipient ? 1 : 0),
+            tags            => $self->_getCurrentTags($page),
             new_tags        => $new_tags,
             caller          => ($self->cgi->caller_action || ''),
             display_title   => html_escape($page->name),
@@ -357,10 +359,6 @@ sub _render_display {
             title                   => $page->name,
             page                    => $self->_get_page_info($page),
             template_name           => $self->cgi->template || '',
-            tag_count               => scalar @{ $page->tags }, # counts recent changes!
-            tags                    => $self->_getCurrentTags($page),
-            initialtags             => $self->_getCurrentTagsJSON($page),
-            workspacetags           => $self->_get_workspace_tags,
             is_homepage             => (
                   !$self->hub->current_workspace->homepage_is_dashboard
                   and $page->page_id eq title_to_id(

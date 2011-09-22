@@ -302,11 +302,8 @@ method global_template_vars {
     return %result;
 }
 
-method add_js_bootstrap ($vars) {
-    $->js_bootstrap({ %{$->js_bootstrap}, %$vars });
-}
-
-method js_bootstrap {
+has 'js_bootstrap' => (is => 'rw', isa => 'HashRef', lazy_build => 1);
+method _build_js_bootstrap {
     return {
         version => Socialtext->product_version,
         # Socialtext.new_page = [% IF is_new %]true;[% ELSE %]false;[% END %]
@@ -330,6 +327,10 @@ method js_bootstrap {
         plugins_enabled_for_current_workspace_account =>
             $self->plugins_enabled_for_ws_account,
     };
+}
+
+method add_js_bootstrap ($vars) {
+    $->js_bootstrap({ %{$->js_bootstrap}, %$vars });
 }
 
 sub clean_user_frame_cache {
