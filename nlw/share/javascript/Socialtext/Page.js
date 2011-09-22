@@ -1,6 +1,79 @@
 (function ($) {
 
-Page = {
+Socialtext.Page = function(opts) {
+    $.extend(this, opts);
+};
+
+Socialtext.Page.prototype = {
+    /**
+     * Tagging
+     */
+    tagUrl: function (tag) {
+        return this.uri() + '/tags/' + encodeURIComponent(tag);
+    },
+
+    uri: function() {
+        return '/data/workspaces/' + st.workspace.name + '/pages/' + this.id;
+    },
+
+    addTag: function (tag) {
+        var self = this;
+        console.log('addTag');
+        $.ajax({
+            type: "PUT",
+            url: self.tagUrl(tag),
+            // {bz: 4588}: Use an non-empty payload to avoid
+            // "411 Length required"
+            data: { '': '' },
+            complete: function (xhr) {
+                self.refreshTags();
+                $('#st-tags-field').val('');
+            }
+        });
+    },
+
+    delTag: function (tag) {
+        var self = this;
+        $.ajax({
+            type: "DELETE",
+            url: self.tagUrl(tag),
+            complete: function () {
+                self.refreshTags();
+            }
+        });
+    },
+
+    renderTags: function() {
+        var self = this;
+        $('#st-tags-listing').html(
+            Jemplate.process('page/tags.tt2', {
+                tags: self.tags
+            })
+        );
+        $('#st-tags-listing .delete_icon').click(function() {
+            $(this).attr('src', nlw_make_static_path('/images/ajax-loader.gif'));
+            self.delTag($(this).siblings('.tag_name').text());
+            return false;
+        });
+    },
+
+    refreshTags: function () {
+        var self = this;
+        $.ajax({
+            url: self.uri() + '/tags?order=alpha',
+            cache: false,
+            dataType: 'json',
+            success: function (tags) {
+                self.tags.sorted_tags = tags;
+                self.renderTags(); 
+            }
+        });
+    },
+
+    /**
+     * Old functions
+     */
+
     // args: (ws,page) or (page_in_current_workspace)
     active_page_exists: function () {
         var args = $.makeArray(arguments);
@@ -15,17 +88,6 @@ Page = {
 
     restApiUri: function () {
         return Page.pageUrl.apply(this, arguments);
-    },
-
-    workspaceUrl: function (wiki_id) {
-        return '/data/workspaces/' + (wiki_id || Socialtext.wiki_id);
-    },
-
-    pageUrl: function () {
-        var args = $.makeArray(arguments);
-        var page_name = args.pop() || Socialtext.page_id;
-        var wiki_id = args.pop() || Socialtext.wiki_id;
-        return Page.workspaceUrl(wiki_id) + '/pages/' + page_name;
     },
 
     cgiUrl: function () {
@@ -125,56 +187,9 @@ Page = {
         });
     },
 
-    tagUrl: function (tag) {
-        return this.pageUrl() + '/tags/' + encodeURIComponent(tag);
-    },
-
     attachmentUrl: function (attach_id) {
         return '/data/workspaces/' + Socialtext.wiki_id +
                '/attachments/' + Socialtext.page_id + ':' + attach_id
-    },
-
-    refreshTags: function () {
-        var tag_url = '?action=category_display;category=';
-        $.ajax({
-            url: this.pageUrl() + '/tags?order=alpha',
-            cache: false,
-            dataType: 'json',
-            success: function (tags) {
-                $('#st-tags-listing').html('');
-                for (var i=0; i< tags.length; i++) {
-                    var tag = tags[i];
-                    $('#st-tags-listing').append(
-                        $('<li />').append(
-                            $('<a></a>')
-                                .text(tag.name)
-                                .addClass('tag_name')
-                                .attr('title', tag.name)
-                                .attr('href', tag_url + encodeURIComponent(tag.name)),
-
-                            ' ',
-                            $('<a href="#" />')
-                                .html('<img src="'+nlw_make_s3_path('/images/delete.png')+'" width="16" height="16" border="0" />')
-                                .addClass('delete_tag')
-                                .attr('name', tag.name)
-                                .attr('alt', loc('page.delete-tag'))
-                                .attr('title', loc('page.delete-tag'))
-                                .bind('click', function () {
-                                    $(this).children('img').attr('src', nlw_make_static_path('/skin/common/images/ajax-loader.gif'));
-                                    Page.delTag(this.name);
-                                    return false;
-                                })
-                        )
-                    )
-                }
-                if (tags.length == 0) {
-                    $('#st-tags-listing').append( 
-                        $('<div id="st-no-tags-placeholder" />')
-                            .html(loc('page.no-tags'))
-                    );
-                }
-            }
-        });
     },
 
     _format_bytes: function(filesize) {
@@ -202,28 +217,6 @@ Page = {
             }
         }
         return n + unit;
-    },
-
-    delTag: function (tag) {
-        $.ajax({
-            type: "DELETE",
-            url: this.tagUrl(tag),
-            complete: function () {
-                Page.refreshTags();
-            }
-        });
-    },
-
-    addTag: function (tag) {
-        $.ajax({
-            type: "PUT",
-            url: this.tagUrl(tag),
-            data: { '': '' }, // {bz: 4588}: Use an non-empty payload to avoid "411 Length required"
-            complete: function (xhr) {
-                Page.refreshTags();
-                $('#st-tags-field').val('');
-            }
-        });
     }
 };
 

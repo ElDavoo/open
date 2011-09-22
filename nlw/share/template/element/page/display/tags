@@ -1,0 +1,30 @@
+[%# vim: set ft=tt2 et sts=2 sw=2: %]
+<div class="widget">
+  <h1>[% loc('wiki.tags') %]</h1>
+  <div class="content">
+    <div id="st-tags-listing">
+    </div>
+
+    [% IF checker.check_permission('edit') AND !page_locked_for_user %]
+      <a class="button" id="st-tags-addlink">[% loc('tag.add') %]<a>
+      <form id="st-tags-form">
+        <div class="alpha grid_3">
+          <input  id="st-tags-field" name="tagfield" type="text" />
+        </div>
+        <div class="omega grid_3">
+          <a class="button" id="st-tags-plusbutton-link">
+            [% loc('page.add-tag') %]
+          </a>
+          <input id="st-tags-addbutton" type="submit" class="hidden" />
+        </div>
+      </form>
+      <div id="st-tags-message"></div>
+      <div style="display:none" id="st-tags-suggestion">
+        <span class="st-tags-hint">
+          [% loc("tag.suggestions:") %]
+        </span>
+        <span id="st-tags-suggestionlist"></span>
+      </div>
+    [% END %]
+  </div>
+</div>

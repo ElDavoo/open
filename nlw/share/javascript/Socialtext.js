@@ -8,7 +8,7 @@ Socialtext = function(vars) {
 
     // TODO this.viewer = new Socialtext.User(this.viewer);
     // TODO this.workspace = new Socialtext.Workspace(this.workspace);
-    // TODO this.page = new Socialtext.Page(this.page);
+    if (this.page) this.page = new Socialtext.Page(this.page);
 }
 
 Socialtext.prototype = {

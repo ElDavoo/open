@@ -28,6 +28,8 @@
     parts:
         - contrib/jquery-1.6.2.js
         - contrib/jquery-json-1.3.js
+        - contrib/jquery-ui-1.8.5.js
+        - contrib/jquery.ui.ipad.altfix.js
         - contrib/utf8.js
         - {jemplate_runtime: jquery}
         - JemplatePlugin/*.js
@@ -35,13 +37,12 @@
         - Socialtext/Buttons.js
         - Socialtext/Dialog.js
         - Socialtext/Search.js
+        - Socialtext/Display.js
+        - socialtext-api.js
         - socialtext-container.js
         - bubble.js
         - like-indicator.js
-        - pageview.js
         - nav-list.js
-        - socialtext-api.js
-        - { jemplate: 'template' }
 
 # Socialtext API
 'socialtext-api.js':
@@ -54,14 +55,13 @@
         - Socialtext/Workspace.js
         - Socialtext/Person.js
         - Socialtext/Avatar.js
+        - Socialtext/Page.js
 
 'socialtext-container.js':
     compress: 1
     parts:
         - { jemplate: 'template' }
         - shindig-container-default.js
-        - contrib/jquery-ui-1.8.5.js
-        - contrib/jquery.ui.ipad.altfix.js
         - container/drag-and-drop.js
         - container/gadgets.js
         - container/madlibs.js
