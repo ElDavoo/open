@@ -77,8 +77,8 @@
 | *Comment* | Test Case: New Default Dashboard login as new member, change default dashboard |  |
 | st-logoutin | %%new_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
-| click_and_wait | link=Administer Dashboards |  |
+| wait_for_element_visible_ok | st-admin-dashboard | 30000 |
+| click_and_wait | st-admin-dashboard |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
 | wait_for_element_visible_ok | link=Edit Layout | 5000 |
 | click_ok | link=Edit Layout |  |
@@ -100,8 +100,8 @@
 | *Comment* | Test Case: New Default Dashboard revert to default dashboard |  |
 | st-logoutin | %%new_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
-| click_and_wait | link=Administer Dashboards |  |
+| wait_for_element_visible_ok | st-admin-dashboard | 30000 |
+| click_and_wait | st-admin-dashboard |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
 | wait_for_element_visible_ok | link=Edit Layout | 5000 |
 | click_ok | link=Edit Layout |  |
@@ -125,8 +125,8 @@
 | text_unlike | //body | I'm new |
 
 | *Comment* | Test Case: New Default Dashboard old member sees new default dashboard |  |
-| wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
-| click_and_wait | link=Administer Dashboards |  |
+| wait_for_element_visible_ok | st-admin-dashboard | 30000 |
+| click_and_wait | st-admin-dashboard |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
 | wait_for_text_present_ok | I'm new. What do I do? | 5000 |
 
