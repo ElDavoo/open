@@ -366,8 +366,8 @@ sub st_single_widget_in_dashboard {
     my ($self, $linkid) = @_;
     eval {
         $self->handle_command('st-empty-container');
-        $self->handle_command('wait_for_element_visible_ok','link=Add Widget','30000');
-        $self->handle_command('click_ok','link=Add Widget');
+        $self->handle_command('wait_for_element_visible_ok','st-add-widget','30000');
+        $self->handle_command('click_ok','st-add-widget');
         my $str = '//a[@id=' . "'" . $linkid . "'" . ']';
         $self->handle_command('wait_for_element_present_ok', $str, 30000);
         $self->handle_command('click_ok' ,$str); 
