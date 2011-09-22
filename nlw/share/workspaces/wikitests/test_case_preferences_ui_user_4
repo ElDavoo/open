@@ -12,9 +12,9 @@
 
 | *Comment* | Test Case: Preferences UI User 4. Email Notification. Defaults: Every day, chronologically, full info |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Frequency of updates |
-| text_like | contentWrapper | Sort order of updates |
-| text_like | contentWrapper | Email digest information |
+| text_like | content | Frequency of updates |
+| text_like | content | Sort order of updates |
+| text_like | content | Email digest information |
 | is_selected_ok | %%email_notify__notify_frequency%% | label=Every Day |
 | verifyValue | //input[@value='chrono'] | on |
 | verifyValue | //input[@value='expanded'] | on |
@@ -71,9 +71,9 @@
 
 | *Comment* | Test Case: Preferences UI User 4. Email Notification. Navigate away, return, verify values |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Frequency of updates |
-| text_like | contentWrapper | Sort order of updates |
-| text_like | contentWrapper | Email digest information |
+| text_like | content | Frequency of updates |
+| text_like | content | Sort order of updates |
+| text_like | content | Email digest information |
 | is_selected_ok | %%email_notify__notify_frequency%% | label=Every Week |
 | verifyValue | //input[@value='reverse'] | on |
 | verifyValue | //input[@value='condensed'] | on |
@@ -94,7 +94,7 @@
 
 | *Comment* | Test Case: Preferences UI User 4: create new Blog |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/blog |  |
-| text_like | contentWrapper | Create Blog |
+| text_like | content | Create Blog |
 | type_ok | %%weblog_title%% | No Brackets %%start_time%% Blog |
 | click_and_wait | link=Save |  |
 | wait_for_text_present_ok | First Post in No Brackets %%start_time%% Blog |  |
@@ -109,9 +109,9 @@
 
 | *Comment* | Test Case: Preferences UI User 4. What's New. Defaults: Last week, display off, 4 items |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Timeframe for changes |
-| text_like | contentWrapper | What's New sidebar widget |
-| text_like | contentWrapper | Number of items to show |
+| text_like | content | Timeframe for changes |
+| text_like | content | What's New sidebar widget |
+| text_like | content | Number of items to show |
 | is_selected_ok | %%recent_changes__changes_depth%% | label=Last Week |
 | value_is | %%recent_changes__include_in_pages%% | off |
 | is_selected_ok | %%recent_changes__sidebox_changes_depth%% | label=4 |

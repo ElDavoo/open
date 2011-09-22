@@ -14,7 +14,7 @@
 | type_ok | comment | %%comment_nosignal%% |
 | wait_for_element_visible_ok | link=Save | 30000 |
 | st-click-pause | link=Save | 10000 |
-| text_like | contentWrapper | %%comment_nosignal%% |
+| text_like | content | %%comment_nosignal%% |
 
 | *Comment* | Test Case: Add Comment bottom Comment button |  |
 | wait_for_element_visible_ok | st-comment-button-link-bottom | 30000 |
@@ -25,8 +25,8 @@
 | check_ok | st-comment-st-edit-summary-signal-checkbox |  |
 | wait_for_element_visible_ok | link=Save | 30000 |
 | st-click-pause | link=Save | 10000 |
-| text_like | contentWrapper | qr/%%comment_nosignal%%.+%%comment_signal%%/ |
-| text_like | contentWrapper | qr/contributed by/i |
+| text_like | content | qr/%%comment_nosignal%%.+%%comment_signal%%/ |
+| text_like | content | qr/contributed by/i |
 
 | *Comment* | Test Case: Add Comment Cancel comment |  |
 | click_ok | st-comment-button-link-bottom |  |
@@ -34,8 +34,8 @@
 | type_ok | comment | Comment Cancel %%start_time%% |
 | wait_for_element_visible_ok | st-cancel-layout | 30000 |
 | st-click-pause | st-cancel-layout | 5000 |
-| text_like | contentWrapper | qr/%%comment_nosignal%%.+%%comment_signal%%/ |
-| text_unlike | contentWrapper | Comment Cancel %%start_time%% |
+| text_like | content | qr/%%comment_nosignal%%.+%%comment_signal%%/ |
+| text_unlike | content | Comment Cancel %%start_time%% |
 
 | *Comment* | Test Case: Add Comment Check for the signal |  |
 | open_ok | /st/signals |  |

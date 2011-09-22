@@ -8,7 +8,7 @@
 
 | *Comment* | Test Case: Preferences UI User 3 Blogs. Default: 10 posts |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Number of posts to show |
+| text_like | content | Number of posts to show |
 | is_selected_ok | prefs.weblog.weblog_depth | label=10 |
 
 | *Comment* | Test Case: Preferences UI User 3 Blogs. 50 posts |  |
@@ -33,11 +33,11 @@
 | *Comment* | Test Case: Preferences UI User 3 Blogs. Navigate away, come back, verify |  |
 | open_ok | ?action=workspaces_listall |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Number of posts to show |
+| text_like | content | Number of posts to show |
 | is_selected_ok | prefs.weblog.weblog_depth | label=50 |
 
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. Default: 10 posts |  |
-| text_like | contentWrapper | Number of posts to syndicate |
+| text_like | content | Number of posts to syndicate |
 | is_selected_ok | prefs.syndicate.syndication_depth | label=10 |
 
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. 50 posts |  |
@@ -61,7 +61,7 @@
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. Navigate away, come back, verify |  |
 | open_ok | ?action=workspaces_listall |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Number of posts to syndicate |
+| text_like | content | Number of posts to syndicate |
 | is_selected_ok | prefs.syndicate.syndication_depth | label=50 |
 
 | include | [Test Case: Preferences UI User Teardown] |  |

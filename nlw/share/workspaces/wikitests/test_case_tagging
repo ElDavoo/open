@@ -164,10 +164,10 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | open_ok | /%%t_ws%%/?action=recent_changes |  |
 | click_and_wait | link=All Tags |  |
-| text_like | contentWrapper | tagtest %%start_time%% |
+| text_like | content | tagtest %%start_time%% |
 | click_and_wait | link=tagtest %%start_time%% |  |
-| text_like | contentWrapper | tag page 1 %%start_time%% |
-| text_like | contentWrapper | tag page 3 %%start_time%% |
+| text_like | content | tag page 1 %%start_time%% |
+| text_like | content | tag page 3 %%start_time%% |
 
 | *Comment* | Test Case: Tagging test for tags in lookahead |  |
 

@@ -24,7 +24,7 @@
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_and_wait | st-cancel-layout | 30000 |
-| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | content | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Group Home Has Widgets Click Edit Layout Add widget, click cancel widget is gone |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
@@ -40,10 +40,10 @@
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | click_and_wait | st-cancel-layout |  |
-| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | content | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Group Home Has Widgets Cancelled |  |
-| text_unlike | contentWrapper | Wikipedia |
+| text_unlike | content | Wikipedia |
 | wait_for_element_visible_ok | st-edit-layout | 10000 |
 | click_ok | st-edit-layout |  |
 | wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
@@ -60,7 +60,7 @@
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
-| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | content | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 
 | *Comment* | Test Case: Group Home Has Widgets try xpath to widget headers |  |
@@ -122,7 +122,7 @@
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Wikipedia |
-| text_unlike | contentWrapper | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
+| text_unlike | content | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Group Home Has Widgets Login as non-member, see widget |  |
 | st-logoutin | %%just_a_member%% | %%password%% |

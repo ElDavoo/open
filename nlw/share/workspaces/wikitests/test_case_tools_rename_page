@@ -33,7 +33,7 @@
 | text_like | st-page-titletext | Page_Renamed_%%start_time%% |
 | click_and_wait | link=Rename This Page %%start_time%% |  |
 | text_like | st-page-titletext | Rename This Page %%start_time%% |
-| text_like | contentWrapper | Page renamed to Page_Renamed_%%start_time%% |
+| text_like | content | Page renamed to Page_Renamed_%%start_time%% |
 | wait_for_element_visible_ok | link=Rename This Tag %%start_time%% | 30000 |
 | st_check_files_if_highperms | wikitest.jpg |  |
 
@@ -70,10 +70,10 @@
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_renamed_%%start_time%% |  |
-| text_like | contentWrapper | qr/revision 3/i |
+| text_like | content | qr/revision 3/i |
 | click_and_wait | link=Compare Revisions |  |
-| text_like | contentWrapper | Rename This Page %%start_time%% content |
-| text_like | contentWrapper | Rename This Page %%start_time%% NEW content |
+| text_like | content | Rename This Page %%start_time%% content |
+| text_like | content | Rename This Page %%start_time%% NEW content |
 
 | *Comment* | Test Case: Tools: Rename Page TEARDOWN |  |
 | st-process-jobs |  |  |

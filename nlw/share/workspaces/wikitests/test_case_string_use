@@ -43,7 +43,7 @@ Set default values if they are not defined by the caller
 | *Comment* | Test Case: String Use: check tag 1 |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% title |
-| text_like | contentWrapper | %%test_string%% content |
+| text_like | content | %%test_string%% content |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | text_like | st-tags-listing | %%test_string%% tag 1 |
 
@@ -77,7 +77,7 @@ Set default values if they are not defined by the caller
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_dupe |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% dupe |
-| text_like | contentWrapper | %%test_string%% content |
+| text_like | content | %%test_string%% content |
 | text_like | st-tags-listing | %%test_string%% tag 2 |
 
 | *Comment* | Test Case: String Use: rename |  |
@@ -91,7 +91,7 @@ Set default values if they are not defined by the caller
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% rename |
-| text_like | contentWrapper | %%test_string%% content |
+| text_like | content | %%test_string%% content |
 | text_like | st-tags-listing | %%test_string%% tag 2 |
 
 | *Comment* | Test Case: String Use: Comment on the rename page |  |
@@ -102,9 +102,9 @@ Set default values if they are not defined by the caller
 
 | *Comment* | Test Case: String Use: verify comment on the rename page |  |
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
-| wait_for_element_visible_ok | contentWrapper | 30000 |
-| text_like | contentWrapper | %%test_string%% comment |
-| text_like | contentWrapper | qr/contributed\s+by/i |
+| wait_for_element_visible_ok | content | 30000 |
+| text_like | content | %%test_string%% comment |
+| text_like | content | qr/contributed\s+by/i |
 
 | *Comment* | Test Case: String Use: Roundtripping Link Text for a widget in the duplicate page |  |
 | *Comment* | The following test DOES NOT actually find errors that trash the UI because Selenium manages to "click" all the buttons even when the interface is completely bolluxed by nasty data in the page. |  |
@@ -142,7 +142,7 @@ Set default values if they are not defined by the caller
 
 | *Comment* | This regexp carefully tests for the page content being just the link text and no other garbage |  |
 | *Comment* | in the last line in st page maincontent. DO NOT CHANGE IT. |  |
-| text_like | contentWrapper | qr/^\s*%%test_string_esc%%/m |
+| text_like | content | qr/^\s*%%test_string_esc%%/m |
 
 | *Comment* | Test Case: String Use: Your Notepad |  |
 | *Comment* | Your Notepad wants an existing page |  |
@@ -161,7 +161,7 @@ Set default values if they are not defined by the caller
 | open_ok | /%%workspace%%/?%%test_string%% pad |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% pad |
-| text_like | contentWrapper | %%test_string%% pad content |
+| text_like | content | %%test_string%% pad content |
 
 | *Comment* | Test Case: String Use: try TOC |  |
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
@@ -186,7 +186,7 @@ Set default values if they are not defined by the caller
 
 | *Comment* | Test Case: String Use: test for TOC blow up (If this fails under IE, that's okay) |  |
 | pause | 10000 |  |
-| text_like | contentWrapper | qr/does not have any headers/ |
+| text_like | content | qr/does not have any headers/ |
 
 | *Comment* | Test Case: String Use: TEARDOWN |  |
 | st-process-jobs |  |  |

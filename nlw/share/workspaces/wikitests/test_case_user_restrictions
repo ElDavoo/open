@@ -27,7 +27,7 @@
 | wait_for_element_visible_ok | //input[@name='guest_has_email_in' and @value='1'] | 30000 |
 | click_ok | //input[@name='guest_has_email_in' and @value='1'] |  |
 | click_and_wait | link=Save |  |
-| text_like | contentWrapper | Anyone can send email to %%ws%%. |
+| text_like | content | Anyone can send email to %%ws%%. |
 
 | *Comment* | Test Case: User Restrictions - Create confirmations - this will generate emails (this, wikipages) |  |
 | st-admin | add-restriction --email %%emailaddr%% --restriction email_confirmation | has been given the 'email_confirmation' restriction |

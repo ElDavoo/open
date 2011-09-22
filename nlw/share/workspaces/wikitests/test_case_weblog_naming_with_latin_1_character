@@ -15,8 +15,8 @@
 | *Comment* | Test Case: Weblog naming: Selenium can't handle a Latin-1 character in this command ! |  |
 
 | wait_for_text_present_ok | blog %%start_time%% | 10000 |
-| text_like | contentWrapper | First Post in claus |
-| text_like | contentWrapper | blog %%start_time%% |
+| text_like | content | First Post in claus |
+| text_like | content | blog %%start_time%% |
 
 | *Comment* | Test Case: Weblog naming: cause a change |  |
 | st-admin | update-page --w %%workspace%% --e %%email%% --p "Make Me a Malted %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |

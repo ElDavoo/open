@@ -10,11 +10,11 @@
 
 | *Comment* | Test Case: Preferences UI User 2. Time. Defaults: Pacific, auto, M-D-Y, 12, no |  |
 | open_ok | /st/settings |  |
-| text_like | contentWrapper | Timezone |
-| text_like | contentWrapper | Daylight Savings/Summer |
-| text_like | contentWrapper | Date Format |
-| text_like | contentWrapper | Time Format |
-| text_like | contentWrapper | Include Seconds in Time Format |
+| text_like | content | Timezone |
+| text_like | content | Daylight Savings/Summer |
+| text_like | content | Date Format |
+| text_like | content | Time Format |
+| text_like | content | Include Seconds in Time Format |
 | is_selected_ok | prefs.timezone.timezone | label=-0800 Pacific |
 | is_selected_ok | prefs.timezone.dst | label=automatic, United States |
 | is_checked_ok | //input[@value='mmm_d_yyyy'] |  |
@@ -72,8 +72,8 @@
 
 | *Comment* | Test Case: Preferences UI User 2. Watchlist Notification. Defaults: Every day, chronologically, full info |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Frequence of updates |
-| text_like | contentWrapper | Watchlist digest information |
+| text_like | content | Frequence of updates |
+| text_like | content | Watchlist digest information |
 | is_selected_ok | prefs.watchlist.watchlist_notify_frequency | label=Every Day |
 | is_checked_ok | //input[@value='expanded'] |  |
 
@@ -115,8 +115,8 @@
 | *Comment* | Test Case: Preferences UI User 2. Watchlist Notification. Navigate away, return, verify values |  |
 | open_ok | ?action=workspaces_listall |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
-| text_like | contentWrapper | Frequence of updates |
-| text_like | contentWrapper | Watchlist digest information |
+| text_like | content | Frequence of updates |
+| text_like | content | Watchlist digest information |
 | is_selected_ok | prefs.watchlist.watchlist_notify_frequency | label=Every Week |
 | is_checked_ok | //input[@value='condensed'] |  |
 

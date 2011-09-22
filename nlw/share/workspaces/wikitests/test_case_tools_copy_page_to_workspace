@@ -46,7 +46,7 @@ NOT the target WS |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | Copy This Tag %%start_time%% |
 | text_like | st-page-titletext | Copy This Page %%start_time%% |
-| text_like | contentWrapper | Copy This Page %%start_time%% content |
+| text_like | content | Copy This Page %%start_time%% content |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Edit the original the page |  |
 
@@ -89,8 +89,8 @@ TODO: come back and finish this test when {bz: 1039} is fixed. Can't seem to cli
 
 | open_ok | /%%newspace%%/index.cgi?action=revision_list;page_name=page_copied_%%start_time%% |  |
 | click_and_wait | link=Compare Revisions |  |
-| text_like | contentWrapper | Copy This Page %%start_time%% content |
-| text_like | contentWrapper | Copy This Page %%start_time%% NEW content |
+| text_like | content | Copy This Page %%start_time%% content |
+| text_like | content | Copy This Page %%start_time%% NEW content |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. verify tag copied |  |
 | click_ok | link=Back To Current Revision |  |

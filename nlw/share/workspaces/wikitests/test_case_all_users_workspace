@@ -29,7 +29,7 @@
 | st-process-jobs |  |  |
 | st-logoutin | %%auw_user%% | %%password%% |
 | open_ok | /?action=workspaces_listall |  |
-| is_element_present_ok | //div[@id='contentWrapper'] | link=%%auw_wiki%% |
+| is_element_present_ok | //div[@id='content'] | link=%%auw_wiki%% |
 
 | *Comment* | Test Case: All Users Workspace use CLI to remove user from account, check that user got removed from wiki |  |
 | st-admin | set-user-account --email %%auw_user%% --account %%hostname%% | was updated |
@@ -43,7 +43,7 @@
 | st-admin | set-user-account --email %%auw_user%% --account %%auw_acct%% | was updated |
 | st-process-jobs |  |  |
 | open_ok | /?action=workspaces_listall |  |
-| is_element_present_ok | //div[@id='contentWrapper'] | link=%%auw_wiki%% |
+| is_element_present_ok | //div[@id='content'] | link=%%auw_wiki%% |
 
 | *Comment* | Test Case: All Users Workspace test CLI commands for removing account from wiki |  |
 | st-admin | remove-member --account %%auw_acct%% | The command you called (remove-member) requires one of --workspace --username --email --group and one of --account --group --workspace |
@@ -69,7 +69,7 @@
 | st-process-jobs |  |  |
 | st-logoutin | %%auw_user%% | %%password%% |
 | open_ok | /?action=workspaces_listall |  |
-| is_element_present_ok | //div[@id='contentWrapper'] | link=%%auw_wiki%% |
+| is_element_present_ok | //div[@id='content'] | link=%%auw_wiki%% |
 
 | *Comment* | Test Case: All Users Workspace test CLI errors for changing the account of an AUW |  |
 | st-admin | set-workspace-config --workspace %%auw_wiki%% account_id 1 | This workspace is the all users workspace for the %%auw_acct%% account. Aborting. |
@@ -125,8 +125,8 @@
 | st-process-jobs |  |  |
 | st-logoutin | %%auw_user%% | %%password%% |
 | open_ok | /?action=workspaces_listall |  |
-| is_element_present_ok | //div[@id='contentWrapper'] | link=%%auw_wiki%% |
-| is_element_present_ok | //div[@id='contentWrapper'] | link=%%auw_wiki_2%% |
+| is_element_present_ok | //div[@id='content'] | link=%%auw_wiki%% |
+| is_element_present_ok | //div[@id='content'] | link=%%auw_wiki_2%% |
 
 | *Comment* | Test Case: All Users Workspace remove both wikis through control panel |  |
 | st-logoutin | %%username%% | %%password%% |
