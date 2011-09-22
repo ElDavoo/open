@@ -72,7 +72,7 @@
 | uncheck_ok | %%mbread%% |  |
 | value_is | %%mlength%% | on |
 | value_is | %%mbread%% | off |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | value_is | %%mlength%% | off |
 | value_is | %%mbread%% | on |
 

@@ -63,7 +63,7 @@
 | is_selected_ok | %%email_notify__notify_frequency%% | label=Never |
 | verifyValue | //input[@value='chrono'] | on |
 | verifyValue | //input[@value='expanded'] | on |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | is_selected_ok | %%email_notify__notify_frequency%% | label=Every Week |
 | verifyValue | //input[@value='reverse'] | on |
 | verifyValue | //input[@value='condensed'] | on |
@@ -170,7 +170,7 @@
 | is_selected_ok | %%recent_changes__changes_depth%% | label=Last 2 Days |
 | value_is | %%recent_changes__include_in_pages%% | on |
 | is_selected_ok | %%recent_changes__sidebox_changes_depth%% | label=20 |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | is_selected_ok | %%recent_changes__changes_depth%% | label=Last Month |
 | value_is | %%recent_changes__include_in_pages%% | off |
 | is_selected_ok | %%recent_changes__sidebox_changes_depth%% | label=2 |

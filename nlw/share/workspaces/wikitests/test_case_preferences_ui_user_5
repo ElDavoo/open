@@ -36,7 +36,7 @@
 | *Comment* | Test Case: Preferences UI User 5. Page Editing. Cancel chooses previous values |  |
 | uncheck_ok | %%dclick%% |  |
 | value_is | %%dclick%% | off |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | value_is | %%dclick%% | on |
 
 | *Comment* | Test Case: Preferences UI User 5. Page Editing. Navigate away, return, verify value |  |
@@ -86,7 +86,7 @@
 | type_ok | %%first_name%% | Cancel First %%start_time%% |
 | type_ok | %%middle_name%% | Cancel Middle %%start_time%% |
 | type_ok | %%last_name%% | Cancel Last %%start_time%% |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | verifyValue | %%first_name%% | First %%start_time%% |
 | verifyValue | %%middle_name%% | Middle %%start_time%% |
 | verifyValue | %%last_name%% | Last %%start_time%% |

@@ -31,7 +31,7 @@
 | *Comment* | Test Case: Preferences UI User 1. Signals notification. Cancel chooses previous values |  |
 | uncheck_ok | %%dmsend%% |  |
 | st_unchecked_ok | %%dmsend%% |  |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | is_checked_ok | %%dmsend%% |  |
 
 | *Comment* | Test Case: Preferences UI User 1. Signals notification. Navigate away, return, verify value |  |

@@ -20,8 +20,11 @@
 | is_checked_ok | //input[@value='mmm_d_yyyy'] |  |
 | is_checked_ok | //input[@value='12'] |  |
 | st_unchecked_ok | prefs.timezone.time_display_seconds |  |
+| click_and_wait | link=Save |  |
+| wait_for_text_present_ok | Saved | 10000 |
 
 | *Comment* | Test Case: Preferences UI User 2. Time. Nome, on, mmm_d_yyyy, 24,on |  |
+| open_ok | /st/settings |  |
 | select_ok | prefs.timezone.timezone | label=-1100 Nome |
 | select_ok | prefs.timezone.dst | label=currently in DST |
 | click_ok | //input[@value='24'] |  |
@@ -32,7 +35,7 @@
 | is_checked_ok | //input[@value='24'] |  |
 | is_checked_ok | prefs.timezone.time_display_seconds |  |
 | click_and_wait | link=Save |  |
-| wait_for_text_present_ok | Saved | 30000 |
+| wait_for_text_present_ok | Saved | 10000 |
 | is_selected_ok | prefs.timezone.timezone | label=-1100 Nome |
 | is_selected_ok | prefs.timezone.dst | label=currently in DST |
 | is_checked_ok | //input[@value='mmm_d_yyyy'] |  |
@@ -54,7 +57,7 @@
 | click_ok | //input[@value='yyyy_mm_dd'] |  |
 | click_ok | //input[@value='12'] |  |
 | uncheck_ok | prefs.timezone.time_display_seconds |  |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | is_selected_ok | prefs.timezone.timezone | label=-1100 Nome |
 | is_selected_ok | prefs.timezone.dst | label=currently in DST |
 | is_checked_ok | //input[@value='mmm_d_yyyy'] |  |
@@ -108,7 +111,7 @@
 | click_ok | //input[@value='expanded'] |  |
 | is_selected_ok | prefs.watchlist.watchlist_notify_frequency | label=Never |
 | is_checked_ok | //input[@value='expanded'] |  |
-| click_ok | st-cancel-layout |  |
+| click_ok | link=Cancel |  |
 | is_selected_ok | prefs.watchlist.watchlist_notify_frequency | label=Every Week |
 | is_checked_ok | //input[@value='condensed'] |  |
 
