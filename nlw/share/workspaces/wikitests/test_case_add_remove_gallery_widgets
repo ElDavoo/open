@@ -14,8 +14,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets - Add Cheeky Quote via URL |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
-| wait_for_element_visible_ok | st-add-widget to Gallery | 60000 |
-| click_ok | st-add-widget to Gallery |  |
+| wait_for_element_visible_ok | st-gallery-add-widget | 60000 |
+| click_ok | st-gallery-add-widget |  |
 | wait_for_element_visible_ok | widget-url | 60000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | widget-url | seems to be needed |
@@ -67,7 +67,6 @@
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_not_present_ok | gallery-widget-Cheeky Quotes | 30000 |
-| wait_for_text_not_present_ok | Cheeky Quotes | 30000 |
 
 | *Comment* | Test Case: Add Remove Gallery Widgets restore an uploaded widget |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
