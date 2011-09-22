@@ -19,8 +19,8 @@
 | text_like | %%fname%% %%mname%% %%lname%% |  |
 
 | *Comment* | Test Case: Clear Profile Fields. Open for editing |  |
-| wait_for_element_visible_ok | link=Edit Profile | 30000 |
-| click_and_wait | link=Edit Profile |  |
+| wait_for_element_visible_ok | st-edit-profile | 30000 |
+| click_and_wait | st-edit-profile |  |
 
 | *Comment* | Test Case: Clear Profile Fields - Verify OLD values |  |
 | wait_for_element_visible_ok | first_name | 30000 |

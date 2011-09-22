@@ -10,8 +10,8 @@
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - Not Admin - No Edit Link |  |
 | open_ok | /?group/%%group_id%% |  |
-| wait_for_element_not_present_ok | link=Edit Group | 10000 |
-| wait_for_element_not_present_ok | link=Edit Layout | 10000 |
+| wait_for_element_not_present_ok | st-edit-group | 10000 |
+| wait_for_element_not_present_ok | st-edit-layout | 10000 |
 
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - Become Admin - Yes Edit Link |  |
@@ -19,9 +19,9 @@
 | open_ok | /?group/%%group_id%% |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - edit the group |  |
-| wait_for_element_visible_ok | link=Edit Group | 30000 |
-| wait_for_element_visible_ok | link=Edit Layout | 30000 |
-| click_and_wait | link=Edit Group | 30000 |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_and_wait | st-edit-group | 30000 |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
 | pause | 5000 |  |

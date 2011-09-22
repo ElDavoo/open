@@ -31,7 +31,7 @@
 | text_like | %%fname%% %%lname%% |  |
 
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
-| click_and_wait | link=Edit Profile |  |
+| click_and_wait | st-edit-profile |  |
 
 | *Comment* | Test Case: Edit Profile. Verify profile fields present. |  |
 | wait_for_text_present_ok | Edit Profile | 10000 |
@@ -120,7 +120,7 @@ click-ok | link=%%short_super%% | |
 
 | *Comment* | Test Case: Edit Profile. IE gets a permissions error if you do anything more than click_ok and exit |  |
 | click_ok | update_profile |  |
-| wait_for_element_visible_ok | link=Edit Profile | 30000 |
-| wait_for_element_visible_ok | link=Edit Layout | 30000 |
+| wait_for_element_visible_ok | st-edit-profile | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
 
 | *Comment* | Test Case: Edit Profile COMPLETED |  |

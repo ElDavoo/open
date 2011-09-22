@@ -15,7 +15,7 @@
 | *Comment* | Test Case: Verify Profile. Access profile |  |
 | st-logoutin | %%e_user%% | %%password%% |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | `link=Edit Profile` | 30000 |
+| wait_for_element_visible_ok | `st-edit-profile` | 30000 |
 
 | *Comment* | Test Case: Verify Profile. See if Colleagues is there. Can't do much else. |  |
 | wait_for_text_present_ok | Colleagues | 5000 |

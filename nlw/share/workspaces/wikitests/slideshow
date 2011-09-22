@@ -182,7 +182,7 @@ TODO: replace viewing WS settings individual pages with viewing Consolidated Set
 | *Comment* | SEE Wiki Text Mode |  |
 | pause | %%pt%% |  |
 
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 
 #| verifyConfirmation | If you click 'OK', all edit changes will be lost! | |
 
@@ -227,22 +227,22 @@ TODO: replace viewing WS settings individual pages with viewing Consolidated Set
 | click_ok | link=Duplicate Page |  |
 | *Comment* | SEE Duplicate Page |  |
 | pause | %%popup%% |  |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 
 | click_ok | link=Rename Page |  |
 | *Comment* | SEE Rename Page |  |
 | pause | %%popup%% |  |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 
 | click_ok | link=Copy Page to Workspace |  |
 | *Comment* | SEE Copy Page |  |
 | pause | %%popup%% |  |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 
 | click_ok | link=Delete Page |  |
 | *Comment* | SEE Delete Page |  |
 | pause | %%popup%% |  |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 
 | *Comment* | moved HTML/PDF/RTF to SlideShow Plus to use high perms |  |
 
@@ -255,7 +255,7 @@ TODO: replace viewing WS settings individual pages with viewing Consolidated Set
 | click_ok | link=Email |  |
 | *Comment* | SEE Email This Page popup |  |
 | pause | %%popup%% |  |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 
 * Email to this Workspace/Page popup (needs some sort of email client installed)
 

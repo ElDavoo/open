@@ -32,8 +32,8 @@
 | click_ok | st-comment-button-link-bottom |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment Cancel %%start_time%% |
-| wait_for_element_visible_ok | link=Cancel | 30000 |
-| st-click-pause | link=Cancel | 5000 |
+| wait_for_element_visible_ok | st-cancel-layout | 30000 |
+| st-click-pause | st-cancel-layout | 5000 |
 | text_like | contentWrapper | qr/%%comment_nosignal%%.+%%comment_signal%%/ |
 | text_unlike | contentWrapper | Comment Cancel %%start_time%% |
 

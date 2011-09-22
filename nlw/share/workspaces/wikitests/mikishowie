@@ -56,7 +56,7 @@
 | *Comment* | SEE MIKI Edit |
 | pause | %%pt%% |
 
-| click_and_wait | link=Cancel |
+| click_and_wait | st-cancel-layout |
 | *Comment* | SEE MIKI Edit Cancelled |
 | pause | %%pt%% |
 

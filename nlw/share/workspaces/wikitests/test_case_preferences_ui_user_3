@@ -21,7 +21,7 @@
 | *Comment* | Test Case: Preferences UI User 3 Blogs. Cancel preserves value |  |
 | select_ok | prefs.weblog.weblog_depth | label=25 |
 | is_selected_ok | prefs.weblog.weblog_depth | label=25 |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 | is_selected_ok | prefs.weblog.weblog_depth | label=50 |
 
 | *Comment* | Test Case: Preferences UI User 3 Blogs. Save without changing values |  |
@@ -50,7 +50,7 @@
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. Cancel preserves value |  |
 | select_ok | prefs.syndicate.syndication_depth | label=25 |
 | is_selected_ok | prefs.syndicate.syndication_depth | label=25 |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 | is_selected_ok | prefs.syndicate.syndication_depth | label=50 |
 
 | *Comment* | Test Case: Preferences UI User 3 Syndicate. Save without changing values |  |

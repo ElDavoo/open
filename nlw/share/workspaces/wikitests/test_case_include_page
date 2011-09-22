@@ -77,7 +77,7 @@ Repeat test using Miki/Lite access.
 
 | call | st-edit-mobile-page | value=`{include: [%%title%%]}` |
 
-| click_and_wait | link=Cancel |  |
+| click_and_wait | st-cancel-layout |  |
 
 Logout from Miki. Test for content and edit button in page view.
 Repeat test using Miki/Lite access.
@@ -139,7 +139,7 @@ Repeat test using Miki/Lite access.
 
 | call | st-edit-mobile-page | value=`{include: [%%title%%]}` |
 
-| click_and_wait | link=Cancel |  |
+| click_and_wait | st-cancel-layout |  |
 
 Logout from Miki. Test for content and edit button in page view.
 Repeat test using Miki/Lite access.
@@ -217,7 +217,7 @@ repeat in Miki
 
 | call | st-edit-mobile-page | value=qr/^$/ |
 
-| click_and_wait | link=Cancel |  |
+| click_and_wait | st-cancel-layout |  |
 
 | *Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the link |  |
 | *Comment* | Test Case: Include Page MIKI. Page appears but not in edit mode. Use Edit link. |  |

@@ -54,7 +54,7 @@
 | click_ok | //input[@value='yyyy_mm_dd'] |  |
 | click_ok | //input[@value='12'] |  |
 | uncheck_ok | prefs.timezone.time_display_seconds |  |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 | is_selected_ok | prefs.timezone.timezone | label=-1100 Nome |
 | is_selected_ok | prefs.timezone.dst | label=currently in DST |
 | is_checked_ok | //input[@value='mmm_d_yyyy'] |  |
@@ -108,7 +108,7 @@
 | click_ok | //input[@value='expanded'] |  |
 | is_selected_ok | prefs.watchlist.watchlist_notify_frequency | label=Never |
 | is_checked_ok | //input[@value='expanded'] |  |
-| click_ok | link=Cancel |  |
+| click_ok | st-cancel-layout |  |
 | is_selected_ok | prefs.watchlist.watchlist_notify_frequency | label=Every Week |
 | is_checked_ok | //input[@value='condensed'] |  |
 
