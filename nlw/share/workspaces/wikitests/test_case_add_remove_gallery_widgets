@@ -14,8 +14,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets - Add Cheeky Quote via URL |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
-| wait_for_element_visible_ok | link=Add Widget to Gallery | 60000 |
-| click_ok | link=Add Widget to Gallery |  |
+| wait_for_element_visible_ok | st-add-widget to Gallery | 60000 |
+| click_ok | st-add-widget to Gallery |  |
 | wait_for_element_visible_ok | widget-url | 60000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | widget-url | seems to be needed |
@@ -32,8 +32,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets hid a 3rd party widget, added Quotes |  |
 | open_ok | /st/dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_visible_ok | gallery-widget-Cheeky Quotes | 30000 |
 | wait_for_element_not_present_ok | gallery-widget-Google Calendar | 30000 |
@@ -49,8 +49,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets restored a 3rd party widget |  |
 | open_ok | /st/dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_visible_ok | gallery-widget-Google Calendar | 30000 |
 | wait_for_text_present_ok | Google Calendar | 30000 |
@@ -63,8 +63,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets hid an uploaded widget |  |
 | open_ok | /st/dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_not_present_ok | gallery-widget-Cheeky Quotes | 30000 |
 | wait_for_text_not_present_ok | Cheeky Quotes | 30000 |
@@ -77,8 +77,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets restored an uploaded widget |  |
 | open_ok | /st/dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_visible_ok | gallery-widget-Cheeky Quotes | 30000 |
 | wait_for_text_present_ok | Cheeky Quotes | 30000 |
@@ -94,8 +94,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets deleted an uploaded widget |  |
 | open_ok | /st/dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_not_present_ok | gallery-widget-Cheeky Quotes | 30000 |
 

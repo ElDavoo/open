@@ -21,8 +21,8 @@
 
 | *Comment* | Test Case: Page Creator Widget check all widget galleries for widget |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 5000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 5000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Page Creator | 5000 |
 | wait_for_text_present_ok | Create pages from customized forms. | 5000 |
 | open_ok | /st/group/%%group_id%% |  |

@@ -86,8 +86,8 @@
 
 | *Comment* | Test Case: Upload Update Gallery Widgets add a Cheeky Quote to the dashboard |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Cheeky')] | 30000 |
 | click_and_pause | //a[contains(@id,'gallery-widget-Cheeky')] | 5000 |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
@@ -96,8 +96,8 @@
 | st-widget-title | cheeky_quote | Cheeky Quotes |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets add a Boss Spy to the dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Boss Spy'] | 30000 |
 | click_and_pause | //a[@id='gallery-widget-Boss Spy'] | 5000 |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |

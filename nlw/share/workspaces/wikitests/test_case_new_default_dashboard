@@ -82,8 +82,8 @@
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
 | wait_for_element_visible_ok | link=Edit Layout | 5000 |
 | click_ok | link=Edit Layout |  |
-| wait_for_element_visible_ok | link=Add Widget | 5000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 5000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
 | click_and_pause | gallery-widget-Active Content | 5000 |
 | wait_for_element_visible_ok | link=Save... | 5000 |

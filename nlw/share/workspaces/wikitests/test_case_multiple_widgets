@@ -17,8 +17,8 @@
 | wait_for_element_not_visible_ok | title | 5000 |
 
 | *Comment* | Test Case: Multiple Widgets Add Wiki Page Widget |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Wiki Page | 30000 |
 | click_and_pause | gallery-widget-Wiki Page | 5000 |
 | open_ok | /st/dashboard |  |
@@ -28,8 +28,8 @@
 | st-widget-title | image_widget | Chairman |
 
 | *Comment* | Test Case: Multiple Widgets Add My Workspaces Widget |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_ok | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Workspaces')] | 30000 |
 | click_and_pause | //a[contains(@id,'gallery-widget-Workspaces')] | 5000 |
 | open_ok | /st/dashboard |  |
@@ -54,7 +54,7 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Multiple Widgets Add Workspace Tags, everything shifts by 1 |  |
-| click_ok | link=Add Widget |  |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Workspace Tags | 30000 |
 | click_and_pause | gallery-widget-Workspace Tags | 5000 |
 | open_ok | /st/dashboard |  |
@@ -93,13 +93,13 @@
 | *Comment* | Add RSS Viewer everything shifts by 1 |  |
 | open_ok | /st/dashbord |  |
 
-| click_ok | link=Add Widget |  |
+| click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-RSS Viewer | 30000 |
 | click_and_wait | gallery-widget-RSS Viewer |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Add All People Tags everything shifts by 1 |  |
-| click_and_wait | link=Add Widget |  |
+| click_and_wait | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-All People Tags | 30000 |
 | click_and_wait | gallery-widget-All People Tags |  |
 | wait_for_text_present_ok | All People Tags | 30000 |
