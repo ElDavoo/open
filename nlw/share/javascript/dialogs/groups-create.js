@@ -12,6 +12,7 @@ socialtext.dialog.register('groups-create', function(opts) {
         buttons: [
             {
                 text: loc('groups.next-step'),
+                id: 'st-create-group-next',
                 click: function() {
                     var type = dialog.find('input[name=new-group-type]:checked').val(); 
                     if (opts && $.isFunction(opts.onChange)) {
@@ -25,6 +26,7 @@ socialtext.dialog.register('groups-create', function(opts) {
             },
             {
                 text: loc('do.cancel'),
+                id: 'st-create-group-cancel',
                 click: function() { dialog.close() }
             }
         ]
