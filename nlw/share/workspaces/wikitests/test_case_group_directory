@@ -57,7 +57,7 @@
 | wait_for_element_visible_ok | st-create-group | 30000 |
 | click_ok | st-create-group | 30000 |
 | wait_for_element_present_ok | st-create-group-next | 30000 |
-| wait_for_element_present_ok | st-lightbox-cancel-create-group | 30000 |
+| wait_for_element_present_ok | st-create-group-cancel | 30000 |
 | wait_for_text_present_ok | Create Group | 30000 |
 | wait_for_text_present_ok | Will not be displayed in the Group Directory and new members must be invited by | 30000 |
 
