@@ -49,21 +49,69 @@ Avatar.prototype = {
             restricted: $(self.node).find('.vcard').hasClass('restricted')
         });
         self.person.loadWatchlist(function() {
-            var followLink = self.person.createFollowLink();
-            if (followLink) {
+            self.showCommunicatorInfo();
+            self.showSametimeInfo();
+            if (!self.person.isSelf() && !self.person.restricted) {
+                var link_text = self.person.linkText();
+                self.followLink = $('<a href="#">' + link_text + '</a>');
+                self.followLink
+                    .addClass('followPersonButton')
+                    .unbind('click')
+                    .click(function(){ 
+                        self.person.isFollowing() ? self.stopFollowing() : self.follow();
+                        return false;
+                    });
+
                 self.bubble.append(
                     $('<div></div>')
                         .addClass('follow')
                         .append(
                             $('<ul></ul>')
-                                .append($('<li></li>').append(followLink))
+                                .append($('<li></li>').append(self.followLink))
                         )
                 );
             }
-            self.showCommunicatorInfo();
-            self.showSametimeInfo();
             self.bubble.mouseOver();
         });
+    },
+
+    follow: function() {
+        var self = this;
+        $.ajax({
+            url:'/data/people/' + Socialtext.userid + '/watchlist', 
+            type:'POST',
+            contentType: 'application/json',
+            processData: false,
+            data: '{"person":{"id":"' + this.person.id + '"}}',
+            success: function() {
+                self.person.watchlist[self.person.id] = true;
+                self.updateFollowLink();
+            }
+        });
+    },
+
+    stopFollowing: function() {
+        var self = this;
+        $.ajax({
+            url:'/data/people/' + Socialtext.userid + '/watchlist/' + this.person.id,
+            type:'DELETE',
+            contentType: 'application/json',
+            success: function() {
+                delete self.person.watchlist[self.person.id];
+                self.updateFollowLink();
+            }
+        });
+    },
+
+    updateFollowLink: function() {
+        var linkText = this.person.linkText();
+        if (this.person.isFollowing()) {
+            this.followLink.addClass('following');
+        }
+        else {
+            this.followLink.removeClass('following');
+        }
+        this.followLink.text(linkText);
     },
 
     showCommunicatorInfo: function() {
