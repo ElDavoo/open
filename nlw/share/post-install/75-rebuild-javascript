@@ -1,0 +1,11 @@
+#!/opt/perl/5.12.2/bin/perl
+
+use strict;
+use warnings;
+
+use Socialtext::JavaScript::Builder;
+my $b = Socialtext::JavaScript::Builder->new(verbose => 1);
+
+# same as `jsmake clean; jsmake all`
+$b->clean();
+$b->build();
