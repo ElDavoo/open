@@ -6,7 +6,7 @@ doInitPrefs = (ev, ui) ->
     $('#setup label:not(.ui-btn)').addClass 'ui-input-text'
     for own key, val of myPrefs
         onInitPref? key, val
-        $input = $("input[name=#{key}]")
+        $input = $("input[name=#{key}], select[name=#{key}]")
         continue unless $input.length
         $input.data 'key', key
         switch $input.attr 'type'
@@ -25,6 +25,10 @@ doInitPrefs = (ev, ui) ->
                           .removeClass('ui-icon-checkbox-on')
                           .addClass('ui-icon-checkbox-off')
             else $input.val val
+        if $input.find('option').length
+          $input.prev().find('.ui-btn-text').text(
+            $input.find('option:selected').text()
+          )
         $input.setupColorPicker() if $input.hasClass('color')
     setTimeout doInitSetup, 100
     return
@@ -155,7 +159,7 @@ gadgets.util.registerOnLoadHandler ->
     $('#setup').bind 'pageshow', doInitPrefs
 
     $('a.save').click ->
-        $('input[name]').each ->
+        $('input[name], select[name]').each ->
             key = $(@).data('key')
             return unless key
             if $(@).attr('type') == 'checkbox'
@@ -171,7 +175,7 @@ gadgets.util.registerOnLoadHandler ->
         withInstance( ($$, $save) ->
             $form = $$.find 'form'
             for own key, val of myPrefs
-                $form.find("input[name=#{key}]").val val
+                $form.find("input[name=#{key}], select[name=#{key}]").val val
             if window.parent.gadgets and window.parent.gadgets.container
                 if $save.length
                     $('#loading').show()
