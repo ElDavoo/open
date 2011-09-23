@@ -43,7 +43,9 @@ method part_directory($part) {
     return $->output_directory
         if $part->{file} and $->targets->{$part->{file}};
     my $base = $->code_base;
-    return "$base/$part->{dir}" if $part->{dir};
+    if ($part->{dir}) {
+        return $part->{dir} =~ m{^/} ? $part->{dir} : "$base/$part->{dir}";
+    }
     return "$base/javascript/wikiwyg" if $part->{widget_template};
     return "$base/javascript/contrib/shindig" if $part->{shindig_feature};
     return "$base/plugin/$part->{plugin}/share/javascript" if $part->{plugin};
