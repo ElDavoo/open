@@ -4,6 +4,8 @@ Socialtext.prototype.attachments = (function($) {
 
     return {
         renderAttachments: function() {
+            var self = this;
+
             var html = Jemplate.process('page/attachments.tt2', {
                 attachments: st.page.attachments
             });
