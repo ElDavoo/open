@@ -347,7 +347,7 @@ sub st_page_title {
     if ($self->{'skin'} eq 's2') {
         $self->{selenium}->text_like('id=st-list-title', qr/\Q$expected_title\E/);
     } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'contentContainer\']', qr/\Q$expected_title\E/);
+        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$expected_title\E/);
     } else {
         ok 0, "Unknown skin type: $self->{'skin'}";
     }
@@ -633,7 +633,7 @@ sub st_search {
     if ($self->{'skin'} eq 's2') {
         $self->{selenium}->text_like('id=st-list-title', qr/\Q$opt2\E/);
     } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'contentContainer\']', qr/\Q$opt2\E/);
+        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$opt2\E/);
     } else {
         ok 0, "Unknown skin type: $self->{'skin'}";
     }
@@ -652,7 +652,7 @@ sub st_result {
         $self->{selenium}->text_like('id=st-search-content', 
                                  $self->quote_as_regex($opt1));
     } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'contentContainer\']', $self->quote_as_regex($opt1));
+        $self->{selenium}->text_like('//div[@id=\'content\']', $self->quote_as_regex($opt1));
     } else {
         ok 0, "Unknown skin type: $self->{'skin'}";
     }
@@ -1357,7 +1357,7 @@ sub _click_user_row {
         $sel->$method_name($chk_xpath);
         if ($self->{'skin'} eq 's3') {
             $self->click_and_wait('link=Save');
-            $sel->text_like('contentContainer', qr/\QChanges Saved\E/);
+            $sel->text_like('content', qr/\QChanges Saved\E/);
          } elsif ($self->{'skin'} eq 's2') {
             $self->click_and_wait('Button');
             $sel->text_like('st-settings-section', qr/\QChanges Saved\E/);
