@@ -1,11 +1,17 @@
 body.xhtml {
   font-family: Verdana, Arial, sans-serif; }
 
+.xhtml ol {
+  padding-left: 35px; }
+
+.wiki ol {
+  padding-left: 25px; }
+
 .wiki, .xhtml {
   padding: 0 !important;
   line-height: normal !important;
   font-size: 12px !important; }
-  .wiki ol, .wiki ul, .xhtml ol, .xhtml ul {
+  .wiki ul, .xhtml ul {
     padding-left: 25px; }
   .wiki ol, .xhtml ol {
     list-style: decimal outside none; }
