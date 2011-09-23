@@ -50,6 +50,33 @@ foo@bar.org
   ["[XHTML: Meeting notes 2009-01-06]", """
 <p><a href="XHTML%3A%20Meeting%20notes%202009-01-06">XHTML: Meeting notes 2009-01-06</a></p>\n
   """]
+  ["""
+| x | y |
+| z | w |
+  """, """
+<table style="border-collapse: collapse" options="" class="formatter_table" border="1"><tr>
+<td>x</td>
+<td>y</td>
+</tr>
+<tr>
+<td>z</td>
+<td>w</td>
+</tr>
+</table><br />\n
+  """]
+  ["""
+| x | y |
+| z |
+  """, """
+<table style="border-collapse: collapse" options="" class="formatter_table" border="1"><tr>
+<td>x</td>
+<td>y</td>
+</tr>
+<tr>
+<td colspan="2">z</td>
+</tr>
+</table><br />\n
+  """]
 ]
 
 for [wiki, html] in tests
