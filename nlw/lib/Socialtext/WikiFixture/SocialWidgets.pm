@@ -635,16 +635,14 @@ Radiotype should be self-join-radio or private-radio
 sub st_create_group {
     my ($self, $groupname, $groupdesc, $radiotype) = @_;
     $self->handle_command('comment',"st_create_group called with params '$groupname','$groupdesc','$radiotype'");
-    $self->handle_command('set_Speed',4000);
+    $self->handle_command('set_Speed',2000);
     $self->handle_command('wait_for_element_present_ok','link=Create Group...',30000);
     $self->handle_command('click_ok','link=Create Group...');
     $self->handle_command('wait_for_element_visible_ok','st-create-group-next', 30000);
     $self->handle_command('wait_for_element_visible_ok', $radiotype);
     $self->handle_command('check_ok', $radiotype);
     $self->handle_command('click_ok','st-create-group-next');
-    $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
-    $self->handle_command('pause_ok','8000');
-    $self->handle_command('text_like','//body','Create a Group');
+    $self->handle_command('pause_ok','4000');
     $self->handle_command('st-name-widget', 1,'create_group');
     $self->handle_command('st-select-widget-frame','create_group');
     $self->handle_command('wait_for_element_visible_ok','name', 30000);

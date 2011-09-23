@@ -7,6 +7,7 @@ socialtext.dialog.register('groups-delete', function(opts) {
         buttons: [
             {
                 text: loc('do.delete'),
+                id: 'st-lightbox-group-delete',
                 click: function() {
                     dialog.disable();
                     var group = new Socialtext.Group({
@@ -26,6 +27,7 @@ socialtext.dialog.register('groups-delete', function(opts) {
             },
             {
                 text: loc('do.cancel'),
+                id: 'st-lightbox-group-delete-cancel',
                 click: function() {
                     dialog.close();
                 }
