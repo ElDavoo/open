@@ -56,6 +56,13 @@ Socialtext.prototype.setupPageHandlers = function() {
                 st.page.addTag(val);
             }
         });
+
+    // Attachments
+    st.attachments.renderAttachments();
+    $('#st-attachments-uploadbutton').button().click(function () {
+        socialtext.dialog.show('attachments-upload');
+        return false;
+    });
 }
 
 })(jQuery);

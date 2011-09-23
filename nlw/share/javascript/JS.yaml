@@ -38,6 +38,7 @@
         - Socialtext/Dialog.js
         - Socialtext/Search.js
         - Socialtext/Display.js
+        - Socialtext/Attachments.js
         - socialtext-api.js
         - socialtext-container.js
         - bubble.js
@@ -113,6 +114,8 @@
         - activities-add-video
         - activities-add-link
         - activities-show-video
+        - attachments-upload
+        - attachments-delete
         - control-create-workspace
         - control-create-group
         - groups-leave

@@ -133,6 +133,13 @@ h4
 .opaque
   @include opacity(50)
 
+.warning
+  background-color: #fffcdd
+  border: 1px solid #d5d6d5
+  padding: 5px
+  .more p
+    display: inline
+
 /**
  * Text tabs (top content widgets, etc...)
 
@@ -489,6 +496,7 @@ div.peoplelist-desc
         &:hover
           @include opacity(70)
 
+@import wiki.sass
 @import control.sass
 @import jquery-ui.sass
 @import bubble.sass

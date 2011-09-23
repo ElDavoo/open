@@ -3,7 +3,6 @@
   <form id="st-attachments-attach-form" name="attachForm" method="post" action="" enctype="multipart/form-data" target="st-attachments-attach-formtarget">
     <input type="hidden" name="page_name" value="[% page_id %]"/>
     <input type="hidden" name="action" value="attachments_upload"/>
-    <div class="title" id="st-attachments-attach-title">[% loc('file.upload') %]</div>
 
     <p id="st-attachments-attach-message">
     [% loc('info.browse') %]
@@ -20,31 +19,9 @@
     <div class="warning" id="st-attachments-duplicate-menu" style="display:none">
         [% INCLUDE duplicate_attachment_warning %]
     </div>
-    <div class="error" id="st-attachments-attach-error">&nbsp;</div>
-    <div class="message" id="st-attachments-attach-uploadmessage">&nbsp;</div>
-    <div class="list" id="st-attachments-attach-list"></div>
-
-    <div class="buttons" id="st-attachments-attach-buttons">
-        <ul class="widgetButton" style="float:left; padding:10px">
-            <li class="flexButton" id="st-attachments-attach-closebutton">
-                <a class="genericOrangeButton" href="#">[% loc('do.done') %]</a>
-            </li>
-        </ul>
-    </div>
-    <div style="clear:both;">&nbsp;</div>
+    <div id="st-attachments-attach-uploadmessage" class="message ui-state-highlight ui-corner-all hidden"></div>
+    <div class="clear"></div>
   </form>
-</div>
-
-<div class="lightbox" id="st-attachment-delete-confirm">
- <h3>[% loc('file.delete') %]</h3>
- <p>[% loc("file.delete=name?", selected_attachment) %]</p>
-
- <div id="st-attachment-delete-buttons">
- <ul class="buttons">
-  <li class="flexButton"><a href="#" id="st-attachment-delete" class="delete">[% loc('do.delete') %]</a></li>
-  <li class="flexButton"><a href="#" id="st-attachment-delete-cancel" class="close">[% loc('do.cancel') %]</a></li>
- </ul>
- </div>
 </div>
 
 [% BLOCK duplicate_attachment_warning %]
@@ -54,11 +31,11 @@
      <p></p>
     </div>
 
-    <ul class="chooser">
-        <li><a class="add" href="#">[% loc("do.add") %]</a></li>
-        <li><a class="replace" href="#">[% loc("do.replace") %]</a></li>
-        <li class="last"><a class="cancel" href="#">[% loc("do.cancel") %]</a></li>
-    </ul>
+    <div class="chooser right">
+        <a class="add" href="#">[% loc("do.add") %]</a>
+        <a class="replace" href="#">[% loc("do.replace") %]</a>
+        <a class="cancel" href="#">[% loc("do.cancel") %]</a>
+    </div>
 [% END %]
 
 [% BLOCK duplicate_files %]

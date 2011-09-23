@@ -8,7 +8,7 @@ Socialtext.Page.prototype = {
     /**
      * Tagging
      */
-    tagUrl: function (tag) {
+    taguri: function (tag) {
         return this.uri() + '/tags/' + encodeURIComponent(tag);
     },
 
@@ -18,10 +18,9 @@ Socialtext.Page.prototype = {
 
     addTag: function (tag) {
         var self = this;
-        console.log('addTag');
         $.ajax({
             type: "PUT",
-            url: self.tagUrl(tag),
+            url: self.taguri(tag),
             // {bz: 4588}: Use an non-empty payload to avoid
             // "411 Length required"
             data: { '': '' },
@@ -36,7 +35,7 @@ Socialtext.Page.prototype = {
         var self = this;
         $.ajax({
             type: "DELETE",
-            url: self.tagUrl(tag),
+            url: self.taguri(tag),
             complete: function () {
                 self.refreshTags();
             }
@@ -128,10 +127,11 @@ Socialtext.Page.prototype = {
     },
 
     refreshPageContent: function (force_update) {
-        if (Socialtext.page_type == 'spreadsheet') return false;
+        var self = this;
+        if (self.page_type == 'spreadsheet') return false;
 
         $.ajax({
-            url: this.pageUrl(),
+            url: this.uri(),
             data: {
                 link_dictionary: 's2',
                 verbose: 1,
@@ -141,7 +141,7 @@ Socialtext.Page.prototype = {
             cache: false,
             dataType: 'json',
             success: function (data) {
-                Page.html = data.html;
+                self.html = data.html;
                 var newRev = data.revision_id;
                 var oldRev = Socialtext.revision_id;
                 if ((oldRev < newRev) || force_update) {
@@ -166,7 +166,7 @@ Socialtext.Page.prototype = {
                         jQuery(".nlw_phrase", jQuery(data.last_edit_time_html))
                     );
 
-                    Page.setPageContent(data.html);
+                    self.setPageContent(data.html);
 
                     $('table.sort')
                         .each(function() { Socialtext.make_table_sortable(this) });
@@ -174,7 +174,7 @@ Socialtext.Page.prototype = {
                     // After upload, refresh the wikitext contents.
                     if ($('#wikiwyg_wikitext_textarea').size()) {
                         $.ajax({
-                            url: Page.pageUrl(),
+                            url: self.uri(),
                             data: { accept: 'text/x.socialtext-wiki' },
                             cache: false,
                             success: function (text) {
@@ -192,7 +192,7 @@ Socialtext.Page.prototype = {
                '/attachments/' + Socialtext.page_id + ':' + attach_id
     },
 
-    _format_bytes: function(filesize) {
+    format_bytes: function(filesize) {
         var n = 0;
         var unit = '';
         if (filesize < 1024) {

@@ -1,10 +1,8 @@
 (function ($) {
 
-var ST = window.ST = window.ST || {};
+Socialtext.Attachments = function () {}
 
-ST.Attachments = function () {}
-var proto = ST.Attachments.prototype = new ST.Lightbox;
-
+var proto = Attachments.prototype = {};
 proto._newAttachmentList = [];
 proto._attachmentList = [];
 
@@ -322,7 +320,7 @@ proto.showDeleteInterface = function (img) {
         var content = buttons.html();
         buttons.html(loader);
         self.delAttachment(href, true);
-        $.hideLightbox();
+        self.dialog.close();
         buttons.html(content);
     });
 
@@ -336,8 +334,8 @@ proto.showUploadInterface = function () {
     var self = this;
 
     if (!$('#st-attachments-attachinterface').size()) {
-        this.process('attachment.tt2');
-        Attachments.refreshUploadedAttachmentsList();
+        self.process('attachment.tt2');
+        self.refreshUploadedAttachmentsList();
     }
     
     // Make sure the duplicate attachment warnings are hidden.
@@ -400,6 +398,6 @@ proto.delete_all_attachments = proto.deleteAllAttachments;
 proto.reset_new_attachments = proto.resetNewAttachments;
 proto.get_new_attachments = proto.getNewAttachments;
 
-})(jQuery);
+socialtext.dialog.register('attachment', function() { });
 
-window.Attachments = window.Attachments || new ST.Attachments;
+})(jQuery);
