@@ -82,7 +82,7 @@ method render {
 
     $Socialtext::System::SILENT_RUN = 1;
     shell_run(
-        '/var/lib/gems/1.8/bin/sass',
+        '/opt/ruby/1.8/bin/sass',
         '--compass',
         '-I', $self->code_base . '/sass', # Add sass files from starfish
         '-t', $self->style,
