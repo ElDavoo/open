@@ -55,6 +55,9 @@ CREATE_DB_USER = $(PERL) dev-bin/create-db-user
 # File sets that can be installed (use install-files to get all files)
 INSTALL_BASE = install-html       \
 	       install-template	  \
+	       install-javascript \
+	       install-images \
+	       install-sass \
                install-fonts      \
                install-node_modules \
                install-migrations \
