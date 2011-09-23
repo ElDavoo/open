@@ -52,6 +52,20 @@ foo@bar.org
   """]
   ["""
 | x | y |
+| z | w |
+  """, """
+<table style="border-collapse: collapse" options="" class="formatter_table" border="1"><tr>
+<td>x</td>
+<td>y</td>
+</tr>
+<tr>
+<td>z</td>
+<td>w</td>
+</tr>
+</table><br />\n
+  """]
+  ["""
+| x | y |
 | z |
   """, """
 <table style="border-collapse: collapse" options="" class="formatter_table" border="1"><tr>
