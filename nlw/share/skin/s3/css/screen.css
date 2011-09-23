@@ -1082,6 +1082,11 @@ body#blog div#contentColumns div#contentLeft img {
 	border: #cfcfcf 6px solid;
 }
 
+body#blog div#contentColumns div#contentLeft div.signal img {
+	margin-top: 0px;
+	border: none;
+}
+
 div.messageBox {
 	background: #fcf2e3 url(../images/messageBoxTopLeft.png) no-repeat top left;
 }

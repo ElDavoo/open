@@ -1619,6 +1619,7 @@
 "page.duplicate":"Zzzzzzzzz Zzzz",
 "page.duplicate=title":"Zzzzzzzzz zz [_1]",
 "page.edit":"Zzzz",
+"page.edit-as-xhtml":"Zzzzzzz zzz Zzzz <i>(zzzz zzz zzzzzz zzzzzzzzz)</i>",
 "page.edit=title":"Zzzz [_1]",
 "page.editing=ago":"zzzzzz zzzz zzzz zzz zzzzzzz [_1].",
 "page.email-to-this":"Zzzzz Zz Zzzz Zzzz",

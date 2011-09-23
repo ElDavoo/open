@@ -330,6 +330,14 @@ div
 td .wafl_box
   margin-bottom: 0
 
+.xhtml
+  table.sort tr:first-child td
+    padding-right: 24px !important
+    background-position: top right
+    background-repeat: no-repeat
+    background-image: url(../images/unsorted.png)
+    background-color: #eee
+
 .wiki, .xhtml
   .wiki-include-page
     margin: 0 0 1em 0
@@ -381,3 +389,11 @@ td .wafl_box
     padding-top: 6px
     font-weight: bold
     white-space: nowrap
+
+img.st-widget
+  display: block
+  clear: both
+  &.st-inline-widget
+    display: inline
+    clear: none
+

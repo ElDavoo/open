@@ -1619,6 +1619,7 @@
 "page.duplicate":"Duplicate Page",
 "page.duplicate=title":"Duplicate of [_1]",
 "page.edit":"Edit",
+"page.edit-as-xhtml":"Convert and Edit <i>(with new editor prototype)</i>",
 "page.edit=title":"Edit [_1]",
 "page.editing=ago":"opened this page for editing [_1].",
 "page.email-to-this":"Email To This Page",

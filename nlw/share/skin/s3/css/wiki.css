@@ -306,6 +306,13 @@ div#contentColumns div#contentLeft div.wafl_box div.wafl_items ul.item_list li p
 td .wafl_box {
   margin-bottom: 0; }
 
+.xhtml table.sort tr:first-child td {
+  padding-right: 24px !important;
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-image: url(../images/unsorted.png);
+  background-color: #eeeeee; }
+
 .wiki .wiki-include-page, .xhtml .wiki-include-page {
   margin: 0 0 1em 0;
   padding: 1em 0 1em 0;
@@ -356,3 +363,10 @@ td .wafl_box {
   white-space: nowrap; }
   .wiki div.widget div.widgetHeaderTitle img, .xhtml div.widget div.widgetHeaderTitle img {
     display: none; }
+
+img.st-widget {
+  display: block;
+  clear: both; }
+  img.st-widget.st-inline-widget {
+    display: inline;
+    clear: none; }

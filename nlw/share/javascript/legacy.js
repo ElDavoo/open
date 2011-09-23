@@ -453,8 +453,22 @@ $(function() {
         _gz = '.gz';
     }
 
-    var editor_uri = nlw_make_js_path('socialtext-editor.js' + _gz);
-    var socialcalc_uri = nlw_make_js_path("socialtext-socialcalc.js" + _gz);
+    var timestamp = (new Date).getTime();
+
+    var editor_uri = nlw_make_s3_path('/javascript/socialtext-editor.js' + _gz);
+    if (Socialtext.dev_env) {
+        editor_uri = editor_uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
+    }
+
+    var socialcalc_uri = nlw_make_plugin_path(
+        "/socialcalc/javascript/socialtext-socialcalc.js" + _gz
+    );
+    if (Socialtext.socialcalc_make_time) {
+        socialcalc_uri = socialcalc_uri.replace(
+            /(\d+\.\d+\.\d+\.\d+)/,
+            '$1.' + Socialtext.socialcalc_make_time
+        );
+    }
 
     var ckeditor_uri = nlw_make_plugin_path(
         "/ckeditor/javascript/socialtext-ckeditor.js" + _gz
@@ -473,7 +487,13 @@ $(function() {
         }
         else {
             Socialtext.lightbox_loaded[lightbox] = true;
-            var uri = nlw_make_js_path('lightbox-' + lightbox + '.js' + _gz);
+            var uri = nlw_make_s3_path(
+                '/javascript/lightbox-' + lightbox + '.js' + _gz
+            );
+            if (Socialtext.dev_env) {
+                uri = uri.replace(/(\d+\.\d+\.\d+\.\d+)/,'$1.'+timestamp);
+            }
+
             $.ajaxSettings.cache = true;
             $.getScript(uri, cb);
             $.ajaxSettings.cache = false;
@@ -536,7 +556,7 @@ $(function() {
                 oncomplete: function () {
                     $.get(Page.pageUrl(page_id), function (html) {
                         $('#content_'+page_id).html(html);
-                    });
+                    }, 'html');
                 }
             });
             ge.show();
@@ -581,6 +601,12 @@ $(function() {
             var rename = new ST.Rename;
             rename.renameLightbox();
         });
+        return false;
+    });
+
+    $("#st-pagetools-edit-as-xhtml").click(function () {
+        Socialtext.auto_convert_wiki_to_html = true;
+        Socialtext.load_editor();
         return false;
     });
 
@@ -750,14 +776,21 @@ $(function() {
 
     Socialtext.load_editor = function () {
         $.ajaxSettings.cache = true;
+        var current_workspace = Socialtext.wikiwyg_variables.hub.current_workspace;
 
-        if (Socialtext.page_type == 'spreadsheet' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_spreadsheet) {
+        if (Socialtext.page_type == 'spreadsheet' && current_workspace.enable_spreadsheet) {
             $.getScript(socialcalc_uri, function () {
                 Socialtext.start_spreadsheet_editor();
                 $('#bootstrap-loader').hide();
             });
         }
-        else if (Socialtext.page_type == 'xhtml' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_xhtml) {
+        else if (Socialtext.page_type == 'xhtml' && current_workspace.enable_xhtml) {
+            $.getScript(ckeditor_uri, function () {
+                Socialtext.start_xhtml_editor();
+                $('#bootstrap-loader').hide();
+            });
+        }
+        else if (Socialtext.auto_convert_wiki_to_html && current_workspace.enable_xhtml) {
             $.getScript(ckeditor_uri, function () {
                 Socialtext.start_xhtml_editor();
                 $('#bootstrap-loader').hide();

@@ -174,7 +174,7 @@ proto.create_grammar = function() {
 
         td_multi_line_block: {
             pre_match: _escape_pipes,
-            match: /\|[ \t]*\n?(\s*?[^|]*?\n[^|]*?)[ \t]*(?=\|)/,
+            match: /^\s*\|[ \t]*\n?(\s*?[^|]*?\n[^|]*?)[ \t]*(?=\|)/,
             post_match: _unescape_pipes,
             blocks: ['pre', 'html', 'hr', 'hx', 'waflparagraph', 'ol', 'ul', 'blockquote', 'p', 'empty', 'else'],
             filter: function(node) {
@@ -185,7 +185,7 @@ proto.create_grammar = function() {
 
         td_single_line_block: {
             pre_match: _escape_pipes,
-            match: /\|[ \t]*\n?((?:\*+|#+|>+|\^+)\s[^|]*?)[ \t]*(?=\|)/,
+            match: /^\s*\|[ \t]*\n?((?:\*+|#+|>+|\^+)\s[^|]*?)[ \t]*(?=\|)/,
             post_match: _unescape_pipes,
             blocks: ['hx', 'ol', 'ul'],
             filter: function(node) {

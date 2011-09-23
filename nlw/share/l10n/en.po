@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-08 16:52-0700\n"
+"PO-Revision-Date: 2011-09-08 13:54+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -11000,6 +11000,9 @@ msgstr "Duplicate of %1"
 #: share/plugin/widgets/share/widgets/one_page/widget.html:28 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:34 share/plugin/widgets/share/widgets/workspace_activity/widget.html:7 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:41 share/skin/s3/template/element/page/display/edit-button:13 share/skin/s3/template/element/page/display/edit-button:7 share/skin/s3/template/lite/subnav.html:40 share/skin/s3/template/view/weblog:98
 msgid "page.edit"
 msgstr "Edit"
+
+msgid "page.edit-as-xhtml"
+msgstr "Convert and Edit <i>(with new editor prototype)</i>"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2

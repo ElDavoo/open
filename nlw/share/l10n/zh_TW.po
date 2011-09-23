@@ -10416,6 +10416,9 @@ msgstr "%1的副本"
 msgid "page.edit"
 msgstr "編輯"
 
+msgid "page.edit-as-xhtml"
+msgstr "轉換格式並編輯<br />（使用新版編輯器）"
+
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
 msgid "page.edit=title"
