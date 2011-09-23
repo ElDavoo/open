@@ -67,6 +67,9 @@ Avatar.prototype = {
     },
 
     showCommunicatorInfo: function() {
+        if (window.ocs_helper === undefined)
+            return;
+
         var communicator_elem = $(this.node).find('.communicator');
         var communicator_elem_parent = communicator_elem.parent();
         var communicator_sn = communicator_elem.text();
