@@ -23,10 +23,18 @@ Socialtext.prototype.setupPageHandlers = function() {
         $(this).hide();
         $('#st-tags-form').show();
         $('#st-tags-field').val('').focus();
+        $('#st-tags-field').unbind('blur').blur(function () {
+            setTimeout(function () {
+                $('#st-tags-form').hide();
+                $('#st-tags-addlink').show();
+            }, 500);
+        })
     });
-    $('#st-tags-addbutton').button().click(function() {
-        $('#st-tags-form').submit();
-    });
+
+    $('#st-tags-plusbutton-link')
+        .button({ label: '+' })
+        .click(function() { $('#st-tags-form').submit() });
+
     $('#st-tags-form')
         .bind('submit', function () {
             var tag = $('#st-tags-field').val();
@@ -37,12 +45,6 @@ Socialtext.prototype.setupPageHandlers = function() {
         $('#st-tags-form').submit();
     });
     $('#st-tags-field')
-        .blur(function () {
-            setTimeout(function () {
-                $('#st-tags-form').hide();
-                $('#st-tags-addlink').show()
-            }, 500);
-        })
         .lookahead({
             url: '/data/workspaces/' + st.workspace.name + '/tags',
             params: {

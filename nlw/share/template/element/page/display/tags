@@ -26,5 +26,6 @@
         <span id="st-tags-suggestionlist"></span>
       </div>
     [% END %]
+    <div class="clear"></div>
   </div>
 </div>
