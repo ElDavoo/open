@@ -13,9 +13,12 @@ Socialtext.prototype.attachments = (function($) {
                 .each(function() { new Avatar(this) });
 
             // Delete Attachments
-            $('#st-attachment-listing .delete_attachment').unbind('click')
+            $('#st-attachment-listing .delete_icon').unbind('click')
                 .click(function() {
-                    self.showDeleteInterface(this);
+                    socialtext.dialog.show('attachments-delete', {
+                        href: $(this).attr('href'),
+                        filename: $(this).data('filename')
+                    });
                     return false;
                 });
 
@@ -71,49 +74,6 @@ Socialtext.prototype.attachments = (function($) {
                 this.refreshAttachments();
                 st.page.refreshPageContent(true);
             }
-        },
-
-        showDeleteInterface: function (img) {
-            var self = this;
-            var href = $(img).prevAll('a[href!=#]').attr('href');
-            
-            $(Socialtext.attachments).each(function() {
-                if ( href == this.uri ) {
-                    Socialtext.selected_attachment = this.name;
-                }
-            });
-
-            $(self.getNewAttachments()).each(function() {
-                if ( href == this.uri ) {
-                    Socialtext.selected_attachment = this.name;
-                }
-            });
-
-            self.process('attachment.tt2');
-
-            // We only process the popup once, so we'll only load the
-            // selected_attachment that first time. After that, we need to manually
-            // replace the value.
-            var popup = $('#st-attachment-delete-confirm');
-            popup.html(
-                popup.html().replace(/'.*'/,
-                    "'" + Socialtext.selected_attachment + "'")
-            );
-
-            $('#st-attachment-delete').unbind('click').click(function() {
-                var loader = $('<img>').attr('src','/static/skin/common/images/ajax-loader.gif');
-                var buttons = $('#st-attachment-delete-buttons');
-                var content = buttons.html();
-                buttons.html(loader);
-                self.delAttachment(href, true);
-                self.dialog.close();
-                buttons.html(content);
-            });
-
-            $.showLightbox({
-                content:'#st-attachment-delete-confirm',
-                close:'#st-attachment-delete-cancel'
-            })
         },
 
         showDuplicateLightbox: function(files, upload_callback) {
