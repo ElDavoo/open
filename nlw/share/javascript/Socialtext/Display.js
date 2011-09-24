@@ -65,6 +65,13 @@ Socialtext.prototype.setupPageHandlers = function() {
         socialtext.dialog.show('attachments-upload');
         return false;
     });
+
+    // Edit
+    $('#st-edit-button-link').button().click(function() {
+        $.getScript(st.nlw_make_js_path('socialtext-ckeditor.jgz'), function() {
+            Socialtext.start_xhtml_editor();
+        });
+    });
 }
 
 })(jQuery);

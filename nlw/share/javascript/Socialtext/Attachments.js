@@ -3,6 +3,16 @@ Socialtext.prototype.attachments = (function($) {
     var _attachmentList = [];
 
     return {
+        delete_new_attachments: function() {
+            console.log('delete_new_attachments unimplemented');
+        },
+        reset_new_attachments: function() {
+            console.log('reset_new_attachments unimplemented');
+        },
+        get_new_attachments: function() {
+            console.log('get_new_attachments unimplemented');
+        },
+
         renderAttachments: function() {
             var self = this;
 

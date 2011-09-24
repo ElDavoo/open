@@ -23,14 +23,17 @@
 [% buttons.push(['st-new-page', loc('+ Create Page') ]) %]
 
 [% WRAPPER $frame_name id="contentPage" %]
-<div class="grid_18 widgetColumn">
+
+<div id="st-editor" style="display:none"></div>
+
+<div id="st-display-mode-container" class="grid_18 widgetColumn">
   <div class="widget">
     <h1 id="st-page-titletext" class="tableTitle" title="[% page.display_title %]">[% page.display_title %]</h1>
     <div class="content" id="st-page-content">[% page.content %]</div>
   </div>
 </div>
 
-<div class="grid_6 widgetColumn">
+<div id="st-display-mode-widgets" class="grid_6 widgetColumn">
   [% INCLUDE element/page/display/tools %]
   [% INCLUDE element/page/display/tags %]
   [% INCLUDE element/page/display/links %]

@@ -21,7 +21,9 @@
 [% END %]
 
 <div class="widget">
-  <h1>&nbsp;</h1>
+  <div class="pad4">
+    [% INCLUDE 'element/page/display/edit-button' %]
+  </div>
   <div class="content">
     <ul class="tools">
       [% SET locked = page_locked_for_user %]

@@ -1,5 +1,4 @@
-if (typeof(socialtext) == 'undefined') socialtext = {};
-socialtext.dialog = (function($) {
+Socialtext.prototype.dialog = (function($) {
     var dialogs = {};
     var loaded = {};
 
@@ -118,3 +117,7 @@ $.hideLightbox = function() { throw new Error('$.hideLightbox deprecated') }
 $.showLightbox = function() { throw new Error('$.showLightbox deprecated') }
 $.pauseLightbox = function() { throw new Error('$.pauseLightbox deprecated') }
 $.resumeLightbox = function() { throw new Error('$.resumeLightbox deprecated') }
+
+// Temporary compat
+if (typeof(socialtext) == 'undefined') socialtext = {};
+socialtext.dialog = Socialtext.prototype.dialog;

@@ -2,8 +2,7 @@
     <div class="body">
         <form action="#">
             <div class="field">
-                <label for="st-edit-summary-text-area">[% loc("edit.summarize") %]</label>
-                <input type="text" id="st-edit-summary-text-area" maxlength="250" class="input">
+                <input type="text" id="st-edit-summary-text-area" maxlength="250" class="input initial" value="[% loc("edit.summarize") %]">
             </div>
             [% IF plugins_enabled.grep("signals").size && plugins_enabled_for_current_workspace_account.grep("signals").size -%]
             <div class="signal">

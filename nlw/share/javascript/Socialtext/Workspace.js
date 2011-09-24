@@ -9,14 +9,27 @@ Socialtext.Workspace = function(params) {
 Socialtext.Workspace.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.Workspace.prototype, {
-    url: function(extra) {
+    uri: function(extra) {
         if (!extra) extra = '';
         return '/data/workspaces/' + this.name + extra
     },
+
+    pageExists: function (page_name) {
+        var data = jQuery.ajax({
+            url: this.pageUri(page_name),
+            async: false
+        });
+        return data.status == '200';
+    },
+
+    pageUri: function(page_name) {
+        return this.uri('/pages/' + page_name);
+    },
+
     load: function(callback) {
         var self = this;
         $.ajax({
-            url: self.url(),
+            url: self.uri(),
             type: 'get',
             dataType: 'json',
             success: function(data) {
@@ -60,7 +73,7 @@ $.extend(Socialtext.Workspace.prototype, {
     _request: function(method, collection, data, callback) {
         var self = this;
         $.ajax({
-            url: self.url('/' + collection),
+            url: self.uri('/' + collection),
             type: method,
             contentType: 'application/json',
             data: $.toJSON(data),
@@ -124,7 +137,7 @@ $.extend(Socialtext.Workspace.prototype, {
                 return r;
             });
             $.ajax({
-                url: this.url('/trash'),
+                url: this.uri('/trash'),
                 type: 'POST',
                 contentType: 'application/json',
                 data: $.toJSON(data),

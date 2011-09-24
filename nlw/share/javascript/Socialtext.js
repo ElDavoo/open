@@ -7,8 +7,10 @@ Socialtext = function(vars) {
     $.extend(this, vars);
 
     // TODO this.viewer = new Socialtext.User(this.viewer);
-    // TODO this.workspace = new Socialtext.Workspace(this.workspace);
-    if (this.page) this.page = new Socialtext.Page(this.page);
+    if (this.workspace)
+        this.workspace = new Socialtext.Workspace(this.workspace);
+    if (this.page)
+        this.page = new Socialtext.Page(this.page);
 }
 
 Socialtext.prototype = {
@@ -22,6 +24,12 @@ Socialtext.prototype = {
             'workspaces_settings_appearance': 'dl.form > dd > input:eq(0)'
         }
     },
+
+    UA_is_MacOSX: navigator.userAgent.match(/Mac OS X/),
+    UA_is_Safari: ($.browser.safari && parseInt($.browser.version) < 500),
+
+    // For some templates
+    loc: loc,
 
     // Paths
     nlw_make_path: function(path) {
@@ -75,40 +83,6 @@ Socialtext.prototype = {
 
             // Wikiwyg
             wikiwyg_variables: {
-                dropshadow: {
-                    defined: ''
-                },
-                is_new: this.page && this.page.is_new,
-                is_incipient: this.page && this.page.is_incipient,
-                plugins_enabled: this.plugins_enabled,
-                plugins_enabled_for_current_workspace_account:
-                    this.plugins_enabled_for_current_workspace_account,
-                new_tags: this.page ? this.page.new_tags : [],
-                miki_url: this.miki_url || '',
-                ui_is_expanded: this.ui_is_expanded,
-                user: {
-                    is_guest: this.viewer.is_guest
-                },
-                page: this.page ? {
-                    title: this.page.title || '',
-                    display_title: this.page.display_title || '',
-                    page_type: this.page.type || '',
-                    revision_id: this.page.revision_id || '',
-                    caller: this.page.caller || '',
-                    new_title: this.page.new_title
-                } : {},
-                hub: {
-                    current_workspace: this.workspace ? {
-                        uri: this.workspace.uri,
-                        allows_html_wafl: this.workspace.allows_html_wafl,
-                        enable_spreadsheet: this.workspace.enable_spreadsheet,
-                        enable_xhtml: this.workspace.enable_xhtml
-                    } : {}
-                },
-                wiki: {
-                    static_path: this.staic_path,
-                    is_public: false
-                }
             }
         });
     }

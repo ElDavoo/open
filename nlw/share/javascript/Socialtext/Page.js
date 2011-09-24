@@ -74,16 +74,6 @@ Socialtext.Page.prototype = {
      */
 
     // args: (ws,page) or (page_in_current_workspace)
-    active_page_exists: function () {
-        var args = $.makeArray(arguments);
-        var page_name = trim(args.pop());
-        var wiki_id = args.pop() || Socialtext.wiki_id;
-        var data = jQuery.ajax({
-            url: Page.pageUrl(wiki_id, page_name),
-            async: false
-        });
-        return data.status == '200';
-    },
 
     restApiUri: function () {
         return Page.pageUrl.apply(this, arguments);
