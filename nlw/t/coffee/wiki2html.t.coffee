@@ -73,7 +73,8 @@ foo@bar.org
 <td>y</td>
 </tr>
 <tr>
-<td colspan="2">z</td>
+<td>z</td>
+<td></td>
 </tr>
 </table><br />\n
   """]
