@@ -65,7 +65,7 @@ st-logoutin | %%euserone%% | %%password%% |
 
 | *Comment* | Test Case: People Search Execute Search For User #4 by Last Name & UTF-8 |  |
 | open_ok | / |  |
-| st-search-for | People | Gaertner |
+| st-search-for | People | Gäèrtner |
 | wait_for_text_present_ok | People matching | 30000 |
 | wait_for_element_visible_ok | link=Markus Z. Gäèrtner | 30000 |
 | text_like | content | qr/Showing 1 - 1 of 1 total/ism |

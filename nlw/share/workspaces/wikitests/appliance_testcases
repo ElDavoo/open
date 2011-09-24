@@ -23,6 +23,6 @@ Keep these two authen renewal cases together
 * [Test Case: Authen Renewal]
 * [Test Case: Authen Renewal Reset]
 
-Save Race Conditions uses st-appliance-ctl stop/start
+Save Race Conditions uses st-stop/start-webserver
 
 * [Test Case: Save Race Conditions]

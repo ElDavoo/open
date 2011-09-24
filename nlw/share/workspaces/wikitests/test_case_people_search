@@ -43,6 +43,17 @@
 | add-member | %%euserfive%% | %%diffws%% |  |
 
 | *Comment* | Test Case: People Search Edit and search FIVE Profiles |  |
+
+| st-logoutin | %%euserfour%% | %%password%% |
+| set | current_user | %%euserfour%% |
+| set | location | South Bend, IN |
+| set | default_field | default-four |
+| set | first | Markus |
+| set | middle | Z. |
+| set | last | Gäèrtner |
+| include | [Test Case: People Search Edit A Profile] |  |
+| include | [Test Case: People Search Field Search] |  |
+
 | st-logoutin | %%euserone%% | %%password%% |
 | set | current_user | %%euserone%% |
 | set | location | Monterey, CA |
@@ -70,16 +81,6 @@
 | set | first | Michael |
 | set | middle | S. |
 | set | last | Bolton |
-| include | [Test Case: People Search Edit A Profile] |  |
-| include | [Test Case: People Search Field Search] |  |
-
-| st-logoutin | %%euserfour%% | %%password%% |
-| set | current_user | %%euserfour%% |
-| set | location | South Bend, IN |
-| set | default_field | default-four |
-| set | first | Markus |
-| set | middle | Z. |
-| set | last | Gaertner |
 | include | [Test Case: People Search Edit A Profile] |  |
 | include | [Test Case: People Search Field Search] |  |
 
