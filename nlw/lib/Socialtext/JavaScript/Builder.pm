@@ -481,8 +481,8 @@ method write_target ($target, $text, $compress) {
     warn "Gzipping $target...\n" if $->verbose;
     my $gzipped = Compress::Zlib::memGzip($text);
 
-    warn "Writing to $path.gz...\n" if $->verbose;
     (my $gz_path = $path) =~ s{\.js}{.jgz};
+    warn "Writing to $gz_path...\n" if $->verbose;
     write_file($gz_path, $gzipped);
 }
 
