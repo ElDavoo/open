@@ -71,6 +71,7 @@ Socialtext.prototype.setupPageHandlers = function() {
         $.getScript(st.nlw_make_js_path('socialtext-ckeditor.jgz'), function() {
             Socialtext.start_xhtml_editor();
         });
+        return false;
     });
 }
 
