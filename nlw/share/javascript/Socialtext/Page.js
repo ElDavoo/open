@@ -133,10 +133,10 @@ Socialtext.Page.prototype = {
             success: function (data) {
                 self.html = data.html;
                 var newRev = data.revision_id;
-                var oldRev = Socialtext.revision_id;
+                var oldRev = st.page.revision_id;
                 if ((oldRev < newRev) || force_update) {
-                    Socialtext.wikiwyg_variables.page.revision_id =
-                        Socialtext.revision_id = newRev;
+                    st.page.revision_id = newRev;
+                    st.setupLegacy();
 
                     // By this time, the "edit_wikiwyg" Jemplate had already
                     // finished rendering, so we need to reach into the

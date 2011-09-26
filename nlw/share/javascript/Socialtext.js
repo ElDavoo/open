@@ -84,7 +84,10 @@ Socialtext.prototype = {
             page_id:    this.page ? this.page.id : '',
             page_title: this.page ? this.page.title : '',
             page_type:  this.page ? this.page.type : '',
-            page_size:  this.page ? this.page.size : 0
+            page_size:  this.page ? this.page.size : 0,
+
+            // Revision
+            revision_id : this.page ? this.page.revision_id : 0
         });
     }
 };
