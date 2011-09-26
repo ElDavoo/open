@@ -69,7 +69,7 @@ Socialtext.prototype = {
             real_user_id: this.viewer.user_id,
             userid: this.viewer.username,
             email_address: this.viewer.email_address,
-            username: this.viewer.best_full_name,
+            username: this.viewer.guess_real_name,
             workspaces: this.viewer.workspaces,
             accounts: this.viewer.accounts,
 
