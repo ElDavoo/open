@@ -3,27 +3,6 @@
 var Socialtext = Socialtext || {};
 Socialtext.S3 = true;
 
-function trim(value) {
-    var ltrim = /\s*((\s*\S+)*)/;
-    var rtrim = /((\s*\S+)*)\s*/;
-    return value.replace(rtrim, "$1").replace(ltrim, "$1");
-};
-
-function is_reserved_pagename(pagename) {
-    if (pagename && pagename.length > 0) {
-        var name = nlw_name_to_id(trim(pagename));
-        var untitled = nlw_name_to_id(loc('page.untitled'));
-        var untitledspreadsheet = nlw_name_to_id(loc('sheet.untitled'));
-        return(
-            (name == untitled) || (name == untitledspreadsheet)
-            || (name == 'untitled_page') || (name == 'untitled_spreadsheet')
-        );
-    }
-    else {
-        return false;
-    }
-}
-
 (function(){
 // Create a document.hasFocus function that tests whether we've lost focus
 var chrome = /chrome/.test( navigator.userAgent.toLowerCase() );

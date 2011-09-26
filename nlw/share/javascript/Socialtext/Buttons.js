@@ -3,7 +3,7 @@
 var button_handler = {
     // gallery
     'st-add-widget': function() {
-        socialtext.dialog.show('opensocial-gallery', {
+        st.dialog.show('opensocial-gallery', {
             view: gadgets.container.view,
             account_id: gadgets.container.viewer.primary_account_id || 0
         });
@@ -16,7 +16,7 @@ var button_handler = {
     'st-save-layout': function() {
         if (gadgets.container.type == 'account_dashboard') {
             // Show a confirmation dialog
-            socialtext.dialog.show('save-layout');
+            st.dialog.show('save-layout');
         }
         else {
             // Just save
@@ -52,7 +52,7 @@ var button_handler = {
 
     // create group
     'st-create-group': function() {
-        socialtext.dialog.show('groups-create');
+        st.dialog.show('groups-create');
     },
 
     /**
@@ -66,7 +66,7 @@ var button_handler = {
 
     // leave
     'st-leave-group': function() {
-        socialtext.dialog.show('groups-leave', {
+        st.dialog.show('groups-leave', {
             onConfirm: function() { leave('/st/dashboard') }
         });
     },
@@ -83,7 +83,7 @@ var button_handler = {
         };
         group.addMembers(group_data, function(data) {
             if (data.errors) {
-                socialtext.dialog.showError(data.errors[0]);
+                st.dialog.showError(data.errors[0]);
             }
             else {
                 window.location = '/st/group/'
@@ -98,7 +98,7 @@ var button_handler = {
     
     // delete
     'st-delete-group': function() {
-        socialtext.dialog.show('groups-delete', {
+        st.dialog.show('groups-delete', {
             group_id: gadgets.container.group.id,
             group_name: gadgets.container.group.name
         });
@@ -106,7 +106,7 @@ var button_handler = {
 
     // Create/Save
     'create-group': function() {
-        socialtext.dialog.show('groups-save', { });
+        st.dialog.show('groups-save', { });
     },
 
     // Cancel
@@ -123,6 +123,13 @@ var button_handler = {
     // edit
     'st-edit-profile': function() {
         window.location = '/st/edit_profile';
+    },
+
+    /**
+     * Wiki pages
+     */
+    'st-create-content-link': function() {
+        st.dialog.show('create-content');
     }
 };
 

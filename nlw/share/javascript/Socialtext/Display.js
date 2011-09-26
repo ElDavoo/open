@@ -78,6 +78,23 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    if (st.page.is_new
+        && st.page.title != loc("page.untitled")
+        && st.page.title != loc("sheet.untitled")
+        && !location.href.toString().match(/action=display;/)
+        && !/^#draft-\d+$/.test(location.hash)
+    ) {
+        $("#st-create-content-link").trigger("click", {
+            title: st.page.title
+        })
+    }
+    else if (st.page.is_new || st.start_in_edit_mode
+            || location.hash.toLowerCase() == '#edit') {
+        setTimeout(function() {
+            $("#st-edit-button-link").click();
+        }, 500);
+    }
+
     // Comments
 }
 

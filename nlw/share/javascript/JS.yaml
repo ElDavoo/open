@@ -123,6 +123,7 @@
         - groups-create-workspace
         - groups-delete
         - groups-save
+        - create-content
 'shindig-container-%.js':
     compress: 1
     parts:

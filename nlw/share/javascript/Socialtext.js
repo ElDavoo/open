@@ -88,6 +88,31 @@ Socialtext.prototype = {
     }
 };
 
+// Legacy stuff that we still need, but maybe could be improved
+trim = function(value) {
+    var ltrim = /\s*((\s*\S+)*)/;
+    var rtrim = /((\s*\S+)*)\s*/;
+    return value.replace(rtrim, "$1").replace(ltrim, "$1");
+};
+nlw_name_to_id = function(name) {
+    if (name == '') return '';
+    return encodeURI(Socialtext.Page.title_to_page_id(name));
+};
+is_reserved_pagename = function(pagename) {
+    if (pagename && pagename.length > 0) {
+        var name = nlw_name_to_id(trim(pagename));
+        var untitled = nlw_name_to_id(loc('page.untitled'));
+        var untitledspreadsheet = nlw_name_to_id(loc('sheet.untitled'));
+        return(
+            (name == untitled) || (name == untitledspreadsheet)
+            || (name == 'untitled_page') || (name == 'untitled_spreadsheet')
+        );
+    }
+    else {
+        return false;
+    }
+};
+
 // Deprecated functions
 nlw_make_s2_path = function (rest) {
     throw new Error('deprecated call to nlw_make_s2_path!');

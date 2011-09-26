@@ -315,6 +315,8 @@ method _build_js_bootstrap {
         static_path => $->static_path,
         miki_url => $->miki_path,
 
+        content_types => $->hub->pluggable->content_types,
+
         # wikiwyg
         ui_is_expanded => $self->ui_is_expanded,
 
@@ -475,7 +477,7 @@ method _build_workspace_info {
         name          => $ws->name,
         has_dashboard => $ws->homepage_is_dashboard,
         is_public     => $ws->permissions->is_public,
-        uri           => $ws->uri,
+        web_uri       => $ws->uri,
         email_address => $ws->email_in_address,
         comment_form_window_height => $ws->comment_form_window_height,
         comment_by_email           => $ws->comment_by_email,
