@@ -1,14 +1,17 @@
 (function($) {
 
 Socialtext.prototype.setupPageHandlers = function() {
-    // Tools menu -- collapse
+    /**
+     * Tools Menu
+     */
+    // collapse
     $('.tools .expanded').live('click', function() {
         $(this).hide();
         $(this).siblings('.subtools').hide();
         $(this).siblings('.collapsed').show();
         return false;
     });
-    // Tools menu -- expand
+    // expand
     $('.tools .collapsed').live('click', function() {
         $(this).hide();
         $(this).siblings('.subtools').show();
@@ -16,7 +19,9 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
-    // Tags
+    /**
+     * Tags
+     */
     st.page.renderTags();
 
     $('#st-tags-addlink').button().click(function() {
@@ -59,7 +64,9 @@ Socialtext.prototype.setupPageHandlers = function() {
             }
         });
 
-    // Attachments
+    /**
+     * Attachments
+     */
     st.attachments.renderAttachments();
 
     $('#st-attachments-uploadbutton').button().click(function () {
@@ -67,7 +74,9 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
-    // Edit
+    /**
+     * Edit
+     */
     $('#st-edit-button-link').button().click(function() {
         var $button = $(this);
         $button.button('disable');
@@ -95,7 +104,9 @@ Socialtext.prototype.setupPageHandlers = function() {
         }, 500);
     }
 
-    // Comments
+    /**
+     * Comments
+     */
 }
 
 })(jQuery);
