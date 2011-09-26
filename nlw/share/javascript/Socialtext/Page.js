@@ -16,6 +16,10 @@ Socialtext.Page.prototype = {
         return '/data/workspaces/' + st.workspace.name + '/pages/' + this.id;
     },
 
+    web_uri: function() {
+        return '/' + st.workspace.name + '/' + this.id;
+    },
+
     addTag: function (tag) {
         var self = this;
         $.ajax({
@@ -208,6 +212,24 @@ Socialtext.Page.prototype = {
         }
         return n + unit;
     },
+
+    watch: function(cb) {
+        $.ajax({
+            type: "GET",
+            url: this.web_uri() + '?action=add_to_watchlist;page=' + this.id,
+            success: cb
+        });
+    },
+
+    unwatch: function(cb) {
+        var id = this.id;
+        $.ajax({
+            type: "GET",
+            url: this.web_uri() + '?action=remove_from_watchlist;page='
+                + this.id,
+            success: cb
+        });
+    }
 };
 
 /**

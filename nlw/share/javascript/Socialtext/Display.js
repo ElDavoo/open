@@ -19,6 +19,24 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // Watch
+    $('#st-watchlist-indicator a').click(function() {
+        var $link = $(this);
+        if ($link.data('watching')) {
+            st.page.unwatch(function() {
+                $link.attr('title', loc("do.watch")).text(loc('do.watch'));
+                $link.data('watching', 0);
+            });
+        }
+        else {
+            st.page.watch(function() {
+                $link.attr('title', loc("watch.stop")).text(loc('watch.stop'));
+                $link.data('watching', 1);
+            });
+        }
+        return false;
+    });
+
     /**
      * Tags
      */
