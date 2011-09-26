@@ -71,7 +71,10 @@ html .wiki a:hover, html .xhtml a:hover {
   font-size: 1.4em; }
 
 .xhtml h1, .xhtml h2, .xhtml h3 {
-  margin-bottom: 0.5em; }
+  margin-bottom: 0.5em;
+  margin-top: 0.5em; }
+.xhtml br + br + h1, .xhtml br + br + h2, .xhtml br + br + h3 {
+  margin-top: 0em; }
 
 .wiki h1, .wiki h3 {
   margin-bottom: 0.5em; }
