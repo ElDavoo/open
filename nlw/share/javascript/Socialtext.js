@@ -56,22 +56,22 @@ Socialtext.prototype = {
     setupLegacy: function() {
         $.extend(true, Socialtext, {
             version: this.version,
-            new_page: this.new_page,
             accept_encoding: this.accept_encoding,
             loc_lang: this.loc_lang,
             dev_mode: this.dev_mode,
+            template_name: this.template_name,
 
             // TODO
             start_in_edit_mode: false,
             double_click_to_edit: false, // if wikiwyg_double
 
             // Viewer
-            real_user_id: this.viewer.user_id,
-            userid: this.viewer.username,
+            real_user_id:  this.viewer.user_id,
+            userid:        this.viewer.username,
             email_address: this.viewer.email_address,
-            username: this.viewer.guess_real_name,
-            workspaces: this.viewer.workspaces,
-            accounts: this.viewer.accounts,
+            username:      this.viewer.guess_real_name,
+            workspaces:    this.viewer.workspaces,
+            accounts:      this.viewer.accounts,
 
             // Workspace
             wiki_id: this.workspace.name,
@@ -80,10 +80,11 @@ Socialtext.prototype = {
                 this.workspace.comment_form_window_height,
 
             // Page
-
-            // Wikiwyg
-            wikiwyg_variables: {
-            }
+            new_page:   this.page ? this.page.is_new : false,
+            page_id:    this.page ? this.page.id : '',
+            page_title: this.page ? this.page.title : '',
+            page_type:  this.page ? this.page.type : '',
+            page_size:  this.page ? this.page.size : 0
         });
     }
 };
