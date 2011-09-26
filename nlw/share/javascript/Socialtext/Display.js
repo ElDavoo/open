@@ -61,6 +61,7 @@ Socialtext.prototype.setupPageHandlers = function() {
 
     // Attachments
     st.attachments.renderAttachments();
+
     $('#st-attachments-uploadbutton').button().click(function () {
         socialtext.dialog.show('attachments-upload');
         return false;
@@ -68,11 +69,16 @@ Socialtext.prototype.setupPageHandlers = function() {
 
     // Edit
     $('#st-edit-button-link').button().click(function() {
+        var $button = $(this);
+        $button.button('disable');
         $.getScript(st.nlw_make_js_path('socialtext-ckeditor.jgz'), function() {
             Socialtext.start_xhtml_editor();
+            $button.button('enable');
         });
         return false;
     });
+
+    // Comments
 }
 
 })(jQuery);
