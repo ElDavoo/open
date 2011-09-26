@@ -32,6 +32,7 @@
     </div><!-- controls END -->
   [% END %]
   <div id="contentContainer">
+  <div class="grid_24">
     <h2 class="tableTitle wrap" title="[% display_title | html %]">[% display_title | html %]</h2>
     [% IF !rows.size %]
       <div style="font-size:110%" id="tooManyResults">
@@ -192,19 +193,18 @@
         </tr>
       [% END %]
     </table><!-- dataTable END -->
-      [% IF pager && pager.total_entries %]
-    <table class="dataTable" cellspacing="0">
-      <tr>
-        <th width="30" style="border-right: 0">
-        &nbsp;
-        </th>
-        <th class="toggle">
-           <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-           [% INCLUDE "view/paging" %]
-        </th>
-      </tr>
-      </table>
-      [% END %]
     </form>
+    </div>
+    <div class="clear"></div>
+      [% IF pager && pager.total_entries %]
+      <div class="grid_24 search_count">
+         <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+      </div>
+    <div class="clear"></div>
+      <div class="grid_24">
+         [% INCLUDE "view/paging" %]
+      </div>
+    <div class="clear"></div>
+      [% END %]
   </div><!-- contentContainer -->
 [% END %]
