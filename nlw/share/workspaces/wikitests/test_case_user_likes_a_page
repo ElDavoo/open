@@ -98,12 +98,12 @@
 | *Comment* | Test Case: User Likes a Page order search results by likes |  |
 | select_and_wait | sort-picker | label=Date Created |
 | wait_for_element_visible_ok | link=%%wiki%% 2 | 30000 |
-| text_like | contentContainer | qr/%%wiki%% 2.+%%wiki%%/ |
-| text_like | contentContainer | qr/0 likes.+2 likes/ |
+| text_like | content | qr/%%wiki%% 2.+%%wiki%%/ |
+| text_like | content | qr/0 likes.+2 likes/ |
 | select_and_wait | sort-picker | label=Likes |
 | wait_for_element_visible_ok | link=%%wiki%% 2 | 30000 |
-| text_like | contentContainer | qr/%%wiki%%.+%%wiki%% 2/ |
-| text_like | contentContainer | qr/2 likes.+0 likes/ |
+| text_like | content | qr/%%wiki%%.+%%wiki%% 2/ |
+| text_like | content | qr/2 likes.+0 likes/ |
 
 | *Comment* | Test Case: User Likes a Page check the what's new page for proper likes |  |
 | open_ok | /%%wiki%%/?action=recent_changes |  |
@@ -113,12 +113,12 @@
 | wait_for_element_visible_ok | //a[@class='like-indicator immutable'] | 30000 |
 
 | *Comment* | Test Case: User Likes a Page order what's new by likes |  |
-| text_like | contentContainer | qr/%%wiki%% 2.+%%wiki%%/ |
-| text_like | contentContainer | qr/0 likes.+2 likes/ |
+| text_like | content | qr/%%wiki%% 2.+%%wiki%%/ |
+| text_like | content | qr/0 likes.+2 likes/ |
 | select_and_wait | sort-picker | label=Likes |
 | wait_for_element_visible_ok | link=%%wiki%% 2 | 30000 |
-| text_like | contentContainer | qr/%%wiki%%.+%%wiki%% 2/ |
-| text_like | contentContainer | qr/2 likes.+0 likes/ |
+| text_like | content | qr/%%wiki%%.+%%wiki%% 2/ |
+| text_like | content | qr/2 likes.+0 likes/ |
 
 | *Comment* | Test Case: User Likes a Page follow user 1, then check mouseover bubble for colleague list |  |
 | open_ok | /st/profile/%%user1_id%% |  |
@@ -257,7 +257,7 @@
 | *Comment* | Test Case: User Likes a Page check dashboard activities widget for liking posts |  |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 4 | ticker |
-| st-widget-title-like | ticker | Activities |
+| st-widget-title | ticker | Activities |
 | st-select-widget-frame | ticker |  |
 | wait_for_text_present_ok | liked %%wiki%% in %%wiki%% | 30000 |
 | wait_for_text_present_ok | unliked %%wiki%% in %%wiki%% | 30000 |

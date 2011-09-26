@@ -77,22 +77,22 @@
 | text_like | st-page-boxes-toggle-link | hide |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - what's new |
-| clickAndWait | link=Settings |  |
-| clickAndWait | //a[contains(@href,'action=preferences_settings;preferences_class_id=recent_changes')] |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | //a[contains(@href,'action=preferences_settings;preferences_class_id=recent_changes')] |  |
 | select_ok | recent_changes__changes_depth | label=Last 24 hours |
 | check_ok | recent_changes__include_in_pages |  |
 | select_ok | recent_changes__sidebox_changes_depth | label=2 |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | open_ok | /%%workspace%%/index.cgi?tc_hide_sidebar_spreadsheet2_%%start_time%% |  |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - uncheck what's new |
-| clickAndWait | link=Settings |  |
-| clickAndWait | //a[contains(@href,'action=preferences_settings;preferences_class_id=recent_changes')] |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | //a[contains(@href,'action=preferences_settings;preferences_class_id=recent_changes')] |  |
 | uncheck_ok | recent_changes__include_in_pages |  |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
 
@@ -101,19 +101,19 @@
 | text_unlike | contentRight | What's New |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - check recently viewed |
-| clickAndWait | link=Settings |  |
-| clickAndWait | link=Screen Layout |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | link=Screen Layout |  |
 | check_ok | display__include_breadcrumbs |  |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 30000 |
 
-| clickAndWait | link=Settings |  |
-| clickAndWait | link=Screen Layout |  |
+| click_and_wait | link=Settings |  |
+| click_and_wait | link=Screen Layout |  |
 | uncheck_ok | display__include_breadcrumbs |  |
-| clickAndWait | link=Save |  |
+| click_and_wait | link=Save |  |
 
 | open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
 | wait_for_element_not_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |

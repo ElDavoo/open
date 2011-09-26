@@ -1,4 +1,6 @@
+
 | *Comment* | Test case: Business Control Panel Export Account Data export user data as CSV |  |
+
 
 | st-admin | give-accounts-admin --username %%username%% | %%username%% now has accounts admin access |
 
@@ -37,7 +39,7 @@
 | *Comment* | Test case: Business Control Panel Account verify the export |  |
 | *Comment* | Test case: Business Control Panel Account should not leave Account page |  |
 | location_like | /nlw/control/account |  |
-| text_like | Socialtext Control Panel - Accounts |  |
+| text_like | Accounts |  |
 | text_like | Create New Account |  |
 
 | *Comment* | Test Cse: Business Control Panel Export Account Data TEARDOWN |  |

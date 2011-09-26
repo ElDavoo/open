@@ -6,15 +6,9 @@ Add a link to a non-existent page in an existing page | incipient page link appe
 Navigate to a page known to have zero incoming links | system displays "There are no pages that link to this page yet."
 
 | *Comment* | Test Case: Sidebar: Incoming Links. create TC Incoming Links %%start_time%% |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | st-newpage-pagename-edit | TC Incoming Links %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | [TC Incoming Links New Page %%start_time%%] [House Payment] |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-new-page | ws=%%workspace%% | title=TC Incoming Links %%start_time%% | content=[TC Incoming Links New Page %%start_time%%] [House Payment] |
+
 
 | *Comment* | Test Case: Sidebar: Incoming Links. no incoming links |  |
 | wait_for_text_present_ok | TC Incoming Links %%start_time%% | 30000 |
@@ -46,7 +40,7 @@ navigate to and delete existing page | page is gone
 navigate to new page | Incoming link to old page is gone
 
 | *Comment* | Test Case: Sidebar: Incoming Links. delete TC Incoming Links %%start_time%% |  |
-| clickAndWait | link=TC Incoming Links %%start_time%% |  |
+| click_and_wait | link=TC Incoming Links %%start_time%% |  |
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 20000 |
 | click_and_wait | st-delete-deletelink |  |

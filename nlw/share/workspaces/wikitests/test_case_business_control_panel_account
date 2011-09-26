@@ -1,4 +1,6 @@
 
+*Will convert to TUX when Restrict domain confirmation message is restored*
+
 | *Comment* | Test case: Business Control Panel Account |  |
 
 | st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
@@ -35,7 +37,7 @@
 
 | *Comment* | Test case: Business Control Panel Socialtext Account exists |  |
 | open_ok | /nlw/control/account |  |
-| text_like | st-display-mode-container | Accounts |
+| text_like | content | Accounts |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | Socialtext |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
@@ -62,7 +64,6 @@
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
-| text_like | Custom Skins: Socialtext 3 default skin |  |
 | text_like | qr/Socialtext People\s+\(click to enable\)/ism |  |
 | text_like | qr/Socialtext Signals\s+\(click to enable\)/ism |  |
 | text_like | qr/Socialtext Dashboard\s+\(click to enable\)/ism |  |
