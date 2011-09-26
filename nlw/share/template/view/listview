@@ -6,8 +6,7 @@
   [% INCLUDE element/listview_tabs %]
   [% IF !too_many %]
     <div id="controls">
-      <div id="st-editing-tools-edit">
-      </div><!-- controlsLeft END -->
+      <div id="st-editing-tools-edit"></div><!-- controlsLeft END -->
       <div id="controlsRight">
         [% IF feeds.rss.page %]
             <a style="float: left; margin-top: 12px" href="[% feeds.rss.page.url %]"><img border="0" src="[% wiki.skin_uri('s3') %]/images/rss.png"/></a>
@@ -32,10 +31,13 @@
     </div><!-- controls END -->
   [% END %]
   <div id="contentContainer">
-  <div class="grid_24">
-    <h2 class="tableTitle wrap" title="[% display_title | html %]">[% display_title | html %]</h2>
+    <div class="grid_24">
+      <h2 class="tableTitle wrap" title="[% display_title | html %]">[% display_title | html %]</h2>
+    </div>
+    <div class="clear"></div>
     [% IF !rows.size %]
-      <div style="font-size:110%" id="tooManyResults">
+      <div class="grid_24">
+        <div style="font-size:110%" id="tooManyResults">
           [% IF empty_message; empty_message; ELSE %]
             <p style="margin:10px 0">
               [% loc('error.no-search-results') %]
@@ -46,165 +48,173 @@
             </p>
             [% END %]
           [% END %]
-        [% IF action == 'search_workspace' %]
+          [% IF action == 'search_workspace' %]
+            <div id="inlineSearch">
+              [% INCLUDE element/search_form sid='search-again' %]
+            </div>
+          [% END %]
+        </div>
+      </div>
+      <div class="clear"></div>
+    [% ELSIF too_many %]
+      <div class="grid_24">
+        <div id="tooManyResults">
+          <p> [% loc('search.too-many=count', too_many) %] </p>
+          <p>
+            [% loc('search.limit=count' , appconfig.search_warning_threshold) %]
+          </p>
+          <p> [% loc('search.be-more-specific') %] </p>
+          <br />
           <div id="inlineSearch">
             [% INCLUDE element/search_form sid='search-again' %]
           </div>
-        [% END %]
-      </div>
-    [% ELSIF too_many %]
-      <div id="tooManyResults">
-        <p>
-          [% loc('search.too-many=count', too_many) %]
-        </p>
-        <p>
-          [% loc('search.limit=count' , appconfig.search_warning_threshold) %]
-        </p>
-        <p>
-          [% loc('search.be-more-specific') %]
-        </p>
-        <br />
-        <div id="inlineSearch">
-          [% INCLUDE element/search_form sid='search-again' %]
         </div>
       </div>
+      <div class="clear"></div>
     [% ELSIF search_timeout %]
-      <div id="tooManyResults">
-        <p>
-          [% loc('search.too-general') %]
-        </p>
-        <p>
-          [% loc('search.be-more-specific') %]
-        </p>
-        <br />
-        <div id="inlineSearch">
-          [% INCLUDE element/search_form sid='search-again' %]
+      <div class="grid_24">
+        <div id="tooManyResults">
+          <p> [% loc('search.too-general') %] </p>
+          <p> [% loc('search.be-more-specific') %] </p>
+          <br />
+          <div id="inlineSearch">
+            [% INCLUDE element/search_form sid='search-again' %]
+          </div>
         </div>
       </div>
+      <div class="clear"></div>
     [% ELSE %]
-      [% IF listview_content_actions %][% PROCESS $listview_content_actions %][% END %]
+      [% IF listview_content_actions %]
+        <div class="grid_24">
+          [% PROCESS $listview_content_actions %]
+        </div>
+        <div class="clear"></div>
+      [% END %]
       <form id="st-listview-form" method="post" action="/[% current_workspace.name %]/">
       <input id="st-listview-action" name="action" value="" type="hidden">
       <input id="st-listview-filename" name="filename" value="" type="hidden">
-      <table class="dataTable" cellspacing="0">
-        <tr>
-          <th width="30" style="border-right: 0">
-          <div class="selectall">
+      <div class="grid_1">
+        <div class="selectall">
           <input type="checkbox" id="st-listview-selectall"/>
-          </div>
-          </th>
-          <th class="toggle">
-          [% predicate_with_params = BLOCK %]?[% predicate |html %];scope=[% scope |html %];orig_search_term=[% search_term |html %];sortby=[% sortby |html %];direction=[% (direction || sortdir.$sortby) |html %][%- END %]
-          <div class="toggle">
-            [% loc('nav.show:') %]
-            [% IF summaries %]
-               <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('page.titles') %]</a> | 
-               [% loc('page.summaries') %]
-            [% ELSE %]
-               [% loc('page.titles') %] |
-               <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('page.summaries') %]</a>
-            [% END %]
-            [% IF pager %]
+        </div>
+      </div>
+      <div class="alpha grid_16">
+        [% predicate_with_params = BLOCK %]?[% predicate |html %];scope=[% scope |html %];orig_search_term=[% search_term |html %];sortby=[% sortby |html %];direction=[% (direction || sortdir.$sortby) |html %][%- END %]
+        <div class="toggle">
+          [% loc('nav.show:') %]
+          [% IF summaries %]
+            <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('page.titles') %]</a> | 
+            [% loc('page.summaries') %]
+          [% ELSE %]
+            [% loc('page.titles') %] |
+            <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('page.summaries') %]</a>
+          [% END %]
+          [% IF pager %]
             &mdash;
             <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-            [% INCLUDE "view/paging" %]
-            [% END %]
-          </div>
-          </th>
-          [% IF !hide_sort_widget %]
-          <th class="sort">
-          [% loc('sort.by:') %]
-            <select id="sort-picker" onchange="sort_by();">
-              [% FILTER decorate('search_sort_options') %]
-              [% IF allow_relevance %]
-                [% PROCESS element/listview_sort_option name = loc('sort.relevance') field = 'Relevance' %]
-              [% END %]
-                [% PROCESS element/listview_sort_option name = loc('sort.title') field = 'Subject' %]
-              [% IF show_workspace %]
-                [% PROCESS element/listview_sort_option name = loc('sort.wiki') field = 'Workspace' %]
-              [% END %]
-              [% IF ! no_user_sorting %]
-                [% PROCESS element/listview_sort_option name = loc('sort.last-edited') field = 'username' %]
-                [% PROCESS element/listview_sort_option name = loc('sort.creator') field = 'creator' %]
-              [% END %]
-              [% PROCESS element/listview_sort_option name = loc('sort.edited') field = 'Date' %]
-              [% PROCESS element/listview_sort_option name = loc('sort.created') field = 'create_time' %]
-              [% PROCESS element/listview_sort_option name = loc('sort.revisions') field = 'revision_count' %]
-              [% END %]
-          </select>
-          </th>
           [% END %]
-          [% query_start = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];summaries=[% summaries %][%- END %]
-          <script language="javascript">
-            var query_start = [% query_start.json %];
-            function sort_by() {
-              var selected = jQuery('select#sort-picker').val();
-              window.location = query_start + ';' + selected;
-            }
-          </script>
-        </tr>
-        </table>
-      [% END %]
-      [% IF ! offset; offset = 0; END %]
-      [% IF ! last; last = rows.size; END %]
-    <table class="dataTable fixed" cellspacing="0">
-      [% FOREACH row = rows %]
-        [% row = load_row_times(row) %]
-        [% IF !partial_set AND loop.count - 1 < offset %][% NEXT %][% END %]
-        [% IF !partial_set AND loop.count > last %][% BREAK %][% END %]
-        [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
-        <td width="30"><input type="checkbox" name="page_selected" class="st-listview-selectpage-checkbox" value="[% row.workspace_name %]:[% row.page_uri %]"/></td>
-        <td>
-        [% IF row.is_spreadsheet %]
-           <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/sheetIcon.png" />
-        [% ELSIF row.is_attachment %]
-           <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/attachment.png" />
-        [% ELSE %]
-           <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/docIcon.png" />
-        [% END %]
-        [% FILTER decorate('search_result_title', [row]) %]
-          [% IF row.is_attachment %]
-            <a class="titleLink" href="/data/workspaces/[% row.workspace_name || current_workspace.name %]/attachments/[% row.page_uri %]:[% row.id %]/original/[% row.document_title %]">[% row.document_title %]</a>
-            [% loc('file.attached-to-page') %]
-            <a href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
-          [% ELSE %]
-            <a class="titleLink" href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
-          [% END %]
-          [% IF row.workspace_title %][% loc('info.in') %] <a href="/[% row.workspace_name %]">[% row.workspace_title %]</a>[% END %]
-        [% END %]
-        [% IF summaries %]
-          <div class="summary">[% row.Summary %]</div>
-          [% IF row.edit_summary %]
-            <div class="edit_summary">[% loc('nav.summary') %]: [% row.edit_summary %]</div>
-          [% END %]
-        [% END %]
-        <div class="byline">
-        <span class="originally-created-by">[% loc('page.creator') %] [% row.creator | decorate('user_avatar') %] [% loc('info.on') %] [% row.create_time_local %]</span>.
-        <span class="byline-separator">&nbsp;</span>
-        <span class="last-updated-by">[% loc('page.last-updated') %] [% row.username | decorate('user_avatar') %] [% loc('info.on') %] [% row.DateLocal %].</span>
-        <span class="revision-count">(<a href="/[% (row.workspace_name || current_workspace.name) %]/?action=revision_list;page_name=[% row.page_uri %]">[% loc('page.revisions=count', row.revision_count) %]</a>)</span>
         </div>
-        </td>
-    [% IF listview_extra_columns.watchlist %]
-        <td class="listview-watchlist">
-        <a id="st-watchlist-indicator-[% row.page_uri %]" class="on watch" href="#" title="[% loc('watch.stop') %]">[% loc('watch.stop') %]</a>
-        </td>
-    [% END %]
-        </tr>
+      </div>
+      [% IF !hide_sort_widget %]
+        <div class="grid_7 sort_options">
+          [% loc('sort.by:') %]
+          <select id="sort-picker" onchange="sort_by();">
+            [% FILTER decorate('search_sort_options') %]
+            [% IF allow_relevance %]
+              [% PROCESS element/listview_sort_option name = loc('sort.relevance') field = 'Relevance' %]
+            [% END %]
+              [% PROCESS element/listview_sort_option name = loc('sort.title') field = 'Subject' %]
+            [% IF show_workspace %]
+              [% PROCESS element/listview_sort_option name = loc('sort.wiki') field = 'Workspace' %]
+            [% END %]
+            [% IF ! no_user_sorting %]
+              [% PROCESS element/listview_sort_option name = loc('sort.last-edited') field = 'username' %]
+              [% PROCESS element/listview_sort_option name = loc('sort.creator') field = 'creator' %]
+            [% END %]
+            [% PROCESS element/listview_sort_option name = loc('sort.edited') field = 'Date' %]
+            [% PROCESS element/listview_sort_option name = loc('sort.created') field = 'create_time' %]
+            [% PROCESS element/listview_sort_option name = loc('sort.revisions') field = 'revision_count' %]
+            [% END %]
+          </select>
+        </div>
       [% END %]
-    </table><!-- dataTable END -->
-    </form>
+      [% query_start = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];summaries=[% summaries %][%- END %]
+      <script language="javascript">
+        var query_start = [% query_start.json %];
+        function sort_by() {
+          var selected = jQuery('select#sort-picker').val();
+          window.location = query_start + ';' + selected;
+        }
+      </script>
+      <div class="clear"></div>
+      [% IF pager %]
+        <div class="grid_24">
+           [% INCLUDE "view/paging" %]
+        </div>
+        <div class="clear"></div>
+      [% END %]
+    [% END %]
+    [% IF ! offset; offset = 0; END %]
+    [% IF ! last; last = rows.size; END %]
+    <div class="grid_24">
+      <table class="dataTable fixed" cellspacing="0">
+        [% FOREACH row = rows %]
+          [% row = load_row_times(row) %]
+          [% IF !partial_set AND loop.count - 1 < offset %][% NEXT %][% END %]
+          [% IF !partial_set AND loop.count > last %][% BREAK %][% END %]
+          [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
+            <td width="30"><input type="checkbox" name="page_selected" class="st-listview-selectpage-checkbox" value="[% row.workspace_name %]:[% row.page_uri %]"/></td>
+            <td>
+              [% IF row.is_spreadsheet %]
+                 <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/sheetIcon.png" />
+              [% ELSIF row.is_attachment %]
+                 <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/attachment.png" />
+              [% ELSE %]
+                 <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/docIcon.png" />
+              [% END %]
+              [% FILTER decorate('search_result_title', [row]) %]
+              [% IF row.is_attachment %]
+                <a class="titleLink" href="/data/workspaces/[% row.workspace_name || current_workspace.name %]/attachments/[% row.page_uri %]:[% row.id %]/original/[% row.document_title %]">[% row.document_title %]</a>
+                [% loc('file.attached-to-page') %]
+                <a href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
+              [% ELSE %]
+                <a class="titleLink" href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
+              [% END %]
+              [% IF row.workspace_title %][% loc('info.in') %] <a href="/[% row.workspace_name %]">[% row.workspace_title %]</a>[% END %]
+              [% END %]
+              [% IF summaries %]
+                <div class="summary">[% row.Summary %]</div>
+                [% IF row.edit_summary %]
+                  <div class="edit_summary">[% loc('nav.summary') %]: [% row.edit_summary %]</div>
+                [% END %]
+              [% END %]
+              <div class="byline">
+                <span class="originally-created-by">[% loc('page.creator') %] [% row.creator | decorate('user_avatar') %] [% loc('info.on') %] [% row.create_time_local %]</span>.
+                <span class="byline-separator">&nbsp;</span>
+                <span class="last-updated-by">[% loc('page.last-updated') %] [% row.username | decorate('user_avatar') %] [% loc('info.on') %] [% row.DateLocal %].</span>
+                <span class="revision-count">(<a href="/[% (row.workspace_name || current_workspace.name) %]/?action=revision_list;page_name=[% row.page_uri %]">[% loc('page.revisions=count', row.revision_count) %]</a>)</span>
+              </div>
+            </td>
+            [% IF listview_extra_columns.watchlist %]
+              <td class="listview-watchlist">
+                <a id="st-watchlist-indicator-[% row.page_uri %]" class="on watch" href="#" title="[% loc('watch.stop') %]">[% loc('watch.stop') %]</a>
+              </td>
+            [% END %]
+          </tr>
+        [% END %]
+      </table><!-- dataTable END -->
     </div>
     <div class="clear"></div>
-      [% IF pager && pager.total_entries %]
-      <div class="grid_24 search_count">
-         <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-      </div>
+    </form>
+  </div>
+  <div class="clear"></div>
+  [% IF pager && pager.total_entries %]
+    <div class="grid_24 search_count">
+       <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+    </div>
     <div class="clear"></div>
-      <div class="grid_24">
-         [% INCLUDE "view/paging" %]
-      </div>
+    <div class="grid_24"> [% INCLUDE "view/paging" %] </div>
     <div class="clear"></div>
-      [% END %]
+  [% END %]
   </div><!-- contentContainer -->
 [% END %]
