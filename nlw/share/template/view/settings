@@ -9,12 +9,14 @@ jQuery(document).ready(function() {
         autoHeight: false
     });
 
-    jQuery('#settings-main a.save').click(function() {
+    jQuery('#settings-main .save').button().click(function() {
         jQuery('#settings-main form').submit();
+        return false;
     });
     
-    jQuery('#settings-main a.cancel').click(function() {
+    jQuery('#settings-main .cancel').button().click(function() {
         jQuery('#settings-main form')[0].reset();
+        return false;
     });
 });
 
@@ -62,8 +64,8 @@ jQuery(document).ready(function() {
   <div id="settings-main">
     <form method="POST" action="">
       <p>
-        <a class="button save" href="#">[% loc('Save') %]</a>
-        <a class="button cancel" href="#">[% loc('Cancel') %]</a>
+        <a class="save" href="#">[% loc('Save') %]</a>
+        <a class="cancel" href="#">[% loc('Cancel') %]</a>
       </p>
 
       [% IF message %]
@@ -73,8 +75,8 @@ jQuery(document).ready(function() {
       [% main_content %]
 
       <p>
-        <a class="button save" href="#">[% loc('Save') %]</a>
-        <a class="button cancel" href="#">[% loc('Cancel') %]</a>
+        <a class="save" href="#">[% loc('Save') %]</a>
+        <a class="cancel" href="#">[% loc('Cancel') %]</a>
       </p>
     </form>
   </div>

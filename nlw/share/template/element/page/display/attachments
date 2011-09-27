@@ -5,7 +5,7 @@
       <div id="st-attachment-listing"></div>
       <div class="clear vpad3"></div>
       [% IF checker.check_permission('attachments') AND !page_locked_for_user %]
-        <a id="st-attachments-uploadbutton" class="button" href="#">[% loc('file.upload') %]</a>
+        <a id="st-attachments-uploadbutton" href="#">[% loc('file.upload') %]</a>
       [% END %]
       <div class="clear"></div>
     </div>

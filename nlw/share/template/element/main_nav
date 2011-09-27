@@ -33,7 +33,7 @@
 <div class="grid_9 navGrid last">
   <div class="navItem">
     <div class="buttons">
-        [% IF invite_url %]<a class="button invite" id="st-wiki-subnav-link-invite" href="[% invite_url %]">[% loc("nav.invite!") %]</a>[% END %]
+        [% IF invite_url %]<a class="invite" id="st-wiki-subnav-link-invite" href="[% invite_url %]">[% loc("nav.invite!") %]</a>[% END %]
     </div>
     <div class="clear"></div>
   </div>

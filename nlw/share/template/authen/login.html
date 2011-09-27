@@ -36,7 +36,7 @@
       <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
     [% ELSE %]
       <input type="submit" class="hidden"/>
-      <a style="float:left" id="login_btn" class="button" href="#" onclick="document.forms['login'].submit(); return false">[% loc('login.log-in') %]</a>
+      <a style="float:left" id="login_btn" href="#">[% loc('login.log-in') %]</a>
       <div class="clear"></div>
       [% INCLUDE errors_and_messages %]
     [% END %]
@@ -46,4 +46,10 @@
   </div>
   <div class="clear vpad10"></div>
 </form>
+<script>
+$('#login_btn').button().click(function() {
+  $(this).parents('form').submit();
+  return false;
+});
+</script>
 [% END %]

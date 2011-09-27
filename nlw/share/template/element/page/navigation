@@ -28,7 +28,7 @@
 
   </div>
   <div class="grid_6 right">
-    <a class="button" id="st-create-content-link">[% loc('+ New Page') %]</a>
+    <a id="st-create-content-link">[% loc('+ New Page') %]</a>
   </div>
 </div>
 
