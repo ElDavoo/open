@@ -19,10 +19,9 @@
     [%- END -%]
 [%- END -%]
 
-[% SET buttons = [] %]
-[% buttons.push(['st-create-content-link', loc('+ Create Page') ]) %]
-
 [% WRAPPER $frame_name id="contentPage" %]
+
+[% INCLUDE element/page/navigation %]
 
 <div id="st-editor" style="display:none"></div>
 

@@ -110,6 +110,13 @@ Socialtext.prototype.setupPageHandlers = function() {
     });
 
     /**
+     * Create Content
+     */
+    $('#st-create-content-link').button().click(function() {
+        st.dialog.show('create-content');
+    });
+
+    /**
      * Edit
      */
     $('#st-edit-button-link').button().click(function() {
@@ -175,7 +182,6 @@ Socialtext.prototype.setupPageHandlers = function() {
 
         return false;
     });
-
-}
+};
 
 })(jQuery);

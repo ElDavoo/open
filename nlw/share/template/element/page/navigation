@@ -1,0 +1,35 @@
+[%# vim: set et sts=2 sw=2: %]
+
+[% MACRO jump_menu BLOCK %]
+<select id="st-jump-to">
+  <option value="action=recent_changes">[% loc('nav.news') %]</option>
+  <option value="action=display_watchlist">[% loc('nav.watchlist') %]</option>
+  <option value="action=blog_display">[% loc('blog.blogs') %]</option>
+  <option value="action=my_likes">[% loc('nav.likes') %]</option>
+  <option value="action=changes&changes=all">[% loc('page.all') %]</option>
+  <option value="action=category_list">[% loc('tag.all') %]</option>
+  <option value="action=attachments_listall">[% loc('file.all') %]</option>
+</select>
+<script>
+    $('#st-jump-to').change(function() {
+        var cgi_params = $(this).find('option:selected').val();
+        location = '/' + st.workspace.name + '?' + cgi_params;
+    });
+</script>
+[% END %]
+
+<div class="workspaceNav">
+  <div class="grid_18">
+    <a href="/?action=workspaces_listall" class="spaces">[% loc('nav.wikis') %]</a>
+    <span class="arrow">&gt;</span>
+    <a href="/[% wiki.name %]" class="spaceName">[% wiki.title %]</a>
+    <span class="arrow">&gt;</span>
+    <span>[% loc('Jump to: [_1]', jump_menu) %]</a>
+
+  </div>
+  <div class="grid_6 right">
+    <a class="button" id="st-create-content-link">[% loc('+ New Page') %]</a>
+  </div>
+</div>
+
+<div class="clear"></div>
