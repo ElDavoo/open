@@ -31,6 +31,7 @@
     <h1 id="st-page-titletext" class="tableTitle" title="[% page.display_title %]">[% page.display_title %]</h1>
     <div class="content" id="st-page-content">[% page.content %]</div>
   </div>
+  <div id="st-comment-interface"></div>
 </div>
 
 <div id="st-display-mode-widgets" class="grid_6 widgetColumn">

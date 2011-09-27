@@ -59,6 +59,13 @@
         - Socialtext/Avatar.js
         - Socialtext/Page.js
 
+# Old relic of an editor for comments
+'socialtext-comments.js':
+    compress: 1
+    parts:
+        - comments/guiedit.js
+        - { jemplate: 'comments/guiedit.tt2' }
+
 'socialtext-container.js':
     compress: 1
     parts:
@@ -87,6 +94,7 @@
         - activities/explore_filters.js
         - activities/explore.js
         - activities/last_signal.js
+        - activities/network_dropdown.js
 'shindig-inline.js':
     parts:
         - contrib/shindig/core/util.js

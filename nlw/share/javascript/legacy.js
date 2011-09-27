@@ -350,32 +350,6 @@ $(function() {
     }
     window.get_plugin_lightbox = get_plugin_lightbox;
 
-    $("#st-comment-button-link, #bottomButtons .commentButton")
-        .click(function () {
-            if ($('div.commentWrapper').length) {
-                Page._currentGuiEdit.scrollTo();
-                return;
-            }
-
-            get_lightbox('comment', function () {
-                var ge = new GuiEdit({
-                    id: 'contentLeft',
-                    oncomplete: function () {
-                        Page.refreshPageContent();
-                    },
-                    onclose: function () {
-                        Page._repaintBottomButtons();
-                    }
-                });
-                Page._currentGuiEdit = ge;
-                ge.show();
-                Page._repaintBottomButtons();
-            });
-
-            Page._repaintBottomButtons();
-            return false;
-        });
-
     $(".weblog_comment").click(function () {
         var page_id = this.id.replace(/^comment_/,'');
         get_lightbox('comment', function () {

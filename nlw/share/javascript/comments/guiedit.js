@@ -37,12 +37,7 @@ GuiEdit.prototype = {};
 GuiEdit.prototype.show = function () {
     var self = this;
 
-    Socialtext.loc = loc;
-    Socialtext.s2_path = nlw_make_s2_path;
-
-    this.container.append(
-        Jemplate.process('comment.tt2', Socialtext)
-    );
+    this.container.append(Jemplate.process('guiedit.tt2', st));
 
     jQuery('.commentWrapper', this.container).bind('dblclick', function () {
         return false;
@@ -65,6 +60,8 @@ GuiEdit.prototype.show = function () {
             jQuery(this).css('border', 'thin solid white');
         })
         .click(function () { self['do_'+this.name].call(self) })
+
+    $('#st-comment-interface .buttons').buttonset();
 
     jQuery('.saveButton', this.container).click(function () {
         var $saveButton = $(this);
@@ -108,7 +105,14 @@ GuiEdit.prototype.show = function () {
     }
 
     if ($('#st-comment-signal_network').size() > 0) {
-        Socialtext.show_signal_network_dropdown('st-comment-', '200px');
+        var dropdown = new Activities.NetworkDropdown({
+            prefix: 'st-comment-',
+            width: '200px',
+            user: st.viewer.username,
+            workspace_id: st.workspace.name,
+            account_id: st.viewer.primary_account_id
+        });
+        dropdown.show();
     }
 
     this.scrollTo(function () {

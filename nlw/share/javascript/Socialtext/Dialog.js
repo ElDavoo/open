@@ -3,9 +3,6 @@ Socialtext.prototype.dialog = (function($) {
     var loaded = {};
 
     var timestamp = (new Date).getTime();
-    var _gz = 
-        !$.browser.safari && Socialtext.accept_encoding
-            && Socialtext.accept_encoding.match(/\bgzip\b/) ? '.gz' : '';
 
     // Socialtext adapter class for jQuery dialogs
     var Dialog = function(opts) {
@@ -64,7 +61,7 @@ Socialtext.prototype.dialog = (function($) {
                 loaded[name] = true;
                 $.ajaxSettings.cache = true;
                 $.ajax({
-                    url: st.nlw_make_js_path('dialog-' + name + '.js' + _gz),
+                    url: st.nlw_make_js_path('dialog-' + name + '.jgz'),
                     dataType: 'script',
                     success: function() {
                         self.callDialog(name, args)
