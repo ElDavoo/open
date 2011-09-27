@@ -6,28 +6,28 @@
   [% INCLUDE element/listview_tabs %]
   [% IF !too_many %]
     <div id="controls">
-      <div id="st-editing-tools-edit"></div><!-- controlsLeft END -->
-      <div id="controlsRight">
+      <div class="prefix_20 grid_4" id="controlsRight">
         [% IF feeds.rss.page %]
-            <a style="float: left; margin-top: 12px" href="[% feeds.rss.page.url %]"><img border="0" src="[% wiki.skin_uri('s3') %]/images/rss.png"/></a>
+            <a style="float: left; margin-top: 12px" href="[% feeds.rss.page.url %]"><img border="0" src="[% static_path %]/images/icons/share-black-15.png"/></a>
         [% END %]
         [% IF hub.current_workspace.enable_unplugged %]
             [% IF unplug_uri %]
                 <a style="float: left; margin-top: 12px; margin-left: 5px;" title="[% unplug_phrase %]" href="[% unplug_uri %]"><img border="0" src="[% wiki.skin_uri('s3') %]/images/plug.png"/></a>
             [% END %]
         [% END %]
-        <ul class="level1">
-          <li class="submenu">
+        <ul class="jd_menu">
+          <li>
             <a class="export" href="#" id="st-listtools-export">[% loc('do.export') %]</a>
-            <ul class="level2">
+            <ul>
               [% IF loc_system_lang != 'ja' %]
-              <li class="first"><a title="[% loc('nav.create-pdf') %]" id="st-listview-submit-pdfexport" href="#">[% loc('export.pdf') %]</a></li>
+              <li><a title="[% loc('nav.create-pdf') %]" id="st-listview-submit-pdfexport" href="#">[% loc('export.pdf') %]</a></li>
               [% END %]
-              <li class="separator"><a title="[% loc('nav.create-word') %]" id="st-listview-submit-rtfexport" href="#">[% loc('export.word') %]</a></li>
+              <li><a title="[% loc('nav.create-word') %]" id="st-listview-submit-rtfexport" href="#">[% loc('export.word') %]</a></li>
             </ul>
           </li>
         </ul>
       </div><!-- controlsRight END -->
+      <div class="clear"></div>
     </div><!-- controls END -->
   [% END %]
   <div id="contentContainer">
@@ -166,11 +166,11 @@
             <td width="30"><input type="checkbox" name="page_selected" class="st-listview-selectpage-checkbox" value="[% row.workspace_name %]:[% row.page_uri %]"/></td>
             <td>
               [% IF row.is_spreadsheet %]
-                 <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/sheetIcon.png" />
+                 <img class="pageType" src="[% static_path %]/images/icons/sheet-black-15.png" />
               [% ELSIF row.is_attachment %]
-                 <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/attachment.png" />
+                 <img class="pageType" src="[% static_path %]/images/icons/attachment-black-15.png" />
               [% ELSE %]
-                 <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/docIcon.png" />
+                 <img class="pageType" src="[% static_path %]/images/icons/document-black-15.png" />
               [% END %]
               [% FILTER decorate('search_result_title', [row]) %]
               [% IF row.is_attachment %]
