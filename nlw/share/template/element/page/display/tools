@@ -30,10 +30,10 @@
       [% SET locked = page_locked_for_user %]
 
       [% IF page.revisions && page.revisions > 0 %]
-        [%# INCLUDE tools_item
+        [% INCLUDE tools_item
             id="controls-right-revisions"
             href="?action=revision_list;page_name=$page.id"
-            title=loc('page.revisions=count', page.revisions)
+            text=loc('page.revisions=count', page.revisions)
         %]
       [% END %]
 
