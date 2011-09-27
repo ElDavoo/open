@@ -41,6 +41,11 @@
 </div>
 
 <div class="clear"></div>
+
+[% INCLUDE element/page/display/attribution %]
+
+<div class="clear"></div>
+
 <script>st.setupPageHandlers()</script>
 [% END %]
 
@@ -204,50 +209,6 @@
       [% END %]
     </div><!-- contentRight -->
   </div>
-
-  <div class="clear"></div>
-  <div id="bottomButtons">
-    <ul>
-      [% PROCESS 'element/page/display/edit-button' id_suffix='-bottom' %]
-      [% IF page.page_type != 'spreadsheet' %]
-        [% PROCESS 'element/page/display/comment-button' id_suffix='-bottom' %]
-      [% END %]
-    </ul>
-
-    [% MACRO username BLOCK %]
-      [% name | decorate('user_avatar') %]
-    [% END %]
-
-    [% SET create_author = '<span class="st-username">' _ username(name=page.created.user_id) _ '</span>' %]
-    [% SET create_date = '<span class="st-createdate">' _ (page.created.date) _ '</span>' %]
-    [% SET update_author = '<span class="st-username">' _ username(name=page.updated.user_id) _ '</span>' %]
-    [% SET update_date = '<span class="st-updatedate">' _ (page.updated.date) _ '</span>' %]
-    [% IF page.revisions && page.revisions > 0 %]
-    <div id="pageAttribution">
-
-[% IF enable_unplugged %]
-    <a title="[% loc('info.unplugged') %]" href="?action=unplug;page_name=[% page.id %]" style="float: right; margin-left: 5px">
-      <img class="st-page-details-feed-icon" alt="[% loc('info.unplugged') %]" src="[% wiki.skin_uri('s3') %]/images/plug.png" />
-     </a>
-[% END %]
-[% IF feeds.rss %]
-    <a href="[% feeds.rss.page.url %]" style="float: right">
-        <img class="st-page-details-feed-icon" src="[% wiki.skin_uri('s3') %]/images/rss.png" />
-    </a>
-[% END %]
-
-        <span id="create-attribution">
-            [% loc('page.created=author,date', create_author, create_date) %]
-        </span>
-        <span id="update-attribution">
-            [% loc('page.updated=user,date', update_author, update_date) %]
-        </span>
-        <span id="statistics-attribution">
-            (<a class="revision" id="bottom-buttons-revisions" href="?action=revision_list;page_name=[% page.id %]">[% loc('page.count=revision', page.revisions) %]</a>,
-            [% loc('page.count=view', page.views) %])
-        </span>
-    </div>
-    [% END %]
   </div><!-- bottomButtons -->
   <div class="clear">&nbsp;</div>
 </div><!-- contentContainer -->
