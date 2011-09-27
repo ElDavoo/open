@@ -76,6 +76,7 @@ Socialtext.prototype = {
             // Workspace
             wiki_id: this.workspace.name,
             wiki_title: this.workspace.title,
+            current_workspace_account_id: this.workspace.account_id,
             comment_form_window_height:
                 this.workspace.comment_form_window_height,
 
