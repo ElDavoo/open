@@ -1,3 +1,5 @@
+@import "compass/css3"
+
 /*
  *  HEADER
  *  ------
@@ -224,10 +226,91 @@
   font-size: inherit !important
   line-height: inherit !important
 
-.ckeditor-container .cke_button
+#st-edit-mode-container.ckeditor-container .cke_button
   .cke_button_source .cke_label
     display: none
   .cke_button_st_upload .cke_label
     display: inline
+  .cke_button_st_insert
+    .cke_label
+      display: inline
+      padding-right: 23px
+    .cke_icon
+      display: none !important
   .cke_icon
     cursor: pointer !important
+
+@mixin icon($button, $image)
+  .ckeditor-container
+    a.cke_button_#{$button} span.cke_icon
+      background-image: url(/nlw/plugin/ckeditor/images/ckeditor/#{$image}.png)
+      background-position: 0 0
+      margin-top: -1px
+      height: 20px
+      width: 20px !important
+
+@include icon(wysiwyg, rich-text)
+@include icon(wikitext, wiki-text)
+@include icon(source, html-text)
+@include icon(st_upload, attach)
+@include icon(st_add_tags, add)
+@include icon(removeFormat, erase)
+@include icon(link, link)
+@include icon(textcolor, font-color)
+@include icon(bgcolor, bg-color)
+@include icon(image, image)
+@include icon(st_widget, insert-widget)
+@include icon(st_video, insert-video)
+@include icon(smiley, emoticon)
+@include icon(st_wikilink, wikilink)
+@include icon(table, table)
+@include icon(horizontalrule, horizontalrule)
+
+.ckeditor-container
+  .cke_skin_kama .cke_button .cke_icon
+    width: 18px
+  #st-page-editing-widget-menu
+    height: 22px
+  #st-editing-insert-menu
+    padding-top: 2px
+    ul
+      @include border-radius(3px)
+    li:hover, li.sfhover
+      background: #dff1ff
+    li ul ul
+      padding: 5px 0
+      margin: -30px 0 0 12.5em
+    li li
+      height: 18px
+      ul, ul > li
+        width: 13.5em
+      a
+        @include opacity(1)
+        cursor: pointer
+        &.daddy
+          cursor: default
+    & > li > a
+      &, &:active, &:link
+        @include opacity(0.9)
+        width: auto
+        padding-right: 16px
+  .cke_skin_kama textarea.cke_source
+    font-size: 14px
+    font-family: 'Ubuntu Monospace', Menlo, Monaco, Consolas, 'Droid Sans Mono', 'Andale Mono', 'Lucida Console',  monospace
+  .ui-dialog #lightbox
+    height: auto !important
+    position: static !important
+    @include box-shadow(none !important)
+    @include border-radius(none !important)
+
+@-moz-document url-prefix()
+  .ckeditor-container
+    #st-editing-insert-menu > li > ul
+      margin-top: 20px
+    #st-editing-insert-menu li ul li ul
+      margin-top: -6px
+
+//@include icon(copy, copy)
+//@include icon(cut, cut)
+//@include icon(redo, redo)
+//@include icon(undo, undo)
