@@ -72,20 +72,37 @@
             [% END %]
             <span id="st-wikinav-help"><a href="/help/" target="_blank">[% loc('nav.help') %]</a></span>
             <span class="pad5"></span>
+            [% SET wiki_uri = wiki.uri | html %]
             [% IF user.is_guest %]
               [% IF self_registration AND NOT checker.check_permission('self_join') %]
-                <a id="st-wikinav-login" class="button" href="/challenge?[% wiki.uri | html %]">[% loc('nav.login') %]</a>
-                <a class="button" href="/nlw/register.html?redirect_to=[% hub.current_workspace.uri %]">[% loc('do.register') %]</a></li>
+                [% INCLUDE element/button
+                  id='st-wikinav-login'
+                  href="/challenge?$wiki_uri"
+                  text=loc('nav.login')
+                %]
+                [% INCLUDE element/button
+                  href="/nlw/register.html?redirect_to=$hub.current_workspace.uri"
+                  text=loc('nav.register')
+                %]
               [% ELSE %]
-                <a class="button" id="st-wikinav-login" href="/challenge?[% wiki.uri | html %]">[% loc('nav.login') %]</a>
+                [% INCLUDE element/button
+                  id="st-wikinav-login"
+                  href="/challenge?$wiki_uri"
+                  text=loc('nav.login')
+                %]
               [% END %]
             [% ELSE %]
-               <a id="logout_btn" class="button" href="/nlw/submit/logout[% IF wiki.is_public %]?redirect_to=[% wiki.uri | html %][% END %]">[% loc('nav.logout') %]</a>
+              [% SET redir = wiki.is_public ? "?redirect_to=$wiki_uri" : "" %]
+              [% INCLUDE element/button
+                id="logout_btn"
+                href="/nlw/submit/logout" _ redir
+                text=loc('nav.logout')
+              %]
             [% END %]
           </div>
 
           <div class="searchForm">
-              [% INCLUDE element/search_form %]
+            [% INCLUDE element/search_form %]
           </div>
         </div>
         <div class="clear"></div>

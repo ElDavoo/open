@@ -123,13 +123,6 @@ var button_handler = {
     // edit
     'st-edit-profile': function() {
         window.location = '/st/edit_profile';
-    },
-
-    /**
-     * Wiki pages
-     */
-    'st-create-content-link': function() {
-        st.dialog.show('create-content');
     }
 };
 
