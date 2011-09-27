@@ -30,20 +30,10 @@ Socialtext.prototype.dialog = (function($) {
         find: function(selector) { return this.node.find(selector) },
         showError: function(err) { this.node.find('.error').html(err) },
         disable: function() {
-            // image is 16x16
-            this.img = $('<div></div>')
-                .addClass('dialogDisabled')
-                .height(this.node.height())
-                .width(this.node.width())
-                .css({ top: '40px', left: '10px' })
-                .insertAfter(this.node);
-            this.node.addClass('opaque');
+            st.disable(this.node.parents('.ui-dialog'));
         },
         enable: function() {
-            if (this.img) {
-                this.img.remove();
-                this.node.removeClass('opaque');
-            }
+            st.enable(this.node.parents('.ui-dialog'));
         }
     };
 

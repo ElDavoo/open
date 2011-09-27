@@ -49,6 +49,24 @@ Socialtext.prototype = {
         );
     },
 
+    disable: function($node) {
+        var $disabled = $('<div class="uiDisabled"></div>')
+            .height('100%')
+            .width('100%')
+            .append(
+                '<div class="spinner"></div>',
+                '<div class="background"></div>'
+            )
+            .prependTo($node);
+        $node.data('disabled', $disabled);
+    },
+    enable: function($node) {
+        var $disabled = $node.data('disabled');
+        if ($disabled) {
+            $disabled.remove();
+        }
+    },
+
     /**
      * Recreate the old Socialtext.var_name API that will be replaced with the
      * st API

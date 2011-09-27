@@ -14,8 +14,11 @@ body
   color: #333
 
 #content
+  position: relative
   background-color: #fff
   padding-top: 8px
+  .uiDisabled
+    margin-top: -8px
 
 a
   color: $primary_color
@@ -345,9 +348,21 @@ div.users ul
 .inlineWidget
   @import inline.sass
 
-.dialogDisabled
-  background: transparent url(#{$static}/images/ajax-loader.gif) no-repeat center
+.uiDisabled
   position: absolute
+  z-index: 2000
+  .background
+    z-index: 2001
+    width: 100%
+    height: 100%
+    background: #eee
+    @include opacity(70)
+  .spinner
+    z-index: 2002
+    width: 100%
+    height: 100%
+    background: transparent url(#{$static}/images/ajax-loader.gif) no-repeat center
+    position: absolute
 
 // Dialog boxes
 .ui-dialog-content
