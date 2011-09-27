@@ -39,7 +39,13 @@ Socialtext.prototype.setupPageHandlers = function() {
 
     // Email
     $('#st-pagetools-email a').click(function() {
-        st.dialog.show('email');
+        st.dialog.show('page-email');
+        return false;
+    });
+
+    // Duplicate
+    $('#st-pagetools-duplicate a').click(function() {
+        st.dialog.show('page-duplicate');
         return false;
     });
 

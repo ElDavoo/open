@@ -125,7 +125,7 @@
         - groups-delete
         - groups-save
         - create-content
-        - email
+        - page-email
         - page-duplicate
 'shindig-container-%.js':
     compress: 1

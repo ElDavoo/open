@@ -1,4 +1,4 @@
-st.dialog.register('email', function(opts) {
+st.dialog.register('page-email', function(opts) {
     var firstAdd = true;
 
     function clearEmails () {
@@ -16,7 +16,7 @@ st.dialog.register('email', function(opts) {
         + '/' + st.workspace.name + '/' + st.page.id;
 
     var dialog = st.dialog.createDialog({
-        html: st.dialog.process('email.tt2', $.extend({full_uri:full_uri},st)),
+        html: st.dialog.process('page-email.tt2', $.extend({full_uri:full_uri},st)),
         title: loc('info.email-page'),
         width: 580,
         buttons: [
