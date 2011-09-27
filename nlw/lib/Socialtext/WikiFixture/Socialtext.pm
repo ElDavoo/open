@@ -463,15 +463,13 @@ sub st_create_wikipage {
     my ($self, $workspace, $pagename)  = @_;
     my $url = '/' . $workspace . '/?action=new_page';
     $self->{selenium}->open_ok($url);
-    $self->handle_command('set_Speed',3000);
-    $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);
-    $self->handle_command('click_ok','link=Wiki Text');
-    $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
     $self->handle_command('wait_for_element_visible_ok','st-newpage-pagename-edit',30000);
     $self->handle_command('type_ok','st-newpage-pagename-edit',$pagename);
-    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+    $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
+    $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
+    $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
+    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',5000);
     $self->handle_command('click_and_wait','st-save-button-link');
-    $self->handle_command('set_Speed',0);
 }
 
 =head2 st_update_wikipage ( $workspace, $page, $content) 
@@ -488,15 +486,12 @@ sub st_update_wikipage {
     $self->{selenium}->open_ok($url);
     $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 3000);
     $self->handle_command('click_ok', 'st-edit-button-link');
-    $self->handle_command('set_Speed',3000);
-    $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);
-    $self->handle_command('click_ok','link=Wiki Text');   
-    $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
-    $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$content);
+    $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
+    $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
+    $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
+    $self->handle_command('type_ok','//textarea[contains(@class,"cke_source")]',$content);
     $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
-    $self->handle_command('pause',$pause);
     $self->handle_command('click_and_wait','st-save-button-link');
-    $self->handle_command('set_Speed',0);
 }
 
 
@@ -565,20 +560,16 @@ Then edits it and types the text you suggest
 =cut
 
 sub st_edit_page {
-  my ($self, $url, $text) = @_;
-  $self->handle_command('set_Speed',3000);
+  my ($self, $url, $content) = @_;
   $self->handle_command('open_ok',  $url); 
   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000);  
   $self->handle_command('click_ok','st-edit-button-link');
-  $self->handle_command('wait_for_element_visible_ok', 'link=Wiki Text',  30000);
-  $self->handle_command('click_ok','link=Wiki Text');
-  $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
-  $self->handle_command('type_ok','wikiwyg_wikitext_textarea', $text);
-  $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+  $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
+  $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
+  $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
+  $self->handle_command('type_ok','//textarea[contains(@class,"cke_source")]',$content);
+  $self->handle_command('wait_for_element_visible_ok','st-save-button-link',5000);
   $self->handle_command('click_and_wait','st-save-button-link');
-  $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000); 
-  $self->handle_command('pause',1000);
-  $self->handle_command('set_Speed',0);
 }
 
 
