@@ -38,6 +38,7 @@
         - Socialtext/Dialog.js
         - Socialtext/Search.js
         - Socialtext/Display.js
+        - Socialtext/Email.js
         - Socialtext/Attachments.js
         - socialtext-api.js
         - socialtext-container.js
@@ -124,6 +125,7 @@
         - groups-delete
         - groups-save
         - create-content
+        - email
 'shindig-container-%.js':
     compress: 1
     parts:

@@ -37,6 +37,12 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // Email
+    $('#st-pagetools-email a').click(function() {
+        st.dialog.show('email');
+        return false;
+    });
+
     /**
      * Tags
      */
