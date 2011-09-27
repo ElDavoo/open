@@ -49,8 +49,8 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
-    $('#st-pagetools-duplicate a').click(function() {
-        st.dialog.show('page-duplicate');
+    $('#st-pagetools-rename a').click(function() {
+        st.dialog.show('page-rename');
         return false;
     });
 

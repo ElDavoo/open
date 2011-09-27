@@ -127,6 +127,7 @@
         - create-content
         - page-email
         - page-duplicate
+        - page-rename
 'shindig-container-%.js':
     compress: 1
     parts:
