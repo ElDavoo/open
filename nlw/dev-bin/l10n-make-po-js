@@ -130,6 +130,8 @@ sub gen_po {
     my $en_po = "share/l10n/en.po";
     $en_po = $use_first = '' if $lang eq 'en';
     system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} $en_po > $po_file");
+    my @diff_lines = grep { /^[-+] / and not /PO-Revision-Date/ } qx(git diff $po_file);
+    system(git => checkout => $po_file) unless @diff_lines;
     if ($lang ne 'en') {
         system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file.orig");
         system("diff -du $po_file.orig $po_file | grep ^+ > $po_file.diff");

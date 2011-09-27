@@ -37,6 +37,23 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // Email
+    $('#st-pagetools-email a').click(function() {
+        st.dialog.show('page-email');
+        return false;
+    });
+
+    // Duplicate
+    $('#st-pagetools-duplicate a').click(function() {
+        st.dialog.show('page-duplicate');
+        return false;
+    });
+
+    $('#st-pagetools-rename a').click(function() {
+        st.dialog.show('page-rename');
+        return false;
+    });
+
     /**
      * Tags
      */
@@ -124,7 +141,41 @@ Socialtext.prototype.setupPageHandlers = function() {
 
     /**
      * Comments
+     *
+     * I'm just going to get this to work because the plan is to get rid of
+     * it.
      */
+    $("#st-comment-button a").click(function () {
+        if ($('div.commentWrapper').length) {
+            st.page._currentGuiEdit.scrollTo();
+            return;
+        }
+
+        $.ajaxSettings.cache = true;
+        $.ajax({
+            url: st.nlw_make_js_path('socialtext-comments.jgz'),
+            dataType: 'script',
+            success: function() {
+                var ge = new GuiEdit({
+                    id: 'st-comment-interface',
+                    oncomplete: function () {
+                        st.page.refreshPageContent();
+                    },
+                    onclose: function () {
+                    }
+                });
+                st.page._currentGuiEdit = ge;
+                ge.show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                throw errorThrown;
+            }
+        });
+        $.ajaxSettings.cache = false;
+
+        return false;
+    });
+
 }
 
 })(jQuery);

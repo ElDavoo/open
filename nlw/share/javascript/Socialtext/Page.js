@@ -87,19 +87,6 @@ Socialtext.Page.prototype = {
         return '/' + Socialtext.wiki_id + '/';
     },
 
-    _repaintBottomButtons: function() {
-        $('#bottomButtons').html($('#bottomButtons').html());
-        Avatar.createAll();
-        $('#st-edit-button-link-bottom').click(function(){
-            $('#st-edit-button-link').click();
-            return false;
-        });
-        $('#st-comment-button-link-bottom').click(function(){
-            $('#st-comment-button-link').click();
-            return false;
-        });
-    },
-
     setPageContent: function(html) {
         $('#st-page-content').html(html);
     
@@ -109,15 +96,6 @@ Socialtext.Page.prototype = {
             var iframe = $('iframe#st-page-editing-wysiwyg').get(0);
             iframe.contentWindow.document.body.innerHTML = html;
         } catch (e) {};
-
-        // For MSIE, force browser reflow of the bottom buttons to avoid {bz: 966}.
-        Page._repaintBottomButtons();
-
-        // Repaint after each image finishes loading since the height
-        // would've been changed.
-        $('#st-page-content img').load(function() {
-            Page._repaintBottomButtons();
-        });
     },
 
     refreshPageContent: function (force_update) {
