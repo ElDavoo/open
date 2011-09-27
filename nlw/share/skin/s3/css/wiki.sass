@@ -347,6 +347,12 @@ td .wafl_box
   margin-bottom: 0
 
 .xhtml
+  table
+    border-collapse: collapse
+  table[border], table[border] td
+    border: 1px solid black
+  table[border="0"], table[border="0"] td
+    border: 0px !important
   table.sort, table[data-sort]
     tr:first-child td
       padding-right: 24px !important
