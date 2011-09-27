@@ -1338,6 +1338,7 @@
 "insert.date":"Zzzzz Zzzz &amp; Zzzz",
 "insert.fetchrss":"ZZZ Zzzz Zzzzz",
 "insert.file":"Z Zzzz Zzzzzzzz zz Zzzz Zzzz",
+"insert.file-image":"Zzzzz Zzzzzzzz zz Zzzz",
 "insert.from-the-web":"Zzzz Zzz Zzz...",
 "insert.from-wikis":"Zzzz Zzzzzzzzzz...",
 "insert.googlesearch":"Zzzzzz Zzzzzz Zzzzzzz",

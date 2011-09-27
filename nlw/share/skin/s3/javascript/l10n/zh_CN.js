@@ -1341,6 +1341,7 @@
 "insert.date":"\u672c\u5730\u65e5\u671f\u4e0e\u65f6\u95f4",
 "insert.fetchrss":"RSS \u8ba2\u9605\u9879\u76ee",
 "insert.file":"\u672c\u9875\u9762\u7684\u9644\u5e26\u6587\u4ef6",
+"insert.file-image":"Image Attached to Page",
 "insert.from-the-web":"\u4ece\u7f51\u7edc...",
 "insert.from-wikis":"\u4ece\u5de5\u4f5c\u533a...",
 "insert.googlesearch":"Google \u641c\u7d22\u7ed3\u679c",
