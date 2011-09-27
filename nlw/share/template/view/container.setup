@@ -34,8 +34,7 @@ li.fixed {
 }
 
 div.widget {
-    background: url("/static/skin/s3/images/widgetTop.png") no-repeat scroll left top transparent !important;
-    width: 560px !important;
+    width: 600px !important;
 }
 
 div.widgetHeaderTitle {
@@ -48,31 +47,17 @@ span.widgetHeaderTitleText {
     font-weight: bold !important;
 }
 
-div.widgetContent {
-    background: url("/static/skin/s3/images/widgetRight.png") repeat-y scroll right top transparent !important;
-    border-left: 1px solid #DEDEDE !important;
-    padding: 5px 0 !important;
+.widgetHeader .buttons {
+    height: 0px;
 }
-
-div.widgetHeader {
-    background: url("/static/skin/s3/images/widgetHeader.png") no-repeat scroll right top transparent !important;
-    height: 25px !important;
-}
-
-div.widgetBottom {
-    background: url("/static/skin/s3/images/widgetBottom.png") no-repeat scroll left bottom transparent !important;
-    height: 10px !important;
-}
-
-div.widgetBottomRight {
-    background: url("/static/skin/s3/images/widgetBottomRight.png") no-repeat scroll right bottom transparent !important;
-    height: 10px !important;
-}
-
 .widgetHeaderButtons .close,
 .widgetHeaderButtons .minimize,
 .widgetHeaderButtons .fix {
     display: none !important;
+}
+
+iframe {
+    width: 95% !important;
 }
 
 .widgetHeaderButtons .settings {
