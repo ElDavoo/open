@@ -38,6 +38,8 @@
   [% INCLUDE element/page/display/tags %]
   [% INCLUDE element/page/display/links %]
   [% INCLUDE element/page/display/attachments %]
+  [% INCLUDE element/page/display/recent_changes IF include_recent_changes %]
+  [% INCLUDE element/page/display/breadcrumbs IF include_breadcrumbs %]
 </div>
 
 <div class="clear"></div>
@@ -173,40 +175,6 @@
       </div><!-- widget END -->
 
       [% INCLUDE element/page/display/attachments %]
-
-      [% IF include_recent_changes %]
-      <div class="widget">
-        <div class="widgetHeader">
-        <h4>[% loc("nav.news") %]</h4>
-        </div><!-- widgetHeader END -->
-        <div class="widgetContent">
-          <ul>
-          [% FOR rc = recent_changes %]
-            <li><a href="[% rc.link %]">[% rc.title %]</a></li>
-          [% END %]
-          </ul>
-          <div class="clear"></div>
-        </div><!-- widgetContent -->
-        <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->
-      </div><!-- widget END -->
-      [% END %]
-
-      [% IF include_breadcrumbs %]
-      <div class="widget">
-        <div class="widgetHeader">
-        <h4>[% loc('nav.recently-viewed') %]</h4>
-        </div><!-- widgetHeader END -->
-        <div class="widgetContent">
-          <ul>
-          [% FOREACH bc IN breadcrumbs %]
-            <li><a href="[% bc.link %]">[% bc.title %]</a></li>
-          [% END %]
-          </ul>
-          <div class="clear"></div>
-        </div><!-- widgetContent -->
-        <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->
-      </div><!-- widget END -->
-      [% END %]
     </div><!-- contentRight -->
   </div>
   </div><!-- bottomButtons -->
