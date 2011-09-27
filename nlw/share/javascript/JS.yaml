@@ -181,6 +181,14 @@
 'wikiwyg-widgets.js':
     parts:
         - { json: 'wikiwyg/Widgets.yaml', name: 'Wikiwyg.Widgets' }
+#'Widgets.coffee':
+#    parts:
+#        - json: 'wikiwyg/Widgets.yaml'
+#          name: 'Widgets'
+#          nocomment: true
+#          epilogue: >
+#              (window.Wikiwyg ||= {}).Widgets = Widgets if window?;
+#              module?.exports = Widgets
 'socialtext-editor.js':
     parts:
         - main.js
