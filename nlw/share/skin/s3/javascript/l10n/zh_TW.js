@@ -1340,6 +1340,7 @@
 "insert.date":"\u672c\u5730\u65e5\u671f\u8207\u6642\u9593",
 "insert.fetchrss":"RSS \u8a02\u95b1\u9805\u76ee",
 "insert.file":"\u672c\u9801\u9762\u7684\u9644\u5e36\u6a94\u6848",
+"insert.file-image":"Image Attached to Page",
 "insert.from-the-web":"\u5f9e\u7db2\u8def...",
 "insert.from-wikis":"\u5f9e\u5de5\u4f5c\u5340...",
 "insert.googlesearch":"Google \u641c\u5c0b\u7d50\u679c",

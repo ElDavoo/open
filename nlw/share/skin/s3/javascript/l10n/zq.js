@@ -1337,6 +1337,7 @@
 "insert.date":"\u00abLocal Date &amp; Time\u00bb",
 "insert.fetchrss":"\u00abRSS Feed Items\u00bb",
 "insert.file":"\u00abA File Attached to This Page\u00bb",
+"insert.file-image":"\u00abImage Attached to Page\u00bb",
 "insert.from-the-web":"\u00abFrom The Web...\u00bb",
 "insert.from-wikis":"\u00abFrom Workspaces...\u00bb",
 "insert.googlesearch":"\u00abGoogle Search Results\u00bb",

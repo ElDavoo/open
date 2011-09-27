@@ -1337,6 +1337,7 @@
 "insert.date":"Local Date &amp; Time",
 "insert.fetchrss":"RSS Feed Items",
 "insert.file":"A File Attached to This Page",
+"insert.file-image":"Image Attached to Page",
 "insert.from-the-web":"From The Web...",
 "insert.from-wikis":"From Workspaces...",
 "insert.googlesearch":"Google Search Results",

@@ -8840,6 +8840,9 @@ msgstr "RSS 訂閱項目"
 msgid "insert.file"
 msgstr "本頁面的附帶檔案"
 
+msgid "insert.file-image"
+msgstr "Image Attached to Page"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:30
 msgid "insert.from-the-web"
 msgstr "從網路..."
