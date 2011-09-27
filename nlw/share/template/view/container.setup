@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/data/accounts/[% current_account.account_id || user.primary_account_id %]/theme/style.css" media="screen" />
       <script type="text/javascript" charset="utf-8" src="/js/4.7.7.2/socialtext-starfish.jgz"></script>
     
       <script type="text/javascript" charset="utf-8" src="/js/4.7.7.2/l10n-[% loc_lang || 'en' %].jgz"></script>
@@ -101,7 +101,15 @@ div.widgetBottomRight {
 <script>
     var gadgets = gadgets || {};
     gadgets.container.setup({
-        env: {},
+        env: {
+            "owner": st.viewer.username,
+            "owner_id": st.viewer.user_id,
+            "owner_name": st.viewer.guess_real_name,
+            "viewer": st.viewer.username,
+            "viewer_id": st.viewer.user_id,
+            "viewer_name": st.viewer.guess_real_name,
+            "primary_account_id": st.viewer.primary_account_id
+        },
         view: "page",
         onSetPreferences: function(prefHash) {
             if (!$('#st-savebutton-[% gadget.instance_id %]').data('clicked')) {
