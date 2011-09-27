@@ -45,6 +45,12 @@
         - bubble.js
         - like-indicator.js
         - nav-list.js
+        - jquery.bgiframe.js
+        - jquery.dimensions.js
+        - jquery.poll.js
+        - jquery.positionBy.js
+        - jquery.selectOverlap.js
+        - jquery.jdMenu.js
 
 # Socialtext API
 'socialtext-api.js':
