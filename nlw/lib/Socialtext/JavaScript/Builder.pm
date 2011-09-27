@@ -431,7 +431,7 @@ method _widget_jemplate_to_text ($part) {
         my $widget_data = $yaml_data->{widget} || die;
 
         my ($type, $kind) = ('','');
-        if ($output_file =~ /^jemplate\/widget_(\w+)_(\w+)\.html$/) {
+        if ($output_file =~ /widget_(\w+)_(\w+)\.html$/) {
             ($type, $kind) = ($1, $2);
         }
 
