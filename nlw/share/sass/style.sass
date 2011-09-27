@@ -22,7 +22,7 @@ a
   text-decoration: none
   &:hover
     text-decoration: underline
-  &.button, &.expander
+  &.expander
     margin: 0 5px
     padding: 3px 5px
     white-space: nowrap
@@ -30,11 +30,6 @@ a
     text-decoration: none
     border-radius: 5px
     border: 1px solid $tertiary_color
-  &.button
-    background-color: $primary_color
-    &:hover
-      @include opacity(70)
-  &.expander
     color: #000
     @include gradient(#f9f9f9, #e3e3e3)
     &:hover
