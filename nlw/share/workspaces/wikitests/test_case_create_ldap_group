@@ -18,11 +18,11 @@
 | is_checked_ok | st-radio-ldapgroup |  |
 
 | wait_for_element_visible_ok | ldap_driver | 5000 |
-| select_ok | ldap_driver | index=0 |
-| is_selected_ok | ldap_driver | index=0 |
+| select_ok | ldap_driver | index=1 |
+| is_selected_ok | ldap_driver | index=1 |
 
 | wait_for_element_visible_ok | st-select-ldap-group | 5000 |
-| pause | 1000 |  |
+| pause | 5000 |  |
 | select_ok | st-select-ldap-group | label=Hawkwind |
 | is_selected_ok | st-select-ldap-group | label=Hawkwind |
 | select_ok | st-select-ldap-group | label=Motorhead |
@@ -34,7 +34,7 @@
 | is_checked_ok | st-radio-ldapgroup |  |
 
 | *Comment* | Test Case: Create LDAP Group. Save and Verify |  |
-| wait_for_element_visible_ok | st-group-create-submit | 30000 |
+| wait_for_element_visible_ok | st-group-create-submit | 5000 |
 | click_ok | st-group-create-submit |  |
 
 | *Comment* | Test Case: Create LDAP Group. Process jobs after Motorhead |  |
@@ -42,17 +42,16 @@
 | st-process-jobs |  |  |
 | st-ldap-vanilla | refresh --force |  |
 | st-process-jobs |  |  |
-| pause | 15000 |  |
 | get_group_id | Motorhead | created_group_id |
 | open_ok | /nlw/control/group/%%created_group_id%% |  |
 
 | wait_for_element_visible_ok | addToAccountLookahead | 30000 |
-| wait_for_text_present_ok | Motorhead Group | 10000 |
-| wait_for_text_present_ok | Created By: | 10000 |
-| wait_for_text_present_ok | Created On: | 10000 |
-| wait_for_text_present_ok | Source: LDAP: | 10000 |
-| wait_for_text_present_ok | Description: | 10000 |
-| wait_for_text_present_ok | Accounts (1) | 10000 |
-| wait_for_text_present_ok | Users (3) | 10000 |
+| wait_for_text_present_ok | Motorhead Group | 5000 |
+| wait_for_text_present_ok | Created By: | 5000 |
+| wait_for_text_present_ok | Created On: | 5000 |
+| wait_for_text_present_ok | Source: LDAP: | 5000 |
+| wait_for_text_present_ok | Description: | 5000 |
+| wait_for_text_present_ok | Accounts (1) | 5000 |
+| wait_for_text_present_ok | Users (3) | 5000 |
 
 | *Comment* | Test Case: Create LDAP Group COMPLETED |  |

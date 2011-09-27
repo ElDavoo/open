@@ -1,5 +1,5 @@
-| wait_for_element_visible_ok | link=(edit) |  |
-| click_and_wait | link=(edit) |  |
+
+| open_ok | /st/edit_profile |  |
 | wait_for_element_visible_ok | field_supervisor | 30000 |
 | type-lookahead-ok | xpath=//div[@id='field_supervisor']/input[@class='relationship'] | %%manager_short%% |
 | wait-for-element-present-ok | link=%%manager_short%% |  |

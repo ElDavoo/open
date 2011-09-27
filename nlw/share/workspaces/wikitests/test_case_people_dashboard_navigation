@@ -39,8 +39,8 @@
 | st-admin | add-member --account %%defaultaccount%% --u %%username%% | has the role of 'member' |
 
 | open_ok | / |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_and_wait | st-add-widget |  |
 
 TO DO - Add testability hooks and confirm Grey Ghost Icon
 

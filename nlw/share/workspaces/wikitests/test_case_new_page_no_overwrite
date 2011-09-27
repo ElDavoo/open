@@ -42,7 +42,7 @@
 
 | *Comment* | Test Case: New Page No Overwrite write to npno 2 |  |
 | wait_for_element_visible_ok | st-newpage-duplicate-okbutton | 30000 |
-| clickAndWait | st-newpage-duplicate-okbutton |  |
+| click_and_wait | st-newpage-duplicate-okbutton |  |
 
 | *Comment* | Test Case: New Page No Overwrite write should succeed |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
@@ -65,7 +65,7 @@
 | wait_for_element_visible_ok | st-newpage-save-savebutton | 30000 |
 | click_ok | st-newpage-save-savebutton |  |
 | wait_for_element_visible_ok | st-newpage-duplicate-cancelbutton | 30000 |
-| click_ok | st-newpage-duplicate-cancelbutton | clickAndWait does not work for cancel button |
+| click_ok | st-newpage-duplicate-cancelbutton | click_and_wait does not work for cancel button |
 
 | *Comment* | Test Case: New Page No Overwrite: Overwrite should fail - try append instead |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
@@ -77,7 +77,7 @@
 | wait_for_element_visible_ok | st-newpage-duplicate-option-append | 30000 |
 | check_ok | st-newpage-duplicate-option-append |  |
 | wait_for_element_visible_ok | st-newpage-duplicate-okbutton | 30000 |
-| clickAndWait | st-newpage-duplicate-okbutton |  |
+| click_and_wait | st-newpage-duplicate-okbutton |  |
 
 | *Comment* | Test Case: New Page No Overwrite: append should succeed |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
@@ -92,7 +92,7 @@
 | wait_for_element_visible_ok | st-newpage-duplicate-option-suggest | 30000 |
 | check_ok | st-newpage-duplicate-option-suggest |  |
 | wait_for_element_visible_ok | st-newpage-duplicate-okbutton | 30000 |
-| clickAndWait | st-newpage-duplicate-okbutton |  |
+| click_and_wait | st-newpage-duplicate-okbutton |  |
 
 | *Comment* | Test Case: New Page No Overwrite: suggestion should succeed |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |

@@ -1,3 +1,5 @@
+tuxhold until select/clear toggle works
+
 | *Comment* | Test case: Business Control Panel Sorting Set up data |  |
 
 | st-admin | create-account --name "0 sort 1 account %%start_time%%" | was created |

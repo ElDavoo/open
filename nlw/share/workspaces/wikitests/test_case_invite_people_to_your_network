@@ -30,7 +30,7 @@ THIS TEST SHOULD NOT USE DASHBOARD
 | open_ok | / |  |
 | wait_for_element_visible_ok | link=Invite! | 30000 |
 | click_ok | link=Invite! |  |
-| wait_for_element_present_ok | link=Cancel | 30000 |
+| wait_for_element_present_ok | st-cancel-layout | 30000 |
 | wait_for_element_present_ok | link=Contact Support | 30000 |
 | text_like | You can only invite people who share the %%domain%% email domain with you. |  |
 | wait_for_element_present_ok | users_new_ids | 30000 |
@@ -40,7 +40,7 @@ THIS TEST SHOULD NOT USE DASHBOARD
 | text_like | qr/The following 1 user was successfully invited into this Group:\s+%%eemailok2%%/ |  |
 | click_ok | Link=Invite more people |  |
 | pause | 20000 |  |
-| wait_for_element_present_ok | link=Cancel | 30000 |
+| wait_for_element_present_ok | st-cancel-layout | 30000 |
 | wait_for_element_present_ok | users_new_ids | 30000 |
 | type_ok | users_new_ids | %%emailbad%% |
 | click_ok | link=Invite |  |
