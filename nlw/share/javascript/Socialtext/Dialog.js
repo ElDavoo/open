@@ -30,10 +30,10 @@ Socialtext.prototype.dialog = (function($) {
         find: function(selector) { return this.node.find(selector) },
         showError: function(err) { this.node.find('.error').html(err) },
         disable: function() {
-            st.disable(this.node.parents('.ui-dialog'));
+            this.node.parents('.ui-dialog').uiDisable();
         },
         enable: function() {
-            st.enable(this.node.parents('.ui-dialog'));
+            this.node.parents('.ui-dialog').uiEnable();
         }
     };
 

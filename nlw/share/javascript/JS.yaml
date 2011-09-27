@@ -42,6 +42,7 @@
         - Socialtext/Attachments.js
         - socialtext-api.js
         - socialtext-container.js
+        - jquery.uiDisable.js
         - bubble.js
         - like-indicator.js
         - nav-list.js
