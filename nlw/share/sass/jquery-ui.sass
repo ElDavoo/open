@@ -99,12 +99,10 @@
  *----------------------------------
 
 .ui-widget
-  font-family: Verdana,Arial,sans-serif
-  font-size: 1.1em
+  font-family: $body_font
   .ui-widget
-    font-size: 1em
   input, select, textarea, button
-    font-family: Verdana,Arial,sans-serif
+    font-family: $body_font
     font-size: 1em
 
 .ui-widget-content
@@ -928,6 +926,7 @@
     position: relative
     margin-top: 1px
     zoom: 1
+    padding: 2px 0
   .ui-accordion-li-fix
     display: inline
   .ui-accordion-header-active
@@ -956,6 +955,8 @@
     overflow: auto
     display: none
     zoom: 1
+    li
+      padding: 1px 0
   .ui-accordion-content-active
     display: block
 

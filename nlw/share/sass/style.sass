@@ -9,7 +9,7 @@ $containers: 12, 16, 24
 
 body
   background: $background_color url(#{$static}/images/background.png) $background_image_tiling $background_image_position
-  font-size: 11px
+  font-size: 12px
   font-family: $body_font
   color: #333
 
@@ -55,7 +55,9 @@ a.icon-delete
   display: none
 
 input
-  border-radius: 5px
+  padding: 2px 5px
+  font-size: 110%
+  border-radius: 2px
   border: 1px solid #ccc
   &.disabled
     background-color: #eee
@@ -71,9 +73,9 @@ input
     color: #999
 
 select
-  -webkit-border-radius: 5px
-  -moz-border-radius: 5px
-  border-radius: 5px
+  -webkit-border-radius: 2px
+  -moz-border-radius: 2px
+  border-radius: 2px
   border: 1px solid #ccc
 
 /**
@@ -161,7 +163,7 @@ h4
   border: 1px solid #ccc
   height: 17px
   position: relative
-  border-radius: 3px
+  border-radius: 2px
   .value
     background-color: $secondary_color
     height: 17px
@@ -250,7 +252,7 @@ footer
 .widget
   margin-bottom: 15px
   .content
-    padding-top: 5px
+    padding-top: 10px
     border-top: 1px solid #ccc
   .buttons
     float: right
@@ -299,7 +301,6 @@ ul
       white-space: nowrap
       /* Styles that are inherited in widgets:
       font-size: 11px
-      font-family: arial, helvetica, sans-serif
     li
       &:hover, &.hover
         background-color: #F4F0CB
@@ -401,9 +402,9 @@ div.users ul
     text-align: right
 
 #settings-sidebar
-  -webkit-border-radius: 5px
-  -moz-border-radius: 5px
-  border-radius: 5px
+  -webkit-border-radius: 2px
+  -moz-border-radius: 2px
+  border-radius: 2px
   border: 1px solid #ccc
   background-color: #dfebed
   .pad
