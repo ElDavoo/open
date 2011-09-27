@@ -486,6 +486,7 @@ method _build_workspace_info {
         allows_html_wafl => $ws->allows_html_wafl,
         enable_spreadsheet => $ws->enable_spreadsheet,
         enable_xhtml => $ws->enable_xhtml,
+        account_id => $ws->account_id,
     };
 }
 
