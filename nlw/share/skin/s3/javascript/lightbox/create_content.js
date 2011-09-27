@@ -57,6 +57,9 @@ proto.update_templates = function (template_tag) {
     var self = this;
     var type = this.selected_page_type();
     var template = template_tag || loc('tag.template');
+    if (type == 'xhtml') {
+        type = 'xhtml,wiki';
+    }
     $.ajax({
         url: Page.workspaceUrl() + '/tags/' + template + '/pages?type=' + type,
         cache: false,

@@ -3,14 +3,9 @@
 | st-admin | set-account-config --acc %%defaultaccount%% --index timezone date_display_format mmm_d_yyyy | Updated |
 
 | open_ok | /%%workspace%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Original content %%start_time%% |
-| type_ok | st-newpage-pagename-edit | Email subject %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-save-page | title=Original content %%start_time%% | content=Email subject %%start_time%% |
+
 
 | *Comment* | Test Case: Email attachment attach two things to the page |  |
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
@@ -38,12 +33,9 @@
 | *Comment* | Test Case: Email attachment overwrite the page content |  |
 | *Comment* | This must be done because attaching a file also places a link to it in the page content. When the page is emailed, this causes the file to be attached twice. |  |
 | click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | New content %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-save-page | content=New content %%start_time%% |
+
 
 | *Comment* | Test Case: Email attachment open the email-page |  |
 | wait_for_element_visible_ok | link=Email | 30000 |
@@ -80,15 +72,15 @@
 | *Comment* | Test Case: Email attachment email Check Reception with HTML attachment and two other attachments |  |
 | open_ok | /%%workspace%%/index.cgi?emailed page %%start_time%% |  |
 | text_like | st-page-titletext | emailed page %%start_time%% |
-| text_like | contentContainer | Note %%start_time%% from Test Case: Email |
+| text_like | content | Note %%start_time%% from Test Case: Email |
 | wait_for_element_visible_ok | link=wikitestzip.zip | 30000 |
 | wait_for_element_visible_ok | link=wikitest.doc | 30000 |
 | text_like | st-attachment-listing | wikitestzip.zip |
 | text_like | st-attachment-listing | wikitest.doc |
 | type_ok | st-search-term | "Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |
-| text_like | contentContainer | qr/emailed\s*page\s*%%start_time%%\s*in\s*%%title%%/ |
-| text_like | contentContainer | qr/attached\s*to\s*page\s*emailed\s*page\s*%%start_time%%/i |
+| text_like | content | qr/emailed\s*page\s*%%start_time%%\s*in\s*%%title%%/ |
+| text_like | content | qr/attached\s*to\s*page\s*emailed\s*page\s*%%start_time%%/i |
 | pause | 10000 |  |
 
 | *Comment* | Test Case: Email attachment Deleting zip attachment |  |
@@ -109,8 +101,8 @@
 | type_ok | st-search-term | "wikitestzip.zip" |
 | click_and_wait | st-search-submit |  |
 | wait_for_text_present_ok | Pages matching '"wikitestzip.zip"' | 30000 |
-| text_like | contentContainer | Email subject %%start_time%% |
-| text_unlike | contentContainer | emailed page %%start_time%% |
+| text_like | content | Email subject %%start_time%% |
+| text_unlike | content | emailed page %%start_time%% |
 
 | *Comment* | Test Case: Email attachment TEARDOWN |  |
 | st-process-jobs |  |  |

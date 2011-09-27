@@ -18,53 +18,50 @@
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Open The Group |  |
 | open_ok | /st/edit_group/%%group_id%% |  |
-| wait_for_text_present_ok | Edit Group |  |
 | wait_for_element_visible_ok | create-group | 30000 |
-| pause | 5000 |  |
+| wait_for_text_present_ok | Members |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Make %%group_mbr%% an admin |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-7-list'] | 30000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-7-list'] | 5000 |
 | click_ok | //*[@id='st-dropdown-7-list']/li[2]/a |  |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/changed/ism |
 | text_like | //body | qr/%%group_mbr_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | create-group | 30000 |
+| wait_for_element_visible_ok | create-group | 5000 |
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Check to make sure %%group_mbr%% is an admin |  |
 | open_ok | /st/edit_group/%%group_id%% |  |
-| wait_for_text_present_ok | Edit Group |  |
 | wait_for_element_visible_ok | create-group | 30000 |
-| pause | 5000 |  |
+| wait_for_text_present_ok | Members |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_mbr_short%%\s+Admin/ |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member |  |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-7-list'] | 30000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-7-list'] | 5000 |
 | click_ok | `//*[@id='st-dropdown-7-list']/li[1]/a` |  |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/changed/ism |
 | text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | create-group | 30000 |
+| wait_for_element_visible_ok | create-group | 5000 |
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Check that %%group_mbr%% is back to member |  |
 | open_ok | /st/edit_group/%%group_id%% |  |
-| wait_for_text_present_ok | Edit Group |  |
 | wait_for_element_visible_ok | create-group | 30000 |
-| pause | 5000 |  |
+| wait_for_text_present_ok | Members |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
@@ -77,18 +74,17 @@
 | *Comment* | Test Case: Groups UI Delegate Membership attempt to remove the last Admin |  |
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/edit_group/%%group_id%% |  |
-| wait_for_text_present_ok | Edit Group |  |
 | wait_for_element_visible_ok | create-group | 30000 |
-| pause | 5000 |  |
+| wait_for_text_present_ok | Members |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list'] | 30000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list'] | 5000 |
 | click_ok | `//*[@id='st-dropdown-3-list']/li[1]/a` |  |
 | st-select-widget-frame | members_widget |  |
-| wait_for_text_present_ok | Groups need at least one admin | 30000 |
+| wait_for_text_present_ok | Groups need at least one admin | 5000 |
 | pause | 15000 | error message removes Admin menu. Wait for it to return. |
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |

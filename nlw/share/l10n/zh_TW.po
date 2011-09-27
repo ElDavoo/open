@@ -10417,7 +10417,7 @@ msgid "page.edit"
 msgstr "編輯"
 
 msgid "page.edit-as-xhtml"
-msgstr "轉換格式並編輯<br />（使用新版編輯器）"
+msgstr "編輯"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
@@ -10630,7 +10630,7 @@ msgid "page.type-wiki"
 msgstr "頁面"
 
 msgid "page.type-xhtml"
-msgstr "頁面（使用新版編輯器）"
+msgstr "頁面"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -11856,7 +11856,7 @@ msgstr "向下"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2527
 msgid "sc.edit-more"
-msgstr "編輯更多"
+msgstr "繼續編輯"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:254
 msgid "sc.edit-revision"
@@ -14977,4 +14977,4 @@ msgid "wikiwyg.widget"
 msgstr "插入一個小工具"
 
 msgid "xhtml.creating"
-msgstr "正在啟動新版編輯器建立頁面..."
+msgstr "正在建立頁面..."

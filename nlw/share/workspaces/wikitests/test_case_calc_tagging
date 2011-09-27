@@ -142,10 +142,10 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | open_ok | /%%t_ws%%/?action=recent_changes |  |
 | click_and_wait | link=All Tags |  |
-| text_like | contentContainer | tagtest %%start_time%% |
+| text_like | content | tagtest %%start_time%% |
 | click_and_wait | link=tagtest %%start_time%% |  |
-| text_like | contentContainer | tag page 1 %%start_time%% |
-| text_like | contentContainer | tag page 3 %%start_time%% |
+| text_like | content | tag page 1 %%start_time%% |
+| text_like | content | tag page 3 %%start_time%% |
 
 
 | *Comment* | Test Case: Calc Tagging verify suggestions foo bar, fog, and Foster City |  |

@@ -40,7 +40,7 @@ TODO: this test is too long; split into two or three independent TCs
 | open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 | st-name-widget | 4 | follow_widget |
-| st-widget-title-like | follow_widget | Colleagues |
+| st-widget-title | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Follows')] | 30000 |
 | click_ok | //td[contains(text(),'Follows')] |  |
@@ -53,7 +53,7 @@ TODO: this test is too long; split into two or three independent TCs
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 | st-name-widget | 2 | follow_widget |
-| st-widget-title-like | follow_widget | Colleagues |
+| st-widget-title | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Follows')] | 30000 |
 | click_ok | //td[contains(text(),'Follows')] |  |
@@ -88,7 +88,7 @@ TODO: this test is too long; split into two or three independent TCs
 | open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 | st-name-widget | 4 | follow_widget |
-| st-widget-title-like | follow_widget | Colleagues |
+| st-widget-title | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_not_present_ok | link=%%fFname%% | 30000 |
 | select-frame | relative=parent |  |
@@ -97,7 +97,7 @@ TODO: this test is too long; split into two or three independent TCs
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 | st-name-widget | 2 | follow_widget |
-| st-widget-title-like | follow_widget | Colleagues |
+| st-widget-title | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_not_present_ok | link=%%fFname%% | 30000 |
 | select-frame | relative=parent |  |
@@ -135,7 +135,7 @@ TODO: this test is too long; split into two or three independent TCs
 | open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 | st-name-widget | 4 | follow_widget |
-| st-widget-title-like | follow_widget | Colleagues |
+| st-widget-title | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Follows')] | 30000 |
 | click_ok | //td[contains(text(),'Follows')] |  |
@@ -160,7 +160,7 @@ TODO: this test is too long; split into two or three independent TCs
 | *Comment* | Test Case: Follow. Verify %%short_username%% follows %%fFname%% |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 | st-name-widget | 4 | follow_widget |
-| st-widget-title-like | follow_widget | Colleagues |
+| st-widget-title | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Follows')] | 30000 |
 | click_ok | //td[contains(text(),'Follows')] |  |
@@ -192,7 +192,7 @@ TODO: this test is too long; split into two or three independent TCs
 | open_ok | /st/profile |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 | st-name-widget | 4 | follow_widget |
-| st-widget-title-like | follow_widget | Colleagues |
+| st-widget-title | follow_widget | Colleagues |
 | st-select-widget-frame | follow_widget |  |
 | wait_for_element_visible_ok | //td[contains(text(),'Follows')] | 30000 |
 | click_ok | //td[contains(text(),'Follows')] |  |

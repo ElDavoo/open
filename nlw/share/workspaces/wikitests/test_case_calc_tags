@@ -59,16 +59,16 @@ click on several page links | Pages appear; each page has its that tag displayed
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
 | wait_for_element_present_ok | link=tag2 %%start_time%% |  |
 | text_like | link=tag2 %%start_time%% | tag2 %%start_time%% |
-| clickAndWait | link=tag2 %%start_time%% |  |
-| clickAndWait | link=tag2 content spreadsheet %%start_time%% |  |
+| click_and_wait | link=tag2 %%start_time%% |  |
+| click_and_wait | link=tag2 content spreadsheet %%start_time%% |  |
 | text_like | link=tag2 %%start_time%% | tag2 %%start_time%% |
 
 | *Comment* | Test Case Calc: Tags Checking tag1 links and pages |  |
 
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
 | text_like | link=tag1 %%start_time%% | tag1 %%start_time%% |
-| clickAndWait | link=tag1 %%start_time%% |  |
-| clickAndWait | link=tag1 content spreadsheet %%start_time%% |  |
+| click_and_wait | link=tag1 %%start_time%% |  |
+| click_and_wait | link=tag1 content spreadsheet %%start_time%% |  |
 | text_like | link=tag1 %%start_time%% | tag1 %%start_time%% |
 
 click: View {link: Category as a weblog} | All pages with that tag appear in weblog form
@@ -109,7 +109,7 @@ Go to All Tags | The deleted tag should not appear in list
 | st-process-jobs | PageIndex |  |
 
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
-| text_unlike | contentContainer | tag1 %%start_time%% |
+| text_unlike | content | tag1 %%start_time%% |
 
 Make a new page and add a new tag (a tag not already in use in workspace) | tag is added
 Delete this page. | Page is deleted. This tag now has zero pages.
@@ -126,7 +126,7 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | st-process-jobs | PageIndex |  |
 
 | open_ok | %%workspace%%/index.cgi?action=category_list |  |
-| text_unlike | contentContainer | tag2 %%start_time%% |
+| text_unlike | content | tag2 %%start_time%% |
 
 | *Comment* | Test Case Calc: Tags Teardown |  |
 

@@ -1,11 +1,17 @@
 body.xhtml {
   font-family: Verdana, Arial, sans-serif; }
 
+.xhtml ol {
+  padding-left: 35px; }
+
+.wiki ol {
+  padding-left: 25px; }
+
 .wiki, .xhtml {
   padding: 0 !important;
   line-height: normal !important;
   font-size: 12px !important; }
-  .wiki ol, .wiki ul, .xhtml ol, .xhtml ul {
+  .wiki ul, .xhtml ul {
     padding-left: 25px; }
   .wiki ol, .xhtml ol {
     list-style: decimal outside none; }
@@ -58,14 +64,22 @@ html .wiki a:hover, html .xhtml a:hover {
   color: #0a94df;
   line-height: 1.2 !important; }
 .wiki h1, .xhtml h1 {
-  font-size: 2em;
-  margin-bottom: 0.5em; }
+  font-size: 2em; }
 .wiki h2, .xhtml h2 {
-  font-size: 1.7em;
-  margin-bottom: 0.75em; }
+  font-size: 1.7em; }
 .wiki h3, .xhtml h3 {
-  font-size: 1.4em;
+  font-size: 1.4em; }
+
+.xhtml h1, .xhtml h2, .xhtml h3 {
+  margin-bottom: 0.5em;
+  margin-top: 0.5em; }
+.xhtml br + br + h1, .xhtml br + br + h2, .xhtml br + br + h3 {
+  margin-top: 0em; }
+
+.wiki h1, .wiki h3 {
   margin-bottom: 0.5em; }
+.wiki h2 {
+  margin-bottom: 0.75em; }
 
 div#contentColumns div#contentLeft .wiki h3 {
   font-size: 1.4em;
@@ -306,7 +320,7 @@ div#contentColumns div#contentLeft div.wafl_box div.wafl_items ul.item_list li p
 td .wafl_box {
   margin-bottom: 0; }
 
-.xhtml table.sort tr:first-child td {
+.xhtml table.sort tr:first-child td, .xhtml table[data-sort] tr:first-child td {
   padding-right: 24px !important;
   background-position: top right;
   background-repeat: no-repeat;

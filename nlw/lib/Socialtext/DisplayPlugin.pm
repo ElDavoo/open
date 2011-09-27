@@ -226,15 +226,19 @@ sub display {
                 my @template_tags = (lc('template'), lc(loc('tag.template')));
                 push @new_tags, grep { not( lc($_) ~~ @template_tags ) }
                                 @{ $tmpl_page->tags };
-                my $content = $tmpl_page->content;
 
-                if (my $variables = $self->cgi->variables) {
-                    my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
-                    my %vars;
-                    while (my ($key, $val) = each %$decoded_vars) {
-                        $vars{lc $key} = $val;
+                my $content = '';
+                if ($page_type eq 'wiki') {
+                    $content = $tmpl_page->to_wikitext;
+
+                    if (my $variables = $self->cgi->variables) {
+                        my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
+                        my %vars;
+                        while (my ($key, $val) = each %$decoded_vars) {
+                            $vars{lc $key} = $val;
+                        }
+                        $content =~ s/%%(.*?)%%/$vars{lc $1}/eg;
                     }
-                    $content =~ s/%%(.*?)%%/$vars{lc $1}/eg;
                 }
 
                 if ($page->mutable) {
@@ -325,6 +329,9 @@ sub _render_display {
         template_name      => scalar $self->cgi->template,
         start_in_edit_mode => $start_in_edit_mode,
         accept_encoding    => $accept_encoding,
+        editor => {
+            insert_menu_extra_items => [ undef ],
+        },
         page => {
             id              => $page->page_id,
             title           => $page->title,
@@ -334,6 +341,9 @@ sub _render_display {
             attachments     => $attachments,
             new_title       => scalar $self->cgi->new_title,
             new_attachments => $new_attachments,
+            variables       => (Socialtext::JSON::decode_json_utf8(
+                $self->cgi->variables || '{}'
+            ) || {}),
             revision_id     => $page->revision_id,
             is_new          => $is_new_page,
             is_incipient    => ($self->cgi->is_incipient ? 1 : 0),
@@ -366,6 +376,9 @@ sub _render_display {
             ),
             attachments             => $attachments,
             new_attachments         => $new_attachments,
+            variables               => (Socialtext::JSON::decode_json_utf8(
+                $self->cgi->variables || '{}'
+            ) || {}),
             watching                => $self->hub->watchlist->page_watched,
             login_and_edit_path => '/challenge?'
                 . uri_escape(

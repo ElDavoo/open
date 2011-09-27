@@ -162,7 +162,7 @@ Socialtext.Page.prototype = {
 
                     self.setPageContent(data.html);
 
-                    $('table.sort')
+                    $('table.sort, table[data-sort]')
                         .each(function() { Socialtext.make_table_sortable(this) });
 
                     // After upload, refresh the wikitext contents.

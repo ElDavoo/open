@@ -5,7 +5,7 @@ use methods-invoker;
 use 5.12.0;
 use warnings;
 use Socialtext::System qw(shell_run);
-use Socialtext::JSON qw(encode_json);
+use JSON::XS ();
 use Socialtext::Paths;
 use JavaScript::Minifier::XS qw(minify);
 use Template;
@@ -375,7 +375,10 @@ method _json_to_text ($part) {
     my $name = $part->{name} || die "name required";
     my $text = '';
     $text .= $part->{nocomment} ? '' : "// BEGIN $part->{json}\n";
-    $text .= "$name = " . encode_json(YAML::LoadFile($part->{json})) . ";";
+    $text .= "$name = " . JSON::XS->new->ascii->allow_nonref->canonical(1)->encode(
+        YAML::LoadFile($part->{json})
+    ) . ";";
+    $text .= $part->{epilogue} if $part->{epilogue};
     return $text;
 }
 

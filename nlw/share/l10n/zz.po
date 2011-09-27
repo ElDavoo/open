@@ -47,7 +47,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-23 11:19+0800\n"
+"PO-Revision-Date: 2011-09-15 13:09+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-11 08:11-0700\n"
+"PO-Revision-Date: 2011-09-15 13:07+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -11002,7 +11002,7 @@ msgid "page.edit"
 msgstr "Zzzz"
 
 msgid "page.edit-as-xhtml"
-msgstr "Zzzzzzz zzz Zzzz <i>(zzzz zzz zzzzzz zzzzzzzzz)</i>"
+msgstr "Zzzz"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
@@ -11220,7 +11220,7 @@ msgid "page.type-wiki"
 msgstr "Zzzz"
 
 msgid "page.type-xhtml"
-msgstr "Zzzz (zzzzz zzz zzzzzz zzzzzzzzz)"
+msgstr "Zzzz"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -15737,4 +15737,4 @@ msgid "wikiwyg.widget"
 msgstr "Zzzzzz z Zzzzzz"
 
 msgid "xhtml.creating"
-msgstr "Zzzzzzzz z Zzzz zzzzz zzz zzzzzz zzzzzzzzz..."
+msgstr "Zzzzzzzz z Zzzz..."

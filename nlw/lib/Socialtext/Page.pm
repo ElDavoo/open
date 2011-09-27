@@ -1057,6 +1057,16 @@ sub content {
     return ${$self->body_ref};
 }
 
+sub to_wikitext {
+    my $self = shift;
+    $self->content_as_type(@_, type => $WIKITEXT_TYPE)
+}
+
+sub to_xhtml {
+    my $self = shift;
+    $self->content_as_type(@_, type => $XHTML_TYPE)
+}
+
 sub content_as_type {
     my $self = shift;
     my %p    = @_;
@@ -2117,10 +2127,12 @@ sub rename {
         );
         return 0 unless $ok;
 
-        my $localized_str = loc("page.renamed=title", $new_page_title);
+        my $localized_str = wiki2html(
+            loc("page.renamed=title", $new_page_title)
+        );
         my $rev = $self->edit_rev();
         $rev->body_ref(\$localized_str);
-        $rev->page_type('wiki');
+        $rev->page_type('xhtml');
         $self->store();
 
         return 1;

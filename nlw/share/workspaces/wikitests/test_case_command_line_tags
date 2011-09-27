@@ -6,13 +6,9 @@
 | st-admin | add-member --email %%email%% --workspace %%cmd_tag_workspace%% | qr/now has the role of 'member' in the %%cmd_tag_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line TAGS Create Page 1 |  |
-| open_ok | /%%cmd_tag_workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | st-newpage-pagename-edit | Command Line Tag 1 %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Tag 1 Content Page %%start_time%% |
+
+| call | st-edit-fill-page | ws=%%cmd_tag_workspace%% | title=Command Line Tag 1 %%start_time%% | content=Tag 1 Content Page %%start_time%% |
+
 
 | *Comment* | Test Case: Command Line TAGS Tag Page 1 in edit mode three times |  |
 | wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
@@ -29,17 +25,13 @@
 
 | *Comment* | Test Case: Command Line TAGS Tag save Page 1 |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 | wait_for_element_present_ok | st-edit-button-link |  |
 
 | *Comment* | Test Case: Command Line: TAGS Create Page 2 |  |
-| open_ok | /%%cmd_tag_workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | st-newpage-pagename-edit | Command Line Tag 2 %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Tag 2 Content Page %%start_time%% |
+
+| call | st-edit-fill-page | ws=%%cmd_tag_workspace%% | title=Command Line Tag 2 %%start_time%% | content=Tag 2 Content Page %%start_time%% |
+
 
 | *Comment* | Test Case: Command Line TAGS Tag Page 2 in edit mode three times |  |
 | wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
@@ -56,7 +48,7 @@
 
 | *Comment* | Test Case: Command Line TAGS Tag save Page 2 |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 | wait_for_element_present_ok | st-edit-button-link |  |
 
 delete-tag
