@@ -25,6 +25,11 @@ var gallery = {
         self.dialog.find("a.add-now").click(function(){
             var $button = $(this);
             var src = $button.siblings('input[name=src]').val();
+            if (self.onAddWidget) {
+                self.dialog.close();
+                self.onAddWidget(src);
+                return false;
+            }
             var gadget_id = $button.siblings('input[name=gadget_id]').val();
             gadgets.container.add_gadget({
                 col: 2,

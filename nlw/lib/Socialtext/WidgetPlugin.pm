@@ -99,6 +99,7 @@ sub widget_setup_screen {
             account_id => $account->account_id,
             plugins => [$account->plugins_enabled],
         },
+        container => { id => -1 },
         pluggable => $self->hub->pluggable,
         gadget => $self->gadget_vars(
             $self->cgi->widget, $self->cgi->encoded_prefs,
