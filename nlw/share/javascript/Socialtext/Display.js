@@ -43,6 +43,11 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    $('#st-pagetools-duplicate a').click(function() {
+        st.dialog.show('page-duplicate');
+        return false;
+    });
+
     /**
      * Tags
      */
