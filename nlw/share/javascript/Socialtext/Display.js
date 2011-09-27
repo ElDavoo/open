@@ -121,10 +121,10 @@ Socialtext.prototype.setupPageHandlers = function() {
      */
     $('#st-edit-button-link').button().click(function() {
         var $button = $(this);
-        $button.button('disable');
+        $('#content').uiDisable();
         $.getScript(st.nlw_make_js_path('socialtext-ckeditor.jgz'), function() {
             Socialtext.start_xhtml_editor();
-            $button.button('enable');
+            $('#content').uiEnable();
         });
         return false;
     });
