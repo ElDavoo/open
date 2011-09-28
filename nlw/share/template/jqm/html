@@ -21,5 +21,5 @@ if (window.parent && window.parent.$) {
 [% content %]
 
 <div id="loading" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: white; display: none; z-index: 9999; padding-top: 12px; text-align: center; *width: 100%; *height: 100%">
-    <img src="/static/skin/common/images/ajax-loader.gif" width="16" height="16" />
+    <img src="/static/images/ajax-loader.gif" width="16" height="16" />
 </div>

@@ -89,7 +89,7 @@
 
         <div class="content inlineWidget" style="margin-top: 35px; margin-bottom: 20px">
             <div id="content" class="activitiesWidget">
-                <img style="margin: 40px" src="[% static_path %]/skin/common/images/ajax-loader.gif"/>
+                <img style="margin: 40px" src="[% static_path %]/images/ajax-loader.gif"/>
             </div>
         </div>
 

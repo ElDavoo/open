@@ -34,7 +34,7 @@
 <li>[% loc('desktop.download-and-run-installer=flash,air,target', getFlash, getAIR, target) %]</li>
 <li><i>[% loc('desktop.admin-privilege-needed-to-install=target', target) %]</i></li>
 <li class="getFlash" style="margin-bottom: 10px">[% loc('desktop.after-installation-restart-browser') %]</a></li>
-[% SET clickHere = '<a href="/" onclick="$(' _ "'#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false" _ '">' _ loc('desktop.click-here') _ '</a>' %]
+[% SET clickHere = '<a href="/" onclick="$(' _ "'#flashcontent').css('background', 'url(/static/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false" _ '">' _ loc('desktop.click-here') _ '</a>' %]
 <li class="getAIR" style="margin-bottom: 10px; display: none">[% loc('desktop.after-installation-click-to-launch-desktop=link', clickHere) %]</a></li>
 <li>[% loc('desktop.thank-you') %]</li>
 </ol>
