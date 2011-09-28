@@ -412,6 +412,17 @@ sub PUT_json {
         $object->{date} = Socialtext::Date->now(hires => 1);
     }
 
+    if (not defined $object->{content}) {
+        if (defined $object->{xhtml}) {
+            $object->{type} ||= 'xhtml';
+            $object->{content} = delete $object->{xhtml};
+        }
+        elsif (defined $object->{wikitext}) {
+            $object->{type} ||= 'wiki';
+            $object->{content} = delete $object->{wikitext};
+        }
+    }
+
     if (my $t = $object->{type}) {
         $object->{type} = undef unless $self->_acceptable_page_types($t);
     }
