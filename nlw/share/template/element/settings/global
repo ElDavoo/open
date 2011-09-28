@@ -1,23 +1,23 @@
 [% USE decorate %]
 
 [% IF can_update_store %]
-  <h3>[% loc('My Settings') %]</h3>
+  <h3>[% loc('nav.my-settings') %]</h3>
 
-  <div class="alpha grid_5 input-label">[% loc('First Name') %]:</div>
+  <div class="alpha grid_5 input-label">[% loc('field.first_name') %]:</div>
   <div class="omega grid_15">
     <input type="text" name="user.first_name"
       value="[% user.first_name %]" />
   </div>
   <div class="clear"></div>
 
-  <div class="alpha grid_5 input-label">[% loc('Middle Name') %]:</div>
+  <div class="alpha grid_5 input-label">[% loc('field.middle_name') %]:</div>
   <div class="omega grid_15">
     <input type="text" name="user.middle_name"
       value="[% user.middle_name %]" />
   </div>
   <div class="clear"></div>
 
-  <div class="alpha grid_5 input-label">[% loc('Last Name') %]:</div>
+  <div class="alpha grid_5 input-label">[% loc('field.last_name') %]:</div>
   <div class="omega grid_15">
     <input type="text" name="user.last_name"
       value="[% user.last_name %]" />
@@ -48,7 +48,7 @@
   <hr />
 [% END %]
 
-<h3>[% loc('Time') %]</h3>
+<h3>[% loc('class.timezone') %]</h3>
 
 [% INCLUDE element/settings/setting_select
   pref='prefs.timezone.timezone'

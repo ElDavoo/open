@@ -55,15 +55,15 @@ sub homepage_weblog_data {
     my $self = shift;
 
     return {
-        title => loc('Workspace Link'),
+        title => loc('wiki.link'),
         additional => loc('When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a weblog instead, enter that name here.'),
     };
 }
 
 sub title_data {
     return {
-        title => loc('Workspace Title'),
-        additional => loc('Example: Acme Widgets Product Development'),
+        title => loc('wiki.title'),
+        additional => loc('example.title'),
     };
 }
 
@@ -74,9 +74,9 @@ sub incoming_email_placement_data {
         title => loc('Placement of emailed content'),
         default_setting => 'bottom',
         options => [
-            {setting => 'bottom', display => loc('Bottom of page')},
-            {setting => 'top', display => loc('Top of page')},
-            {setting => 'replace', display => loc('Replace existing page')},
+            {setting => 'bottom', display => loc('page.bottom')},
+            {setting => 'top', display => loc('page.top')},
+            {setting => 'replace', display => loc('page.replace')},
         ],
     };
 }
@@ -85,7 +85,7 @@ sub enable_unplugged_data {
     my $self = shift;
 
     return {
-        title => loc('Socialtext Unplugged'),
+        title => loc('nav.socialtext-unplugged'),
         default_setting => 0,
         binary => 1,
         options => [
@@ -114,7 +114,7 @@ sub sort_weblogs_by_create_data {
 
     return {
         title => loc('Weblog sort order'),
-        additional => loc('You can choose to sort blog entries by the date an entry is updated, or by the date an entry was first posted.'),
+        additional => loc('info.blog-sort'),
         default_setting => 0,
         options => [
             {setting => 1, display => loc('by last updated time')},
@@ -127,7 +127,7 @@ sub allows_page_locking_data {
     my $self = shift;
 
     return {
-        title => loc('Page Locking'),
+        title => loc('nav.page-locking'),
         default_setting => 0,
         binary => 1,
         options => [
@@ -141,11 +141,11 @@ sub guest_has_email_in_data {
     my $self = shift;
 
     return {
-        title => loc('Who can send email to this workspace?'),
+        title => loc('wiki.email-senders?'),
         default_setting => 0,
         options => [
             {setting => 0, display => loc('Only Registered Users')},
-            {setting => 1, display => loc('Anyone')},
+            {setting => 1, display => loc('explore.anyone')},
         ],
     };
 }
@@ -180,7 +180,7 @@ sub workspaces_listall {
 
     $self->screen_template('view/user_workspacelist');
     return $self->render_screen(
-        display_title => loc('My Workspaces'),
+        display_title => loc('nav.my-wikis'),
         workspaces => $workspaces,
     );
 }

@@ -61,7 +61,7 @@ jQuery(document).ready(function() {
 
 </script>
 
-<h3>[% loc('Invite New Users') %]</h3>
+<h3>[% loc('invite.new-users') %]</h3>
 
 [% IF invite_errors %]
   <p class="error">

@@ -497,10 +497,10 @@ sub _space_prefs {
     );
 
     my %abilities = (
-        preferences => loc('Preferences'),
+        preferences => loc('nav.preferences'),
     );
 
-    $abilities{unsubscribe} = loc('Unsubscribe')
+    $abilities{unsubscribe} = loc('do.unsubscribe')
        if $space->has_user($user, direct=>1);
 
     $abilities{blog} = loc('Create Blog')

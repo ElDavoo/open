@@ -8,7 +8,7 @@
     <table class="dataTable workspacelist">
       <tr>
         <th>[% loc('Title') %]</th>
-        <th class="numeric">[% loc('Users') %]</th>
+        <th class="numeric">[% loc('nav.users') %]</th>
         <th class="numeric">[% loc('Groups') %]</th>
       </tr>
       [% FOREACH workspace = workspaces %]

@@ -2,13 +2,13 @@
 
 <div class="[% selected(['dashboard']) %]grid_3 navGrid first">
   <div class="navLink">
-      <a class="dashboard" href="/st/dashboard">[% loc('Dashboard') %]</a>
+      <a class="dashboard" href="/st/dashboard">[% loc('nav.dashboard') %]</a>
   </div>
   <div class="underline"></div>
 </div>
 <div id="global-people-directory" class="[% selected(['peoplelist','profile']) %]grid_3 navGrid">
   <div class="navLink">
-      <a class="people" href="/st/people">[% loc('People') %]</a>
+      <a class="people" href="/st/people">[% loc('nav.people') %]</a>
   </div>
   <div class="underline"></div>
 </div>
@@ -20,13 +20,13 @@
 </div>
 <div class="[% selected(['signals']) %]grid_3 navGrid">
   <div class="navLink">
-      <a class="activities" href="/st/signals">[% loc('Signals') %]</a>
+      <a class="activities" href="/st/signals">[% loc('nav.signals') %]</a>
   </div>
   <div class="underline"></div>
 </div>
 <div id="global-workspace-list" class="[% selected(['spaces']) %]grid_3 navGrid">
   <div class="navLink">
-      <a class="spaces" href="/?action=workspaces_listall">[% loc('Workspaces') %]</a>
+      <a class="spaces" href="/?action=workspaces_listall">[% loc('nav.wikis') %]</a>
   </div>
   <div class="underline"></div>
 </div>

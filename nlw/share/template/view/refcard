@@ -10,25 +10,25 @@
       [% PROCESS window_button label = loc('Print This'), method = 'print' %]
     </div>
 
-[% SET bold_words_text = loc('bold words') %]
-[% SET italic_words_text = loc('italic words') %]
-[% SET strikeout_text = loc('strikeout') %]
-[% SET monospace_text = loc('monospace') %]
-[% SET table_text = loc('table') %]
-[% SET value_text = loc('value') %]
-[% SET dinette_text = loc('dinette') %]
+[% SET bold_words_text = loc('refcard.bold-words') %]
+[% SET italic_words_text = loc('refcard.italic-words') %]
+[% SET strikeout_text = loc('refcard.strikeout') %]
+[% SET monospace_text = loc('refcard.monospace') %]
+[% SET table_text = loc('refcard.table') %]
+[% SET value_text = loc('refcard.value') %]
+[% SET dinette_text = loc('refcard.dinette') %]
 [% SET indented_text = loc('indented') %]
 [% SET lines_text = loc('lines') %]
 [% SET Page_link_text = loc('Page link') %]
-[% SET Page_Link_text = loc('Page Link') %]
-[% SET Link_text_text = loc('Link text') %]
+[% SET Page_Link_text = loc('refcard.page-link') %]
+[% SET Link_text_text = loc('wafl.link-text') %]
 [% SET different_workspace_text = loc('different-workspace') %]
-[% SET Page_Title_text = loc('Page Title') %]
-[% SET Name_text = loc('Name') %]
-[% SET Section_text = loc('Section') %]
+[% SET Page_Title_text = loc('page.title') %]
+[% SET Name_text = loc('user.name') %]
+[% SET Section_text = loc('wafl.section') %]
 [% SET headings_are_sections_text = loc('headings are sections too') %]
 [% SET another_workspace_text = loc('another workspace') %]
-[% SET external_link_text = loc('external link') %]
+[% SET external_link_text = loc('link.external') %]
 [% SET email_link_text = loc('email link') %]
 [% SET Socialtext_Home_Page_text = loc('Socialtext Home Page') %]
 [% SET Socialtext_Email_text = loc('Socialtext Email') %]
@@ -45,7 +45,7 @@
 [% SET image_attachment_text = loc('image attachment') %]
 [% SET image_attached_to_page_text = loc('image attached to page') %]
 [% SET image_attachment_text = loc('image attachment') %]
-[% SET workspace_text = loc('workspace') %]
+[% SET workspace_text = loc('heading.workspace') %]
 [% SET image_attached_to_a_page_in_another_ws_text = loc('image attached to a page in another workspace') %]
 [% SET page_name_text= loc('page name') %]
 [% SET My_Weblog_text = loc('My Weblog') %]
@@ -99,7 +99,7 @@
     },
 
     {
-        html = loc('Page section name'),
+        html = loc('refcard.page-section-name'),
         text = '{section:'  _ Name_text _ '}',
     },
 
@@ -250,7 +250,7 @@
 ] %]
 
     <table class="st-refcard-table">
-      <tr class="st-refcard-table-row"><th>[% loc('To Get This...') %] </th><th>[% loc('Type This') %]</th></tr>
+      <tr class="st-refcard-table-row"><th>[% loc('refcard.to-get-this') %] </th><th>[% loc('refcard.type-this') %]</th></tr>
       [% FOREACH row = refcard %]
         <tr class="st-refcard-table-row"><td>[% row.html %]</td><td>[% row.text %]</td></tr>
       [% END %]

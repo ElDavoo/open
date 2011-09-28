@@ -1,4 +1,4 @@
-<h3>[% loc('Page Editing') %]</h3>
+<h3>[% loc('class.wikiwyg') %]</h3>
 
 [% FOREACH setting IN prefs.wikiwyg.keys %]
   [% INCLUDE element/settings/setting_select
@@ -9,7 +9,7 @@
 
 <hr />
 
-<h3>[% loc('Screen Layout') %]</h3>
+<h3>[% loc('class.display') %]</h3>
 
 [% FOREACH setting IN prefs.display.keys %]
   [% INCLUDE element/settings/setting_select
@@ -20,7 +20,7 @@
 
 <hr />
 
-<h3>[% loc('Email Notification') %]</h3>
+<h3>[% loc('class.email_notify') %]</h3>
 
 [% FOREACH setting IN prefs.email_notify.keys %]
   [% INCLUDE element/settings/setting_select
@@ -31,7 +31,7 @@
 
 <hr />
 
-<h3>[% loc("What's New") %]</h3>
+<h3>[% loc("class.recent_changes") %]</h3>
 
 [% INCLUDE element/settings/setting_select
   pref='prefs.recent_changes.changes_depth'
@@ -61,7 +61,7 @@
 
 <hr />
 
-<h3>[% loc('Watchlist') %]</h3>
+<h3>[% loc('nav.watchlist') %]</h3>
 
 [% FOREACH setting IN prefs.watchlist.keys %]
   [% INCLUDE element/settings/setting_select
@@ -72,7 +72,7 @@
 
 <hr />
 
-<h3>[% loc('Blogs') %]</h3>
+<h3>[% loc('blog.blogs') %]</h3>
 
 [% FOREACH setting IN prefs.weblog.keys %]
   [% INCLUDE element/settings/setting_select

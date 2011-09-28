@@ -25,7 +25,7 @@ jQuery(document).ready(function() {
 <div class="grid_4">
   <div id="settings-sidebar">
     <div class="pad">
-      <h4>[% loc('Settings') %]</h4>
+      <h4>[% loc('nav.settings') %]</h4>
         <div class="top">
           [% IF section == 'global' %]
             <strong>[% loc('Global Settings') %]</strong>
@@ -33,7 +33,7 @@ jQuery(document).ready(function() {
             <a href="/st/settings">[% loc('Global Settings') %]</a>
           [% END %]
         </div>
-      <h4>[% loc('Workspaces') %]</h4>
+      <h4>[% loc('nav.wikis') %]</h4>
       <div id="spaces-accordion">
       [% FOREACH space IN spaces %]
         <div class="top header">
@@ -64,8 +64,8 @@ jQuery(document).ready(function() {
   <div id="settings-main">
     <form method="POST" action="">
       <p>
-        <a class="save" href="#">[% loc('Save') %]</a>
-        <a class="cancel" href="#">[% loc('Cancel') %]</a>
+        <a class="save" href="#">[% loc('do.save') %]</a>
+        <a class="cancel" href="#">[% loc('do.cancel') %]</a>
       </p>
 
       [% IF message %]
@@ -75,8 +75,8 @@ jQuery(document).ready(function() {
       [% main_content %]
 
       <p>
-        <a class="save" href="#">[% loc('Save') %]</a>
-        <a class="cancel" href="#">[% loc('Cancel') %]</a>
+        <a class="save" href="#">[% loc('do.save') %]</a>
+        <a class="cancel" href="#">[% loc('do.cancel') %]</a>
       </p>
     </form>
   </div>

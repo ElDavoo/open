@@ -9,7 +9,7 @@
 	<span class="st-wiki-subnav-label">[% loc("See more") %]:&nbsp;</span>
 	<a id="st-wiki-subnav-link-all-pages" href="?action=changes&changes=all">[% loc("All pages") %]</a>
 	-
-	<a id="st-wiki-subnav-link-all-tags" href="?action=category_list">[% loc("All tags") %]</a>
+	<a id="st-wiki-subnav-link-all-tags" href="?action=category_list">[% loc("tag.all=wiki") %]</a>
 	-
 	<a id="st-wiki-subnav-link-all-files" href="?action=attachments_listall">[% loc("All files") %]</a>
 	<br style="clear: both; height: 1px;" />
