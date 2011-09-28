@@ -54,8 +54,15 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // Rename
     $('#st-pagetools-rename a').click(function() {
         st.dialog.show('page-rename');
+        return false;
+    });
+
+    // Delete
+    $('#st-pagetools-delete a').click(function() {
+        st.dialog.show('page-delete');
         return false;
     });
 
