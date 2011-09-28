@@ -19,6 +19,23 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // Show/Hide
+    var $container = $('#st-display-mode-container')
+    $('#st-page-boxes-hide-link').click(function() {
+        $container.removeClass($container.data('expanded'));
+        $container.addClass($container.data('collapsed'));
+        $('#st-display-mode-widgets').hide();
+        $('#st-page-boxes-show-link').show();
+        return false;
+    });
+    $('#st-page-boxes-show-link').click(function() {
+        $container.removeClass($container.data('collapsed'));
+        $container.addClass($container.data('expanded'));
+        $('#st-page-boxes-show-link').hide();
+        $('#st-display-mode-widgets').show();
+        return false;
+    });
+
     // Watch
     $('#st-watchlist-indicator a').click(function() {
         var $link = $(this);

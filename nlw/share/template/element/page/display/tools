@@ -24,6 +24,7 @@
 <div class="widget">
   <div class="pad4">
     [% INCLUDE 'element/page/display/edit-button' %]
+    <a id="st-page-boxes-hide-link" href="#"><span class="arrow">&#x25bc;</span>[% loc('nav.hide') %]</a>
   </div>
   <div class="content">
     <ul class="tools">

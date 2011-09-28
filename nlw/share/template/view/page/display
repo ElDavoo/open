@@ -25,21 +25,26 @@
 
 <div id="st-editor" style="display:none"></div>
 
-<div id="st-display-mode-container" class="grid_18 widgetColumn">
+<div id="st-display-mode-container" class="grid_18" data-expanded="grid_18" data-collapsed="grid_24">
   <div class="widget">
-    <h1 id="st-page-titletext" class="tableTitle" title="[% page.display_title %]">[% page.display_title %]</h1>
+    <h1 class="grid_18" id="st-page-titletext" title="[% page.display_title %]">[% page.display_title %]</h1>
+    <a id="st-page-boxes-show-link" href="#"><span class="arrow">&#x25bc;</span> [% loc('nav.show') %]</a>
+    <div class="clear"></div>
     <div class="content" id="st-page-content">[% page.content %]</div>
   </div>
   <div id="st-comment-interface"></div>
 </div>
 
-<div id="st-display-mode-widgets" class="grid_6 widgetColumn">
+<div id="st-display-mode-widgets" class="grid_6">
   [% INCLUDE element/page/display/tools %]
   [% INCLUDE element/page/display/tags %]
   [% INCLUDE element/page/display/links %]
   [% INCLUDE element/page/display/attachments %]
   [% INCLUDE element/page/display/recent_changes IF include_recent_changes %]
   [% INCLUDE element/page/display/breadcrumbs IF include_breadcrumbs %]
+</div>
+
+<div id="st-display-mode-hidden-widgets" class="grid_2">
 </div>
 
 <div class="clear"></div>
