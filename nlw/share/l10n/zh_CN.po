@@ -4628,7 +4628,7 @@ msgstr "您刚才编辑的%1显示如下。您可以从此处复制粘贴您的�
 
 #: share/skin/s3/template/view/page_locked:17
 msgid "edit.view-locked"
-msgstr "您的更改的原始wikitext 如下。您可以从此处复制您的更改。"
+msgstr "您的更改的源码格式如下。您可以从此处复制您的更改。"
 
 #: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
@@ -9053,7 +9053,7 @@ msgid "insert.file"
 msgstr "本页面的附带文件"
 
 msgid "insert.file-image"
-msgstr "Image Attached to Page"
+msgstr "本页面的附带图片"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:30
 msgid "insert.from-the-web"
@@ -11883,7 +11883,7 @@ msgstr "由："
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "revision.color"
-msgstr "颜色查看（无格式的）"
+msgstr "以源码格式检视"
 
 #: share/skin/s3/template/view/page/revision_compare:49
 msgid "revision.compare"
@@ -11945,7 +11945,7 @@ msgstr "标签："
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "revision.view"
-msgstr "查看含格式的"
+msgstr "以显示格式检视"
 
 #: lib/Socialtext/SyndicatePlugin.pm:144
 msgid "rss.number-of-posts-to-syndicate"

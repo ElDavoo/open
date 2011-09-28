@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-26 21:21-0700\n"
+"PO-Revision-Date: 2011-09-28 18:42+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -513,7 +513,7 @@ msgstr "您刚才编辑的%1显示如下。您可以从此处复制粘贴您的�
 
 #: share/skin/s3/template/view/page_locked:17
 msgid "edit.view-locked"
-msgstr "您的更改的原始wikitext 如下。您可以从此处复制您的更改。"
+msgstr "您的更改的源码格式如下。您可以从此处复制您的更改。"
 
 #: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
@@ -1908,7 +1908,7 @@ msgstr "由："
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "revision.color"
-msgstr "颜色查看（无格式的）"
+msgstr "以源码格式检视"
 
 #: share/skin/s3/template/view/page/revision_compare:49
 msgid "revision.compare"
@@ -1965,7 +1965,7 @@ msgstr "标签："
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "revision.view"
-msgstr "查看含格式的"
+msgstr "以显示格式检视"
 
 #: share/skin/s3/template/view/listview:44 share/skin/s3/template/view/listview:57
 msgid "search.be-more-specific"

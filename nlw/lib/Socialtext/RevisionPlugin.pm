@@ -296,8 +296,8 @@ use Algorithm::Diff::XS;
 sub diff_rows {
     my $self = shift;
     return $self->compare(
-        $self->before_page->content,
-        $self->after_page->content
+        $self->before_page->to_wikitext,
+        $self->after_page->to_wikitext
     );
 }
 
