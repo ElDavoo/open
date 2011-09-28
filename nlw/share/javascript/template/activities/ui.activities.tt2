@@ -9,7 +9,7 @@
     <div id="[% id('messages') %]" class="messages"></div>
 
     <div id="[% id('loading') %]">
-        <img id="[% id('spinner') %]" src="[% this.static_path %]/skin/common/images/ajax-loader.gif"/>
+        <img id="[% id('spinner') %]" src="[% this.static_path %]/images/ajax-loader.gif"/>
     </div>
 
     <div class="event_list" id="[% id('event_list') %]"></div>
