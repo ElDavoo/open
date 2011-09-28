@@ -184,12 +184,50 @@
   height: 25px
   border-top: 1px dashed #ccc 
 
-#st-page-boxes-show-link, #st-page-boxes-hide-link
-  float: right
-  .arrow
-    font-size: 10px
-    margin: 0 5px
-  &:hover
-    text-decoration: none
-#st-page-boxes-show-link
-  display:none
+
+/* datatable (search results et al)
+
+.pagination-container
+  margin: 0.5em 0
+  padding: 0.5em 0
+  border-bottom: 1px #ccc solid
+  border-top: 1px #ccc solid
+  .paging-numbers
+    .paging-button
+      a, b
+        padding: 2px 8px
+      a
+        background: #f8f8f8
+
+.dataTable
+  tbody
+    tr
+      td:nth-child(1)
+        vertical-align: top
+        align: center
+      td
+        vertical-align: bottom
+        padding-top: 3px
+        padding-bottom: 3px
+        .pageType
+          vertical-align: middle
+        .titleLink
+          font-size: 125%
+          text-decoration: underline
+        .summary
+          margin: 0.5em 0 0.5em 17px
+        .byline
+          font-size: 93%
+          margin: 0.5em 0 0.5em 17px
+          color: #999
+          font-style: italic
+
+#st-listview-form
+  vertical-align: bottom
+  .toggle
+    padding: 3px 0
+  .toggle, .sort_options
+    margin-top: 0.25em 0
+
+.st-listview-selectpage-checkbox
+  padding: 3px 0
