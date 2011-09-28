@@ -9,6 +9,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: share/plugin/dashboard/template/cp_dashboard:112
+msgid "###-dashboard.edit"
+msgstr "edit"
+
+#: share/plugin/dashboard/template/cp_dashboard:5
+msgid "###-dashboard.view-default-dashboard-layout"
+msgstr "View Default Dashboard Layout"
+
+#: share/plugin/dashboard/template/cp_dashboard:28
+msgid "###-dashboard.visibility"
+msgstr "Visibility"
+
+#: share/plugin/dashboard/template/cp_dashboard:38
+msgid "###-dashboard.visible"
+msgstr "Visible"
+
+#: share/plugin/dashboard/template/cp_dashboard:75
+msgid "###-dashboard.wiki-pages"
+msgstr "Wiki Pages"
+
 #: share/skin/wikiwyg/javascript/template/widget_edit.tt2:4
 msgid "<! widget.desc !>"
 msgstr "<! widget.desc !>"
@@ -625,6 +645,10 @@ msgstr "单个域名（如果您不清楚，请选择此项）"
 msgid "analytics.use-for:"
 msgstr "这个 Google Analytics 追踪帐号是用于："
 
+#: share/plugin/analytics/template/cp_google_analytics:20
+msgid "analytics.use-tracking-id-for:"
+msgstr "Tracking ID is used for:"
+
 msgid "api.about-wiki-name"
 msgstr "工作区名称必须包含 3-10 个小写字母、数字、下划线或破折号。"
 
@@ -1186,6 +1210,10 @@ msgstr "新建博客"
 msgid "blog.newer"
 msgstr "新条目"
 
+#: lib/Socialtext/WeblogPlugin.pm:55
+msgid "blog.number-of-posts-to-show"
+msgstr "Number of posts to show"
+
 #: lib/Socialtext/WeblogPlugin.pm:49
 msgid "blog.number-of-posts?"
 msgstr "在博客视图中显示多少博客？"
@@ -1238,6 +1266,10 @@ msgstr "更新者"
 msgid "blog.view"
 msgstr "查看"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:116
+msgid "blog.weblog-sort-order"
+msgstr "Weblog sort order"
+
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"
 msgstr "”书签，将网页透过讯息来分享给同事。"
@@ -1282,6 +1314,38 @@ msgstr "忽略错误"
 #: share/template/bugs_content.html:24
 msgid "bug.report"
 msgstr "报告错误"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:3
+msgid "ckeditor.checking-for-edit-contention"
+msgstr "Checking for Edit Contention"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:4
+msgid "ckeditor.generating-page-content"
+msgstr "Generating Page Content"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
+msgid "ckeditor.page-save-progress"
+msgstr "Page Save Progress"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:5
+msgid "ckeditor.saving-page-content-kb"
+msgstr "Saving Page Content (<span id=\"st-xhtml-save-progress-size\">?</span> kB)"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:187 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switch-modes?"
+msgstr "Switch modes?"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:185 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switching-to-wikitext-mode-will-result-in-loss-of-some-formatting-on-this-page"
+msgstr "Switching to Wikitext mode will result in the <strong>loss</strong> of some formatting on this page."
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:183 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.wikitext-does-not-support-all-rich-text-formatting"
+msgstr "Wikitext does not support all rich text formatting."
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:172 share/plugin/ckeditor/share/javascript/WikitextArea.js:216
+msgid "ckeditor.wikitext-mode-warning"
+msgstr "Wikitext Mode Warning"
 
 #: lib/Socialtext/Wikiwyg/AnalyzerPlugin.pm:11
 msgid "class.analyzer"
@@ -2498,6 +2562,10 @@ msgstr "添加用户至工作区："
 msgid "control.add-users"
 msgstr "添加用户"
 
+#: share/plugin/control/template/control/workspaces_new.html:40
+msgid "control.add-users-and-groups"
+msgstr "Add Users and Groups"
+
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_account.html:5
 msgid "control.adding-group-to-account=group,group-id"
@@ -2732,6 +2800,10 @@ msgstr "自定义服务器权限设置已生效。"
 msgid "control.custom-skins=name"
 msgstr "自定义视觉主题：%1"
 
+#: share/plugin/control/template/control/add_users.html:21
+msgid "control.data-file"
+msgstr "Data File"
+
 #: share/plugin/control/template/control/field_form:56
 msgid "control.data-source"
 msgstr "数据来源"
@@ -2787,6 +2859,10 @@ msgstr "开放邀请加入群组"
 
 msgid "control.ending-on-midnight-of"
 msgstr "至此日凌晨为止"
+
+#: share/plugin/control/template/control/accounts.html:54
+msgid "control.export-user-data"
+msgstr "Export User Data"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
@@ -3311,6 +3387,10 @@ msgstr "Socialtext 控制台"
 msgid "control.source=driver-name"
 msgstr "来源：%1"
 
+#: share/plugin/control/template/control/accounts.html:39
+msgid "control.standard-account"
+msgstr "Standard"
+
 msgid "control.start-typing-account-name"
 msgstr "开始键入一个帐户名称"
 
@@ -3444,6 +3524,10 @@ msgstr "已从 %1 个帐户中移除用户"
 #: share/plugin/control/template/control/user.html:48
 msgid "control.user-requires-confirmation"
 msgstr "用户必要信息"
+
+#: share/plugin/control/template/control/add_users.html:34
+msgid "control.user-restrictions"
+msgstr "Restrictions"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:16
 msgid "control.username"
@@ -3585,6 +3669,26 @@ msgstr "管理显示板"
 msgid "dashboard.confirm-revert?"
 msgstr "您确认要恢复到Socialtext的默认设置么？"
 
+#: share/plugin/dashboard/template/cp_dashboard:62
+msgid "dashboard.container-types"
+msgstr "Container types"
+
+#: share/plugin/dashboard/template/cp_dashboard:1
+msgid "dashboard.dashboard-gallery"
+msgstr "Dashboard Gallery"
+
+#: share/plugin/dashboard/template/cp_dashboard:74
+msgid "dashboard.dashboards"
+msgstr "Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:83
+msgid "dashboard.dashboards-and-wiki-pages"
+msgstr "Dashboards and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:133
+msgid "dashboard.delete-widget"
+msgstr "Delete Widget"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:117
 msgid "dashboard.exporting-widgets"
 msgstr "正在导出控制面板小工具..."
@@ -3598,6 +3702,30 @@ msgstr "%1 的显示板"
 msgid "dashboard.force-update"
 msgstr "同时强制升级现有用户的显示板"
 
+#: share/plugin/dashboard/template/cp_dashboard:79
+msgid "dashboard.groups-and-dashboards"
+msgstr "Groups and Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:78
+msgid "dashboard.groups-and-profiles"
+msgstr "Groups and Profiles"
+
+#: share/plugin/dashboard/template/cp_dashboard:80
+msgid "dashboard.groups-and-wiki-pages"
+msgstr "Groups and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:91
+msgid "dashboard.groups-dashboards-and-wiki-pages"
+msgstr "Groups, Dashboards and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:87
+msgid "dashboard.groups-profiles-and-dashboards"
+msgstr "Groups, Profiles and Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:89
+msgid "dashboard.groups-profiles-and-wiki-pages"
+msgstr "Groups, Profiles and Wiki Pages"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:244
 msgid "dashboard.importing-default"
 msgstr "正在导入默认控制面板"
@@ -3610,6 +3738,22 @@ msgstr "正在为“%1”用户导入控制面板"
 #: share/plugin/dashboard/template/widget_editor_links:3
 msgid "dashboard.preview"
 msgstr "预览"
+
+#: share/plugin/dashboard/template/cp_dashboard:73
+msgid "dashboard.profiles"
+msgstr "Profiles"
+
+#: share/plugin/dashboard/template/cp_dashboard:81
+msgid "dashboard.profiles-and-dashboards"
+msgstr "Profiles and Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:82
+msgid "dashboard.profiles-and-wiki-pages"
+msgstr "Profiles and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:93
+msgid "dashboard.profiles-dashboards-and-wiki-pages"
+msgstr "Profiles, Dashboards and Wiki Pages"
 
 #: share/plugin/dashboard/template/widget_editor_links:8
 msgid "dashboard.publish"
@@ -3646,6 +3790,22 @@ msgstr "这是帐户\"%1\"下面所有用户共享的默认显示板。切换到
 #: share/plugin/dashboard/template/dashboard_hello:14
 msgid "dashboard.welcome"
 msgstr "欢迎"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:164
+msgid "dashboard.widget-added"
+msgstr "Successfully added your widget. Close this dialog to return to the account administration interface."
+
+#: share/plugin/dashboard/template/cp_dashboard:57
+msgid "dashboard.widget-description"
+msgstr "Description"
+
+#: share/plugin/dashboard/template/cp_dashboard:37
+msgid "dashboard.widget-hidden"
+msgstr "Hidden"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:148
+msgid "dashboard.widget-updated"
+msgstr "Successfully updated your widget. Close this dialog to return to the account administration interface."
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:12
 msgid "dashboard.widgets-to-push:"
@@ -4082,6 +4242,10 @@ msgstr "新建"
 msgid "do.delete"
 msgstr "删除"
 
+#: lib/Socialtext/DisplayPlugin.pm:122 lib/Socialtext/DisplayPlugin.pm:154 lib/Socialtext/RecentChangesPlugin.pm:106 lib/Socialtext/WikiwygPlugin.pm:83 lib/Socialtext/WorkspacesUIPlugin.pm:107 lib/Socialtext/WorkspacesUIPlugin.pm:135 lib/Socialtext/WorkspacesUIPlugin.pm:93
+msgid "do.disabled"
+msgstr "disabled"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19
 msgid "do.done"
 msgstr "完成"
@@ -4100,6 +4264,10 @@ msgstr "编辑个人档案"
 #: share/skin/s3/template/view/page/display:79
 msgid "do.email"
 msgstr "寄送"
+
+#: lib/Socialtext/DisplayPlugin.pm:121 lib/Socialtext/DisplayPlugin.pm:153 lib/Socialtext/RecentChangesPlugin.pm:105 lib/Socialtext/WikiwygPlugin.pm:82 lib/Socialtext/WorkspacesUIPlugin.pm:106 lib/Socialtext/WorkspacesUIPlugin.pm:134 lib/Socialtext/WorkspacesUIPlugin.pm:92
+msgid "do.enabled"
+msgstr "enabled"
 
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
@@ -4604,6 +4772,10 @@ msgstr "（您可以自定义下面的文字。）"
 msgid "email.date:"
 msgstr "日期："
 
+#: lib/Socialtext/EmailNotifyPlugin.pm:96
+msgid "email.digest-information"
+msgstr "Email digest information"
+
 #. (escaped_str)
 #: share/template/email/email-address-confirmation-completed.html:28 share/template/email/email-address-confirmation-completed.txt:10
 msgid "email.email-confirmed-login-to=app"
@@ -4654,6 +4826,10 @@ msgstr "您在 <a href=\"%3\">%2</a> 的<a href=\"%1\">关注列表</a>中的下
 #: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "您在 %1 的关注列表中的下列页面最近被更改。本电子邮件于 %2 的 %3 创建。"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:34
+msgid "email.frequency-of-updates"
+msgstr "Frequency of updates"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
@@ -4918,6 +5094,10 @@ msgstr "Socialtext"
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:77
 msgid "email.socialtext-appliance"
 msgstr "Socialtext 设备"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:68
+msgid "email.sort-order-of-updates"
+msgstr "Sort order of updates"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:17
 msgid "email.subject"
@@ -5252,6 +5432,10 @@ msgstr "用户 %1 修改密码出错"
 msgid "error.change-profile-field-failed"
 msgstr "无法更新资料字段。"
 
+#: lib/Socialtext/Gadgets/Gallery.pm:267
+msgid "error.changing-container-types"
+msgstr "Error changing container types"
+
 #: share/plugin/control/template/control/desktop-account.html:45
 msgid "error.check-again?"
 msgstr "请再次确认？"
@@ -5333,6 +5517,10 @@ msgstr "请在此字段填入数字：%1"
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "警告：样式单在移动设备上无法使用。要正确地查看移动版 Socialtext，您需要在浏览器设置里面启用样式单。"
+
+#: lib/Socialtext/Handler/Settings.pm:74
+msgid "error.current-password-not-correct"
+msgstr "Current password not correct"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:44
 msgid "error.dashboard-push-widget"
@@ -6002,6 +6190,10 @@ msgstr "必须提供一个名字用以创建帐户"
 #: lib/Socialtext/Handler/ControlPanel.pm:445
 msgid "error.new-account-type-required"
 msgstr "必须指定更新的帐户类型。"
+
+#: lib/Socialtext/Handler/Settings.pm:77
+msgid "error.new-password-does-not-match"
+msgstr "New password does not match"
 
 #: lib/Socialtext/UserSettingsPlugin.pm:87
 msgid "error.new-password-mismatch"
@@ -6742,6 +6934,10 @@ msgstr "您不能让版本跟自己比较。"
 msgid "error.save-failed"
 msgstr "服务器错误导致保存失败，请稍候再试。"
 
+#: lib/Socialtext/Handler/Settings.pm:135 lib/Socialtext/Handler/Settings.pm:315
+msgid "error.saving-settings"
+msgstr "Error when saving settings"
+
 #: lib/Socialtext/Appliance/Model/Setup.pm:356
 msgid "error.saving-system-time-to-hardware-clock"
 msgstr "保存系统时间至硬件时钟时发生错误"
@@ -7141,6 +7337,14 @@ msgstr "下面的 %1 名用户已经是工作区成员："
 #: lib/Socialtext/Workspace.pm:600
 msgid "error.wiki-name-required"
 msgstr "工作区名字是必填字段"
+
+#: lib/Socialtext/Handler/Settings.pm:166 lib/Socialtext/Handler/Settings.pm:349
+msgid "error.wiki-not-authorized"
+msgstr "Not Authorized"
+
+#: lib/Socialtext/Handler/Settings.pm:165 lib/Socialtext/Handler/Settings.pm:348 lib/Socialtext/Handler/Settings.pm:384
+msgid "error.wiki-not-found"
+msgstr "Not Found"
 
 #. ($self->{uri})
 #: lib/Socialtext/Handler/ControlPanel.pm:1746
@@ -8610,6 +8814,10 @@ msgstr "注意：不和其他人分享群组，则无法查看他们的个人资
 msgid "info.hello=user"
 msgstr "你好，%1"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:59
+msgid "info.homepage-blog-data"
+msgstr "When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a weblog instead, enter that name here."
+
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1967 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1985
 msgid "info.html-fragments"
 msgstr "（注意：HTML 片段不能确保运行并可能会破坏用户界面。）"
@@ -9710,6 +9918,10 @@ msgstr "语言设定"
 msgid "loc.system-default=lang"
 msgstr "%1（默认）"
 
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:43
+msgid "locales.display-language"
+msgstr "Display Language"
+
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
 msgid "login.back-to=uri"
@@ -10405,6 +10617,10 @@ msgstr "已删除“%1”"
 #: share/skin/s3/template/view/page_revision_list:116
 msgid "page.deleted=revision"
 msgstr "已删除：版本%1"
+
+#: lib/Socialtext/WikiwygPlugin.pm:78
+msgid "page.double-click-to-edit"
+msgstr "Double-click to edit page"
 
 #: share/skin/s3/template/view/page/display:84
 msgid "page.duplicate"
@@ -11731,6 +11947,10 @@ msgstr "标签："
 msgid "revision.view"
 msgstr "查看含格式的"
 
+#: lib/Socialtext/SyndicatePlugin.pm:144
+msgid "rss.number-of-posts-to-syndicate"
+msgstr "Number of posts to syndicate"
+
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:59
 msgid "sc.add-tags"
 msgstr "添加标签..."
@@ -12314,6 +12534,22 @@ msgstr "您输入的搜索过于宽泛。"
 msgid "search.too-many=count"
 msgstr "您输入的搜索过于宽泛; %1页面和/或附件符合请求。"
 
+#: lib/Socialtext/Handler/Settings.pm:535
+msgid "settings.features"
+msgstr "Features"
+
+#: lib/Socialtext/Handler/Settings.pm:534
+msgid "settings.manage-users"
+msgstr "Manage Users"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:74
+msgid "settings.number-of-items-to-show"
+msgstr "Number of items to show"
+
+#: lib/Socialtext/Handler/Settings.pm:131 lib/Socialtext/Handler/Settings.pm:318
+msgid "settings.saved"
+msgstr "Saved"
+
 #: lib/Socialtext/Page.pm:1133
 msgid "sheet.creating"
 msgstr "正在创建新的电子表格..."
@@ -12321,6 +12557,11 @@ msgstr "正在创建新的电子表格..."
 #: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16
 msgid "sheet.untitled"
 msgstr "未命名电子表格"
+
+#. ($sender->best_full_name)
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "signal.mention-by=sender"
+msgstr "Signal mention by %1"
 
 #: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "signals.about-bookmarklet!"
@@ -12551,6 +12792,10 @@ msgstr "将提及我的讯息用电子邮件发送"
 msgid "signals.send-private-messages-as-email"
 msgstr "将给我的私人讯息用电子邮件发送"
 
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:488
+msgid "signals.send-private-signals-as-email"
+msgstr "Send Private Signals as Email"
+
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
 msgstr "给您的同事分享这条链接？"
@@ -12709,9 +12954,17 @@ msgstr "已上传"
 msgid "sort.ascending=field"
 msgstr "按照 %1 正序排列"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:121
+msgid "sort.by-create-time"
+msgstr "by create time"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:71
 msgid "sort.by-created"
 msgstr "按首次发布时间对条目排序"
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:120
+msgid "sort.by-last-updated-time"
+msgstr "by last updated time"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:65
 msgid "sort.by-updated"
@@ -12925,15 +13178,31 @@ msgstr "%1 %2"
 msgid "time.count=days"
 msgstr "%1 天"
 
+#: lib/Socialtext/TimeZonePlugin.pm:152
+msgid "time.date-format"
+msgstr "Date Format"
+
+#: lib/Socialtext/TimeZonePlugin.pm:113
+msgid "time.daylight-savings-summer"
+msgstr "Daylight Savings/Summer"
+
 #. (int($age / 86400)
 #: lib/Socialtext/PageRevision.pm:377
 msgid "time.days=count"
 msgstr "%1 天"
 
+#: lib/Socialtext/TimeZonePlugin.pm:228
+msgid "time.do-not-include-seconds"
+msgstr "Do not Include Seconds"
+
 #. (int($age / 3600)
 #: lib/Socialtext/PageRevision.pm:376
 msgid "time.hours=count"
 msgstr "%1 小时"
+
+#: lib/Socialtext/TimeZonePlugin.pm:227
+msgid "time.include-seconds-in-time-format"
+msgstr "Include Seconds in Time Format"
 
 #. (int($age / 60)
 #: lib/Socialtext/PageRevision.pm:375
@@ -12953,6 +13222,14 @@ msgstr "从不"
 #: lib/Socialtext/PageRevision.pm:374
 msgid "time.seconds=count"
 msgstr "%1 秒"
+
+#: lib/Socialtext/TimeZonePlugin.pm:195
+msgid "time.time-format"
+msgstr "Time Format"
+
+#: lib/Socialtext/TimeZonePlugin.pm:81
+msgid "time.timezone"
+msgstr "Timezone"
 
 #. (int($age / 604800)
 #: lib/Socialtext/PageRevision.pm:378
@@ -13888,6 +14165,14 @@ msgstr "寻找"
 msgid "watch.stop"
 msgstr "停止关注"
 
+#: lib/Socialtext/WatchlistPlugin.pm:80
+msgid "watchlist.digest-information"
+msgstr "Watchlist digest information"
+
+#: lib/Socialtext/WatchlistPlugin.pm:46
+msgid "watchlist.frequence-of-updates"
+msgstr "Frequence of updates"
+
 #: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
 msgid "widget.100%"
 msgstr "依页宽（100%）"
@@ -14596,6 +14881,10 @@ msgstr "用户“%1”不可以锁定页面。"
 msgid "wiki.double-click-to-edit?"
 msgstr "双击编辑页面？"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:102
+msgid "wiki.email-notifications"
+msgstr "Email Notifications"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:28
 msgid "wiki.email-senders?"
 msgstr "谁可以向此工作区发送邮件？"
@@ -14726,9 +15015,17 @@ msgstr "公告和链接"
 msgid "wiki.only-email-from=role"
 msgstr "只有%1可以向这个工作区发邮件。"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:147
+msgid "wiki.only-registered-users"
+msgstr "Only Registered Users"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:13
 msgid "wiki.permission-type:"
 msgstr "您是否想将此工作区设立为："
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:74
+msgid "wiki.placement-of-emailed-content"
+msgstr "Placement of emailed content"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:6 share/skin/s3/template/view/settings:61 share/skin/s3/template/workspaces_created_section.html:25
 msgid "wiki.privacy"
@@ -14741,6 +15038,14 @@ msgstr "公开的工作区"
 #: share/skin/s3/template/element/workspace_list/public_workspaces:5
 msgid "wiki.public:"
 msgstr "您可以自由查看或编辑这些公开工作区："
+
+#: lib/Socialtext/RecentChangesPlugin.pm:101
+msgid "wiki.recent-changes-sidebar-widget"
+msgstr "What's New sidebar widget"
+
+#: lib/Socialtext/DisplayPlugin.pm:149
+msgid "wiki.recently-viewed-sidebar-widget"
+msgstr "Recently Viewed sidebar widget"
 
 #. ($group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1527
@@ -14776,6 +15081,10 @@ msgstr "已在此工作区设置一个过滤器。所有邮件地址必须匹配
 msgid "wiki.show-breadcrumbs-sidebox?"
 msgstr "显示“最近浏览”侧边栏？"
 
+#: lib/Socialtext/DisplayPlugin.pm:117
+msgid "wiki.show-page-snippets-on-mouse-hover"
+msgstr "Show page snippets on mouse hover"
+
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "wiki.show-sidebox?"
 msgstr "在页面视图中显示为侧边栏？"
@@ -14808,6 +15117,10 @@ msgstr "标签：%1"
 #: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:153
 msgid "wiki.tags"
 msgstr "标签"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:43
+msgid "wiki.timeframe-for-changes"
+msgstr "Timeframe for changes"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "wiki.title"
