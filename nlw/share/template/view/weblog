@@ -49,18 +49,18 @@
           <h3 class="blogheader">
             <a href="[%entry.page_uri%]">[% entry.title | html %]</a>
           </h3>
-          <em class="weblog_info">
+          <p class="weblog_info">
             [% IF entry.is_updated %]
               [% loc('post.by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %]
             [% ELSE %]
               [% loc('post.by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %]
             [% END %]
-          </em>
+          </p>
           <div id="content_[% entry.page_uri %]">
             [% entry.post %]
           </div>
           <hr size="1"/>
-          <em class="weblog_info">
+          <p class="weblog_info">
             [% IF entry.is_updated %]
                   [% loc('nav.created-by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %].
                   [% loc('blog.updated-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
@@ -81,7 +81,7 @@
               [% END %]
             [% END %]
             <a href="?[%entry.page_uri%]">[% loc('blog.permalink') %]</a>
-          </em>
+          </p>
         </div>
       [% END %]
     [% END %]
