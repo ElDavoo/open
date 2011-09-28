@@ -2,6 +2,7 @@
 
 [% MACRO jump_menu BLOCK %]
 <select id="st-jump-to">
+  <option selected value=""></option>
   <option value="action=recent_changes">[% loc('nav.news') %]</option>
   <option value="action=display_watchlist">[% loc('nav.watchlist') %]</option>
   <option value="action=blog_display">[% loc('blog.blogs') %]</option>
