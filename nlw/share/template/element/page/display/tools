@@ -17,7 +17,7 @@
 
 [% BLOCK tools_item %]
   <li class="item" id="[% id %]">
-    <a href="[% href || '#' %]" title="[% title %] [% onclick ? "onClick=\"$onclick\"" : '' %]"[% FOR kv = data %] data-[% kv.0 %]="[% kv.1 %]"[% END %]>[% text %]</a>
+    <a href="[% href || '#' %]" title="[% title || text%] [% onclick ? "onClick=\"$onclick\"" : '' %]"[% FOR kv = data %] data-[% kv.0 %]="[% kv.1 %]"[% END %]>[% text %]</a>
   </li>
 [% END %]
 
@@ -44,6 +44,22 @@
             title=loc('info.comment')
             text=loc('page.comment')
         %]
+      [% END %]
+
+      [% IF locking_enabled && can_lock %]
+        [% IF page_locked %]
+          [% INCLUDE tools_item
+              id="st-admin-unlock-link"
+              href="/$current_workspace.name/?page_name=$page.id;action=unlock_page"
+              text=loc('Locked')
+          %]
+        [% ELSE %]
+          [% INCLUDE tools_item
+              id="st-admin-lock-link"
+              href="/$current_workspace.name/?page_name=$page.id;action=lock_page"
+              text=loc('Unlocked')
+          %]
+        [% END %]
       [% END %]
 
       [% FILTER decorate('page_menu') %]
