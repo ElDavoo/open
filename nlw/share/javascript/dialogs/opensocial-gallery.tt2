@@ -25,7 +25,7 @@
     <td style="padding:13px 0; width:30%">
         <input type="hidden" name="gadget_id" value="[% widget.gadget_id %]"/>
         <input type="hidden" name="src" value="[% widget.src %]"/>
-        <a id="gallery-widget-[% widget.title %]" href="#gallery-widget-[% widget.title %]" class="add-now button">[% loc('widget.add-now') %]</a>
+        <a id="gallery-widget-[% widget.title %]" href="#gallery-widget-[% widget.title %]" class="add-now ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">[% loc('widget.add-now') %]</span></a>
     </td>
 [% END %]
 
