@@ -92,7 +92,7 @@ $.extend(Activities.Editor.prototype, {
                     $(this.contentWindow.document.body).addClass('signals');
                     onload();
                 })
-                .attr('src', self.static_path + "/skin/s3/html/wikiwyg.html");
+                .attr('src', self.static_path + "/html/wikiwyg.html");
         }
 
         self.adjustHeight();
