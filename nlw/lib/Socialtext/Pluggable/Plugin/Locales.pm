@@ -40,7 +40,7 @@ sub st_settings {
         plugin => {
             locales => {
                 locale =>  {
-                    title => loc('Display Language'),
+                    title => loc('locales.display-language'),
                     default_setting => $locale,
                     options => \@locales,
                 },

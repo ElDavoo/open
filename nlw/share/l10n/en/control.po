@@ -190,6 +190,10 @@ msgstr "Add User to Workspace:"
 msgid "control.add-users"
 msgstr "Add Users"
 
+#: share/plugin/control/template/control/workspaces_new.html:40
+msgid "control.add-users-and-groups"
+msgstr "Add Users and Groups"
+
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_account.html:5
 msgid "control.adding-group-to-account=group,group-id"
@@ -425,6 +429,10 @@ msgstr "Custom server-wide permissions are in effect."
 msgid "control.custom-skins=name"
 msgstr "Custom Skins: %1"
 
+#: share/plugin/control/template/control/add_users.html:21
+msgid "control.data-file"
+msgstr "Data File"
+
 #: share/plugin/control/template/control/field_form:56
 msgid "control.data-source"
 msgstr "Data Source"
@@ -484,6 +492,10 @@ msgstr "Enable Invitation to Group"
 #: share/plugin/control/template/control/report.html:108
 msgid "control.ending-on-midnight-of"
 msgstr "ending on midnight of"
+
+#: share/plugin/control/template/control/accounts.html:54
+msgid "control.export-user-data"
+msgstr "Export User Data"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
@@ -1021,6 +1033,10 @@ msgstr "Socialtext Control Panel"
 msgid "control.source=driver-name"
 msgstr "Source: %1"
 
+#: share/plugin/control/template/control/accounts.html:39
+msgid "control.standard-account"
+msgstr "Standard"
+
 #: share/plugin/control/template/control/group.html:43
 msgid "control.start-typing-account-name"
 msgstr "Start typing an Account's name"
@@ -1163,6 +1179,10 @@ msgstr "User was removed from %*(%1,Account)"
 #: share/plugin/control/template/control/user.html:48
 msgid "control.user-requires-confirmation"
 msgstr "User requires confirmation"
+
+#: share/plugin/control/template/control/add_users.html:34
+msgid "control.user-restrictions"
+msgstr "Restrictions"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:16
 msgid "control.username"

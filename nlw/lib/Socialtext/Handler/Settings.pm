@@ -71,10 +71,10 @@ sub POST {
 
         if ($new_password) {
             if (!$user->password_is_correct($q->param('user.old_password'))) {
-                $self->message(loc('Current password not correct'));
+                $self->message(loc('error.current-password-not-correct'));
             }
             elsif ($new_password ne $q->param('user.new_password_retype')) {
-                $self->message(loc('New password does not match'));
+                $self->message(loc('error.new-password-does-not-match'));
             }
             else {
                 my @messages = $user->ValidatePassword(password => $new_password);
@@ -128,11 +128,11 @@ sub POST {
 
         $user->prefs->save({timezone => $tz_prefs});
 
-        $self->message(loc('Saved')) unless $self->message;
+        $self->message(loc('settings.saved')) unless $self->message;
     };
     if (my $e = $@) {
         st_log->error("Could not save settings: $e");
-        $self->message(loc('Error when saving settings'));
+        $self->message(loc('error.saving-settings'));
     }
 
     return $self->get_html($rest);
@@ -162,8 +162,8 @@ sub POST_space {
     my $self = shift;
     my $rest = shift;
 
-    return $self->error(loc('Not Found')) unless $self->space;
-    return $self->error(loc('Not Authorized'))
+    return $self->error(loc('error.wiki-not-found')) unless $self->space;
+    return $self->error(loc('error.wiki-not-authorized'))
         unless $self->_user_has_correct_perms;
 
     my $q = $self->rest->query;
@@ -312,10 +312,10 @@ sub POST_space {
     };
     if (my $e = $@) {
         st_log->error("Could not save settings: $e");
-        $self->message(loc('Error when saving settings'));
+        $self->message(loc('error.saving-settings'));
     }
     else {
-        $self->message(loc('Saved'))
+        $self->message(loc('settings.saved'))
             unless $self->invite_errors;
     }
 
@@ -345,8 +345,8 @@ sub GET_space {
     my $self = shift;
     my $rest = shift;
 
-    return $self->error(loc('Not Found')) unless $self->space;
-    return $self->error(loc('Not Authorized'))
+    return $self->error(loc('error.wiki-not-found')) unless $self->space;
+    return $self->error(loc('error.wiki-not-authorized'))
         unless $self->_user_has_correct_perms;
 
     return $self->get_space_html($rest);
@@ -381,7 +381,7 @@ sub get_space_html {
     };
     if (my $e = $@) {
         warn $e;
-        return $self->error(loc('Not Found')) unless $content;
+        return $self->error(loc('error.wiki-not-found')) unless $content;
     }
 
     $vars->{main_content} = $content;
@@ -503,7 +503,7 @@ sub _space_prefs {
     $abilities{unsubscribe} = loc('do.unsubscribe')
        if $space->has_user($user, direct=>1);
 
-    $abilities{blog} = loc('Create Blog')
+    $abilities{blog} = loc('blog.create')
         if $space->user_can(
             user => $user,
             permission => ST_EDIT_PERM,
@@ -531,8 +531,8 @@ sub _space_prefs {
 
 sub AdminAbilities {
     return (
-        manage => loc('Manage Users'),
-        features => loc('Features'),
+        manage => loc('settings.manage-users'),
+        features => loc('settings.features'),
     );
 }
 

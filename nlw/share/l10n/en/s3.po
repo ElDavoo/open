@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-26 21:21-0700\n"
+"PO-Revision-Date: 2011-09-28 15:04+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgstr "Blogs"
 
 #: share/skin/s3/template/element/settings/weblog_create:5
 msgid "blog.create"
-msgstr "Create A Blog"
+msgstr "Create Blog"
 
 #: share/skin/s3/template/view/weblog:78
 msgid "blog.edit"

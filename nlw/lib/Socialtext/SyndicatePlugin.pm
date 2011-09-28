@@ -141,7 +141,7 @@ sub syndication_depth_data {
     my $self = shift;
 
     return {
-        title => loc('Number of posts to syndicate'),
+        title => loc('rss.number-of-posts-to-syndicate'),
         default_setting => 10,
         options => [
             map { {setting => $_, display => $_ } } qw(5 10 15 20 25 50 100)

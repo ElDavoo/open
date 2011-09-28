@@ -43,7 +43,7 @@ sub watchlist_notify_frequency_data {
     my $self = shift;
 
     return {
-        title => loc('Frequence of updates'),
+        title => loc('watchlist.frequence-of-updates'),
         default_setting => $Default_notify_frequency_in_minutes,
         options => [
             {setting => 0, display => __('time.never')},
@@ -77,7 +77,7 @@ sub watchlist_links_only_data {
     my $self = shift;
 
     return {
-        title => loc('Watchlist digest information'),
+        title => loc('watchlist.digest-information'),
         default_setting => 'expanded',
         options => [
             {setting => 'condensed', display => __('email.page-name-link-only')},

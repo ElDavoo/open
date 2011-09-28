@@ -78,7 +78,7 @@ sub timezone_data {
     ];
 
     return {
-        title => loc('Timezone'),
+        title => loc('time.timezone'),
         default_setting => $self->_default_timezone,
         options => $options,
     };
@@ -110,7 +110,7 @@ sub dst_data {
     ];
 
     return {
-        title => loc('Daylight Savings/Summer'),
+        title => loc('time.daylight-savings-summer'),
         default_setting => $self->_default_dst,
         options => $options,
     };
@@ -149,7 +149,7 @@ sub date_display_format_data {
     }
 
     return {
-        title => loc('Date Format'),
+        title => loc('time.date-format'),
         default_setting => $self->_default_date_display_format,
         options => \@options,
     };
@@ -192,7 +192,7 @@ sub time_display_12_24_data {
     }
 
     return {
-        title => loc('Time Format'),
+        title => loc('time.time-format'),
         default => $self->_default_time_display_12_24,
         options => \@options,
     };
@@ -224,8 +224,8 @@ sub time_display_seconds_data {
         binary => 1,
         default_setting => 0,
         options => [
-            {setting => '1', display => loc('Include Seconds in Time Format')},
-            {setting => '0', display => loc('Do not Include Seconds')},
+            {setting => '1', display => loc('time.include-seconds-in-time-format')},
+            {setting => '0', display => loc('time.do-not-include-seconds')},
         ],
     };
 }

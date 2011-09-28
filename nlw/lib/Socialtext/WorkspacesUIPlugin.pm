@@ -56,7 +56,7 @@ sub homepage_weblog_data {
 
     return {
         title => loc('wiki.link'),
-        additional => loc('When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a weblog instead, enter that name here.'),
+        additional => loc('info.homepage-blog-data'),
     };
 }
 
@@ -71,7 +71,7 @@ sub incoming_email_placement_data {
     my $self = shift;
 
     return {
-        title => loc('Placement of emailed content'),
+        title => loc('wiki.placement-of-emailed-content'),
         default_setting => 'bottom',
         options => [
             {setting => 'bottom', display => loc('page.bottom')},
@@ -89,8 +89,8 @@ sub enable_unplugged_data {
         default_setting => 0,
         binary => 1,
         options => [
-            {setting => 1, display => loc('enabled')},
-            {setting => 0, display => loc('disabled')},
+            {setting => 1, display => loc('do.enabled')},
+            {setting => 0, display => loc('do.disabled')},
         ],
     };
 }
@@ -99,12 +99,12 @@ sub email_notify_is_enabled_data {
     my $self = shift;
 
     return {
-        title => loc('Email Notifications'),
+        title => loc('wiki.email-notifications'),
         default_setting => 1,
         binary => 1,
         options => [
-            {setting => 1, display => loc('enabled')},
-            {setting => 0, display => loc('disabled')},
+            {setting => 1, display => loc('do.enabled')},
+            {setting => 0, display => loc('do.disabled')},
         ],
     };
 }
@@ -113,12 +113,12 @@ sub sort_weblogs_by_create_data {
     my $self = shift;
 
     return {
-        title => loc('Weblog sort order'),
+        title => loc('blog.weblog-sort-order'),
         additional => loc('info.blog-sort'),
         default_setting => 0,
         options => [
-            {setting => 1, display => loc('by last updated time')},
-            {setting => 0, display => loc('by create time')},
+            {setting => 1, display => loc('sort.by-last-updated-time')},
+            {setting => 0, display => loc('sort.by-create-time')},
         ],
     };
 }
@@ -131,8 +131,8 @@ sub allows_page_locking_data {
         default_setting => 0,
         binary => 1,
         options => [
-            {setting => 1, display => loc('enabled')},
-            {setting => 0, display => loc('disabled')},
+            {setting => 1, display => loc('do.enabled')},
+            {setting => 0, display => loc('do.disabled')},
         ],
     };
 }
@@ -144,7 +144,7 @@ sub guest_has_email_in_data {
         title => loc('wiki.email-senders?'),
         default_setting => 0,
         options => [
-            {setting => 0, display => loc('Only Registered Users')},
+            {setting => 0, display => loc('wiki.only-registered-users')},
             {setting => 1, display => loc('explore.anyone')},
         ],
     };

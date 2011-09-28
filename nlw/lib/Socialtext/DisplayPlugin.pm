@@ -114,12 +114,12 @@ sub mouseover_length_data {
     my $self = shift;
 
     return {
-        title => loc('Show page snippets on mouse hover'),
+        title => loc('wiki.show-page-snippets-on-mouse-hover'),
         binary => 1,
         default_setting => 1,
         options => [
-            {setting => '1', display => loc('enabled')},
-            {setting => '0', display => loc('disabled')},
+            {setting => '1', display => loc('do.enabled')},
+            {setting => '0', display => loc('do.disabled')},
         ],
     };
 }
@@ -146,12 +146,12 @@ sub include_breadcrumbs_data {
     my $self = shift;
 
     return {
-        title => loc('Recently Viewed sidebar widget'),
+        title => loc('wiki.recently-viewed-sidebar-widget'),
         binary => 1,
         default_setting => 0,
         options => [
-            {setting => '1', display => loc('enabled')},
-            {setting => '0', display => loc('disabled')},
+            {setting => '1', display => loc('do.enabled')},
+            {setting => '0', display => loc('do.disabled')},
         ],
     };
 }
