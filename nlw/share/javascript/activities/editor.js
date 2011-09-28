@@ -857,6 +857,9 @@ $.extend(Activities.Editor.prototype, {
 
         $dialog.show();
 
+        // Make OK and Cancel buttons
+        $('.buttons', $dialog).buttonset();
+
         $('.cancel', $dialog).click(function() {
             $input.blur();
             self.focus();
