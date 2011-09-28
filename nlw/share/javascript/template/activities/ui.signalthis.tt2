@@ -10,7 +10,7 @@
 </div>
 <div id='outer'>
     <div class="signals" id="[% id('signals') %]">
-        [% INCLUDE signals post_to_prompt="Post to" %]
+        [% INCLUDE activities/elements/signals.tt2 post_to_prompt="Post to" %]
     </div>
     <div class="main">
         <div id="[% id('messages') %]" class="messages">

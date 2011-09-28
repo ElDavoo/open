@@ -130,6 +130,7 @@
         - activities-add-video
         - activities-add-link
         - activities-show-video
+        - activities-signalthis
         - attachments-upload
         - attachments-delete
         - control-create-workspace

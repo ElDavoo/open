@@ -37,6 +37,11 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // Share This
+    $("#st-signalthis-indicator").click(function() {
+        st.dialog.show('activities-signalthis');
+    });
+
     // Email
     $('#st-pagetools-email a').click(function() {
         st.dialog.show('page-email');

@@ -11,7 +11,7 @@
     </div>
 </div>
 <div class="omega grid_2 post">
-    <a href="#" class="button" id="[% id('post') %]">[% loc('Go') %]</a>
+    <a href="#" id="[% id('post') %]">[% loc('Go') %]</a>
     <div class="count" id="[% id('count') %]"></div>
 </div>
 <div class="clear"></div>

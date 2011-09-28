@@ -69,7 +69,7 @@ $.extend(Activities.Widget.prototype, {
         self.appdata.load(function() {
             try {
                 $(self.node).html(self.processTemplate(template));
-
+                self.findId('post').button();
                 self.appdata.bind();
 
                 if (self.overlap)

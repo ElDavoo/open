@@ -69,6 +69,13 @@
             data=[['watching', watching]]
             text=watching ? loc('watch.stop') : loc('do.watch')
         %]
+        [% IF plugins_enabled.grep("signals").size && plugins_enabled_for_current_workspace_account.grep("signals").size -%]
+          [% INCLUDE tools_item
+              id="st-signalthis-indicator"
+              href="#"
+              text=loc('page.signal-this!')
+          %]
+        [% END %]
 
         [% WRAPPER subtools id="st-page-options" name=loc('Options...') %]
           [% INCLUDE tools_item
@@ -165,6 +172,13 @@
                 id="st-pagetools-rename"
                 href="#"
                 text=loc('page.rename')
+            %]
+          [% END %]
+          [% IF checker.check_permission('delete') AND !locked %]
+            [% INCLUDE tools_item
+                id="st-pagetools-delete"
+                href="#"
+                text=loc('page.delete')
             %]
           [% END %]
         [% END %]
