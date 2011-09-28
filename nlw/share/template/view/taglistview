@@ -4,25 +4,30 @@
 [% WRAPPER $frame_name id="listPage" %]
   [% INCLUDE element/listview_tabs %]
   <div id="controls">
-    <div id="st-editing-tools-edit">
-
-    </div><!-- controlsLeft END -->
-    <div id="controlsRight">
-    </div><!-- controlsRight END -->
-  </div><!-- controls END -->
+    <div class="grid_18" id="st-editing-tools-edit">
+      &nbsp;
+    </div>
+    <div class="grid_6">
+      &nbsp;
+    </div>
+    <div class="clear"></div>
+  </div>
   <div id="contentContainer">
+  <div class="grid_24">
     <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
-
+  </div>
+  <div class="clear"></div>
     <script language="javascript"><!--
       // Make the table sortable: [0,0] means the default is first column ascending.
       jQuery(function(){jQuery("table.dataTable").tablesorter({ sortList: [[0, 0]] });});
     --></script>
-
+  
+  <div class="grid_24">
     <table class="dataTable tablist">
       <thead>
       <tr>
         <th>[% loc('wiki.tag') %]</th>
-        <th>[% loc('tag.pages') %]</th>
+        <th class="numeric">[% loc('tag.pages') %]</th>
       </tr>
       </thead>
       <tbody>
@@ -31,13 +36,15 @@
           <td>
             <a href="[% row.script_name %]?action=category_display;category=[% row.escaped %]">[% row.display | html %]</a>
           </td>
-          <td>
+          <td class="numeric">
             [% row.page_count %]
           </td>
         </tr>
       [% END %]
       </tbody>
     </table><!-- dataTable END -->
+  </div>
+  <div class="clear"></div>
   </div><!-- contentContainer -->
 [% END %]
 
