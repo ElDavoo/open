@@ -90,7 +90,11 @@
         </div>
         <div class="clear"></div>
       [% END %]
+      [% IF current_workspace.name %]
       <form id="st-listview-form" method="post" action="/[% current_workspace.name %]/">
+      [% ELSE %]
+      <form id="st-listview-form" method="post" action="/">
+      [% END %]
       <input id="st-listview-action" name="action" value="" type="hidden">
       <input id="st-listview-filename" name="filename" value="" type="hidden">
       <div class="grid_1">
@@ -145,6 +149,40 @@
           var selected = jQuery('select#sort-picker').val();
           window.location = query_start + ';' + selected;
         }
+
+$('#st-listview-submit-pdfexport').click(function() {
+    if (!$('.st-listview-selectpage-checkbox:checked').size()) {
+        alert(loc("error.no-page-pdf"));
+    }
+    else {
+        $('#st-listview-action').val('pdf_export')
+        $('#st-listview-filename').val(Socialtext.wiki_id + '.pdf');
+        $('#st-listview-form').submit();
+    }
+    return false;
+});
+
+$('#st-listview-submit-rtfexport').click(function() {
+    if (!$('.st-listview-selectpage-checkbox:checked').size()) {
+        alert(loc("error.no-page-doc"));
+    }
+    else {
+        $('#st-listview-action').val('rtf_export')
+        $('#st-listview-filename').val(Socialtext.wiki_id + '.rtf');
+        $('#st-listview-form').submit();
+    }
+    return false;
+});
+
+$('#st-listview-selectall').click(function () {
+    var self = this;
+    $('input[type=checkbox]').each(function() {
+        if ( ! $(this).attr('disabled') ) {
+            $(this).attr('checked', self.checked);
+        }
+    });
+    return true;
+});
       </script>
       <div class="clear"></div>
       [% IF pager %]
