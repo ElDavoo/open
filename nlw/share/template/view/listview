@@ -3,7 +3,7 @@
 [%- USE decorate -%]
 [%- USE JSON -%]
 [% WRAPPER $frame_name id="listPage" %]
-  [% INCLUDE element/listview_tabs %]
+  [% INCLUDE element/page/navigation %]
   [% IF !too_many %]
     <div id="controls">
       <div class="prefix_20 grid_4" id="controlsRight">

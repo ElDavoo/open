@@ -1,15 +1,19 @@
 [%# vim: set et sts=2 sw=2: %]
 
+[% MACRO jump_option(option_action, text, suffix) BLOCK %]
+  <option [% IF action == option_action %]selected="selected"[% END %] value="action=[% option_action %][% suffix %]">[% text %]</option>
+[% END %]
+
 [% MACRO jump_menu BLOCK %]
 <select id="st-jump-to">
   <option selected value=""></option>
-  <option value="action=recent_changes">[% loc('nav.news') %]</option>
-  <option value="action=display_watchlist">[% loc('nav.watchlist') %]</option>
-  <option value="action=blog_display">[% loc('blog.blogs') %]</option>
-  <option value="action=my_likes">[% loc('nav.likes') %]</option>
-  <option value="action=changes&changes=all">[% loc('page.all') %]</option>
-  <option value="action=category_list">[% loc('tag.all') %]</option>
-  <option value="action=attachments_listall">[% loc('file.all') %]</option>
+  [% jump_option("recent_changes", loc('nav.news')) %]
+  [% jump_option("display_watchlist", loc('nav.watchlist')) %]
+  [% jump_option("blog_display", loc('blog.blogs')) %]
+  [% jump_option("my_likes", loc('nav.likes')) %]
+  [% jump_option("changes", loc('page.all'), "&changes=all") %]
+  [% jump_option("category_list", loc('tag.all')) %]
+  [% jump_option("attachments_listall", loc('file.all')) %]
 </select>
 <script>
     $('#st-jump-to').change(function() {

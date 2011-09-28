@@ -2,6 +2,7 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% WRAPPER $frame_name id="blog" %]
+[% INCLUDE element/page/navigation %]
 <div id="controls">
   <div id="st-editing-tools-edit">
     <h1 title="[% loc('blog.blog') %]: [% display_title | html %]">[% loc('blog.blog') %]: [% display_title | html %]</h1>

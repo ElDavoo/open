@@ -2,7 +2,7 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% WRAPPER $frame_name id="listPage" %]
-  [% INCLUDE element/listview_tabs %]
+  [% INCLUDE element/page/navigation %]
   <div id="controls">
     <div class="grid_18" id="st-editing-tools-edit">
       &nbsp;
