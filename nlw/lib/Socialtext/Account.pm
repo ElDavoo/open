@@ -1188,6 +1188,7 @@ sub _validate_and_clean_data {
     my $p = shift;
 
     my $is_create = ref $self ? 0 : 1;
+    delete $p->{backup_skin_name};
 
     if (defined $p->{name}) {
         $p->{name} = Socialtext::String::scrub( $p->{name} );
