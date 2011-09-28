@@ -1,16 +1,11 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
-[% WRAPPER $frame_name id="revisions" title="${display_title}: ${display_title_decorator}" %]
 
-<div id="controls">
-  <div id="st-editing-tools-edit">
-    <ul id="revision-tools">
-      <li class="flexButtonBlue">
-        <a class="genericBlueButton" href="[% "${script_name}?${page_uri}" %]">
-          [% loc('revision.current') %]
-        </a>
-      </li>
+[% SET buttons = [] %]
+[% buttons.push(['st-compare-revisions', loc('revision.current')]) %]
+
+[% WRAPPER $frame_name buttons=buttons id="revisions" title="${display_title}: ${display_title_decorator}" %]
       <li class="flexButtonBlue">
         <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% prev_id %];mode=[%mode%]">
           [% loc('revision.previous-compare') %]

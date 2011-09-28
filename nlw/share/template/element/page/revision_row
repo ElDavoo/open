@@ -1,14 +1,15 @@
+[%# vim: set et sts=2 sw=2: %]
 [% USE decorate %]
 [% USE label_ellipsis %]
-<td><input onclick="preventSameRevisionCompare()" name="old_revision_id" value="[% id %]" type="radio"
-  [% IF check_old %] checked="checked"[% END %] 
-  [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
-</td>
-<td><input onclick="preventSameRevisionCompare()" name="new_revision_id" value="[% id %]" type="radio"
-  [% IF check_new %] checked="checked"[% END %] 
-  [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
-</td>
-<td>
+<div class="grid_2">
+  <input onclick="preventSameRevisionCompare()" name="old_revision_id" value="[% id %]" type="radio" [% IF check_old %] checked="checked"[% END %] [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
+
+  <input onclick="preventSameRevisionCompare()" name="new_revision_id" value="[% id %]" type="radio"
+    [% IF check_new %] checked="checked"[% END %] 
+    [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
+</div>
+
+<div class="grid_2">
   [% IF is_deleted %]
     [% loc("page.deleted=revision", revision) %]
   [% ELSE %]
@@ -16,7 +17,16 @@
     [% loc("page.revision=revision", revision) %]
   </a>
   [% END %]
-</td>
-<td class="person">[% from | decorate('user_avatar') %]</td>
-<td class="date">[% date %]</td>
-<td class="edit-summary">[% edit_summary | label_ellipsis(edit_summary_maxlength) | html %]</td>
+</div>
+
+<div class="grid_4">[% from | decorate('user_avatar') %]</div>
+
+<div class="grid_4">[% date %]</div>
+
+<div class="grid_12">
+  [% FILTER decorate('revision-edit-summary', row.id) %]
+    [% edit_summary | label_ellipsis(edit_summary_maxlength) | html %]
+  [% END %]
+</div>
+
+<div class="clear"></div>

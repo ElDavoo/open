@@ -52,6 +52,15 @@ sub revision_list {
         push @$rows, $row;
     }
 
+    $self->hub->helpers->add_js_bootstrap({
+        page => {
+            id       => $page->page_id,
+            title    => $page->title,
+            type     => $page->type,
+            full_uri => $page->full_uri,
+        },
+    });
+
     $self->screen_template('view/page_revision_list');
     $self->render_screen(
         revision_count => $page->revision_count,
