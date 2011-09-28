@@ -359,7 +359,7 @@ $.extend(Activities.Editor.prototype, {
 
     onChange: function() {
         var self = this;
-        var $count = self.node.siblings('.postWrap').find('.count');
+        var $count = self.find('.count');
         if (!$count.size()) {
             return;
         }
