@@ -2,7 +2,6 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% WRAPPER $frame_name id="listPage" %]
-  [% INCLUDE element/listview_tabs %]
   <div class="grid_23 prefix_1">
     <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
     <table class="dataTable workspacelist">
