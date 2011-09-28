@@ -658,3 +658,5 @@ lib/Socialtext/XHTML/Cell.pm
 lib/Socialtext/XHTML/Renderer.pm
 lib/Socialtext/Job/SignalMentionNotify.pm
 etc/socialtext/socialradar.conf
+.sass-cache/
+share/node_modules/*.js
