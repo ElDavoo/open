@@ -6,6 +6,7 @@
     </div>
 
     <div class="filter_bar">[% INCLUDE activities/elements/filters.tt2 %]</div>
+    <div id="[% id('messages') %]" class="messages"></div>
 
     <div id="[% id('loading') %]">
         <img id="[% id('spinner') %]" src="[% this.static_path %]/skin/common/images/ajax-loader.gif"/>
