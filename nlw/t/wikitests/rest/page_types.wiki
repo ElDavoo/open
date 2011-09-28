@@ -84,3 +84,68 @@ Test Wikitext and XHTML page types via the REST API
 | body-like  | qr/"type":"wiki"/                          |                  |
 | body-like  | qr/"html":".*Four.*"/                      |                  |
 
+
+
+
+
+| comment | PUT with xhtml                      |                                    |     |
+| PUT     | /data/workspaces/%%ws%%/pages/page2 | Content-Type=application/xhtml+xml | One |
+| code-is | 201                                 |                                    |     |
+
+| comment     | GET HTML representation                    |           |
+| GET         | /data/workspaces/%%ws%%/pages/page2?html=1 | text/html |
+| code-is     | 200                                        |           |
+| header-like | Content-Type                               | text/html |
+| body-like   | qr/One/                                    |           |
+
+| comment     | GET Wikitext representation         |                        |
+| GET         | /data/workspaces/%%ws%%/pages/page2 | text/x.socialtext-wiki |
+| code-is     | 200                                 |                        |
+| header-like | Content-Type                        | text/x.socialtext-wiki |
+| body-like   | qr/One/                             |                        |
+
+| comment     | GET XHTML representation            |                        |
+| GET         | /data/workspaces/%%ws%%/pages/page2 | application/xhtml+xml  |
+| code-is     | 200                                 |                        |
+| header-like | Content-Type                        | application/xhtml+xml  |
+| body-like   | qr/One/                             |                        |
+
+| comment   | GET JSON with HTML representation          |                  |
+| GET       | /data/workspaces/%%ws%%/pages/page2?html=1 | application/json |
+| code-is   | 200                                        |                  |
+| body-like | qr/"html":".*One.*"/                       |                  |
+
+| comment    | GET JSON with Wikitext representation          |                  |
+| GET        | /data/workspaces/%%ws%%/pages/page2?wikitext=1 | application/json |
+| code-is    | 200                                            |                  |
+| json-parse |                                                |                  |
+| body-like  | qr/"type":"xhtml"/                             |                  |
+| body-like  | qr/"wikitext":".*One.*"/                       |                  |
+
+| comment    | GET JSON with XHTML representation          |                  |
+| GET        | /data/workspaces/%%ws%%/pages/page2?xhtml=1 | application/json |
+| code-is    | 200                                         |                  |
+| json-parse |                                             |                  |
+| body-like  | qr/"type":"xhtml"/                          |                  |
+| body-like  | qr/"xhtml":".*One.*"/                       |                  |
+
+| comment | PUT with xhtml in JSON (implicit)   |                               |                   |
+| PUT     | /data/workspaces/%%ws%%/pages/page2 | Content-Type=application/json | {"xhtml":"Three"} |
+| code-is | 204                                 |                               |                   |
+
+| GET        | /data/workspaces/%%ws%%/pages/page2?html=1 | application/json |
+| code-is    | 200                                        |                  |
+| json-parse |                                            |                  |
+| body-like  | qr/"type":"xhtml"/                         |                  |
+| body-like  | qr/"html":".*Three.*"/                     |                  |
+
+| comment | PUT with xhtml in JSON (default)    |                               |                                   |
+| PUT     | /data/workspaces/%%ws%%/pages/page2 | Content-Type=application/json | {"content":"Four","type":"xhtml"} |
+| code-is | 204                                 |                               |                                   |
+
+| GET        | /data/workspaces/%%ws%%/pages/page2?html=1 | application/json |
+| code-is    | 200                                        |                  |
+| json-parse |                                            |                  |
+| body-like  | qr/"type":"xhtml"/                         |                  |
+| body-like  | qr/"html":".*Four.*"/                      |                  |
+

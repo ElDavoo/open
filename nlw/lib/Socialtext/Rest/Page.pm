@@ -308,8 +308,8 @@ sub DELETE {
     );
 }
 
-sub PUT_wikitext {
-    my ( $self, $rest ) = @_;
+sub _put_with_type {
+    my ( $self, $rest, $type ) = @_;
 
     my $unable_to_edit = $self->page_locked_or_unauthorized();
     return $unable_to_edit if ($unable_to_edit);
@@ -328,6 +328,7 @@ sub PUT_wikitext {
     }
 
     $page->update_from_remote(
+        type => ($type || $self->_default_page_type),
         content => $rest->getContent(),
     );
 
@@ -338,8 +339,14 @@ sub PUT_wikitext {
     return '';
 }
 
+sub PUT_wikitext {
+    my ( $self, $rest ) = @_;
+    return $self->_put_with_type($rest, 'wiki');
+}
+
 sub PUT_xhtml {
-    die "TODO: Not yet implemented";
+    my ( $self, $rest ) = @_;
+    return $self->_put_with_type($rest, 'xhtml');
 }
 
 sub PUT_html {
