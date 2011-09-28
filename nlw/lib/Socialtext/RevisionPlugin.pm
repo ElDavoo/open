@@ -58,6 +58,8 @@ sub revision_list {
             title    => $page->title,
             type     => $page->type,
             full_uri => $page->full_uri,
+
+            new_revision_id => $self->cgi->new_revision_id,
         },
     });
 

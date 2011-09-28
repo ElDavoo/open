@@ -128,7 +128,7 @@ var button_handler = {
     /**
      * Revisions
      */
-    'st-compare-revisions': function() {
+    'st-revision-compare': function() {
       var old_rev = jQuery('input[name=old_revision_id]:checked').val();
       var new_rev = jQuery('input[name=new_revision_id]:checked').val();
       if (old_rev == new_rev) {
@@ -139,8 +139,18 @@ var button_handler = {
       }
       return false;
     },
-    'st-current-revision': function() {
-      window.location = st.page.full_uri;
+    'st-revision-current': function() {
+        window.location = st.page.full_uri;
+    },
+    'st-revision-all': function() {
+    },
+    'st-revision-next': function() {
+    },
+    'st-revision-color': function() {
+        window.location = "[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]"
+    },
+    'st-revision-view': function() {
+        window.location = "[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]"
     }
 };
 

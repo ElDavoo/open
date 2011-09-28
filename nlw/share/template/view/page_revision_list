@@ -4,8 +4,8 @@
 [% USE label_ellipsis %]
 
 [% SET buttons = [] %]
-[% buttons.push(['st-compare-revisions', loc("do.compare-revisions")]) IF page.page_type != 'spreadsheet' %]
-[% buttons.push(['st-current-revision', loc('revision.current')]) %]
+[% buttons.push(['st-revision-current', loc('revision.current')]) %]
+[% buttons.push(['st-revision-compare', loc("do.compare-revisions")]) IF page.page_type != 'spreadsheet' %]
 
 [% WRAPPER $frame_name id="contentPage" title = loc("revision.all=page", display_title) %]
 <script language="javascript"><!--
@@ -50,7 +50,7 @@
 
     [%# Body %]
     [% FOREACH row IN rows %]
-      <div class="listRow [% IF even %]even[% ELSE %]odd[% END %]">
+      <div class="listRow [% IF loop.even %]even[% ELSE %]odd[% END %]">
         [% INCLUDE element/page/revision_row 
               id           = row.id,
               even         = loop.count % 2,
