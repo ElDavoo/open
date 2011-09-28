@@ -45,40 +45,44 @@
     [% USE section_iterator = iterator(sections) %]
     [% FOREACH section IN section_iterator %]
       [% FOREACH entry = section.entries %]
-        <h3><a href="[%entry.page_uri%]">[% entry.title | html %]</a></h3>
-        <em class="weblog_info">
-        [% IF entry.is_updated %]
-          [% loc('post.by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %]
-        [% ELSE %]
-          [% loc('post.by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %]
-        [% END %]
-        </em>
-        <div id="content_[% entry.page_uri %]">
-          [% entry.post %]
-        </div>
-        <hr size="1"/>
-        <em class="weblog_info">
-          [% IF entry.is_updated %]
-                [% loc('nav.created-by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %].
-                [% loc('blog.updated-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
-          [% ELSE %]
-                [% loc('nav.created-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
-          [% END %]
+        <div class="blogentry">
+          <h3 class="blogheader">
+            <a href="[%entry.page_uri%]">[% entry.title | html %]</a>
+          </h3>
+          <em class="weblog_info">
+            [% IF entry.is_updated %]
+              [% loc('post.by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %]
+            [% ELSE %]
+              [% loc('post.by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %]
+            [% END %]
+          </em>
+          <div id="content_[% entry.page_uri %]">
+            [% entry.post %]
+          </div>
+          <hr size="1"/>
+          <em class="weblog_info">
+            [% IF entry.is_updated %]
+                  [% loc('nav.created-by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %].
+                  [% loc('blog.updated-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
+            [% ELSE %]
+                  [% loc('nav.created-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
+            [% END %]
 
-          [% IF !entry.page_locked_for_user %]
-            [% IF checker.check_permission('comment') %]
-              <a href="#" id="comment_[% entry.page_uri %]" class="weblog_comment">
-                [% loc('page.comment') %]
-              </a>
-              -
+            [% IF !entry.page_locked_for_user %]
+              [% IF checker.check_permission('comment') %]
+                <a href="#" id="comment_[% entry.page_uri %]" class="weblog_comment">
+                  [% loc('page.comment') %]
+                </a>
+                -
+              [% END %]
+              [% IF checker.check_permission('edit') %]
+                <a href="?action=display;page_name=[% entry.page_uri %];caller_action=[% caller_action %];tag=[% tag | uri %];js=show_edit_div#edit">[% loc('blog.edit') %]</a>
+                -
+              [% END %]
             [% END %]
-            [% IF checker.check_permission('edit') %]
-              <a href="?action=display;page_name=[% entry.page_uri %];caller_action=[% caller_action %];tag=[% tag | uri %];js=show_edit_div#edit">[% loc('blog.edit') %]</a>
-              -
-            [% END %]
-          [% END %]
-          <a href="?[%entry.page_uri%]">[% loc('blog.permalink') %]</a>
-        </em>
+            <a href="?[%entry.page_uri%]">[% loc('blog.permalink') %]</a>
+          </em>
+        </div>
       [% END %]
     [% END %]
     [% PROCESS entry_nav %]
@@ -91,11 +95,7 @@
       <div class="widgetContent">
         [% box_content_filled %]
         [% IF hub.checker.check_permission('edit') %]
-        <ul class="widgetButton">
-          <li class="flexButtonGrey">
-            <a class="greyButton" href="[% hub.weblog.page_edit_path %]#edit">[% loc('page.edit') %]</a>
-          </li>
-        </ul>
+          <a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" href="[% hub.weblog.page_edit_path %]#edit"><span class="ui-button-text">[% loc('page.edit') %]</span></a>
         [% END %]
         <div class="clear"></div>
       </div><!-- widgetContent -->
@@ -106,7 +106,7 @@
         <h4>[% loc('blog.archives') %]</h4>
       </div><!-- widgetHeader END -->
       <div class="widgetContent">
-        <ul>
+        <ul class="vertical_actions">
         [% FOREACH year = archive.keys.nsort.reverse %]
           [% FOREACH month = archive.$year.keys.nsort.reverse %]
             [% NEXT IF !archive.$year.$month %]
