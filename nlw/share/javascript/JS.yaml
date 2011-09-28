@@ -30,6 +30,9 @@
         - contrib/jquery-json-1.3.js
         - contrib/jquery-ui-1.8.5.js
         - contrib/jquery.ui.ipad.altfix.js
+        - contrib/jquery.bgiframe.js
+        - contrib/jquery.positionBy.js
+        - contrib/jquery.jdMenu.js
         - contrib/utf8.js
         - {jemplate_runtime: jquery}
         - JemplatePlugin/*.js
@@ -46,9 +49,6 @@
         - bubble.js
         - like-indicator.js
         - nav-list.js
-        - jquery.bgiframe.js
-        - jquery.positionBy.js
-        - jquery.jdMenu.js
         - jquery.html5Upload.js
 
 # Socialtext API
