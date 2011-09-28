@@ -121,6 +121,9 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // HTML5 Drag and drop of files from desktop
+    $('#dropbox').createUploadDropArea({ url: st.page.uri() + '/attachments' });
+
     /**
      * Edit
      */

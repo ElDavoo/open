@@ -88,10 +88,11 @@ $.fn.createUploadDropArea = function(opts) {
 
             // Duplicates:
             if (dups.length) {
-                get_lightbox('attachment', function () {
-                    Attachments.showDuplicateLightbox(dups, function(file, r){
+                st.dialog.show('attachments-duplicate', {
+                    files: dups,
+                    callback: function(file, r) {
                         $dropbox.uploadDroppedFile(file, opts.url, r);
-                    });
+                    }
                 });
             }
         });
@@ -131,10 +132,8 @@ $.fn.uploadDroppedFile = function(file, url, replace) {
     };
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
-            get_lightbox('attachment', function () {
-                $progress.remove()
-                Attachments.refreshAttachments();
-            });
+            $progress.remove()
+            st.attachments.refreshAttachments();
         }
     };
     reader.onloadend = function(evt) {
@@ -142,11 +141,5 @@ $.fn.uploadDroppedFile = function(file, url, replace) {
     };
     reader.readAsBinaryString(file);
 };
-
-$(function() {
-    var url = '/data/workspaces/' + Socialtext.wiki_id
-            + '/pages/' + Socialtext.page_id + '/attachments';
-    $('#dropbox').createUploadDropArea({ url: url });
-});
 
 })(jQuery);

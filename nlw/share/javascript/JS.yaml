@@ -49,6 +49,7 @@
         - jquery.bgiframe.js
         - jquery.positionBy.js
         - jquery.jdMenu.js
+        - jquery.html5Upload.js
 
 # Socialtext API
 'socialtext-api.js':
@@ -130,6 +131,7 @@
         - activities-signalthis
         - attachments-upload
         - attachments-delete
+        - attachments-duplicate
         - control-create-workspace
         - control-create-group
         - groups-leave
