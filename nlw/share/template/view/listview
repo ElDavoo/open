@@ -49,7 +49,7 @@
          <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
       </div>
       <div class="clear"></div>
-      <div class="grid_24"> [% INCLUDE "view/paging" %]</div>
+      <div class="grid_24">[% INCLUDE "view/paging" %]</div>
       <div class="clear"></div>
     [% END %]
   [% END %]
