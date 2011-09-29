@@ -26,14 +26,15 @@
 <div id="st-editor" style="display:none"></div>
 
 [% IF page.edit_in_progress %]
-<div id="contentWarning" class="grid_18">
+<div id="contentWarning" class="grid_18 warning">
   [% IF page.edit_in_progress.user_link %]
    [% page.edit_in_progress.user_link %]
   [% ELSE %]
    <a href="mailto:[% page.edit_in_progress.email_address %]">[% page.edit_in_progress.username %]</a>
   [% END %]
   [% loc('page.editing=ago', ago_text(page.edit_in_progress.minutes_ago)) %]
-  <a href="#" id="st-edit-warning-help">(?)</a>
+  [%# TODO: Bring up edit_warning_help.tt2 dialog...
+      <a href="#" id="st-edit-warning-help">(?)</a> %]
 </div>
 [% END %]
 
