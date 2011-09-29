@@ -118,9 +118,10 @@ sub POST {
 
             if ($plugin eq 'locales') {
                 my $locales = $prefs->get();
+                my $locale = $locales->{locale};
 
                 $tz_prefs = undef
-                    if $locales->{locale} ne $updates->{locale};
+                    if $locale && $locale ne $updates->{locale};
             }
 
             $prefs->set(%$updates);
