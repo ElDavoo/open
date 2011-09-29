@@ -41,7 +41,7 @@
 [% END %]
 
   <div class="widget">
-    <h1 class="grid_18" id="st-page-titletext" title="[% page.display_title %]">[% page.display_title %]</h1>
+    <h1 id="st-page-titletext" title="[% page.display_title %]">[% page.display_title %]</h1>
     <a id="st-page-boxes-show-link" href="#"><span class="arrow">&#x25b6;</span>[% loc('nav.show') %]</a>
     <div class="clear"></div>
     <div class="content" id="st-page-content">[% page.content %]</div>
