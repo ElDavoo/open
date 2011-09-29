@@ -6,12 +6,12 @@ st.dialog.register('page-delete', function(opts) {
             {
                 id: 'st-delete-deletelink',
                 text: loc('do.delete'),
-                click: function() { dialog.close() }
+                click: function() { dialog.find('form').submit() }
             },
             {
                 id: 'st-delete-cancellink',
                 text: loc('do.cancel'),
-                click: function() { dialog.find('form').submit() }
+                click: function() { dialog.close() }
             }
         ]
     });
