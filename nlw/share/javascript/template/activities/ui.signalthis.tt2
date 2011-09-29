@@ -14,7 +14,7 @@
     </div>
     <div class="main">
         <div id="[% id('messages') %]" class="messages">
-            <div id="[% id('signal_network_warning') %]" class="message" style="display: none; background: url(/static/skin/common/images/warning-icon.png) no-repeat 7px 0px #FFFDD3; padding-left: 20px">
+            <div id="[% id('signal_network_warning') %]" class="message" style="display: none; background: url(/static/images/warning-icon.png) no-repeat 7px 0px #FFFDD3; padding-left: 20px">
                 [% loc('info.edit-summary-signal-visibility') %]
             </div>
             <div class="sent message" style="display: none">[% loc('activities.signal-sent!') %]</div>
