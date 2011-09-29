@@ -125,6 +125,7 @@ bin/st-admin enable-plugin --all-accounts \
 
 bin/st-admin enable-plugin --all-workspaces \
     --plugin ckeditor \
+    --plugin socialcalc \
 
 bin/st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 
