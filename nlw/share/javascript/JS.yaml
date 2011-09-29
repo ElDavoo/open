@@ -40,9 +40,10 @@
         - Socialtext/Buttons.js
         - Socialtext/Dialog.js
         - Socialtext/Search.js
-        - Socialtext/Display.js
         - Socialtext/Email.js
         - Socialtext/Attachments.js
+        - Socialtext/Display.js
+        - Socialtext/Listview.js
         - socialtext-api.js
         - socialtext-container.js
         - jquery.uiDisable.js

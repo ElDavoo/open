@@ -2,254 +2,184 @@
 [%# @COPYRIGHT@ -%]
 [%- USE decorate -%]
 [%- USE JSON -%]
+
 [% WRAPPER $frame_name id="listPage" %]
   [% INCLUDE element/page/navigation %]
-  <div id="contentContainer">
-    <div class="grid_20">
-      <h2 class="tableTitle wrap" title="[% display_title | html %]">[% display_title | html %]</h2>
+  [% INCLUDE header %]
+
+  [% IF !rows.size %]
+    [% INCLUDE no_results %]
+  [% ELSIF too_many %]
+    [% INCLUDE too_many_results %]
+  [% ELSIF search_timeout %]
+    <div class="grid_24" id="tooManyResults">
+      <p> [% loc('search.too-general') %] </p>
+      <p> [% loc('search.be-more-specific') %] </p>
+      <br />
+      <div id="inlineSearch">
+        [% INCLUDE element/search_form sid='search-again' %]
+      </div>
     </div>
-    [% IF !too_many %]
-      <div class="grid_4" id="controlsRight">
-        [% IF feeds.rss.page %]
-          <a style="float: left; margin-right: 10px; margin-top: 1px" href="[% feeds.rss.page.url %]"><img border="0" src="[% static_path %]/images/icons/rss.png"/></a>
-        [% END %]
-        [% IF hub.current_workspace.enable_unplugged %]
-          [% IF unplug_uri %]
-              <a style="float: left; margin-top: 12px; margin-left: 5px;" title="[% unplug_phrase %]" href="[% unplug_uri %]"><img border="0" src="[% wiki.skin_uri('s3') %]/images/plug.png"/></a>
-          [% END %]
-        [% END %]
-        <ul class="jd_menu">
-          <li>
-            <a class="export" href="#" id="st-listtools-export">[% loc('do.export') %]</a>
-            <ul>
-              [% IF loc_system_lang != 'ja' %]
-              <li><a title="[% loc('nav.create-pdf') %]" id="st-listview-submit-pdfexport" href="#">[% loc('export.pdf') %]</a></li>
-              [% END %]
-              <li><a title="[% loc('nav.create-word') %]" id="st-listview-submit-rtfexport" href="#">[% loc('export.word') %]</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    [% END %]
     <div class="clear"></div>
-    [% IF !rows.size %]
-      <div class="grid_24">
-        <div style="font-size:110%" id="tooManyResults">
-          [% IF empty_message; empty_message; ELSE %]
-            <p style="margin:10px 0">
-              [% loc('error.no-search-results') %]
-            </p>
-            [% IF action == 'search_workspace' %]
-            <p style="margin:8px 0">
-              [% loc('info.no-search-results') %]
-            </p>
-            [% END %]
-          [% END %]
-          [% IF action == 'search_workspace' %]
-            <div id="inlineSearch">
-              [% INCLUDE element/search_form sid='search-again' %]
-            </div>
-          [% END %]
-        </div>
-      </div>
+  [% ELSE %]
+    [% IF listview_content_actions %]
+      <div class="grid_24">[% PROCESS $listview_content_actions %]</div>
       <div class="clear"></div>
-    [% ELSIF too_many %]
-      <div class="grid_24">
-        <div id="tooManyResults">
-          <p> [% loc('search.too-many=count', too_many) %] </p>
-          <p>
-            [% loc('search.limit=count' , appconfig.search_warning_threshold) %]
-          </p>
-          <p> [% loc('search.be-more-specific') %] </p>
-          <br />
-          <div id="inlineSearch">
-            [% INCLUDE element/search_form sid='search-again' %]
-          </div>
-        </div>
-      </div>
-      <div class="clear"></div>
-    [% ELSIF search_timeout %]
-      <div class="grid_24">
-        <div id="tooManyResults">
-          <p> [% loc('search.too-general') %] </p>
-          <p> [% loc('search.be-more-specific') %] </p>
-          <br />
-          <div id="inlineSearch">
-            [% INCLUDE element/search_form sid='search-again' %]
-          </div>
-        </div>
-      </div>
-      <div class="clear"></div>
-    [% ELSE %]
-      [% IF listview_content_actions %]
-        <div class="grid_24">
-          [% PROCESS $listview_content_actions %]
-        </div>
-        <div class="clear"></div>
-      [% END %]
-      [% IF current_workspace.name %]
-      <form id="st-listview-form" method="post" action="/[% current_workspace.name %]/">
-      [% ELSE %]
-      <form id="st-listview-form" method="post" action="/">
-      [% END %]
+    [% END %]
+    <form id="st-listview-form" method="post" action="/[% current_workspace.name %]/">
       <input id="st-listview-action" name="action" value="" type="hidden">
       <input id="st-listview-filename" name="filename" value="" type="hidden">
-      <div class="grid_1">
-        <div class="selectall">
-          <input type="checkbox" id="st-listview-selectall"/>
-        </div>
-      </div>
-      <div class="alpha grid_16">
-        [% predicate_with_params = BLOCK %]?[% predicate |html %];scope=[% scope |html %];orig_search_term=[% search_term |html %];sortby=[% sortby |html %];direction=[% (direction || sortdir.$sortby) |html %][%- END %]
-        <div class="toggle">
-          [% loc('nav.show:') %]
-          [% IF summaries %]
-            <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('page.titles') %]</a> | 
-            [% loc('page.summaries') %]
-          [% ELSE %]
-            [% loc('page.titles') %] |
-            <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('page.summaries') %]</a>
-          [% END %]
-          [% IF pager %]
-            &mdash;
-            <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-          [% END %]
-        </div>
-      </div>
-      [% IF !hide_sort_widget %]
-        <div class="grid_7 sort_options">
-          [% loc('sort.by:') %]
-          <select id="sort-picker" onchange="sort_by();">
-            [% FILTER decorate('search_sort_options') %]
-            [% IF allow_relevance %]
-              [% PROCESS element/listview_sort_option name = loc('sort.relevance') field = 'Relevance' %]
-            [% END %]
-              [% PROCESS element/listview_sort_option name = loc('sort.title') field = 'Subject' %]
-            [% IF show_workspace %]
-              [% PROCESS element/listview_sort_option name = loc('sort.wiki') field = 'Workspace' %]
-            [% END %]
-            [% IF ! no_user_sorting %]
-              [% PROCESS element/listview_sort_option name = loc('sort.last-edited') field = 'username' %]
-              [% PROCESS element/listview_sort_option name = loc('sort.creator') field = 'creator' %]
-            [% END %]
-            [% PROCESS element/listview_sort_option name = loc('sort.edited') field = 'Date' %]
-            [% PROCESS element/listview_sort_option name = loc('sort.created') field = 'create_time' %]
-            [% PROCESS element/listview_sort_option name = loc('sort.revisions') field = 'revision_count' %]
-            [% END %]
-          </select>
-        </div>
-      [% END %]
-      [% query_start = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];summaries=[% summaries %][%- END %]
-      <script language="javascript">
-        var query_start = [% query_start.json %];
-        function sort_by() {
-          var selected = jQuery('select#sort-picker').val();
-          window.location = query_start + ';' + selected;
-        }
-
-$('#st-listview-submit-pdfexport').click(function() {
-    if (!$('.st-listview-selectpage-checkbox:checked').size()) {
-        alert(loc("error.no-page-pdf"));
-    }
-    else {
-        $('#st-listview-action').val('pdf_export')
-        $('#st-listview-filename').val(Socialtext.wiki_id + '.pdf');
-        $('#st-listview-form').submit();
-    }
-    return false;
-});
-
-$('#st-listview-submit-rtfexport').click(function() {
-    if (!$('.st-listview-selectpage-checkbox:checked').size()) {
-        alert(loc("error.no-page-doc"));
-    }
-    else {
-        $('#st-listview-action').val('rtf_export')
-        $('#st-listview-filename').val(Socialtext.wiki_id + '.rtf');
-        $('#st-listview-form').submit();
-    }
-    return false;
-});
-
-$('#st-listview-selectall').click(function () {
-    var self = this;
-    $('input[type=checkbox]').each(function() {
-        if ( ! $(this).attr('disabled') ) {
-            $(this).attr('checked', self.checked);
-        }
-    });
-    return true;
-});
-      </script>
-      <div class="clear"></div>
       [% IF pager %]
-        <div class="grid_24">
-           [% INCLUDE "view/paging" %]
-        </div>
+        <div class="grid_24">[% INCLUDE "view/paging" %]</div>
         <div class="clear"></div>
       [% END %]
-    [% END %]
-    [% IF ! offset; offset = 0; END %]
-    [% IF ! last; last = rows.size; END %]
-    <div class="grid_24">
-      <table class="dataTable fixed" cellspacing="0">
-        [% FOREACH row = rows %]
-          [% row = load_row_times(row) %]
-          [% IF !partial_set AND loop.count - 1 < offset %][% NEXT %][% END %]
-          [% IF !partial_set AND loop.count > last %][% BREAK %][% END %]
-          [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
-            <td width="30"><input type="checkbox" name="page_selected" class="st-listview-selectpage-checkbox" value="[% row.workspace_name %]:[% row.page_uri %]"/></td>
-            <td>
-              [% IF row.is_spreadsheet %]
-                 <img class="pageType" src="[% static_path %]/images/icons/sheet-black-15.png" />
-              [% ELSIF row.is_attachment %]
-                 <img class="pageType" src="[% static_path %]/images/icons/attachment-black-15.png" />
-              [% ELSE %]
-                 <img class="pageType" src="[% static_path %]/images/icons/document-black-15.png" />
-              [% END %]
-              [% FILTER decorate('search_result_title', [row]) %]
-              [% IF row.is_attachment %]
-                <a class="titleLink" href="/data/workspaces/[% row.workspace_name || current_workspace.name %]/attachments/[% row.page_uri %]:[% row.id %]/original/[% row.document_title %]">[% row.document_title %]</a>
-                [% loc('file.attached-to-page') %]
-                <a href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
-              [% ELSE %]
-                <a class="titleLink" href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
-              [% END %]
-              [% IF row.workspace_title %][% loc('info.in') %] <a href="/[% row.workspace_name %]">[% row.workspace_title %]</a>[% END %]
-              [% END %]
-              [% IF summaries %]
-                <div class="summary">[% row.Summary %]</div>
-                [% IF row.edit_summary %]
-                  <div class="edit_summary">[% loc('nav.summary') %]: [% row.edit_summary %]</div>
-                [% END %]
-              [% END %]
-              <div class="byline">
-                <span class="originally-created-by">[% loc('page.creator') %] [% row.creator | decorate('user_avatar') %] [% loc('info.on') %] [% row.create_time_local %]</span>.
-                <span class="byline-separator">&nbsp;</span>
-                <span class="last-updated-by">[% loc('page.last-updated') %] [% row.username | decorate('user_avatar') %] [% loc('info.on') %] [% row.DateLocal %].</span>
-                <span class="revision-count">(<a href="/[% (row.workspace_name || current_workspace.name) %]/?action=revision_list;page_name=[% row.page_uri %]">[% loc('page.revisions=count', row.revision_count) %]</a>)</span>
-              </div>
-            </td>
-            [% IF listview_extra_columns.watchlist %]
-              <td class="listview-watchlist">
-                <a id="st-watchlist-indicator-[% row.page_uri %]" class="on watch" href="#" title="[% loc('watch.stop') %]">[% loc('watch.stop') %]</a>
-              </td>
-            [% END %]
-          </tr>
-        [% END %]
-      </table><!-- dataTable END -->
-    </div>
-    <div class="clear"></div>
+
+      [% IF ! offset; offset = 0; END %]
+      [% IF ! last; last = rows.size; END %]
+
+      [% INCLUDE listview_header %]
+      [% INCLUDE element/listview_results %]
+      <div class="clear"></div>
     </form>
-  </div>
-  <div class="clear"></div>
-  [% IF pager && pager.total_entries %]
-    <div class="grid_24 search_count">
-       <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-    </div>
-    <div class="clear"></div>
-    <div class="grid_24"> [% INCLUDE "view/paging" %] </div>
-    <div class="clear"></div>
+    [% IF pager && pager.total_entries %]
+      <div class="grid_24 search_count">
+         <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+      </div>
+      <div class="clear"></div>
+      <div class="grid_24"> [% INCLUDE "view/paging" %]</div>
+      <div class="clear"></div>
+    [% END %]
   [% END %]
-  </div><!-- contentContainer -->
+  <div class="clear vpad5"></div>
+
+  <script>
+    [% query_start = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];summaries=[% summaries %][%- END %]
+    st.setupListview([% query_start.json %]);
+  </script>
 [% END %]
+
+[% BLOCK header %]
+  [% IF too_many %]
+    <div class="grid_24">
+      <h1 title="[% display_title | html %]">[% display_title | html %]</h2>
+    </div>
+  [% ELSE %]
+    <div class="grid_20">
+      <h1 title="[% display_title | html %]">[% display_title | html %]</h2>
+    </div>
+    <div class="grid_4" id="controlsRight">
+      [% IF feeds.rss.page %]
+        <a style="float: left; margin-right: 10px; margin-top: 1px" href="[% feeds.rss.page.url %]"><img border="0" src="[% static_path %]/images/icons/rss.png"/></a>
+      [% END %]
+      [% IF hub.current_workspace.enable_unplugged %]
+        [% IF unplug_uri %]
+            <a style="float: left; margin-top: 12px; margin-left: 5px;" title="[% unplug_phrase %]" href="[% unplug_uri %]"><img border="0" src="[% wiki.skin_uri('s3') %]/images/plug.png"/></a>
+        [% END %]
+      [% END %]
+      <ul class="jd_menu">
+        <li>
+          <a class="export" href="#" id="st-listtools-export">[% loc('do.export') %]</a>
+          <ul>
+            [% IF loc_system_lang != 'ja' %]
+            <li><a title="[% loc('nav.create-pdf') %]" id="st-listview-submit-pdfexport" href="#">[% loc('export.pdf') %]</a></li>
+            [% END %]
+            <li><a title="[% loc('nav.create-word') %]" id="st-listview-submit-rtfexport" href="#">[% loc('export.word') %]</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  [% END %]
+
+  <div class="clear"></div>
+[% END %]
+
+[% BLOCK no_results %]
+  <div class="grid_24" style="font-size:110%" id="tooManyResults">
+    [% IF empty_message; empty_message; ELSE %]
+      <p style="margin:10px 0">
+        [% loc('error.no-search-results') %]
+      </p>
+      [% IF action == 'search_workspace' %]
+      <p style="margin:8px 0">
+        [% loc('info.no-search-results') %]
+      </p>
+      [% END %]
+    [% END %]
+    [% IF action == 'search_workspace' %]
+      <div id="inlineSearch">
+        [% INCLUDE element/search_form sid='search-again' %]
+      </div>
+    [% END %]
+  </div>
+
+  <div class="clear"></div>
+[% END %]
+
+[% BLOCK too_many_results %]
+  <div class="grid_24">
+    <div id="tooManyResults">
+      <p> [% loc('search.too-many=count', too_many) %] </p>
+      <p>
+        [% loc('search.limit=count' , appconfig.search_warning_threshold) %]
+      </p>
+      <p> [% loc('search.be-more-specific') %] </p>
+      <br />
+      <div id="inlineSearch">
+        [% INCLUDE element/search_form sid='search-again' %]
+      </div>
+    </div>
+  </div>
+
+  <div class="clear"></div>
+[% END %]
+
+[% BLOCK listview_header %]
+  <div class="grid_1">
+    <div class="selectall">
+      <input type="checkbox" id="st-listview-selectall"/>
+    </div>
+  </div>
+  <div class="alpha grid_16">
+    [% predicate_with_params = BLOCK %]?[% predicate |html %];scope=[% scope |html %];orig_search_term=[% search_term |html %];sortby=[% sortby |html %];direction=[% (direction || sortdir.$sortby) |html %][%- END %]
+    <div class="toggle">
+      [% loc('nav.show:') %]
+      [% IF summaries %]
+        <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('page.titles') %]</a> | 
+        [% loc('page.summaries') %]
+      [% ELSE %]
+        [% loc('page.titles') %] |
+        <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('page.summaries') %]</a>
+      [% END %]
+      [% IF pager %]
+        &mdash;
+        <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+      [% END %]
+    </div>
+  </div>
+  [% IF !hide_sort_widget %]
+    <div class="grid_7 sort_options">
+      [% loc('sort.by:') %]
+      <select id="sort-picker">
+        [% FILTER decorate('search_sort_options') %]
+        [% IF allow_relevance %]
+          [% PROCESS element/listview_sort_option name = loc('sort.relevance') field = 'Relevance' %]
+        [% END %]
+          [% PROCESS element/listview_sort_option name = loc('sort.title') field = 'Subject' %]
+        [% IF show_workspace %]
+          [% PROCESS element/listview_sort_option name = loc('sort.wiki') field = 'Workspace' %]
+        [% END %]
+        [% IF ! no_user_sorting %]
+          [% PROCESS element/listview_sort_option name = loc('sort.last-edited') field = 'username' %]
+          [% PROCESS element/listview_sort_option name = loc('sort.creator') field = 'creator' %]
+        [% END %]
+        [% PROCESS element/listview_sort_option name = loc('sort.edited') field = 'Date' %]
+        [% PROCESS element/listview_sort_option name = loc('sort.created') field = 'create_time' %]
+        [% PROCESS element/listview_sort_option name = loc('sort.revisions') field = 'revision_count' %]
+        [% END %]
+      </select>
+    </div>
+  [% END %]
+  
+  <div class="clear"></div>
+[% END %]
+
