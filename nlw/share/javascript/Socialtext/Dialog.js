@@ -24,8 +24,7 @@ Socialtext.prototype.dialog = (function($) {
             }, opts));
         },
         close: function() {
-            this.node.find('iframe').attr('src', '/static/html/blank.html');
-            this.node.dialog('destroy');
+            this.node.dialog('destroy').remove();
         },
         find: function(selector) { return this.node.find(selector) },
         showError: function(err) { this.node.find('.error').html(err) },
