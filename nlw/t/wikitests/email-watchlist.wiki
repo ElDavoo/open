@@ -1,5 +1,7 @@
 * Fixture: EmailJob
 
+# NEEDS UPDATES FOR NEW /st/settings API
+
 | standard-test-setup |
 | st-clear-jobs       |
 | clear-email         |
