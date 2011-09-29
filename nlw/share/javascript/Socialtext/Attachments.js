@@ -7,10 +7,10 @@ Socialtext.prototype.attachments = (function($) {
             // XXX console.log('delete_new_attachments unimplemented');
         },
         reset_new_attachments: function() {
-            // XXX console.log('reset_new_attachments unimplemented');
+            _newAttachmentList = [];
         },
         get_new_attachments: function() {
-            // XXX console.log('get_new_attachments unimplemented');
+            return _newAttachmentList;
         },
 
         renderAttachments: function() {
@@ -122,6 +122,19 @@ Socialtext.prototype.attachments = (function($) {
                     return false;
                 });
             });
+        },
+
+        prepare_before_save: function() {
+            var self = this;
+            var files = self.get_new_attachments();
+
+            $.each(files, function () {
+                if (this.deleted) return;
+                $('<input type="hidden" name="attachment" />')
+                    .val(this['id'] + ':' + this['page-id'])
+                    .appendTo('#st-page-editing-files');
+            });
         }
+
     }
 })(jQuery);

@@ -73,19 +73,42 @@ Socialtext.Page.prototype = {
         });
     },
 
-    /**
-     * Old functions
-     */
+    active_page_exists: function () {
+        var self = this;
+        var args = $.makeArray(arguments);
+        var page_name = trim(args.pop());
+        var wiki_id = args.pop() || Socialtext.wiki_id;
+        var data = $.ajax({
+            url: self.pageUrl(wiki_id, page_name),
+            async: false
+        });
+        return data.status == '200';
+    },
 
     // args: (ws,page) or (page_in_current_workspace)
-
     restApiUri: function () {
-        return Page.pageUrl.apply(this, arguments);
+        return this.pageUrl.apply(this, arguments);
+    },
+
+    workspaceUrl: function (wiki_id) {
+        return '/data/workspaces/' + (wiki_id || st.workspace.name);
+    },
+
+    pageUrl: function () {
+        var args = $.makeArray(arguments);
+        var page_name = args.pop() || st.page.id;
+        var wiki_id = args.pop() || st.workspace.name;
+
+        return this.workspaceUrl(wiki_id) + '/pages/' + page_name;
     },
 
     cgiUrl: function () {
         return '/' + Socialtext.wiki_id + '/';
     },
+
+    /**
+     * Old functions
+     */
 
     setPageContent: function(html) {
         $('#st-page-content').html(html);

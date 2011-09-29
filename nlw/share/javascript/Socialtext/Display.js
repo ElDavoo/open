@@ -147,6 +147,14 @@ Socialtext.prototype.setupPageHandlers = function() {
     $('#st-edit-button-link').button().click(function() {
         var $button = $(this);
         $('#content').uiDisable();
+        if (st.page.type == 'spreadsheet') {
+            $.getScript(st.nlw_make_js_path('socialtext-socialcalc.jgz'), function() {
+                Socialtext.start_spreadsheet_editor();
+                $('#content').uiEnable();
+            });
+            return false;
+        }
+
         $.getScript(st.nlw_make_js_path('socialtext-ckeditor.jgz'), function() {
             Socialtext.start_xhtml_editor();
             $('#content').uiEnable();
