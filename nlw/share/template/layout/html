@@ -132,5 +132,7 @@
       </footer>
       <div class="clear"></div>
     </div>
+    [% FILTER decorate('body_end') %]
+    [% END %]
   </body>
 </html>
