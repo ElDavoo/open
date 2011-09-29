@@ -21,19 +21,17 @@ Socialtext::editor =
         $('#st-edit-check').remove()
 
         $('<div />', class: "lightbox", id: "st-edit-check")
-          .append("<h3>#{loc('edit.warning')}</h3>")
+          .append("<span class='title'>#{loc('edit.warning')}</span>")
           .append("<p>#{loc('page.opened-for-edit=user,ago', user_link, time_ago)}</p>")
           .append(user_business_card)
-          .append(
-            $('<div />', class:"""
-              ui-dialog-buttonpane ui-widget-content ui-helper-clearfix
-            """).append(
-              $('<a />', href: '#', class: 'continue').text(loc('edit.force')).button()
-            ).append(
-              $('<a />', href: '#', class: 'close').text(loc('edit.return-to-page-view')).button()
-            )
-          ).appendTo('body')
-
+          .append("""
+            <div class="buttons">
+              <a href="#" class="continue">#{loc('edit.force')}</a>
+              <a href="#" class="close">#{loc('edit.return-to-page-view')}</a>
+            </div>
+          """)
+          .appendTo('body')
+        $('#st-edit-check .buttons a').button()
         Socialtext::editor.showLightbox
           speed: 0
           content: "#st-edit-check"
@@ -53,11 +51,12 @@ Socialtext::editor =
               $("#st-edit-check .continue").addClass "checked"
               Socialtext::editor.hideLightbox()
             
-            $("#lightbox").one "lightbox-unload", ->
+            $("#lightbox").bind "dialogclose", ->
               unless $("#st-edit-check .continue").hasClass("checked")
+                $('#st-display-mode-widgets').show()
                 cleanup_callback?()
               $("#st-edit-check").remove()
-    wikiwyg_launcher()
+    wikiwyg_launcher?()
 
   showLightbox: (opts) ->
     if $('#lightbox').length
@@ -93,7 +92,6 @@ Socialtext::editor =
       resizable: false
       title: title
       close: ->
-        $('#lightbox').triggerHandler 'lightbox-unload'
         Socialtext::editor.hideLightbox()
       width: $('#lightbox').width()
       height: Math.min($(window).height(), ($('#lightbox').height() + opts.extraHeight))
@@ -102,7 +100,7 @@ Socialtext::editor =
     return
 
   hideLightbox: () ->
-    try $('#lightbox').dialog('close')
+    $("#lightbox").triggerHandler('dialogclose')
     try $('#lightbox').dialog('destroy')
     $("#lightbox").remove()
 
