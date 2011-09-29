@@ -141,7 +141,6 @@ sub recent_changes {
         miki_url      => $self->hub->helpers->miki_path('recent_changes_query'),
         feeds         => $self->_feeds( $self->hub->current_workspace ),
         unplug_uri    => "?action=unplug",
-        unplug_phrase => loc('info.unplug-recent=count', $self->hub->tiddly->default_count),
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},
