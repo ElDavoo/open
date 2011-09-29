@@ -36,8 +36,17 @@ sub register {
     $registry->add(action => 'display_html');
     $registry->add(action => 'page_info');
     $registry->add(action => 'preview');
+    $registry->add(action => 'homepage');
 
     $self->_register_prefs($registry);
+}
+
+sub homepage {
+    my $self = shift;
+    if (my $ws = $self->hub->current_workspace) {
+        return $self->redirect('/'.$ws->name);
+    }
+    return $self->redirect('/');
 }
 
 sub pref_names {
