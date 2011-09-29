@@ -96,14 +96,6 @@ method page_display_link_from_page($page) {
     return qq(<a href="$path">$title</a>);
 }
 
-method page_edit_link($page_name, $link_text) {
-    my $extra = $->query_string_from_hash(@_);
-    return
-        '<a href="' . $->page_edit_path($page_name) . $extra . '">'
-        . $->html_escape($link_text)
-        . '</a>';
-}
-
 method page_display_path($page_name) {
     return $->script_path() . "?$page_name";
 }
@@ -117,12 +109,6 @@ method page_edit_params($page_name) {
     return 'action=display;page_name='
         . $->uri_escape($page_name)
         . ';js=show_edit_div'
-}
-
-method preference_path($pref) {
-    $->script_path
-        . "?action=preferences_settings;preferences_class_id=$pref"
-        . $->query_string_from_hash(@_)
 }
 
 has 'default_workspace' => (
