@@ -1,18 +1,11 @@
 [%# vim: set et sts=2 sw=2: %]
 [% WRAPPER $frame_name id="contentPage" %]
-  <div id="controls">
-    <div id="st-editing-tools-edit">
-
-    </div><!-- controlsLeft END -->
-    <div id="controlsRight">
-
-    </div><!-- controlsRight END -->
-  </div><!-- controls END -->
   <div id="contentContainer">
-    <div id="contentTitle">
+    <div id="contentTitle" class="grid_24">
       <h2 id="st-page-titletext" class="tableTitle" title="[% display_title %]">[% display_title %]</h2>
     </div>
-    <div id="contentColumns">
+    <div class="clear"></div>
+    <div id="contentColumns" class="grid_24">
       <br />
       [% loc('page.delete-epilogue') %]
       <br />
@@ -20,17 +13,14 @@
       <form method="post" action="[% script_name %]">
         <input type="hidden" name="action" value="undelete_page" />
         <input type="hidden" name="page_id" value="[% page_id %]" />
-        <ul class="formButtons" style="float:left">
-          <li class="flexButton">
-            <a class="genericOrangeButton" href="#" onclick="jQuery(this).parents('form').submit()">
-              [% loc('page.restore') %]
-            </a>
-          </li>
-        </ul>
-        <div class="clear"></div>
+
+        <a id="restore_btn" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" href="#" onclick="jQuery(this).parents('form').submit();>
+          <span class="ui-button-text">[% loc('page.restore') %]</span>
+        </a>
       </form>
       <br />
       [% backlinks_description %]
     </div>
+    <div class="clear"></div>
   </div>
 [% END %]
