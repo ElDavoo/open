@@ -46,6 +46,6 @@
         [% END %]
       </tr>
     [% END %]
-  </table><!-- dataTable END -->
+  </table>
 </div>
 <div class="clear"></div>

@@ -7,6 +7,9 @@
   [% INCLUDE element/page/navigation %]
   [% INCLUDE header %]
 
+  [% predicate_with_params = BLOCK %]?[% predicate |html %];scope=[% scope |html %];orig_search_term=[% search_term |html %];sortby=[% sortby |html %];direction=[% (direction || sortdir.$sortby) |html %][%- END %]
+  [% query_start = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];summaries=[% summaries %][%- END %]
+
   [% IF !rows.size %]
     [% INCLUDE no_results %]
   [% ELSIF too_many %]
@@ -52,10 +55,7 @@
   [% END %]
   <div class="clear vpad5"></div>
 
-  <script>
-    [% query_start = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];summaries=[% summaries %][%- END %]
-    st.setupListview([% query_start.json %]);
-  </script>
+  <script>st.setupListview([% query_start.json %])</script>
 [% END %]
 
 [% BLOCK header %]
@@ -140,7 +140,6 @@
     </div>
   </div>
   <div class="alpha grid_16">
-    [% predicate_with_params = BLOCK %]?[% predicate |html %];scope=[% scope |html %];orig_search_term=[% search_term |html %];sortby=[% sortby |html %];direction=[% (direction || sortdir.$sortby) |html %][%- END %]
     <div class="toggle">
       [% loc('nav.show:') %]
       [% IF summaries %]
