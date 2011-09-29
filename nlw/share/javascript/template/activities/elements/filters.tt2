@@ -28,7 +28,7 @@
             [% INCLUDE filterOption object=feed type='feed' %]
         [% END %]
     </div>
-    <div class="grid_minus_6 vpad10 omega">
+    <div class="grid_4 vpad10 omega">
         <div class="filterHeading">[% loc('Venue') %]</div>
         [% FOR network = this.appdata.networks %]
             [% INCLUDE filterOption object=network type='network' %]
@@ -38,7 +38,7 @@
 </div>
 
 [% BLOCK filterOption %]
-    <div class="filterOption">
+    <div class="filterOption[% IF object.wrap %] wrap[% END %]">
         <input type="radio"
             class="[% type %]" value="[% object.value %]"
             id="[% object.id %]" name="[% id('filter_' _ type) %]"
@@ -46,7 +46,7 @@
                 checked="checked"
             [% END %]
             />
-        <label for="[% object.id %]">[% object.title %]</label>
+        <label for="[% object.id %]">[% object.filterTitle || object.title %]</label>
     </div>
 [% END %]
 

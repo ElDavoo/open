@@ -229,16 +229,19 @@ $.extend(Activities.AppData.prototype, {
         $.each(sorted_accounts, function(i, acc) {
             var primary = acc.account_id == prim_acc_id ? true : false;
             var userlabel = (acc.user_count == 1) ? ' user)': ' users)';
-            var title = acc.account_name + ' ('
-                    + (primary ? loc('signals.primary-account=users', acc.user_count)
-                               : loc('signals.network-count=users', acc.user_count))
-                    + ')';
+            var additional = primary
+                ? loc('signals.primary-account=users', acc.user_count)
+                : loc('signals.network-count=users', acc.user_count);
+
 
             $.extend(acc, {
                 'default': primary,
                 value: 'account-' + acc.account_id,
                 id: 'account-' + acc.account_id,
-                title: title,
+                title: acc.account_name + ' ' + '(' + additional + ')',
+                filterTitle: acc.account_name + ' '
+                    + '<div class="users">' + additional + '</div>',
+                wrap: true,
                 signals_size_limit:
                     acc.plugin_preferences.signals.signals_size_limit
             });
@@ -250,12 +253,17 @@ $.extend(Activities.AppData.prototype, {
             // Now find the groups in that account
             $.each(sorted_groups, function(i, grp) {
                 if (grp.primary_account_id == acc.account_id) {
-                    var title = grp.name + ' (' + loc('signals.network-count=users', grp.user_count) + ')';
+                    var additional = loc(
+                        'signals.network-count=users', grp.user_count
+                    );
+                    var title = grp.name + ' (' + additional + ')';
                     $.extend(grp, {
                         value: 'group-' + grp.group_id,
                         id: 'group-' + grp.group_id,
                         optionTitle: '... ' + title,
                         title: title,
+                        filterTitle: grp.name
+                            + ' <div class="users">' + additional + '</div>',
                         signals_size_limit: acc.signals_size_limit,
                         plugins_enabled: acc.plugins_enabled
                     });
