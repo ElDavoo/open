@@ -64,6 +64,7 @@
         - Socialtext/Person.js
         - Socialtext/Avatar.js
         - Socialtext/Page.js
+        - {coffee: Socialtext/Editor.coffee}
 
 # Old relic of an editor for comments
 'socialtext-comments.js':

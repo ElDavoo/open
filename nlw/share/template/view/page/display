@@ -25,6 +25,18 @@
 
 <div id="st-editor" style="display:none"></div>
 
+[% IF page.edit_in_progress %]
+<div id="contentWarning" class="grid_18">
+  [% IF page.edit_in_progress.user_link %]
+   [% page.edit_in_progress.user_link %]
+  [% ELSE %]
+   <a href="mailto:[% page.edit_in_progress.email_address %]">[% page.edit_in_progress.username %]</a>
+  [% END %]
+  [% loc('page.editing=ago', ago_text(page.edit_in_progress.minutes_ago)) %]
+  <a href="#" id="st-edit-warning-help">(?)</a>
+</div>
+[% END %]
+
 <div id="st-display-mode-container" class="grid_18" data-expanded="grid_18" data-collapsed="grid_24">
   <div class="widget">
     <h1 class="grid_18" id="st-page-titletext" title="[% page.display_title %]">[% page.display_title %]</h1>
