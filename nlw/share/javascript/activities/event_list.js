@@ -954,24 +954,14 @@ $.extend(Activities.EventList.prototype, {
         var $actions = evt.$node.find('.actions:first');
         if (!$actions) { return false };
 
-        $actions.find('.hideLink:first').click(function (e) {
+        evt.$node.find('.hideLink:first').click(function (e) {
             self.hideEvent(evt);
             return false;
         });
-        $actions.find('.expungeLink:first').click(function (e) {
+        evt.$node.find('.expungeLink:first').click(function (e) {
             self.expungeEvent(evt);
             return false;
         });
-
-        /* Hover class toggling */
-        if (!self.isTouchDevice()) { // only non-touch devices
-            evt.$node.find('.hoverable').mouseover(function() {
-                $(this).addClass('hover');
-            });
-            evt.$node.find('.hoverable').mouseout(function() {
-                $(this).removeClass('hover');
-            });
-        }
     },
 
     /* XXX: Duplicate code is in bubble.js */
