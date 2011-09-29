@@ -75,12 +75,12 @@ var proto = CreateContentDialog.prototype = {
                         .css({'font-style': 'italic'});
                 }
                 else {
-                    self.from_template_radio().attr('disabled', '');
+                    self.from_template_radio().removeAttr('disabled');
                     self.from_template_select()
-                        .attr('disabled', '')
+                        .removeAttr('disabled')
                         .css({'font-style': 'normal'});
                     if (self.from_template_radio().is(':checked')) {
-                        self.from_template_select().attr('disabled', '');
+                        self.from_template_select().removeAttr('disabled');
                     }
                     for (var i = 0,l=pages.length; i < l; i++) {
                         $('<option></option>')
@@ -193,7 +193,6 @@ var proto = CreateContentDialog.prototype = {
         // Set the defaults
         self.type_radio('xhtml').click();
         self.from_blank_radio().click();
-        self.update_templates();
         self.create_page_lookahead();
 
         self.dialog.find('#st-create-content-form')
