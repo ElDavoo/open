@@ -7,11 +7,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="/data/accounts/[% current_account.account_id || user.primary_account_id %]/theme/style.css" media="screen" />
-      <script type="text/javascript" charset="utf-8" src="/js/4.7.7.2/socialtext-starfish.jgz"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-starfish.jgz"></script>
     
-      <script type="text/javascript" charset="utf-8" src="/js/4.7.7.2/l10n-[% loc_lang || 'en' %].jgz"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang || 'en' %].jgz"></script>
     
-      <script type="text/javascript" charset="utf-8" src="/js/4.7.7.2/shindig-container-pubsub.jgz"></script>
+      <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/shindig-container-pubsub.jgz"></script>
 [% INCLUDE "element/wiki/js-bootstrap" %]
 <style>
 

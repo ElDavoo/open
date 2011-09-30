@@ -25,11 +25,7 @@
 </div>
 [% ELSE %]
 <li><div style="background: [% skin_info.mobile.logo.backgroundColor || '#17417F' %]; height: 34px; text-align: center"><table border=0 height="34" width="100%"><tr><td valign="middle">
-        [% SET logo = skin_info.mobile.logo.url
-            ? skin_uri(skin_info.mobile.logo.url)
-            : s3_uri('images/miki-logo.png')
-         %]
-        <img src="[% logo %]" style="max-width: 98%; max-height: 26px;"/>
+        <img src="/static/[% app_version %]/images/miki-logo.png" style="max-width: 98%; max-height: 26px;"/>
 </td></tr></table></div></li>
     [% END %]
     [% IF bottom %]

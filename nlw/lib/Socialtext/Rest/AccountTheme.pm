@@ -24,7 +24,7 @@ sub GET_css {
     my $rest = shift;
 
     return $self->if_valid_request($rest => sub {
-        my ($filename, $ext) = $self->filename =~ m{^(\w+)\.(sass|css)$};
+        my ($filename, $ext) = $self->filename =~ m{^([-\w]+)\.(sass|css)$};
         die 'Only .sass and .css are acceptable file extensions' unless $ext;
 
         $rest->header(-type=>"text/$ext");
