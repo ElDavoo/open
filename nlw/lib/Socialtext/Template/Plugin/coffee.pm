@@ -15,7 +15,7 @@ method init {
 }
 
 has 'coffee_compiler' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
-sub _build_coffee_compiler { which('coffee') }
+sub _build_coffee_compiler { which('st-coffee') }
 
 method filter ($text) {
     my ($out, $err);
