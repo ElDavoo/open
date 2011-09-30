@@ -20,7 +20,6 @@ use unmocked 'Socialtext::Helpers';
 use unmocked 'Socialtext::AccountFactory';
 use unmocked 'Socialtext::DisplayPlugin';
 use unmocked 'Socialtext::BacklinksPlugin';
-use unmocked 'Socialtext::FavoritesPlugin';
 use unmocked 'Socialtext::CategoryPlugin';
 use unmocked 'Socialtext::RecentChangesPlugin';
 use unmocked 'Socialtext::SyndicatePlugin';
@@ -107,11 +106,6 @@ sub display {
 
 sub css { 
     return $_[0]{css} ||= Socialtext::CSS->new(hub => $_[0]);
-}
-
-sub favorites { 
-    return $_[0]{favorites} ||= 
-        Socialtext::FavoritesPlugin->new(hub => $_[0]);
 }
 
 sub category { 
