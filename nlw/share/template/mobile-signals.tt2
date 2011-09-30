@@ -6,14 +6,15 @@
         [% ELSE %]
         <title>[% loc('nav.signals') %]</title>
         [% END %]
-        <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
+        <link rel="apple-touch-icon" href="/static/[% app_version %]/images/apple-touch-icon.png"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1">
         [% INCLUDE element/css_links %]
-        <link rel="stylesheet" type="text/css" href="[% static_path %]/skin/common/css/jquery.mobile-1.0a3.min.css" media="screen" />
-        <link rel="stylesheet" type="text/css" href="[% share %]/css/inline.css" media="screen" />
-        <link rel="stylesheet" type="text/css" href="[% share %]/css/mobile.css" media="screen" />
+        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/miki.css" />
+        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/jquery-mobile.css" />
+        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/inline.css" />
+        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/mobile-widget.css" />
         <script src="[% share %]/javascript/socialtext-popout.js"></script>
-        <script src="[% static_path %]/skin/s3/javascript/l10n-[% loc_lang %].js.gz"></script>
+        <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang || 'en' %].jgz"></script>
 
         [% INCLUDE widget/syndicator %]
         <script>
@@ -70,16 +71,12 @@
     <body class="mobile">
         [% FILTER decorate('body_begin') %]
         [% END %]
-        <div class="topnav">
-            <div data-role="header" class="ui-bar-a ui-header" role="banner">
+        <div class="topnav ui-body-c ui-page-active">
+            <div data-role="header" class="ui-header ui-bar-a" role="banner">
                 <div data-role="navbar" class="ui-navbar ui-navbar-noicons" style="min-height: 34px" role="navigation"><ul class="ui-grid-d">
                     <li class="ui-block-a">
 <div style="background: [% skin_info.mobile.logo.backgroundColor || '#17417F' %]; height: 34px; text-align: center"><table border=0 height="34" width="100%"><tr><td valign="middle" style="vertical-align: middle !important; text-align: center">
-        [% SET logo = skin_info.mobile.logo.url
-            ? skin_uri(skin_info.mobile.logo.url)
-            : s3_uri('images/miki-logo.png')
-         %]
-        <img src="[% logo %]" style="max-width: 98%; max-height: 26px;"/>
+        <img src="/static/[% app_version %]/images/miki-logo.png" style="max-width: 98%; max-height: 26px;"/>
 </td></tr></table></div></li>
                     [% INCLUDE globalnav %]
                 </ul></div>
@@ -89,7 +86,9 @@
 
         <div class="content inlineWidget" style="margin-top: 35px; margin-bottom: 20px">
             <div id="content" class="activitiesWidget">
-                <img style="margin: 40px" src="[% static_path %]/images/ajax-loader.gif"/>
+                <div style="text-align: center">
+                    <img style="margin: 40px" src="[% static_path %]/images/ajax-loader.gif"/>
+                </div>
             </div>
         </div>
 
