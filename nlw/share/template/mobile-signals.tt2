@@ -87,7 +87,11 @@
         <div class="content inlineWidget" style="margin-top: 35px; margin-bottom: 20px">
             <div id="content" class="activitiesWidget">
                 <div style="text-align: center">
-                    <img style="margin: 40px" src="[% static_path %]/images/ajax-loader.gif"/>
+                    <!-- <img style="margin: 40px" src="[% static_path %]/images/ajax-loader.gif"/> -->
+                    <br/>
+                    TODO: Mobile signal needs repairing as part of [TUX Skin works with Mobile UI] work. <br/>
+                    <img src="http://www.ozsticker.com/312-662-thickbox/dont-panic-thumb.jpg"><br/>
+                    We apologise for the inconvenience.
                 </div>
             </div>
         </div>
