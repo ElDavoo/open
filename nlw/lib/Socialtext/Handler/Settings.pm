@@ -539,3 +539,18 @@ sub AdminAbilities {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Handler::Settings - Handler for Consolidated Settings
+
+=head1 SYNOPSIS
+
+   GET/POST /st/settings
+   GET/POST /st/settings/<workspace>/prefs/<preferences>
+
+=head1 DESCRIPTION
+
+ReST endpoint for User settings.
+
+=end
