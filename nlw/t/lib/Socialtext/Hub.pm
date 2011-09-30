@@ -23,7 +23,6 @@ use unmocked 'Socialtext::BacklinksPlugin';
 use unmocked 'Socialtext::CategoryPlugin';
 use unmocked 'Socialtext::RecentChangesPlugin';
 use unmocked 'Socialtext::SyndicatePlugin';
-use unmocked 'Socialtext::TiddlyPlugin';
 use unmocked 'Socialtext::FetchRSSPlugin';
 use unmocked 'Socialtext::Template';
 use unmocked 'Socialtext::Stax';
