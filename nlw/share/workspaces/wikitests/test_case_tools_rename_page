@@ -1,13 +1,9 @@
 | *Comment* | Test Case: Tools: Rename Page |
 
 | *Comment* | Test Case: Tools: Rename Page Create test page |  |
-| open_ok | /%%workspace%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Rename This Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Rename This Page %%start_time%% content |
+
+| call | st-edit-fill-page | ws=%%workspace%% | title=Rename This Page %%start_time%% | content=Rename This Page %%start_time%% content |
+
 
 | *Comment* | Test Case: Tools: Rename Page Create test tag |  |
 | wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
@@ -37,19 +33,14 @@
 | text_like | st-page-titletext | Page_Renamed_%%start_time%% |
 | click_and_wait | link=Rename This Page %%start_time%% |  |
 | text_like | st-page-titletext | Rename This Page %%start_time%% |
-| text_like | contentContainer | Page renamed to Page_Renamed_%%start_time%% |
+| text_like | content | Page renamed to Page_Renamed_%%start_time%% |
 | wait_for_element_visible_ok | link=Rename This Tag %%start_time%% | 30000 |
 | st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Rename Page. Edit the original the page |  |
-| open_ok | /%%workspace%%/?Rename This Page %%start_time%% |  |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Rename This Page %%start_time%% NEW content |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-this-page | ws=%%workspace%% | thispage=Rename This Page %%start_time%% | content=Rename This Page %%start_time%% NEW content |
+
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the edited page and Cancel |  |
 | click_ok | link=Rename Page |  |
@@ -79,10 +70,10 @@
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_renamed_%%start_time%% |  |
-| text_like | contentContainer | qr/revision 3/i |
+| text_like | content | qr/revision 3/i |
 | click_and_wait | link=Compare Revisions |  |
-| text_like | contentContainer | Rename This Page %%start_time%% content |
-| text_like | contentContainer | Rename This Page %%start_time%% NEW content |
+| text_like | content | Rename This Page %%start_time%% content |
+| text_like | content | Rename This Page %%start_time%% NEW content |
 
 | *Comment* | Test Case: Tools: Rename Page TEARDOWN |  |
 | st-process-jobs |  |  |

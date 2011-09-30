@@ -1,0 +1,37 @@
+<div class="navList [% IF entry.exists('icon') %] icons[% END %]">
+    [%- FOR entry = entries -%]
+        [% IF entry.data %]
+            [% IF entry.data.size %]
+                <div class="navListItems">
+                [%- FOR item = entry.data -%]
+                    [%- IF entry.exists('icon') -%]
+                        <div class="grid_1 alpha"><img src="[% entry.icon(item) %]"/></div>
+                        <div class="grid_2 omega">[% INCLUDE navListLink %]</div>
+                        <div class="clear vpad3"></div>
+                    [%- ELSE -%]
+                        <div>[% INCLUDE navListLink %]</div>
+                    [%- END -%]
+                [%- END -%]
+                </div>
+            [% ELSE %]
+                <div class="navListItem emptynotice">[% entry.emptyMessage %]</div>
+            [% END %]
+        [% ELSE %]
+            [% IF entry.href.defined OR entry.onclick.defined %]
+            <div class="navListItem">
+                <a href="[% entry.href || '#' %]"[% IF entry.onclick.defined %] onClick="[% entry.onclick %]"[% END %]>[% entry.title %]</a>
+            </div>
+            [% ELSE %]
+            <div class="navListItem">
+                <a class="label" name="st-dropaction-[% action.title %]">[% action.title %]</a>
+            </div>
+            [% END %]
+        [% END %]
+    [%- END -%]
+</div>
+
+[% BLOCK navListLink %]
+    <a [% IF entry.defaultId AND item.default %] id="[% entry.defaultId %]"[% END %]href="[% entry.href(item) %]">
+        [%- entry.title(item) | label_ellipsis(25) | html_encode %][% IF item.default %] ([% loc("nav.default") %])[% END -%]
+    </a>
+[% END %]

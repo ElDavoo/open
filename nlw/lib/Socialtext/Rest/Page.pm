@@ -308,8 +308,8 @@ sub DELETE {
     );
 }
 
-sub PUT_wikitext {
-    my ( $self, $rest ) = @_;
+sub _put_with_type {
+    my ( $self, $rest, $type ) = @_;
 
     my $unable_to_edit = $self->page_locked_or_unauthorized();
     return $unable_to_edit if ($unable_to_edit);
@@ -328,6 +328,7 @@ sub PUT_wikitext {
     }
 
     $page->update_from_remote(
+        type => ($type || $self->_default_page_type),
         content => $rest->getContent(),
     );
 
@@ -338,8 +339,14 @@ sub PUT_wikitext {
     return '';
 }
 
+sub PUT_wikitext {
+    my ( $self, $rest ) = @_;
+    return $self->_put_with_type($rest, 'wiki');
+}
+
 sub PUT_xhtml {
-    die "TODO: Not yet implemented";
+    my ( $self, $rest ) = @_;
+    return $self->_put_with_type($rest, 'xhtml');
 }
 
 sub PUT_html {
@@ -381,7 +388,7 @@ sub _default_page_type { 'wiki' }
 sub _acceptable_page_types {
     my $self = shift;
     my $type = shift;
-    return $type =~ m/^wiki|spreadsheet$/;
+    return $type =~ m/^wiki|spreadsheet|xhtml$/;
 }
 
 sub PUT_json {
@@ -410,6 +417,17 @@ sub PUT_json {
     }
     else {
         $object->{date} = Socialtext::Date->now(hires => 1);
+    }
+
+    if (not defined $object->{content}) {
+        if (defined $object->{xhtml}) {
+            $object->{type} ||= 'xhtml';
+            $object->{content} = delete $object->{xhtml};
+        }
+        elsif (defined $object->{wikitext}) {
+            $object->{type} ||= 'wiki';
+            $object->{content} = delete $object->{wikitext};
+        }
     }
 
     if (my $t = $object->{type}) {

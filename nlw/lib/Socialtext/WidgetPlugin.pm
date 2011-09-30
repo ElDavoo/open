@@ -54,6 +54,13 @@ sub gadget_vars {
         $pref->{value} = $overridden; # This affects $gadget->requires_preferences
     }
 
+    my $workspace = Socialtext::Workspace->new(
+        name => $self->cgi->workspace_name || $self->hub->current_workspace->name,
+    );
+    my $account = $workspace->account;
+    $overrides{"ENV_primary_account"} = $account->name;
+    $overrides{"ENV_primary_account_id"} = $account->account_id;
+
     my $renderer = Socialtext::Gadget::Renderer->new(
         gadget => $gadget,
         view => 'page',
@@ -99,6 +106,7 @@ sub widget_setup_screen {
             account_id => $account->account_id,
             plugins => [$account->plugins_enabled],
         },
+        container => { id => -1 },
         pluggable => $self->hub->pluggable,
         gadget => $self->gadget_vars(
             $self->cgi->widget, $self->cgi->encoded_prefs,

@@ -1,0 +1,59 @@
+@import reset.sass
+@import text.sass
+
+// Defaults - Maybe someday we can generate this based off account variables 
+$header_image_tiling: no-repeat
+$background_image_tiling: repeat
+$header_image_position: left top
+$header_color: #cacaca
+$static: "/static/4.7.7.6"
+$base_theme_id: 1
+$background_image_position: left top
+$header_font: Georgia
+$background_color: #27430c
+$background_image_id: 2
+$tertiary_color: #dfebed
+$body_font: Helvetica
+$header_image_id: 1
+$primary_color: #6f7c01
+$secondary_color: #c6ba03
+
+body
+  font-size: 12px
+  font-family: $body_font
+  color: #333
+  text-align: left
+  background: none
+  background-color: #FFFFDD
+  zoom: 1
+  &.signals
+    background-color: white
+    margin: 3px
+  &.socialcalc .wiki
+    padding: 0 !important
+    font-size: 100% !important
+  &.signals img, &.socialcalc img
+    vertical-align: middle
+  &.signals a
+    text-decoration: underline
+
+.wiki a
+  color: $primary_color
+  text-decoration: none
+  &.incipient
+    color: #25a800
+
+/* Same as in common/css/common.css, but with !important to override our own screen.css settings.
+
+#wysiwyg-editable-div
+  ol, ul, p
+    margin-top: 0 !important
+    margin-bottom: 0 !important
+
+table .current-cell
+  background: red
+
+.clearHandler
+  font-style: italic
+  color: #666666
+

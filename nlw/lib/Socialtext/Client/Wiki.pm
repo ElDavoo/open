@@ -11,7 +11,6 @@ use Socialtext::HTTP::Ports;
 our @EXPORT = qw( wiki2html html2wiki );
 
 sub wiki2html {
-    return '' unless length $_[0];
     unshift @_, 'wiki';
     goto &_request;
 }

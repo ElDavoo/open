@@ -51,12 +51,12 @@
 | *Comment* | Test Case: Friendly Name 1 check group page |  |
 | open_ok | /st/group/%%fname_group_id%% |  |
 | st-name-widget | 1 | info_widget |
-| st-widget-title-like | info_widget | Information |
+| st-widget-title | info_widget | Information |
 | st-select-widget-frame | info_widget |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 | select-frame | relative=parent |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Membership |
+| st-widget-title | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 | select-frame | relative=parent |  |
@@ -68,7 +68,7 @@
 | *Comment* | Test Case: Friendly Name check add user to group lookahead |  |
 | open_ok | /st/edit_group/%%fname_group_2_id%% |  |
 | st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
+| st-widget-title | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type_lookahead_ok | lookahead | %%fname_prefix%% |

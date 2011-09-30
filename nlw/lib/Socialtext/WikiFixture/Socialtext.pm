@@ -347,7 +347,7 @@ sub st_page_title {
     if ($self->{'skin'} eq 's2') {
         $self->{selenium}->text_like('id=st-list-title', qr/\Q$expected_title\E/);
     } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'contentContainer\']', qr/\Q$expected_title\E/);
+        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$expected_title\E/);
     } else {
         ok 0, "Unknown skin type: $self->{'skin'}";
     }
@@ -418,7 +418,9 @@ sub get_id_from_url {
 sub st_page_save {
     my ($self) = @_;
     st_pause_click($self, 3000, 'st-save-button-link', 'andWait');
-    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link');
+    # NOTE: removed the following wait, should be superfluous, made folding
+    # page saves easier.
+    #$self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link');
 }
 
 =head2 st_pause_click
@@ -463,15 +465,13 @@ sub st_create_wikipage {
     my ($self, $workspace, $pagename)  = @_;
     my $url = '/' . $workspace . '/?action=new_page';
     $self->{selenium}->open_ok($url);
-    $self->handle_command('set_Speed',3000);
-    $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);
-    $self->handle_command('click_ok','link=Wiki Text');
-    $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
     $self->handle_command('wait_for_element_visible_ok','st-newpage-pagename-edit',30000);
     $self->handle_command('type_ok','st-newpage-pagename-edit',$pagename);
-    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+    $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
+    $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
+    $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
+    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',5000);
     $self->handle_command('click_and_wait','st-save-button-link');
-    $self->handle_command('set_Speed',0);
 }
 
 =head2 st_update_wikipage ( $workspace, $page, $content) 
@@ -488,15 +488,12 @@ sub st_update_wikipage {
     $self->{selenium}->open_ok($url);
     $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 3000);
     $self->handle_command('click_ok', 'st-edit-button-link');
-    $self->handle_command('set_Speed',3000);
-    $self->handle_command('wait_for_element_visible_ok','link=Wiki Text',30000);
-    $self->handle_command('click_ok','link=Wiki Text');   
-    $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
-    $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$content);
+    $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
+    $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
+    $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
+    $self->handle_command('type_ok','//textarea[contains(@class,"cke_source")]',$content);
     $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
-    $self->handle_command('pause',$pause);
     $self->handle_command('click_and_wait','st-save-button-link');
-    $self->handle_command('set_Speed',0);
 }
 
 
@@ -565,20 +562,16 @@ Then edits it and types the text you suggest
 =cut
 
 sub st_edit_page {
-  my ($self, $url, $text) = @_;
-  $self->handle_command('set_Speed',3000);
+  my ($self, $url, $content) = @_;
   $self->handle_command('open_ok',  $url); 
   $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000);  
   $self->handle_command('click_ok','st-edit-button-link');
-  $self->handle_command('wait_for_element_visible_ok', 'link=Wiki Text',  30000);
-  $self->handle_command('click_ok','link=Wiki Text');
-  $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea',30000);
-  $self->handle_command('type_ok','wikiwyg_wikitext_textarea', $text);
-  $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+  $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
+  $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
+  $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
+  $self->handle_command('type_ok','//textarea[contains(@class,"cke_source")]',$content);
+  $self->handle_command('wait_for_element_visible_ok','st-save-button-link',5000);
   $self->handle_command('click_and_wait','st-save-button-link');
-  $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000); 
-  $self->handle_command('pause',1000);
-  $self->handle_command('set_Speed',0);
 }
 
 
@@ -633,7 +626,7 @@ sub st_search {
     if ($self->{'skin'} eq 's2') {
         $self->{selenium}->text_like('id=st-list-title', qr/\Q$opt2\E/);
     } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'contentContainer\']', qr/\Q$opt2\E/);
+        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$opt2\E/);
     } else {
         ok 0, "Unknown skin type: $self->{'skin'}";
     }
@@ -652,7 +645,7 @@ sub st_result {
         $self->{selenium}->text_like('id=st-search-content', 
                                  $self->quote_as_regex($opt1));
     } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'contentContainer\']', $self->quote_as_regex($opt1));
+        $self->{selenium}->text_like('//div[@id=\'content\']', $self->quote_as_regex($opt1));
     } else {
         ok 0, "Unknown skin type: $self->{'skin'}";
     }
@@ -1357,7 +1350,7 @@ sub _click_user_row {
         $sel->$method_name($chk_xpath);
         if ($self->{'skin'} eq 's3') {
             $self->click_and_wait('link=Save');
-            $sel->text_like('contentContainer', qr/\QChanges Saved\E/);
+            $sel->text_like('content', qr/\QChanges Saved\E/);
          } elsif ($self->{'skin'} eq 's2') {
             $self->click_and_wait('Button');
             $sel->text_like('st-settings-section', qr/\QChanges Saved\E/);

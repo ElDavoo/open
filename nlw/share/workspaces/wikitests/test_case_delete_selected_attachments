@@ -42,8 +42,8 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Mudville |
 | click_and_wait | st-search-submit |  |
-| text_like | contentContainer | Delete Attachments %%start_time%% |
-| text_like | contentContainer | qr/Delete Attachments %%start_time%%.+in %%title%%/ |
+| text_like | content | Delete Attachments %%start_time%% |
+| text_like | content | qr/Delete Attachments %%start_time%%.+in %%title%%/ |
 
 | *Comment* | Open All Files |  |
 | open_ok | /%%workspace%%/index.cgi?action=attachments_listall |  |
@@ -73,7 +73,7 @@
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Mudville |
 | click_and_wait | st-search-submit |  |
-| text_unlike | contentContainer | Delete Attachments %%start_time%% |
+| text_unlike | content | Delete Attachments %%start_time%% |
 
 | *Comment* | Test Case: Delete Selected Attachments teardown |  |
 

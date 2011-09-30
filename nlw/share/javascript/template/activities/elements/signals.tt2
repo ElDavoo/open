@@ -1,0 +1,29 @@
+<div class="networks grid_minus_0 alpha omega">
+    [% post_to_prompt || loc('activities.post-to') %]
+    <span class="signal_network select" id="[% id('signal_network') %]"></span>
+</div>
+
+<div class="grid_minus_2 alpha">
+    <div class="mainWikiwyg">
+        <div id="[% id('mainWikiwyg') %]" class="setupWikiwyg wikiwyg">
+            <div class="clearHandler">[% this.startText %]</div>
+        </div>
+    </div>
+</div>
+<div class="omega grid_2 post">
+    <a href="#" id="[% id('post') %]">[% loc('Go') %]</a>
+    <div class="count" id="[% id('count') %]"></div>
+</div>
+<div class="clear"></div>
+
+[% INCLUDE lookahead %]
+<div class="attachmentList"></div>
+<div class="links">
+    <h3 class="title">Link</h3>
+    <div class="cancel" href="#">X</div>
+    <div class="link"></div>
+</div>
+
+<div class="toolbar">
+    [% INCLUDE activities/elements/toolbar.tt2 showDirect=this.showDirect %]
+</div>

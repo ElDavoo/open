@@ -396,10 +396,8 @@ BEGIN {
             Socialtext::EditPlugin
             Socialtext::EmailNotifyPlugin
             Socialtext::EmailPageUIPlugin
-            Socialtext::FavoritesPlugin
             Socialtext::FetchRSSPlugin
             Socialtext::HitCounterPlugin
-            Socialtext::HomepagePlugin
             Socialtext::PageAnchorsPlugin
             Socialtext::PdfExportPlugin
             Socialtext::RecentChangesPlugin
@@ -409,7 +407,6 @@ BEGIN {
             Socialtext::ShortcutLinksPlugin
             Socialtext::GoogleSearchPlugin
             Socialtext::SyndicatePlugin
-            Socialtext::TiddlyPlugin
             Socialtext::TimeZonePlugin
             Socialtext::OpenIdPlugin
             Socialtext::UserPreferencesPlugin

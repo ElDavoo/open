@@ -9,6 +9,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: share/plugin/dashboard/template/cp_dashboard:112
+msgid "###-dashboard.edit"
+msgstr "edit"
+
+#: share/plugin/dashboard/template/cp_dashboard:5
+msgid "###-dashboard.view-default-dashboard-layout"
+msgstr "View Default Dashboard Layout"
+
+#: share/plugin/dashboard/template/cp_dashboard:28
+msgid "###-dashboard.visibility"
+msgstr "Visibility"
+
+#: share/plugin/dashboard/template/cp_dashboard:38
+msgid "###-dashboard.visible"
+msgstr "Visible"
+
+#: share/plugin/dashboard/template/cp_dashboard:75
+msgid "###-dashboard.wiki-pages"
+msgstr "Wiki Pages"
+
 #: share/skin/wikiwyg/javascript/template/widget_edit.tt2:4
 msgid "<! widget.desc !>"
 msgstr "<! widget.desc !>"
@@ -625,6 +645,10 @@ msgstr "單個域名（如果您不清楚，請選擇此項）"
 msgid "analytics.use-for:"
 msgstr "這個 Google Analytics 追蹤帳號是用於："
 
+#: share/plugin/analytics/template/cp_google_analytics:20
+msgid "analytics.use-tracking-id-for:"
+msgstr "Tracking ID is used for:"
+
 msgid "api.about-wiki-name"
 msgstr "工作區名稱必須包含 3-10 個小寫字母、數字、下劃線或破折號。"
 
@@ -1186,6 +1210,10 @@ msgstr "新建網誌"
 msgid "blog.newer"
 msgstr "新條目"
 
+#: lib/Socialtext/WeblogPlugin.pm:55
+msgid "blog.number-of-posts-to-show"
+msgstr "Number of posts to show"
+
 #: lib/Socialtext/WeblogPlugin.pm:49
 msgid "blog.number-of-posts?"
 msgstr "在網誌視圖中顯示多少網誌？"
@@ -1238,6 +1266,10 @@ msgstr "更新者"
 msgid "blog.view"
 msgstr "查看"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:116
+msgid "blog.weblog-sort-order"
+msgstr "Weblog sort order"
+
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"
 msgstr "』書籤，將網頁透過訊息來分享給同事。"
@@ -1282,6 +1314,38 @@ msgstr "忽略錯誤"
 #: share/template/bugs_content.html:24
 msgid "bug.report"
 msgstr "報告錯誤"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:3
+msgid "ckeditor.checking-for-edit-contention"
+msgstr "Checking for Edit Contention"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:4
+msgid "ckeditor.generating-page-content"
+msgstr "Generating Page Content"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
+msgid "ckeditor.page-save-progress"
+msgstr "Page Save Progress"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:5
+msgid "ckeditor.saving-page-content-kb"
+msgstr "Saving Page Content (<span id=\"st-xhtml-save-progress-size\">?</span> kB)"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:187 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switch-modes?"
+msgstr "Switch modes?"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:185 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switching-to-wikitext-mode-will-result-in-loss-of-some-formatting-on-this-page"
+msgstr "Switching to Wikitext mode will result in the <strong>loss</strong> of some formatting on this page."
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:183 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.wikitext-does-not-support-all-rich-text-formatting"
+msgstr "Wikitext does not support all rich text formatting."
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:172 share/plugin/ckeditor/share/javascript/WikitextArea.js:216
+msgid "ckeditor.wikitext-mode-warning"
+msgstr "Wikitext Mode Warning"
 
 #: lib/Socialtext/Wikiwyg/AnalyzerPlugin.pm:11
 msgid "class.analyzer"
@@ -2498,6 +2562,10 @@ msgstr "新增用戶至工作區："
 msgid "control.add-users"
 msgstr "新增用戶"
 
+#: share/plugin/control/template/control/workspaces_new.html:40
+msgid "control.add-users-and-groups"
+msgstr "Add Users and Groups"
+
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_account.html:5
 msgid "control.adding-group-to-account=group,group-id"
@@ -2732,6 +2800,10 @@ msgstr "自訂伺服器權限設定已生效。"
 msgid "control.custom-skins=name"
 msgstr "自訂視覺主題：%1"
 
+#: share/plugin/control/template/control/add_users.html:21
+msgid "control.data-file"
+msgstr "Data File"
+
 #: share/plugin/control/template/control/field_form:56
 msgid "control.data-source"
 msgstr "資料來源"
@@ -2787,6 +2859,10 @@ msgstr "開放邀請加入群組"
 
 msgid "control.ending-on-midnight-of"
 msgstr "至此日凌晨為止"
+
+#: share/plugin/control/template/control/accounts.html:54
+msgid "control.export-user-data"
+msgstr "Export User Data"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
@@ -3311,6 +3387,10 @@ msgstr "Socialtext 控制台"
 msgid "control.source=driver-name"
 msgstr "來源：%1"
 
+#: share/plugin/control/template/control/accounts.html:39
+msgid "control.standard-account"
+msgstr "Standard"
+
 msgid "control.start-typing-account-name"
 msgstr "開始鍵入一個帳戶名稱"
 
@@ -3444,6 +3524,10 @@ msgstr "已從 %1 個帳戶中移除用戶"
 #: share/plugin/control/template/control/user.html:48
 msgid "control.user-requires-confirmation"
 msgstr "用戶必要資訊"
+
+#: share/plugin/control/template/control/add_users.html:34
+msgid "control.user-restrictions"
+msgstr "Restrictions"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:16
 msgid "control.username"
@@ -3585,6 +3669,26 @@ msgstr "管理顯示板"
 msgid "dashboard.confirm-revert?"
 msgstr "您確認要恢復到Socialtext的預設設定麼？"
 
+#: share/plugin/dashboard/template/cp_dashboard:62
+msgid "dashboard.container-types"
+msgstr "Container types"
+
+#: share/plugin/dashboard/template/cp_dashboard:1
+msgid "dashboard.dashboard-gallery"
+msgstr "Dashboard Gallery"
+
+#: share/plugin/dashboard/template/cp_dashboard:74
+msgid "dashboard.dashboards"
+msgstr "Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:83
+msgid "dashboard.dashboards-and-wiki-pages"
+msgstr "Dashboards and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:133
+msgid "dashboard.delete-widget"
+msgstr "Delete Widget"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:117
 msgid "dashboard.exporting-widgets"
 msgstr "正在匯出控制面板小工具..."
@@ -3598,6 +3702,30 @@ msgstr "%1 的顯示板"
 msgid "dashboard.force-update"
 msgstr "同時強制升級現有用戶的顯示板"
 
+#: share/plugin/dashboard/template/cp_dashboard:79
+msgid "dashboard.groups-and-dashboards"
+msgstr "Groups and Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:78
+msgid "dashboard.groups-and-profiles"
+msgstr "Groups and Profiles"
+
+#: share/plugin/dashboard/template/cp_dashboard:80
+msgid "dashboard.groups-and-wiki-pages"
+msgstr "Groups and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:91
+msgid "dashboard.groups-dashboards-and-wiki-pages"
+msgstr "Groups, Dashboards and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:87
+msgid "dashboard.groups-profiles-and-dashboards"
+msgstr "Groups, Profiles and Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:89
+msgid "dashboard.groups-profiles-and-wiki-pages"
+msgstr "Groups, Profiles and Wiki Pages"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:244
 msgid "dashboard.importing-default"
 msgstr "正在導入預設控制面板"
@@ -3610,6 +3738,22 @@ msgstr "正在為『%1』用戶導入控制面板"
 #: share/plugin/dashboard/template/widget_editor_links:3
 msgid "dashboard.preview"
 msgstr "預覽"
+
+#: share/plugin/dashboard/template/cp_dashboard:73
+msgid "dashboard.profiles"
+msgstr "Profiles"
+
+#: share/plugin/dashboard/template/cp_dashboard:81
+msgid "dashboard.profiles-and-dashboards"
+msgstr "Profiles and Dashboards"
+
+#: share/plugin/dashboard/template/cp_dashboard:82
+msgid "dashboard.profiles-and-wiki-pages"
+msgstr "Profiles and Wiki Pages"
+
+#: share/plugin/dashboard/template/cp_dashboard:93
+msgid "dashboard.profiles-dashboards-and-wiki-pages"
+msgstr "Profiles, Dashboards and Wiki Pages"
 
 #: share/plugin/dashboard/template/widget_editor_links:8
 msgid "dashboard.publish"
@@ -3646,6 +3790,22 @@ msgstr "這是帳戶\"%1\"下面所有用戶共用的預設顯示板。切換到
 #: share/plugin/dashboard/template/dashboard_hello:14
 msgid "dashboard.welcome"
 msgstr "歡迎"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:164
+msgid "dashboard.widget-added"
+msgstr "Successfully added your widget. Close this dialog to return to the account administration interface."
+
+#: share/plugin/dashboard/template/cp_dashboard:57
+msgid "dashboard.widget-description"
+msgstr "Description"
+
+#: share/plugin/dashboard/template/cp_dashboard:37
+msgid "dashboard.widget-hidden"
+msgstr "Hidden"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:148
+msgid "dashboard.widget-updated"
+msgstr "Successfully updated your widget. Close this dialog to return to the account administration interface."
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:12
 msgid "dashboard.widgets-to-push:"
@@ -4082,6 +4242,10 @@ msgstr "新建"
 msgid "do.delete"
 msgstr "刪除"
 
+#: lib/Socialtext/DisplayPlugin.pm:122 lib/Socialtext/DisplayPlugin.pm:154 lib/Socialtext/RecentChangesPlugin.pm:106 lib/Socialtext/WikiwygPlugin.pm:83 lib/Socialtext/WorkspacesUIPlugin.pm:107 lib/Socialtext/WorkspacesUIPlugin.pm:135 lib/Socialtext/WorkspacesUIPlugin.pm:93
+msgid "do.disabled"
+msgstr "disabled"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19
 msgid "do.done"
 msgstr "完成"
@@ -4100,6 +4264,10 @@ msgstr "編輯個人檔案"
 #: share/skin/s3/template/view/page/display:79
 msgid "do.email"
 msgstr "寄送"
+
+#: lib/Socialtext/DisplayPlugin.pm:121 lib/Socialtext/DisplayPlugin.pm:153 lib/Socialtext/RecentChangesPlugin.pm:105 lib/Socialtext/WikiwygPlugin.pm:82 lib/Socialtext/WorkspacesUIPlugin.pm:106 lib/Socialtext/WorkspacesUIPlugin.pm:134 lib/Socialtext/WorkspacesUIPlugin.pm:92
+msgid "do.enabled"
+msgstr "enabled"
 
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
@@ -4460,7 +4628,7 @@ msgstr "您剛才編輯的%1顯示如下。您可以從此處複製貼上您的�
 
 #: share/skin/s3/template/view/page_locked:17
 msgid "edit.view-locked"
-msgstr "您的更改的原始wikitext 如下。您可以從此處複製您的更改。"
+msgstr "您的更改的源碼格式如下。您可以從此處複製您的更改。"
 
 #: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
@@ -4604,6 +4772,10 @@ msgstr "（您可以自訂下面的文字。）"
 msgid "email.date:"
 msgstr "日期："
 
+#: lib/Socialtext/EmailNotifyPlugin.pm:96
+msgid "email.digest-information"
+msgstr "Email digest information"
+
 #. (escaped_str)
 #: share/template/email/email-address-confirmation-completed.html:28 share/template/email/email-address-confirmation-completed.txt:10
 msgid "email.email-confirmed-login-to=app"
@@ -4654,6 +4826,10 @@ msgstr "您在 <a href=\"%3\">%2</a> 的<a href=\"%1\">關注列表</a>中的下
 #: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "您在 %1 的關注列表中的下列頁面最近被更改。本電子郵件於 %2 的 %3 建立。"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:34
+msgid "email.frequency-of-updates"
+msgstr "Frequency of updates"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
@@ -4918,6 +5094,10 @@ msgstr "Socialtext"
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:77
 msgid "email.socialtext-appliance"
 msgstr "Socialtext 設備"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:68
+msgid "email.sort-order-of-updates"
+msgstr "Sort order of updates"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:17
 msgid "email.subject"
@@ -5252,6 +5432,10 @@ msgstr "用戶 %1 修改密碼出錯"
 msgid "error.change-profile-field-failed"
 msgstr "無法更新資料欄位。"
 
+#: lib/Socialtext/Gadgets/Gallery.pm:267
+msgid "error.changing-container-types"
+msgstr "Error changing container types"
+
 #: share/plugin/control/template/control/desktop-account.html:45
 msgid "error.check-again?"
 msgstr "請再次確認？"
@@ -5333,6 +5517,10 @@ msgstr "請在此欄位填入數字：%1"
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "警告：樣式單在移動設備上無法使用。要正確地查看行動版 Socialtext，您需要在瀏覽器設定裡面啟用樣式單。"
+
+#: lib/Socialtext/Handler/Settings.pm:74
+msgid "error.current-password-not-correct"
+msgstr "Current password not correct"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:44
 msgid "error.dashboard-push-widget"
@@ -6002,6 +6190,10 @@ msgstr "必須提供一個名字用以建立帳戶"
 #: lib/Socialtext/Handler/ControlPanel.pm:445
 msgid "error.new-account-type-required"
 msgstr "必須指定更新的帳戶類型。"
+
+#: lib/Socialtext/Handler/Settings.pm:77
+msgid "error.new-password-does-not-match"
+msgstr "New password does not match"
 
 #: lib/Socialtext/UserSettingsPlugin.pm:87
 msgid "error.new-password-mismatch"
@@ -6742,6 +6934,10 @@ msgstr "您不能讓版本跟自己比較。"
 msgid "error.save-failed"
 msgstr "伺服器錯誤導致儲存失敗，請稍候再試。"
 
+#: lib/Socialtext/Handler/Settings.pm:135 lib/Socialtext/Handler/Settings.pm:315
+msgid "error.saving-settings"
+msgstr "Error when saving settings"
+
 #: lib/Socialtext/Appliance/Model/Setup.pm:356
 msgid "error.saving-system-time-to-hardware-clock"
 msgstr "儲存系統時間至硬體時鐘時發生錯誤"
@@ -7141,6 +7337,14 @@ msgstr "下面的 %1 名用戶已經是工作區成員："
 #: lib/Socialtext/Workspace.pm:600
 msgid "error.wiki-name-required"
 msgstr "工作區名字是必填欄位"
+
+#: lib/Socialtext/Handler/Settings.pm:166 lib/Socialtext/Handler/Settings.pm:349
+msgid "error.wiki-not-authorized"
+msgstr "Not Authorized"
+
+#: lib/Socialtext/Handler/Settings.pm:165 lib/Socialtext/Handler/Settings.pm:348 lib/Socialtext/Handler/Settings.pm:384
+msgid "error.wiki-not-found"
+msgstr "Not Found"
 
 #. ($self->{uri})
 #: lib/Socialtext/Handler/ControlPanel.pm:1746
@@ -8237,6 +8441,10 @@ msgstr "成員"
 msgid "groups.save"
 msgstr "儲存"
 
+#: share/plugin/groups/template/search_box_groups:1
+msgid "groups.search"
+msgstr "Groups"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "groups.search-before-creating"
 msgstr "在建立群組之前，您可以按名字或描述搜尋已有的群組。"
@@ -8606,6 +8814,10 @@ msgstr "注意：不和其他人分享群組，則無法查看他們的個人資
 msgid "info.hello=user"
 msgstr "你好，%1"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:59
+msgid "info.homepage-blog-data"
+msgstr "When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a weblog instead, enter that name here."
+
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1967 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1985
 msgid "info.html-fragments"
 msgstr "（注意：HTML 片段不能確保運行並可能會破壞用戶界面。）"
@@ -8839,6 +9051,9 @@ msgstr "RSS 訂閱項目"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:11
 msgid "insert.file"
 msgstr "本頁面的附帶檔案"
+
+msgid "insert.file-image"
+msgstr "本頁面的附帶圖片"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:30
 msgid "insert.from-the-web"
@@ -9703,6 +9918,10 @@ msgstr "語言設定"
 msgid "loc.system-default=lang"
 msgstr "%1（預設）"
 
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:43
+msgid "locales.display-language"
+msgstr "Display Language"
+
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
 msgid "login.back-to=uri"
@@ -10399,6 +10618,10 @@ msgstr "已刪除『%1』"
 msgid "page.deleted=revision"
 msgstr "已刪除：版本%1"
 
+#: lib/Socialtext/WikiwygPlugin.pm:78
+msgid "page.double-click-to-edit"
+msgstr "Double-click to edit page"
+
 #: share/skin/s3/template/view/page/display:84
 msgid "page.duplicate"
 msgstr "複製頁面"
@@ -10413,7 +10636,7 @@ msgid "page.edit"
 msgstr "編輯"
 
 msgid "page.edit-as-xhtml"
-msgstr "轉換格式並編輯<br />（使用新版編輯器）"
+msgstr "編輯"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
@@ -10626,7 +10849,7 @@ msgid "page.type-wiki"
 msgstr "頁面"
 
 msgid "page.type-xhtml"
-msgstr "頁面（使用新版編輯器）"
+msgstr "頁面"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -11660,7 +11883,7 @@ msgstr "由："
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "revision.color"
-msgstr "顏色查看（無格式的）"
+msgstr "以源碼格式檢視"
 
 #: share/skin/s3/template/view/page/revision_compare:49
 msgid "revision.compare"
@@ -11722,7 +11945,11 @@ msgstr "標籤："
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "revision.view"
-msgstr "查看含格式的"
+msgstr "以顯示格式檢視"
+
+#: lib/Socialtext/SyndicatePlugin.pm:144
+msgid "rss.number-of-posts-to-syndicate"
+msgstr "Number of posts to syndicate"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:59
 msgid "sc.add-tags"
@@ -11852,7 +12079,7 @@ msgstr "向下"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2527
 msgid "sc.edit-more"
-msgstr "編輯更多"
+msgstr "繼續編輯"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:254
 msgid "sc.edit-revision"
@@ -12307,6 +12534,22 @@ msgstr "您輸入的搜尋過於寬泛。"
 msgid "search.too-many=count"
 msgstr "您輸入的搜尋過於寬泛; %1頁面和/或附件符合請求。"
 
+#: lib/Socialtext/Handler/Settings.pm:535
+msgid "settings.features"
+msgstr "Features"
+
+#: lib/Socialtext/Handler/Settings.pm:534
+msgid "settings.manage-users"
+msgstr "Manage Users"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:74
+msgid "settings.number-of-items-to-show"
+msgstr "Number of items to show"
+
+#: lib/Socialtext/Handler/Settings.pm:131 lib/Socialtext/Handler/Settings.pm:318
+msgid "settings.saved"
+msgstr "Saved"
+
 #: lib/Socialtext/Page.pm:1133
 msgid "sheet.creating"
 msgstr "正在建立新的試算表..."
@@ -12314,6 +12557,11 @@ msgstr "正在建立新的試算表..."
 #: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16
 msgid "sheet.untitled"
 msgstr "未命名試算表"
+
+#. ($sender->best_full_name)
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "signal.mention-by=sender"
+msgstr "Signal mention by %1"
 
 #: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "signals.about-bookmarklet!"
@@ -12523,6 +12771,10 @@ msgid "signals.reply-to-signal-message=url"
 msgstr "這封郵件由 Socialtext 訊息系統發送。您可以按<a href=\"%1\">這裡</a>來回覆訊息。"
 
 #: share/plugin/signals/template/search_box_signals:1
+msgid "signals.search"
+msgstr "Signals"
+
+#: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "搜尋訊息："
 
@@ -12539,6 +12791,10 @@ msgstr "將提及我的訊息用電子郵件發送"
 
 msgid "signals.send-private-messages-as-email"
 msgstr "將給我的私人訊息用電子郵件發送"
+
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:488
+msgid "signals.send-private-signals-as-email"
+msgstr "Send Private Signals as Email"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
@@ -12698,9 +12954,17 @@ msgstr "已上傳"
 msgid "sort.ascending=field"
 msgstr "按照 %1 正序排列"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:121
+msgid "sort.by-create-time"
+msgstr "by create time"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:71
 msgid "sort.by-created"
 msgstr "按首次發布時間對條目排序"
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:120
+msgid "sort.by-last-updated-time"
+msgstr "by last updated time"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:65
 msgid "sort.by-updated"
@@ -12914,15 +13178,31 @@ msgstr "%1 %2"
 msgid "time.count=days"
 msgstr "%1 天"
 
+#: lib/Socialtext/TimeZonePlugin.pm:152
+msgid "time.date-format"
+msgstr "Date Format"
+
+#: lib/Socialtext/TimeZonePlugin.pm:113
+msgid "time.daylight-savings-summer"
+msgstr "Daylight Savings/Summer"
+
 #. (int($age / 86400)
 #: lib/Socialtext/PageRevision.pm:377
 msgid "time.days=count"
 msgstr "%1 天"
 
+#: lib/Socialtext/TimeZonePlugin.pm:228
+msgid "time.do-not-include-seconds"
+msgstr "Do not Include Seconds"
+
 #. (int($age / 3600)
 #: lib/Socialtext/PageRevision.pm:376
 msgid "time.hours=count"
 msgstr "%1 小時"
+
+#: lib/Socialtext/TimeZonePlugin.pm:227
+msgid "time.include-seconds-in-time-format"
+msgstr "Include Seconds in Time Format"
 
 #. (int($age / 60)
 #: lib/Socialtext/PageRevision.pm:375
@@ -12942,6 +13222,14 @@ msgstr "從不"
 #: lib/Socialtext/PageRevision.pm:374
 msgid "time.seconds=count"
 msgstr "%1 秒"
+
+#: lib/Socialtext/TimeZonePlugin.pm:195
+msgid "time.time-format"
+msgstr "Time Format"
+
+#: lib/Socialtext/TimeZonePlugin.pm:81
+msgid "time.timezone"
+msgstr "Timezone"
 
 #. (int($age / 604800)
 #: lib/Socialtext/PageRevision.pm:378
@@ -13877,6 +14165,14 @@ msgstr "尋找"
 msgid "watch.stop"
 msgstr "停止關注"
 
+#: lib/Socialtext/WatchlistPlugin.pm:80
+msgid "watchlist.digest-information"
+msgstr "Watchlist digest information"
+
+#: lib/Socialtext/WatchlistPlugin.pm:46
+msgid "watchlist.frequence-of-updates"
+msgstr "Frequence of updates"
+
 #: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
 msgid "widget.100%"
 msgstr "依頁寬（100%）"
@@ -14585,6 +14881,10 @@ msgstr "用戶『%1』不可以鎖定頁面。"
 msgid "wiki.double-click-to-edit?"
 msgstr "雙擊編輯頁面？"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:102
+msgid "wiki.email-notifications"
+msgstr "Email Notifications"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:28
 msgid "wiki.email-senders?"
 msgstr "誰可以向此工作區發送郵件？"
@@ -14715,9 +15015,17 @@ msgstr "公告和鏈結"
 msgid "wiki.only-email-from=role"
 msgstr "只有%1可以向這個工作區發郵件。"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:147
+msgid "wiki.only-registered-users"
+msgstr "Only Registered Users"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:13
 msgid "wiki.permission-type:"
 msgstr "您是否想將此工作區設立為："
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:74
+msgid "wiki.placement-of-emailed-content"
+msgstr "Placement of emailed content"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:6 share/skin/s3/template/view/settings:61 share/skin/s3/template/workspaces_created_section.html:25
 msgid "wiki.privacy"
@@ -14731,10 +15039,26 @@ msgstr "公開的工作區"
 msgid "wiki.public:"
 msgstr "您可以自由查看或編輯這些公開工作區："
 
+#: lib/Socialtext/RecentChangesPlugin.pm:101
+msgid "wiki.recent-changes-sidebar-widget"
+msgstr "What's New sidebar widget"
+
+#: lib/Socialtext/DisplayPlugin.pm:149
+msgid "wiki.recently-viewed-sidebar-widget"
+msgstr "Recently Viewed sidebar widget"
+
 #. ($group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1527
 msgid "wiki.removed=group"
 msgstr "%1 群組已從此工作區移除"
+
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
+msgid "wiki.search"
+msgstr "This Workspace"
+
+#: share/skin/s3/template/element/search_form:23
+msgid "wiki.search-all"
+msgstr "My Workspaces"
 
 #: share/skin/s3/template/element/search_form:23
 msgid "wiki.search-all:"
@@ -14756,6 +15080,10 @@ msgstr "已在此工作區設定一個過濾器。所有郵件位址必須符合
 #: lib/Socialtext/BreadCrumbsPlugin.pm:33
 msgid "wiki.show-breadcrumbs-sidebox?"
 msgstr "顯示『最近瀏覽』側邊欄？"
+
+#: lib/Socialtext/DisplayPlugin.pm:117
+msgid "wiki.show-page-snippets-on-mouse-hover"
+msgstr "Show page snippets on mouse hover"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "wiki.show-sidebox?"
@@ -14789,6 +15117,10 @@ msgstr "標籤：%1"
 #: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:153
 msgid "wiki.tags"
 msgstr "標籤"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:43
+msgid "wiki.timeframe-for-changes"
+msgstr "Timeframe for changes"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "wiki.title"
@@ -14961,4 +15293,4 @@ msgid "wikiwyg.widget"
 msgstr "插入一個小工具"
 
 msgid "xhtml.creating"
-msgstr "正在啟動新版編輯器建立頁面..."
+msgstr "正在建立頁面..."

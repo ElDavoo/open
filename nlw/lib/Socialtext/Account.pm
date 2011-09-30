@@ -1188,6 +1188,7 @@ sub _validate_and_clean_data {
     my $p = shift;
 
     my $is_create = ref $self ? 0 : 1;
+    delete $p->{backup_skin_name};
 
     if (defined $p->{name}) {
         $p->{name} = Socialtext::String::scrub( $p->{name} );
@@ -1203,26 +1204,6 @@ sub _validate_and_clean_data {
     if ($p->{all_users_workspace}) {
         push @errors, 'Updating the all-users workspace via $acct->update is deprecated';
     }
-
-    if ( $p->{skin_name} ) {
-        my $skin = Socialtext::Skin->new(name => $p->{skin_name});
-        unless ($skin->exists) {
-            if ($p->{backup_skin_name}) {
-                $skin = Socialtext::Skin->new(name => $p->{backup_skin_name});
-            }
-            my $msg = loc(
-                "error.no-skin=name", $p->{skin_name}
-            );
-            if ($skin->exists) {
-                warn $msg . "\n";
-                warn "Falling back to the $p->{backup_skin_name} skin.\n";
-            }
-            else {
-                push @errors, $msg;
-            }
-        }
-    }
-    delete $p->{backup_skin_name};
 
     if ( defined $p->{name} && Socialtext::Account->new( name => $p->{name} ) ) {
         push @errors, loc('error.account-exists=name',$p->{name} );

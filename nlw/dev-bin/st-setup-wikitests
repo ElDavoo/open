@@ -14,8 +14,8 @@ $NLW_BIN/st-admin add-workspace-admin --w test-data --e $USERNAME >/dev/null 2>/
 $NLW_BIN/st-admin give-accounts-admin  --e $USERNAME  >/dev/null 2>/dev/null || true
 $NLW_BIN/st-admin give-system-admin  --e $USERNAME  >/dev/null 2>/dev/null || true
 
-echo "Set up wikitests"
-    $NLW_DEVBIN/wikitests-to-wiki
+echo "DON'T Set up wikitests - use a different plan server"
+#    $NLW_DEVBIN/wikitests-to-wiki
 
 echo ENABLING Socialcalc for all workspaces
 $NLW_DEVBIN/st-socialcalc enable
@@ -23,14 +23,6 @@ $NLW_DEVBIN/st-socialcalc enable
 echo "Importing latest help workspace"
 $NLW_BIN/st-admin delete-workspace --workspace help-en --no-export
 $NLW_BIN/st-admin import-workspace --tarball $NLW_BIN/../share/l10n/help/help-en.tar.gz
-
-echo "No longer populating reports DB"
-#echo "CTRL-C to halt reports DB setup"
-
-#echo ""
-#echo Populating reports DB
-#export PGUSER=`st-config echo db_user`
-#$NLW_DEVBIN/st-populate-reports-db
 
 if [ ! -e $HOME/wikitests/anycorp.small ]; then
     echo "Unpacking AnyCorp archive"

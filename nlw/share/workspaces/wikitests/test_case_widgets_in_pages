@@ -1,4 +1,6 @@
 
+*On hold until wikis work*
+
 | *Comment* | Test Case: Widgets In Pages |  |
 
 
@@ -12,8 +14,8 @@
 
 | *Comment* | Test Case: Widgets In Pages make a page |  |
 | open_ok | /%%wip_ws%%/?action=new_page |  |
-| wait_for_element_visible_ok | st-mode-wikitext-button | 30000 |
-| click_ok | st-mode-wikitext-button |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | %%wip_page%% |

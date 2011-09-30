@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-01 23:50+0800\n"
+"PO-Revision-Date: 2011-09-15 13:08+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3107,7 +3107,7 @@ msgid "page.type-wiki"
 msgstr "页面"
 
 msgid "page.type-xhtml"
-msgstr "页面（使用新版编辑器）"
+msgstr "页面"
 
 #. ($page->name, $workspace->title()
 #: lib/Socialtext/CLI.pm:2715
@@ -4025,4 +4025,4 @@ msgid "wiki.welcome-confirm=name"
 msgstr "欢迎来到 %1 工作区 - 请确认注册邮箱"
 
 msgid "xhtml.creating"
-msgstr "正在启动新版编辑器创建页面..."
+msgstr "正在创建页面..."

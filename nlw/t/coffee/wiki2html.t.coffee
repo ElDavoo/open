@@ -5,7 +5,7 @@ tests = [
   [".code-perl\nMoose\n.code-perl\n", """
 <img data-wafl=".code-perl
 Moose
-.code-perl" src="/data/wafl/code-perl%20section.%20Edit%20in%20Wiki%20Text%20mode." alt="code-perl section. Edit in Wiki Text mode." title="code-perl section. Edit in Wiki Text mode." class="st-widget" />
+.code-perl" src="/data/wafl/Code%20block%20with%20Perl%20syntax.%20Click%20to%20edit." alt="Code block with Perl syntax. Click to edit." class="st-widget" />
   """]
   ["{user: q@q.q}", """
 <img data-wafl="{user: q@q.q}" alt="user: q@q.q" src="/data/wafl/user%3A%20q%40q.q" class="st-widget st-inline-widget" />
@@ -77,6 +77,16 @@ foo@bar.org
 <td></td>
 </tr>
 </table><br />\n
+  """]
+  ["""
+.html
+foo
+.html
+{user: q@q.q}
+  """, """
+<img data-wafl=".html
+foo
+.html" src="/data/wafl/Raw%20HTML%20block.%20Click%20to%20edit." alt="Raw HTML block. Click to edit." class="st-widget" /><img data-wafl="{user: q@q.q}" alt="user: q@q.q" src="/data/wafl/user%3A%20q%40q.q" class="st-widget st-inline-widget" />
   """]
 ]
 

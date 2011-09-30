@@ -115,7 +115,7 @@ SKIP: {
     $profile->save;
 }
 
-Account_skins: {
+Account_skins: { # this should go away eventually.
     # set skins
     my $ws      = $test->workspaces->next;
     my $ws_name = $ws->name;
@@ -152,9 +152,9 @@ Account_skins: {
 
     eq_or_diff( [], $test->custom_workspace_skins, 'custom workspace skins is empty.');
     $ws->update( skin_name => 's3' );
-    eq_or_diff( ['s3'], $test->custom_workspace_skins, 'custom workspace skins updated.');
+    eq_or_diff( [], $test->custom_workspace_skins, 'custom workspace skins not updated.');
     my $mess = $test->custom_workspace_skins( include_workspaces => 1 );
-    is( $ws_name, $mess->{s3}[0]{name}, 'custom skins with workspaces.');
+    is($mess->{s3}[0]{name}, undef, 'no custom skins with workspaces.');
 }
 
 use Test::MockObject;

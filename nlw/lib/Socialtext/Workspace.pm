@@ -198,6 +198,15 @@ sub _new {
     return $new_obj;
 }
 
+sub guest_has_email_in {
+    my $self = shift;
+
+    return $self->permissions->role_can(
+        role       => Socialtext::Role->Guest(),
+        permission => ST_EMAIL_IN_PERM,
+    );
+}
+
 sub new_from_hash_ref {
     my ( $class, $row ) = @_;
     return $row unless $row;
@@ -1888,14 +1897,6 @@ used to generate filesystem and URI paths to the various files.
 
 In the future, this will be replaced with something more
 sophisticated, when skins become first class entities in the system.
-
-=head2 enable_unplugged
-
-If set to a true value, enable_unplugged will cause the workspace to
-display icons that, when clicked, will generate a zip archive of a
-tiddlytext version of the relevant pages from the workspace. A tiddlytext
-is a version of TiddlyWiki for editing Socialtext workspaces pages offline
-and then syncing them back to the server.
 
 =head2 logo_uri
 

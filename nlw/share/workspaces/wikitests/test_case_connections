@@ -3,6 +3,7 @@
 
 
 | open_ok | /%%workspace%%/?action=new_page |  |
+| *Comment* | TC: Connections cannot be folded due to newlines in data |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |

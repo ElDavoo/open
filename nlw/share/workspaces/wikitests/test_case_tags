@@ -22,7 +22,7 @@ use or create a workspace with several tags and tagged pages
 | click_ok | st-tagqueue-addbutton |  |
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Tags Create tag 12 |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
@@ -38,7 +38,7 @@ use or create a workspace with several tags and tagged pages
 | click_ok | st-tagqueue-addbutton |  |
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Tags Create tag2 page tagged tag2 |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
@@ -54,7 +54,7 @@ use or create a workspace with several tags and tagged pages
 | click_ok | st-tagqueue-addbutton |  |
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Tags Process page index jobs |  |
 | st_process_jobs | PageIndex |  |
@@ -66,24 +66,24 @@ click on several page links | Pages appear; each page has its that tag displayed
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
 | wait_for_element_visible_ok | link=Tag 2 %%start_time%% | 30000 |
 | text_like | link=Tag 2 %%start_time%% | Tag 2 %%start_time%% |
-| clickAndWait | link=Tag 2 %%start_time%% |  |
-| clickAndWait | link=Tag 2 Content Title %%start_time%% |  |
+| click_and_wait | link=Tag 2 %%start_time%% |  |
+| click_and_wait | link=Tag 2 Content Title %%start_time%% |  |
 | text_like | link=Tag 2 %%start_time%% | Tag 2 %%start_time%% |
 
 | *Comment* | Test Case: Tags Checking tag1 links and pages |  |
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
 | wait_for_element_visible_ok | link=Tag 1 %%start_time%% | 30000 |
 | text_like | link=Tag 1 %%start_time%% | Tag 1 %%start_time%% |
-| clickAndWait | link=Tag 1 %%start_time%% |  |
-| clickAndWait | link=Tag 1 Content Title %%start_time%% |  |
+| click_and_wait | link=Tag 1 %%start_time%% |  |
+| click_and_wait | link=Tag 1 Content Title %%start_time%% |  |
 | text_like | link=Tag 1 %%start_time%% | Tag 1 %%start_time%% |
 
  click: View {link: Category as a blog} | All pages with that tag appear in weblog form
 
 | *Comment* | Test Case: Tags Checking weblog view |  |
 | open_ok | %%workspace%%/?Tag 2 Content Title %%start_time%% |  |
-| clickAndWait | link=Tag 2 %%start_time%% |  |
-| clickAndWait | link=Tag 2 %%start_time%% as a blog |  |
+| click_and_wait | link=Tag 2 %%start_time%% |  |
+| click_and_wait | link=Tag 2 %%start_time%% as a blog |  |
 | text_like | st-editing-tools-edit | Blog: Tag 2 %%start_time%% |
 
 | *Comment* | Test Case: Tags post to category by email not implemented |
@@ -120,8 +120,8 @@ Go to All Tags | The deleted tag should not appear in list
 
 | *Comment* | Test Case: Tags deleted tag gone from list view |  |
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
-| text_unlike | contentContainer | Tag 1 %%start_time%% |
-| text_like | contentContainer | Tag 2 %%start_time%% |
+| text_unlike | content | Tag 1 %%start_time%% |
+| text_like | content | Tag 2 %%start_time%% |
 
 Make a new page and add a new tag (a tag not already in use in workspace) | tag is added
 Delete this page. | Page is deleted. This tag now has zero pages.
@@ -134,10 +134,10 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | click_and_wait | st-delete-deletelink |  |
 
 | *Comment* | Test Case: Tags Process all jobs before teardown |  |
-| st_process_jobs | |  |
+| st_process_jobs |  |  |
 
 | open_ok | /%%workspace%%/index.cgi?action=category_list |  |
-| text_unlike | contentContainer | Tag 2 %%start_time%% |
+| text_unlike | content | Tag 2 %%start_time%% |
 
 | *Comment* | Test Case: Tags Teardown |  |
 | st-admin | purge-page --w %%workspace%% --page tag_1_content_title_%%start_time%% | was purged |

@@ -28,6 +28,8 @@
 # @COPYRIGHT@
 # #-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
+# #-#-#-#-#  ckeditor.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
 # #-#-#-#-#  bin.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  appliance.po (Socialtext i18n)  #-#-#-#-#
@@ -39,7 +41,7 @@ msgid ""
 msgstr ""
 "#-#-#-#-#  wikiwyg.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-01 03:35-0700\n"
+"PO-Revision-Date: 2011-09-28 01:46+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +49,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-23 11:19+0800\n"
+"PO-Revision-Date: 2011-09-15 13:09+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +81,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-17 22:09-0700\n"
+"PO-Revision-Date: 2011-09-28 15:03+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +89,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-08 13:54+0800\n"
+"PO-Revision-Date: 2011-09-28 18:42+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +105,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-07-28 11:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +129,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-11 08:11-0700\n"
+"PO-Revision-Date: 2011-09-15 13:07+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +137,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 09:22-0700\n"
+"PO-Revision-Date: 2011-07-28 11:14-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +153,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:44-0700\n"
+"PO-Revision-Date: 2011-09-28 16:36+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -162,6 +164,14 @@ msgstr ""
 "PO-Revision-Date: 2011-03-16 23:29+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  ckeditor.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-09-28 16:31+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -832,6 +842,10 @@ msgstr "«A single domain (if you're unsure, use this value)»"
 msgid "analytics.use-for:"
 msgstr "«This Google Analytics tracking ID is used for:»"
 
+#: share/plugin/analytics/template/cp_google_analytics:20
+msgid "analytics.use-tracking-id-for:"
+msgstr "«Tracking ID is used for:»"
+
 #: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:224
 msgid "api.about-wiki-name"
 msgstr "«Workspace names must consist of 3-30 lowercase letters, numbers, underscores or dashes.»"
@@ -1432,9 +1446,9 @@ msgstr "«Blog»"
 msgid "blog.blogs"
 msgstr "«Blogs»"
 
-#: share/skin/s3/template/element/settings/weblog_create:5
+#: share/skin/s3/template/element/settings/weblog_create:5 lib/Socialtext/Handler/Settings.pm:506
 msgid "blog.create"
-msgstr "«Create A Blog»"
+msgstr "«Create Blog»"
 
 #: share/skin/s3/template/view/weblog:78
 msgid "blog.edit"
@@ -1479,6 +1493,10 @@ msgstr "«Create New Blog»"
 #: share/skin/s3/template/view/weblog:0 share/skin/s3/template/view/weblog:138
 msgid "blog.newer"
 msgstr "«Newer entries»"
+
+#: lib/Socialtext/WeblogPlugin.pm:55
+msgid "blog.number-of-posts-to-show"
+msgstr "«Number of posts to show»"
 
 #: lib/Socialtext/WeblogPlugin.pm:49
 msgid "blog.number-of-posts?"
@@ -1532,6 +1550,10 @@ msgstr "«Updated by»"
 msgid "blog.view"
 msgstr "«View»"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:116
+msgid "blog.weblog-sort-order"
+msgstr "«Weblog sort order»"
+
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"
 msgstr "«bookmarklet to share any page on the web via Signals.»"
@@ -1576,6 +1598,38 @@ msgstr "«Ignore Bug»"
 #: share/template/bugs_content.html:24 lib/Socialtext/BugsPlugin.pm:31
 msgid "bug.report"
 msgstr "«Report Bug»"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:3
+msgid "ckeditor.checking-for-edit-contention"
+msgstr "«Checking for Edit Contention»"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:4
+msgid "ckeditor.generating-page-content"
+msgstr "«Generating Page Content»"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
+msgid "ckeditor.page-save-progress"
+msgstr "«Page Save Progress»"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:5
+msgid "ckeditor.saving-page-content-kb"
+msgstr "«Saving Page Content (<span id=\"st-xhtml-save-progress-size\">?</span> kB)»"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:187 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switch-modes?"
+msgstr "«Switch modes?»"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:185 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switching-to-wikitext-mode-will-result-in-loss-of-some-formatting-on-this-page"
+msgstr "«Switching to Wikitext mode will result in the <strong>loss</strong> of some formatting on this page.»"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:183 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.wikitext-does-not-support-all-rich-text-formatting"
+msgstr "«Wikitext does not support all rich text formatting.»"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:172 share/plugin/ckeditor/share/javascript/WikitextArea.js:216
+msgid "ckeditor.wikitext-mode-warning"
+msgstr "«Wikitext Mode Warning»"
 
 #: lib/Socialtext/Wikiwyg/AnalyzerPlugin.pm:11
 msgid "class.analyzer"
@@ -2796,6 +2850,10 @@ msgstr "«Add User to Workspace:»"
 msgid "control.add-users"
 msgstr "«Add Users»"
 
+#: share/plugin/control/template/control/workspaces_new.html:40
+msgid "control.add-users-and-groups"
+msgstr "«Add Users and Groups»"
+
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_account.html:5
 msgid "control.adding-group-to-account=group,group-id"
@@ -3031,6 +3089,10 @@ msgstr "«Custom server-wide permissions are in effect.»"
 msgid "control.custom-skins=name"
 msgstr "«Custom Skins: %1»"
 
+#: share/plugin/control/template/control/add_users.html:21
+msgid "control.data-file"
+msgstr "«Data File»"
+
 #: share/plugin/control/template/control/field_form:56
 msgid "control.data-source"
 msgstr "«Data Source»"
@@ -3090,6 +3152,10 @@ msgstr "«Enable Invitation to Group»"
 #: share/plugin/control/template/control/report.html:108
 msgid "control.ending-on-midnight-of"
 msgstr "«ending on midnight of»"
+
+#: share/plugin/control/template/control/accounts.html:54
+msgid "control.export-user-data"
+msgstr "«Export User Data»"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
@@ -3636,6 +3702,10 @@ msgstr "«Socialtext Control Panel»"
 msgid "control.source=driver-name"
 msgstr "«Source: %1»"
 
+#: share/plugin/control/template/control/accounts.html:39
+msgid "control.standard-account"
+msgstr "«Standard»"
+
 #: share/plugin/control/template/control/group.html:43
 msgid "control.start-typing-account-name"
 msgstr "«Start typing an Account's name»"
@@ -3778,6 +3848,10 @@ msgstr "«User was removed from %*(%1,Account)»"
 #: share/plugin/control/template/control/user.html:48
 msgid "control.user-requires-confirmation"
 msgstr "«User requires confirmation»"
+
+#: share/plugin/control/template/control/add_users.html:34
+msgid "control.user-restrictions"
+msgstr "«Restrictions»"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:16
 msgid "control.username"
@@ -3922,6 +3996,30 @@ msgstr "«Administer Dashboards»"
 msgid "dashboard.confirm-revert?"
 msgstr "«Are you sure you want to revert to the Socialtext defaults?»"
 
+#: share/plugin/dashboard/template/cp_dashboard:62
+msgid "dashboard.container-types"
+msgstr "«Container types»"
+
+#: share/plugin/dashboard/template/cp_dashboard:1
+msgid "dashboard.dashboard-gallery"
+msgstr "«Dashboard Gallery»"
+
+#: share/plugin/dashboard/template/cp_dashboard:74
+msgid "dashboard.dashboards"
+msgstr "«Dashboards»"
+
+#: share/plugin/dashboard/template/cp_dashboard:83
+msgid "dashboard.dashboards-and-wiki-pages"
+msgstr "«Dashboards and Wiki Pages»"
+
+#: share/plugin/dashboard/template/cp_dashboard:133
+msgid "dashboard.delete-widget"
+msgstr "«Delete Widget»"
+
+#: share/plugin/dashboard/template/cp_dashboard:112
+msgid "dashboard.edit"
+msgstr "«edit»"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:117
 msgid "dashboard.exporting-widgets"
 msgstr "«Exporting dashboard widgets ...»"
@@ -3935,6 +4033,30 @@ msgstr "«Dashboard for %1»"
 msgid "dashboard.force-update"
 msgstr "«Force update this dashboard on existing users, too»"
 
+#: share/plugin/dashboard/template/cp_dashboard:79
+msgid "dashboard.groups-and-dashboards"
+msgstr "«Groups and Dashboards»"
+
+#: share/plugin/dashboard/template/cp_dashboard:78
+msgid "dashboard.groups-and-profiles"
+msgstr "«Groups and Profiles»"
+
+#: share/plugin/dashboard/template/cp_dashboard:80
+msgid "dashboard.groups-and-wiki-pages"
+msgstr "«Groups and Wiki Pages»"
+
+#: share/plugin/dashboard/template/cp_dashboard:91
+msgid "dashboard.groups-dashboards-and-wiki-pages"
+msgstr "«Groups, Dashboards and Wiki Pages»"
+
+#: share/plugin/dashboard/template/cp_dashboard:87
+msgid "dashboard.groups-profiles-and-dashboards"
+msgstr "«Groups, Profiles and Dashboards»"
+
+#: share/plugin/dashboard/template/cp_dashboard:89
+msgid "dashboard.groups-profiles-and-wiki-pages"
+msgstr "«Groups, Profiles and Wiki Pages»"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:244
 msgid "dashboard.importing-default"
 msgstr "«Importing default dashboard»"
@@ -3947,6 +4069,22 @@ msgstr "«Importing dashboard for user %1»"
 #: share/plugin/dashboard/template/widget_editor_links:3
 msgid "dashboard.preview"
 msgstr "«Preview»"
+
+#: share/plugin/dashboard/template/cp_dashboard:73
+msgid "dashboard.profiles"
+msgstr "«Profiles»"
+
+#: share/plugin/dashboard/template/cp_dashboard:81
+msgid "dashboard.profiles-and-dashboards"
+msgstr "«Profiles and Dashboards»"
+
+#: share/plugin/dashboard/template/cp_dashboard:82
+msgid "dashboard.profiles-and-wiki-pages"
+msgstr "«Profiles and Wiki Pages»"
+
+#: share/plugin/dashboard/template/cp_dashboard:93
+msgid "dashboard.profiles-dashboards-and-wiki-pages"
+msgstr "«Profiles, Dashboards and Wiki Pages»"
 
 #: share/plugin/dashboard/template/widget_editor_links:8
 msgid "dashboard.publish"
@@ -3981,13 +4119,45 @@ msgstr "«Successfully saved the default layout for the selected account.»"
 msgid "dashboard.switch-from=account:"
 msgstr "«This is the default dashboard shared among all users for the \"%1\" account. Switch to account:»"
 
+#: share/plugin/dashboard/template/cp_dashboard:5
+msgid "dashboard.view-default-dashboard-layout"
+msgstr "«View Default Dashboard Layout»"
+
+#: share/plugin/dashboard/template/cp_dashboard:28
+msgid "dashboard.visibility"
+msgstr "«Visibility»"
+
+#: share/plugin/dashboard/template/cp_dashboard:38
+msgid "dashboard.visible"
+msgstr "«Visible»"
+
 #: share/plugin/dashboard/template/dashboard_hello:14
 msgid "dashboard.welcome"
 msgstr "«Welcome»"
 
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:164
+msgid "dashboard.widget-added"
+msgstr "«Successfully added your widget. Close this dialog to return to the account administration interface.»"
+
+#: share/plugin/dashboard/template/cp_dashboard:57
+msgid "dashboard.widget-description"
+msgstr "«Description»"
+
+#: share/plugin/dashboard/template/cp_dashboard:37
+msgid "dashboard.widget-hidden"
+msgstr "«Hidden»"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:148
+msgid "dashboard.widget-updated"
+msgstr "«Successfully updated your widget. Close this dialog to return to the account administration interface.»"
+
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:12
 msgid "dashboard.widgets-to-push:"
 msgstr "«The following widgets will be pushed:»"
+
+#: share/plugin/dashboard/template/cp_dashboard:75
+msgid "dashboard.wiki-pages"
+msgstr "«Wiki Pages»"
 
 #: lib/Socialtext/Reports/Utils.pm:55
 msgid "date.apr"
@@ -4481,6 +4651,10 @@ msgstr "«Create»"
 msgid "do.delete"
 msgstr "«Delete»"
 
+#: lib/Socialtext/DisplayPlugin.pm:122 lib/Socialtext/DisplayPlugin.pm:154 lib/Socialtext/RecentChangesPlugin.pm:106 lib/Socialtext/WikiwygPlugin.pm:83 lib/Socialtext/WorkspacesUIPlugin.pm:107 lib/Socialtext/WorkspacesUIPlugin.pm:135 lib/Socialtext/WorkspacesUIPlugin.pm:93
+msgid "do.disabled"
+msgstr "«disabled»"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:176 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:316 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:356 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:373 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:195 share/skin/s3/javascript/lightbox/attachment.tt2:40 share/plugin/control/template/control/group.html:129
 msgid "do.done"
 msgstr "«Done»"
@@ -4500,6 +4674,10 @@ msgstr "«Edit Profile»"
 #: share/skin/s3/template/view/page/display:79
 msgid "do.email"
 msgstr "«Email»"
+
+#: lib/Socialtext/DisplayPlugin.pm:121 lib/Socialtext/DisplayPlugin.pm:153 lib/Socialtext/RecentChangesPlugin.pm:105 lib/Socialtext/WikiwygPlugin.pm:82 lib/Socialtext/WorkspacesUIPlugin.pm:106 lib/Socialtext/WorkspacesUIPlugin.pm:134 lib/Socialtext/WorkspacesUIPlugin.pm:92
+msgid "do.enabled"
+msgstr "«enabled»"
 
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
@@ -4573,7 +4751,7 @@ msgstr "«(%1) Like»"
 msgid "do.next"
 msgstr "«Next»"
 
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18 lib/Socialtext/Pluggable/Plugin/Signals.pm:493 lib/Socialtext/Pluggable/Plugin/Signals.pm:503 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
 msgid "do.no"
 msgstr "«No»"
 
@@ -4674,7 +4852,7 @@ msgstr "«Web Link»"
 msgid "do.wikilink"
 msgstr "«Wiki Link»"
 
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:8
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11 lib/Socialtext/Pluggable/Plugin/Signals.pm:492 lib/Socialtext/Pluggable/Plugin/Signals.pm:502 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:8
 msgid "do.yes"
 msgstr "«Yes»"
 
@@ -5009,6 +5187,10 @@ msgstr "«(You can customize the note below.)»"
 msgid "email.date:"
 msgstr "«Date:»"
 
+#: lib/Socialtext/EmailNotifyPlugin.pm:96
+msgid "email.digest-information"
+msgstr "«Email digest information»"
+
 #. (escaped_str)
 #: share/template/email/email-address-confirmation-completed.html:28 share/template/email/email-address-confirmation-completed.txt:10
 msgid "email.email-confirmed-login-to=app"
@@ -5059,6 +5241,10 @@ msgstr "«The following pages in your <a href=\"%1\">watchlist</a> in <a href=\"
 #: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "«The following pages in your watchlist in %1 have recently changed. This email was generated on %2 at %3.»"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:34
+msgid "email.frequency-of-updates"
+msgstr "«Frequency of updates»"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
@@ -5323,6 +5509,10 @@ msgstr "«Socialtext»"
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:77
 msgid "email.socialtext-appliance"
 msgstr "«Socialtext Appliance»"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:68
+msgid "email.sort-order-of-updates"
+msgstr "«Sort order of updates»"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:17
 msgid "email.subject"
@@ -5663,6 +5853,10 @@ msgstr "«There was a problem changing password for user %1»"
 msgid "error.change-profile-field-failed"
 msgstr "«Unable to change profile field.»"
 
+#: lib/Socialtext/Gadgets/Gallery.pm:267
+msgid "error.changing-container-types"
+msgstr "«Error changing container types»"
+
 #: share/plugin/control/template/control/desktop-account.html:45
 msgid "error.check-again?"
 msgstr "«Please check again?»"
@@ -5747,6 +5941,10 @@ msgstr "«Number required in field: %1»"
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "«Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.»"
+
+#: lib/Socialtext/Handler/Settings.pm:74
+msgid "error.current-password-not-correct"
+msgstr "«Current password not correct»"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:44
 msgid "error.dashboard-push-widget"
@@ -6441,6 +6639,10 @@ msgstr "«You must provide a name to create a new account.»"
 #: lib/Socialtext/Handler/ControlPanel.pm:445
 msgid "error.new-account-type-required"
 msgstr "«You must provide an account type to change the type.»"
+
+#: lib/Socialtext/Handler/Settings.pm:77
+msgid "error.new-password-does-not-match"
+msgstr "«New password does not match»"
 
 #: lib/Socialtext/UserSettingsPlugin.pm:87
 msgid "error.new-password-mismatch"
@@ -7209,6 +7411,10 @@ msgstr "«You cannot compare a revision to itself.»"
 msgid "error.save-failed"
 msgstr "«Saving failed due to server error; please try again later.»"
 
+#: lib/Socialtext/Handler/Settings.pm:135 lib/Socialtext/Handler/Settings.pm:315
+msgid "error.saving-settings"
+msgstr "«Error when saving settings»"
+
 #: lib/Socialtext/Appliance/Model/Setup.pm:356
 msgid "error.saving-system-time-to-hardware-clock"
 msgstr "«Error saving system time to hardware clock»"
@@ -7629,6 +7835,14 @@ msgstr "«The following %*(%1,user was already a member,users were already membe
 #: lib/Socialtext/Workspace.pm:600 share/plugin/control/template/control/workspace_invite.html:269
 msgid "error.wiki-name-required"
 msgstr "«Workspace name is a required field.»"
+
+#: lib/Socialtext/Handler/Settings.pm:166 lib/Socialtext/Handler/Settings.pm:349
+msgid "error.wiki-not-authorized"
+msgstr "«Not Authorized»"
+
+#: lib/Socialtext/Handler/Settings.pm:165 lib/Socialtext/Handler/Settings.pm:348 lib/Socialtext/Handler/Settings.pm:384
+msgid "error.wiki-not-found"
+msgstr "«Not Found»"
 
 #. ($self->{uri})
 #: lib/Socialtext/Handler/ControlPanel.pm:1746
@@ -8747,6 +8961,10 @@ msgstr "«Member»"
 msgid "groups.save"
 msgstr "«Save»"
 
+#: share/plugin/groups/template/search_box_groups:1
+msgid "groups.search"
+msgstr "«Groups»"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "groups.search-before-creating"
 msgstr "«Before creating a group, you can search names and descriptions for existing groups.»"
@@ -9151,6 +9369,10 @@ msgstr "«NOTE: You do not share a group with this person and cannot view their 
 msgid "info.hello=user"
 msgstr "«Hello, %1»"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:59
+msgid "info.homepage-blog-data"
+msgstr "«When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a weblog instead, enter that name here.»"
+
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1967 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1985
 msgid "info.html-fragments"
 msgstr "«(Note: HTML fragments are not guaranteed to work and may break the UI.)»"
@@ -9390,6 +9612,9 @@ msgstr "«RSS Feed Items»"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:11
 msgid "insert.file"
 msgstr "«A File Attached to This Page»"
+
+msgid "insert.file-image"
+msgstr "«Image Attached to Page»"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:30
 msgid "insert.from-the-web"
@@ -10285,6 +10510,10 @@ msgstr "«Language Settings»"
 msgid "loc.system-default=lang"
 msgstr "«%1 (Default)»"
 
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:43
+msgid "locales.display-language"
+msgstr "«Display Language»"
+
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
 msgid "login.back-to=uri"
@@ -10984,6 +11213,10 @@ msgstr "«Deleted \"%1\"»"
 msgid "page.deleted=revision"
 msgstr "«Deleted: Revision %1»"
 
+#: lib/Socialtext/WikiwygPlugin.pm:78
+msgid "page.double-click-to-edit"
+msgstr "«Double-click to edit page»"
+
 #: share/skin/s3/template/view/page/display:84
 msgid "page.duplicate"
 msgstr "«Duplicate Page»"
@@ -10998,7 +11231,7 @@ msgid "page.edit"
 msgstr "«Edit»"
 
 msgid "page.edit-as-xhtml"
-msgstr "«Convert and Edit <i>(with new editor prototype)</i>»"
+msgstr "«Edit»"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
@@ -11216,7 +11449,7 @@ msgid "page.type-wiki"
 msgstr "«Page»"
 
 msgid "page.type-xhtml"
-msgstr "«Page (using new editor prototype)»"
+msgstr "«Page»"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -11357,9 +11590,9 @@ msgstr "«Profile»"
 
 #: share/plugin/people/template/lite/people.html:7
 msgid "people.search"
-msgstr "«Search People»"
+msgstr "«People»"
 
-#: share/plugin/people/template/search_box_people:1
+#: share/plugin/people/template/lite/people.html:7
 msgid "people.search:"
 msgstr "«Search People:»"
 
@@ -12347,7 +12580,7 @@ msgstr "«By:»"
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "revision.color"
-msgstr "«Color View (Unformatted)»"
+msgstr "«Wikitext View»"
 
 #: share/skin/s3/template/view/page/revision_compare:49
 msgid "revision.compare"
@@ -12409,7 +12642,11 @@ msgstr "«Tags:»"
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "revision.view"
-msgstr "«View Formatted»"
+msgstr "«Formatted View»"
+
+#: lib/Socialtext/SyndicatePlugin.pm:144
+msgid "rss.number-of-posts-to-syndicate"
+msgstr "«Number of posts to syndicate»"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:59
 msgid "sc.add-tags"
@@ -12994,6 +13231,22 @@ msgstr "«The search you have entered is too general.»"
 msgid "search.too-many=count"
 msgstr "«The search you have entered is too general; %1 pages and/or attachments matched your query.»"
 
+#: lib/Socialtext/Handler/Settings.pm:535
+msgid "settings.features"
+msgstr "«Features»"
+
+#: lib/Socialtext/Handler/Settings.pm:534
+msgid "settings.manage-users"
+msgstr "«Manage Users»"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:74
+msgid "settings.number-of-items-to-show"
+msgstr "«Number of items to show»"
+
+#: lib/Socialtext/Handler/Settings.pm:131 lib/Socialtext/Handler/Settings.pm:318
+msgid "settings.saved"
+msgstr "«Saved»"
+
 #: lib/Socialtext/Page.pm:1133
 msgid "sheet.creating"
 msgstr "«Creating a New Spreadsheet...»"
@@ -13001,6 +13254,11 @@ msgstr "«Creating a New Spreadsheet...»"
 #: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"
 msgstr "«Untitled Page»"
+
+#. ($sender->best_full_name)
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "signal.mention-by=sender"
+msgstr "«Signal mention by %1»"
 
 #: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "signals.about-bookmarklet!"
@@ -13236,6 +13494,10 @@ msgid "signals.reply-to-signal-message=url"
 msgstr "«This message was sent by Socialtext Signals. You can reply to this message <a href=\"%1\">here</a>.»"
 
 #: share/plugin/signals/template/search_box_signals:1
+msgid "signals.search"
+msgstr "«Signals»"
+
+#: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "«Search Signals:»"
 
@@ -13247,13 +13509,17 @@ msgstr "«Selected people»"
 msgid "signals.send-as-private-message"
 msgstr "«Send as private message»"
 
-#: share/plugin/signals/template/element/settings/signals_settings_section:11
+#: share/plugin/signals/template/element/settings/signals_settings_section:11 lib/Socialtext/Pluggable/Plugin/Signals.pm:498
 msgid "signals.send-mentions-of-me-as-email"
-msgstr "«Send mentions of me as email»"
+msgstr "«Send Mentions of Me as Email»"
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:26
 msgid "signals.send-private-messages-as-email"
-msgstr "«Send private messages as email»"
+msgstr "«Send Private Messages as Email»"
+
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:488
+msgid "signals.send-private-signals-as-email"
+msgstr "«Send Private Signals as Email»"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
@@ -13430,9 +13696,17 @@ msgstr "«Uploaded»"
 msgid "sort.ascending=field"
 msgstr "«Sort by %1 in ascending order»"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:121
+msgid "sort.by-create-time"
+msgstr "«by create time»"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:71
 msgid "sort.by-created"
 msgstr "«Sort entries by first posted time»"
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:120
+msgid "sort.by-last-updated-time"
+msgstr "«by last updated time»"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:65
 msgid "sort.by-updated"
@@ -13646,15 +13920,31 @@ msgstr "«%1 at %2»"
 msgid "time.count=days"
 msgstr "«%*(%1,day)»"
 
+#: lib/Socialtext/TimeZonePlugin.pm:152
+msgid "time.date-format"
+msgstr "«Date Format»"
+
+#: lib/Socialtext/TimeZonePlugin.pm:113
+msgid "time.daylight-savings-summer"
+msgstr "«Daylight Savings/Summer»"
+
 #. (int($age / 86400)
 #: lib/Socialtext/PageRevision.pm:377
 msgid "time.days=count"
 msgstr "«%1 days»"
 
+#: lib/Socialtext/TimeZonePlugin.pm:228
+msgid "time.do-not-include-seconds"
+msgstr "«Do not Include Seconds»"
+
 #. (int($age / 3600)
 #: lib/Socialtext/PageRevision.pm:376
 msgid "time.hours=count"
 msgstr "«%1 hours»"
+
+#: lib/Socialtext/TimeZonePlugin.pm:227
+msgid "time.include-seconds-in-time-format"
+msgstr "«Include Seconds in Time Format»"
 
 #. (int($age / 60)
 #: lib/Socialtext/PageRevision.pm:375
@@ -13674,6 +13964,14 @@ msgstr "«Never»"
 #: lib/Socialtext/PageRevision.pm:374
 msgid "time.seconds=count"
 msgstr "«%1 seconds»"
+
+#: lib/Socialtext/TimeZonePlugin.pm:195
+msgid "time.time-format"
+msgstr "«Time Format»"
+
+#: lib/Socialtext/TimeZonePlugin.pm:81
+msgid "time.timezone"
+msgstr "«Timezone»"
 
 #. (int($age / 604800)
 #: lib/Socialtext/PageRevision.pm:378
@@ -14630,6 +14928,14 @@ msgstr "«Look for»"
 msgid "watch.stop"
 msgstr "«Stop Watching»"
 
+#: lib/Socialtext/WatchlistPlugin.pm:80
+msgid "watchlist.digest-information"
+msgstr "«Watchlist digest information»"
+
+#: lib/Socialtext/WatchlistPlugin.pm:46
+msgid "watchlist.frequence-of-updates"
+msgstr "«Frequence of updates»"
+
 #: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
 msgid "widget.100%"
 msgstr "«Fit page width (100%)»"
@@ -15342,6 +15648,10 @@ msgstr "«User '%1' cannot lock a page.»"
 msgid "wiki.double-click-to-edit?"
 msgstr "«Double-click to edit a page?»"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:102
+msgid "wiki.email-notifications"
+msgstr "«Email Notifications»"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:28
 msgid "wiki.email-senders?"
 msgstr "«Who can send email to this workspace?»"
@@ -15472,9 +15782,17 @@ msgstr "«Announcements and Links»"
 msgid "wiki.only-email-from=role"
 msgstr "«Only %1 can send email to this workspace.»"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:147
+msgid "wiki.only-registered-users"
+msgstr "«Only Registered Users»"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:13
 msgid "wiki.permission-type:"
 msgstr "«Do you want to set up this workspace as:»"
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:74
+msgid "wiki.placement-of-emailed-content"
+msgstr "«Placement of emailed content»"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:6 share/skin/s3/template/view/settings:61 share/skin/s3/template/workspaces_created_section.html:25
 msgid "wiki.privacy"
@@ -15488,10 +15806,26 @@ msgstr "«Public workspaces»"
 msgid "wiki.public:"
 msgstr "«You have free access to view and contribute to any of these public wikis:»"
 
+#: lib/Socialtext/RecentChangesPlugin.pm:101
+msgid "wiki.recent-changes-sidebar-widget"
+msgstr "«What's New sidebar widget»"
+
+#: lib/Socialtext/DisplayPlugin.pm:149
+msgid "wiki.recently-viewed-sidebar-widget"
+msgstr "«Recently Viewed sidebar widget»"
+
 #. ($group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1527
 msgid "wiki.removed=group"
 msgstr "«%1 Group has been removed from this Workspace»"
+
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
+msgid "wiki.search"
+msgstr "«This Workspace»"
+
+#: share/skin/s3/template/element/search_form:23
+msgid "wiki.search-all"
+msgstr "«My Workspaces»"
 
 #: share/skin/s3/template/element/search_form:23
 msgid "wiki.search-all:"
@@ -15513,6 +15847,10 @@ msgstr "«A filter has been set on this workspace. All candidate email addresses
 #: lib/Socialtext/BreadCrumbsPlugin.pm:33
 msgid "wiki.show-breadcrumbs-sidebox?"
 msgstr "«Display \"Recently Viewed\" side pane box?»"
+
+#: lib/Socialtext/DisplayPlugin.pm:117
+msgid "wiki.show-page-snippets-on-mouse-hover"
+msgstr "«Show page snippets on mouse hover»"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "wiki.show-sidebox?"
@@ -15546,6 +15884,10 @@ msgstr "«Tag: %1»"
 #: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:153
 msgid "wiki.tags"
 msgstr "«Tags»"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:43
+msgid "wiki.timeframe-for-changes"
+msgstr "«Timeframe for changes»"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "wiki.title"
@@ -15721,4 +16063,4 @@ msgid "wikiwyg.widget"
 msgstr "«Insert a Widget»"
 
 msgid "xhtml.creating"
-msgstr "«Creating a Page using new editor prototype...»"
+msgstr "«Creating a Page...»"

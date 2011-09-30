@@ -23,19 +23,7 @@ const cgi_class => 'Socialtext::RenamePage::CGI';
 
 sub register {
     my $self = shift;
-    $self->hub->registry->add(action => 'rename_popup');
     $self->hub->registry->add(action => 'rename_page');
-}
-
-sub rename_popup {
-    my $self = shift;
-    my %p = @_;
-    return encode_json(\%p) if $self->cgi->json;
-    return $self->template_process(
-        'popup/rename',
-        %p,
-        $self->hub->helpers->global_template_vars,
-    );
 }
 
 sub rename_page {

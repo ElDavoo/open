@@ -1,0 +1,72 @@
+[%# vim: set et sts=2 sw=2: %]
+[%# @COPYRIGHT@ -%]
+[% USE decorate %]
+[% USE label_ellipsis %]
+
+[% SET buttons = [] %]
+[% buttons.push(['st-revision-current', loc('revision.current')]) %]
+[% buttons.push(['st-revision-compare', loc("do.compare-revisions")]) IF page.page_type != 'spreadsheet' %]
+
+[% WRAPPER $frame_name id="contentPage" title = loc("revision.all=page", display_title) %]
+<script language="javascript"><!--
+    function preventSameRevisionCompare () {
+        var newVal = $('input[name=new_revision_id]:checked:first').val();
+        var oldVal = $('input[name=old_revision_id]:checked:first').val();
+        if (newVal == oldVal) {
+            $('a.compareRevisions').hide();
+        }
+        else {
+            $('a.compareRevisions').show();
+        }
+    };
+    $(preventSameRevisionCompare);
+--></script>
+
+<form class="listView" name='revisions' id="compare_revisions" onsubmit="return check_revisions(this);">
+
+<div class="widget">
+  <h1 class="grid_24" title="[% display_title %]">[% display_title %]</h1>
+  <div class="clear"></div>
+
+  <input type="hidden" name="action" value="revision_compare" />
+  <input type="hidden" name="page_name" value="[% page_uri %]" />
+  <input type="hidden" name="mode" value="source" />
+
+  <div class="content">
+
+    [%# Header %]
+    <div class="header">
+      <div class="grid_2">[% loc("nav.select") %]</div>
+      <div class="grid_2">[% loc("page.revision") %]</div>
+      <div class="grid_4">[% loc("revision.edited-by") %]</div>
+      <div class="grid_4">[% loc("revision.date") %]</div>
+      <div class="grid_12">
+        [% FILTER decorate('revision-edit-summary-header') %]
+          [% loc("revision.summary") %]
+        [% END %]
+      </div>
+    </div>
+    <div class="clear"></div>
+
+    [%# Body %]
+    [% FOREACH row IN rows %]
+      <div class="listRow [% IF loop.even %]even[% ELSE %]odd[% END %]">
+        [% INCLUDE element/page/revision_row 
+              id           = row.id,
+              even         = loop.count % 2,
+              check_old    = loop.index == 1,
+              check_new    = loop.index == 0,
+              revision     = row.number,
+              from         = row.from,
+              date         = row.date,
+              is_deleted   = row.is_deleted,
+              edit_summary = row.edit_summary
+         %]
+      </div>
+    [% END %]
+  </div>
+</div>
+
+</form>
+[% END %]
+

@@ -1,0 +1,203 @@
+/**
+ * Activities
+
+.signals
+  background-color: #dfebed
+
+.networks
+  padding: 5px 0 0 8px
+
+.mainWikiwyg .wikiwyg
+  margin: 5px
+
+.post
+  padding: 0
+  text-align: center
+
+.mainWikiwyg, .wikiwyg.focused
+  font-size: 110%
+  color: #666666
+  background-color: #fff
+  min-height: 23px
+  box-shadow: inset 0 2px 2px #ccc
+  cursor: text
+  padding: 0
+  margin-left: 5px
+  padding: 5px 0 3px 0
+
+.wikiwyg textarea
+  resize: none
+  border: none
+
+.toolbar
+  padding: 5px 0
+  span
+    float: left
+  a.icon
+    display: block
+    float: left
+    width: 15px
+    height: 15px
+    margin: 0 3px
+    background: transparent no-repeat
+    background-position: top left
+    cursor: pointer
+    &.startPrivate
+      background-image: url(#{$static}/images/icons/email-black-15.png)
+    &.insertMention
+      background-image: url(#{$static}/images/icons/person-black-15.png)
+    &.insertVideo
+      background-image: url(#{$static}/images/icons/video-black-15.png)
+    &.insertFile
+      background-image: url(#{$static}/images/icons/document-black-15.png)
+    &.insertLink
+      background-image: url(#{$static}/images/icons/link-black-15.png)
+    &.insertTag
+      display: none // Needs input from tracy
+
+.hideLink
+  display: block
+  padding-left: 12px
+  float: right
+  background: transparent no-repeat url(#{$static}/images/icons/close-black-8.png) 0 4px
+
+.private span, .insert span
+  margin-left: 5px
+
+.event_list
+  .event
+    margin: 10px 0
+  .avatar img
+    width: 35px
+    height: 35px
+
+.more
+  position: relative
+  text-decoration: none
+  font-size: 120%
+  margin: 5px 2px
+  padding: 2px 0
+  background: #AAA
+  color: #fff
+  cursor: pointer
+  border: 1px solid #999
+  border-radius: 5px
+  text-align: center
+
+.event_list
+  .event .metadata
+    position: relative
+    padding-bottom: 2px
+    font-size: 11px
+    color: #777
+  .signal
+    .signal_event
+      font-size: 120%
+    .metadata
+      padding-bottom: 0px
+      padding-top: 2px
+  .event .metadata
+    font-size: 11px
+    a
+      color: #777
+      margin-right: 3px
+      &:hover
+        color: #36c
+
+.links
+  position: relative
+  border: 1px solid #999
+  text-align: left
+  padding: 5px
+  color: #666
+
+.signals .links
+  display: none
+
+.lookahead
+  display: none
+  height: 45px
+  position: absolute
+  text-align: left
+  border: 1px solid black
+  background: #ffffff
+  padding: 5px
+  z-index: 1000
+  .lookaheadDiv
+    padding-right: 105px
+  .buttons
+    position: absolute
+    right: 0px
+    top: 19px
+    height: 22px
+  .lookahead-prompt
+    color: #808080
+  input.private
+    vertical-align: middle
+
+.replies
+  .top_line
+    border-top: 1px solid #ccc
+    padding-top: 10px
+    margin-top: 10px
+  .older
+    margin-top: 5px
+  .clearHandler
+    color: $primary_color
+    cursor: pointer
+    &:hover
+      text-decoration: underline
+  .lookahead
+    left: 35px
+
+.loading
+  display: none
+
+.signal_thumbnails
+  margin-bottom: 2px
+  margin-right: 4px
+  display: inline
+  float: right
+  img
+    max-width: 64px
+    max-height: 64px
+    border-radius: 4px
+    -moz-border-radius: 4px
+    -webkit-border-radius: 4px
+    &.video
+      *width: 64px
+      /* For IE only
+
+/* Filters */
+.filter_bar
+  background-color: $primary_color
+  color: #fff
+  .searchText
+    width: 73%
+  .filters
+    display: none
+    .filterHeading
+      padding-left: 5px
+      font-style: italic
+      font-weight: bold
+    .filterOption
+      margin: 1px 3px 1px 8px
+      white-space: nowrap
+      .users
+        padding-left: 22px
+        font-size: 10px
+        font-style: italic
+    .disabledOption
+      font-style: italic
+      color: #ddd
+    .selectedOption
+      background-color: #8B9633
+
+.messages .message
+  background-color: #FFFDD3
+  border: 1px solid #999
+  padding: 4px
+  text-align: center
+  margin-bottom: 5px
+  .cancel
+    color: #be3b3f

@@ -1,7 +1,0 @@
-<ul class="widgetButton">
-  <li class="flexButtonBlue">
-    <a class="compareRevisions genericBlueButton" href="#">
-      [% loc("do.compare-revisions") %]
-    </a>
-  </li>
-</ul>

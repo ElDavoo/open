@@ -28,6 +28,8 @@
 # @COPYRIGHT@
 # #-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
+# #-#-#-#-#  ckeditor.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
 # #-#-#-#-#  bin.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  appliance.po (Socialtext i18n)  #-#-#-#-#
@@ -39,7 +41,7 @@ msgid ""
 msgstr ""
 "#-#-#-#-#  wikiwyg.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-01 03:35-0700\n"
+"PO-Revision-Date: 2011-09-28 01:46+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +49,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-23 11:19+0800\n"
+"PO-Revision-Date: 2011-09-15 13:09+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +81,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-17 22:09-0700\n"
+"PO-Revision-Date: 2011-09-28 15:03+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +89,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-08 13:54+0800\n"
+"PO-Revision-Date: 2011-09-28 18:42+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +105,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-07-28 11:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +129,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-11 08:11-0700\n"
+"PO-Revision-Date: 2011-09-15 13:07+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -135,7 +137,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-14 09:22-0700\n"
+"PO-Revision-Date: 2011-07-28 11:14-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +153,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:44-0700\n"
+"PO-Revision-Date: 2011-09-28 16:36+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -162,6 +164,14 @@ msgstr ""
 "PO-Revision-Date: 2011-03-16 23:29+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  ckeditor.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-09-28 16:31+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -832,6 +842,10 @@ msgstr "Z zzzzzz zzzzzz (zz zzz'zz zzzzzz, zzz zzzz zzzzz)"
 msgid "analytics.use-for:"
 msgstr "Zzzz Zzzzzz Zzzzzzzzz zzzzzzzz ZZ zz zzzz zzz:"
 
+#: share/plugin/analytics/template/cp_google_analytics:20
+msgid "analytics.use-tracking-id-for:"
+msgstr "Zzzzzzzz ZZ zz zzzz zzz:"
+
 #: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:224
 msgid "api.about-wiki-name"
 msgstr "Zzzzzzzzz zzzzz zzzz zzzzzzz zz 3-30 zzzzzzzzz zzzzzzz, zzzzzzz, zzzzzzzzzzz zz zzzzzz."
@@ -1432,9 +1446,9 @@ msgstr "Zzzz"
 msgid "blog.blogs"
 msgstr "Zzzzz"
 
-#: share/skin/s3/template/element/settings/weblog_create:5
+#: share/skin/s3/template/element/settings/weblog_create:5 lib/Socialtext/Handler/Settings.pm:506
 msgid "blog.create"
-msgstr "Zzzzzz Z Zzzz"
+msgstr "Zzzzzz Zzzz"
 
 #: share/skin/s3/template/view/weblog:78
 msgid "blog.edit"
@@ -1479,6 +1493,10 @@ msgstr "Zzzzzz Zzz Zzzz"
 #: share/skin/s3/template/view/weblog:0 share/skin/s3/template/view/weblog:138
 msgid "blog.newer"
 msgstr "Zzzzz zzzzzzz"
+
+#: lib/Socialtext/WeblogPlugin.pm:55
+msgid "blog.number-of-posts-to-show"
+msgstr "Zzzzzz zz zzzzz zz zzzz"
 
 #: lib/Socialtext/WeblogPlugin.pm:49
 msgid "blog.number-of-posts?"
@@ -1532,6 +1550,10 @@ msgstr "Zzzzzzz zz"
 msgid "blog.view"
 msgstr "Zzzz"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:116
+msgid "blog.weblog-sort-order"
+msgstr "Zzzzzz zzzz zzzzz"
+
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"
 msgstr "zzzzzzzzzzz zz zzzzz zzz zzzz zz zzz zzz zzz Zzzzzzz."
@@ -1576,6 +1598,38 @@ msgstr "Zzzzzz Zzz"
 #: share/template/bugs_content.html:24 lib/Socialtext/BugsPlugin.pm:31
 msgid "bug.report"
 msgstr "Zzzzzz Zzz"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:3
+msgid "ckeditor.checking-for-edit-contention"
+msgstr "Zzzzzzzz zzz Zzzz Zzzzzzzzzz"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:4
+msgid "ckeditor.generating-page-content"
+msgstr "Zzzzzzzzzz Zzzz Zzzzzzz"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
+msgid "ckeditor.page-save-progress"
+msgstr "Zzzz Zzzz Zzzzzzzz"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:5
+msgid "ckeditor.saving-page-content-kb"
+msgstr "Zzzzzz Zzzz Zzzzzzz (<span id=\"st-xhtml-save-progress-size\">?</span> zZ)"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:187 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switch-modes?"
+msgstr "Zzzzzz zzzzz?"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:185 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switching-to-wikitext-mode-will-result-in-loss-of-some-formatting-on-this-page"
+msgstr "Zzzzzzzzz zz Zzzzzzzz zzzz zzzz zzzzzz zz zzz <strong>zzzz</strong> zz zzzz zzzzzzzzzz zz zzzz zzzz."
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:183 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.wikitext-does-not-support-all-rich-text-formatting"
+msgstr "Zzzzzzzz zzzz zzz zzzzzzz zzz zzzz zzzz zzzzzzzzzz."
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:172 share/plugin/ckeditor/share/javascript/WikitextArea.js:216
+msgid "ckeditor.wikitext-mode-warning"
+msgstr "Zzzzzzzz Zzzz Zzzzzzz"
 
 #: lib/Socialtext/Wikiwyg/AnalyzerPlugin.pm:11
 msgid "class.analyzer"
@@ -2796,6 +2850,10 @@ msgstr "Zzz Zzzz zz Zzzzzzzzz:"
 msgid "control.add-users"
 msgstr "Zzz Zzzzz"
 
+#: share/plugin/control/template/control/workspaces_new.html:40
+msgid "control.add-users-and-groups"
+msgstr "Zzz Zzzzz zzz Zzzzzz"
+
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_account.html:5
 msgid "control.adding-group-to-account=group,group-id"
@@ -3031,6 +3089,10 @@ msgstr "Zzzzzz zzzzzz-zzzz zzzzzzzzzzz zzz zz zzzzzz."
 msgid "control.custom-skins=name"
 msgstr "Zzzzzz Zzzzz: %1"
 
+#: share/plugin/control/template/control/add_users.html:21
+msgid "control.data-file"
+msgstr "Zzzz Zzzz"
+
 #: share/plugin/control/template/control/field_form:56
 msgid "control.data-source"
 msgstr "Zzzz Zzzzzz"
@@ -3090,6 +3152,10 @@ msgstr "Zzzzzz Zzzzzzzzzz zz Zzzzz"
 #: share/plugin/control/template/control/report.html:108
 msgid "control.ending-on-midnight-of"
 msgstr "zzzzzz zz zzzzzzzz zz"
+
+#: share/plugin/control/template/control/accounts.html:54
+msgid "control.export-user-data"
+msgstr "Zzzzzz Zzzz Zzzz"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
@@ -3636,6 +3702,10 @@ msgstr "Zzzzzzzzzz Zzzzzzz Zzzzz"
 msgid "control.source=driver-name"
 msgstr "Zzzzzz: %1"
 
+#: share/plugin/control/template/control/accounts.html:39
+msgid "control.standard-account"
+msgstr "Zzzzzzzz"
+
 #: share/plugin/control/template/control/group.html:43
 msgid "control.start-typing-account-name"
 msgstr "Zzzzz zzzzzz zz Zzzzzzz'z zzzz"
@@ -3778,6 +3848,10 @@ msgstr "Zzzz zzz zzzzzzz zzzz %*(%1,Zzzzzzz)"
 #: share/plugin/control/template/control/user.html:48
 msgid "control.user-requires-confirmation"
 msgstr "Zzzz zzzzzzzz zzzzzzzzzzzz"
+
+#: share/plugin/control/template/control/add_users.html:34
+msgid "control.user-restrictions"
+msgstr "Zzzzzzzzzzzz"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:16
 msgid "control.username"
@@ -3922,6 +3996,30 @@ msgstr "Zzzzzzzzzz Zzzzzzzzzz"
 msgid "dashboard.confirm-revert?"
 msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzz zz zzz Zzzzzzzzzz zzzzzzzz?"
 
+#: share/plugin/dashboard/template/cp_dashboard:62
+msgid "dashboard.container-types"
+msgstr "Zzzzzzzzz zzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:1
+msgid "dashboard.dashboard-gallery"
+msgstr "Zzzzzzzzz Zzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:74
+msgid "dashboard.dashboards"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:83
+msgid "dashboard.dashboards-and-wiki-pages"
+msgstr "Zzzzzzzzzz zzz Zzzz Zzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:133
+msgid "dashboard.delete-widget"
+msgstr "Zzzzzz Zzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:112
+msgid "dashboard.edit"
+msgstr "zzzz"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:117
 msgid "dashboard.exporting-widgets"
 msgstr "Zzzzzzzzz zzzzzzzzz zzzzzzz ..."
@@ -3935,6 +4033,30 @@ msgstr "Zzzzzzzzz zzz %1"
 msgid "dashboard.force-update"
 msgstr "Zzzzz zzzzzz zzzz zzzzzzzzz zz zzzzzzzz zzzzz, zzz"
 
+#: share/plugin/dashboard/template/cp_dashboard:79
+msgid "dashboard.groups-and-dashboards"
+msgstr "Zzzzzz zzz Zzzzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:78
+msgid "dashboard.groups-and-profiles"
+msgstr "Zzzzzz zzz Zzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:80
+msgid "dashboard.groups-and-wiki-pages"
+msgstr "Zzzzzz zzz Zzzz Zzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:91
+msgid "dashboard.groups-dashboards-and-wiki-pages"
+msgstr "Zzzzzz, Zzzzzzzzzz zzz Zzzz Zzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:87
+msgid "dashboard.groups-profiles-and-dashboards"
+msgstr "Zzzzzz, Zzzzzzzz zzz Zzzzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:89
+msgid "dashboard.groups-profiles-and-wiki-pages"
+msgstr "Zzzzzz, Zzzzzzzz zzz Zzzz Zzzzz"
+
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:244
 msgid "dashboard.importing-default"
 msgstr "Zzzzzzzzz zzzzzzz zzzzzzzzz"
@@ -3947,6 +4069,22 @@ msgstr "Zzzzzzzzz zzzzzzzzz zzz zzzz %1"
 #: share/plugin/dashboard/template/widget_editor_links:3
 msgid "dashboard.preview"
 msgstr "Zzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:73
+msgid "dashboard.profiles"
+msgstr "Zzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:81
+msgid "dashboard.profiles-and-dashboards"
+msgstr "Zzzzzzzz zzz Zzzzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:82
+msgid "dashboard.profiles-and-wiki-pages"
+msgstr "Zzzzzzzz zzz Zzzz Zzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:93
+msgid "dashboard.profiles-dashboards-and-wiki-pages"
+msgstr "Zzzzzzzz, Zzzzzzzzzz zzz Zzzz Zzzzz"
 
 #: share/plugin/dashboard/template/widget_editor_links:8
 msgid "dashboard.publish"
@@ -3981,13 +4119,45 @@ msgstr "Zzzzzzzzzzzz zzzzz zzz zzzzzzz zzzzzz zzz zzz zzzzzzzz zzzzzzz."
 msgid "dashboard.switch-from=account:"
 msgstr "Zzzz zz zzz zzzzzzz zzzzzzzzz zzzzzz zzzzz zzz zzzzz zzz zzz \"%1\" zzzzzzz. Zzzzzz zz zzzzzzz:"
 
+#: share/plugin/dashboard/template/cp_dashboard:5
+msgid "dashboard.view-default-dashboard-layout"
+msgstr "Zzzz Zzzzzzz Zzzzzzzzz Zzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:28
+msgid "dashboard.visibility"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:38
+msgid "dashboard.visible"
+msgstr "Zzzzzzz"
+
 #: share/plugin/dashboard/template/dashboard_hello:14
 msgid "dashboard.welcome"
 msgstr "Zzzzzzz"
 
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:164
+msgid "dashboard.widget-added"
+msgstr "Zzzzzzzzzzzz zzzzz zzzz zzzzzz. Zzzzz zzzz zzzzzz zz zzzzzz zz zzz zzzzzzz zzzzzzzzzzzzzz zzzzzzzzz."
+
+#: share/plugin/dashboard/template/cp_dashboard:57
+msgid "dashboard.widget-description"
+msgstr "Zzzzzzzzzzz"
+
+#: share/plugin/dashboard/template/cp_dashboard:37
+msgid "dashboard.widget-hidden"
+msgstr "Zzzzzz"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:148
+msgid "dashboard.widget-updated"
+msgstr "Zzzzzzzzzzzz zzzzzzz zzzz zzzzzz. Zzzzz zzzz zzzzzz zz zzzzzz zz zzz zzzzzzz zzzzzzzzzzzzzz zzzzzzzzz."
+
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:12
 msgid "dashboard.widgets-to-push:"
 msgstr "Zzz zzzzzzzzz zzzzzzz zzzz zz zzzzzz:"
+
+#: share/plugin/dashboard/template/cp_dashboard:75
+msgid "dashboard.wiki-pages"
+msgstr "Zzzz Zzzzz"
 
 #: lib/Socialtext/Reports/Utils.pm:55
 msgid "date.apr"
@@ -4481,6 +4651,10 @@ msgstr "Zzzzzz"
 msgid "do.delete"
 msgstr "Zzzzzz"
 
+#: lib/Socialtext/DisplayPlugin.pm:122 lib/Socialtext/DisplayPlugin.pm:154 lib/Socialtext/RecentChangesPlugin.pm:106 lib/Socialtext/WikiwygPlugin.pm:83 lib/Socialtext/WorkspacesUIPlugin.pm:107 lib/Socialtext/WorkspacesUIPlugin.pm:135 lib/Socialtext/WorkspacesUIPlugin.pm:93
+msgid "do.disabled"
+msgstr "zzzzzzzz"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:176 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:316 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:356 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:373 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:195 share/skin/s3/javascript/lightbox/attachment.tt2:40 share/plugin/control/template/control/group.html:129
 msgid "do.done"
 msgstr "Zzzz"
@@ -4500,6 +4674,10 @@ msgstr "Zzzz Zzzzzzz"
 #: share/skin/s3/template/view/page/display:79
 msgid "do.email"
 msgstr "Zzzzz"
+
+#: lib/Socialtext/DisplayPlugin.pm:121 lib/Socialtext/DisplayPlugin.pm:153 lib/Socialtext/RecentChangesPlugin.pm:105 lib/Socialtext/WikiwygPlugin.pm:82 lib/Socialtext/WorkspacesUIPlugin.pm:106 lib/Socialtext/WorkspacesUIPlugin.pm:134 lib/Socialtext/WorkspacesUIPlugin.pm:92
+msgid "do.enabled"
+msgstr "zzzzzzz"
 
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
@@ -4573,7 +4751,7 @@ msgstr "(%1) Zzzz"
 msgid "do.next"
 msgstr "Zzzz"
 
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18 lib/Socialtext/Pluggable/Plugin/Signals.pm:493 lib/Socialtext/Pluggable/Plugin/Signals.pm:503 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
 msgid "do.no"
 msgstr "Zz"
 
@@ -4674,7 +4852,7 @@ msgstr "Zzz Zzzz"
 msgid "do.wikilink"
 msgstr "Zzzz Zzzz"
 
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:8
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11 lib/Socialtext/Pluggable/Plugin/Signals.pm:492 lib/Socialtext/Pluggable/Plugin/Signals.pm:502 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:8
 msgid "do.yes"
 msgstr "Zzz"
 
@@ -5009,6 +5187,10 @@ msgstr "(Zzz zzz zzzzzzzzz zzz zzzz zzzzz.)"
 msgid "email.date:"
 msgstr "Zzzz:"
 
+#: lib/Socialtext/EmailNotifyPlugin.pm:96
+msgid "email.digest-information"
+msgstr "Zzzzz zzzzzz zzzzzzzzzzz"
+
 #. (escaped_str)
 #: share/template/email/email-address-confirmation-completed.html:28 share/template/email/email-address-confirmation-completed.txt:10
 msgid "email.email-confirmed-login-to=app"
@@ -5059,6 +5241,10 @@ msgstr "Zzz zzzzzzzzz zzzzz zz zzzz <a href=\"%1\">zzzzzzzzz</a> zz <a href=\"%3
 #: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "Zzz zzzzzzzzz zzzzz zz zzzz zzzzzzzzz zz %1 zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %2 zz %3."
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:34
+msgid "email.frequency-of-updates"
+msgstr "Zzzzzzzzz zz zzzzzzz"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
@@ -5323,6 +5509,10 @@ msgstr "Zzzzzzzzzz"
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:77
 msgid "email.socialtext-appliance"
 msgstr "Zzzzzzzzzz Zzzzzzzzz"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:68
+msgid "email.sort-order-of-updates"
+msgstr "Zzzz zzzzz zz zzzzzzz"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:17
 msgid "email.subject"
@@ -5663,6 +5853,10 @@ msgstr "Zzzzz zzz z zzzzzzz zzzzzzzz zzzzzzzz zzz zzzz %1"
 msgid "error.change-profile-field-failed"
 msgstr "Zzzzzz zz zzzzzz zzzzzzz zzzzz."
 
+#: lib/Socialtext/Gadgets/Gallery.pm:267
+msgid "error.changing-container-types"
+msgstr "Zzzzz zzzzzzzz zzzzzzzzz zzzzz"
+
 #: share/plugin/control/template/control/desktop-account.html:45
 msgid "error.check-again?"
 msgstr "Zzzzzz zzzzz zzzzz?"
@@ -5747,6 +5941,10 @@ msgstr "Zzzzzz zzzzzzzz zz zzzzz: %1"
 #: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "Zzzzzzz: Zzzzzzzzzzz zzz zzz zzzzzzz zz zzzz zzzzzz zzzzzz. Zz zzzzz zz zzzzzzzz zzzz Zzzzzzzzzz Zzzzzz, zzz zzzz zzzz zz zzzzzz zzzzzzzzzzz zz zzzz zzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Handler/Settings.pm:74
+msgid "error.current-password-not-correct"
+msgstr "Zzzzzzz zzzzzzzz zzz zzzzzzz"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:44
 msgid "error.dashboard-push-widget"
@@ -6441,6 +6639,10 @@ msgstr "Zzz zzzz zzzzzzz z zzzz zz zzzzzz z zzz zzzzzzz."
 #: lib/Socialtext/Handler/ControlPanel.pm:445
 msgid "error.new-account-type-required"
 msgstr "Zzz zzzz zzzzzzz zz zzzzzzz zzzz zz zzzzzz zzz zzzz."
+
+#: lib/Socialtext/Handler/Settings.pm:77
+msgid "error.new-password-does-not-match"
+msgstr "Zzz zzzzzzzz zzzz zzz zzzzz"
 
 #: lib/Socialtext/UserSettingsPlugin.pm:87
 msgid "error.new-password-mismatch"
@@ -7209,6 +7411,10 @@ msgstr "Zzz zzzzzz zzzzzzz z zzzzzzzz zz zzzzzz."
 msgid "error.save-failed"
 msgstr "Zzzzzz zzzzzz zzz zz zzzzzz zzzzz; zzzzzz zzz zzzzz zzzzz."
 
+#: lib/Socialtext/Handler/Settings.pm:135 lib/Socialtext/Handler/Settings.pm:315
+msgid "error.saving-settings"
+msgstr "Zzzzz zzzz zzzzzz zzzzzzzz"
+
 #: lib/Socialtext/Appliance/Model/Setup.pm:356
 msgid "error.saving-system-time-to-hardware-clock"
 msgstr "Zzzzz zzzzzz zzzzzz zzzz zz zzzzzzzz zzzzz"
@@ -7629,6 +7835,14 @@ msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz zzzzzzz z zzzzzz,zzzzz zzzz zzzzzzz zzzzzzz
 #: lib/Socialtext/Workspace.pm:600 share/plugin/control/template/control/workspace_invite.html:269
 msgid "error.wiki-name-required"
 msgstr "Zzzzzzzzz zzzz zz z zzzzzzzz zzzzz."
+
+#: lib/Socialtext/Handler/Settings.pm:166 lib/Socialtext/Handler/Settings.pm:349
+msgid "error.wiki-not-authorized"
+msgstr "Zzz Zzzzzzzzzz"
+
+#: lib/Socialtext/Handler/Settings.pm:165 lib/Socialtext/Handler/Settings.pm:348 lib/Socialtext/Handler/Settings.pm:384
+msgid "error.wiki-not-found"
+msgstr "Zzz Zzzzz"
 
 #. ($self->{uri})
 #: lib/Socialtext/Handler/ControlPanel.pm:1746
@@ -8747,6 +8961,10 @@ msgstr "Zzzzzz"
 msgid "groups.save"
 msgstr "Zzzz"
 
+#: share/plugin/groups/template/search_box_groups:1
+msgid "groups.search"
+msgstr "Zzzzzz"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "groups.search-before-creating"
 msgstr "Zzzzzz zzzzzzzz z zzzzz, zzz zzz zzzzzz zzzzz zzz zzzzzzzzzzzz zzz zzzzzzzz zzzzzz."
@@ -9151,6 +9369,10 @@ msgstr "ZZZZ: Zzz zz zzz zzzzz z zzzzz zzzz zzzz zzzzzz zzz zzzzzz zzzz zzzzz zz
 msgid "info.hello=user"
 msgstr "Zzzzz, %1"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:59
+msgid "info.homepage-blog-data"
+msgstr "Zzzz zzzzz zzzzz zz zzz zzzzz zz z zzzzzzzzz, zzzz zz zz zzz Zzzzzzz Zzzz zz zzz zzzzzzzzz. Zz zzz zzzz zz zzz zzz zzzz zz z zzzzzz zzzzzzz, zzzzz zzzz zzzz zzzz."
+
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1967 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1985
 msgid "info.html-fragments"
 msgstr "(Zzzz: ZZZZ zzzzzzzzz zzz zzz zzzzzzzzzz zz zzzz zzz zzz zzzzz zzz ZZ.)"
@@ -9390,6 +9612,9 @@ msgstr "ZZZ Zzzz Zzzzz"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:11
 msgid "insert.file"
 msgstr "Z Zzzz Zzzzzzzz zz Zzzz Zzzz"
+
+msgid "insert.file-image"
+msgstr "Zzzzz Zzzzzzzz zz Zzzz"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:30
 msgid "insert.from-the-web"
@@ -10285,6 +10510,10 @@ msgstr "Zzzzzzzz Zzzzzzzz"
 msgid "loc.system-default=lang"
 msgstr "%1 (Zzzzzzz)"
 
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:43
+msgid "locales.display-language"
+msgstr "Zzzzzzz Zzzzzzzz"
+
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
 msgid "login.back-to=uri"
@@ -10984,6 +11213,10 @@ msgstr "Zzzzzzz \"%1\""
 msgid "page.deleted=revision"
 msgstr "Zzzzzzz: Zzzzzzzz %1"
 
+#: lib/Socialtext/WikiwygPlugin.pm:78
+msgid "page.double-click-to-edit"
+msgstr "Zzzzzz-zzzzz zz zzzz zzzz"
+
 #: share/skin/s3/template/view/page/display:84
 msgid "page.duplicate"
 msgstr "Zzzzzzzzz Zzzz"
@@ -10998,7 +11231,7 @@ msgid "page.edit"
 msgstr "Zzzz"
 
 msgid "page.edit-as-xhtml"
-msgstr "Zzzzzzz zzz Zzzz <i>(zzzz zzz zzzzzz zzzzzzzzz)</i>"
+msgstr "Zzzz"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
@@ -11216,7 +11449,7 @@ msgid "page.type-wiki"
 msgstr "Zzzz"
 
 msgid "page.type-xhtml"
-msgstr "Zzzz (zzzzz zzz zzzzzz zzzzzzzzz)"
+msgstr "Zzzz"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -11357,9 +11590,9 @@ msgstr "Zzzzzzz"
 
 #: share/plugin/people/template/lite/people.html:7
 msgid "people.search"
-msgstr "Zzzzzz Zzzzzz"
+msgstr "Zzzzzz"
 
-#: share/plugin/people/template/search_box_people:1
+#: share/plugin/people/template/lite/people.html:7
 msgid "people.search:"
 msgstr "Zzzzzz Zzzzzz:"
 
@@ -12347,7 +12580,7 @@ msgstr "Zz:"
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "revision.color"
-msgstr "Zzzzz Zzzz (Zzzzzzzzzzz)"
+msgstr "Zzzzzzzz Zzzz"
 
 #: share/skin/s3/template/view/page/revision_compare:49
 msgid "revision.compare"
@@ -12409,7 +12642,11 @@ msgstr "Zzzz:"
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "revision.view"
-msgstr "Zzzz Zzzzzzzzz"
+msgstr "Zzzzzzzzz Zzzz"
+
+#: lib/Socialtext/SyndicatePlugin.pm:144
+msgid "rss.number-of-posts-to-syndicate"
+msgstr "Zzzzzz zz zzzzz zz zzzzzzzzz"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:59
 msgid "sc.add-tags"
@@ -12994,6 +13231,22 @@ msgstr "Zzz zzzzzz zzz zzzz zzzzzzz zz zzz zzzzzzz."
 msgid "search.too-many=count"
 msgstr "Zzz zzzzzz zzz zzzz zzzzzzz zz zzz zzzzzzz; %1 zzzzz zzz/zz zzzzzzzzzzz zzzzzzz zzzz zzzzz."
 
+#: lib/Socialtext/Handler/Settings.pm:535
+msgid "settings.features"
+msgstr "Zzzzzzzz"
+
+#: lib/Socialtext/Handler/Settings.pm:534
+msgid "settings.manage-users"
+msgstr "Zzzzzz Zzzzz"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:74
+msgid "settings.number-of-items-to-show"
+msgstr "Zzzzzz zz zzzzz zz zzzz"
+
+#: lib/Socialtext/Handler/Settings.pm:131 lib/Socialtext/Handler/Settings.pm:318
+msgid "settings.saved"
+msgstr "Zzzzz"
+
 #: lib/Socialtext/Page.pm:1133
 msgid "sheet.creating"
 msgstr "Zzzzzzzz z Zzz Zzzzzzzzzzz..."
@@ -13001,6 +13254,11 @@ msgstr "Zzzzzzzz z Zzz Zzzzzzzzzzz..."
 #: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"
 msgstr "Zzzzzzzz Zzzz"
+
+#. ($sender->best_full_name)
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "signal.mention-by=sender"
+msgstr "Zzzzzz zzzzzzz zz %1"
 
 #: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "signals.about-bookmarklet!"
@@ -13236,6 +13494,10 @@ msgid "signals.reply-to-signal-message=url"
 msgstr "Zzzz zzzzzzz zzz zzzz zz Zzzzzzzzzz Zzzzzzz. Zzz zzz zzzzz zz zzzz zzzzzzz <a href=\"%1\">zzzz</a>."
 
 #: share/plugin/signals/template/search_box_signals:1
+msgid "signals.search"
+msgstr "Zzzzzzz"
+
+#: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
 msgstr "Zzzzzz Zzzzzzz:"
 
@@ -13247,13 +13509,17 @@ msgstr "Zzzzzzzz zzzzzz"
 msgid "signals.send-as-private-message"
 msgstr "Zzzz zz zzzzzzz zzzzzzz"
 
-#: share/plugin/signals/template/element/settings/signals_settings_section:11
+#: share/plugin/signals/template/element/settings/signals_settings_section:11 lib/Socialtext/Pluggable/Plugin/Signals.pm:498
 msgid "signals.send-mentions-of-me-as-email"
-msgstr "Zzzz zzzzzzzz zz zz zz zzzzz"
+msgstr "Zzzz Zzzzzzzz zz Zz zz Zzzzz"
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:26
 msgid "signals.send-private-messages-as-email"
-msgstr "Zzzz zzzzzzz zzzzzzzz zz zzzzz"
+msgstr "Zzzz Zzzzzzz Zzzzzzzz zz Zzzzz"
+
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:488
+msgid "signals.send-private-signals-as-email"
+msgstr "Zzzz Zzzzzzz Zzzzzzz zz Zzzzz"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
@@ -13430,9 +13696,17 @@ msgstr "Zzzzzzzz"
 msgid "sort.ascending=field"
 msgstr "Zzzz zz %1 zz zzzzzzzzz zzzzz"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:121
+msgid "sort.by-create-time"
+msgstr "zz zzzzzz zzzz"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:71
 msgid "sort.by-created"
 msgstr "Zzzz zzzzzzz zz zzzzz zzzzzz zzzz"
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:120
+msgid "sort.by-last-updated-time"
+msgstr "zz zzzz zzzzzzz zzzz"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:65
 msgid "sort.by-updated"
@@ -13646,15 +13920,31 @@ msgstr "%1 zz %2"
 msgid "time.count=days"
 msgstr "%*(%1,zzz)"
 
+#: lib/Socialtext/TimeZonePlugin.pm:152
+msgid "time.date-format"
+msgstr "Zzzz Zzzzzz"
+
+#: lib/Socialtext/TimeZonePlugin.pm:113
+msgid "time.daylight-savings-summer"
+msgstr "Zzzzzzzz Zzzzzzz/Zzzzzz"
+
 #. (int($age / 86400)
 #: lib/Socialtext/PageRevision.pm:377
 msgid "time.days=count"
 msgstr "%1 zzzz"
 
+#: lib/Socialtext/TimeZonePlugin.pm:228
+msgid "time.do-not-include-seconds"
+msgstr "Zz zzz Zzzzzzz Zzzzzzz"
+
 #. (int($age / 3600)
 #: lib/Socialtext/PageRevision.pm:376
 msgid "time.hours=count"
 msgstr "%1 zzzzz"
+
+#: lib/Socialtext/TimeZonePlugin.pm:227
+msgid "time.include-seconds-in-time-format"
+msgstr "Zzzzzzz Zzzzzzz zz Zzzz Zzzzzz"
 
 #. (int($age / 60)
 #: lib/Socialtext/PageRevision.pm:375
@@ -13674,6 +13964,14 @@ msgstr "Zzzzz"
 #: lib/Socialtext/PageRevision.pm:374
 msgid "time.seconds=count"
 msgstr "%1 zzzzzzz"
+
+#: lib/Socialtext/TimeZonePlugin.pm:195
+msgid "time.time-format"
+msgstr "Zzzz Zzzzzz"
+
+#: lib/Socialtext/TimeZonePlugin.pm:81
+msgid "time.timezone"
+msgstr "Zzzzzzzz"
 
 #. (int($age / 604800)
 #: lib/Socialtext/PageRevision.pm:378
@@ -14630,6 +14928,14 @@ msgstr "Zzzz zzz"
 msgid "watch.stop"
 msgstr "Zzzz Zzzzzzzz"
 
+#: lib/Socialtext/WatchlistPlugin.pm:80
+msgid "watchlist.digest-information"
+msgstr "Zzzzzzzzz zzzzzz zzzzzzzzzzz"
+
+#: lib/Socialtext/WatchlistPlugin.pm:46
+msgid "watchlist.frequence-of-updates"
+msgstr "Zzzzzzzzz zz zzzzzzz"
+
 #: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
 msgid "widget.100%"
 msgstr "Zzz zzzz zzzzz (100%)"
@@ -15342,6 +15648,10 @@ msgstr "Zzzz '%1' zzzzzz zzzz z zzzz."
 msgid "wiki.double-click-to-edit?"
 msgstr "Zzzzzz-zzzzz zz zzzz z zzzz?"
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:102
+msgid "wiki.email-notifications"
+msgstr "Zzzzz Zzzzzzzzzzzzz"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:28
 msgid "wiki.email-senders?"
 msgstr "Zzz zzz zzzz zzzzz zz zzzz zzzzzzzzz?"
@@ -15472,9 +15782,17 @@ msgstr "Zzzzzzzzzzzzz zzz Zzzzz"
 msgid "wiki.only-email-from=role"
 msgstr "Zzzz %1 zzz zzzz zzzzz zz zzzz zzzzzzzzz."
 
+#: lib/Socialtext/WorkspacesUIPlugin.pm:147
+msgid "wiki.only-registered-users"
+msgstr "Zzzz Zzzzzzzzzz Zzzzz"
+
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:13
 msgid "wiki.permission-type:"
 msgstr "Zz zzz zzzz zz zzz zz zzzz zzzzzzzzz zz:"
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:74
+msgid "wiki.placement-of-emailed-content"
+msgstr "Zzzzzzzzz zz zzzzzzz zzzzzzz"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:6 share/skin/s3/template/view/settings:61 share/skin/s3/template/workspaces_created_section.html:25
 msgid "wiki.privacy"
@@ -15488,10 +15806,26 @@ msgstr "Zzzzzz zzzzzzzzzz"
 msgid "wiki.public:"
 msgstr "Zzz zzzz zzzz zzzzzz zz zzzz zzz zzzzzzzzzz zz zzz zz zzzzz zzzzzz zzzzz:"
 
+#: lib/Socialtext/RecentChangesPlugin.pm:101
+msgid "wiki.recent-changes-sidebar-widget"
+msgstr "Zzzz'z Zzz zzzzzzz zzzzzz"
+
+#: lib/Socialtext/DisplayPlugin.pm:149
+msgid "wiki.recently-viewed-sidebar-widget"
+msgstr "Zzzzzzzz Zzzzzz zzzzzzz zzzzzz"
+
 #. ($group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1527
 msgid "wiki.removed=group"
 msgstr "%1 Zzzzz zzz zzzz zzzzzzz zzzz zzzz Zzzzzzzzz"
+
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
+msgid "wiki.search"
+msgstr "Zzzz Zzzzzzzzz"
+
+#: share/skin/s3/template/element/search_form:23
+msgid "wiki.search-all"
+msgstr "Zz Zzzzzzzzzz"
 
 #: share/skin/s3/template/element/search_form:23
 msgid "wiki.search-all:"
@@ -15513,6 +15847,10 @@ msgstr "Z zzzzzz zzz zzzz zzz zz zzzz zzzzzzzzz. Zzz zzzzzzzzz zzzzz zzzzzzzzz z
 #: lib/Socialtext/BreadCrumbsPlugin.pm:33
 msgid "wiki.show-breadcrumbs-sidebox?"
 msgstr "Zzzzzzz \"Zzzzzzzz Zzzzzz\" zzzz zzzz zzz?"
+
+#: lib/Socialtext/DisplayPlugin.pm:117
+msgid "wiki.show-page-snippets-on-mouse-hover"
+msgstr "Zzzz zzzz zzzzzzzz zz zzzzz zzzzz"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "wiki.show-sidebox?"
@@ -15546,6 +15884,10 @@ msgstr "Zzz: %1"
 #: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:153
 msgid "wiki.tags"
 msgstr "Zzzz"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:43
+msgid "wiki.timeframe-for-changes"
+msgstr "Zzzzzzzzz zzz zzzzzzz"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "wiki.title"
@@ -15721,4 +16063,4 @@ msgid "wikiwyg.widget"
 msgstr "Zzzzzz z Zzzzzz"
 
 msgid "xhtml.creating"
-msgstr "Zzzzzzzz z Zzzz zzzzz zzz zzzzzz zzzzzzzzz..."
+msgstr "Zzzzzzzz z Zzzz..."

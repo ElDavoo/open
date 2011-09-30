@@ -1,0 +1,203 @@
+<script language="javascript">
+
+jQuery(document).ready(function() {
+    var newUsers = [];
+
+    function renderNewUsers() {
+        var ul = jQuery('<ul>');
+        for (var i in newUsers) {
+            li = jQuery('<li>')
+              .append(newUsers[i].best_full_name)
+              .append('<a id="' + newUsers[i].user_id + '" href="#" class="remove icon"><span>remove</span><div class="removeIcon"></div></a>')
+              .append('<input type="hidden" name="workspace.do.invite_user" value="' + newUsers[i].user_id + '">'); 
+
+            if (i == 0) {
+                li.addClass('first');
+            }
+            ul.append(li);
+        }
+        jQuery('#newUsers').html('');
+        jQuery('#newUsers').append(ul);
+
+        // Bind the remove icon to remove the user from the list
+        jQuery('#newUsers a.remove').click(function() {
+            var user_id = $(this).attr('id');
+            newUsers = $.grep(newUsers, function(u) {
+                return user_id != u.user_id;
+            });
+            renderNewUsers();
+            return false;
+        });
+    };
+
+    jQuery('#user').lookahead({
+        url: '/data/users',
+        clearOnHide: true,
+        requireMatch: [%- IF space.require_registered -%]true[%- ELSE -%]false[%- END -%],
+        params: {accept: 'application/json'},
+        linkText: function (user) {
+            return [user.best_full_name, user.user_id];
+        },
+        getEntryThumbnail: function(user) {
+            return '/data/people/' + user.value + '/small_photo';
+        },
+        displayAs: function(user) { return user.title; },
+        onAccept: function(id, item) {
+            jQuery('#user').val('');
+
+            var user = item.title
+                ? {best_full_name: item.title, user_id: item.value}
+                : {best_full_name: id, user_id: id};
+
+            newUsers.push(user);
+            renderNewUsers();
+        },
+    });
+
+    jQuery(".lookahead-prompt").one('click', function() {
+        $(this).val('');
+    });
+});
+
+</script>
+
+<h3>[% loc('invite.new-users') %]</h3>
+
+[% IF invite_errors %]
+  <p class="error">
+    [% loc('There were errors inviting the following users.') %]</p>
+    <ul>
+  [% FOREACH error IN invite_errors.keys %]
+      <li>
+    [% IF error == 'ACCOUNT DOMAIN FILTER' %]
+      [% loc('The following users were not invited because their email domain does not match [_1].', space.domain_restriction) %]
+    [% ELSIF error == 'WORKSPACE INVITATION FILTER' %]
+      [% loc('The following users were not invited because their email address does not match the workspace invite filter "[_1]".', space.invitation_filter) %]
+    [% ELSIF error == 'USER DELETED' %]
+      [% loc('The following users were not invited because they have been deleted. If you wish to invite the users you first need to undelete them.') %]
+    [% ELSIF error == 'WORKSPACE RESTRICT TO REGISTERED' %]
+      [% loc('The following users were not invited because they are not registered users of Socialtext.') %]
+    [% ELSIF error == 'INVALID EMAIL ADDRESS' %]
+      [% loc('The following email addresses are not valid.') %]
+    [% ELSE %]
+      [% loc('The following users generated a [_1] error when attempting to invite.', error) %]
+    [% END %]
+    [% PROCESS list_of_emails emails=invite_errors.$error %]
+    </li>
+  [% END %]
+    </ul>
+[% END %]
+
+[% IF space.require_registered %]<p>[% loc('Only registered Socialtext users may be invited to this workspace.') %]</p>[% END %]
+
+[% IF space.invitation_filter %]<p>[% loc('Only users whose email address matches the pattern "[_1]" may be invited to this workspace.', space.invitation_filter) %]</p>[% END %]
+
+[% IF space.domain_restriction %]<p>[% loc('Only users whose email address is in the "[_1]" domain may be invited to this workspace.', space.domain_restriction) %]</p>[% END %]
+
+<div class="alpha grid_5 input-label">
+  [% loc('Email address to invite') %]:
+</div>
+<div class="omega grid_15">
+    <input id="user" name="please.ignore.me"
+      class="lookahead-prompt" type="text"
+      value="[% loc('begin typing email here...') %]"
+    />
+
+    <div class="users" id="newUsers">
+    </div>
+</div>
+<div class="clear"></div>
+
+<hr />
+
+[% IF space.auw_for %]
+  <div class="grid_12">
+    [% loc('Note: All users of the [_1] account are members of this workspace.', space.auw_for) %]
+  </div>
+  <div class="clear"></div>
+[% END %]
+
+[% IF space.users.size > 0 %]
+<div class="grid_12">
+  <h3>[% loc('Manage Users') %]</h3>
+  <table>
+    <tr>
+      <th class="first">[% loc('do.remove') %]</th>
+      <th>[% loc('user.email-address') %]</th>
+      <th>[% loc('user.admin') %]</th>
+      <th class="last">[% loc('password.reset') %]</th>
+    </tr>
+
+  [% FOREACH user_and_role IN space.users %]
+    [% user = user_and_role.0 %]
+    [% role = user_and_role.1 %]
+
+    <tr>
+      <td class="first">
+        <input type="checkbox" value="[% user.user_id %]"
+          name="workspace.do.remove_user" />
+      </td>
+      <td>[% user.name_and_email | html %] </td>
+      <td>
+        <input type="checkbox" value="[% user.user_id %]"
+         name="workspace.do.should_be_admin"
+         [% IF role.name == 'admin' %]checked="checked"[% END %]
+        />
+        <input type="hidden" value="[% user.user_id %].[% role.role_id %]"
+          name="workspace.do.valid_user" />
+      </td>
+      <td class="last">
+        <input type="checkbox" value="[% user.user_id %]"
+          name="workspace.do.reset_password"
+          [% UNLESS user.can_update_store %]disabled="disabled"[%END%]
+        />
+      </td>
+  </tr>
+
+  [% END %]
+  </table>
+</div>
+<div class="clear"></div>
+
+<hr />
+[% END %]
+
+[% IF space.groups.size > 0 %]
+<div class="grid_12">
+  <h3>[% loc('Member Groups') %]</h3>
+
+  <table>
+    <tr>
+      <th class="first">[% loc('group.name') %]</th>
+      <th>[% loc('config.users') %]</th>
+      <th class="last">[% loc('user.role') %]</th>
+    </tr>
+
+  [% FOREACH group_and_role IN space.groups %]
+    [% group = group_and_role.0 %]
+    [% role = group_and_role.1 %]
+
+    <tr>
+      <td class="first"><a href="/st/group/[% group.group_id %]">
+        [% group.driver_group_name | html %]</a>
+      </td>
+      <td class="right">[% group.user_count %]</td>
+      <td class="last">[% role.name | html %]</td>
+    </tr>
+
+  [% END %]
+
+  </table>
+</div>
+<div class="clear"></div>
+
+<hr />
+[% END %]
+
+[% BLOCK  list_of_emails %]
+  <ul>
+  [% FOR email IN emails %]
+    <li>[% email | html %]</li>
+  [% END %]
+  </ul>
+[% END %]

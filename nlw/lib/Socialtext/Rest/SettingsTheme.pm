@@ -5,6 +5,7 @@ use Socialtext::HTTP qw(:codes);
 use Socialtext::Prefs::System;
 use Socialtext::Upload;
 use Socialtext::JSON qw(encode_json decode_json);
+use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Entity';
 
@@ -41,7 +42,7 @@ sub if_valid_request {
     return $coderef->();
 }
 
-sub GET_theme {
+sub GET_json {
     my $self = shift;
     my $rest = shift;
 

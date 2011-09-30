@@ -52,6 +52,17 @@ sub revision_list {
         push @$rows, $row;
     }
 
+    $self->hub->helpers->add_js_bootstrap({
+        page => {
+            id       => $page->page_id,
+            title    => $page->title,
+            type     => $page->type,
+            full_uri => $page->full_uri,
+
+            new_revision_id => $self->cgi->new_revision_id,
+        },
+    });
+
     $self->screen_template('view/page_revision_list');
     $self->render_screen(
         revision_count => $page->revision_count,
@@ -296,8 +307,8 @@ use Algorithm::Diff::XS;
 sub diff_rows {
     my $self = shift;
     return $self->compare(
-        $self->before_page->content,
-        $self->after_page->content
+        $self->before_page->to_wikitext,
+        $self->after_page->to_wikitext
     );
 }
 

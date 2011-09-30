@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-08 13:54+0800\n"
+"PO-Revision-Date: 2011-09-28 18:42+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgstr "Blogs"
 
 #: share/skin/s3/template/element/settings/weblog_create:5
 msgid "blog.create"
-msgstr "Create A Blog"
+msgstr "Create Blog"
 
 #: share/skin/s3/template/view/weblog:78
 msgid "blog.edit"
@@ -1726,7 +1726,7 @@ msgid "page.edit"
 msgstr "Edit"
 
 msgid "page.edit-as-xhtml"
-msgstr "Convert and Edit <i>(with new editor prototype)</i>"
+msgstr "Edit"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
@@ -1878,7 +1878,7 @@ msgid "page.top"
 msgstr "Top of page"
 
 msgid "page.type-xhtml"
-msgstr "Page (using new editor prototype)"
+msgstr "Page"
 
 msgid "page.type-spreadsheet"
 msgstr "Spreadsheet"
@@ -1959,7 +1959,7 @@ msgstr "By:"
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "revision.color"
-msgstr "Color View (Unformatted)"
+msgstr "Wikitext View"
 
 #: share/skin/s3/template/view/page/revision_compare:49
 msgid "revision.compare"
@@ -2016,7 +2016,7 @@ msgstr "Tags:"
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "revision.view"
-msgstr "View Formatted"
+msgstr "Formatted View"
 
 #: share/skin/s3/template/view/listview:44 share/skin/s3/template/view/listview:57
 msgid "search.be-more-specific"
@@ -2405,9 +2405,17 @@ msgstr "You have free access to view and contribute to any of these public wikis
 msgid "wiki.search-all:"
 msgstr "Search My Workspaces:"
 
+#: share/skin/s3/template/element/search_form:23
+msgid "wiki.search-all"
+msgstr "My Workspaces"
+
 #: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
 msgid "wiki.search:"
 msgstr "Search This Workspace:"
+
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
+msgid "wiki.search"
+msgstr "This Workspace"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:35
 msgid "wiki.send-email-notifications?"

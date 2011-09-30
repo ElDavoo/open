@@ -1,0 +1,88 @@
+[% MACRO selected(types) FOR type = types; IF type == container.type %] selected [% END; END %]
+
+<div class="[% selected(['dashboard']) %]grid_3 navGrid first">
+  <div class="navLink">
+      <a class="dashboard" href="/st/dashboard">[% loc('nav.dashboard') %]</a>
+  </div>
+  <div class="underline"></div>
+</div>
+<div id="global-people-directory" class="[% selected(['peoplelist','profile']) %]grid_3 navGrid">
+  <div class="navLink">
+      <a class="people" href="/st/people">[% loc('nav.people') %]</a>
+  </div>
+  <div class="underline"></div>
+</div>
+<div id="global-groups-directory" class="[% selected(['group_directory']) %]grid_3 navGrid">
+  <div class="navLink">
+      <a class="groups" href="/st/groups">[% loc('Groups') %]</a>
+  </div>
+  <div class="underline"></div>
+</div>
+<div class="[% selected(['signals']) %]grid_3 navGrid">
+  <div class="navLink">
+      <a class="activities" href="/st/signals">[% loc('nav.signals') %]</a>
+  </div>
+  <div class="underline"></div>
+</div>
+<div id="global-workspace-list" class="[% selected(['spaces']) %]grid_3 navGrid">
+  <div class="navLink">
+      <a class="spaces" href="/?action=workspaces_listall">[% loc('nav.wikis') %]</a>
+  </div>
+  <div class="underline"></div>
+</div>
+<div class="grid_9 navGrid last">
+  <div class="navItem">
+    <div class="buttons">
+        [% IF invite_url %]<a class="invite" id="st-wiki-subnav-link-invite" href="[% invite_url %]">[% loc("nav.invite!") %]</a>[% END %]
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="staticUnderline"></div>
+</div>
+<div class="clear"></div>
+
+<script>
+    st.buttons.show([% container.buttons.json || buttons.json %]);
+
+    $("#global-workspace-list").navList([
+        {  
+            title: loc("wiki.all"),
+            href: "/?action=workspaces_listall"
+        },
+        {  
+            data: Socialtext.workspaces,
+            defaultId: 'default-workspace-link',
+            href: function(w) { return '/' + w.name },
+            title: function(w) { return w.label },
+            sort: function(a,b) {
+                if (a['default']) return -1;
+                if (b['default']) return 1;
+                if (a.name == b.title) return 0;
+                return (a.title < b.title) ? -1 : 1;
+            },
+            emptyMessage:
+                loc("nav.no-wikis")
+        }
+    ]);
+
+    $('#global-people-directory').peopleNavList();
+
+    $("#global-groups-directory").navList([
+      { title: loc("groups.directory"), href: "/st/groups" },
+      {
+        url: "/data/groups?minimal=1",
+        icon: function(g) {
+            return '/data/groups/' + g.group_id + '/small_photo'
+        },
+        href: function(g) { return '/st/group/' + g.group_id },
+        title: function(g) { return g.name },
+        emptyMessage: loc("error.not-member-of-any-groups")
+      }
+      [%- IF can_create_groups -%]
+      ,{
+        title: loc("groups.create-group"),
+        onclick: "socialtext.dialog.show('groups-create'); return false;"
+      }
+      [%- END -%]
+    ]);
+</script>

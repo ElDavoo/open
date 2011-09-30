@@ -228,13 +228,13 @@ sub st_widget_settings {
 sub st_cycle_network_select {
     my ($self, $numelements) = @_;
     $self->handle_command('wait_for_element_visible_ok','network-select','30000'); 
-    $self->handle_command('pause',3000);
+    $self->handle_command('pause_ok',3000);
     for (my $idx=0; $idx<$numelements;$idx++) {
-        $self->handle_command('pause',3000);
+        $self->handle_command('pause_ok',3000);
         $self->handle_command('select_ok','network-select',"index=$idx");    
     }
     $self->handle_command('select_ok','network-select','index=0');
-    $self->handle_command('pause',3000);     
+    $self->handle_command('pause_ok',3000);     
 }
 
 =head2 st_widget_title_like ( logical_name, regex )
@@ -246,12 +246,13 @@ This assumes that the currently selected frame is the "parent" container frame.
 
 =cut
 
-sub st_widget_title_like {
-    my ($self, $logical, $opt1) = @_;
+sub st_widget_title {
+    my ($self, $logical, $title) = @_;
+    my $cmdx = "//div[\@class='widgetTitle']/h1[text()='" . $title . "']";
     eval {
-        $self->{selenium}->text_like_ok("//span[\@class='widgetHeaderTitleText' and \@id='gadget-".$self->{_widgets}{$logical}."-title-text']", $opt1);
+        $self->handle_command('wait_for_element_present_ok',$cmdx,'5000');
     };
-    ok( !$@, "st-widget-title-like" );
+    ok( !$@, "st-widget-title" );
 
 }
 
@@ -365,11 +366,13 @@ sub st_single_widget_in_dashboard {
     my ($self, $linkid) = @_;
     eval {
         $self->handle_command('st-empty-container');
-        $self->handle_command('wait_for_element_visible_ok','link=Add Widget','30000');
-        $self->handle_command('click_and_wait','link=Add Widget');
+        $self->handle_command('wait_for_element_visible_ok','st-add-widget','30000');
+        $self->handle_command('click_ok','st-add-widget');
         my $str = '//a[@id=' . "'" . $linkid . "'" . ']';
-        $self->handle_command('wait_for_element_visible_ok', $str, 30000);
-        $self->handle_command('click_and_wait' ,$str); 
+        $self->handle_command('wait_for_element_present_ok', $str, 30000);
+        $self->handle_command('click_ok' ,$str); 
+        $self->handle_command('pause_ok',8000);
+        $self->handle_command('refresh_ok');
     };
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
@@ -400,7 +403,7 @@ sub st_send_page_signal {
    $self->st_type_signal($signaltosend);
    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
    $self->handle_command('click_ok', '//a[@class="btn post"]');
-   $self->handle_command('pause',3000);
+   $self->handle_command('pause_ok',3000);
    $self->handle_command('set_Speed',0);
 
 }
@@ -504,7 +507,7 @@ sub st_send_signal_in_activities_widget {
     $self->st_prepare_signal_within_activities_widget($signaltosend, $private);
     $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
     $self->handle_command('click_ok', '//a[@class="btn post"]');
-    $self->handle_command('pause',3000); 
+    $self->handle_command('pause_ok',3000); 
 }
 
 =head2 st_send_signal_via_activities_widget 
@@ -536,7 +539,7 @@ PostCondition: Text is verfied (or not), frame focus remains on activities widge
 
 sub st_verify_text_within_activities_widget {
     my ($self, $texttofind) = @_;
-    $self->handle_command('pause', 3000);
+    $self->handle_command('pause_ok', 3000);
     #If is regexp,
     if ($texttofind=~/^qr\//) {
         $self->handle_command('text_like','//body', $texttofind);
@@ -594,7 +597,7 @@ sub st_element_not_present_in_activities_widget {
     my ($self, $widgetname, $linktofind) = @_;
     eval {
         $self->handle_command('st-select-widget-frame', $widgetname);
-        $self->handle_command('pause', 3000);
+        $self->handle_command('pause_ok', 3000);
         $self->handle_command('wait_for_element_not_present_ok', $linktofind);
         $self->handle_command('select-frame', 'relative=parent');
     };
@@ -615,7 +618,7 @@ sub st_verify_link_in_activities_widget {
     my ($self, $widgetname, $linktofind) = @_;
     eval {
         $self->handle_command('st-select-widget-frame', $widgetname);
-        $self->handle_command('pause', 3000);
+        $self->handle_command('pause_ok', 3000);
         $self->handle_command('wait_for_element_visible_ok', $linktofind);
         $self->handle_command('select-frame', 'relative=parent');
     };
@@ -632,16 +635,14 @@ Radiotype should be self-join-radio or private-radio
 sub st_create_group {
     my ($self, $groupname, $groupdesc, $radiotype) = @_;
     $self->handle_command('comment',"st_create_group called with params '$groupname','$groupdesc','$radiotype'");
-    $self->handle_command('set_Speed',4000);
+    $self->handle_command('set_Speed',2000);
     $self->handle_command('wait_for_element_present_ok','link=Create Group...',30000);
     $self->handle_command('click_ok','link=Create Group...');
     $self->handle_command('wait_for_element_visible_ok','st-create-group-next', 30000);
     $self->handle_command('wait_for_element_visible_ok', $radiotype);
     $self->handle_command('check_ok', $radiotype);
     $self->handle_command('click_ok','st-create-group-next');
-    $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
-    $self->handle_command('pause','8000');
-    $self->handle_command('text_like','//body','Create a Group');
+    $self->handle_command('pause_ok','4000');
     $self->handle_command('st-name-widget', 1,'create_group');
     $self->handle_command('st-select-widget-frame','create_group');
     $self->handle_command('wait_for_element_visible_ok','name', 30000);
@@ -664,13 +665,13 @@ sub st_find_user {
     my ($self, $user_id, $label) = @_;
     eval {
         $self->handle_command('open_ok','/?action=people;tag=;sortby=best_full_name;limit=20;account_id=all');
-        $self->handle_command('pause','10000');
-        $self->handle_command('wait_for_element_visible_ok','st-search-action', 30000);
-        $self->handle_command('wait_for_element_visible_ok', 'st-search-term', 30000);
-        $self->handle_command('wait_for_element_visible_ok', 'st-search-submit', 30000);
-        $self->handle_command('select_ok', 'st-search-action', 'Search People:');
+        $self->handle_command('wait_for_text_present_ok','All People','10000');
+        $self->handle_command('wait_for_element_visible_ok','st-search-action', 5000);
+        $self->handle_command('wait_for_element_visible_ok', 'st-search-term', 5000);
+        $self->handle_command('wait_for_element_visible_ok', 'st-search-submit', 5000);
+        $self->handle_command('select_ok', 'st-search-action', 'People');
         $self->handle_command('type_ok', 'st-search-term', $user_id);
-        $self->handle_command('pause', '1000');
+        $self->handle_command('pause_ok', '1000');
         $self->handle_command('click_and_wait', 'st-search-submit');
 
         $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);

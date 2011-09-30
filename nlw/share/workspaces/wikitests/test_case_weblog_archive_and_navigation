@@ -25,6 +25,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Weblog Archive %%start_time%% content |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
+| *Comment* | Test Case: Weblog Archive and Navigation can't be folded |  |
 | st-pause-click | 2000 | st-save-button-link |
 
 | *Comment* | Test Case: Weblog Archive and Navigation save and return |  |

@@ -1,0 +1,6 @@
+
+| *Comment* | st-edit-this-page: ws=%%ws= thispage=%%thispage=%% content=%%content=%% |  |
+
+
+| open_ok | %%ws=%%/?%%thispage=%% |  |
+| st-save-page | content=%%content=%% |  |

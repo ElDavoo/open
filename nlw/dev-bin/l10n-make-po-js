@@ -107,7 +107,8 @@ sub gen_js {
     if ($lang ne 'en') {
         $lexicon = { %EnglishLexicon, %$lexicon };
     }
-    my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
+    mkdir "share/javascript/l10n" unless -d "share/javascript/l10n";
+    my $js_file = "share/javascript/l10n/$lang.js";
     open my $js, '>:utf8', $js_file;
     print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
     my $json = encode_json $lexicon;
@@ -129,6 +130,8 @@ sub gen_po {
     my $en_po = "share/l10n/en.po";
     $en_po = $use_first = '' if $lang eq 'en';
     system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} $en_po > $po_file");
+    my @diff_lines = grep { /^[-+] / and not /PO-Revision-Date/ } qx(git diff $po_file);
+    system(git => checkout => $po_file) unless @diff_lines;
     if ($lang ne 'en') {
         system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file.orig");
         system("diff -du $po_file.orig $po_file | grep ^+ > $po_file.diff");

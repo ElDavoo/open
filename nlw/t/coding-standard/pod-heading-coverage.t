@@ -63,7 +63,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::Events::Recorder
     Socialtext::Events::Reporter
     Socialtext::Exceptions
-    Socialtext::FavoritesPlugin
     Socialtext::FetchRSSPlugin
     Socialtext::File
     Socialtext::File::Stringify
