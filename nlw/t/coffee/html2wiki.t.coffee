@@ -30,6 +30,19 @@ tests = [
   ['<a href="Disable%20Google%20Analytics">Disable Google Analytics</a></li>', '[Disable Google Analytics]']
 ]
 
+tests = [
+  ["""
+<img data-wafl=".html
+foo
+.html" src="/data/wafl/Raw%20HTML%20block.%20Click%20to%20edit." alt="Raw HTML block. Click to edit." class="st-widget" /><img data-wafl="{user: q@q.q}" alt="user: q@q.q" src="/data/wafl/user%3A%20q%40q.q" class="st-widget st-inline-widget" />
+  """, """
+.html
+foo
+.html
+{user: q@q.q}
+  """]
+]
+
 plan tests.length*2
 
 makeStep = ([html, wiki, isErrorExpected]) ->

@@ -78,6 +78,16 @@ foo@bar.org
 </tr>
 </table><br />\n
   """]
+  ["""
+.html
+foo
+.html
+{user: q@q.q}
+  """, """
+<img data-wafl=".html
+foo
+.html" src="/data/wafl/Raw%20HTML%20block.%20Click%20to%20edit." alt="Raw HTML block. Click to edit." class="st-widget" /><img data-wafl="{user: q@q.q}" alt="user: q@q.q" src="/data/wafl/user%3A%20q%40q.q" class="st-widget st-inline-widget" />
+  """]
 ]
 
 for [wiki, html] in tests
