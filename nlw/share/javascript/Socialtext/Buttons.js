@@ -167,7 +167,7 @@ Socialtext.prototype.buttons = {
                 .addClass(button_class)
                 .attr('id', button_id)
                 .button({
-                    label: button_text,
+                    label: button_text
                 })
                 .click(button_handler[button_id] || function() {
                     throw new Error(button_id + ' has no handler');
