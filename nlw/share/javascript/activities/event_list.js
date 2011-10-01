@@ -813,7 +813,7 @@ $.extend(Activities.EventList.prototype, {
                 url: $a.attr('href'),
                 video: $video.size(),
                 width: $video.data('width') || 400,
-                height: $video.data('height') || 300,
+                height: $video.data('height') || 300
             }
         });
     },
