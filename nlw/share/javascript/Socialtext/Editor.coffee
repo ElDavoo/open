@@ -1,4 +1,5 @@
 $ = jQuery
+Socialtext.prototype ?= {}
 Socialtext::editor =
   insert_menu_extra_items: [null]
   ui_expand_setup: (->)
