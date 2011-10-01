@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/miki.css" />
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/jquery-mobile.css" />
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/inline.css" />
-        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/mobile-widget.css" />
+        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/widget-mobile.css" />
         <script src="[% share %]/javascript/socialtext-popout.js"></script>
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang || 'en' %].jgz"></script>
 
