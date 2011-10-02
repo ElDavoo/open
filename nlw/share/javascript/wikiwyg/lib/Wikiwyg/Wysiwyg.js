@@ -1305,10 +1305,6 @@ proto.do_link = function(widget_element) {
     this._do_link(widget_element);
 }
 
-proto.do_video = function() {
-    this.do_widget_video();
-}
-
 proto.do_widget = function(widget_element) {
     if (widget_element && widget_element.nodeName) {
         this.do_opensocial_setup(widget_element);
@@ -1497,7 +1493,7 @@ proto.do_new_table = function() {
                 self.closeTableDialog();
                 return false;
             });
-        jQuery("#lightbox").one("dilalogclose", function() {
+        jQuery("#lightbox").one("dialogclose", function() {
             self.set_focus();
         });
     }
@@ -3405,10 +3401,6 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         return;
     }
 
-    if ( Wikiwyg.Widgets.widget_editing > 0 )
-        return;
-    Wikiwyg.Widgets.widget_editing++;
-
     if ( widget_element.nodeName ) {
         this.currentWidget = this.parseWidgetElement(widget_element);
         this.currentWidget = this.setTitleAndId(this.currentWidget);
@@ -3417,8 +3409,6 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     else {
         this.currentWidget = widget_element;
     }
-
-    this.currentWidget.skin_path = nlw_make_s2_path('');
 
     // Give the templates direct access to loc()
     // This should not be needed after new Jemplate release...
@@ -3513,10 +3503,8 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
             );
     }, 500);
 
-    // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
-    jQuery('#lightbox').one('dilalogclose', function(){
+    jQuery('#lightbox').one('dialogclose', function(){
         clearInterval(intervalId);
-        Wikiwyg.Widgets.widget_editing--;
         if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
             self.wikiwyg.current_mode.set_focus();
         }
@@ -3527,14 +3515,14 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
             jQuery('#st-widgets-moreoptions')
                 .html(loc('wafl.fewer-options'))
             jQuery('#st-widgets-optionsicon')
-                .attr('src', nlw_make_s2_path('/images/st/hide_more.gif'));
+                .attr('src', '/nlw/plugin/ckeditor/images/ckeditor/hide_more.gif');
             jQuery('#st-widgets-moreoptionspanel').show();
         },
         function () {
             jQuery('#st-widgets-moreoptions')
                 .html(loc('wafl.more-options'))
             jQuery('#st-widgets-optionsicon')
-                .attr('src', nlw_make_s2_path('/images/st/show_more.gif'));
+                .attr('src', '/nlw/plugin/ckeditor/images/ckeditor/show_more.gif');
             jQuery('#st-widgets-moreoptionspanel').hide();
         }
     );
@@ -3609,22 +3597,29 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     if (form.size) {
         jQuery(form.width).click(function (){
             form.size[form.size.length-1].checked = true;
-            disable(form.height);
+            if (form.height != null) {
+              disable(form.height);
+            }
             enable(form.width);
         }).focus(function() {
             $(this).triggerHandler('click');
         });
-        jQuery(form.height).click(function () {
-            form.size[form.size.length-1].checked = true;
+        if (form.height != null) {
+            jQuery(form.height).click(function() {
+                form.size[form.size.length - 1].checked = true;
+                disable(form.width);
+                return enable(form.height);
+            }).focus(function() {
+                return $(this).triggerHandler("click");
+            });
+        }
+        if (!Number((_ref2 = form.height) != null ? _ref2.value : void 0)) {
+            if (form.height != null) {
+                disable(form.height);
+            }
+        } else if (!Number(form.width.value)) {
             disable(form.width);
-            enable(form.height);
-        }).focus(function() {
-            $(this).triggerHandler('click');
-        });
-        if (!Number(form.height.value))
-            disable(form.height);
-        else if (!Number(form.width.value))
-            disable(form.width);
+        }
     }
 }
 

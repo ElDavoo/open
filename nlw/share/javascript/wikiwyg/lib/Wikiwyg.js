@@ -1141,9 +1141,9 @@ this.addGlobal().setup_wikiwyg = function() {
     var myConfig = {
         doubleClickToEdit: false,
         firstMode: firstMode,
-        javascriptLocation: nlw_make_s2_path('/javascript/'),
+        javascriptLocation: '/static/javascript/',
         toolbar: {
-            imagesLocation: nlw_make_s2_path('/images/wikiwyg_icons/')
+            imagesLocation: '/static/images/wikiwyg_icons/'
         },
         wysiwyg: {
             clearRegex: clearRichText,
@@ -2016,7 +2016,6 @@ proto.do_opensocial_gallery = function() {
             st.viewer.primary_account_id
         ),
         onAddWidget: function(src) {
-            Wikiwyg.Widgets.widget_editing = 1;
             self.do_opensocial_setup(src);
         }
     };
@@ -2116,9 +2115,7 @@ proto.do_opensocial_setup = function(src) {
         }
     });
 
-
-    $('#lightbox').one('dilalogclose', function(){
-        Wikiwyg.Widgets.widget_editing = 0;
+    $('#lightbox').one('dialogclose', function(){
         $('#st-widget-opensocial-setup').remove();
     });
 }
@@ -2211,7 +2208,6 @@ proto._do_insert_block_dialog = function(opts) {
         .bind('reset', function() {
             $('#st-widget-block-content').val('');
             st.editor.hideLightbox();
-            Wikiwyg.Widgets.widget_editing = 0;
             return false;
         })
         .submit(function() {
@@ -2340,7 +2336,6 @@ proto._do_link = function(widget_element) {
         .unbind('submit')
         .bind('reset', function() {
             st.editor.hideLightbox();
-            Wikiwyg.Widgets.widget_editing = 0;
             return false;
         })
         .submit(function() {
@@ -2359,7 +2354,6 @@ proto._do_link = function(widget_element) {
 
             var close = function() {
                 st.editor.hideLightbox();
-                Wikiwyg.Widgets.widget_editing = 0;
             }
 
             if (jQuery.browser.msie)
@@ -2389,10 +2383,7 @@ proto._do_link = function(widget_element) {
 proto.showWidgetEditingLightbox = function(opts) {
     var self = this;
     st.editor.showLightbox(opts);
-    // Set the unload handle explicitly so when user clicks the overlay gray
-    // area to close lightbox, widget_editing will still be set to false.
-    $('#lightbox').one('dilalogclose', function(){
-        Wikiwyg.Widgets.widget_editing = 0;
+    $('#lightbox').one('dialogclose', function(){
         if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
             self.wikiwyg.current_mode.set_focus();
         }
