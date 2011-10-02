@@ -360,7 +360,7 @@
             lookaheadList.html('<li></li>');
             $('li', lookaheadList)
                 .text(loc("error.no-match=lookahead", $(this.input).val()))
-                .css({padding: '3px 5px'});
+                .css({padding: '3px 5px', margin: '0'});
             this.show();
         }
     };
