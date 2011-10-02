@@ -103,5 +103,6 @@ Socialtext::editor =
   hideLightbox: () ->
     $("#lightbox").triggerHandler('dialogclose')
     try $('#lightbox').dialog('destroy')
+    $('div.lookaheadContainer').hide()
     $("#lightbox").remove()
 

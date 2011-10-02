@@ -196,7 +196,7 @@
         }
 
         if (!this.lookahead) {
-            this.lookahead = this.$('<div></div>')
+            this.lookahead = this.$('<div class="lookaheadContainer"></div>')
                 .hide()
                 .css({
                     textAlign: 'left',
