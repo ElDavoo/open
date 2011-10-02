@@ -78,8 +78,7 @@ Socialtext.prototype.drafts = (function($){
                     st.attachments.addNewAttachment(this);
                 });
                 $.each((draft.tags || []), function () {
-                    console.log('XXX Unimplemented');
-                    Socialtext.addNewTag(this);
+                    st.editor.addNewTag(this);
                 });
 
                 cb(draft);

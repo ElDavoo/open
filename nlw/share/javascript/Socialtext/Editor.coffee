@@ -79,8 +79,8 @@ Socialtext::editor =
     $("#lightbox").css("width", opts.width || "520px").append(
       opts.html || $(opts.content).show()
     )
-    title = opts.title || $('#lightbox span.title').text()
-    $('#lightbox span.title').remove()
+    title = opts.title || $('#lightbox span.title, #lightbox div.title').text()
+    $('#lightbox span.title, #lightbox div.title').remove()
     $('#lightbox div.buttons input, #lightbox a.button').button()
     if opts.close
       $(opts.close).click ->
@@ -106,3 +106,14 @@ Socialtext::editor =
     $('div.lookaheadContainer').hide()
     $("#lightbox").remove()
 
+  addNewTag: (tag) ->
+    rand = ("" + Math.random()).replace(/\./, "")
+    $("#st-page-editing-files").append $("<input type=\"hidden\" name=\"add_tag\" id=\"st-tagqueue-" + rand + "\" />").val(tag)
+    $("#st-tagqueue-list").show()
+    $("#st-tagqueue-list").append $("<span class=\"st-tagqueue-taglist-name\" id=\"st-taglist-" + rand + "\" />").text((if $(".st-tagqueue-taglist-name").size() then ", " else "") + tag)
+    $("#st-taglist-" + rand).append $("<a href=\"#\" class=\"st-tagqueue-taglist-delete\" />").attr("title", loc("edit.remove=tag", tag)).click(->
+      $("#st-taglist-" + rand).remove()
+      $("#st-tagqueue-" + rand).remove()
+      $("#st-tagqueue-list").hide()  unless $(".st-tagqueue-taglist-name").size()
+      false
+    ).html("<img src=\"/static/" + st.version + "/images/icons/close-black-8.png\" width=\"8\" height=\"8\" border=\"0\" style=\"padding: 4px\" />")
