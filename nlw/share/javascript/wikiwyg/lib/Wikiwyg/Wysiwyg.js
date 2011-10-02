@@ -1157,10 +1157,10 @@ proto.on_pasted = function(html) {
 
             self.insert_html( html );
 
-//             jQuery.hideLightbox();
+//             st.editor.hideLightbox();
         },
         error: function(xhr) {
-//             jQuery.hideLightbox();
+//             st.editor.hideLightbox();
         }
     });
 }
@@ -1454,7 +1454,7 @@ proto.insert_table_html = function(rows, columns, options) {
 proto.closeTableDialog = function() {
     var doc = this.get_edit_document();
     jQuery(doc).unbind("keypress");
-    jQuery.hideLightbox();
+    st.editor.hideLightbox();
     this.rebindHandlers();
 }
 
@@ -1497,11 +1497,11 @@ proto.do_new_table = function() {
                 self.closeTableDialog();
                 return false;
             });
-        jQuery("#lightbox").one("lightbox-unload", function() {
+        jQuery("#lightbox").one("dilalogclose", function() {
             self.set_focus();
         });
     }
-    jQuery.showLightbox({
+    st.editor.showLightbox({
         html: Jemplate.process("table-create.html", {"loc": loc}),
         width: 300,
         callback: setup
@@ -1688,11 +1688,11 @@ proto.do_table_settings = function() {
             var opt_string = self.tableOptionsFromNode($lb);
             self.applyTableOptions($table, opt_string);
 
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
             return false;
         });
 
-        jQuery.showLightbox({
+        st.editor.showLightbox({
             content: '#st-table-settings',
             close: '#st-table-settings .close',
             width: 300,
@@ -3472,7 +3472,7 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         .appendTo('body');
 
     var self = this;
-    jQuery.showLightbox({
+    st.editor.showLightbox({
         content: '#widget-' + widget,
         callback: function() {
             var config = Wikiwyg.Widgets.widget[ widget ];
@@ -3514,7 +3514,7 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     }, 500);
 
     // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
-    jQuery('#lightbox').unbind('lightbox-unload').one("lightbox-unload", function(){
+    jQuery('#lightbox').one('dilalogclose', function(){
         clearInterval(intervalId);
         Wikiwyg.Widgets.widget_editing--;
         if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
@@ -3549,7 +3549,7 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
                 clearInterval(intervalId);
                 self.insert_widget(widget_string, widget_element, function () {
                     jQuery('#lightbox .buttons input').attr('disabled', '');
-                    jQuery.hideLightbox();
+                    st.editor.hideLightbox();
                 });
             }
             catch(e) {
@@ -3567,7 +3567,7 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         .unbind('click')
         .click(function () {
             clearInterval(intervalId);
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
         });
 
     this.hookLookaheads();

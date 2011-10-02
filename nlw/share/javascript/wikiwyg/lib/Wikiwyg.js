@@ -529,7 +529,7 @@ proto.newpage_display_duplicate_dialog = function(page_name) {
     jQuery('#st-newpage-duplicate').show();
     jQuery('#st-newpage-duplicate-pagename').trigger('focus');
 
-    jQuery.showLightbox({
+    st.editor.showLightbox({
         content:'#st-newpage-duplicate-interface',
         close:'#st-newpage-duplicate-cancelbutton'
     });
@@ -561,7 +561,7 @@ proto.newpage_save = function(page_name, pagename_editfield) {
     }
     else {
         if (this.active_page_exists(page_name)) {
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
             setTimeout(function () {
                 wikiwyg.newpage_display_duplicate_dialog(page_name)
             }, 1000);
@@ -608,7 +608,7 @@ proto.newpage_saveClicked = function() {
     );
     var saved = this.newpage_save(page_name, focus_field.get(0));
     if (saved) {
-        jQuery.hideLightbox();
+        st.editor.hideLightbox();
     }
     return saved;
 }
@@ -626,13 +626,13 @@ proto.newpage_duplicate_ok = function() {
         case 'different':
             var edit_field = jQuery('#st-newpage-duplicate-pagename');
             if (this.newpage_save(edit_field.val(), edit_field.get(0))) {
-                jQuery.hideLightbox();
+                st.editor.hideLightbox();
             }
             break;
         case 'suggest':
             var name = jQuery('#st-newpage-duplicate-suggest').text();
             if (this.newpage_save(name)) {
-                jQuery.hideLightbox();
+                st.editor.hideLightbox();
             }
             break;
         case 'append':
@@ -640,7 +640,7 @@ proto.newpage_duplicate_ok = function() {
             jQuery('#st-page-editing-pagename').val(
                 jQuery('#st-newpage-duplicate-appendname').text()
             );
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
             this.saveContent();
             break;
     }
@@ -649,7 +649,7 @@ proto.newpage_duplicate_ok = function() {
 
 proto.displayNewPageDialog = function() {
     jQuery('#st-newpage-save-pagename').val('');
-    jQuery.showLightbox({
+    st.editor.showLightbox({
         content: '#st-newpage-save',
         close: '#st-newpage-save-cancelbutton',
         focus: '#st-newpage-save-pagename'
@@ -842,8 +842,8 @@ proto.signal_edit_cancel = function() {
         url: location.pathname,
         data: {
             action: 'edit_cancel',
-            page_name: Socialtext.wikiwyg_variables.page.title,
-            revision_id: Socialtext.wikiwyg_variables.page.revision_id
+            page_name: st.page.title,
+            revision_id: st.page.revision_id
         }
     });
 }
@@ -881,7 +881,7 @@ proto.contentIsModified = function() {
 
 proto.diffContent = function () {
     if (this.originalWikitext == null) {
-        jQuery.showLightbox('There is no originalWikitext');
+        st.editor.showLightbox('There is no originalWikitext');
     }
     else if (this.contentIsModified()) {
         var current_wikitext = this.get_current_wikitext();
@@ -894,7 +894,7 @@ proto.diffContent = function () {
                 text2: current_wikitext
             },
             success: function (data) {
-                jQuery.showLightbox({
+                st.editor.showLightbox({
                     html: '<pre style="font-family:Courier">'+data+'</pre>',
                     width: '95%'
                 });
@@ -902,7 +902,7 @@ proto.diffContent = function () {
         });
     }
     else {
-        jQuery.showLightbox("Content is not modified");
+        st.editor.showLightbox("Content is not modified");
     }
     return void(0);
 }
@@ -926,7 +926,7 @@ proto.set_edit_tips_span_display = function() {
     jQuery('#st-edit-tips')
         .unbind('click')
         .click(function () {
-            jQuery.showLightbox({
+            st.editor.showLightbox({
                 content: '#st-ref-card',
                 close: '#st-ref-card-close'
             });
@@ -1087,9 +1087,8 @@ this.addGlobal().setup_wikiwyg = function() {
 
     if ( jQuery("#st-edit-mode-container").size() != 1 ||
          jQuery("iframe#st-page-editing-wysiwyg").size() != 1 ) {
-        Socialtext.wikiwyg_variables.loc = loc;
         var template = 'edit_wikiwyg';
-        var html = Jemplate.process(template, Socialtext.wikiwyg_variables);
+        var html = Jemplate.process(template, st);
 
         if (Wikiwyg.is_gecko || (jQuery.browser.version == 6 && jQuery.browser.msie)) {
             html = html.replace(/scrolling="no"><\/iframe>/, "></iframe>");
@@ -1097,7 +1096,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
         jQuery(html).insertBefore('#st-display-mode-container');
 
-        if (!Socialtext.wikiwyg_variables.hub.current_workspace.enable_spreadsheet) {
+        if (!st.workspace.enable_spreadsheet) {
             jQuery('a[do="do_widget_ss"]').parent("li").remove()
         }
 
@@ -1545,7 +1544,7 @@ this.addGlobal().setup_wikiwyg = function() {
     });
 
     jQuery('#st-edit-mode-tagbutton').click(function() {
-        jQuery.showLightbox({
+        st.editor.showLightbox({
             content:'#st-tagqueue-interface',
             close:'#st-tagqueue-close',
             focus:'#st-tagqueue-field'
@@ -1612,7 +1611,7 @@ Wikiwyg.setup_newpage = function() {
         });
 
         jQuery('#st-newpage-duplicate-cancelbutton').click(function () {
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
             return false;
         });
 
@@ -2009,18 +2008,19 @@ proto.do_widget_pre = function(widget_element) {
 
 proto.do_opensocial_gallery = function() {
     var self = this;
-
-    get_plugin_lightbox('widgets', 'opensocial-gallery', function () {
-        var gallery = new ST.OpenSocialGallery({
-            container_type: 'page',
-            account_id: Socialtext.current_workspace_account_id,
-            onAddWidget: function(src) {
-                Wikiwyg.Widgets.widget_editing = 1;
-                self.do_opensocial_setup(src);
-            }
-        });
-        gallery.showLightbox();
-    });
+    var galleryOptions = {
+        view: "page",
+        container_type: "page",
+        account_id: (
+            st.workspace.account_id ||
+            st.viewer.primary_account_id
+        ),
+        onAddWidget: function(src) {
+            Wikiwyg.Widgets.widget_editing = 1;
+            self.do_opensocial_setup(src);
+        }
+    };
+    st.dialog.show("opensocial-gallery", galleryOptions);
 }
 
 proto.do_opensocial_setup = function(src) {
@@ -2045,15 +2045,14 @@ proto.do_opensocial_setup = function(src) {
     }
 
     if (!jQuery('#st-widget-opensocial-setup').size()) {
-        Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
             Jemplate.process(
                 "opensocial-setup.html",
-                Socialtext.wikiwyg_variables
+                st
             )
         );
         $('#st-widget-opensocial-setup-cancel').click(function(){
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
         });
     }
 
@@ -2083,13 +2082,13 @@ proto.do_opensocial_setup = function(src) {
 
         self.wikiwyg.current_mode.insert_widget('{widget: ' + args.join(' ') + '}', widget_element);
 
-        jQuery.hideLightbox();
+        st.editor.hideLightbox();
         return false;
     });
 
     $('#st-widget-opensocial-setup-widgets').text('');
 
-    jQuery.showLightbox({
+    st.editor.showLightbox({
         content: '#st-widget-opensocial-setup',
         close: '#st-widget-opensocial-setup-cancel',
         width: '640px',
@@ -2118,7 +2117,7 @@ proto.do_opensocial_setup = function(src) {
     });
 
 
-    $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+    $('#lightbox').one('dilalogclose', function(){
         Wikiwyg.Widgets.widget_editing = 0;
         $('#st-widget-opensocial-setup').remove();
     });
@@ -2132,11 +2131,10 @@ proto._do_insert_block_dialog = function(opts) {
 
     self.preserveSelection();
     if (!jQuery('#st-widget-block-dialog').size()) {
-        Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
             Jemplate.process(
                 "add-a-block.html",
-                Socialtext.wikiwyg_variables
+                st
             )
         );
     }
@@ -2212,7 +2210,7 @@ proto._do_insert_block_dialog = function(opts) {
         .unbind('submit')
         .bind('reset', function() {
             $('#st-widget-block-content').val('');
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
             Wikiwyg.Widgets.widget_editing = 0;
             return false;
         })
@@ -2223,7 +2221,7 @@ proto._do_insert_block_dialog = function(opts) {
             var close = function() {
                 var text = $('#st-widget-block-content').val();
                 $('#st-widget-block-content').val('');
-                jQuery.hideLightbox();
+                st.editor.hideLightbox();
                 var id = opts.wafl_id;
                 if (id == 'code' && $('#st-widget-block-syntax').val()) {
                     id += '-' + $('#st-widget-block-syntax').val();
@@ -2263,9 +2261,8 @@ proto._do_link = function(widget_element) {
     var self = this;
 
     if (!jQuery('#st-widget-link-dialog').size()) {
-        Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
-            Jemplate.process("add-a-link.html", Socialtext.wikiwyg_variables)
+            Jemplate.process("add-a-link.html", st)
         );
     }
 
@@ -2342,7 +2339,7 @@ proto._do_link = function(widget_element) {
         .unbind('reset')
         .unbind('submit')
         .bind('reset', function() {
-            jQuery.hideLightbox();
+            st.editor.hideLightbox();
             Wikiwyg.Widgets.widget_editing = 0;
             return false;
         })
@@ -2361,7 +2358,7 @@ proto._do_link = function(widget_element) {
             }
 
             var close = function() {
-                jQuery.hideLightbox();
+                st.editor.hideLightbox();
                 Wikiwyg.Widgets.widget_editing = 0;
             }
 
@@ -2391,10 +2388,10 @@ proto._do_link = function(widget_element) {
 
 proto.showWidgetEditingLightbox = function(opts) {
     var self = this;
-    $.showLightbox(opts);
+    st.editor.showLightbox(opts);
     // Set the unload handle explicitly so when user clicks the overlay gray
     // area to close lightbox, widget_editing will still be set to false.
-    $('#lightbox').one('lightbox-unload', function(){
+    $('#lightbox').one('dilalogclose', function(){
         Wikiwyg.Widgets.widget_editing = 0;
         if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
             self.wikiwyg.current_mode.set_focus();
