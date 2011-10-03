@@ -226,28 +226,7 @@ sub display_watchlist {
     );
 
     my @pages = $watchlist->pages;
-    if ( $#pages < 0 ) {
-        my $empty_message = loc("watch.empty=wiki",
-            $self->hub->current_workspace->title);
-        return $self->template_render(
-            template => 'view/empty_watchlist',
-            vars     => {
-                $self->hub->helpers->global_template_vars,
-                action        => 'display_watchlist',
-                title         => loc("nav.watchlist"),
-                empty_message => $empty_message,
-                feeds => $self->_feeds( $self->hub->current_workspace ),
-                enable_unplugged =>
-                    $self->hub->current_workspace->enable_unplugged,
-                unplug_uri    => "?action=unplug;watchlist=default",
-                unplug_phrase =>
-                    loc("info.unplug-watchlist"),
-            },
-        );
-    }
-    else {
-        return $self->watchlist_changes( \@pages );
-    }
+    return $self->watchlist_changes( \@pages );
 }
 
 sub _feeds {
@@ -299,14 +278,11 @@ sub watchlist_changes {
     return $self->display_results(
         \%sortdir,
         feeds         => $self->_feeds( $self->hub->current_workspace ),
-        unplug_uri    => "?action=unplug;watchlist=default",
-        unplug_phrase =>
-            "Click this button to save the pages you're "
-            . 'watching for offline use.',
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},
         )->template_vars(),
+        empty_include => 'view/empty_watchlist',
     );
 }
 

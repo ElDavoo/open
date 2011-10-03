@@ -95,7 +95,11 @@
 
 [% BLOCK no_results %]
   <div class="grid_24" style="font-size:110%" id="tooManyResults">
-    [% IF empty_message; empty_message; ELSE %]
+    [% IF empty_message %]
+      [% empty_message %]
+    [% ELSIF empty_include %]
+      [% INCLUDE $empty_include %]
+    [% ELSE %]
       <p style="margin:10px 0">
         [% loc('error.no-search-results') %]
       </p>
