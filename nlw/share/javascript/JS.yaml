@@ -146,6 +146,7 @@
         - page-duplicate
         - page-rename
         - page-delete
+        - tag-queue
 'shindig-container-%.js':
     compress: 1
     parts:
