@@ -553,4 +553,4 @@ Socialtext::Handler::Settings - Handler for Consolidated Settings
 
 ReST endpoint for User settings.
 
-=end
+=cut
