@@ -3601,8 +3601,11 @@ sub masked_url_is {
     }
 
     $self->code_is(200);
-    if ($resp->content =~ /Socialtext\.masked_url = "([^"]*)";/) {
+    my $content = $resp->content;
+    if ($content =~ /st\.masked_url = "([^"]*)";/) {
         is $1, $expected, "masked-url-is $expected";
+        ok $content =~ m{_gaq\.push\(\['_trackPageview', st.masked_url\]\)},
+            'Page tracks analytics';
     }
     else {
         fail "No masked url found - $url";
