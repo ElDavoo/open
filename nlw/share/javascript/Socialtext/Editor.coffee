@@ -81,7 +81,7 @@ Socialtext::editor =
     )
     title = opts.title || $('#lightbox span.title, #lightbox div.title').text()
     $('#lightbox span.title, #lightbox div.title').remove()
-    $('#lightbox div.buttons input, #lightbox a.button').button()
+    $('#lightbox div.buttons input, #lightbox a.button, #lightbox input.button').button()
     if opts.close
       $(opts.close).click ->
         Socialtext::editor.hideLightbox()
