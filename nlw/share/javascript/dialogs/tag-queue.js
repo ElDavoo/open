@@ -1,14 +1,8 @@
 st.dialog.register('tag-queue', function(opts) {
-    /* TODO: Clicking "Add" does nothing at the moment */
     var dialog = st.dialog.createDialog({
         html: st.dialog.process('tag-queue.tt2', {}),
         title: loc('do.add-tags'),
         buttons: [
-            {
-                id: 'st-tagqueue-addbutton',
-                text: loc('do.add-tag'),
-                click: function() { $('#st-tagqueue').triggerHandler('submit') }
-            },
             {
                 id: 'st-tagqueue-close',
                 text: loc('do.close'),

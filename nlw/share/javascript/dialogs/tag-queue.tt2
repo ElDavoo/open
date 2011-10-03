@@ -4,6 +4,8 @@
     <p id="st-tagqueue-tagprompt">
       [% loc('edit.tag-prompt:') %]
       <input id="st-tagqueue-field" class="st-tagqueue-input" type="text" name="tagfield"/>
+      <input type="submit" id="st-tagqueue-addbutton" class="button"
+          value="[% loc('do.add-tag') %]" />
     </p>
     <div class="list" id="st-tagqueue-list" style="display: none">
       <span class="st-tagqueue-listlabel">
