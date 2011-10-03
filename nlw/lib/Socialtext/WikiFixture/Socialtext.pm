@@ -178,9 +178,8 @@ wait_for_text_present_ok so we've got to use text_like, which has no wait_for)
 =cut
 
 sub click_and_pause {
-  my ($self, $link) = @_;
-  $self->click_ok($link);
-  $self->pause(15000);
+  my ($self, $link, $pause, $andwait) = @_;
+  st_click_pause($self, $link, $pause, $andwait);
 }
 
 
@@ -445,8 +444,10 @@ sub st_pause_click {
 sub st_click_pause {
     my ($self, $locator, $pause, $andwait) = @_;
     my $cmd = $andwait ? 'click_and_wait' : 'click_ok';
+    my $mypause = $pause ? $pause : '15000';
+    diag "st_click_pause: $cmd $locator, pausing $mypause";
     $self->handle_command($cmd, $locator);
-    $self->handle_command('pause',$pause);
+    $self->handle_command('pause',$mypause);
 }
 
 =head2 st_create_wikipage ( $workspace, pagename )
