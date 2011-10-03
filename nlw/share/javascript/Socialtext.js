@@ -48,6 +48,36 @@ Socialtext.prototype = {
             this.static_path.replace(/static/, 'nlw/plugin') + rest
         );
     },
+    makeWatchHandler: function(pageId) {
+        return function(){
+            var self = this;
+            if ($(this).hasClass('on')) {
+                $.get(
+                    location.pathname + '?action=remove_from_watchlist'+
+                    ';page=' + pageId +
+                    ';_=' + (new Date()).getTime(),
+                    function () {
+                        var text = loc("do.watch");
+                        $(self).attr('title', text).text(text);
+                        $(self).removeClass('on');
+                    }
+                );
+            }
+            else {
+                $.get(
+                    location.pathname + '?action=add_to_watchlist'+
+                    ';page=' + pageId +
+                    ';_=' + (new Date()).getTime(),
+                    function () {
+                        var text = loc('watch.stop');
+                        $(self).attr('title', text).text(text);
+                        $(self).addClass('on');
+                    }
+                );
+            }
+            return false;
+        };
+    },
 
     /**
      * Recreate the old Socialtext.var_name API that will be replaced with the

@@ -38,5 +38,14 @@ Socialtext.prototype.setupListview = (function($){
             });
             return true;
         });
+
+        $('td.listview-watchlist a[id^=st-watchlist-indicator-]').each(function(){
+            $(this).click(
+                st.makeWatchHandler(
+                    $(this).attr('id').replace(/^st-watchlist-indicator-/, '')
+                )
+            );
+        });
+
     };
 })(jQuery);
