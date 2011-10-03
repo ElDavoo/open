@@ -10,6 +10,7 @@ st.dialog.register('tag-queue', function(opts) {
             }
         ]
     });
+    $('#st-tagqueue-addbutton').button();
     $('#st-tagqueue-field').lookahead({
         submitOnClick: true,
         url: "/data/workspaces/" + st.workspace.name + "/tags",
