@@ -8,7 +8,7 @@
         <div id='messages'></div>
 
         <div id="loading">
-            <img id="spinner" src="[% this.static_path %]/skin/common/images/ajax-loader.gif"/>
+            <img id="spinner" src="[% this.static_path %]/images/ajax-loader.gif"/>
         </div>
 
         <div id='event_list'>

@@ -45,7 +45,8 @@ var proto = CreateContentDialog.prototype = {
 
     update_templates: function (template_tag) {
         var self = this;
-        var type = this.selected_page_type();
+        var type = this.selected_template_type();
+
         var template = template_tag || loc('tag.template');
         $.ajax({
             url: st.workspace.uri() + '/tags/' + template + '/pages?type=' + type,
@@ -102,7 +103,7 @@ var proto = CreateContentDialog.prototype = {
         this.from_page_text().lookahead({
             url: function () {
                 return st.workspace.uri() + '/pages?type=' +
-                    self.selected_page_type();
+                    self.selected_template_type();
             },
             params: { minimal_pages: 1 },
             linkText: function (i) { return i.name }
@@ -125,6 +126,13 @@ var proto = CreateContentDialog.prototype = {
     selected_visible_type: function () {
         var type = this.selected_page_type();
         return this.visible_types[type] || type;
+    },
+
+    // Treat wiki templates and copied pages the same as xhtml
+    selected_template_type: function() {
+        var type = this.selected_page_type();
+        if (type == 'xhtml') type = 'wiki,xhtml';
+        return type;
     },
 
     show: function (opts) {

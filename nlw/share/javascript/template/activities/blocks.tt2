@@ -23,7 +23,7 @@
                 [% END %]
                 [% loc('activities.click-to-expand') %]
             </a>
-            <img class="loading" src="[% this.static_path %]/skin/common/images/ajax-loader.gif"/>
+            <img class="loading" src="[% this.static_path %]/images/ajax-loader.gif"/>
         </div>
     [% ELSIF replies.size > 2 %]
         <div class="open">
