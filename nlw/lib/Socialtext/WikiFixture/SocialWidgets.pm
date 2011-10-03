@@ -452,10 +452,10 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 
 sub st_type_signal {
     my ($self, $signaltosend, $is_mobile) = @_;
-    $self->handle_command('set_Speed',4000);
+    $self->handle_command('set_Speed',2000);
    
     if ($self->_is_wikiwyg() ) { #wikiwyg
-        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 15000);
+        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
@@ -466,7 +466,7 @@ sub st_type_signal {
          } else {
              $textbox_name = 'wikiwyg_wikitext_textarea';
          }
-         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 15000);
+         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 5000);
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
 }
@@ -483,8 +483,8 @@ sub st_prepare_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
     # The next two commands are REQUIRED to expose either the signalFrame or
     # the wikiwyg_wikitext_textarea before sending the signal
-    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 15000);
-    $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
+    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'setupWikiwyg wikiwyg']", 5000);
+    $self->handle_command('click_ok', '//div[@class=' . "'setupWikiwyg wikiwyg']");
 
     $self->st_type_signal($signaltosend);
 
@@ -498,73 +498,35 @@ sub st_prepare_signal_within_activities_widget {
 
 =head2 st_send_signal_in_activities_widget
 
-Parameters: You pass in the signal text and optional private flag
-
-=cut
-
-sub st_send_signal_in_activities_widget {
-    my ($self, $signaltosend, $private) = @_;
-    $self->st_prepare_signal_within_activities_widget($signaltosend, $private);
-    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
-    $self->handle_command('click_ok', '//a[@class="btn post"]');
-    $self->handle_command('pause_ok',3000); 
-}
-
-=head2 st_send_signal_via_activities_widget 
-
 Precondition: Open to page with a named activities widget.
 Precondition: Frame focus should be the page.
 Parameters: You pass in the activities widget name, signal text, private flag
 PostCondition: Signal is sent, Frame focus is back to entire dashboard
 
-Private flag only makes sense if the widget being used has a toggle-private element.
-
 =cut
 
-sub st_send_signal_via_activities_widget {
-    my ($self, $widgetname, $signaltosend, $private) = @_;
-    eval {
-        $self->st_send_signal_in_activities_widget($signaltosend, $private);
-    };
-    ok(!$@, 'st_send_signal_via_activities_widget');
+sub st_send_signal_in_activities_widget {
+    my ($self, $signaltosend, $private) = @_;
+    my $post = '//a[contains(@id,"widget") and contains(@id,"post")]';
+    $self->st_prepare_signal_within_activities_widget($signaltosend, $private);
+    $self->handle_command('wait_for_element_visible_ok',$post, 5000);
+    $self->handle_command('click_ok', $post);
+    $self->handle_command('pause_ok',3000); 
 }
 
+=head2 st_verify_text_in_activities_widget ($self, $texttofind)
 
-=head2 st_verify_text_within_activities_widget ($self, $texttofind)
-
-Precondition: Activities widget is selected frame
-PostCondition: Text is verfied (or not), frame focus remains on activities widget
-
-=cut
-
-sub st_verify_text_within_activities_widget {
-    my ($self, $texttofind) = @_;
-    $self->handle_command('pause_ok', 3000);
-    #If is regexp,
-    if ($texttofind=~/^qr\//) {
-        $self->handle_command('text_like','//body', $texttofind);
-    } else {
-        $self->handle_command('wait_for_text_present_ok', $texttofind);
-    }
-}   
-
-
-=head2 st_verify_text_in_activities_widget ($self, $widgetname, $texttofind)
-
-Precondition: Open to container with a named activities widget.
-Precondition: Frame focus should be the entire page
-Parameters: You pass in the activties widget name, text to look for
-PostCondition: Text is verified (or not), Frame focus is back to entire page
+Parameters: You pass in the text to look for
+PostCondition: Text is verfied (or not)
 
 =cut
 
 sub st_verify_text_in_activities_widget {
-    my ($self, $widgetname, $texttofind) = @_;
-    eval {
-        $self->st_verify_text_within_activities_widget($texttofind);
-    };
+    my ($self, $texttofind) = @_;
+    $self->handle_command('pause_ok', 3000);
+    $self->handle_command('text_like','//div[@class="activitiesWidget"]', $texttofind);
     ok(!$@, 'st_verify_text_in_activities_widget');
-}
+}   
 
 =head2 st_text_unlike_in_activities_widget ($self, $widgetname, $betternotfindit)
 

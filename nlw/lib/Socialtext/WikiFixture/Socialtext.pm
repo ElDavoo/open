@@ -510,11 +510,9 @@ The page must exist in order to have a tag added.
 sub st_add_page_tag {
    my ($self, $url, @tags) = @_;
    $self->handle_command('open_ok',$url);
-   $self->handle_command('set_Speed',3000);
+   $self->handle_command('set_Speed',2000);
    $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
    $self->handle_command('wait_for_element_visible_ok','link=Add Tag',30000);
-   $self->handle_command('wait_for_element_visible_ok','st-edit-button-link-bottom',30000);
-   $self->handle_command('wait_for_element_visible_ok','st-comment-button-link-bottom',30000);
    foreach my $tag (@tags) {
        $self->handle_command('click_ok','link=Add Tag');
        $self->handle_command('wait_for_element_visible_ok','st-tags-field',30000);
@@ -539,15 +537,16 @@ clicks the comment button and leaves your note.
 
 sub st_comment_on_page {
     my ($self, $url, $comment) = @_;
-    $self->handle_command('set_Speed',3000);
+    my $commentbutton = '//li[@id=\'st-comment-button\']';
+    my $commentlink = $commentbutton . '/a';
+    $self->handle_command('set_Speed',2000);
     $self->handle_command('open_ok', $url);  
-    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link', 30000);
-    $self->handle_command('click_ok','st-comment-button-link');
-    $self->handle_command('wait_for_element_visible_ok','comment',30000);
+    $self->handle_command('wait_for_element_visible_ok',$commentbutton, 5000);
+    $self->handle_command('click_ok',$commentlink);
+    $self->handle_command('wait_for_element_visible_ok','comment',10000);
     $self->handle_command('type_ok', 'comment', $comment);
-    $self->handle_command('wait_for_element_visible_ok','link=Save',30000);
+    $self->handle_command('wait_for_element_visible_ok','link=Save',5000);
     $self->handle_command('click_ok','link=Save');
-    $self->handle_command('wait_for_element_visible_ok','st-comment-button-link', 30000);
     $self->handle_command('set_Speed',0);
 }   
 
@@ -781,9 +780,9 @@ sub st_watch_page {
     $verify_only = '' if $verify_only and $verify_only =~ /^#/; # ignore comments
 
     unless ($page_name) {
-        my $html_type = $is_s3 ? "a" : "img"; 
+        #my $html_type = $is_s3 ? "a" : "img";
             
-        return $self->_watch_page_xpath("//$html_type" . "[\@id='st-watchlist-indicator']", 
+        return $self->_watch_page_xpath("//li[\@id='st-watchlist-indicator']", 
                                         $watch_re, $verify_only, $s3_expected, $is_s3, $s3_id_type);
     }
 
