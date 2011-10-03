@@ -13,9 +13,7 @@
         <script src="/nlw/plugin/widgets/javascript/socialtext-container.js.gz"></script>
         [% INCLUDE widget/syndicator %]
 
-        [% INCLUDE element/container_head %]
         [% INCLUDE "element/wiki/js-bootstrap" %]
-        [% PROCESS element/css_links %]
         <style>
             iframe {
                 width: 100%;

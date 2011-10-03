@@ -25,7 +25,6 @@
     <title>[% title || display_title |html %][% IF workspace_present AND wiki.title %] / [% wiki.title |html %][% END %]</title>
 
     [% FILTER decorate "head_css" %]
-    [% PROCESS element/css_links %]
     [% IF css_template; INCLUDE $css_template; END %]
     [% END %]
 
@@ -113,10 +112,6 @@
         </div><!-- globalNav END -->
       </div><!-- header END -->
       <div id="mainNav" class="st-wiki-subnav-dashboard">
-       <%- IF signals_only; PROCESS element/main_nav/signals; 
-           ELSE; PROCESS element/main_nav/standard; 
-           END
-       -%>
       </div><!-- mainNav END -->
 
       <div id="st-actions-bar">

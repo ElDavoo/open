@@ -388,7 +388,6 @@ BEGIN {
             Socialtext::BreadCrumbsPlugin
             Socialtext::BugsPlugin
             Socialtext::CategoryPlugin
-            Socialtext::CommentUIPlugin
             Socialtext::DeletePagePlugin
             Socialtext::DevEnvPlugin
             Socialtext::DisplayPlugin
@@ -414,10 +413,8 @@ BEGIN {
             Socialtext::WatchlistPlugin
             Socialtext::WeblogPlugin
             Socialtext::WeblogArchive
-            Socialtext::Wikiwyg::AnalyzerPlugin
             Socialtext::RtfExportPlugin
             Socialtext::WorkspacesUIPlugin
-            Socialtext::WorkspaceListPlugin
             Socialtext::PageActivityPlugin
             Socialtext::CodeSyntaxPlugin
             Socialtext::VideoPlugin

@@ -1,4 +1,5 @@
 [%# vim: set et sts=2 sw=2: %]
+[% USE decorate %]
 [% MACRO username BLOCK %][% name | decorate('user_avatar') %][% END %]
 [% SET create_author = '<span class="st-username">' _ username(name=page.created.user_id) _ '</span>' %]
 [% SET create_date = '<span class="st-createdate">' _ (page.created.date) _ '</span>' %]

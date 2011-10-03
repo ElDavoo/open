@@ -3,7 +3,6 @@
 <html>
   <head>
     <title>[% loc('Socialtext Workspace Punctuation Help') %]</title>
-    [% PROCESS element/popup_css_links %]
   </head>
   <body id="st-refcard">
     <div id="st-refcard-print-button">

@@ -8,7 +8,6 @@
         [% END %]
         <link rel="apple-touch-icon" href="/static/[% app_version %]/images/apple-touch-icon.png"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1">
-        [% INCLUDE element/css_links %]
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/miki.css" />
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/jquery-mobile.css" />
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/inline.css" />
