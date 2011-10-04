@@ -7,6 +7,7 @@ Activities.Editor = function (opts) {
     this.requires([
         'static_path', 'base_uri', 'network', 'onPost', 'share'
     ]);
+    this.find('.post a').button();
 };
 
 Activities.Editor.prototype = new Activities.Base();
