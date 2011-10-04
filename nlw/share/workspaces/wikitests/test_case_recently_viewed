@@ -1,6 +1,6 @@
 | *Comment* | START Test Case S3: Recently Viewed |  |
 
- Find or create several pages. Open the pages to create view instances
+Find or create several pages. Open the pages to create view instances
 
 | *Comment* | Test Case S3: Recently Viewed. Create pages. |  |
 | st-admin | update-page --email %%email%% --workspace %%workspace%% --page "RV Page 1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "RV Page 1 %%start_time%%" page has been created. |
@@ -17,7 +17,7 @@
 Open Recently Viewed list view
 
 | *Comment* | Test Case: Recently Viewed. Recently Viewed page list |  |
-| select_and_wait | st-jump-to | label=Watchlist |
+| select_and_wait | st-jump-to | label=Recently Viewed |
 | click_and_wait | link=Recently Viewed |  |
 | text_like | link=RV Page 1 %%start_time%% | RV Page 1 %%start_time%% |
 | text_like | link=RV Page 2 %%start_time%% | RV Page 2 %%start_time%% |
@@ -26,8 +26,7 @@ Open Recently Viewed list view
 | *Comment* | Test Case: Recently Viewed. page links work |  |
 | click_and_wait | link=RV Page 1 %%start_time%% |  |
 | text_like | st-page-titletext | RV Page 1 %%start_time%% |
-| select_and_wait | st-jump-to | label=Watchlist |
-| click_and_wait | link=Recently Viewed |  |
+| select_and_wait | st-jump-to | label=Recently Viewed |
 | click_and_wait | link=RV Page 2 %%start_time%% |  |
 | text_like | st-page-titletext | RV Page 2 %%start_time%% |
 
