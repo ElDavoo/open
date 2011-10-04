@@ -5,23 +5,9 @@ use strict;
 use warnings;
 use DateTime;
 use Socialtext::Pages;
-use Test::Socialtext tests => 7;
+use Test::Socialtext tests => 6;
 
-fixtures(qw( admin foobar help no-ceq-jobs ));
+fixtures(qw(db));
 use_ok 'Socialtext::WorkspaceListPlugin';
-
-# Create a dummy/test Hub
-my $hub  = create_test_hub('admin');
-my $user = $hub->current_user;
-
-my $output = $hub->workspace_list->workspace_list;
-ok( $output ne '', 'output exists' );
-like( $output, qr/navList/, 'wiki page' );
-unlike( $output, qr/target="_blank".*Socialtext Documentation/, 'Workspace links open in same window' );
-
-$output = $hub->workspace_list->widget_workspace_list;
-ok( $output ne '', 'output exists' );
-unlike( $output, qr/navList/, 'Non wiki page' );
-like( $output, qr/target="_blank".*Socialtext Documentation/, 'Workspace links open in new window' );
 
 1;
