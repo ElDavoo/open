@@ -268,8 +268,8 @@ sub protected_uri {
 
 sub created_at_str { sql_format_timestamptz($_[0]->created_at) }
 
-*as_hash = *to_hash;
-sub to_hash {
+*to_hash = *as_hash;
+sub as_hash {
     my ($self, $viewer) = shift;
     my %hash = map { $_ => $self->$_ } qw(
         attachment_id attachment_uuid filename
