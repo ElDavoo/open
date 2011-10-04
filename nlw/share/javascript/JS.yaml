@@ -145,6 +145,7 @@
         - page-email
         - page-duplicate
         - page-rename
+        - page-copy
         - page-delete
         - tag-queue
 'shindig-container-%.js':

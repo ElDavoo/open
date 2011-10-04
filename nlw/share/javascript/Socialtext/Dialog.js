@@ -4,6 +4,21 @@ Socialtext.prototype.dialog = (function($) {
 
     var timestamp = (new Date).getTime();
 
+    function _pageErrorString(data, new_title, button) {
+        if (data.page_exists) {
+            return loc('error.page-exists=title,button', new_title, button);
+        }
+        else if (data.page_title_bad) {
+            return loc('error.invalid-page-name=title', new_title);
+        }
+        else if (data.page_title_too_long) {
+            return loc('error.long-page-name=title', new_title);
+        }
+        else if (data.same_title) {
+            return loc('error.same-page-name=title', new_title);
+        }
+    }
+
     // Socialtext adapter class for jQuery dialogs
     var Dialog = function(opts) {
         this.show(opts);
@@ -33,6 +48,39 @@ Socialtext.prototype.dialog = (function($) {
         },
         enable: function() {
             this.node.parents('.ui-dialog').uiEnable();
+        },
+
+        submitPageForm: function(callback) {
+            var self = this;
+            self.disable();
+            var button_title = self.node.dialog("option", "buttons")[0].text;
+            $.ajax({
+                url: st.page.web_uri(),
+                data: self.find('form').serializeArray(),
+                type: 'post',
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    var title = self.find('input[name=new_title]').val();
+                    var error = _pageErrorString(data, title, button_title);
+                    if (error) {
+                        self.find('input[name=clobber]').remove();
+                        self.find('form').append(
+                            $('<input name="clobber" type="hidden">')
+                                .attr('value', title)
+                        );
+                        self.find('.error').html(error).show();
+                        self.enable();
+                    }
+                    else {
+                        if ($.isFunction(callback)) callback();
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    self.find('.error').html(textStatus).show();
+                    self.enable();
+                }
+            });
         }
     };
 

@@ -1,29 +1,29 @@
 (function ($) {
 
-st.dialog.register('page-rename', function(opts) {
+st.dialog.register('page-copy', function(opts) {
     var dialog = st.dialog.createDialog({
-        html: st.dialog.process('page-rename.tt2', st),
-        title: loc('page.rename'),
+        html: st.dialog.process('page-copy.tt2', st),
+        title: loc('page.copy=title?', st.page.title),
         buttons: [
             {
-                id: 'st-rename-savelink',
-                text: loc('do.rename'),
+                id: "st-copy-savelink",
+                text: loc('do.copy'),
                 click: function() { dialog.find('form').submit() }
             },
             {
-                id: 'st-rename-cancellink',
+                id: "st-copy-cancellink",
                 text: loc('do.cancel'),
                 click: function() { dialog.close() }
             }
         ]
     });
-    $("#st-rename-newname").select().focus();
 
     dialog.find('form').submit(function () {
         dialog.submitPageForm(function() {
             var title = dialog.find('input[name=new_title]').val();
-            document.location = '/' + st.workspace.name + '/' + title;
-            dialog.close();
+            var ws = dialog.find('select option:selected').data('name');
+            document.location = '/' + ws + '/' + title;
+            self.close();
         });
         return false;
     });

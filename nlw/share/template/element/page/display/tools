@@ -175,6 +175,13 @@
                 text=loc('page.rename')
             %]
           [% END %]
+          [% IF current_user_workspace_count > 1 AND !page_locked_for_user %]
+            [% INCLUDE tools_item
+                id="st-pagetools-copy"
+                href="#"
+                text=loc('page.copy')
+            %]
+          [% END %]
           [% IF checker.check_permission('delete') AND !locked %]
             [% INCLUDE tools_item
                 id="st-pagetools-delete"

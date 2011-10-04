@@ -77,6 +77,12 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    // Copy
+    $('#st-pagetools-copy a').click(function() {
+        st.dialog.show('page-copy');
+        return false;
+    });
+
     // Delete
     $('#st-pagetools-delete a').click(function() {
         st.dialog.show('page-delete');
