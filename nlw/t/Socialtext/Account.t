@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 121;
+use Test::Socialtext tests => 112;
 use Test::Socialtext::User;
 use Test::Socialtext::Fatal;
 use Test::Differences;
