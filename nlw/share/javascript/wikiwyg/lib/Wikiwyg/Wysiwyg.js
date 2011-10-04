@@ -2435,9 +2435,12 @@ proto.setWidgetHandlers = function() {
 proto.setWidgetHandler = function(img) {
     var widget = img.getAttribute('alt');
     if (! /^st-widget-/.test(widget)) return;
+    $(img).css('cursor', 'pointer');
+    /* Not used in SocialCalc anymore
     this.currentWidget = this.parseWidgetElement(img);
     this.currentWidget = this.setTitleAndId(this.currentWidget);
     this.attachTooltip(img);
+    */
 }
 
 proto.revert_widget_images = function() {
