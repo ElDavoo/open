@@ -32,6 +32,10 @@ Socialtext::Template::Plugin::coffee - Convert coffee script to javascript
 
 NOTE: This will be slow, so it should only happen in build operations, not on each request!!!!
 
+=head1 DESCRIPTION
+
+Convert coffeescript to javascript
+
 =head1 SYNOPSIS
 
     [% USE coffee %]
