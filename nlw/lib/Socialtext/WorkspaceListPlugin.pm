@@ -13,6 +13,27 @@ const class_title => __('class.workspace_list');
 
 sub WORKSPACE_LIST_SIZE { 10 }
 
+sub register {
+    my $self = shift;
+    my $registry = shift;
+
+    $registry->add(action => 'widget_workspace_list');
+}
+
+sub widget_workspace_list {
+    my $self = shift;
+    return $self->template_render(
+       template => 'view/widget_workspace_list',
+       vars     => {
+           $self->hub->helpers->global_template_vars,
+           action            => 'widget_workspace_list',
+           my_workspaces     => [ $self->my_workspaces ],
+           public_workspaces => [ $self->public_workspaces ],
+           link_target => '_blank',
+       },
+   );
+}
+
 sub my_workspaces {
     my $self = shift;
 
