@@ -14,7 +14,7 @@ Repeat test using Miki/Lite access.
 
 | *Comment* | Test Case: Include Page. Make a page and include the central page in it |  |
 
-| call | st-edit-new-page | ws=%%tcipw%% | title=TC Include Page %%start_time%% | content=`{include: [%%title%%]}` |
+| call | [st-edit-new-page] | ws=%%tcipw%% | title=TC Include Page %%start_time%% | content=`{include: [%%title%%]}` |
 
 | wait_for_element_visible_ok | link=%%title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%title%% |

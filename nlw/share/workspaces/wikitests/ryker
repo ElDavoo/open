@@ -149,7 +149,7 @@ We need to provide a place for two-way communication with our customers regardin
 | http-user-pass | %%sd2%% | %%spwd%% |
 
 | open_ok | /%%commentws%%/?%%commentPage%% |  |
-| click_ok | st-comment-button-link |  |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%commentContent%% |
 | click_ok | link=Save |  |

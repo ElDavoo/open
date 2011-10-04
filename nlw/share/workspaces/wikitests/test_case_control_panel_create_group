@@ -1,6 +1,3 @@
-
-*On hold until Create New Group button in all groups CP works*
-
 | *Comment* | Test Case: Control Panel Create Group |  |
 
 | set | email1 | group1%%start_time%%@ken.socialtext.net |
@@ -92,7 +89,11 @@
 | wait_for_element_visible_ok | link=%%short_email2%% <%%email2%%> | 30000 |
 | wait_for_element_visible_ok | link=%%short_email3%% <%%email3%%> | 30000 |
 | wait_for_element_visible_ok | link=%%short_email4%% <%%email4%%> | 30000 |
-| text_like | //body | You successfully added 4 users to 1 group. |
+
+ text_like | //body | You successfully added 4 users to 1 group. |
+
+TUXTODO: Is this confirmation back?
+
 | text_like | //body | Users (5) |
 | text_like | //body | %%groupname%% |
 | text_like | //body | Created By: %%short_username%% |
@@ -138,7 +139,10 @@
 | check_ok | %%group_id%% |  |
 | wait_for_element_visible_ok | invite-button | 30000 |
 | click_and_wait | invite-button |  |
-| wait_for_text_present_ok | You successfully added 3 users to 1 group | 30000 |
+
+ wait_for_text_present_ok | You successfully added 3 users to 1 group | 30000 |
+
+TUXTODO: Is this confirmation back?
 
 | *Comment* | Test Case: Control Panel Groups Confirm Add |  |
 | open_ok | /nlw/control/group/%%group_id%% |  |
@@ -181,7 +185,7 @@
 | *Comment* | Test Case: Control Panel Create Group - Add Multiple Users to %%groupname%% |  |
 | wait_for_element_visible_ok | link=Add Multiple Users | 30000 |
 | click_and_wait | link=Add Multiple Users | 30000 |
-| wait_for_text_present_ok | Add users to %%groupexists%% group | 30000 |
+| wait_for_text_present_ok | users to add to the group | 30000 |
 | wait_for_element_visible_ok | link=Return to %%groupexists%% Group | 30000 |
 | wait_for_element_visible_ok | st-username-search-submit | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
@@ -193,7 +197,10 @@
 | check_ok | toggle_all_users |  |
 | is_checked_ok | toggle_all_users |  |
 | click_and_wait | link=Add Users |  |
-| wait_for_text_present_ok | You successfully added | 30000 |
+
+ wait_for_text_present_ok | You successfully added | 30000 |
+
+users to add to the group
 
 | *Comment* | Test Case: Control Panel Create Group TEARDOWN |  |
 | st-process-jobs |  |  |

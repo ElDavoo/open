@@ -149,9 +149,7 @@
 | pause | 90000 |  |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group view custom invite in %%email_ws%% workspace |  |
-| open_ok | /%%email_ws%%/ |  |
-| wait_for_element_visible_ok | link=What's New | 5000 |
-| click_and_wait | link=What's New |  |
+| open_ok | /%%email_ws%%/?action=recent_changes |  |
 | wait_for_element_visible_ok | link=I'm inviting you into the %%group_name%% group | 30000 |
 | click_and_wait | link=I'm inviting you into the %%group_name%% group |  |
 | wait_for_text_present_ok | has added you to the group: %%group_name%% | 30000 |

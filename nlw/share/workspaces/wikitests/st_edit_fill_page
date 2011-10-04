@@ -1,10 +1,9 @@
 | *Comment* | st-edit-fill-page: ws=%%ws%% title=%%title%% content=%%content%% |  |
 
-
-| open_ok | /%%ws%%/index\.cgi\?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
+| open_ok | /%%ws%%/?action=new_page |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 10000 |
+| click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
+| wait_for_element_present_ok | //textarea[contains(@class,"cke_source")] | 10000 |
+| type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
 | type_ok | st-newpage-pagename-edit | %%title%% |
-| type_ok | wikiwyg_wikitext_textarea | %%content%% |

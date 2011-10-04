@@ -1,6 +1,3 @@
-
-*On hold until wikis work*
-
 | *Comment* | Test Case: Activities Widget Followers |
 
 * Fixture: SocialWidgets
@@ -35,7 +32,7 @@
 | st-create-wikipage | %%followws%% | pageone |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
-| st-send-signal-via-activities-widget | activities_widget | You should see this %%start_time%% |
+| st-send-signal-in-activities-widget | You should see this %%start_time%% |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%notfollowinguser%%, create a page and send a signal |  |
 | st-logoutin | %%notfollowinguser%% | %%password%% |
@@ -43,18 +40,18 @@
 | st-create-wikipage | %%followws%% | donotseethispage |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
-| st-send-signal-via-activities-widget | activities_widget | Signal from not a follower %%start_time%% |
+| st-send-signal-in-activities-widget | Signal from not a follower %%start_time%% |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, add widget, set length to 25 |  |
 | st-logoutin | %%loggedinuser%% | %%password%% |
 | open_ok | /%%followws%%/ |  |
 | st-find-user | %%shortfollow%% |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
-| wait_for_element_visible_ok | link=Follow this person | 30000 |
+| wait_for_element_visible_ok | st-watchperson-indicator | 30000 |
 
 | pause_ok | 5000 | needed for IE7. Serious. Sorry about that. |
-| click_ok | link=Follow this person |  |
-| wait_for_element_visible_ok | link=Stop following this person | 30000 |
+| click_ok | st-watchperson-indicator |  |
+| wait_for_element_visible_ok | //button[@title='Stop following this person'] | 30000 |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
 | st-widget-settings | activities_widget |  |
@@ -73,26 +70,34 @@
 | open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, see all activities |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r1%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r2%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r3%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r4%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r1%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r2%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r3%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r4%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to people I follow, see only %%shortfollow%%'s activity |  |
-| wait_for_element_present_ok | link=people I follow | 5000 |
-| click_ok | link=people I follow |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r3%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r4%%/ism |
+| wait_for_element_present_ok | //a[@class='expander'] | 5000 |
+| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | feed-followed | 30000 |
+| click_ok | feed-followed |  |
+| pause_ok | 2000 |  |
+| open_ok | /st/dashboard |  |
+| st-verify-text-in-activities-widget | qr/%%r3%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r4%%/ism |
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%r1%%/ism |
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%r2%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to everyone, see all activities |  |
-| wait_for_element_present_ok | link=everyone | 5000 |
-| click_ok | link=everyone |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r1%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r2%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r3%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/%%r4%%/ism |
+| wait_for_element_present_ok | //a[@class='expander'] | 5000 |
+| click_ok | //a[@class='expander'] |  |
+| wait_for_element_present_ok | feed-everyone | 5000 |
+| click_ok | feed-everyone |  |
+| pause_ok | 2000 |  |
+| open_ok | /st/dashboard |  |
+| st-verify-text-in-activities-widget | qr/%%r1%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r2%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r3%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r4%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers TEARDOWN |  |
 | st-process-jobs |  |  |

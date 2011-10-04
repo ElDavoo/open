@@ -17,7 +17,7 @@
 Open Recently Viewed list view
 
 | *Comment* | Test Case: Recently Viewed. Recently Viewed page list |  |
-| click_and_wait | link=What's New |  |
+| select_and_wait | st-jump-to | label=Watchlist |
 | click_and_wait | link=Recently Viewed |  |
 | text_like | link=RV Page 1 %%start_time%% | RV Page 1 %%start_time%% |
 | text_like | link=RV Page 2 %%start_time%% | RV Page 2 %%start_time%% |
@@ -25,11 +25,11 @@ Open Recently Viewed list view
 
 | *Comment* | Test Case: Recently Viewed. page links work |  |
 | click_and_wait | link=RV Page 1 %%start_time%% |  |
-| text_like | contentTitle | RV Page 1 %%start_time%% |
-| click_and_wait | link=What's New |  |
+| text_like | st-page-titletext | RV Page 1 %%start_time%% |
+| select_and_wait | st-jump-to | label=Watchlist |
 | click_and_wait | link=Recently Viewed |  |
 | click_and_wait | link=RV Page 2 %%start_time%% |  |
-| text_like | contentTitle | RV Page 2 %%start_time%% |
+| text_like | st-page-titletext | RV Page 2 %%start_time%% |
 
 | *Comment* | Test Case: Recently Viewed. SORT PICKER IS GONE |  |
 

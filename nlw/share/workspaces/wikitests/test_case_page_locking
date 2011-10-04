@@ -37,9 +37,7 @@
 | open_ok | /%%ws%%/?%%ppage%% |  |
 | text_like | This page is locked and can only be edited by a workspace administrator |  |
 | wait_for_element_not_present_ok | st-edit-button-link | 5000 |
-| wait_for_element_not_present_ok | st-comment-button-link | 5000 |
-| wait_for_element_not_present_ok | st-edit-button-link-bottom | 5000 |
-| wait_for_element_not_present_ok | st-comment-button-link-bottom | 5000 |
+| wait_for_element_not_present_ok | //li[@id="st-comment-button"]/a | 5000 |
 
 | *Comment* | Test Case: Page Locking TEARDOWN |  |
 | st-admin | purge-page --w %%ws%% --page pl_%%start_time%% | was purged |

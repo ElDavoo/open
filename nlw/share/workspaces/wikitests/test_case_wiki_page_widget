@@ -1,6 +1,3 @@
-
-*On hold until workspaces work*
-
 | *Comment* | STARTING Test case: Wiki Page Widget |  |
 
 * Fixture: SocialWidgets
@@ -9,7 +6,7 @@
 
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
 
-| call | st-edit-save-page | title=Wiki Page %%start_time%% | content=I have created a page called Wiki Page %%start_time%%. w00t. |
+| call | [st-edit-save-page] | title=Wiki Page %%start_time%% | content=I have created a page called Wiki Page %%start_time%%. w00t. |
 
 
 | *Comment* | Test Case: Wiki Page Widget. Create the widget |  |

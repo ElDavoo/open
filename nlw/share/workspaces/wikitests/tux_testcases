@@ -1,5 +1,231 @@
-* [Test Case: Cool Dashboard]
-* [Command Line Testcases]
+
+* [Test Case: Signals Follow Filter With Pagination]
+* [Test Case: Recent Changes]
+* [Test Case: Recently Viewed]
+* [Test Case: Activities Widget Followers]
+* [Test Case: Workspace Widget]
+* [Test Case: Workspace Navigation]
+* [Test Case: Workspace Configuration]
+* [Test Case: Workspace Config Preservation]
+* [Test Case: Wiki Page Widget]
+* [Test Case: Widgets in Profile]
+* [Test Case: Widgets In Pages]
+* [Test Case: Widget Editor Edit]
+* [Test Case: Widget Editor Dashboard]
+* [Test Case: Web Page Widget]
+* [Test Case: Verify Location]
+* [Test Case: Verify LDAP Enabled]
+* [Test Case: User Settings Create Workspace]
+* [Test case: User Resets Password]
+* [Test Case: User Deletes Group]
+* [Test Case: User Creates Group]
+* [Test Case: Upload Update Gallery Widgets]
+* [Test Case: Twitter Widget]
+* [Test Case: ToDo Widget]
+* [Test Case: Tagging]
+* [Test Case: Tag Cloud Widget]
+* [Test Case: Sticky Search Selection]
+* [Test Case: stemming]
+* [Test Case: Socialtext Gadgets]
+* [Test Case: SJ Groups UI Create New Workspace]
+* [Test Case: Signals Bookmarklet]
+* [Test Case: Settings: Email Notification]
+* [Test Case: Settings: Custom Language]
+* [Test case: Self Register]
+* [Test Case: Self Join Group]
+* [Test Case: Search Selector]
+* [Test Case: RSS Feed Widget]
+* [Test Case: Restrict Self-Join Workspaces]
+* [Test Case: Public-Read-Only]
+* [Test Case: Public Join to Edit]
+* [Test Case: Public-Comment-Only]
+* [Test Case: Public]
+* [Test Case: Profile Group List]
+* [Test Case: Private Group]
+
+* [Test Case: Preferences UI User Setup]
+
+* [Test Case: Preferences UI User 6]
+* [Test Case: Preferences UI User 5]
+* [Test Case: Preferences UI User 4]
+* [Test Case: Preferences UI User 3]
+* [Test Case: Preferences UI User 2]
+* [Test Case: Preferences UI User 1]
+
+* [Test Case: Preferences UI User Teardown]
+
+* [Test Case: Phrase search]
+* [Test Case: People Search]
+
+* [Test Case: People Dashboard Plugins]
+* [Test Case: People Dashboard Plugins Reset]
+
+* [Test Case: New Default Dashboard]
+* [Test case: Login Logout]
+
+* [Test Case: LDAP Watchlist]
+* [Test Case: LDAP Deleted User]
+* [Test Case: Intranet]
+* [Test Case: Insert Menu]
+* [Test Case: Insert Blocks]
+* [Test Case: Image Widget]
+* [Test Case: Home]
+* [Test Case: Groups UI Mismatched Workspace]
+* [Test Case: Groups UI Invite Colleagues to account-group]
+* [Test Case: Groups UI Filter Search Results by Group]
+* [Test Case: Groups UI Edit an Existing Group]
+* [Test Case: Groups UI Delegate Membership]
+* [Test Case: Groups UI Create New Workspace]
+* [Test Case: Groups UI AddRemove Members From Group]
+* [Test Case: Groups UI Acct 2 Group Web UI]
+* [Test Case: Groups in Global Nav]
+* [Test Case: Group No Change Link]
+* [Test Case: Group Home Widget Permissions]
+* [Test Case: Group Home Has Widgets]
+* [Test Case: Group Home At Different Levels]
+* [Test Case: Group Directory]
+* [Test Case: Global Navigation]
 * [Test Case: Gadgets Galore]
+* [Test case: functional search tests]
+* [Test Case: Functional Search Additional Indexes]
+* [Test Case: External Gadgets]
+* [Test Case: Email page shows LDAP emails]
+* [Test Case: Email page shows emails]
+* [Test Case: Edit Profile]
+* [Test Case: Data Jobs]
+* [Test Case: Custom Desktop Theme]
+* [Test Case: Create LDAP Group]
+* [Test Case: Cool Dashboard]
+* [Test Case: Control Panel Group Delegate Membership]
+* [Test Case: Control Panel Create Group]
 * [Test Case: Consolidated Settings Defaults]
-* [Explore Testcases]
+* [Test Case: Consolidate Settings]
+* [Test Case: Command Line: WORKSPACES]
+* [Test Case: Command Line: USERS]
+* [Test Case: Command-Line User Restrictions]
+* [Test Case: Command Line: TAGS]
+* [Test Case: Command Line: RESTRICTIONS]
+* [Test Case: Command Line: OTHER]
+* [Test Case: Command Line: NEW]
+* [Test Case: Command Line: LOCK PAGES]
+* [Test Case: Command Line: LDAP USERS]
+* [Test Case: Command Line: INVITE NEW USER]
+* [Test Case: Command Line: INDEXING]
+* [Test Case: Command Line: EMAIL]
+* [Test Case: Command Line: ACCOUNTS]
+* [Test Case: Clear Profile Fields]
+* [Test Case: Captcha]
+* [Test Case: Business Control Panel Workspace Roles]
+* [Test Case: Business Control Panel Workspace Add Group]
+* [Test Case: Business Control Panel Workspace]
+* [Test Case: Business Control Panel User Remove Workspaces]
+* [Test Case: Business Control Panel User Multiple Accounts]
+* [Test Case: Business Control Panel User Lookup by User Id]
+* [Test Case: Business Control Panel USER External ID]
+* [Test Case: Business Control Panel Uploads]
+* [Test Case: Business Control Panel Sorting]
+* [Test Case: Business Control Panel SJ Group Add Workspace]
+
+* [Test Case: Business Control Panel Settings]
+
+* [Test Case: Business Control Panel Mass Add Users]
+
+* [Test Case: Business Control Panel Invite Users to Existent Workspace]
+
+* [Test Case: Business Control Panel Invite To Workspace]
+
+* [Test Case: Business Control Panel Groups in Workspace]
+
+* [Test Case: Business Control Panel Groups In Account]
+
+* [Test Case: Business Control Panel Group Role Within A Workspace]
+
+* [Test Case: Business Control Panel Group Add To Workspace]
+
+* [Test Case: Business Control Panel Group Add To Account]
+
+* [Test Case: Business Control Panel Export Account Data]
+
+* [Test Case: Business Control Panel Create Workspace from Account]
+
+* [Test Case: Business Control Panel Confirm User]
+
+* [Test case: Business Control Panel]
+
+* [Test Case: Bare Account]
+
+* [Test Case: Authenticated-User-Only]
+
+* [Test Case: Authen Renewal Reset]
+
+* [Test Case: Authen Renewal]
+
+* [Test Case: Associate Group With Workspace]
+
+* [Test Case: All People Tags Widget]
+
+* [Test Case: Administer Dashboards]
+
+* [Test case: Admin Resets Password]
+
+* [Test Case: Add Remove Gallery Widgets]
+
+* [Test Case: Activities Widget Tags and Tagging]
+
+* [Test Case: Activities Widget Permalinks]
+
+* [Test Case: Activities Widget Other Signals]
+
+* [Test Case: Activities Widget Greeting]
+
+* [Test Case: Activities Widget Basic Events]
+
+* [Test Case: Active Members Widget]
+
+* [Test Case: Active Members Setup]
+
+* [Test Case: Active Members Empty Messages]
+
+* [Test Case: Active Content Empty Messages]
+
+* [Test Case: Account Types]
+
+* [Test Case: A Enable LDAP]
+
+* [Template for Test Cases]
+
+* [ST Widgets]
+
+* [st-new-page-wysiwyg]
+
+* [st-fill-editor]
+
+* [st-edit-new-sheet]
+
+* [st-edit-new-page]
+
+* [st-edit-fill-page]
+
+* [st-add-widget]
+
+* [single-activities-widget]
+
+* [Profile Testcases]
+
+* [Preferences UI User Testcases]
+
+* [LDAP Testcases]
+
+* [folds]
+
+* [Enable LDAP]
+
+* [Disable Google Analytics]
+
+* [Default User Testcases]
+
+* [Command Line Testcases]
+
+* [Appliance Testcases]
+
+* [activities-widget]

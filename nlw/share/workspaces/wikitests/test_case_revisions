@@ -3,23 +3,23 @@
 | *Comment* | Test Case: Revisions: Create a page with five revisions |  |
 
 
-| call | st-edit-new-page | ws=%%workspace%% | title=test case revisions %%start_time%% | content=original revision number one %%start_time%% |
+| call | [st-edit-new-page] | ws=%%workspace%% | title=test case revisions %%start_time%% | content=original revision number one %%start_time%% |
 
 | click_ok | st-edit-button-link |  |
 
-| call | st-save-page | content=revision number two %%start_time%% |
+| call | [st-save-page] | content=revision number two %%start_time%% |
 
 | click_ok | st-edit-button-link |  |
 
-| call | st-save-page | content=revision number three %%start_time%% |
+| call | [st-save-page] | content=revision number three %%start_time%% |
 
 | click_ok | st-edit-button-link |  |
 
-| call | st-save-page | content=`[revision number four] %%start_time%%` |
+| call | [st-save-page] | content=`[revision number four] %%start_time%%` |
 
 | click_ok | st-edit-button-link |  |
 
-| call | st-save-page | content=`[revision number five] %%start_time%%` |
+| call | [st-save-page] | content=`[revision number five] %%start_time%%` |
 
 
 | *Comment* | Test Case: Revisions: Check for sorting and the "Compare Revisions" button |  |
@@ -232,13 +232,9 @@ from Compare Revisions, click the link above the older version | older version a
 | text_like | revision number two |  |
 
 | *Comment* | Test Case: Revisions: make a revision with an edit summary |  |
-| open_ok | /%%workspace%%/?test case revisions %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Revision 7 containing an edit summary |
+
+| call | [st-edit-no-save] | ws=%%workspace%% | page=test case revisions %%start_time%% | content=Revision 7 containing an edit summary |
+
 | wait_for_element_visible_ok | st-edit-summary-text-area | 30000 |
 | type_ok | st-edit-summary-text-area | Edit Summary %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |

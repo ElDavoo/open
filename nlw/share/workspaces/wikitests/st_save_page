@@ -1,8 +1,8 @@
 | *Comment* | st-edit-save-page: content=%%content%% |  |
 
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | %%content%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
+| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 10000 |
+| click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
+| wait_for_element_present_ok | //textarea[contains(@class,"cke_source")] | 10000 |
+| type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
 | st-page-save |  |  |

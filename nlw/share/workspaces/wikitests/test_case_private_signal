@@ -53,21 +53,19 @@
 | st-send-signal-in-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Private Signal. All signals appear in activities widget |  |
-| st-verify-text-within-activities-widget | %%signal%% |  |
-| st-verify-text-within-activities-widget | %%private%% |  |
-| st-verify-text-within-activities-widget | %%private_reply%% |  |
-| st-verify-text-within-activities-widget | %%public%% |  |
+| st-verify-text-in-activities-widget | %%signal%% |  |
+| st-verify-text-in-activities-widget | %%private%% |  |
+| st-verify-text-in-activities-widget | %%private_reply%% |  |
+| st-verify-text-in-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Private Signal. login as another user, see public but not private signals. |  |
 | st-logoutin | %%username%% | %%password%% |
 
-| open_ok | /st/signals |  |
-| text_like | st-editing-tools-edit | Signals |
-| st-name-widget | 1 | signals |
-| st-verify-text-in-activities-widget | signals | %%signal%% |
-| st-verify-text-in-activities-widget | signals | %%public%% |
-| st-text-unlike-in-activities-widget | signals | %%private%% |
-| st-text-unlike-in-activities-widget | signals | %%private_reply%% |
+| open_ok | /st/signals |
+| st-verify-text-in-activities-widget | %%signal%% |
+| st-verify-text-in-activities-widget | %%public%% |
+| st-text-unlike-in-activities-widget | %%private%% |
+| st-text-unlike-in-activities-widget | %%private_reply%% |
 
 | *Comment* | Test Case: Private Signal. Start privmsg, cancel, send public msg |  |
 | set | cancel | Public Hello after Cancel to %%psshort%% from %%short_username%% |

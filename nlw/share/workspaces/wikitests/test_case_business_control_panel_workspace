@@ -1,6 +1,3 @@
-
-*Will convert to TUX when confirmation message is restored*
-
 | *Comment* | Test case: Business Control Panel Workspace |  |
 
 | set | new_acct | acct-wstest-%%start_time%% |
@@ -72,7 +69,11 @@
 | select_ok | account_id | Socialtext |
 | wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
 | click_and_wait | st-assign-to-account-submit |  |
-| text_like | The %%new_workspace%% workspace is now part of the Socialtext account. |  |
+
+ text_like | The %%new_workspace%% workspace is now part of the Socialtext account. | |
+
+TUXTODO: Is this confirmation back?
+
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |

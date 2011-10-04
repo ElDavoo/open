@@ -1,5 +1,5 @@
 
-*On hold until workspaces are implemented*
+*On hold until cancel button has its ID restored*
 
 .pre
   Create a group named $group_name, populate %%group_id%% with the group id in account %%group_acct%%

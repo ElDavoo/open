@@ -42,8 +42,8 @@
 | wait_for_element_visible_ok | link=tag-%%start_time%% | 30000 |
 
 | *Comment* | Test Case: Groups Home. Comment on a Page |  |
-| wait_for_element_visible_ok | st-comment-button-link | 30000 |
-| click_ok | st-comment-button-link |  |
+| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | comment-%%start_time%% |
 | wait_for_element_visible_ok | link=Save | 30000 |
@@ -55,7 +55,7 @@
 | *Comment* | Test Case: Groups Home. Send A Signal to the Group |  |
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Activities | 30000 |
-| st-send-signal-via-activities-widget | signals_widget | signal-%%start_time%% |
+| st-send-signal-in-activities-widget | signal-%%start_time%% |
 | wait_for_text_present_ok | to %%groupname%% | 30000 |
 
 | *Comment* | Test Case: Groups Home. Check Lack of Permissions |  |

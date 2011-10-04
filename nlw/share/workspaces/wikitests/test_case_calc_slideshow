@@ -124,7 +124,7 @@
 | sc_right_cursor |  |  |
 | sc_left_cursor |  |  |
 
-| click_ok | st-comment-button-link |  |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | click_ok | st-spreadsheet-comment-input |  |
 | type_ok | st-spreadsheet-comment-input | I am leaving a comment |
 | click_ok | st-spreadsheet-comment-save |  |

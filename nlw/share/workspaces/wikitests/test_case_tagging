@@ -128,14 +128,17 @@ Click Revisions | new revision created for new tag
 Compare top two revisions | only difference is in added tag
 
 | *Comment* | Test Case: Tagging Compare Revisions |  |
-| click_and_wait | controls-right-revisions |  |
-| click_and_wait | link=Compare Revisions |  |
+| open_ok | /%%t_ws%%/?tag page 3 %%start_time%% |  |
+| click_and_wait | link=2 Revisions |  |
+| wait_for_element_visible_ok | st-revision-compare | 30000 |
+| click_and_wait | st-revision-compare |  |
 | text_like | qr/Tags:.+Tags:\s*tagtest %%start_time%%/ |  |
 
 Click on that tag in third page | list appears with correct three pages
 Click on any link in list | that page appears
 
-| click_and_wait | link=Back To Current Revision |  |
+| click_and_wait | link=All Revisions |  |
+| click_and_wait | st-revision-current |  |
 | click_and_wait | link=tagtest %%start_time%% |  |
 | click_and_wait | link=tag page 3 %%start_time%% |  |
 | text_like | st-page-titletext | tag page 3 %%start_time%% |
@@ -146,15 +149,15 @@ Compare top two revisions | only difference is in deleted tag
 
 | *Comment* | Test Case: Tagging Delete Tag |  |
 | open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |
-| wait_for_element_present_ok | //a[contains(@title,'Delete this')] | 30000 |
-| click_ok | //a[contains(@title,'Delete this')] |  |
-| wait_for_element_visible_ok | st-no-tags-placeholder | 30000 |
-| text_like | st-no-tags-placeholder | There are no tags for this page. |
+| wait_for_element_present_ok | //a[@class='delete_icon'] | 30000 |
+| click_ok | //a[@class='delete_icon'] |  |
+| wait_for_text_not_present_ok | tagtest %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Tagging. Compare revisions for deleted tag |  |
 | *Comment* | The revision number did not change but the tag should be gone |  |
-| click_and_wait | controls-right-revisions |  |
-| click_and_wait | link=Compare Revisions |  |
+| open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |  |
+| click_and_wait | link=3 Revisions |  |
+| click_and_wait | st-revision-compare |  |
 | text_like | qr/Tags:\s*tagtest %%start_time%%/m |  |
 | text_like | qr/Tags:\s*$/m |  |
 
@@ -162,8 +165,7 @@ Navigate to All Tags in list view | All Tags appears
 Observe that tag | tag is still in list
 Click that tag | Tag list page appears with two remaining tagged pages
 
-| open_ok | /%%t_ws%%/?action=recent_changes |  |
-| click_and_wait | link=All Tags |  |
+| open_ok | /%%t_ws%%/?action=category_list |  |
 | text_like | content | tagtest %%start_time%% |
 | click_and_wait | link=tagtest %%start_time%% |  |
 | text_like | content | tag page 1 %%start_time%% |
@@ -171,7 +173,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | *Comment* | Test Case: Tagging test for tags in lookahead |  |
 
-| call | st-edit-new-page | ws=%%t_ws%% | content=tag page 4 %%start_time%% content | title=tag page 4 %%start_time%% |
+| call | [st-edit-new-page] | ws=%%t_ws%% | content=tag page 4 %%start_time%% content | title=tag page 4 %%start_time%% |
 
 
 | *Comment* | Test Case: Tagging verify suggestions foo bar, fog, and Foster City |  |
@@ -185,9 +187,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | *Comment* | Test Case: Tagging use lookahead to add a tag |  |
 | click_ok | link=foster City %%start_time%% |  |
-| wait_for_text_not_present_ok | There are no tags for this page. | 30000 |
-| wait_for_element_visible_ok | st-tags-listing | 30000 |
-| wait_for_text_present_ok | foster City %%start_time%% | 30000 |
+| wait_for_element_visible_ok | //a[@class='delete_icon'] | 30000 |
 | text_like | st-tags-listing | foster City %%start_time%% |
 
 | *Comment* | Test Case: Tagging Teardown |  |

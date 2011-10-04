@@ -1,5 +1,5 @@
 
-*On hold until wikis work*
+*On hold until page tracker widget is restored*
 
 | *Comment* | Test Case: Page Tracker Widget |  |
 
@@ -32,8 +32,9 @@
 
 | st-admin | update-page --w %%wiki%% --e %%user%% --p "%%page%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-process-jobs |  |  |
-| st-add-page-tag | /%%wiki%%/index.cgi?%%page%% | %%tag_1%% |
-| st-add-page-tag | /%%wiki%%/index.cgi?%%page%% | %%tag_2%% |
+| open_ok | /%%wiki%%/%%page%% |  |
+| call | [st-tag-page] | tag_to_apply=%%tag_1%% |
+| call | [st-tag-page] | tag_to_apply=%%tag_2%% |
 
 | *Comment* | Test Case: Page Tracker put widget in dashboard, select proper frame |  |
 | st-single-widget-in-dashboard | gallery-widget-Page Tracker |  |

@@ -110,7 +110,7 @@
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | There are no new signals in the last 30 days. | 30000 |
 | st-name-widget | 1 | signals_widget |
-| st_send_signal_via_activities_widget | signals_widget | signal 1 %%start_time%% |
+| st-send-signal-in-activities-widget | signal 1 %%start_time%% |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | By you less than a minute ago to %%acct%% | 30000 |
 | wait_for_text_present_ok | signal 1 %%start_time%% | 30000 |
@@ -136,7 +136,7 @@
 | wait_for_text_present_ok | page title | 30000 |
 
 | *Comment* | Build Testcases comment on the page |  |
-| click_ok | st-comment-button-link |  |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | page comment |
 | wait_for_element_visible_ok | link=Save | 30000 |

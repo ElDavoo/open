@@ -1,6 +1,3 @@
-
-*On hold until confirmation message is restored or confirmed deleted*
-
 | *Comment* | Test Case: Business Control Panel Groups in Workspace |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace SETUP |  |
@@ -119,12 +116,15 @@
 | click_and_wait | //input[@value='Add to Workspace'] |  |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Group added |  |
-| wait-for-text-present-ok | Group '%%group5%%' now has the role of admin in the %%ws%% Workspace | 30000 |
+
+ wait-for-text-present-ok | Group '%%group5%%' now has the role of admin in the %%ws%% Workspace | 30000 |
+
+TUXTODO: Is this confirmation message coming back?
+
 | wait_for_element_visible_ok | //a[contains(text(),'%%group5%%')] | 30000 |
 | is_selected_ok | groupTable-dropdown-2-0 | label=Member |
 | is_selected_ok | groupTable-dropdown-2-4 | label=Admin |
 
-| pause | 5000 |  |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace TEARDOWN |  |
 | st-process-jobs |  |  |

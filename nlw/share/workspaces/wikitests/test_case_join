@@ -92,7 +92,7 @@
 | click_and_wait | login_btn |  |
 | location_like | /%%acct_ws%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 5000 |
-| wait_for_element_visible_ok | st-comment-button-link | 5000 |
+| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 5000 |
 | st-admin | get-user-account --u %%to_ws_user%% | Primary account for "%%to_ws_user%%" is %%acct%%. |
 
 | *Comment* | Test Case: Join TEARDOWN |  |

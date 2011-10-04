@@ -112,15 +112,9 @@
 | text_like | contentRight | qr/\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
 
 | *Comment* | Test Case: Upload File Edit Mode - verify page is still editable |  |
-| click_ok | st-edit-button-link |  |
-| wait_for_text_present_ok | Editing | 30000 |
-| text_like | st-editing-title | Editing: Upload File %%start_time%% |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | MODIFY THE CONTENT OF Upload File %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| click_and_wait | st-save-button-link |  |
+
+| call | [st-edit-this-page] | ws=%%workspace%% | thispage=Upload File %%start_time%% | content=MODIFY THE CONTENT OF Upload File %%start_time%% |
+
 | wait_for_text_present_ok | MODIFY THE CONTENT OF Upload File %%start_time%% | 30000 |
 | text_like | st-page-content | MODIFY THE CONTENT OF Upload File %%start_time%% |
 

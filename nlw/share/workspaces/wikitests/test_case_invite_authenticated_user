@@ -1,3 +1,6 @@
+
+*On hold until Reset Password works*
+
 | *Comment* | Test Case: Invite Authenticated User Invite new users |  |
 
 | set | invite | `//input[@class='lookahead-prompt']` |
@@ -13,8 +16,7 @@
 
 | *Comment* | Test Case: Invite Authenticated User non-admin not authorized to invite |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/manage |  |
-| wait_for_text_present_ok | Error |  |
-| text_like | qr/Not Authorized/i |  |
+| wait_for_text_present_ok | Not Authorized |  |
 
 | *Comment* | Test Case: Invite Authenticated User elevate to admin, add users to invite |  |
 | st-admin | add-workspace-admin --w %%new_ws%% --e %%new_user%% |  |

@@ -1,3 +1,6 @@
+
+*On hold until double-click to edit works*
+
 | *Comment* | Test Case: Double Click to Edit |  |
 | st-admin | update-page --w %%workspace%% --e %%email%% --p "DCTE %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 | open_ok | /%%workspace%%/?DCTE %%start_time%% |  |

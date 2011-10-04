@@ -87,8 +87,8 @@
 
 
 | *Comment* | Test Case Friendly Name Setup comment on a page |  |
-| wait_for_element_visible_ok | st-comment-button-link | 30000 |
-| click_ok | st-comment-button-link |  |
+| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | //textarea[@name='comment'] | 30000 |
 | type_ok | //textarea[@name='comment'] | comment text |
 | wait_for_element_visible_ok | //a[@class='saveButton genericOrangeButton'] | 30000 |

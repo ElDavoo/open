@@ -41,9 +41,9 @@
 | click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%account_signal%% |  |
-| st_send_signal_via_activities_widget | signals_widget | %%account_signal%% |
-| st_verify_text_in_activities_widget | signals_widget | qr/%%group_acct%%.+By you.*minute.*ago\s*to/ism |
-| st_verify_text_in_activities_widget | signals_widget | %%account_signal%% |
+| st-send-signal-in-activities-widget | %%account_signal%% |
+| st-verify-text-in-activities-widget | qr/%%group_acct%%.+By you.*minute.*ago\s*to/ism |
+| st-verify-text-in-activities-widget | %%account_signal%% |
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Choose within %%group_name%% |  |
@@ -53,9 +53,9 @@
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%group_signal%% |  |
 
-| st_send_signal_via_activities_widget | signals_widget | %%group_signal%% |
-| st_verify_text_in_activities_widget | signals_widget | qr/%%group_name%%.+By you.*minute.*ago\s*to/ism |
-| st_verify_text_in_activities_widget | signals_widget | %%group_signal%% |
+| st-send-signal-in-activities-widget | %%group_signal%% |
+| st-verify-text-in-activities-widget | qr/%%group_name%%.+By you.*minute.*ago\s*to/ism |
+| st-verify-text-in-activities-widget | %%group_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. login as group member %%ssg_user%% |  |
 | st-logoutin | %%ssg_user%% | %%password%% |
@@ -78,8 +78,8 @@
 | st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. see group signal only, not account signal |  |
-| st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
-| st_verify_text_in_activities_widget | signals_widget | %%group_signal%% |
+| st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
+| st-verify-text-in-activities-widget | %%group_signal%% |
 
 | st_text_unlike_in_activities_widget | signals_widget | %%account_signal%% |
 
@@ -96,10 +96,10 @@
 | st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Verify %%ssg_user%% sees both signals |  |
-| st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
-| st_verify_text_in_activities_widget | signals_widget | %%group_signal%% |
-| st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_acct%%/ |
-| st_verify_text_in_activities_widget | signals_widget | %%account_signal%% |
+| st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
+| st-verify-text-in-activities-widget | %%group_signal%% |
+| st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_acct%%/ |
+| st-verify-text-in-activities-widget | %%account_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within %%group_acct%% |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
@@ -114,7 +114,7 @@
 | st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Verify %%ssg_user%% sees only account signal |  |
-| st_verify_text_in_activities_widget | signals_widget | %%account_signal%% |
+| st-verify-text-in-activities-widget | %%account_signal%% |
 
 | st_text_unlike_in_activities_widget | signals_widget | %%group_signal%% |
 
@@ -126,8 +126,8 @@
 | text_like | st-editing-tools-edit | Signals |
 | st-name-widget | 1 | signals_widget |
 
-| st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_acct%%/ |
-| st_verify_text_in_activities_widget | signals_widget | %%account_signal%% |
+| st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_acct%%/ |
+| st-verify-text-in-activities-widget | %%account_signal%% |
 
 | st_text_unlike_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
 | st_text_unlike_in_activities_widget | signals_widget | %%group_signal%% |

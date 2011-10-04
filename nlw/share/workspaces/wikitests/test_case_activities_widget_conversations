@@ -1,5 +1,5 @@
 
-*On hold until wikis work*
+*On hold until st-watch-page works*
 
 | *Comment* | Test Case: Activities Widget Conversations |  |
 
@@ -52,10 +52,10 @@
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 1 | signals_widget |
 | st-widget-title | signals_widget | Activities |
-| st-send-signal-via-activities-widget | signals_widget | simple signals %%start_time%% |
+| st-send-signal-in-activities-widget | simple signals %%start_time%% |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 1 | signals_widget |
-| st-send-signal-via-activities-widget | signals_widget | {user: %%actor%%} %%mentioncode%% |
+| st-send-signal-in-activities-widget | {user: %%actor%%} %%mentioncode%% |
 
 | *Comment* | Test Case: Activities Widget Conversations - %%convuser%% edits, comments, makes a conversation (plus two pages that are not conversations) |  |
 | st-create-wikipage | %%wrkspc%% | %%notconvpage%% |
@@ -99,35 +99,35 @@
 | wait_for_text_present_ok | %%watchedpagename%% | 30000 |
 
 | *Comment* | %%r1%% |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r1%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r1%%/ism |
 | *Comment* | %%r2%% |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r2%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r2%%/ism |
 | *Comment* | %%r3%% |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r3%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r3%%/ism |
 | *Comment* | %%r4%% |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r4%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r4%%/ism |
 | *Comment* | %%r5%% |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r5%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r5%%/ism |
 | *Comment* | %%r6%% |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r6%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r6%%/ism |
 | *Comment* | %%r7%% |  |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r7%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r7%%/ism |
 | *Comment* | %%mentioncode%% |  |
-| st_verify_text_in_activities_widget | activities_widget | %%mentioncode%% |
+| st-verify-text-in-activities-widget | %%mentioncode%% |
 
 | *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, PRESENT - mention /is/ present |  |
 | wait_for_element_present_ok | link=my conversations | 5000 |
 | click_ok | link=my conversations |  |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r2%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r3%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r4%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r2%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r3%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r4%%/ism |
 
 | st_text_unlike_in_activities_widget | activities_widget | qr/Showing.+%%r1%%/ism |
 | st_text_unlike_in_activities_widget | activities_widget | qr/Showing.+%%r5%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r6%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r7%%/ism |
-| st_verify_text_in_activities_widget | activities_widget | %%mentioncode%% |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r6%%/ism |
+| st-verify-text-in-activities-widget | qr/Showing.+%%r7%%/ism |
+| st-verify-text-in-activities-widget | %%mentioncode%% |
 
 
 | *Comment* | Test Case: Activities Widget Conversations TEARDOWN |  |

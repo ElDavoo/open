@@ -1,5 +1,5 @@
 
-*On hold until wikis are working*
+*On hold until st-edit-new-page can pass content correctly*
 
 | *Comment* | Test Case: Page Creator Widget |  |
 
@@ -44,30 +44,17 @@
 | wait_for_text_present_ok | Create pages from customized forms. | 5000 |
 
 | *Comment* | Test Case: Page Creator Widget create a template page to feed into the widget |  |
-| open_ok | /%%pcw_wiki%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit |  |
-| type_ok | st-newpage-pagename-edit | %%pcw_template_page%% |
-| click_ok | wikiwyg_wikitext_textarea |  |
 | set | pp | `%%` |
-| type_ok | wikiwyg_wikitext_textarea | %%pp%%dev%%pp%% |
-| click_ok | st-edit-mode-tagbutton |  |
-| wait_for_element_visible_ok | st-tagqueue-field | 30000 |
-| type_ok | st-tagqueue-field | story |
-| click_ok | st-tagqueue-addbutton |  |
-| wait_for_text_present_ok | Tags to apply: story | 30000 |
-| type_ok | st-tagqueue-field | template |
-| click_ok | st-tagqueue-addbutton |  |
-| wait_for_text_present_ok | Tags to apply: story, template | 30000 |
-| click_ok | st-tagqueue-close |  |
-| wait_for_element_not_visible_ok | st-tagqueue-field | 10000 |
-| st-page-save |  |  |
+| set | a | `%%d` |
+| set | b | `ev%%` |
+
+| call | [st-edit-new-page] | ws=%%pcw_wiki%% | title=%%pcw_template_page%% | content=%%a%%%%b%% |
+| call | [st-tag-page] | tag_to_apply=story |  |  |
+| call | [st-tag-page] | tag_to_apply=template |  |  |
 
 | *Comment* | Test Case: Page Creator Widget make a new page, insert the widget |  |
 
-| call | st-edit-fill-page | ws=%%pcw_wiki%% | title=%%pcw_form_page%% |  |
+| call | [st-edit-fill-page] | ws=%%pcw_wiki%% | title=%%pcw_form_page%% |  |
 
 | click_ok | link=Widget... |  |
 | wait_for_element_visible_ok | gallery-widget-Page Creator | 30000 |

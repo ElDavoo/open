@@ -68,7 +68,7 @@
 | *Comment* | Test Case: Restrict Self-Join Workspaces Not Logged In User can not see self-join workspace in any account |  |
 | st-logout |  |  |
 | open_ok | /%%ws_other_acct%%/ |  |
-| wait_for_text_present_ok | Log in to Socialtext | 30000 |
+| wait_for_text_present_ok | Remember me on this computer | 30000 |
 | wait_for_element_not_present_ok | st-wikinav-register | 5000 |
 | text_unlike | //body | Welcome to the %%ws_other_acct%% workspace |
 

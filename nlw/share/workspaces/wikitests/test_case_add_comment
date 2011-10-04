@@ -7,18 +7,18 @@
 
 | call | st-edit-new-page | ws=%%workspace%% | title=Comment Test Page %%start_time%% | content=Comment Test Page Content %%start_time%% |
 
-| *Comment* | Test Case: Add Comment top comment button |  |
-| wait_for_element_visible_ok | st-comment-button-link | 30000 |
-| click_ok | st-comment-button-link |  |
+| *Comment* | Test Case: Add Comment comment button |  |
+| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%comment_nosignal%% |
 | wait_for_element_visible_ok | link=Save | 30000 |
 | st-click-pause | link=Save | 10000 |
 | text_like | content | %%comment_nosignal%% |
 
-| *Comment* | Test Case: Add Comment bottom Comment button |  |
-| wait_for_element_visible_ok | st-comment-button-link-bottom | 30000 |
-| click_ok | st-comment-button-link-bottom |  |
+| *Comment* | Test Case: Add Comment again Comment button |  |
+| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%comment_signal%% |
 | wait_for_element_visible_ok | st-comment-st-edit-summary-signal-checkbox | 30000 |
@@ -29,7 +29,7 @@
 | text_like | content | qr/contributed by/i |
 
 | *Comment* | Test Case: Add Comment Cancel comment |  |
-| click_ok | st-comment-button-link-bottom |  |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment Cancel %%start_time%% |
 | wait_for_element_visible_ok | st-cancel-layout | 30000 |

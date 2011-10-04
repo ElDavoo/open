@@ -4,13 +4,8 @@
 | st-admin | update-page --workspace %%workspace%% --email %%email%% --page "Edit Summaries %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Edit Summaries %%start_time%%" page has been created. |
 
 | *Comment* | Test Case: Edit Summaries. Create one edit summary |  |
-| open_ok | /%%workspace%%/index.cgi?Edit Summaries %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
+
+| call | [st-edit-fill-page] | ws=%%workspace%% | title=Edit Summaries %%start_time%% | content=test content |
 
 | *Comment* | Test Case: Edit Summaries. type the summary |  |
 | wait_for_element_present_ok | st-edit-summary-text-area | 30000 |
@@ -19,13 +14,8 @@
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Edit Summaries. Create a second edit summary. |  |
-| open_ok | /%%workspace%%/index.cgi?Edit Summaries %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+
+| call | [st-edit-no-save] | ws=%%workspace%% | page=Edit Summaries %%start_time%% | content=test content |
 
 | *Comment* | Test Case: Edit Summaries. type the second summary. |  |
 | wait_for_element_present_ok | st-edit-summary-text-area | 30000 |

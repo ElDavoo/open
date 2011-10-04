@@ -37,7 +37,7 @@
 
 | *Comment* | Test Case: Change Signal Limit Send 200 and 440 char signals |  |
 | st-send-signal-in-activities-widget | %%twohundredsignal%% |  |
-| st-verify-text-within-activities-widget | %%twohundredsignal%% |  |
+| st-verify-text-in-activities-widget | %%twohundredsignal%% |  |
 | open_ok | /st/dashboard |  |
 | st-send-signal-in-activities-widget | %%fourfortysignal%% |  |
 
@@ -136,15 +136,15 @@
 | wait_for_text_present_ok | 100 | 20000 |
 | text_like | //div[@class='activitiesWidget']//div[@class='count'] | 100 |
 
-| st-send-signal-via-activities-widget | activities_widget | %%onehundredsignal%% |
-| st-verify-text-in-activities-widget | activities_widget | %%onehundredsignal%% |
+| st-send-signal-in-activities-widget | %%onehundredsignal%% |  |
+| st-verify-text-in-activities-widget | %%onehundredsignal%% |  |
 | open_ok | /st/dashboard |  |
-| st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
+| st-send-signal-in-activities-widget | %%twohundredsignal%% |
 | open_ok | /st/dashboard |  |
-| st-send-signal-via-activities-widget | activities_widget | def 456 to get two hundred out of input box |
+| st-send-signal-in-activities-widget | def 456 to get two hundred out of input box |
 | st-text-unlike-in-activities-widget | activities_widget | %%twohundredsignal%% |
 | open_ok | /st/dashboard |  |
-| st-send-signal-via-activities-widget | activities_widget | %%twohundredsignal%% |
+| st-send-signal-in-activities-widget | %%twohundredsignal%% |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_text_present_ok | Signal length limit is 100 | 20000 |
 | select-frame | relative=parent |  |
@@ -191,11 +191,11 @@
 | text_like | //div[@class='activitiesWidget']//div[@class='count'] | 200 |
 
 | *Comment* | Test Case: Change Signal Limit. Test Limit 200 in %%twohundredlimit%% |  |
-| st-send-signal-via-activities-widget | signals_widget | %%onehundred_two%% |
+| st-send-signal-in-activities-widget | %%onehundred_two%% |
 | text_unlike | //div[@class='activitiesWidget'] | Signal length limit is 100, please edit your Signal |
 
 | open_ok | /st/signals |  |
-| st-send-signal-via-activities-widget | signals_widget | %%fourfortysignal%% |
+| st-send-signal-in-activities-widget | %%fourfortysignal%% |
 | wait_for_text_present_ok | Signal length limit is 200 | 20000 |
 
 | *Comment* | Test Case: Change Signal Limit TEARDOWN |  |

@@ -1,6 +1,3 @@
-
-*On hold until the Create New Group button does something*
-
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace SETUP |
@@ -54,7 +51,11 @@
 | wait_for_element_visible_ok | st-assign-to-workspace | 30000 |
 | type_ok | st-assign-to-workspace | %%workspace%% |
 | click-and-wait | //input[@value='Add to Workspace'] |  |
-| wait_for_text_present_ok | group and workspace do not have compatible permission sets | 30000 |
+
+ wait_for_text_present_ok | group and workspace do not have compatible permission sets | 30000 |
+
+TUXTODO: Is this confirmation back?
+
 | wait_for_text_present_ok | Workspaces (0) | 30000 |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Non existant WS |  |
@@ -64,7 +65,11 @@
 | wait_for_element_visible_ok | st-assign-to-workspace | 30000 |
 | type_ok | st-assign-to-workspace | %%fake_ws%% |
 | click-and-wait | //input[@value='Add to Workspace'] |  |
-| wait_for_text_present_ok | No Workspace identified by %%fake_ws%% | 30000 |
+
+ wait_for_text_present_ok | No Workspace identified by %%fake_ws%% | 30000 |
+
+TUXTODO: Is this confirmation back?
+
 | wait_for_text_present_ok | Workspaces (0) | 30000 |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Add new workspace - Correct Permission Set |  |
@@ -74,7 +79,11 @@
 | wait_for_element_visible_ok | workspace_id | 30000 |
 | select_ok | workspace_id | label=%%ws_to_add%% |
 | click-and-wait | //input[@value='Add to Workspace'] |  |
-| wait_for_text_present_ok | Group '%%group_name%%' now has the role of member in the %%ws_to_add%% Workspace | 30000 |
+
+ wait_for_text_present_ok | Group '%%group_name%%' now has the role of member in the %%ws_to_add%% Workspace | 30000 |
+
+TUXTODO: Is this confirmation back?
+
 | wait_for_text_present_ok | Workspaces (1) | 30000 |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Give Admin privileges |  |
@@ -87,7 +96,11 @@
 | check_ok | invite-as-admins |  |
 | is_checked_ok | invite-as-admins |  |
 | click-and-wait | //input[@value='Add to Workspace'] |  |
-| wait_for_text_present_ok | Group '%%group_name%%' now has the role of admin in the %%add_ws_two%% Workspace | 30000 |
+
+ wait_for_text_present_ok | Group '%%group_name%%' now has the role of admin in the %%add_ws_two%% Workspace | 30000 |
+
+TUXTODO: Is this confirmation back?
+
 | wait_for_text_present_ok | Workspaces (2) | 30000 |
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace Confirm Admin privileges |  |

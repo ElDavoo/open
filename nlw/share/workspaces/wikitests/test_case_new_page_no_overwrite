@@ -1,21 +1,23 @@
+
+*On hold until st-newxhtml-duplicate-option-suggest actually works*
+
 | *Comment* | Test Case: New Page No Overwrite |  |
 
 | *Comment* | Test Case: New Page No Overwrite: Create a new page with a unique name |  |
 | st-admin | update-page --workspace %%workspace%% --email %%email%% --page "%%start_time%% npno 1" < %%wikitest_client_files%%wikitest.txt |
 
 | *Comment* | Test Case: New Page No Overwrite: title already in use |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| type_ok | st-newpage-pagename-edit | %%start_time%% npno 1 |
+
+| call | [st-edit-fill-page] | ws=%%workspace%% | title=%%start_time%% npno 1 | content=test content |
+
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_ok | st-save-button-link |  |
 
 | *Comment* | Test Case: New Page No Overwrite save with existing title should fail |  |
-| wait_for_element_visible_ok | st-newpage-duplicate-pagename | 30000 |
-| text_like | st-newpage-duplicate-emphasis | already a page |
-| check_ok | st-newpage-duplicate-option-append |  |
-| click_and_wait | st-newpage-duplicate-okbutton |  |
+| wait_for_element_visible_ok | st-newxhtml-duplicate-pagename | 30000 |
+| text_like | st-newspreadsheet-duplicate-emphasis | already taken |
+| click_ok | st-newxhtml-duplicate-option-suggest |  |
+| click_and_wait | st-newxhtml-duplicate-okbutton |  |
 | *Comment* | Test Case: New Page No Overwrite append should succeed |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%start_time%% npno 1 |

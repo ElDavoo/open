@@ -1,6 +1,3 @@
-
-*On hold until wikis work*
-
 | *Comment* | Test Case: Activities Widget Tags and Tagging |
 
 * Fixture: SocialWidgets
@@ -48,8 +45,8 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 | text_like | link=%%personaltag%% | %%personaltag%% |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Tag A Page |  |
-| st-create-wikipage | %%wrkspc%% | %%pagename%% |
-| st-add-page-tag | /%%wrkspc%%/index.cgi?%%pagename%% | %%pagetag%% |
+| call | [st-edit-new-page] | ws=%%wrkspc%% | title=%%pagename%% | content=foo |
+| call | [st-tag-page] | tag_to_apply=%%pagetag%% |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging Clear Cache, catchup logs |
 | st-clear-json-cache |  |
@@ -67,7 +64,7 @@ TODO: there seems to be some weirdness indexing usernames that end in a string o
 | set | t3 | %%taggingusershort%%.+minute.+ago.+tagged.+themself.+%%personaltag%% |
 | set | t4 | %%taggingusershort%%.+minute.+ago.+tagged.+%%tagusershort%%.+%%othertag%% |
 
-| st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%t1%%.+%%t2%%.+%%t3%%.+%%t4%%/ism |
+| st-verify-text-in-activities-widget | qr/%%t1%%.+%%t2%%.+%%t3%%.+%%t4%%/ism |
 
 | *Comment* | Test Case: Activities Widget Tags and Tagging TEARDOWN |
 | st-process-jobs |  |  |

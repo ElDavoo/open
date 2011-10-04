@@ -8,24 +8,10 @@
 | st-admin | add-member --email %%email%% --workspace %%newspace%% | qr/%%username%%.+now has the role of 'member' in the %%newspace%% workspace/ism |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace Create test page |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Copy This Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Copy This Page %%start_time%% content |
 
-| *Comment* | Test Case: Tools: Copy Page to Workspace Create test tag |  |
-| wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
-| click_ok | st-edit-mode-tagbutton |  |
-| wait_for_element_visible_ok | st-tagqueue-field | 30000 |
-| type_ok | st-tagqueue-field | Copy This Tag %%start_time%% |
-| click_ok | st-tagqueue-addbutton |  |
-| click_ok | st-tagqueue-close |  |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
-| wait_for_element_visible_ok | link=Copy This Tag %%start_time%% |
+| call | [st-edit-new-page] | ws=%%workspace%% | title=Copy This Page %%start_time%% | content=Copy This Page %%start_time%% content |
+| call | [st-tag-page] | tag_to_apply=Copy This Tag %%start_time%% |  |  |
+
 | st_upload_if_highperms | wikitest.jpg |  |
 
 TODO: upload a file and test for Keep Attachments
@@ -50,7 +36,7 @@ NOT the target WS |  |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Edit the original the page |  |
 
-| call | st-edit-this-page | ws=%%workspace%% | thispage=Copy This Page %%start_time%% | content=Copy This Page %%start_time%% NEW content |
+| call | [st-edit-this-page] | ws=%%workspace%% | thispage=Copy This Page %%start_time%% | content=Copy This Page %%start_time%% NEW content |
 
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Copy the edited page and Cancel |  |

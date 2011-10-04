@@ -34,11 +34,7 @@
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 
 | *Comment* | Test Case: Edit Contention Execute. Save anyway. |  |
-| set_speed_ok | 0 |  |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | link=Save | 30000 |
-| click_and_wait | link=Save |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Edit Contention Execute. TEARDOWN. Teardown will be done by Test Case: Edit Contention Reset |  |
 

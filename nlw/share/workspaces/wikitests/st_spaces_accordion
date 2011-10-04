@@ -4,4 +4,4 @@
 | wait_for_element_visible_ok | `//span[@class="ui-icon ui-icon-triangle-1-e"][%%index%%]` | 10000 |
 | click_ok | `//span[@class="ui-icon ui-icon-triangle-1-e"][%%index%%]` |  |
 | wait_for_element_visible_ok | link=%%section%% | 5000 |
-| click_ok | link=%%section%% |  |
+| click_and_wait | link=%%section%% |  |

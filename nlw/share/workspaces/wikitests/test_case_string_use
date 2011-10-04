@@ -22,23 +22,11 @@ Set default values if they are not defined by the caller
 | set | test_id | %%test_id%%_%%start_time%% |
 
 | *Comment* | Test Case: String Use: new page |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | %%test_string%% content |
-| type_ok | st-newpage-pagename-edit | %%test_string%% title |
-| click_ok | st-edit-mode-tagbutton |  |
+
+| call | [st-edit-new-page] | ws=%%workspace%% | title=%%test_string%% title | content=%%test_string%% content |
 
 | *Comment* | Test Case: String Use: add tag 1 |  |
-| wait_for_element_visible_ok | st-tagqueue-field | 30000 |
-| type_ok | st-tagqueue-field | %%test_string%% tag 1 |
-| click_ok | st-tagqueue-addbutton |  |
-| wait_for_element_visible_ok | st-tagqueue-close | 30000 |
-| click_ok | st-tagqueue-close |  |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+| call | [st-tag-page] | tag_to_apply=%%test_string%% tag 1 |
 
 | *Comment* | Test Case: String Use: check tag 1 |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
@@ -48,12 +36,7 @@ Set default values if they are not defined by the caller
 | text_like | st-tags-listing | %%test_string%% tag 1 |
 
 | *Comment* | Test Case: String Use: add tag 2 |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
-| click_ok | link=Add Tag |  |
-| wait_for_element_visible_ok | st-tags-field | 30000 |
-| type_ok | st-tags-field | %%test_string%% tag 2 |
-| wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
-| click_ok | st-tags-plusbutton-link |  |
+| call | [st-tag-page] | tag_to_apply=%%test_string%% tag 2 |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_element_visible_ok | link=%%test_string%% tag 2 | 30000 |
 | text_like | st-tags-listing | %%test_string%% tag 2 |
@@ -95,7 +78,7 @@ Set default values if they are not defined by the caller
 | text_like | st-tags-listing | %%test_string%% tag 2 |
 
 | *Comment* | Test Case: String Use: Comment on the rename page |  |
-| click_ok | st-comment-button-link |  |
+| click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%test_string%% comment |
 | st-click-pause | link=Save | 5000 |
@@ -147,7 +130,7 @@ Set default values if they are not defined by the caller
 | *Comment* | Test Case: String Use: Your Notepad |  |
 | *Comment* | Your Notepad wants an existing page |  |
 
-| call | st-edit-new-page | ws=%%workspace%% | title=%%test_string%% pad | content=%%test_string%% pad content |
+| call | [st-edit-new-page] | ws=%%workspace%% | title=%%test_string%% pad | content=%%test_string%% pad content |
 
 
 | *Comment* | Test Case: String Use: set Your Notepad |  |
@@ -164,13 +147,8 @@ Set default values if they are not defined by the caller
 | text_like | content | %%test_string%% pad content |
 
 | *Comment* | Test Case: String Use: try TOC |  |
-| open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `{toc}` |
+
+| call | [st-edit-no-save] | ws=%%workspace%% | page=%%test_id%%_rename | content=`{toc}` |
 
 | *Comment* | Test Case: String Use: try the TOC roundtrip |  |
 | wait_for_element_visible_ok | link=Rich Text | 30000 |

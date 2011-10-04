@@ -1,4 +1,3 @@
-
 | *Comment* | Test Case: Create Content |  |
 | set | select_template | `//div[@id='create-content-from-template']/select` |
 | set | copy_from | `//div[@id='create-content-from-page']/input[2]` |
@@ -45,7 +44,6 @@
 | click_ok | link=+ New Page |  |
 | wait_for_element_visible_ok | use-template-radio | 5000 |
 | check_ok | use-template-radio |  |
-|  wait_for_element_visible_ok |  %%select_template%% |  5000 |
 | select_ok | %%select_template%% | Create Page %%start_time%% |
 | click_and_wait | st-create-content-savelink |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |

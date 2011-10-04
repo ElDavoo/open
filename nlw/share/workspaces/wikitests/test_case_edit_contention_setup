@@ -9,8 +9,7 @@
 | text_unlike | //body | opened this page for editing |
 
 | *Comment* | Test Case: Edit Contention Setup. Open page for editing, then go away |  |
-| click_ok | link=Edit |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | st-edit-button-link |  |
 
 | *Comment* | Test Case: Edit Contention. Page %%page%% has been OPENED FOR EDITING. |  |
 | *Comment* | Test Case: Edit Contention Setup COMPLETED |  |
