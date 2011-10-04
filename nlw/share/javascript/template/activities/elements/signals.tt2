@@ -1,16 +1,16 @@
-<div class="networks grid_minus_0 alpha omega">
+<div class="networks grid_24 alpha omega">
     [% post_to_prompt || loc('activities.post-to') %]
     <span class="signal_network select" id="[% id('signal_network') %]"></span>
 </div>
 
-<div class="grid_minus_2 alpha">
+<div class="grid_20 alpha">
     <div class="mainWikiwyg">
         <div id="[% id('mainWikiwyg') %]" class="setupWikiwyg wikiwyg">
             <div class="clearHandler">[% this.startText %]</div>
         </div>
     </div>
 </div>
-<div class="omega grid_2 post">
+<div class="omega grid_4 post">
     <a href="#" id="[% id('post') %]">[% loc('Go') %]</a>
     <div class="count" id="[% id('count') %]"></div>
 </div>
