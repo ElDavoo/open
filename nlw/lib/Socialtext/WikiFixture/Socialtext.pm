@@ -417,9 +417,7 @@ sub get_id_from_url {
 sub st_page_save {
     my ($self) = @_;
     st_pause_click($self, 3000, 'st-save-button-link', 'andWait');
-    # NOTE: removed the following wait, should be superfluous, made folding
-    # page saves easier.
-    #$self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link');
+    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link');
 }
 
 =head2 st_pause_click
