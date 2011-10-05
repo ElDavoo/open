@@ -56,6 +56,10 @@
     [% INCLUDE 'element/wiki/js-bootstrap' %]
     [% INCLUDE 'widget/syndicator' %]
 
+    [% IF head_template %]
+      [% INCLUDE $head_template %]
+    [% END %]
+
     <meta name="keywords" content="[% loc('about.keywords') %]"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
   </head>
