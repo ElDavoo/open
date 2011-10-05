@@ -122,6 +122,7 @@ sub PUT_layout {
                 else {
                     # Install the new gadget
                     $gadget = $self->container->install_gadget(
+                        src => $g->{src},
                         gadget_id => $g->{gadget_id},
                         fixed => $g->{fixed},
                         class => $g->{class}

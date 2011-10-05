@@ -2996,6 +2996,30 @@ sub st_purge_widget {
     diag loc("test.deleted-widgets=count", $sth->rows)."\n";
 }
 
+sub add_widget_ok {
+    my ($self, $url, $src, $col) = @_;
+
+    my @layout = ([], [], []);
+
+    # Add the new widget
+    push @{$layout[$col || 2]}, { src => $src, install => 1 };
+
+    # add old gadgets 
+    $self->get_json($url);
+    $self->json_parse;
+    for my $gadget (@{$self->{json}}) {
+        push @{$layout[$gadget->{col}]}, {
+            instance_id => $gadget->{instance_id},
+        };
+    }
+    
+    $self->put_json($url, encode_json({ gadgets => \@layout }));
+
+    my $layout = $self->get_json($url);
+    $self->json_parse;
+    use Data::Dump 'dump'; scalar @{$self->{json}};
+}
+
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
 sub disable_ws_plugin   { shift; _change_plugin('Workspace', 0, @_) }
 sub enable_acct_plugin  { shift; _change_plugin('Account',   1, @_) }
