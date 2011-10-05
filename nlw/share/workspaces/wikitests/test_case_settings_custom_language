@@ -1,10 +1,14 @@
+*On hold until switching languages stops not working intermittently*
 
 Note: Does not work in IE8. If done manually in IE8 it works fine, but when Sel is automating, the select_ok of locale does not trigger a page reload as it should.
 
 | *Comment* | Test Case: Settings: Custom Language |  |
 
 | *Comment* | Test Case: Settings: Custom Language - Create User |  |
-| set | custom_user | customuser%%start_time%%@matt.socialtext.net |
+| set | custom_user_at | user.%%start_time%%@ |
+| set | domain | david.socialtext.net |
+| set | custom_user | %%custom_user_at%%%%domain%% |
+
 | set | acct | customacct%%start_time%% |
 | set | ws | customerws%%start_time%% |
 | set | locale | //select[contains(@name,'locale')] |
@@ -93,9 +97,11 @@ Note: Does not work in IE8. If done manually in IE8 it works fine, but when Sel 
 | wait_for_element_visible_ok | %%locale%% | 5000 |
 | is_selected_ok | %%locale%% | label=zz - DEV_MODE ONLY |
 | select_ok | %%locale%% | label=Zzzzzzz (English) |
-| click_ok | link=Save |  |
-| wait_for_text_present_ok | Saved | 5000 |
+| is_selected_ok | %%locale%% | label=Zzzzzzz (English) |
+| click_and_wait | link=Zzzz |  |
+| wait_for_text_present_ok | Zzzzz | 5000 |
 | open_ok | /st/settings |  |
+| wait_for_element_visible_ok | %%locale%% | 30000 |
 | is_selected_ok | %%locale%% | label=English |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome | 5000 |
@@ -105,7 +111,6 @@ Note: Does not work in IE8. If done manually in IE8 it works fine, but when Sel 
 | wait_for_text_present_ok | People | 5000 |
 | open_ok | /nlw/control |  |
 | wait_for_text_present_ok | Welcome to the Socialtext Control Panel | 5000 |
-
 
 | *Comment* | Test Case: Settings: Custom Language - customize language from %%ws%% |  |
 | open_ok | /%%ws%%/ |  |

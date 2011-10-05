@@ -1,3 +1,5 @@
+*On hold until Search is restored for Guest Users*
+
 | *Comment* | Test Case: Inter Workspace Search |  |
 
 | *Comment* | This test relies on the presence of test-data and deliberately overwrites fixed workspace names so subsequent runs will work with `workspaces:*` |  |
@@ -19,19 +21,19 @@
 
 | *Comment* | Test Case: Inter Workspace Search. Select My Workspaces in Dashboard-context |  |
 | open_ok | /st/dashboard |  |
-| select_ok | st-search-action | label=Search My Workspaces: |
+| select_ok | st-search-action | label=My Workspaces |
 | st-search | wiki | Pages matching 'wiki' |
-| is_selected_ok | st-search-action | label=Search My Workspaces: |
+| is_selected_ok | st-search-action | label=My Workspaces |
 
 | *Comment* | Test Case: Inter Workspace Search in People Context |  |
 | open_ok | /?action=people |  |
-| select_ok | st-search-action | label=Search My Workspaces: |
+| select_ok | st-search-action | label=My Workspaces |
 | st-search | wiki | Pages matching 'wiki' |
-| is_selected_ok | st-search-action | label=Search My Workspaces: |
+| is_selected_ok | st-search-action | label=My Workspaces |
 
 | *Comment* | Test Case: Inter Workspace Search Search all the workspaces where %%username%% is a member - in WS Context |  |
 | open_ok | /%%workspace%%/ |  |
-| select_ok | st-search-action | label=Search My Workspaces: |
+| select_ok | st-search-action | label=My Workspaces |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 15 total |  |
 | *Comment* | Sort by Workspace. Unstick the sort mode |  |
@@ -49,7 +51,7 @@
 
 | st-process-jobs |  |  |
 
-| select_ok | st-search-action | label=Search My Workspaces: |
+| select_ok | st-search-action | label=My Workspaces |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 10 total |  |
 | select_and_wait | sort-picker | label=Title |
@@ -82,7 +84,7 @@
 | *Comment* | Test Case: Inter Workspace Search Login to %%workspace%% ws and search again |  |
 | st-login |  |  |
 | wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=Search My Workspaces: |
+| select_ok | st-search-action | label=My Workspaces |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 10 total |  |
 | select_and_wait | sort-picker | label=Title |
@@ -95,7 +97,7 @@
 | *Comment* | add user back to test-data2, delete test-data2 |  |
 
 | st-admin | add-member --workspace test-data2 --email %%email%% | now has the role of 'member' in the test-data2 Workspace |
-| select_ok | st-search-action | label=Search My Workspaces: |
+| select_ok | st-search-action | label=My Workspaces |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 15 total |  |
 | select_and_wait | sort-picker | label=Title |
@@ -108,7 +110,7 @@
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace test-data2 --no-export | has been deleted |
 
-| select_ok | st-search-action | label=Search My Workspaces: |
+| select_ok | st-search-action | label=My Workspaces |
 | st-search | jabber | Pages matching 'jabber' |
 
 | st-result | 10 total |  |
@@ -140,9 +142,12 @@
 
 | st-login |  |  |
 | open_ok | /test-data3 |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Unsubscribe |  |
-| click_and_wait | Button |  |
+
+| BREAK |  |  |
+
+| call | [st-spaces-accordion] | index= | click_and_wait | link=Settings |  |
+| click_and_wait | link=Unsubscribe |  |  |  |  |
+| click_and_wait | Button |  |  |  |  |
 
 | open_ok | /%%workspace%% |  |
 | select_ok | st-search-action | label=Search My Workspaces: |
@@ -158,15 +163,13 @@
 | *Comment* | Test Case: Inter Workspace Search Create new ws empty because ceq takes too long to index |  |
 | *Comment* | delete the ws first in case it already exists |  |
 
-| st-process-jobs |  |  |
-| st-admin | delete-workspace --workspace from-scratch --no-export |  |
-| st-admin | create-workspace --empty --name from-scratch --title From-Scratch --empty | A new workspace named "from-scratch" was created. |
-| st-admin | add-member --workspace from-scratch --email %%email%% | now has the role of 'member' in the from-scratch Workspace |
-| st-process-jobs |  |  |
-
+| st-process-jobs |  |  |  |  |
+| st-admin | delete-workspace --workspace from-scratch --no-export |  |  |  |
+| st-admin | create-workspace --empty --name from-scratch --title From-Scratch --empty | A new workspace named "from-scratch" was created. |  |  |
+| st-admin | add-member --workspace from-scratch --email %%email%% | now has the role of 'member' in the from-scratch Workspace |  |  |
+| st-process-jobs |  |  |  |  |
 
 | call | st-edit-new-page | ws=from-scratch | title=jabber | content=jabber |
-
 
 | *Comment* | Test Case: Inter Workspace Search index new page explicitly just in case ceq is tetchy |  |
 | st-process-jobs | PageIndex | from-scratch |
@@ -181,10 +184,10 @@
 | st-result | qr/jabber.+%%title%%/ |  |
 | st-result | qr/jabber.+From-Scratch/ |  |
 
-| *Comment* | Test Case: Inter Workspace Search TEARDOWN |
+| *Comment* | Test Case: Inter Workspace Search TEARDOWN |  |
 | st-process-jobs |  |  |
 | delete-workspace | test-data2 | Recklessly deleting |
 | delete-workspace | test-data3 | Recklessly deleting |
 | delete-workspace | from-scratch | Recklessly deleting |
 
-| *Comment* | Test Case: Inter Workspace Search COMPLETED |
+| *Comment* | Test Case: Inter Workspace Search COMPLETED |  |
