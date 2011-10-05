@@ -6,4 +6,5 @@
 | wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 10000 |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 | wait_for_element_present_ok | //textarea[contains(@class,"cke_source")] | 10000 |
+| pause_ok | 4000 |  |
 | type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |

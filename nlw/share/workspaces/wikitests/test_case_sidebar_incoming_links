@@ -9,7 +9,7 @@ Navigate to a page known to have zero incoming links | system displays "There ar
 
 | *Comment* | Test Case: Sidebar: Incoming Links. create TC Incoming Links %%start_time%% |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%workspace%% | title=TC Incoming Links %%start_time%% | `content=[TC Incoming Links New Page %%start_time%%] [House Payment]` |
+| call | [st-edit-new-page] | ws=%%workspace%% | title=TC Incoming Links %%start_time%% | content=[TC Incoming Links New Page %%start_time%%] [House Payment] |
 
 | *Comment* | Test Case: Sidebar: Incoming Links. no incoming links |  |
 | wait_for_text_present_ok | TC Incoming Links %%start_time%% | 30000 |

@@ -1,5 +1,4 @@
-| *Comment* | st-edit-new-page: ws=%%ws%% title=%%title%% content=%%content%% |  |
+| *Comment* | st-edit-new-page: ws=%%ws%% title=%%title%% content=%%content%% |  |  |  |
 
 | call | [st-edit-fill-page] | ws=%%ws%% | title=%%title%% | content=%%content%% |
-
-| st-page-save |  |  |
+| st_page_save |  |  |  |  |

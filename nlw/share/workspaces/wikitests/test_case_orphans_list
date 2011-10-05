@@ -1,3 +1,6 @@
+skip.all until and unless Orphans List is restored
+
+
 | *Comment* | START Test Case: Orphans List |  |
 
 (↑) (↓)
@@ -13,7 +16,7 @@ Find or create several pages that have no incoming links. This creates orphan pa
 
 Create a page by a different user
 
-| set | orphan_email | `aaa.orphan.%%start_time%%@ken.socialtext.net` |
+| set | orphan_email | `"aaa.orphan.%%start_time%%@ken.socialtext.net"<mailto:aaa.orphan.%2525%2525start_time%2525%2525@ken.socialtext.net>` |
 | st-admin | create-user --e %%orphan_email%% --p 123456 |  |
 | st-admin | add-member --w %%ws%% --e %%orphan_email%% | now has the role of 'member' in the |
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been created. |
@@ -32,11 +35,10 @@ Create a page by a different user
 edit a page to include a link to an orphan page | link appears in page
 
 | *Comment* | Test Case: Orphans List. Create a link to the second orphan page |  |
-| click_and_wait | link=orphan %%start_time%% 0004 |
+| click_and_wait | link=orphan %%start_time%% 0004 |  |
 | click_ok | st-edit-button-link |  |
 
 | call | st-save-page | content=`[orphan %%start_time%% 0002]` |
-
 
 | *Comment* | Test Case: Orphans List. second page should no longer be orphan |  |
 | open_ok | /%%ws%%/index.cgi?action=orphans_list |  |

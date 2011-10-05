@@ -1,4 +1,3 @@
-*On hold until intermittent race failures are ironed out*
 
 | *Comment* | Starting Test Case: Preview Format |  |
 | *Comment* | the idea is to add 3 headers with a TOC widget in the middle of the page |  |
@@ -50,16 +49,28 @@
 | wait_for_text_present_ok | Preview | 5000 |
 | wait_for_element_present_ok | st-preview-button-link | 30000 |
 | text_like | st-preview-button-link | Preview |
+
+| *Comment* | Test Case: Preview Format Check that TOC is OK in Preview coming from RICHTEXT mode |  |
+| wait_for_element_visible_ok | //a[contains(@class,"cke_button_wysiwyg")] | 10000 |
+| click_ok | //a[contains(@class,"cke_button_wysiwyg")] |  |
+| wait_for_element_present_ok | st-preview-button-link | 10000 |
+| text_like | st-preview-button-link | Preview |
 | click_ok | st-preview-button-link |  |
 | wait_for_text_present_ok | head | 5000 |
 
-| *Comment* | Test Case: Preview Format Check that TOC is OK in Preview coming from Simple mode |  |
-| pause | 5000 | wait for render |
+| pause_ok | 5000 | wait for render |
 | text_like | qr/head1.+head1.+head2.+head3.+head2.+head3/ |  |
+
+| *Comment* | Test Case: Preview Format Check again that the links exist |  |
+| wait_for_element_present_ok | link=head1 | 5000 |
+| wait_for_element_present_ok | link=head2 | 5000 |
+| wait_for_element_present_ok | link=head3 | 5000 |
 | text_like | st-preview-button-link | Edit More |
+
 | click_and_wait | st-save-button-link |  |
 
 | *Comment* | Test Case: Preview Format TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page edit_this_page_toc_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Preview Format COMPLETED |  |
