@@ -39,8 +39,8 @@
       <div class="grid_2">[% loc("nav.select") %]</div>
       <div class="grid_2">[% loc("page.revision") %]</div>
       <div class="grid_4">[% loc("revision.edited-by") %]</div>
-      <div class="grid_4">[% loc("revision.date") %]</div>
-      <div class="grid_12">
+      <div class="grid_3">[% loc("revision.date") %]</div>
+      <div class="grid_13">
         [% FILTER decorate('revision-edit-summary-header') %]
           [% loc("revision.summary") %]
         [% END %]

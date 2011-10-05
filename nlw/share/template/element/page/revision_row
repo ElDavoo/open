@@ -21,9 +21,9 @@
 
 <div class="grid_4">[% from | decorate('user_avatar') %]</div>
 
-<div class="grid_4">[% date %]</div>
+<div class="grid_3">[% date %]</div>
 
-<div class="grid_12">
+<div class="grid_13">
   [% FILTER decorate('revision-edit-summary', row.id) %]
     [% edit_summary | label_ellipsis(edit_summary_maxlength) | html %]
   [% END %]
