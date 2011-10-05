@@ -46,7 +46,7 @@
         [% END %]
 
         [% IF this.signals_enabled %]
-            <div class="push_4 grid_21 alpha omega top_line"></div>
+            <div class="push_4 grid_20 alpha omega top_line"></div>
             <div class="clear"></div>
 
             <div class="alpha prefix_4 grid_17">
