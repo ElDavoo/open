@@ -850,7 +850,7 @@ $.extend(Activities.EventList.prototype, {
             }
             $img.addClass('hasOverlay');
             var $overlay = $('<img />', {
-                src: self.base_uri + "/static/skin/common/images/video-play-overlay.gif",
+                src: self.base_uri + "/static/images/video-play-overlay.gif",
                 width: size,
                 height: size,
                 title: $img.attr('title')
