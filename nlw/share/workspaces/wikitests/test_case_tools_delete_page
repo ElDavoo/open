@@ -1,17 +1,20 @@
-| *Comment* | Test Case: Tools: Delete Page |
+*On hold until Restore Page works*
 
-| *Comment* | Test Case: Tools: Delete Page: Create test page |  |
+| *Comment* | Test Case: Tools: Delete Page |  |  |  |
 
-| call | st-edit-new-page | ws=%%workspace%% | content=Delete Page Content %%start_time%% | title=Delete Page %%start_time%% |
+| *Comment* | Test Case: Tools: Delete Page: Create test page |  |  |  |
 
+| call | [st-edit-new-page] | ws=%%workspace%% | content=Delete Page Content %%start_time%% | title=Delete Page %%start_time%% |
 
-| *Comment* | Test Case: Tools: Delete Page: Create backlinking page |  |
+| *Comment* | Test Case: Tools: Delete Page: Create backlinking page |  |  |  |
 
-| call | st-edit-new-page | ws=%%workspace%% | content=`[Delete Page %%start_time%%]` | title=Backlink Page %%start_time%% |
-
+| call | [st-edit-new-page] | ws=%%workspace%% | content=`[Delete Page %%start_time%%]` | title=Backlink Page %%start_time%% |
 
 | *Comment* | Test Case: Tools: Delete Page: delete the page |  |
 | open_ok | /%%workspace%%/?Delete Page %%start_time%% |  |
+| wait_for_element_visible_ok | st-page-options | 30000 |
+| click_ok | st-page-options |  |
+| wait_for_element_present_ok | link=Delete Page | 10000 |
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 20000 |
 | click_and_wait | st-delete-deletelink |  |
@@ -30,6 +33,9 @@
 | click_and_wait | link=Compare Revisions |  |
 | text_like | content | Delete Page Content %%start_time%% |
 | click_and_wait | //a[contains(@href,'index.cgi?delete_page_%%start_time%%')] |  |
+| wait_for_element_visible_ok | st-page-options | 30000 |
+| click_ok | st-page-options |  |
+| wait_for_element_present_ok | link=Delete Page | 10000 |
 | click_ok | link=Delete Page |  |
 | wait_for_element_visible_ok | st-delete-deletelink | 20000 |
 | click_and_wait | st-delete-deletelink |  |
@@ -58,4 +64,4 @@
 | st-admin | purge-page --workspace %%workspace%% --page delete_page_%%start_time%% | was purged |
 | st-admin | purge-page --workspace %%workspace%% --page backlink_page_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Tools: Delete Page COMPLETED |
+| *Comment* | Test Case: Tools: Delete Page COMPLETED |  |

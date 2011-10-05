@@ -10,14 +10,13 @@
 | st-admin | add-member --w %%wn_ws%% --e %%wnemail%% | now has the role |
 | st-admin | add-member --w %%wn_ws%% --e %%anemail%% | now has the role |
 
-
 | st-admin | update-page --email %%wnemail%% --workspace %%wn_ws%% --page "hey whats new %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "hey whats new %%start_time%% 0001" page has been created. |
 | st-admin | update-page --email %%wnemail%% --workspace %%wn_ws%% --page "hey whats new %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "hey whats new %%start_time%% 0002" page has been created. |
 | st-admin | update-page --email %%wnemail%% --workspace %%wn_ws%% --page "hey whats new %%start_time%% 0003" < %%wikitest_client_files%%wikitest.txt | The "hey whats new %%start_time%% 0003" page has been created. |
 | st-admin | update-page --email %%wnemail%% --workspace %%wn_ws%% --page "hey whats new %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "hey whats new %%start_time%% 0004" page has been created. |
 
 | *Comment* | Test Case: What's New displays All Pages in old %%workspace%% |  |
-| click_and_wait | link=What's New |  |
+| select_and_wait | st-jump-to | label=What's New |
 | text_like | Changes in Last |  |
 
 | *Comment* | Test Case: What's New sort %%workspace%% Title asc |  |
