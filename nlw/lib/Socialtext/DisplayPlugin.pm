@@ -32,6 +32,7 @@ sub register {
     my $registry = shift;
     $registry->add(action => 'new_page');
     $registry->add(action => 'display');
+    $registry->add(action => 'submit_comment');
     $registry->add(action => 'random_page');
     $registry->add(action => 'page_info');
     $registry->add(action => 'preview');
@@ -46,6 +47,18 @@ sub homepage {
         return $self->redirect('/'.$ws->name);
     }
     return $self->redirect('/');
+}
+
+sub submit_comment {
+    my $self = shift;
+    my $page = $self->hub->pages->current;
+    return unless $self->hub->checker->check_permission('comment');
+    return unless $self->hub->checker->can_modify_locked($page);
+    $page->add_comment(
+        $self->cgi->comment,
+        $self->cgi->signal_comment_to_network
+    );
+    return 'success';
 }
 
 sub pref_names {
@@ -593,6 +606,10 @@ cgi 'attachment_error';
 cgi 'new_blog_entry';
 cgi 'add_tag';
 cgi 'is_incipient';
+
+# For commenting
+cgi 'comment';
+cgi 'signal_comment_to_network';
 
 # For Page Creator integration
 cgi 'new_title';
