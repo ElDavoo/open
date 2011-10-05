@@ -3,7 +3,7 @@
 [% USE decorate %]
 [% predicate_with_params = BLOCK %]?[% predicate %];tag=[% tag | uri %];sortby=[% sort_by %][% people_selector %][% END %]
 
-[% WRAPPER layout/html %]
+[% WRAPPER layout/html head_template="people_head" %]
   [% IF checker.check_permission('delete') %]
     <form action="[% script_name %]" method="post">
   [% END %]
@@ -24,11 +24,35 @@
         </div>
       [% END %]
     </div>
-
     <div class="grid_6 alpha peopleCount">
+    &nbsp;
+    </div>
+    <div class="grid_5">
+      [% IF tag %]
+        <ul class="jd_menu medium_width">
+          <li>
+            <a id="st-pagetools-tools" class="tools" href="#">[% loc('people.tools') %]</a>
+            <ul>
+              <li>
+                <a href="#" onclick="People.add_tag_to_me('[% tag.replace("'", "\\\'") %]')">
+                  [% loc('people.add-tag-to-myself') %]
+                </a>
+              </li>
+              <li>
+                <a href="#" onclick="People.show_add_to_user('[% tag.replace("'", "\\\'") %]')">
+                  [% loc('people.add-tag-to-someone') %]
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      [% ELSE %]
+        <ul></ul>
+      [% END %]
     </div>
     <div class="clear"></div>
-    <div class="prefix_1 grid_22">
+
+    <div class="grid_24">
       [% INCLUDE "view/paging" %]
     </div>
     <div class="clear"></div>
