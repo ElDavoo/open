@@ -8,10 +8,10 @@
     [% IF checker.check_permission('edit') AND !page_locked_for_user %]
       <a id="st-tags-addlink">[% loc('tag.add') %]<a>
       <form id="st-tags-form">
-        <div class="alpha grid_3">
+        <div class="sub_alpha grid_sub_16">
           <input  id="st-tags-field" name="tagfield" type="text" />
         </div>
-        <div class="omega grid_3">
+        <div class="sub_omega grid_sub_8">
           <a id="st-tags-plusbutton-link">
             [% loc('page.add-tag') %]
           </a>
