@@ -1,16 +1,8 @@
-<div class="grid_18 alpha vpad10">
+<div class="vpad10">
     <a id="[% id('expander') %]" href="#" class="expander">
         <span class="collapsed">[% loc('Filter Activities Stream &#9656;') %]</span>
         <span class="expanded">[% loc('Filter Activities Stream &#9662;') %]</span>
     </a>
-</div>
-
-<div class="grid_6 omega vpad7">
-    <form action="/" method="get">
-      <input class="initial searchText" name="search_term" type="text" value="[% loc('Search') %]" />
-      <input type="hidden" name="action" value="search_signals"/>
-      <input type="submit" class="hidden"/>
-    </form>
 </div>
 
 <div class="clear"></div>
