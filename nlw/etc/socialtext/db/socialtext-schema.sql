@@ -1440,7 +1440,8 @@ CREATE TABLE theme (
     header_font text NOT NULL,
     body_font text NOT NULL,
     is_default boolean NOT NULL,
-    icon_set text DEFAULT '' NOT NULL
+    icon_set text DEFAULT '' NOT NULL,
+    logo_image_id bigint NOT NULL
 );
 
 CREATE SEQUENCE theme_theme_id
@@ -2899,6 +2900,11 @@ ALTER TABLE ONLY theme
 ALTER TABLE ONLY theme
     ADD CONSTRAINT theme_header_image_fk
             FOREIGN KEY (header_image_id)
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY theme
+    ADD CONSTRAINT theme_logo_image_fk
+            FOREIGN KEY (logo_image_id)
             REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY topic_signal_link

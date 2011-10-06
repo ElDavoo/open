@@ -14,10 +14,10 @@ my @COLUMNS = qw( theme_id name header_color header_image_id
     header_image_tiling header_image_position background_color
     background_image_id background_image_tiling background_image_position
     primary_color secondary_color tertiary_color header_font body_font
-    is_default icon_set
+    is_default icon_set logo_image_id
 );
 
-my @UPLOADS = qw(header_image background_image);
+my @UPLOADS = qw(header_image background_image logo_image);
 
 has $_ => (is=>'ro', isa=>'Str', required=>1) for @COLUMNS;
 has $_ => (is=>'ro', isa=>'Socialtext::Upload', lazy_build=>1) for @UPLOADS;
@@ -30,6 +30,11 @@ sub _build_header_image {
 sub _build_background_image {
     my $self = shift;
     return Socialtext::Upload->Get(attachment_id => $self->background_image_id);
+}
+
+sub _build_logo_image {
+    my $self = shift;
+    return Socialtext::Upload->Get(attachment_id => $self->logo_id);
 }
 
 sub Load {
@@ -164,6 +169,7 @@ sub ValidSettings {
     my $settings = (@_ == 1) ? shift : {@_};
 
     my %tests = (
+        logo_image_id => \&_valid_attachment_id,
         base_theme_id => \&_valid_theme_id,
         header_color => \&_valid_hex_color,
         header_image_id => \&_valid_attachment_id,
@@ -204,7 +210,7 @@ sub EnsureRequiredDataIsPresent {
 
         my %to_check = %$theme;
         delete $to_check{$_} for qw(
-            header_image is_default name theme_id background_image);
+            header_image is_default name theme_id background_image logo_image);
         die "theme $name has invalid settings, refusing to install/update"
             unless $class->ValidSettings(%to_check);
 
