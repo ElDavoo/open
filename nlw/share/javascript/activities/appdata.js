@@ -487,15 +487,6 @@ $.extend(Activities.AppData.prototype, {
                     $(this).parents('.filterOption')
                         .addClass('selectedOption');
 
-                    console.log('wh',
-                        loc(
-                            'Showing <span class="filter">[_1]</span> from <span class="filter">[_2]</span> within <span class="filter">[_3]</span>',
-                            self.get('action').title,
-                            self.get('feed').title,
-                            self.get('network').title
-                        )
-                    );
-
                     // update text (but after this handler completes)
                     setTimeout(function() {
                         $(self.node).find('.filterText').html(
