@@ -48,10 +48,6 @@ Set default values if they are not defined by the caller
 | click_ok | //a[@class='delete_icon'] |  |
 | wait_for_text_not_present_ok | %%test_string%% tag 1 | 30000 |
 
-TUXTODO: Does Dupe and Rename work yet?
-
-| BREAK |  |  |
-
 | *Comment* | Test Case: String Use: duplicate |  |
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_title |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
