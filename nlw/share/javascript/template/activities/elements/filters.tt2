@@ -1,4 +1,4 @@
-<div class="vpad10 center">
+<div class="vpad6 center">
     <a id="[% id('expander') %]" href="#" class="expander">
         <span class="filterText"></span>
         <span class="collapsed">&#9656;</span>
