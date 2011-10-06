@@ -31,7 +31,7 @@
       [% IF tag %]
         <ul class="jd_menu medium_width">
           <li>
-            <a id="st-pagetools-tools" class="tools" href="#">[% loc('people.tools') %]</a>
+            <a id="st-pagetools-tools" href="#">[% loc('people.tools') %]</a>
             <ul>
               <li>
                 <a href="#" onclick="People.add_tag_to_me('[% tag.replace("'", "\\\'") %]')">
