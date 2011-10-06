@@ -38,9 +38,6 @@
 
     <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
 
-    <!--[if lt IE 9]>
-    <script type="text/javascript" charset="utf-8" src="/static/[% app_version %]/javascript/contrib/iepp.js"></script>
-    <![endif]-->
     [% javascript = javascript || [] %] 
     [% javascript.unshift("l10n-${loc_lang}.jgz") %]
     [% javascript.unshift("socialtext-starfish.jgz") %]
