@@ -1,7 +1,8 @@
-<div class="vpad10">
+<div class="vpad10 center">
     <a id="[% id('expander') %]" href="#" class="expander">
-        <span class="collapsed">[% loc('Filter Activities Stream &#9656;') %]</span>
-        <span class="expanded">[% loc('Filter Activities Stream &#9662;') %]</span>
+        <span class="filterText"></span>
+        <span class="collapsed">&#9656;</span>
+        <span class="expanded">&#9662;</span>
     </a>
 </div>
 
@@ -21,7 +22,7 @@
         [% END %]
     </div>
     <div class="grid_8 vpad10 omega">
-        <div class="filterHeading">[% loc('Venue') %]</div>
+        <div class="filterHeading">[% loc('Group') %]</div>
         [% FOR network = this.appdata.networks %]
             [% INCLUDE filterOption object=network type='network' %]
         [% END %]
