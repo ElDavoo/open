@@ -33,6 +33,7 @@
         - contrib/jquery.bgiframe.js
         - contrib/jquery.positionBy.js
         - contrib/jquery.jdMenu.js
+        - contrib/modernizr.js
         - contrib/utf8.js
         - {jemplate_runtime: jquery}
         - JemplatePlugin/*.js
