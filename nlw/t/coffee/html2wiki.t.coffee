@@ -41,6 +41,9 @@ foo
 .html
 {user: q@q.q}
   """]
+  ["""
+    <p><a href="mailto:user.%25%25start_time%25%25@david.socialtext.net">user.%%start_time%%@david.socialtext.net</a></p>
+   """, "user.%%start_time%%@david.socialtext.net"]
 ]
 
 plan tests.length*2

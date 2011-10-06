@@ -88,6 +88,9 @@ foo
 foo
 .html" src="/data/wafl/Raw%20HTML%20block.%20Click%20to%20edit." alt="Raw HTML block. Click to edit." class="st-widget" /><img data-wafl="{user: q@q.q}" alt="user: q@q.q" src="/data/wafl/user%3A%20q%40q.q" class="st-widget st-inline-widget" />
   """]
+  ["user.%%start_time%%@david.socialtext.net", """
+    <p><a href="mailto:user.%25%25start_time%25%25@david.socialtext.net">user.%%start_time%%@david.socialtext.net</a></p>\n
+  """]
 ]
 
 for [wiki, html] in tests
