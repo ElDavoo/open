@@ -14,9 +14,8 @@
         <input type="hidden" name="action" value="undelete_page" />
         <input type="hidden" name="page_id" value="[% page_id %]" />
 
-        <a id="restore_btn" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" href="#" onclick="jQuery(this).parents('form').submit();>
-          <span class="ui-button-text">[% loc('page.restore') %]</span>
-        </a>
+        <a id="restore_btn">[% loc('page.restore') %]</a>
+        <script>$('#restore_btn').button().click(function() { $(this).parents('form').submit() });</script>
       </form>
       <br />
       [% backlinks_description %]
