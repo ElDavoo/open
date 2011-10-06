@@ -13,3 +13,4 @@ Starfish:
   header_font: Georgia
   body_font: Helvetica
   is_default: 1
+  icon_set: light

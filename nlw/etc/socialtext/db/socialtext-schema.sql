@@ -1439,7 +1439,8 @@ CREATE TABLE theme (
     tertiary_color text NOT NULL,
     header_font text NOT NULL,
     body_font text NOT NULL,
-    is_default boolean NOT NULL
+    is_default boolean NOT NULL,
+    icon_set text DEFAULT '' NOT NULL
 );
 
 CREATE SEQUENCE theme_theme_id
@@ -3056,4 +3057,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '150');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '151');

@@ -57,6 +57,11 @@ valid_settings: {
     ok !$class->ValidSettings(base_theme_id=>'999999999'), 'theme 3';
     ok !$class->ValidSettings(base_theme_id=>''), 'theme 4';
 
+    # excercise _valid_icon_set
+    ok $class->ValidSettings(icon_set=>'light'), 'icons 1';
+    ok $class->ValidSettings(icon_set=>'dark'), 'icons 2';
+    ok !$class->ValidSettings(icon_set=>'anything else'), 'icons 3';
+
     # field doesn't exist
     ok !$class->ValidSettings(ENOSUCH_field=>'nothing'), 'no such field';
 }
@@ -74,6 +79,7 @@ as_hash: {
         header_image_filename
         header_image_mime_type
         header_image_url
+        icon_set
     );
     ok scalar(@undef) == 0, 'additional columns in full as_hash()';
 }
@@ -95,7 +101,8 @@ export_import: {
         tertiary_color=>'#eeeeee',
         body_font=>'Times',
         primary_color=>'#dddddd',
-        secondary_color=>'#cccccc'
+        secondary_color=>'#cccccc',
+        icon_set=>'light',
     );
 
     $account->prefs->save({
