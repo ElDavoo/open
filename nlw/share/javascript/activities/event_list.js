@@ -296,8 +296,8 @@ $.extend(Activities.EventList.prototype, {
             }
         });
 
-        $('.event.last').removeClass('last');
-        $('.event:last').addClass('last');
+        self.node.find('.event.odd').removeClass('odd');
+        self.node.find('.event:odd').addClass('odd');
 
         if (self.reply_id) {
             self.findSignalNode(self.reply_id).addClass('selected');
