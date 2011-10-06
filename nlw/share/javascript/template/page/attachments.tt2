@@ -9,7 +9,7 @@
       END;
     %]
     <li>
-        <div class="grid_5 alpha">
+        <div class="grid_sub_23 sub_alpha">
             <a class="filename" href="[% file.uri %]">[% file.name %]</a>
             [% IF file.name.match('\.(zip|tar|tar.gz|tgz)$') && !page_locked_for_user %]
             <a name="[% file.id %]" href="#" class="extract_attachment">
@@ -26,7 +26,7 @@
                     href="/st/profile/[% file.uploader %]">[% file.uploader_name |html %]</a>
             </div>
         </div>
-        <div class="grid_1 omega">
+        <div class="grid_sub_1 sub_omega">
         [% IF !page_locked_for_user %]
             <a href="[% file.uri %]" data-filename="[% file.name %]" class="delete_icon" title="[% loc('file.delete-this') %]"></a>
         [% END %]
