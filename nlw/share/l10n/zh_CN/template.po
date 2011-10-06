@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-04-28 03:23+0800\n"
+"PO-Revision-Date: 2011-10-06 13:15+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1044,3 +1044,6 @@ msgstr "指定密码："
 #: share/template/email/st/workspace-admin-invitation.txt:16
 msgid "wiki.visit-later=wiki"
 msgstr "您也可以在此工作区继续工作，稍后再转到“%1”。"
+
+msgid "nav.register"
+msgstr "注册"
