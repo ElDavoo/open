@@ -5,8 +5,8 @@
                 <div class="navListItems">
                 [%- FOR item = entry.data -%]
                     [%- IF entry.exists('icon') -%]
-                        <div class="grid_1 alpha"><img src="[% entry.icon(item) %]"/></div>
-                        <div class="grid_2 omega">[% INCLUDE navListLink %]</div>
+                        <div class="grid_sub_6 sub_alpha"><img src="[% entry.icon(item) %]"/></div>
+                        <div class="grid_sub_18 sub_omega">[% INCLUDE navListLink %]</div>
                         <div class="clear vpad3"></div>
                     [%- ELSE -%]
                         <div>[% INCLUDE navListLink %]</div>
