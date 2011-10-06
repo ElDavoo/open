@@ -78,7 +78,7 @@
           %]
         [% END %]
 
-        [% WRAPPER subtools id="st-page-options" name=loc('Options...') %]
+        [% WRAPPER subtools id="st-page-options" name=loc('Tools...') %]
           [% INCLUDE tools_item
               id="st-pagetools-print"
               href="JavaScript:window.print()"
