@@ -14,10 +14,10 @@ my @COLUMNS = qw( theme_id name header_color header_image_id
     header_image_tiling header_image_position background_color
     background_image_id background_image_tiling background_image_position
     primary_color secondary_color tertiary_color header_font body_font
-    is_default icon_set logo_image_id
+    is_default icon_set logo_image_id favicon_image_id
 );
 
-my @UPLOADS = qw(header_image background_image logo_image);
+my @UPLOADS = qw(header_image background_image logo_image favicon_image);
 
 has $_ => (is=>'ro', isa=>'Str', required=>1) for @COLUMNS;
 has $_ => (is=>'ro', isa=>'Socialtext::Upload', lazy_build=>1) for @UPLOADS;
@@ -210,7 +210,9 @@ sub EnsureRequiredDataIsPresent {
 
         my %to_check = %$theme;
         delete $to_check{$_} for qw(
-            header_image is_default name theme_id background_image logo_image);
+            header_image is_default name theme_id background_image
+            logo_image favicon_image
+        );
         die "theme $name has invalid settings, refusing to install/update"
             unless $class->ValidSettings(%to_check);
 

@@ -112,6 +112,7 @@ export_import: {
             background_image_id=>$att_id,
             header_image_id=>$att_id,
             logo_image_id=>$att_id,
+            favicon_image_id=>$att_id,
         },
     });
 
@@ -125,7 +126,9 @@ export_import: {
         ok $static{$key} eq $exportable->{$key}, "static $key exported";
     }
 
-    for my $dynamic qw(base_theme background_image header_image logo_image) {
+    my @dynamic_fields = qw(
+        base_theme background_image header_image logo_image favicon_image);
+    for my $dynamic (@dynamic_fields) {
         my $missing = $dynamic .'_id';
         ok !defined($exportable->{$missing}), "dynamic $missing missing";
         ok defined($exportable->{$dynamic}), "dynamic $dynamic added";
@@ -141,7 +144,7 @@ export_import: {
         ok $static{$key} eq $importable->{$key}, "static $key imported";
     }
 
-    for my $dynamic qw(base_theme background_image header_image logo_image) {
+    for my $dynamic (@dynamic_fields) {
         my $found = $dynamic .'_id';
         ok !defined($exportable->{$dynamic}), "dynamic $dynamic missing";
         ok defined($importable->{$found}), "dynamic $found added";

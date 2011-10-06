@@ -1441,7 +1441,8 @@ CREATE TABLE theme (
     body_font text NOT NULL,
     is_default boolean NOT NULL,
     icon_set text DEFAULT '' NOT NULL,
-    logo_image_id bigint NOT NULL
+    logo_image_id bigint NOT NULL,
+    favicon_image_id bigint NOT NULL
 );
 
 CREATE SEQUENCE theme_theme_id
@@ -2895,6 +2896,11 @@ ALTER TABLE ONLY tag_people__person_tags
 ALTER TABLE ONLY theme
     ADD CONSTRAINT theme_background_image_fk
             FOREIGN KEY (background_image_id)
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY theme
+    ADD CONSTRAINT theme_favicon_image_fk
+            FOREIGN KEY (favicon_image_id)
             REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY theme
