@@ -57,8 +57,8 @@
     </div>
     <div class="clear"></div>
     [% FOREACH row = rows %]
-      <div class="grid_13 peoplelist-row [% IF loop.count % 2 %] oddRow[% END %]">
-        <div class="alpha grid_2 peoplelist-photo">
+      <div class="peoplelist-row [% IF loop.count % 2 %] oddRow[% END %]">
+        <div class="grid_2 peoplelist-photo">
           [% row.id | decorate('user_photo') %]
         </div>
         <div class="grid_8 peoplelist-desc"> 
