@@ -1,3 +1,5 @@
+*On hold until Duplicate and Rename are fixed*
+
 | *Comment* | Test Case: Strings |  |
 
 | set | test_string | `Double dashes -- are double trouble` |
