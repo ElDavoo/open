@@ -32,6 +32,7 @@ $.extend(Activities.Widget.prototype, {
     }; },
 
     showDirect: function() {
+        if (this.mention_user_id) return false;
         var has_show_pref = Number(this.show_direct) && this.direct != 'none';
 
         // if we're viewing a single signal, we don't want to show direct

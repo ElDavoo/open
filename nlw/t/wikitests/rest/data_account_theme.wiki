@@ -42,14 +42,17 @@
 | http-user-pass | %%out_user%% | password |
 | GET-json | /data/accounts/%%the_acct_id%%/theme               |                     |
 | code-is  | 403                                                |                     |
-| GET      | /data/accounts/%%the_acct_id%%/theme               | text/sass           |
-| code-is  | 403                                                |                     |
-| GET      | /data/accounts/%%the_acct_id%%/theme               | text/css            |
-| code-is  | 403                                                |                     |
 | GET-json | /data/accounts/%%the_acct_id%%/theme/images/header |                     |
 | code-is  | 403                                                |                     |
 | PUT-json | /data/accounts/%%the_acct_id%%/theme               | {"base_theme_id":1} |
 | code-is  | 403                                                |                     |
+
+### bad media type asking for anything other than json
+| *Comment* | bad media type asking for anything other than json |           |
+| GET       | /data/accounts/%%the_acct_id%%/theme               | text/sass |
+| code-is   | 415                                                |           |
+| GET       | /data/accounts/%%the_acct_id%%/theme               | text/css  |
+| code-is   | 415                                                |           |
 
 ### account member has GET privs
 | *Comment* | account member has GET privs |
@@ -65,14 +68,6 @@
 | json-path-missing | $.theme_id                           |                        |
 | json-path-missing | $.name                               |                        |
 | json-path-missing | $.is_default                         |                        |
-
-| GET         | /data/accounts/%%the_acct_id%%/theme | text/sass        |
-| code-is     | 200                                  |                  |
-| header-like | Content-type                         | qr/^text\/plain/ |
-
-| GET         | /data/accounts/%%the_acct_id%%/theme | text/css       |
-| code-is     | 200                                  |                |
-| header-like | Content-type                         | qr/^text\/css/ |
 
 ### account member can GET images when they exist
 | http-user-pass | %%in_user%% | password |

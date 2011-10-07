@@ -17,6 +17,8 @@
 [% END %]
 </div>
 
+[% INCLUDE $container.header_template IF container.header_template %]
+
 <div class="clear"></div>
 [% FOR grid = container.grids %]
     <div class="[% grid %] widgetColumn" id="col[% loop.index %]">

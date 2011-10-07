@@ -63,19 +63,26 @@ override 'if_valid_request' => sub {
 
     return $self->no_resource('account') unless $self->account;
 
-    my $permission = $rest->getRequestMethod eq 'GET'
+    my $method = $rest->getRequestMethod;
+    my $user = $self->rest->user;
+
+    my $permission = $method eq 'GET'
         ? ST_READ_PERM
         : ST_ADMIN_PERM;
 
-    return $self->not_authorized()
-        unless $self->account->user_can(
-            user=>$self->rest->user,
-            permission=>$permission,
-        )
-        or (
-            # Allow the guest user to see its theme
-            $self->rest->user->primary_account_id == $self->account->account_id
-        );
+    # guest user is allowed to GET for their primary account.
+    if ($user->is_guest) {
+        return $self->not_authorized()
+            if $user->primary_account_id != $self->account->account_id
+                or $method ne 'GET';
+    }
+    else {
+        return $self->not_authorized()
+            unless $self->account->user_can(
+                user=>$user,
+                permission=>$permission,
+            );
+    }
 
     return $coderef->();
 };
