@@ -83,6 +83,17 @@ config_with_prefs_index: {
         'set account config successful when using a valid index',
     );
 
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [ '--account', $acct->name, '--index', 'theme',
+                          'background_image_id', '-null-' ],
+            )->set_account_config();
+        },
+        qr/\QUpdated the theme prefs for the $name account\E/,
+        'set account config successful when using -null- for image id',
+    );
+
     expect_failure(
         sub {
             Socialtext::CLI->new(

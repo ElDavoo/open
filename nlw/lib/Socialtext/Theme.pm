@@ -169,6 +169,7 @@ sub ValidSettings {
     my $settings = (@_ == 1) ? shift : {@_};
 
     my %tests = (
+        favicon_image_id => \&_valid_attachment_id,
         logo_image_id => \&_valid_attachment_id,
         base_theme_id => \&_valid_theme_id,
         header_color => \&_valid_hex_color,
@@ -261,6 +262,7 @@ sub _valid_font {
 sub _valid_attachment_id {
     my $id = shift;
 
+    return 1 unless defined $id;
     return 0 unless $id =~ /^\d+$/;
 
     my $count = eval {

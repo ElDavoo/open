@@ -1,13 +1,19 @@
 BEGIN;
 
 ALTER TABLE ONLY theme
+    ALTER COLUMN background_image_id DROP NOT NULL;
+
+ALTER TABLE ONLY theme
+    ALTER COLUMN header_image_id DROP NOT NULL;
+
+ALTER TABLE ONLY theme
     ADD COLUMN icon_set TEXT NOT NULL DEFAULT '';
 
 ALTER TABLE ONLY theme
-    ADD COLUMN logo_image_id bigint NOT NULL;
+    ADD COLUMN logo_image_id bigint;
 
 ALTER TABLE ONLY theme
-    ADD COLUMN favicon_image_id bigint NOT NULL;
+    ADD COLUMN favicon_image_id bigint;
 
 ALTER TABLE ONLY theme
     ADD CONSTRAINT theme_logo_image_fk

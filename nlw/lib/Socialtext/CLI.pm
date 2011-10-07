@@ -2288,7 +2288,7 @@ sub _update_account_prefs {
     my $prefs = $account->prefs->all_prefs->{$index};
 
     while (my ($key,$value) = splice(@{$self->{argv}}, 0, 2)) {
-        $prefs->{$key} = $value;
+        $prefs->{$key} = $value eq '-null-' ? undef : $value;
     }
 
     if ($index eq 'theme') {

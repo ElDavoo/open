@@ -25,6 +25,7 @@ valid_settings: {
     ok !$class->ValidSettings(header_color=>'red'), 'hex color 3';
     ok !$class->ValidSettings(header_color=>'#qwerty'), 'hex color 4';
     ok !$class->ValidSettings(header_color=>''), 'hex color 5';
+    ok $class->ValidSettings(header_color=>'#cc6600'), 'hex color 6';
 
     # exercise _valid_position
     ok $class->ValidSettings(header_image_position=>'left top'), 'position 1';
@@ -50,6 +51,7 @@ valid_settings: {
     ok !$class->ValidSettings(header_image_id=>'NaN'), 'attachment 2';
     ok !$class->ValidSettings(header_image_id=>'99999999999'), 'attachment 3';
     ok !$class->ValidSettings(header_image_id=>''), 'attachment 4';
+    ok $class->ValidSettings(header_image_id=>undef), 'attachment 5';
 
     # exercise _valid_theme_id
     ok $class->ValidSettings(base_theme_id=>$theme_id), 'theme 1';
