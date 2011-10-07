@@ -9,6 +9,7 @@
   <option selected value=""></option>
   [% jump_option("recent_changes", loc('nav.news')) %]
   [% jump_option("display_watchlist", loc('nav.watchlist')) %]
+  [% jump_option("breadcrumbs_list", loc('Recently Viewed')) %]
   [% jump_option("blog_display", loc('blog.blogs')) %]
   [% jump_option("my_likes", loc('nav.likes')) %]
   [% jump_option("changes", loc('page.all'), "&changes=all") %]
