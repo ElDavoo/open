@@ -76,6 +76,7 @@ method render {
     for my $key (keys %$theme) {
         push @lines, "\$$key: $theme->{$key}\n";
     }
+    push @lines, '$account_id: '. $self->account->account_id . "\n";
     push @lines, "\@import " . $self->filename . ".sass\n";
 
     set_contents($self->sass_file, join('', @lines));
