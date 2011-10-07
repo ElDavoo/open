@@ -152,7 +152,7 @@
                 return;
             }
 
-            var $node = $('<li class="ui-menu-item-with-icon"></li>')
+            var $node = $('<li></li>')
                 .data("item.autocomplete", item)
                 .append('<a>' + item.label + '</a>')
                 .appendTo(ul);
