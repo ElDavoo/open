@@ -64,7 +64,7 @@
     <header>
       <div class="container_24">
         <div class="grid_12 title">
-          Socialtext<span class="superscript">&reg;</span>, Inc.
+          <img height="34" width="201" src="/data/accounts/[% user.primary_account_id %]/theme/images/logo" />
         </div>
         <div class="grid_12">
           <div class="topLinks right">
