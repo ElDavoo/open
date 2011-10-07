@@ -72,6 +72,8 @@
         
         <div class="clear"></div>
     </div>
+[% ELSE %]
+    <div class="vpad3"></div>
 [% END %]
 
 <div class="clear"></div>
