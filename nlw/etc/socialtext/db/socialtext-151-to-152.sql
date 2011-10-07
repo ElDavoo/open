@@ -20,7 +20,7 @@ ALTER TABLE ONLY theme
              REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 UPDATE "System"
-   SET value = '151'
+   SET value = '152'
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
