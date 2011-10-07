@@ -1,3 +1,5 @@
+*On hold until password retrieval is restored*
+
 | *Comment* | Test Case: Signals Login/Logout expects to be included in a testset |  |
 
 | set | inout_user | inout_%%start_time%%@ken.socialtext.net |
@@ -11,7 +13,7 @@
 | open_ok | /nlw/submit/logout |  |
 | wait_for_element_visible_ok | username | 30000 |
 | wait_for_element_visible_ok | password | 30000 |
-| text_like | Log in to Socialtext |  |
+| text_like | Remember me on this computer |  |
 
 | *Comment* | Test Case: Signals Login/Logout Empty email address: |  |
 | type_ok | username |  |

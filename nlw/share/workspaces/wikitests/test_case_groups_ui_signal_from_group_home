@@ -49,7 +49,7 @@
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
 | text_unlike | //body | What are you working on? |
-| text_like | //body | `qr/within\s*%%group_name%%/` |
+| text_unlike | //body | `qr/within\s*%%group_name%%/` |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Enable signals, see signal option |  |
 | st-admin | enable-plugin --plugin signals --all-accounts |  |

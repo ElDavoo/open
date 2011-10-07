@@ -1,5 +1,6 @@
-| *Comment* | Test Case: Signal Page To Group |
+*On hold until st-send-page-signal is fixed*
 
+| *Comment* | Test Case: Signal Page To Group |
 
 * Fixture: SocialWidgets
 
@@ -23,9 +24,7 @@
 | set | group2_id | %%group_id%% |  |
 | set | signalpage | Signal Page %%start_time%% |  |
 
-
-| st-create-page | %%ws%% | %%signalpage%% |
-
+| st-create-page | %%ws%% | %%signalpage%% |  |
 
 | *Comment* | Test Case: Signal Page To Group - click link then cancel |  |
 | open_ok | /%%ws%%/index.cgi?%%signalpage%% |  |
