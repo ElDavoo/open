@@ -92,15 +92,26 @@
                     dataType: 'json',
                     success: function (data) {
                         var results = [];
+
+                        // No results entry
+                        if (!data.length) {
+                            response([{
+                                error: loc(
+                                    "error.no-match=lookahead", request.term
+                                )
+                            }]);
+                            return;
+                        }
+
                         $.each(data, function(i, item) {
                             if (results.length >= opts.count) {
                                 if (opts.showAll) {
                                     results.push({
                                         title: loc("lookahead.all-results"),
-                                        displayAs: request,
+                                        displayAs: request.term,
                                         noThumbnail: true,
                                         onAccept: function() {
-                                            opts.showAll(request)
+                                            opts.showAll(request.term)
                                         }
                                     });
                                     return false // Break out of $.each
@@ -135,6 +146,12 @@
 
         // Overload _renderItem to support icons and descriptions
         this.data("autocomplete")._renderItem = function (ul, item) {
+            if (item.error) {
+                $('<li class="ui-autocomplete-error">' + item.error + '</li>')
+                    .appendTo(ul);
+                return;
+            }
+
             var $node = $('<li class="ui-menu-item-with-icon"></li>')
                 .data("item.autocomplete", item)
                 .append('<a>' + item.label + '</a>')
