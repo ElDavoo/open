@@ -416,10 +416,12 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 
 sub st_send_reply {
     my ($self, $signaltosend, $is_mobile) = @_;
-    $self->handle_command('wait_for_element_visible_ok', '//a[@class="hoverLink replyLink"]', 15000);
-    $self->handle_command('click_ok', '//a[@class="hoverLink replyLink"]');
+    #TODO: click on something else in IE
+    my $replyLink = '//div[@class="wikiwyg"]';
+    $self->handle_command('wait_for_element_visible_ok', $replyLink, 15000);
+    $self->handle_command('click_ok', $replyLink);
 
-    $self->handle_command('set_Speed',4000);
+    $self->handle_command('set_Speed',3000);
     if ($self->_is_wikiwyg() ) { #wikiwyg
         $self->handle_command('wait_for_element_visible_ok', '//div[@class="replies"]//iframe[@name="signalFrame"]', 15000);
         $self->handle_command('selectFrame', '//div[@class="replies"]//iframe[@name="signalFrame"]');
@@ -439,8 +441,11 @@ sub st_send_reply {
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
     
-    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post postReply"]', 5000);
-    $self->handle_command('click_ok', '//a[@class="btn post postReply"]');
+    my $goLink = '//div[@class="replies"]//a[@role="button" and contains(@id,"post")]';
+    $self->handle_command('wait_for_element_visible_ok',$goLink, 5000);
+    $self->handle_command('click_ok', $goLink);
+    $self->handle_command('wait_for_element_visible_ok','//div[contains(@class,"reply signal")]', 15000);
+    $self->handle_command('wait_for_text_present_ok' ,$signaltosend, 15000);
     $self->handle_command('set_Speed',0);
 }
 
