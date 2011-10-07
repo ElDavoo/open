@@ -76,12 +76,13 @@ override 'if_valid_request' => sub {
             if $user->primary_account_id != $self->account->account_id
                 or $method ne 'GET';
     }
-
-    return $self->not_authorized()
-        unless $self->account->user_can(
-            user=>$user,
-            permission=>$permission,
-        );
+    else {
+        return $self->not_authorized()
+            unless $self->account->user_can(
+                user=>$user,
+                permission=>$permission,
+            );
+    }
 
     return $coderef->();
 };
