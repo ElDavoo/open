@@ -2,7 +2,7 @@
 [% SET signal_class = this.signalClass(event) %]
 [% SET replies = this.visibleReplies(event) %]
 [% SET older = event.num_replies - replies.size %]
-<div class="grid_4 avatar alpha center">
+<div class="avatar">
     <a href="[% event.actor.uri %]" target="_blank">
         <img class="actor_photo"
             src="[% this.base_uri %]/data/people/[% event.actor.id %]/photo"/>
@@ -15,27 +15,29 @@
         <div class="type">[% signal_class %]</div>
     [%- END -%]
 </div>
-<div class="grid_18 omega">
-    [%- try_include("activities/event/${event.event_class}.tt2",
-                    "Unknown event class: ${event.event_class}") -%]
 
-    [% IF event.context.annotations.link %]
-        <div class="links">
-            <h3 class="title">Link</h3>
-            <div class="link">
-                [% event.context.annotations.link.html %]
-            </div>
-        </div>
-    [% END %]
+<div class="indented">
+[%- try_include("activities/event/${event.event_class}.tt2",
+                "Unknown event class: ${event.event_class}") -%]
 </div>
-<div class="grid_2 omega">
+
+[% IF event.context.annotations.link %]
+    <div class="links">
+        <h3 class="title">Link</h3>
+        <div class="link">
+            [% event.context.annotations.link.html %]
+        </div>
+    </div>
+[% END %]
+
+<div class="assetIcon">
     [%- try_include("activities/event/${event.event_class}.icons.tt2",
                     "Unknown event class: ${event.event_class}.icons") -%]
 </div>
 
 [% IF event.signal_id %]
-    <div class="replies">
-        <div class="alpha omega prefix_4 suffix_2 grid_19 older">[% INCLUDE older_replies %]</div>
+    <div class="replies indented">
+        <div class="older">[% INCLUDE older_replies %]</div>
 
         <div class="clear"></div>
 
@@ -46,10 +48,10 @@
         [% END %]
 
         [% IF this.signals_enabled %]
-            <div class="push_4 grid_20 alpha omega top_line"></div>
+            <div class="top_line"></div>
             <div class="clear"></div>
 
-            <div class="alpha prefix_4 grid_17">
+            <div class="wikiwygWrapper">
                 <div class="wikiwyg" id="[% id("reply-$event.signal_id") %]">
                     <div class="clearHandler">
                         [% loc('Reply to conversation »') %]
@@ -60,13 +62,15 @@
                 <div class="toolbar" style="display:none">
                     [% INCLUDE activities/elements/toolbar.tt2 showDirect=0 %]
                 </div>
-            </div>
-            <div class="omega grid_2 post hidden">
-                <a href="#" class="button" id="[% id('post') %]">[% loc('Go') %]</a>
-                <div class="count" id="[% id('count') %]"></div>
+                <div class="post hidden">
+                    <a href="#" class="button" id="[% id('post') %]">[% loc('Go') %]</a>
+                    <div class="count" id="[% id('count') %]"></div>
+                </div>
             </div>
             <div class="omega grid_2"></div>
         [% END %]
+        
+        <div class="clear"></div>
     </div>
 [% END %]
 
