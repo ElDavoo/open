@@ -661,3 +661,4 @@ lib/Socialtext/Job/SignalMentionNotify.pm
 etc/socialtext/socialradar.conf
 .sass-cache/
 share/node_modules/*.js
+lib/Socialtext/Pluggable/Plugin/SocialRadar.pm
