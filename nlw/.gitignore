@@ -662,3 +662,4 @@ etc/socialtext/socialradar.conf
 .sass-cache/
 share/node_modules/*.js
 lib/Socialtext/Pluggable/Plugin/SocialRadar.pm
+lib/Socialtext/Gadgets/Container/SocialRadar/People.pm
