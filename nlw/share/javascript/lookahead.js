@@ -72,7 +72,24 @@
             return $.extend({}, item, { value: item.real_value });
         }
 
-        this.autocomplete({
+        // When we are in an iframe, create a floating place in the parent 
+        // window where we can put the autocomplete
+        var options = {
+            appendTo: 'body'
+        };
+
+
+        var targetWindow = opts.getWindow && opts.getWindow();
+        if (targetWindow && targetWindow !== window) {
+            var $j = window.parent.$
+            var offset = $j('iframe[name='+window.name+']').offset();
+            options.appendTo = $j('body');
+            options.position = {
+                offset: [offset.left, offset.top].join(' ')
+            };
+        }
+
+        this.autocomplete($.extend(options, {
             source: function(request, response) {
                 var url = $.isFunction(opts.url) ? opts.url() : opts.url;
                 if (url === false) return;
@@ -142,7 +159,7 @@
             close: function(event, ui) {
                 if ($.isFunction(opts.onBlur)) opts.onBlur();
             }
-        });
+        }));
 
         // Overload _renderItem to support icons and descriptions
         this.data("autocomplete")._renderItem = function (ul, item) {
