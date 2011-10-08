@@ -271,6 +271,7 @@
         - contrib/jquery-1.4.4.min.js
         - jquery.poll.js
         - jquery.selectOverlap.js
+        - contrib/jquery-ui-1.8.5.js
         - lookahead.js
         - fades.js
         - loc.js
