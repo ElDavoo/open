@@ -1,3 +1,5 @@
+tuxhold until st-watch-page is fixed
+
 user adds page to watchlist using Watchlist icon at top of sidebar icon turns color to indicate membership in watchlist
 
 | *Comment* | STARTING Test case: Calc Watchlist |
@@ -83,15 +85,15 @@ Remove all pages from watchlist; watchlist displays "No watchlist for USER ID in
 | click_and_wait | link=My Watchlist |  |
 | text_unlike | content | watchlist spreadsheet %%start_time |
 
-| *Comment* | Test case: Calc Watchlist ADDING AND DELETING IS FINISHED |
+| *Comment* | Test case: Calc Watchlist ADDING AND DELETING IS FINISHED |  |
 
 Set up to check sorting.
 
-| open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20aaa%20spreadsheet%20%%start_time%% |
+| open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20aaa%20spreadsheet%20%%start_time%% |  |
 | wait_for_element_visible_ok | link=My Watchlist | 30000 |
 | click_and_wait | link=My Watchlist |  |
 
-| *Comment* | Test case: Calc Watchlist CHECKING SORTING VIEWS |
+| *Comment* | Test case: Calc Watchlist CHECKING SORTING VIEWS |  |
 
 Set up to check sorting. (↑) (↓)
 
@@ -122,7 +124,7 @@ add a new page for date and revision sorting
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for save |
-| st-page-save |  |
+| st-page-save |  |  |
 
 | wait_for_element_visible_ok | link=My Watchlist | 30000 |
 | click_and_wait | link=My Watchlist |  |
@@ -203,7 +205,7 @@ Last Edited By sort
 | st-admin | purge-page --w %%workspace%% --p watchlist_ccc_spreadsheet_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --p watchlist_newpage_spreadsheet_%%start_time%% | was purged |
 
-| *Comment* | Test case: Calc Watchlist COMPLETED |
+| *Comment* | Test case: Calc Watchlist COMPLETED |  |
 
 ^ DONE_TESTING
 

@@ -1,4 +1,4 @@
-| *Comment* | Test Case Calc: Tags |
+| *Comment* | Test Case Calc: Tags |  |
 
 | *Comment* | Test Case Calc: Tags Create tag1 page tagged tag1 |  |
 
@@ -92,15 +92,15 @@ Go to All Tags | The deleted tag should not appear in list
 
 | *Comment* | Test Case Calc: Tags Delete a tag from all pages |  |
 | open_ok | /%%workspace%%/index.cgi?tag1_content_spreadsheet_%%start_time%% |  |
-| wait_for_element_visible_ok | //a[@class='delete_tag'] | 30000 |
-| click_ok | //a[@class='delete_tag'] |  |
+| wait_for_element_visible_ok | //a[@class='delete_icon'] | 30000 |
+| click_ok | //a[@class='delete_icon'] |  |
 
 | *Comment* | Test Case Calc: Tags first wait |  |
 | wait_for_text_not_present_ok | Tag 1 %%start_time%% | 30000 |
 
 | open_ok | /%%workspace%%/index.cgi?tag12_content_spreadsheet_%%start_time%% |  |
-| wait_for_element_visible_ok | //a[@class='delete_tag'] | 30000 |
-| click_ok | //a[@class='delete_tag'] |  |
+| wait_for_element_visible_ok | //a[@class='delete_icon'] | 30000 |
+| click_ok | //a[@class='delete_icon'] |  |
 
 | *Comment* | Test Case Calc: Tags second wait |  |
 | wait_for_text_not_present_ok | Tag 2 %%start_time%% | 30000 |
@@ -133,4 +133,4 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | st-admin | purge-page --w %%workspace%% --page tag1_content_spreadsheet_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page tag12_content_spreadsheet_%%start_time%% | was purged |
 
-| *Comment* | Test Case Calc: Tags COMPLETED |
+| *Comment* | Test Case Calc: Tags COMPLETED |  |

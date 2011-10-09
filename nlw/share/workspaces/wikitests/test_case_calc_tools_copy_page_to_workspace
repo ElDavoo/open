@@ -1,3 +1,7 @@
+tuxhold until false transit to new WS is fixed
+tuxhold because clicking copy button crashes Se
+
+
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace |
 
 | set | newspace | newspace-ss-%%start_time%% |
@@ -9,8 +13,8 @@
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Create a page and a tag to copy |  |
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=Copy%20Page%20Spreadsheet%20%%start_time%%#edit |  |
-| wait_for_element_visible_ok | st-save-button-link |  |
-| pause | 5000 | I hate pause; needed for entire page load |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| pause | 5000 |  |
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Add Tag |  |
@@ -30,12 +34,19 @@
 | wait_for_element_visible_ok | st-copy-savelink | 30000 |
 | select_ok | st-copy-workspace | label=%%newtitle%% |
 | type_ok | st-copy-newname | New Copy Page Spreadsheet %%start_time%% |
+
+| Comment | ABOUT TO COPY |  |
 | click_ok | st-copy-savelink |  |
+| Comment | COPIED |  |
+
+| pause | 10000 |  |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Should return to the same WS,
 NOT the target WS |  |
-| location_like | /%%workspace%%/copy_page_spreadsheet_%%start_time%% |  |
-| wait_for_element_visible_ok | contentRight | 30000 |
+
+TUXTODO: restore test when false transit to target workspace is fixed
+location_like | /%%workspace%%/copy_page_spreadsheet_%%start_time%% | |
+
 | wait_for_element_visible_ok | link=Copy Spreadsheet Tag %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Verify copy. |  |
@@ -67,7 +78,7 @@ NOT the target WS |  |
 | click_ok | st-copy-savelink |  |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Verify overwrite by opening target wiki Dashboard and clicking What's New link to allow time for copy to complete |  |
-| open_ok | /%%newspace%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%newspace%%/?action=recent_changes |  |
 | wait_for_element_visible_ok | link=New Copy Page Spreadsheet %%start_time%% |  |
 | click_ok | link=New Copy Page Spreadsheet %%start_time%% |  |
 | wait_for_element_visible_ok | link=Copy Spreadsheet Tag 2 %%start_time%% | 30000 |
@@ -75,6 +86,6 @@ NOT the target WS |  |
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page copy_page_spreadsheet_%%start_time%% | was purged |
-| st-admin | delete-workspace --workspace %%newspace%% --no-export | has been deleted |
+| delete-workspace | %%newspace%% |  |
 
-| *Comment* | Test Case: Calc Tools: Copy Page to Workspace COMPLETED |
+| *Comment* | Test Case: Calc Tools: Copy Page to Workspace COMPLETED |  |

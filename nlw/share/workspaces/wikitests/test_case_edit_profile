@@ -104,13 +104,13 @@
 
 TUXTODO: restore these tests when manager field returns
 
- wait_for_element_visible_ok | supervisor | 5000 |
-type-lookahead-ok | xpath=//div[@id='supervisor']/input[@class='relationship'] | %%short_super%% |
-wait-for-element-present-ok | link=%%short_super%% | |
-click-ok | link=%%short_super%% | |
+| wait_for_element_visible_ok | field_supervisor | 5000 |
+| type-lookahead-ok | xpath=//div[@id='field_supervisor']/input[contains(@class,'relationship')] | %%short_super%% |
+| wait-for-element-present-ok | link=%%short_super%% |  |
+| click-ok | link=%%short_super%% |  |
 
 | wait_for_element_visible_ok | field_assistant | 5000 |
-| type-lookahead-ok | xpath=//div[@id='field_assistant']/input[@class='relationship'] | %%short_assistant%% |
+| type-lookahead-ok | xpath=//div[@id='field_assistant']/input[contains(@class,'relationship')] | %%short_assistant%% |
 | wait-for-element-present-ok | link=%%short_assistant%% |  |
 | click-ok | link=%%short_assistant%% |  |
 

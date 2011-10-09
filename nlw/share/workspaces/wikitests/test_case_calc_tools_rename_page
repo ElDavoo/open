@@ -24,9 +24,8 @@
 
 | *Comment* | Test Case: Calc Tools: Rename Page Test Rename popup, verify rename |  |
 
-| location_like | `/%%workspace%%/renamed_spreadsheet_%%start_time%%` |  |
-| wait_for_element_visible_ok | contentRight | 30000 |
-| text_like | contentRight | SC Rename Tag %%start_time%% |
+| location_like | `/%%workspace%%/Renamed_Spreadsheet_%%start_time%%` |  |
+| text_like | SC Rename Tag %%start_time%% |  |
 | st_check_files_if_highperms | wikitest.jpg |  |
 | text_like | st-page-titletext | Renamed_Spreadsheet_%%start_time%% |
 | click_and_wait | link=Rename Spreadsheet %%start_time%% |  |
@@ -64,4 +63,4 @@
 | st-admin | purge-page --w %%workspace%% --page rename_spreadsheet_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page renamed_spreadsheet_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Calc Tools: Rename Page COMPLETED |
+| *Comment* | Test Case: Calc Tools: Rename Page COMPLETED |  |
