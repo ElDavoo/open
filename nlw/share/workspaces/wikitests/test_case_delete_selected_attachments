@@ -1,3 +1,5 @@
+{image: Callas.jpg}
+
 * HighPermissions
 
 | *Comment* | Test Case: Delete Selected Attachments |  |
@@ -10,9 +12,7 @@
 | st-logoutin | %%user%% | %%password%% |  |
 
 | *Comment* | Test Case: Delete Selected Attachments needs to sort using time in seconds |  |
-| open_ok | /?action=preferences_settings;preferences_class_id=timezone |  |
-| check_ok | timezone__time_display_seconds |  |
-| click_and_wait | link=Save |  |
+| include | [st-timezone-seconds] |  |
 
 | *Comment* | Test Case: Delete Selected Attachments uploads wikitest.doc and wikitest.jpg |  |
 | st-admin | update-page --email %%email%% --workspace %%workspace%% --page "Delete Attachments %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
@@ -23,14 +23,15 @@
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
 | type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.jpg |
 | wait_for_text_present_ok | Uploaded files: wikitest.jpg | 30000 |
-
-| *Comment* | Test Case: Delete Selected Attachments wikitest.jpg upload waits for the Done button |  |
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 30000 |
+| click_ok | st-attachments-attach-closebutton |  |
+
+| *Comment* | Test Case: Delete Selected Attachments upload .doc |  |
+| wait_for_element_visible_ok | st-attachments-uploadbutton | 60000 |
+| click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
 | type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.doc |
-| wait_for_text_present_ok | Uploaded files: wikitest.jpg, wikitest.doc | 30000 |
-
-| *Comment* | Test Case: Delete Selected Attachments wikitest.doc upload waits for the Done button |  |
+| wait_for_text_present_ok | Uploaded files: wikitest.doc | 30000 |
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 30000 |
 | click_ok | st-attachments-attach-closebutton |  |
 
@@ -63,7 +64,7 @@
 | open_ok | /%%workspace%%/?Delete Attachments %%start_time%% |  |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.jpg')] | 60000 |
 | text_like | //a[contains(@href,'original/wikitest.jpg')] | wikitest.jpg |
-| text_unlike | contentRight | wikitest.doc |
+| text_unlike | st-display-mode-widgets | wikitest.doc |
 
 | *Comment* | Process Indexing Jobs after deleting wikitest.doc |  |
 | pause | 5000 | pause to register index job |
