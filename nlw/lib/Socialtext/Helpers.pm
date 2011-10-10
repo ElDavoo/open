@@ -390,6 +390,9 @@ method theme_info {
          account_logo => $theme->{logo_image_id}
              ? "/data/accounts/".$account->account_id."/theme/images/logo"
              : undef,
+         account_favicon => $theme->{favicon_image_id}
+             ? "/data/accounts/".$account->account_id."/theme/images/favicon"
+             : undef,
     };
 }
 
