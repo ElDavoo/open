@@ -14,7 +14,7 @@ my @COLUMNS = qw( theme_id name header_color header_image_id
     header_image_tiling header_image_position background_color
     background_image_id background_image_tiling background_image_position
     primary_color secondary_color tertiary_color header_font body_font
-    is_default icon_set logo_image_id favicon_image_id
+    is_default foreground_shade logo_image_id favicon_image_id
 );
 
 my @UPLOADS = qw(header_image background_image logo_image favicon_image);
@@ -185,7 +185,7 @@ sub ValidSettings {
         tertiary_color => \&_valid_hex_color,
         header_font => \&_valid_font,
         body_font => \&_valid_font,
-        icon_set => \&_valid_icon_set,
+        foreground_shade => \&_valid_foreground_shade,
     );
 
     for my $name ( keys %$settings ) {
@@ -292,7 +292,7 @@ sub _valid_theme_id {
     return $count;
 }
 
-sub _valid_icon_set {
+sub _valid_foreground_shade {
     my $set = shift;
 
     return grep { $set eq $_ } qw(light dark);

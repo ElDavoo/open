@@ -69,18 +69,19 @@ method render {
     my $theme = $self->account->prefs->all_prefs->{theme};
 
     $theme->{static} = '"' . $self->static_path . '"';
-    my $acct_id = $self->account->account_id;
 
     my @lines;
 
     # Variable Expansion
     for my $key (keys %$theme) {
-        push @lines, "\$$key: $theme->{$key}\n";
+        push @lines, "\$$key: $theme->{$key}\n" if defined $theme->{$key};
     }
+    push @lines, $self->_fg_helper($theme);
 
-    push @lines, '$account_id: '. $self->account->account_id . "\n\n";
-    push @lines, $self->_bg_helper('background' => $theme);
-    push @lines, $self->_bg_helper('header' => $theme);
+    if ($self->filename eq 'style') {
+        push @lines, $self->_bg_helper('background' => $theme);
+        push @lines, $self->_bg_helper('header' => $theme);
+    }
 
     push @lines, "\@import " . $self->filename . ".sass\n";
 
@@ -97,23 +98,37 @@ method render {
     );
 }
 
+method _fg_helper($theme) {
+    my $shade = $theme->{foreground_shade};
+
+    my $foreground = {
+        light => '#CCCCCC',
+        dark => '#333333',
+    }->{$shade};
+    die "no fg_helper for $shade" unless $foreground;
+
+    return "\$foreground_color: $foreground\n\n";
+}
+
 method _bg_helper($which, $theme) {
+    my $acct_id = $self->account->account_id;
+
     my $selector = {
         background => 'body',
         header => 'header',
     }->{$which};
-    die "no helper for $which" unless $selector;
+    die "no bg_helper for $which" unless $selector;
 
     my $attrs;
-    if (defined $theme->{background_image_id}) {
+    if (defined $theme->{$which."_image_id"}) {
         $attrs = "background: ".
-            $theme->{background_color} ." ".
-            "url(/data/accounts/$acct_id/theme/images/background) ".
-            $theme->{background_image_tiling} ." ".
-            $theme->{background_image_position};
+            $theme->{$which."_color"} ." ".
+            "url(/data/accounts/$acct_id/theme/images/$which) ".
+            $theme->{$which."_image_tiling"} ." ".
+            $theme->{$which."_image_position"};
     }
     else {
-        $attrs = "background-color: ". $theme->{background_color};
+        $attrs = "background-color: ". $theme->{$which."_color"};
     }
 
     return "$selector\n  $attrs\n\n";

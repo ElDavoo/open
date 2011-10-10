@@ -1432,7 +1432,7 @@ CREATE TABLE theme (
     header_font text NOT NULL,
     body_font text NOT NULL,
     is_default boolean NOT NULL,
-    icon_set text DEFAULT '' NOT NULL,
+    foreground_shade text DEFAULT '' NOT NULL,
     logo_image_id bigint,
     favicon_image_id bigint
 );

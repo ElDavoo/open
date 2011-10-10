@@ -7,7 +7,7 @@ ALTER TABLE ONLY theme
     ALTER COLUMN header_image_id DROP NOT NULL;
 
 ALTER TABLE ONLY theme
-    ADD COLUMN icon_set TEXT NOT NULL DEFAULT '';
+    ADD COLUMN foreground_shade TEXT NOT NULL DEFAULT '';
 
 ALTER TABLE ONLY theme
     ADD COLUMN logo_image_id bigint;
