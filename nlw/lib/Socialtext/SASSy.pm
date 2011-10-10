@@ -103,7 +103,7 @@ method _fg_helper($theme) {
 
     my $foreground = {
         light => '#CCCCCC',
-        dark => '#333333',
+        dark => '#111111',
     }->{$shade};
     die "no fg_helper for $shade" unless $foreground;
 

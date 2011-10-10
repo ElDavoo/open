@@ -64,7 +64,9 @@
     <header>
       <div class="container_24">
         <div class="grid_12 title">
-          <img height="34" width="201" src="/data/accounts/[% user.primary_account_id %]/theme/images/logo" />
+          [% IF theme.account_logo %]
+          <img height="34" width="201" src="[% theme.account_logo %]" />
+          [% END %]
         </div>
         <div class="grid_12">
           <div class="topLinks right">
@@ -119,7 +121,7 @@
 
       <footer>
         <div class="grid_3 socialtext">
-          <img alt="Socialtext Logo" src="[% static_path %]/images/socialtext-logo-white.png"/>
+          <img alt="Socialtext Logo" src="[% static_path %]/images/icons/[% theme.st_logo_shade %]/socialtext-logo.png"/>
         </div>
         <div class="grid_17 tagline">
           [% loc('Enterprise Social Software') %] v[% app_version %]
