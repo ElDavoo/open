@@ -1,0 +1,39 @@
+[%# vim: set et sts=2 sw=2: %]
+[%# @COPYRIGHT@ -%]
+[% USE decorate %]
+[% WRAPPER $frame_name id="listPage" %]
+  [% INCLUDE element/page/navigation %]
+  <div id="contentContainer">
+    <div class="grid_24">
+      <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
+    </div>
+    <div class="clear"></div>
+    <div class="grid_16">
+      <h3>[% loc('Members') %]</h3>
+      <table class="dataTable fixed" id="users">
+      <tr><td colspan="2"></td><td style="padding-left: 0.5em">[% loc('Role') %]</td></tr>
+        [% FOREACH wuser = users %]
+          [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
+            <td> <img src="/data/people/[% wuser.id %]/photo" /> </td>
+            <td style="padding-left: 0.5em; vertical-align: middle"> <a href="/st/profile/[% wuser.id %]">[% wuser.name %]</a> </td>
+            <td style="padding-left: 0.5em; vertical-align: middle"> [% wuser.role %] </td>
+          </tr>
+        [% END %]
+      </table>
+    </div>
+    <div class="grid_8">
+      <h3>[% loc('Groups') %]</h3>
+      <table class="dataTable fixed" id="groups">
+      <tr><td colspan="2"></td><td style="padding-left: 0.5em">[% loc('Role') %]</td></tr>
+        [% FOREACH group = groups %]
+          [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
+            <td> <img src="/data/groups/[% group.id %]/photo" /> </td>
+            <td style="padding-left: 0.5em; vertical-align: middle"> <a href="/st/group/[% group.id %]">[% group.name %]</a> </td>
+            <td style="padding-left: 0.5em; vertical-align: middle"> [% group.role %] </td>
+          </tr>
+        [% END %]
+      </table>
+    </div>
+    <div class="clear"></div>
+  </div>
+[% END %]

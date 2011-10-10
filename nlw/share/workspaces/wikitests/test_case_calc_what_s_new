@@ -31,11 +31,11 @@
 
 | open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
 | text_like | Changes in Last |  |
-| click_and_wait | link=All Pages |  |
+| select_and_wait | st-jump-to | label=All Pages |
 | text_like | All Pages |  |
-| click_and_wait | link=What's New |  |
+| select_and_wait | st-jump-to | label=What's New |
 
-| *Comment* | Test Case: Calc What's New Sorting tests |
+| *Comment* | Test Case: Calc What's New Sorting tests |  |
 
 | *Comment* | Test Case: Calc What's New sort Title asc |  |
 | select_and_wait | sort-picker | label=Title |
@@ -81,7 +81,7 @@
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Calc What's New sort Revisions desc |  |
-| open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%wn_ws%%/?action=recent_changes |  |
 | select_and_wait | sort-picker | label=Revisions |
 | text_like | content | qr/hey whats new %%start_time%% 0005.+hey whats new %%start_time%% 0004/ |
 
@@ -101,7 +101,7 @@
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 
-| open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%wn_ws%%/?action=recent_changes |  |
 
 | *Comment* | Test Case: Calc What's New sort Last Edited By asc |  |
 | select_and_wait | sort-picker | label=Last Edited By |

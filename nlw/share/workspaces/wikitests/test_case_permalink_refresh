@@ -38,7 +38,7 @@
 | wait_for_text_present_ok | %%pr3%% | 20000 |
 
 | *Comment* | Test Case: Permalink Refresh. Click group Reply to Conversation and reply |  |  |
-| st-send-reply | %%pr4%% |
+| st-send-reply | %%pr4%% |  |  |
 
 | *Comment* | Test Case: Permalink Refresh. Wait for the new group reply |  |
 | wait_for_text_present_ok | %%pr4%% | 20000 |

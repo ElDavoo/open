@@ -812,7 +812,6 @@ $.extend(Activities.Editor.prototype, {
 
     hideLookahead: function($dialog,cb) {
         var self = this;
-        $dialog.find('input').abortLookahead();
         $dialog.fadeOut(function() {
             if ($.isFunction(cb)) cb();
         });

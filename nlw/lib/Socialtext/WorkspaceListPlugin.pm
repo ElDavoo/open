@@ -3,7 +3,7 @@ package Socialtext::WorkspaceListPlugin;
 use strict;
 use warnings;
 use Class::Field qw(const);
-use Socialtext::l10n qw(loc __);
+use Socialtext::l10n qw(loc __ lcmp);
 use Socialtext::Workspace;
 
 use base 'Socialtext::Plugin';
@@ -18,6 +18,45 @@ sub register {
     my $registry = shift;
 
     $registry->add(action => 'widget_workspace_list');
+    $registry->add(action => 'workspace_membership');
+}
+
+sub workspace_membership {
+    my $self = shift;
+
+    my $ws = $self->hub->current_workspace;
+    my @uwr = sort { lcmp($a->[0]->best_full_name, $b->[0]->best_full_name) }
+        $ws->user_roles(direct => 1)->all;
+
+    my @users = ();
+    foreach my $ur (@uwr) {
+        push @users, { 
+            name => $ur->[0]->best_full_name(workspace =>$ws),
+            id => $ur->[0]->user_id,
+            role => $ur->[1]->name,
+        };
+    }
+
+    my $iter = $ws->groups;
+    my @gwr = $ws->group_roles->all;
+    my @groups = ();
+    foreach my $gr (@gwr) {
+        push @groups, { 
+            name => $gr->[0]->name,
+            id => $gr->[0]->group_id,
+            role => $gr->[1]->name,
+        };
+    }
+
+    return $self->template_render(
+       template => 'view/workspace_membership',
+       vars     => {
+           $self->hub->helpers->global_template_vars,
+           users => \@users,
+           groups => \@groups,
+           workspace => $ws,
+       },
+   );
 }
 
 sub widget_workspace_list {

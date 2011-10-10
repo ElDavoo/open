@@ -13,9 +13,10 @@
   [% jump_option("blog_display", loc('blog.blogs')) %]
   [% jump_option("my_likes", loc('nav.likes')) %]
   [% jump_option("changes", loc('page.all'), "&changes=all") %]
-  [% jump_option("orphans_list", loc('Orphan pages')) %]
+  [% jump_option("orphans_list", loc('Orphan Pages')) %]
   [% jump_option("category_list", loc('tag.all')) %]
   [% jump_option("attachments_listall", loc('file.all')) %]
+  [% jump_option("workspace_membership", loc('Membership')) %]
 </select>
 <script>
     $('#st-jump-to').change(function() {

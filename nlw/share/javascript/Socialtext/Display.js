@@ -97,11 +97,18 @@ Socialtext.prototype.setupPageHandlers = function() {
     $('#st-tags-addlink').button().click(function() {
         $(this).hide();
         $('#st-tags-form').show();
-        $('#st-tags-field').val('').focus();
+        var focused = false;
+        $('#st-tags-field').val('').focus().unbind('focus').focus(function() {
+            focused = true;
+        });
         $('#st-tags-field').unbind('blur').blur(function () {
+            focused = false;
             setTimeout(function () {
-                $('#st-tags-form').hide();
-                $('#st-tags-addlink').show();
+                if (!focused) {
+                    $('#st-tags-field').autocomplete('close');
+                    $('#st-tags-form').hide();
+                    $('#st-tags-addlink').show();
+                }
             }, 500);
         })
     });

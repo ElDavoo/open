@@ -1,3 +1,5 @@
+tuxhold until lookahead works
+
 | *Comment* | Starting Test Case: Calc Tagging |  |
 
 | set | t_ws | calc_tagging_ws_%%start_time%% |
@@ -130,23 +132,20 @@ Add any other tag to three different pages | tag is added
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
 
 | *Comment* | Test Case: Calc Tagging. Delete Tag |  |
-| open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |
-| wait_for_element_present_ok | //a[@class='delete_tag'] | 30000 |
-| click_ok | //a[@class='delete_tag'] |  |
-| wait_for_element_visible_ok | st-no-tags-placeholder | 30000 |
-| text_like | st-no-tags-placeholder | There are no tags for this page. |
+| open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |  |
+| wait_for_element_present_ok | //a[@class='delete_icon'] | 30000 |
+| click_ok | //a[@class='delete_icon'] |  |
 
 Navigate to All Tags in list view | All Tags appears
 Observe that tag | tag is still in list
 Click that tag | Tag list page appears with two remaining tagged pages
 
 | open_ok | /%%t_ws%%/?action=recent_changes |  |
-| click_and_wait | link=All Tags |  |
+| select_and_wait | st-jump-to | label=All Tags |
 | text_like | content | tagtest %%start_time%% |
 | click_and_wait | link=tagtest %%start_time%% |  |
 | text_like | content | tag page 1 %%start_time%% |
 | text_like | content | tag page 3 %%start_time%% |
-
 
 | *Comment* | Test Case: Calc Tagging verify suggestions foo bar, fog, and Foster City |  |
 | open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%204%20%%start_time%%#edit |  |
@@ -163,7 +162,6 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | *Comment* | Test Case: Calc Tagging use lookahead to add a tag |  |
 | click_ok | link=foster City %%start_time%% |  |
-| wait_for_text_not_present_ok | There are no tags for this page. | 30000 |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | foster City %%start_time%% | 30000 |
 | text_like | st-tags-listing | foster City %%start_time%% |

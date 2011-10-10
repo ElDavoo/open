@@ -3,28 +3,27 @@
 | set | comment_nosignal | Do not signal this comment %%start_time%% |
 | set | comment_signal | Do signal this comment %%start_time%% |
 
-| *Comment* | Test Case: Add Comment Create Test Page |  |
+| *Comment* | Test Case: Add Comment Create Test Page |  |  |  |
 
 | call | st-edit-new-page | ws=%%workspace%% | title=Comment Test Page %%start_time%% | content=Comment Test Page Content %%start_time%% |
 
 | *Comment* | Test Case: Add Comment comment button |  |
 | wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |
 | click_ok | //li[@id="st-comment-button"]/a |  |
-| wait_for_element_visible_ok | comment | 30000 |
+| wait_for_element_visible_ok | comment | 10000 |
 | type_ok | comment | %%comment_nosignal%% |
-| wait_for_element_visible_ok | link=Save | 30000 |
-| st-click-pause | link=Save | 10000 |
+| wait_for_element_visible_ok | link=Save | 5000 |
+| st-click-pause | link=Save | 6000 |
 | text_like | content | %%comment_nosignal%% |
 
 | *Comment* | Test Case: Add Comment again Comment button |  |
-| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |
 | click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%comment_signal%% |
-| wait_for_element_visible_ok | st-comment-st-edit-summary-signal-checkbox | 30000 |
+| wait_for_element_visible_ok | st-comment-st-edit-summary-signal-checkbox | 5000 |
 | check_ok | st-comment-st-edit-summary-signal-checkbox |  |
-| wait_for_element_visible_ok | link=Save | 30000 |
-| st-click-pause | link=Save | 10000 |
+| wait_for_element_visible_ok | link=Save | 5000 |
+| st-click-pause | link=Save | 6000 |
 | text_like | content | qr/%%comment_nosignal%%.+%%comment_signal%%/ |
 | text_like | content | qr/contributed by/i |
 
@@ -32,19 +31,19 @@
 | click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment Cancel %%start_time%% |
-| wait_for_element_visible_ok | st-cancel-layout | 30000 |
-| st-click-pause | st-cancel-layout | 5000 |
+| wait_for_element_visible_ok | link=Cancel | 5000 |
+| st-click-pause | link=Cancel | 6000 |
 | text_like | content | qr/%%comment_nosignal%%.+%%comment_signal%%/ |
 | text_unlike | content | Comment Cancel %%start_time%% |
 
 | *Comment* | Test Case: Add Comment Check for the signal |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | %%comment_signal%% | 30000 |
-| wait_for_text_not_present_ok | %%comment_nosignal%% | 30000 |
-| wait_for_element_visible_ok | //a[contains(text(),'Comment Test Page %%start_time%%')] | 30000 |
+| wait_for_text_not_present_ok | %%comment_nosignal%% | 5000 |
+| wait_for_element_visible_ok | //a[contains(text(),'Comment Test Page %%start_time%%')] | 5000 |
 
 | *Comment* | Test Case: Add Comment TEARDOWN |  |
 | st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --p comment_test_page_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Add Comment COMPLETED |
+| *Comment* | Test Case: Add Comment COMPLETED |  |

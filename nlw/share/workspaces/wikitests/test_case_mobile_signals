@@ -1,3 +1,5 @@
+*On hold until mobile signals is back*
+
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Mobile Signals |  |
@@ -31,7 +33,7 @@
 | http-user-pass | %%username%% | %%password%% |  |
 | post-signals | 20 | Siggy Siggy Siggy %%start_time%% | 1 |
 
-| include | [Test Case: Miki Dropdowns WikiWyg] |
-| include | [Test Case: Miki Dropdowns IE] |
+| include | [Test Case: Miki Dropdowns WikiWyg] |  |
+| include | [Test Case: Miki Dropdowns IE] |  |
 
 | *Comment* | Test Case: Mobile Signals COMPLETED |  |
