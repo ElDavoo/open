@@ -69,6 +69,7 @@ method render {
     my $theme = $self->account->prefs->all_prefs->{theme};
 
     $theme->{static} = '"' . $self->static_path . '"';
+    my $acct_id = $self->account->account_id;
 
     my @lines;
 
@@ -76,7 +77,11 @@ method render {
     for my $key (keys %$theme) {
         push @lines, "\$$key: $theme->{$key}\n";
     }
-    push @lines, '$account_id: '. $self->account->account_id . "\n";
+
+    push @lines, '$account_id: '. $self->account->account_id . "\n\n";
+    push @lines, $self->_bg_helper('background' => $theme);
+    push @lines, $self->_bg_helper('header' => $theme);
+
     push @lines, "\@import " . $self->filename . ".sass\n";
 
     set_contents($self->sass_file, join('', @lines));
@@ -90,6 +95,28 @@ method render {
         $self->sass_file,
         $self->css_file,
     );
+}
+
+method _bg_helper($which, $theme) {
+    my $selector = {
+        background => 'body',
+        header => 'header',
+    }->{$which};
+    die "no helper for $which" unless $selector;
+
+    my $attrs;
+    if (defined $theme->{background_image_id}) {
+        $attrs = "background: ".
+            $theme->{background_color} ." ".
+            "url(/data/accounts/$acct_id/theme/images/background) ".
+            $theme->{background_image_tiling} ." ".
+            $theme->{background_image_position};
+    }
+    else {
+        $attrs = "background-color: ". $theme->{background_color};
+    }
+
+    return "$selector\n  $attrs\n\n";
 }
 
 no Moose;
