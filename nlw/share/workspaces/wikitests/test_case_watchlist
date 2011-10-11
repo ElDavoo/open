@@ -1,3 +1,5 @@
+tuxhold until st-watch-page is rewritten
+
 user adds page to watchlist using Watchlist icon at top of sidebar icon turns color to indicate membership in watchlist
 
 | *Comment* | STARTING Test case: Watchlist |
@@ -85,7 +87,7 @@ Remove all pages from watchlist; watchlist displays "No watchlist for USER ID in
 otherwise this test is not rerunnable when it fails
 and the watchlist is not empty |
 
-| *Comment* | Test case: Watchlist SORTING |
+| *Comment* | Test case: Watchlist SORTING |  |
 
 Set up to check sorting. (↑) (↓)
 
@@ -199,12 +201,13 @@ Last Edited By sort
 | st_admin | purge-page --w %%workspace%% --page ccc_%%start_time%% | was purged |
 | st_admin | purge-page --w %%workspace%% --page new_watchlist_%%start_time%% | was purged |
 
-| *Comment* | Test case: Watchlist COMPLETED |
+| *Comment* | Test case: Watchlist COMPLETED |  |
 
 ^ DONE_TESTING
+
 ^ Remaining TODO:
 
-| Figure out a way to check which element of a dropdown menu is currently selected, text_like does not do this | Check dropdown menu functionality in Settings-&gt;Watchlist |  |
+| Figure out a way to check which element of a dropdown menu is currently selected, text_like does not do this | Check dropdown menu functionality in Settings->Watchlist |  |
 | Change notification to every minute, then edit a page in the watchlist | notification is saved as Every Minute |  |
 | Wait a few minutes, then read email | watchlist notification message received |  |
 | In the email, click through to change the preference for notification frequency | arrive at correct UI page |  |

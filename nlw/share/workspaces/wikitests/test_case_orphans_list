@@ -1,36 +1,29 @@
-skip.all until and unless Orphans List is restored
-
-
 | *Comment* | START Test Case: Orphans List |  |
 
-(↑) (↓)
-
-Find or create several pages that have no incoming links. This creates orphan pages. | pages are created
-
-| set | ws | orphans-ws-%%start_time%% |
-| create-workspace | %%ws%% |  |
-| add-member | %%username%% | %%ws%% |
-| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0001" page has been created. |
-| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been created. |
-| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0003" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0003" page has been created. |
+| set | ws | orphans-ws-%%start_time%% |  |  |  |  |  |
+| create-workspace | %%ws%% |  |  |  |  |  |  |
+| add-member | %%username%% | %%ws%% |  |  |  |  |  |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0001" page has been created. |  |  |  |  |  |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been created. |  |  |  |  |  |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0003" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0003" page has been created. |  |  |  |  |  |
 
 Create a page by a different user
 
-| set | orphan_email | `"aaa.orphan.%%start_time%%@ken.socialtext.net"<mailto:aaa.orphan.%2525%2525start_time%2525%2525@ken.socialtext.net>` |
-| st-admin | create-user --e %%orphan_email%% --p 123456 |  |
+| set | orphan_email | `aaa.orphan.%%start_time%%@ken.socialtext.net` |
+| st-admin | create-user --e %%orphan_email%% --p %%password%% |  |
 | st-admin | add-member --w %%ws%% --e %%orphan_email%% | now has the role of 'member' in the |
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been created. |
 
-"What's New -> Orphans List"<http://.../> | list of links to orphan pages appears
+| open_ok | /%%ws%% |  |
+
 
 | *Comment* | Test Case: Orphans List. Orphan page list |  |
-| setSpeed | 5000 | For Safari |
-| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
+| select_and_wait | st-jump-to | label=Orphan Pages |
+| wait_for_element_visible_ok | link=orphan %%start_time%% 0001 | 30000 |
 | text_like | link=orphan %%start_time%% 0001 | orphan %%start_time%% 0001 |
 | text_like | link=orphan %%start_time%% 0002 | orphan %%start_time%% 0002 |
 | text_like | link=orphan %%start_time%% 0003 | orphan %%start_time%% 0003 |
 | text_like | link=orphan %%start_time%% 0004 | orphan %%start_time%% 0004 |
-| setSpeed | 0 |  |
 
 edit a page to include a link to an orphan page | link appears in page
 
@@ -41,14 +34,15 @@ edit a page to include a link to an orphan page | link appears in page
 | call | st-save-page | content=`[orphan %%start_time%% 0002]` |
 
 | *Comment* | Test Case: Orphans List. second page should no longer be orphan |  |
-| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
+| select-and-wait | st-jump-to | label=Orphan Pages |
+| wait_for_element_visible_ok | link=orphan %%start_time%% 0001 | 30000 |
 | text_unlike | content | orphan %%start_time%% 0002 |
 | text_like | content | orphan %%start_time%% 0001 |
 | text_like | content | orphan %%start_time%% 0004 |
 
 | *Comment* | Test Case: Orphans List. restore fourth page |  |
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been updated. |
-| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
+| refresh | reload again |  |
 
 | *Comment* | Test Case: Orphans List Sorting Title asc |  |
 | select_and_wait | sort-picker | label=Title |
@@ -77,7 +71,7 @@ edit a page to include a link to an orphan page | link appears in page
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been updated. |
 
 | *Comment* | Test Case: Orphans List Sorting reload the Orphans List to see new revisions |  |
-| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
+| refresh |  |  |
 
 | *Comment* | Test Case: Orphans List Sorting revisions desc |  |
 | select_and_wait | sort-picker | label=Revisions |
@@ -98,20 +92,22 @@ click on several links | correct page appear
 | *Comment* | Test Case: Orphans List. Orphan page links work |  |
 | click_and_wait | link=orphan %%start_time%% 0001 |  |
 | text_like | st-page-titletext | orphan %%start_time%% 0001 |
-| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
+| select_and_wait | st-jump-to | label=Orphan Pages |
+| wait_for_element_visible_ok | link=orphan %%start_time%% 0002 | 30000 |
 | click_and_wait | link=orphan %%start_time%% 0002 |  |
 | text_like | st-page-titletext | orphan %%start_time%% 0002 |
 
 observe Incoming Links in sidepanel | there are no Incoming Links for any orphan page
 
 | *Comment* | Test Case: Orphans List. Orphan page has no incoming links |  |
-| text_like | contentRight | qr/There are no pages that link to this page yet/i |
+| text_like | st-display-mode-widgets | qr/There are no pages that link to this page yet/i |
 | open_ok | /%%ws%%/?orphan %%start_time%% 0001 |  |
-| text_like | contentRight | qr/There are no pages that link to this page yet/i |
+| text_like | st-display-mode-widgets | qr/There are no pages that link to this page yet/i |
 
-| *Comment* | Test Case: Orphans list. delete page |  |
+| *Comment* | Test Case: Orphans list. delete page 0003 |  |
 | st-admin | purge-page --w %%ws%% --p orphan_%%start_time%%_0003 | was purged |
-| open_ok | /%%ws%%/index.cgi?action=orphans_list |  |
+| select_and_wait | st-jump-to | label=Orphan Pages |
+| wait_for_element_visible_ok | link=orphan %%start_time%% 0001 | 30000 |
 | text_unlike | content | orphan %%start_time%% 0003 |
 | text_like | content | orphan %%start_time%% 0001 |
 
