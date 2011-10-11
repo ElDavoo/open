@@ -181,9 +181,10 @@ Socialtext.prototype.setupPageHandlers = function() {
         && !location.href.toString().match(/action=display;/)
         && !/^#draft-\d+$/.test(location.hash)
     ) {
-        $("#st-create-content-link").trigger("click", {
-            title: st.page.title
-        })
+        // Incipient pages are now created with "Edit" button too
+        setTimeout(function() {
+            $("#st-edit-button-link").click();
+        }, 500);
     }
     else if (st.page.is_new || st.start_in_edit_mode
             || location.hash.toLowerCase() == '#edit') {
