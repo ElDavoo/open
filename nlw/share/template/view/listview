@@ -71,11 +71,6 @@
       [% IF feeds.rss.page %]
         <a style="float: left; margin-right: 10px; margin-top: 1px" href="[% feeds.rss.page.url %]"><img border="0" src="[% static_path %]/images/icons/rss.png"/></a>
       [% END %]
-      [% IF hub.current_workspace.enable_unplugged %]
-        [% IF unplug_uri %]
-            <a style="float: left; margin-top: 12px; margin-left: 5px;" title="[% unplug_phrase %]" href="[% unplug_uri %]"><img border="0" src="[% wiki.skin_uri('s3') %]/images/plug.png"/></a>
-        [% END %]
-      [% END %]
       <ul class="jd_menu">
         <li>
           <a class="export" href="#" id="st-listtools-export">[% loc('do.export') %]</a>

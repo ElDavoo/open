@@ -140,7 +140,6 @@ sub recent_changes {
         $self->sortdir,
         miki_url      => $self->hub->helpers->miki_path('recent_changes_query'),
         feeds         => $self->_feeds( $self->hub->current_workspace ),
-        unplug_uri    => "?action=unplug",
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},
