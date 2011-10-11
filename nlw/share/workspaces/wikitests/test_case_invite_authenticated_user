@@ -29,13 +29,9 @@
 | wait_for_element_visible_ok | %%invite%% |  |
 
 | *Comment* | Test Case: Invite Authenticated User add %%userone%% and %%usertwo%% |  |
-| type_lookahead_ok | %%invite%% | %%userdotone%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'ne')] | 10000 |
-| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'ne')] |  |
+| select-autocompleted-option-ok | %%invite%% | %%userdotone%% |
 | wait_for_text_present_ok | %%userone%% | 10000 |
-| type_lookahead_ok | %%invite%% | %%userdottwo%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'wo')] | 10000 |
-| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'wo')] |  |
+| select-autocompleted-option-ok | %%invite%% | %%userdottwo%% |
 | wait_for_text_present_ok | %%usertwo%% | 10000 |
 | click_and_wait | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |

@@ -105,14 +105,10 @@
 TUXTODO: restore these tests when manager field returns
 
 | wait_for_element_visible_ok | field_supervisor | 5000 |
-| type-lookahead-ok | xpath=//div[@id='field_supervisor']/input[contains(@class,'relationship')] | %%short_super%% |
-| wait-for-element-present-ok | link=%%short_super%% |  |
-| click-ok | link=%%short_super%% |  |
+| select-autocompleted-option-ok | xpath=//div[@id='field_supervisor']/input[contains(@class,'relationship')] | %%short_super%% |
 
 | wait_for_element_visible_ok | field_assistant | 5000 |
-| type-lookahead-ok | xpath=//div[@id='field_assistant']/input[contains(@class,'relationship')] | %%short_assistant%% |
-| wait-for-element-present-ok | link=%%short_assistant%% |  |
-| click-ok | link=%%short_assistant%% |  |
+| select-autocompleted-option-ok | xpath=//div[@id='field_assistant']/input[contains(@class,'relationship')] | %%short_assistant%% |
 
 | *Comment* | Test Case: Edit Profile. Be conservative around clicking update |  |
 | wait_for_element_visible_ok | update_profile | 5000 |

@@ -101,9 +101,7 @@ TUXTODO: Is this confirmation back?
 | *Comment* | Test Case: Control Panel Create Group - add member %%fName%% to existing group via lookahead |  |
 
 | wait_for_element_visible_ok | addUserLookahead | 30000 |
-| type-lookahead-ok | addUserLookahead | %%fName%% |
-| wait_for_element_visible_ok | link=%%fName%% |
-| click_ok | link=%%fName%% |  |
+| select-autocompleted-option-ok | addUserLookahead | %%fName%% |
 | wait_for_element_visible_ok | //a[contains(text(),'%%email5%%')] | 30000 |
 | text_like | //div[@id='userTable'] | %%email5%% |
 
