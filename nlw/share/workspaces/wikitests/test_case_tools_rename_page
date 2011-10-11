@@ -1,9 +1,8 @@
-| *Comment* | Test Case: Tools: Rename Page |
+| *Comment* | Test Case: Tools: Rename Page |  |  |  |
 
-| *Comment* | Test Case: Tools: Rename Page Create test page |  |
+| *Comment* | Test Case: Tools: Rename Page Create test page |  |  |  |
 
 | call | st-edit-fill-page | ws=%%workspace%% | title=Rename This Page %%start_time%% | content=Rename This Page %%start_time%% content |
-
 
 | *Comment* | Test Case: Tools: Rename Page Create test tag |  |
 | wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
@@ -26,21 +25,20 @@
 | type_ok | st-rename-newname | Page_Renamed_%%start_time%% |
 | click_and_wait | st-rename-savelink |  |
 
-| *Comment* | Test Case: Tools: Rename Page. verify rename |  |
-| location_like | `/%%workspace%%/page_renamed_%%start_time%%` |  |
-| wait_for_element_visible_ok | contentRight | 30000 |
-| text_like | contentRight | Rename This Tag %%start_time%% |
-| text_like | st-page-titletext | Page_Renamed_%%start_time%% |
-| click_and_wait | link=Rename This Page %%start_time%% |  |
-| text_like | st-page-titletext | Rename This Page %%start_time%% |
-| text_like | content | Page renamed to Page_Renamed_%%start_time%% |
-| wait_for_element_visible_ok | link=Rename This Tag %%start_time%% | 30000 |
-| st_check_files_if_highperms | wikitest.jpg |  |
+| *Comment* | Test Case: Tools: Rename Page. verify rename |  |  |  |
+| location_like | `/%%workspace%%/page_renamed_%%start_time%%` |  |  |  |
+| wait_for_element_visible_ok | contentRight | 30000 |  |  |
+| text_like | st-display-mode-widgets | Rename This Tag %%start_time%% |  |  |
+| text_like | st-page-titletext | Page_Renamed_%%start_time%% |  |  |
+| click_and_wait | link=Rename This Page %%start_time%% |  |  |  |
+| text_like | st-page-titletext | Rename This Page %%start_time%% |  |  |
+| text_like | content | Page renamed to Page_Renamed_%%start_time%% |  |  |
+| wait_for_element_visible_ok | link=Rename This Tag %%start_time%% | 30000 |  |  |
+| st_check_files_if_highperms | wikitest.jpg |  |  |  |
 
-| *Comment* | Test Case: Tools: Rename Page. Edit the original the page |  |
+| *Comment* | Test Case: Tools: Rename Page. Edit the original the page |  |  |  |
 
 | call | st-edit-this-page | ws=%%workspace%% | thispage=Rename This Page %%start_time%% | content=Rename This Page %%start_time%% NEW content |
-
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the edited page and Cancel |  |
 | click_ok | link=Rename Page |  |
@@ -80,4 +78,4 @@
 | st-admin | purge-page --w %%workspace%% --page rename_this_page_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page page_renamed_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Tools: Rename Page COMPLETED |
+| *Comment* | Test Case: Tools: Rename Page COMPLETED |  |

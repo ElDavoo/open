@@ -103,11 +103,11 @@ TUXTODO: Is in-page extraction restored?
 
 click_ok | //a[contains(@class,'extract_attachment')] | |
 pause | 15000 | |
-text_like | contentRight | wikitestzip.zip |
-text_like | contentRight | O Star.txt |
-text_like | contentRight | Poem By Robert Frost.pdf |
-text_like | contentRight | st-logo-symbol.jpg |
-text_like | contentRight | publictests-2-2.xls |
+text_like | st-display-mode-widgets | wikitestzip.zip |
+text_like | st-display-mode-widgets | O Star.txt |
+text_like | st-display-mode-widgets | Poem By Robert Frost.pdf |
+text_like | st-display-mode-widgets | st-logo-symbol.jpg |
+text_like | st-display-mode-widgets | publictests-2-2.xls |
 
 | *Comment* | Test Case: Manage Files test extracted txt file (Temporarily disabled) |  |
 

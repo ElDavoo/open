@@ -12,7 +12,7 @@
 | call | [st-edit-new-page] | ws=%%workspace%% | title=Copy This Page %%start_time%% | content=Copy This Page %%start_time%% content |
 | call | [st-tag-page] | tag_to_apply=Copy This Tag %%start_time%% |  |  |
 
-| st_upload_if_highperms | wikitest.jpg |  |
+| st_upload_if_highperms | wikitest.jpg |  |  |  |
 
 TODO: upload a file and test for Keep Attachments
 
@@ -27,17 +27,16 @@ TODO: upload a file and test for Keep Attachments
 | click_ok | st-copy-savelink |  |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Should return to the same WS,
-NOT the target WS |  |
-| location_like | /%%workspace%%/copy_this_page_%%start_time%% |  |
-| wait_for_element_visible_ok | contentRight | 30000 |
-| text_like | contentRight | Copy This Tag %%start_time%% |
-| text_like | st-page-titletext | Copy This Page %%start_time%% |
-| text_like | content | Copy This Page %%start_time%% content |
+NOT the target WS |  |  |  |
+| location_like | /%%workspace%%/copy_this_page_%%start_time%% |  |  |  |
+| wait_for_element_visible_ok | contentRight | 30000 |  |  |
+| text_like | st-display-mode-widgets | Copy This Tag %%start_time%% |  |  |
+| text_like | st-page-titletext | Copy This Page %%start_time%% |  |  |
+| text_like | content | Copy This Page %%start_time%% content |  |  |
 
-| *Comment* | Test Case: Tools: Copy Page to Workspace. Edit the original the page |  |
+| *Comment* | Test Case: Tools: Copy Page to Workspace. Edit the original the page |  |  |  |
 
 | call | [st-edit-this-page] | ws=%%workspace%% | thispage=Copy This Page %%start_time%% | content=Copy This Page %%start_time%% NEW content |
-
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Copy the edited page and Cancel |  |
 | click_ok | link=Copy Page to Workspace |  |
@@ -69,8 +68,8 @@ TODO: come back and finish this test when {bz: 1039} is fixed. Can't seem to cli
 | click_ok | st-copy-savelink |  |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. verify copy of edited page |  |
-| open_ok | /%%newspace%%/page_copied_%%start_time%% |
-| wait_for_element_visible_ok | link=Copy This Tag %%start_time%% |
+| open_ok | /%%newspace%%/page_copied_%%start_time%% |  |
+| wait_for_element_visible_ok | link=Copy This Tag %%start_time%% |  |
 | st_check_files_if_highperms | wikitest.jpg |  |
 
 | open_ok | /%%newspace%%/index.cgi?action=revision_list;page_name=page_copied_%%start_time%% |  |
@@ -89,4 +88,4 @@ TODO: come back and finish this test when {bz: 1039} is fixed. Can't seem to cli
 | st-admin | purge-page --w %%workspace%% --page copy_this_page_%%start_time%% | was purged |
 | st-admin | delete-workspace --workspace %%newspace%% --no-export | has been deleted |
 
-| *Comment* | Test Case: Tools: Copy Page to Workspace COMPLETED |
+| *Comment* | Test Case: Tools: Copy Page to Workspace COMPLETED |  |

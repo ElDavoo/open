@@ -24,7 +24,7 @@
 | value_is | %%mlength%% | on |
 | value_is | %%mbread%% | on |
 | open_ok | /%%new_ws%% |  |
-| text_like | content | Recently Viewed |
+| text_like | st-display-mode-widgets | Recently Viewed |
 
 | *Comment* | Test Case: Preferences UI User 6. hover off, include breadcrumbs off |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
@@ -39,7 +39,7 @@
 | value_is | %%mlength%% | off |
 | value_is | %%mbread%% | off |
 | open_ok | /%%new_ws%% |  |
-| text_unlike | content | Recently Viewed |
+| text_unlike | st-display-mode-widgets | Recently Viewed |
 
 | *Comment* | Test Case: Preferences UI User 6. Screen Layout. Navigate away, return, verify off value |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |
@@ -56,7 +56,7 @@
 | value_is | %%mlength%% | off |
 | value_is | %%mbread%% | on |
 | open_ok | /%%new_ws%% |  |
-| text_like | content | Recently Viewed |
+| text_like | st-display-mode-widgets | Recently Viewed |
 
 | *Comment* | Test Case: Preferences UI User 6. Save Screen Layout without modifications |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/preferences |  |

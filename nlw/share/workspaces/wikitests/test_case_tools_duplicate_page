@@ -1,9 +1,8 @@
-| *Comment* | Test Case: Tools: Duplicate Page |
+| *Comment* | Test Case: Tools: Duplicate Page |  |  |  |
 
-| *Comment* | Test Case: Tools: Duplicate Page Create test page |  |
+| *Comment* | Test Case: Tools: Duplicate Page Create test page |  |  |  |
 
 | call | st-edit-fill-page | ws=%%workspace%% | title=Duplicate This Page %%start_time%% | content=Duplicate This Page %%start_time%% content |
-
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test tag |  |
 | wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
@@ -26,18 +25,17 @@
 | type_ok | st-duplicate-newname | Page_Duplicated_%%start_time%% |
 | click_and_wait | st-duplicate-savelink |  |
 
-| *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |
-| location_like | `/%%workspace%%/page_duplicated_%%start_time%%` |  |
-| wait_for_element_visible_ok | contentRight | 30000 |
-| text_like | contentRight | Duplicate This Tag %%start_time%% |
-| wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |
-| text_like | st-page-titletext | Page_Duplicated_%%start_time%% |
-| st_check_files_if_highperms | wikitest.jpg |  |
+| *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |  |  |
+| location_like | `/%%workspace%%/page_duplicated_%%start_time%%` |  |  |  |
+| wait_for_element_visible_ok | contentRight | 30000 |  |  |
+| text_like | st-display-mode-widgets | Duplicate This Tag %%start_time%% |  |  |
+| wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |  |  |
+| text_like | st-page-titletext | Page_Duplicated_%%start_time%% |  |  |
+| st_check_files_if_highperms | wikitest.jpg |  |  |  |
 
-| *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |
+| *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |  |  |
 
 | call | st-edit-this-page | ws=%%workspace%% | thispage=Duplicate This Page %%start_time%% | content=Duplicate This Page %%start_time%% NEW content |
-
 
 | *Comment* | Test Case: Tools: Duplicate Page. Duplicate the edited page and Cancel |  |
 | click_ok | link=Duplicate Page |  |
@@ -76,4 +74,4 @@
 | st-admin | purge-page --w %%workspace%% --page duplicate_this_page_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page page_duplicated_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Tools: Duplicate Page COMPLETED |
+| *Comment* | Test Case: Tools: Duplicate Page COMPLETED |  |
