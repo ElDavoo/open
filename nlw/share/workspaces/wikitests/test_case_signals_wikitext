@@ -25,41 +25,45 @@
 | wait_for_element_visible_ok | `//a[contains(@href,'Dashboard#%%start_time%%')]` | 10000 |
 | wait_for_element_visible_ok | `link=This better be link text for the Help home page at %%start_time%%` | 10000 |
 
+| *Comment* | These definitions split URLs up so that the editor doesn't try to interpret them. |  |
+| *Comment* | They are concatenated to create a signal containing a URL in pointy brackets. |  |
+
+*Comment* | DO NOT modify them or attempt to coalesce them | |
 | set | leftLink | `<http` |
 | set | rightLink | `%%start_time%%>` |
 | set | leftShow | `http` |
 | set | rightShow | `%%start_time%%` |
 
-| *Comment* | Test Case: Signals Wikitext web link |  |
-| post-signal | %%leftLink%%://www.socialtext.com#%%rightLink%% |  |
+| *Comment* | Test Case: Signals Wikitext: unbracketed web link |  |
+| post-signal | %%leftShow%%://www.socialtext.com#%%rightShow%% |  |
 | wait_for_element_visible_ok | link=%%leftShow%%://www.socialtext.com#%%rightShow%% | 10000 |
 
-| *Comment* | Test Case: Signals Wikitext bracketed web link |  |
+| *Comment* | Test Case: Signals Wikitext: bracketed web link |  |
 | post-signal | %%leftLink%%://kenpier.org#%%rightLink%% |  |
 | wait_for_element_visible_ok | link=%%leftShow%%://kenpier.org#%%rightShow%% | 10000 |
 
-| *Comment* | Test Case: Signals Wikitext named web link |  |
+| *Comment* | Test Case: Signals Wikitext: named web link with link text |  |
 | post-signal | "MARCOM Website %%start_time%%"%%leftLink%%://www.socialtext.com#%%rightLink%% |  |
 | wait_for_element_visible_ok | link=MARCOM Website %%start_time%% | 10000 |
 
-| *Comment* | Test Case: Signals Wikitext named web link with mention |  |
+| *Comment* | Test Case: Signals Wikitext: named web link with mention and link text |  |
 | post-signal | "Socialtext Home %%start_time%%"%%leftLink%%://www.socialtext.com#%%rightLink%% mentioning {user: 1} ` |  |
 | wait_for_element_visible_ok | link=Socialtext Home %%start_time%% | 10000 |
 | wait_for_element_visible_ok | link=System User | 10000 |
 | wait_for_element_visible_ok | `//a[contains(@href,'/st/profile/1')]` | 10000 |
 
-| *Comment* | Test Case: Signals Wikitext user wafl %%username%% |  |
+| *Comment* | Test Case: Signals Wikitext: user wafl %%username%% |  |
 | post-signal | `{user: %%username%%} at %%start_time%%` |  |
 | wait_for_element_visible_ok | `link=%%short_username%%` | 10000 |
 | wait_for_text_present_ok | `%%short_username%% at %%start_time%%` | 10000 |
 
-| *Comment* | Test Case: Signals Wikitext user wafl nosuchuser |  |
+| *Comment* | Test Case: Signals Wikitext: user wafl nosuchuser |  |
 | post-signal | `{user: nosuchuser-%%start_time%%}` |  |
 | open-ok | /st/signals |  |
 | wait_for_text_present_ok | Unknown Person | 10000 |
 
-| *Comment* | Test Case: Signals Wikitext bold italic strike as_is signal content |  |
-| post-signal | `*_-"Bold Italic Strike link to Socialtext Home at %%start_time%%-_*"%%leftLink%%://www.socialtext.com#%%rightLink%%` |  |
+| *Comment* | Test Case: Signals Wikitext: bold italic strike as_is signal content |  |
+| post-signal | `*_-"Bold Italic Strike link to Socialtext Home at %%start_time%%"%%leftLink%%://www.socialtext.com#%%rightLink%%-_*` |  |
 | post-signal | `-_*bold italic strike %%start_time%%*_-` |  |
 | post-signal | `*bold%%start_time%%* _italic%%start_time%%_ -strike%%start_time%%- {{_asis:_ *bold* -%%start_time%%-}}` |  |
 
@@ -73,9 +77,9 @@
 | *Comment* | VERIFY SIGNAL -_*bold italic strike*_- |  |
 | is_element_present_ok | //div[contains(@class,'signal_body')]/del/i/b[contains(text(),'bold italic strike %%start_time%%')] |  |
 
-| *Comment* | VERIFY SIGNAL *_-Bold Italic Strike link to Socialtext Home-_* no longer works |  |
+| *Comment* | VERIFY SIGNAL *_-Bold Italic Strike link to Socialtext Home-_* web link with formatted link text |  |
 
-is_element_present_ok | //div[contains(@class,'signal_body')]/b/i/del/a[contains(text(),'Bold Italic Strike link to Socialtext Home at %%start_time%%')] | |
+| is_element_present_ok | //div[contains(@class,'signal_body')]/b/i/del/a[contains(text(),'Bold Italic Strike link to Socialtext Home at %%start_time%%')] |  |
 
 | *Comment* | Test Case: Signals Wikitext TEARDOWN |  |
 | st-process-jobs |  |  |
