@@ -30,11 +30,11 @@ text_like | feedSubscribeLine | Subscribe to this feed |
 text_like | feedBody | This is the first post in test_%%start_time%%_blog |
 open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_time%%_blog | |
 
-| *Comment* | Test Case: Weblogs new post |  |
-| click_and_wait | st-weblog-newpost-button |  |
+| *Comment* | Test Case: Weblogs new post |  |  |
+| click_and_wait | st-weblog-newpost-button |  |  |
 | call | [st-fill-editor] | title=Post 1 %%start_time%% | content=Post 1 Content %%start_time%% |
-| *Comment* | Can't fold this because returning to blog view |  |
-| st-pause-click | 2000 | st-save-button-link |
+| *Comment* | Can't fold this because returning to blog view |  |  |
+| st-pause-click | 2000 | st-save-button-link |  |
 
 | wait_for_text_present_ok | Permalink | 30000 |
 | text_like | content | qr/Post 1 %%start_time%%.+Post 1 Content %%start_time%%.+Comment.+Edit this post.+Permalink/smi |
@@ -139,7 +139,7 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | wait_for_element_visible_ok | weblog_title | 30000 |
 | type_ok | weblog_title | Z%%start_time%% Blog |
 | click_and_wait | link=Save |  |
-| text_like | contentRight | error: There is already a 'Z%%start_time%% Blog' blog. |
+| text_like | st-display-mode-widgets | error: There is already a 'Z%%start_time%% Blog' blog. |
 
 | *Comment* | Test Case: Weblogs Duplicate Names Weblog |  |
 | click_and_wait | link=Settings |  |
@@ -162,8 +162,7 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | wait_for_element_visible_ok | weblog_title | 30000 |
 | type_ok | weblog_title | A%%start_time%% Weblog |
 | click_and_wait | link=Save |  |
-| text_like | contentRight | error: There is already a 'A%%start_time%% Weblog' blog. |
-
+| text_like | st-display-mode-widgets | error: There is already a 'A%%start_time%% Weblog' blog. |
 
 removed weblog name length test. There is no reason to limit weblog names to 28 chars
 
@@ -177,4 +176,4 @@ removed weblog name length test. There is no reason to limit weblog names to 28 
 | st-admin | purge-page --w %%workspace%% --page first_post_in_z%%start_time%%_blog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_a%%start_time%%_weblog | was purged |
 
-| *Comment* | Test Case: Weblogs COMPLETED |
+| *Comment* | Test Case: Weblogs COMPLETED |  |

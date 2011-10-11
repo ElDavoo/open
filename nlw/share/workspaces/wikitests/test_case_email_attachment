@@ -1,11 +1,10 @@
 | *Comment* | Test Case: Email attachment |  |
 
-| st-admin | set-account-config --acc %%defaultaccount%% --index timezone date_display_format mmm_d_yyyy | Updated |
+| st-admin | set-account-config --acc %%defaultaccount%% --index timezone date_display_format mmm_d_yyyy | Updated |  |
 
-| open_ok | /%%workspace%%/?action=new_page |  |
+| open_ok | /%%workspace%%/?action=new_page |  |  |
 
 | call | st-edit-save-page | title=Original content %%start_time%% | content=Email subject %%start_time%% |
-
 
 | *Comment* | Test Case: Email attachment attach two things to the page |  |
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
@@ -25,17 +24,16 @@
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitestzip.zip')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitestzip.zip')] | wikitestzip.zip |
-| text_like | contentRight | qr/wikitestzip.zip.+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
+| text_like | st-display-mode-widgets | qr/wikitestzip.zip.+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.doc')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.doc')] | wikitest.doc |
-| text_like | contentRight | qr/wikitest.doc.+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
+| text_like | st-display-mode-widgets | qr/wikitest.doc.+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
 
 | *Comment* | Test Case: Email attachment overwrite the page content |  |
 | *Comment* | This must be done because attaching a file also places a link to it in the page content. When the page is emailed, this causes the file to be attached twice. |  |
 | click_ok | st-edit-button-link |  |
 
 | call | st-save-page | content=New content %%start_time%% |
-
 
 | *Comment* | Test Case: Email attachment open the email-page |  |
 | wait_for_element_visible_ok | link=Email | 30000 |
@@ -109,4 +107,4 @@
 | st-admin | purge-page --w %%workspace%% --page email_subject_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page emailed_page_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Email attachment COMPLETED |
+| *Comment* | Test Case: Email attachment COMPLETED |  |

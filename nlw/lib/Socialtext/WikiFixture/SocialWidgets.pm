@@ -421,10 +421,11 @@ sub st_send_reply {
     $self->handle_command('wait_for_element_visible_ok', $replyLink, 15000);
     $self->handle_command('click_ok', $replyLink);
 
-    $self->handle_command('set_Speed',3000);
+    $self->handle_command('set_Speed',2000);
     if ($self->_is_wikiwyg() ) { #wikiwyg
-        $self->handle_command('wait_for_element_visible_ok', '//div[@class="replies"]//iframe[@name="signalFrame"]', 15000);
-        $self->handle_command('selectFrame', '//div[@class="replies"]//iframe[@name="signalFrame"]');
+        my $frame = '//div[@class="wikiwyg focused"]//iframe[@name="signalFrame"]';
+        $self->handle_command('wait_for_element_visible_ok',$frame , 10000);
+        $self->handle_command('selectFrame', $frame);
         $self->handle_command('click_ok' ,'//body', $signaltosend);
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
@@ -441,10 +442,11 @@ sub st_send_reply {
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
     
-    my $goLink = '//div[@class="replies"]//a[@role="button" and contains(@id,"post")]';
+    my $goLink = '//div[@class="post hidden"]//a[@role="button" and contains(@id,"post")]';
+    my $reply = '//div[contains(@class,"reply signal")]';
     $self->handle_command('wait_for_element_visible_ok',$goLink, 5000);
     $self->handle_command('click_ok', $goLink);
-    $self->handle_command('wait_for_element_visible_ok','//div[contains(@class,"reply signal")]', 15000);
+    $self->handle_command('wait_for_element_visible_ok',$reply, 15000);
     $self->handle_command('wait_for_text_present_ok' ,$signaltosend, 15000);
     $self->handle_command('set_Speed',0);
 }

@@ -57,9 +57,9 @@
 | click_ok | //body |  |
 | type_ok | //body | {user: %%actor%%} %%replytext%% |
 | select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@class='button'] | 5000 |
+| wait_for_element_visible_ok | xpath=(//a[@role='button'])[2] | 5000 |
 | pause | 4000 |  |
-| click_ok | //a[@class='button'] |
+| click_ok | xpath=(//a[@role='button'])[2] |  |
 | pause | 5000 |  |
 | wait_for_text_present_ok | %%replytext%% | 30000 |
 
@@ -107,10 +107,10 @@
 | st-verify-text-in-activities-widget | %%replytext%% |
 
 | *Comment* | Test Case: Signals Mentions Second four signals are there; no filtering yet |  |
-| st-verify-text-in-activities-widget | %%privatetext%% |
-| st-verify-text-in-activities-widget | %%shouldnotappear_two%% |
-| st-verify-text-in-activities-widget | %%shouldnotappear_three%% |
-| st-verify-text-in-activities-widget | %%shouldnotappear_four%% |
+| st-verify-text-in-activities-widget | %%privatetext%% |  |
+| st-verify-text-in-activities-widget | %%shouldnotappear_two%% |  |
+| st-verify-text-in-activities-widget | %%shouldnotappear_three%% |  |
+| st-verify-text-in-activities-widget | %%shouldnotappear_four%% |  |
 
 | *Comment* | Test Case: Signals Mentions - Conversations Change to convos only, verify mentions /are/ present, straight signals, not so much |  |
 | wait_for_element_present_ok | //a[@class='expander'] | 5000 |
