@@ -1732,6 +1732,41 @@ sub load_pages_from_disk {
     }
 }
 
+sub last_edit_for_user {
+    my $self = shift;
+    my $user_id = shift;
+
+    my $sql = "
+        SELECT
+          page_id,
+          edit_time,
+          page_type,
+          name
+        FROM
+          page_revision 
+        WHERE
+          workspace_id = ?
+        AND edit_time = (
+          SELECT
+            MAX(edit_time)
+          FROM
+            page_revision
+          WHERE
+            workspace_id = ?
+          AND
+            editor_id = ?
+          AND
+            deleted = false)
+    ";
+
+    my $sth = sql_execute($sql,
+        $self->workspace_id,
+        $self->workspace_id,
+        $user_id,
+    );
+    return $sth->fetchrow_hashref();
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 package Socialtext::NoWorkspace;
