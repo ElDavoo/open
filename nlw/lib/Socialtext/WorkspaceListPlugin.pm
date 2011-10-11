@@ -32,6 +32,7 @@ sub workspace_membership {
     foreach my $ur (@uwr) {
         push @users, { 
             name => $ur->[0]->best_full_name(workspace =>$ws),
+            username => $ur->[0]->username,
             id => $ur->[0]->user_id,
             role => $ur->[1]->name,
         };
