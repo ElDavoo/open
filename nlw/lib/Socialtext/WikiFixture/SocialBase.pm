@@ -1403,6 +1403,7 @@ sub set_gadget_id {
     );
     diag "Set variable $var_name to $self->{$var_name}";
 }
+sub set_widget_id { shift->set_gadget_id(@_) }
 
 sub set_latest_gadget_instance_id {
     my $self = shift;
