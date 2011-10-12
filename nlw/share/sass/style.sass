@@ -8,7 +8,6 @@ $containers: 24
 @import grids.fluid.sass
 
 body
-  background: $background_color url(#{$static}/images/background.png) $background_image_tiling $background_image_position
   font-size: 12px
   font-family: $body_font
   color: #333
@@ -174,7 +173,6 @@ h4
 
 header
   height: 100px
-  background: $header_color url(#{$static}/images/header.png) $header_image_tiling $header_image_position
   /* Drop shadow
   -moz-box-shadow: 3px 3px 4px #000000
   -webkit-box-shadow: 3px 3px 4px #000000
@@ -202,7 +200,7 @@ header
  * Footer
 
 footer
-  color: #ccc
+  color: $foreground_color
   font-size: 13px
   line-height: 19px
   height: 40px
@@ -220,7 +218,7 @@ footer
 .divider
   height: 10px
   margin: 0 10px
-  border-right: 1px solid #ccc
+  border-right: 1px solid $foreground_color
 
 /**
  * Widgets

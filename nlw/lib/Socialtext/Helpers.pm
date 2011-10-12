@@ -229,6 +229,9 @@ method global_template_vars {
         system_status => $->hub->main ?
             $->hub->main->status_message() : undef,
 
+        # Themes
+        theme => $->theme_info,
+
         # possibly this is only used for s2 skin stuff?
         $thunker->('search_box_snippet', sub { 
             my $renderer = Socialtext::TT2::Renderer->instance();
@@ -376,6 +379,21 @@ method _render_user_frame {
     Socialtext::File::set_contents_utf8($frame_file, $frame_content);
     Socialtext::Timer->Pause('render_user_frame');
     return $frame_tmpl;
+}
+
+method theme_info {
+    my $account = $->hub->current_user->primary_account;
+    my $theme = $account->prefs->all_prefs()->{theme};
+
+    return +{
+         st_logo_shade => $theme->{foreground_shade},
+         account_logo => $theme->{logo_image_id}
+             ? "/data/accounts/".$account->account_id."/theme/images/logo"
+             : undef,
+         account_favicon => $theme->{favicon_image_id}
+             ? "/data/accounts/".$account->account_id."/theme/images/favicon"
+             : undef,
+    };
 }
 
 method miki_path($link) {

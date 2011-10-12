@@ -1419,11 +1419,11 @@ CREATE TABLE theme (
     theme_id integer NOT NULL,
     name text NOT NULL,
     header_color text NOT NULL,
-    header_image_id bigint NOT NULL,
+    header_image_id bigint,
     header_image_tiling text NOT NULL,
     header_image_position text NOT NULL,
     background_color text NOT NULL,
-    background_image_id bigint NOT NULL,
+    background_image_id bigint,
     background_image_tiling text NOT NULL,
     background_image_position text NOT NULL,
     primary_color text NOT NULL,
@@ -1431,7 +1431,10 @@ CREATE TABLE theme (
     tertiary_color text NOT NULL,
     header_font text NOT NULL,
     body_font text NOT NULL,
-    is_default boolean NOT NULL
+    is_default boolean NOT NULL,
+    foreground_shade text DEFAULT '' NOT NULL,
+    logo_image_id bigint,
+    favicon_image_id bigint
 );
 
 CREATE SEQUENCE theme_theme_id
@@ -2896,8 +2899,18 @@ ALTER TABLE ONLY theme
             REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY theme
+    ADD CONSTRAINT theme_favicon_image_fk
+            FOREIGN KEY (favicon_image_id)
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY theme
     ADD CONSTRAINT theme_header_image_fk
             FOREIGN KEY (header_image_id)
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY theme
+    ADD CONSTRAINT theme_logo_image_fk
+            FOREIGN KEY (logo_image_id)
             REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY topic_signal_link
@@ -3056,4 +3069,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '151');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '152');
