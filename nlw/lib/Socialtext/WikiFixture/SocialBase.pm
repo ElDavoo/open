@@ -3023,10 +3023,6 @@ sub add_widget_ok {
     }
     
     $self->put_json($url, encode_json({ gadgets => \@layout }));
-
-    my $layout = $self->get_json($url);
-    $self->json_parse;
-    use Data::Dump 'dump'; scalar @{$self->{json}};
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
