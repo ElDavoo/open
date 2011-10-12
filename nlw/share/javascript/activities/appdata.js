@@ -587,7 +587,7 @@ $.extend(Activities.AppData.prototype, {
                         fontSize: '11px',
                         lineHeight: '12px',
                         fontFamily: 'arial,helvetica,sans-serif',
-                        background: 'url(/static/skin/common/images/warning-icon.png) right top no-repeat'
+                        background: 'url(/static/images/warning-icon.png) right top no-repeat'
                     }).attr('title', warningText).prependTo(dropdown.listNode);
 
                     $('<li style="font-weight: bold" class="dropdownItem">Workspace Groups</li>').css({
@@ -614,7 +614,7 @@ $.extend(Activities.AppData.prototype, {
                     fontSize: '11px',
                     lineHeight: '12px',
                     fontFamily: 'arial,helvetica,sans-serif',
-                    background: 'url(/static/skin/common/images/warning-icon.png) right top no-repeat'
+                    background: 'url(/static/images/warning-icon.png) right top no-repeat'
                 }).attr('title', warningText).prependTo(dropdown.listNode);
 
                 dropdown._selectOption(dropdown.selectedOption());
