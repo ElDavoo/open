@@ -83,6 +83,7 @@ iframe {
     <div id="mainWrap" style="width: 450px">
       <div id="st-display-mode-container" class="st-content">
         <ul id="wafl-widget"></ul>
+    [% INCLUDE widget/syndicator %]
 <script>
     var gadgets = gadgets || {};
     gadgets.container.setup({
