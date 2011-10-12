@@ -1532,6 +1532,7 @@ sub delete {
     my ($self, $uri, $accept) = @_;
     $accept ||= 'text/html';
 
+    diag "DELETE: $uri";
     $self->_call_method('delete', $uri, [Accept => $accept]);
 }
 
@@ -1786,7 +1787,7 @@ Put to the specified URI
 sub put {
     my $self = shift;
     my $uri = shift;
-    diag "PUT $uri";
+    diag "PUT: $uri";
     $self->_call_method('put', $uri, @_)
 }
 
