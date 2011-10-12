@@ -47,7 +47,7 @@ sub pref_names {
         email_notify_is_enabled sort_weblogs_by_create
         allows_page_locking guest_has_email_in title
     );
-#   No longer supported: enable_unplugged homepage_is_dashboard
+#   No longer supported: homepage_is_dashboard
 }
 
 
@@ -487,7 +487,7 @@ sub _update_workspace_settings {
     my $self = shift;
 
     my %update;
-    for my $f ( qw( title incoming_email_placement enable_unplugged
+    for my $f ( qw( title incoming_email_placement 
                     email_notify_is_enabled sort_weblogs_by_create
                     homepage_is_dashboard allows_page_locking )
     ) {
@@ -658,7 +658,6 @@ sub _create_workspace {
             clone_pages_from                => $clone_from,
             created_by_user_id              => $hub->current_user->user_id,
             account_id                      => $account_id,
-            enable_unplugged                => 1,
 
             # begin customization inheritances
             cascade_css                     => $skin->cascade_css,
@@ -844,7 +843,6 @@ cgi 'account_id';
 cgi 'account_name';
 cgi 'permission_set_name';
 cgi 'guest_has_email_in';
-cgi 'enable_unplugged';
 cgi 'uploaded_skin';
 cgi 'skin_reset';
 cgi skin_file => '-upload';

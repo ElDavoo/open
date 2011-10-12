@@ -98,7 +98,7 @@
             [% IF checker.check_permission('email_in')
                 && page.page_type != 'spreadsheet' %]
               [% INCLUDE tools_item
-                  id="st-pagetools-email"
+                  id="st-pagetools-emailtoworkspace"
                   href="mailto:$wiki.email_address"
                   title=wiki.email_address
                   text=loc('... to this Workspace')
@@ -107,7 +107,7 @@
                 [% SET title = page.title | html_encode %]
                 [% IF page.page_type == 'spreadsheet' %]
                   [% INCLUDE tools_item
-                      id="st-pagetools-email"
+                      id="st-pagetools-emailtopage"
                       href="mailto:$wiki.email_address?subject=$title"
                       title="To: $wiki.email_address / subject: $title"
                       text=loc('... to this page')
@@ -115,7 +115,7 @@
                   %]
                 [% ELSE %]
                   [% INCLUDE tools_item
-                      id="st-pagetools-email"
+                      id="st-pagetools-emailtopage"
                       href="mailto:$wiki.email_address?subject=$title"
                       title="To: $wiki.email_address / subject: $title"
                       text=loc('... to this page')

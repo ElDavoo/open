@@ -163,9 +163,7 @@
 | click_ok | add-selected |  |
 
 | *Comment* | Test Case: Business Control Panel Sorting choose account |  |
-| type_lookahead_ok | accountLookahead | 0 sort 3 account %%start_time%% |
-| wait_for_element_visible_ok | link=0 sort 3 account %%start_time%% | 30000 |
-| click_ok | link=0 sort 3 account %%start_time%% |  |
+| select-autocompleted-option-ok | accountLookahead | 0 sort 3 account %%start_time%% |
 
 | *Comment* | Test Case: Business Control Panel Sorting invite |  |
 | click_ok | invite-button |  |

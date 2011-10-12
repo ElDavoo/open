@@ -6,16 +6,16 @@ socialtext.dialog.register('attachments-delete', function(opts) {
         title: loc('file.delete'),
         buttons: [
             {
-                text: loc('do.delete'),
                 id: "st-attachment-delete",
+                text: loc('do.delete'),
                 click: function() {
                     st.attachments.delAttachment(opts.href, true);
                     dialog.close();
                 }
             },
             {
-                text: loc('do.close'),
                 id: 'st-attachments-delete-cancel',
+                text: loc('do.close'),
                 click: function() { dialog.close() }
             }
         ],

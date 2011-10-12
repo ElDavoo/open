@@ -35,7 +35,7 @@
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | force-update | 30000 |
 | check_ok | force-update |  |
-| click_ok | st-save-widget-template |  |
+| click_ok | save-layout-save |  |
 | wait_for_text_present_ok | Successfully reset all dashboards in the selected account | 30000 |
 | click_ok | link=Close |  |
 | wait_for_element_not_visible_ok | confirm-dialog | 10000 |
@@ -73,7 +73,7 @@
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | force-update | 30000 |
 | check_ok | force-update |  |
-| click_ok | st-save-widget-template |  |
+| click_ok | save-layout-save |  |
 | wait_for_text_present_ok | Successfully reset all dashboards in the selected account | 30000 |
 | click_ok | link=Close |  |
 | wait_for_element_not_visible_ok | confirm-dialog | 10000 |

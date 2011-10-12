@@ -181,9 +181,6 @@ sub search {
             scope => $scope,
         ),
         title => loc('search.results'),
-        unplug_uri => "?action=unplug;search_term=$template_args{search_term}",
-        unplug_phrase =>
-            loc('info.unplug-search'),
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},

@@ -88,8 +88,8 @@
 | click_and_pause | gallery-widget-Active Content | 5000 |
 | wait_for_element_visible_ok | st-save-layout | 5000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | st-save-widget-template | 5000 |
-| click_and_pause | st-save-widget-template | 5000 |
+| wait_for_element_visible_ok | save-layout-save | 5000 |
+| click_and_pause | save-layout-save | 5000 |
 
 | *Comment* | Test Case: New Default Dashboard login as newer member, see new dashboard |  |
 | st-logoutin | %%newer_user%% | %%password%% |
@@ -109,8 +109,8 @@
 | click_and_pause | st-revert-layout | 8000 |
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | st-save-widget-template | 5000 |
-| click_and_pause | st-save-widget-template | 5000 |
+| wait_for_element_visible_ok | save-layout-save | 5000 |
+| click_and_pause | save-layout-save | 5000 |
 
 | *Comment* | Test Case: New Default Dashboard login as newest user, see default dashboard |  |
 | st-logoutin | %%newest_user%% | %%password%% |

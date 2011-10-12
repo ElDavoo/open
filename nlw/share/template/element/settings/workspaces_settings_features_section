@@ -72,23 +72,4 @@
     </dd>
 </dl>
 
-<dl class="form">
-    <dt><label>[% loc('nav.socialtext-unplugged') %]</label></dt>
-    <dd>[% loc('about.unplugged') %]</dd>
-    <dd>
-        <input type="radio" name="enable_unplugged"
-        [%- IF workspace.enable_unplugged %]
-         checked="checked"
-        [%- END %]
-         value="1" />
-        [% loc('unplugged.enabled') %]<br/>
-        <input type="radio" name="enable_unplugged"
-        [%- UNLESS workspace.enable_unplugged %]
-         checked="checked"
-        [%- END %]
-         value="0" />
-         [% loc('unplugged.disabled') %]<br/>
-    </dd>
-</dl>
-
 [% PROCESS element/settings/stop %]

@@ -32,9 +32,7 @@
 | wait_for_element_present_ok | //a[@title='Send a private message'] | 10000 |
 | click_ok | //a[@title='Send a private message'] |  |
 | wait_for_element_visible_ok | //input[@autocomplete='off'] | 10000 |
-| type-lookahead-ok | //input[@autocomplete='off'] | %%psshort_two%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 10000 |
-| st_pause_click | 1000 | //div[@class='lookaheadItem']/a |
+| select-autocompleted-option-ok | //input[@autocomplete='off'] | %%psshort_two%% |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% looks for Private message confirmation |  |
 | wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
@@ -77,9 +75,7 @@
 | wait_for_element_present_ok | //a[@title='Send a private message'] | 10000 |
 | click_ok | //a[@title='Send a private message'] |  |
 | wait_for_element_visible_ok | //input[@autocomplete='off'] | 10000 |
-| type-lookahead-ok | //input[@autocomplete='off'] | %%psshort%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 10000 |
-| st_pause_click | 1000 | //div[@class='lookaheadItem']/a |
+| select-autocompleted-option-ok | //input[@autocomplete='off'] | %%psshort%% |
 | wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort%% |
 

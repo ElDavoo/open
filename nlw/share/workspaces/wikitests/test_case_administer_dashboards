@@ -45,8 +45,8 @@
 | click_ok | //a[@id='gallery-widget-RSS Viewer'] |  |
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | st-save-widget-template | 5000 |
-| click_ok | st-save-widget-template |  |
+| wait_for_element_visible_ok | save-layout-save | 5000 |
+| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
 | *Comment* | Test Case: Administer Dashboards - Test for RSS Viewer |  |
@@ -70,11 +70,11 @@
 | *Comment* | Test Case: Administer Dashboards - Save... and force update |  |
 | click_ok | st-save-layout |  |
 | wait_for_text_present_ok | Save Confirmation | 30000 |
-| wait_for_element_visible_ok | st-save-widget-template | 30000 |
+| wait_for_element_visible_ok | save-layout-save | 30000 |
 | wait_for_element_visible_ok | force-update | 30000 |
 | check_ok | force-update |  |
 | is_checked_ok | force-update |  |
-| click_and_pause | st-save-widget-template | 2000 |
+| click_and_pause | save-layout-save | 2000 |
 
 | *Comment* | Test Case: Administer Dashboards - verify force update |  |
 | open_ok | /st/dashboard |  |
@@ -98,9 +98,9 @@
 | wait_for_element_visible_ok | st-save-layout | 5000 |
 | click_ok | st-save-layout |  |
 | wait_for_text_present_ok | Save Confirmation | 30000 |
-| wait_for_element_visible_ok | st-save-widget-template | 5000 |
+| wait_for_element_visible_ok | save-layout-save | 5000 |
 | wait_for_element_visible_ok | force-update | 5000 |
-| click_and_pause | st-save-widget-template | 2000 |
+| click_and_pause | save-layout-save | 2000 |
 
 | *Comment* | Test Case: Administer Dashboards - Saved... verify present |  |
 | open_ok | /st/dashboard |  |
