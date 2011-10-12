@@ -3003,15 +3003,10 @@ sub st_purge_widget {
     diag loc("test.deleted-widgets=count", $sth->rows)."\n";
 }
 
-sub add_widget_ok {
-    my ($self, $url, $src_or_id, $col) = @_;
+sub _widget_layout {
+    my ($self, $url) = @_;
 
     my @layout = ([], [], []);
-
-    # Add the new widget
-    push @{$layout[$col || 2]}, $src_or_id =~ m{^\d+$}
-        ? { install => 1, gadget_id => $src_or_id }
-        : { install => 1, src => $src_or_id };
 
     # add old gadgets 
     $self->get_json($url);
@@ -3021,8 +3016,47 @@ sub add_widget_ok {
             instance_id => $gadget->{instance_id},
         };
     }
+
+    return \@layout;
+}
+
+sub add_widget_ok {
+    my ($self, $url, $src_or_id, $col) = @_;
+    $col //= 2;
+
+    # Get the original layout
+    my $layout = $self->_widget_layout($url);
+
+    # Add the new widget
+    unshift @{$layout->[$col]}, $src_or_id =~ m{^\d+$}
+        ? { install => 1, gadget_id => $src_or_id }
+        : { install => 1, src => $src_or_id };
     
-    $self->put_json($url, encode_json({ gadgets => \@layout }));
+    # Set the new layout
+    $self->put_json($url, encode_json({ gadgets => $layout }));
+    
+    # Get the instance id of the added widget
+    $self->get_json($url);
+    $self->json_parse;
+    my ($gadget) = grep { $_->{col} == $col and !$_->{row} } @{$self->{json}};
+    $self->{instance_id} = $gadget->{instance_id}
+}
+
+sub set_widget_prefs {
+    my ($self, $url, $instance_id, $prefs) = @_;
+
+    $prefs = decode_json($prefs);
+
+    # Get the original layout
+    my $layout = $self->_widget_layout($url);
+    for my $col (@$layout) {
+        for my $widget (@$col) {
+            $widget->{preferences} = $prefs
+                if $instance_id == $widget->{instance_id};
+        }
+    }
+
+    $self->put_json($url, encode_json({ gadgets => $layout }));
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
