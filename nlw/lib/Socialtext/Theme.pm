@@ -203,9 +203,13 @@ sub ValidSettings {
     return 1;
 }
 
+sub ThemeDir {
+    return Socialtext::AppConfig->code_base . '/themes';
+}
+
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
-    my $themedir = Socialtext::AppConfig->code_base . '/themes';
+    my $themedir = $class->ThemeDir();
 
     my $installed = { map { $_->{name} => $_ } @{$class->_AllThemes()} };
     my $all = YAML::LoadFile("$themedir/themes.yaml");
