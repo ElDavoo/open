@@ -34,7 +34,12 @@ sub _build_background_image {
 
 sub _build_logo_image {
     my $self = shift;
-    return Socialtext::Upload->Get(attachment_id => $self->logo_id);
+    return Socialtext::Upload->Get(attachment_id => $self->logo_image_id);
+}
+
+sub _build_favicon_image {
+    my $self = shift;
+    return Socialtext::Upload->Get(attachment_id => $self->favicon_image_id);
 }
 
 sub Load {
