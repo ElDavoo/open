@@ -15,6 +15,7 @@ socialtext.dialog.register('control-create-workspace', function(opts) {
             },
             {
                 text: loc('do.cancel'),
+                id: 'new-workspace-cancel',
                 click: function() {
                     if ($.isFunction(opts.onClose)) opts.onClose();
                     dialog.close();

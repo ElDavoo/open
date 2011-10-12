@@ -35,11 +35,11 @@
 | click_ok | st-save-layout |  |
 | wait_for_text_present_ok | Save Confirmation | 10000 |
 | wait_for_text_present_ok | Force update this dashboard | 5000 |
-| wait_for_element_visible_ok | st-save-widget-template | 10000 |
+| wait_for_element_visible_ok | save-layout-save | 10000 |
 | wait_for_element_visible_ok | force-update | 10000 |
 | check_ok | force-update |  |
 | is_checked_ok | force-update |  |
-| click_and_pause | st-save-widget-template | 2000 |
+| click_and_pause | save-layout-save | 2000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Add Wikipedia |  |
 | open_ok | /st/dashboard |  |
@@ -62,10 +62,10 @@
 
 | *Comment* | Test Case: Reset to Default Dashboard - Save... and force update |  |
 | wait_for_text_present_ok | Save Confirmation | 10000 |
-| wait_for_element_visible_ok | st-save-widget-template | 10000 |
+| wait_for_element_visible_ok | save-layout-save | 10000 |
 | wait_for_element_visible_ok | force-update | 10000 |
 | check_ok | force-update |  |
-| click_and_pause | st-save-widget-template | 2000 |
+| click_and_pause | save-layout-save | 2000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard - verify force update |  |
 | open_ok | /st/dashboard |  |
@@ -101,8 +101,8 @@
 | *Comment* | Test Case: Reset to Default Dashboard Revert to Default... and force update |  |
 | wait_for_element_visible_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | st-save-widget-template | 10000 |
-| click_and_pause | st-save-widget-template | 2000 |
+| wait_for_element_visible_ok | save-layout-save | 10000 |
+| click_and_pause | save-layout-save | 2000 |
 
 | *Comment* | Test Case: Reset to Default Dashboard Wikipedia and RSS are gone |  |
 | open_ok | /st/dashboard |  |

@@ -6,6 +6,7 @@ socialtext.dialog.register('simple', function(opts) {
         title: opts.title,
         buttons: opts.buttons || [
             {
+                id: 'simple-close',
                 text: loc('do.close'),
                 click: function() {
                     if ($.isFunction(opts.onClose)) opts.onClose();
