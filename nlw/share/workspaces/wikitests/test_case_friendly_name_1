@@ -1,3 +1,5 @@
+*On hold until lookaheads work, as they are 50% of the test*
+
 | *Comment* | Test Case: Friendly Name 1 |
 
 * Fixture: SocialWidgets
@@ -7,10 +9,13 @@
 | *Comment* | Test Case: Friendly Name 1 check rich mobile interface |  |
 | open_ok | /nlw/submit/logout |  |
 | st-login | %%fname_checker%% | %%password%% |
-| open_ok | /st/m/signals |  |
-| wait_for_element_visible_ok | link=%%fname%% | 30000 |
-| text_like | //div[@class='metadata'][1] | %%fname%% |
-| text_like | //div[@class='signal_body'][1] | %%fname%% |
+
+TUXTODO: Does Mobile Signals work yet?
+open_ok | /st/m/signals | |
+wait_for_element_visible_ok | link=%%fname%% | 30000 |
+text_like | //div[@class='metadata'][1] | %%fname%% |
+text_like | //div[@class='signal_body'][1] | %%fname%% |
+
 | open_ok | /m/people?letter=%%fname_first_letter%% |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | open_ok | /m/page/%%fname_wiki%%/%%fname_page%% |  |
@@ -40,8 +45,8 @@
 | text_like | //div[@class='vcard'] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name 1 check revisions list |  |
-| wait_for_element_visible_ok | controls-right-revisions | 30000 |
-| click_and_wait | controls-right-revisions |  |
+| wait_for_element_visible_ok | link=2 Revisions | 30000 |
+| click_and_wait | link=2 Revisions |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name 1 check people directory |  |
@@ -62,7 +67,8 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Friendly Name 1 check wiki members |  |
-| open_ok | /%%fname_wiki%%/?action=users_listall |  |
+| st-admin | add-workspace-admin --workspace %%fname_wiki%% --email %%fname_checker%% | now has the role |
+| open_ok | /st/settings/%%fname_wiki_id%%/prefs/manage |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name check add user to group lookahead |  |
@@ -111,7 +117,6 @@
 | wait_for_element_visible_ok | email_recipient | 30000 |
 | has-autocompleted-options-ok | email_recipient | %%shared_name%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
-
 | has-autocompleted-options-ok | email_recipient | %%first_letters_after_shared%% |
 
 | *Comment* | Test Case: Friendly Name 1 check add this tag to someone |  |
@@ -122,6 +127,6 @@
 | wait_for_element_visible_ok | add_tag_person | 30000 |
 | has-autocompleted-options-ok | add_tag_person | %%fname_prefix%% |
 
-| include | [Test Case: Friendly Name Teardown] |
+| include | [Test Case: Friendly Name Teardown] |  |
 
-| *Comment* | Test Case: Friendly Name 1 COMPLETED |
+| *Comment* | Test Case: Friendly Name 1 COMPLETED |  |

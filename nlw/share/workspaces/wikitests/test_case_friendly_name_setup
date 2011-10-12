@@ -30,7 +30,8 @@
 | *Comment* | Test Case: Friendly Name Setup create setup |  |  |
 | create-account | %%fname_acct%% |  |  |
 | set | fname_acct_id | %%account_id%% |  |
-| st-admin | create-workspace --name %%fname_wiki%% --title %%fname_wiki%% --account %%fname_acct%% | was created |  |
+| create-workspace | %%fname_wiki%% | %%fname_acct%% |  |
+| set | fname_wiki_id | %%workspace_id%% |  |
 | create-user | %%fname_user%% | %%password%% | %%fname_acct%% |
 | set | fname_user_id | %%user_id%% |  |
 
@@ -44,7 +45,6 @@
 | create-group | %%fname_group_2%% | %%fname_acct%% | %%fname_checker%% |
 | set | fname_group_2_id | %%group_id%% |  |
 | st-admin | add-member --email %%fname_checker%% --group %%fname_group_id%% | is now a member |  |
-
 
 | *Comment* | Test Case: Friendly Name Setup edit profile |  |
 | st-logoutin | %%fname_user%% | %%password%% |
@@ -75,23 +75,22 @@
 | wait_for_element_visible_ok | update_profile | 30000 |
 | click_and_wait | update_profile | 30000 |
 
-| *Comment* | Test Case: Name Setup send Signal with user wafl |  |
-| http-user-pass | %%fname_user%% | %%password%% |
-| post-signal | {user: %%fname_user_id%%} |  |
-| pause | 3000 |  |
-| st_process_jobs | SignalIndex |  |
+| *Comment* | Test Case: Name Setup send Signal with user wafl |  |  |  |
+| http-user-pass | %%fname_user%% | %%password%% |  |  |
+| post-signal | {user: %%fname_user_id%%} |  |  |  |
+| pause | 3000 |  |  |  |
+| st_process_jobs | SignalIndex |  |  |  |
 
-| *Comment* | Test Case Friendly Name Setup edit a page with user wafl |  |
+| *Comment* | Test Case Friendly Name Setup edit a page with user wafl |  |  |  |
 
 | call | st-edit-new-page | ws=%%fname_wiki%% | title=%%fname_page%% | content=user wafl {user: %%fname_user%%} |
-
 
 | *Comment* | Test Case Friendly Name Setup comment on a page |  |
 | wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |
 | click_ok | //li[@id="st-comment-button"]/a |  |
 | wait_for_element_visible_ok | //textarea[@name='comment'] | 30000 |
 | type_ok | //textarea[@name='comment'] | comment text |
-| wait_for_element_visible_ok | //a[@class='saveButton genericOrangeButton'] | 30000 |
-| click_ok | //a[@class='saveButton genericOrangeButton'] |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st-click-pause | link=Save | 6000 |
 | wait_for_element_not_present_ok | //textarea[@name='comment'] | 30000 |
-| wait_for_element_not_present_ok | //a[@class='saveButton genericOrangeButton'] | 30000 |
+| text_like | st-page-content | comment text |
