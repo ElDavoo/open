@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Class::Field qw(const);
 use Socialtext::l10n qw(loc __ lcmp);
+use Socialtext::SQL qw(:time);
 use Socialtext::Workspace;
 
 use base 'Socialtext::Plugin';
@@ -30,10 +31,19 @@ sub workspace_membership {
 
     my @users = ();
     foreach my $ur (@uwr) {
+        my $edit = $ws->last_edit_for_user($ur->[0]->user_id);
+        $edit->{local_edit_time}
+            = $edit->{edit_time}
+            ? $self->hub->timezone->get_date_user(
+            sql_parse_timestamptz($edit->{edit_time}))
+            : '';
+            
         push @users, { 
             name => $ur->[0]->best_full_name(workspace =>$ws),
+            username => $ur->[0]->username,
             id => $ur->[0]->user_id,
             role => $ur->[1]->name,
+            last_edit => $edit,
         };
     }
 

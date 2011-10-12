@@ -40,18 +40,12 @@
 | text_like | Required fields are indicated by an * |  |
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed 3000 to allow for type-in |  |
-| setSpeed | 3000 |  |
 | type_ok | wiki-link-label | %%link_text%% |
-| type_lookahead_ok | wiki-link-workspace | %%title_prefix%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%title_suffix%%')] | 30000 |
-| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%title_suffix%%')] |  |
+| select-autocompleted-option-ok | wiki-link-workspace | %%title_prefix%% |
 | wait_for_element_visible_ok | wiki-link-page | 30000 |
 | wait_for_element_visible_ok | wiki-link-section | 30000 |
-| type_lookahead_ok | wiki-link-page | %%page_prefix%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%page_suffix%%')] | 30000 |
-| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%page_suffix%%')] |  |
+| select-autocompleted-option-ok | wiki-link-page | %%page_prefix%% |
 | type_ok | wiki-link-section | %%section%% |
-| setSpeed | 0 |  |
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed zero, click OK |  |
 | click_ok | xpath=(//button[@role='button'])[1] |  |

@@ -60,9 +60,12 @@
 | wait_for_element_visible_ok | //input[@name='value'] | 30000 |
 | check_ok | //input[@name='value'] |  |
 | is_checked_ok | //input[@name='value'] |  |
-| wait_for_element_visible_ok | `//input[@value='Update'][2]` | 30000 |
-| click_and_wait | `//input[@value='Update'][2]` |  |
-| wait_for_text_present_ok | Account settings updated. | 30000 |
+| wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
+| click_and_wait | xpath=(//input[@value='Update'])[3] |  |
+
+TUXTODO: Is this message back yet?
+wait_for_text_present_ok | Account settings updated. | 5000 |
+
 | is_checked_ok | //input[@name='value'] |  |
 
 | *Comment* | Test Case: All Users Workspace check that the user got added to the wiki |  |
@@ -76,9 +79,9 @@
 
 | *Comment* | Test Case: All Users Workspace check content of wiki settings UI |  |
 | st-logoutin | %%auw_admin%% | %%password%% |
-| open_ok | /%%auw_wiki%%/?action=users_listall |  |
-| wait_for_text_present_ok | All users from the %%auw_acct%% account | 30000 |
-| text_like | qr/All users from the.+%%auw_acct%%.+account are also members of this.+"all users".+workspace./ |  |
+| open_ok | /st/settings/%%auw_wiki_id%%/prefs/manage |  |
+| wait_for_text_present_ok | All users of the %%auw_acct%% account | 30000 |
+| text_like | qr/All users of the.+%%auw_acct%%.+account are members of this workspace/ |  |
 
 | *Comment* | Test Case: All Users Workspace check that AUW text appears on wiki's control panel page |  |
 | st-logoutin | %%username%% | %%password%% |
@@ -94,9 +97,12 @@
 | is_checked_ok | //input[@name='value'] |  |
 | uncheck_ok | //input[@name='value'] |  |
 | st_unchecked_ok | //input[@name='value'] |  |
-| wait_for_element_visible_ok | `//input[@value='Update'][2]` | 30000 |
-| click_and_wait | `//input[@value='Update'][2]` |  |
-| wait_for_text_present_ok | Account settings updated. | 30000 |
+| wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
+| click_and_wait | xpath=(//input[@value='Update'])[3] |  |
+
+TUXTODO: Is this message back yet?
+wait_for_text_present_ok | Account settings updated. | 5000 |
+
 | st_unchecked_ok | //input[@name='value'] |  |
 
 | *Comment* | Test Case: All Users Workspace check that user got removed from the wiki |  |
@@ -115,9 +121,12 @@
 | wait_for_element_visible_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] | 30000 |
 | check_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 | is_checked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
-| wait_for_element_visible_ok | `//input[@value='Update'][2]` | 30000 |
-| click_and_wait | `//input[@value='Update'][2]` |  |
-| wait_for_text_present_ok | Account settings updated. | 30000 |
+| wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
+| click_and_wait | xpath=(//input[@value='Update'])[3] |  |
+
+TUXTODO: Is this message back yet?
+wait_for_text_present_ok | Account settings updated. | 5000 |
+
 | is_checked_ok | //table[@id='workspaces']/tbody/tr[1]/td[1]/input[@name='value'] |  |
 | is_checked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 
@@ -139,9 +148,12 @@
 | is_checked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 | uncheck_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 | st_unchecked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
-| wait_for_element_visible_ok | `//input[@value='Update'][2]` | 30000 |
-| click_and_wait | `//input[@value='Update'][2]` |  |
-| wait_for_text_present_ok | Account settings updated. | 30000 |
+| wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
+| click_and_wait | xpath=(//input[@value='Update'])[3] |  |
+
+TUXTODO: Is this message back yet?
+wait_for_text_present_ok | Account settings updated. | 5000 |
+
 | st_unchecked_ok | //table[@id='workspaces']/tbody/tr[1]/td[1]/input[@name='value'] |  |
 | st_unchecked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 

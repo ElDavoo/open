@@ -77,7 +77,6 @@ Readonly our @COLUMNS => (
     'sort_weblogs_by_create',
     'external_links_open_new_window',
     'basic_search_only',
-    'enable_unplugged',
     'skin_name',
     'custom_title_label',
     'header_logo_link_uri',
@@ -1732,6 +1731,41 @@ sub load_pages_from_disk {
     }
 }
 
+sub last_edit_for_user {
+    my $self = shift;
+    my $user_id = shift;
+
+    my $sql = "
+        SELECT
+          page_id,
+          edit_time,
+          page_type,
+          name
+        FROM
+          page_revision 
+        WHERE
+          workspace_id = ?
+        AND edit_time = (
+          SELECT
+            MAX(edit_time)
+          FROM
+            page_revision
+          WHERE
+            workspace_id = ?
+          AND
+            editor_id = ?
+          AND
+            deleted = false)
+    ";
+
+    my $sth = sql_execute($sql,
+        $self->workspace_id,
+        $self->workspace_id,
+        $user_id,
+    );
+    return $sth->fetchrow_hashref();
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 
 package Socialtext::NoWorkspace;
@@ -2032,8 +2066,6 @@ PARAMS can include:
 
 =item * clone_pages_from - clone pages from another workspace, defaults to false
 
-=item * enable_unplugged - defaults to 0
-
 =back
 
 Creating a workspace creates the necessary paths on the filesystem,
@@ -2120,8 +2152,6 @@ Returns a formatted address comprising the title of the Workspace and
 the address set via email_notification_from_address.
 
 =head2 $workspace->skin_name()
-
-=head2 $workspace->enable_unplugged()
 
 =head2 $workspace->creation_datetime()
 

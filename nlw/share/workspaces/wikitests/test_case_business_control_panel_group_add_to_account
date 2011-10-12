@@ -15,9 +15,7 @@
 | st-admin | give-accounts-admin --e %%email%% | now has accounts admin access |
 | open-ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | addToAccountLookahead | 30000 |
-| type-lookahead-ok | addToAccountLookahead | %%addl_account%% |
-| wait_for_element_visible_ok | link=%%addl_account%% | 10000 |
-| click_ok | link=%%addl_account%% |  |
+| select-autocompleted-option-ok | addToAccountLookahead | %%addl_account%% |
 | wait_for_text_present_ok | Accounts (2) | 30000 |
 | wait_for_text_present_ok | %%account%% | 30000 |
 | text_like | //body | qr/%%account%%.+%%addl_account%%/ |

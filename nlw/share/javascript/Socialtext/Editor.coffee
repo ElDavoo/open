@@ -2,7 +2,39 @@ $ = jQuery
 Socialtext.prototype ?= {}
 Socialtext::editor =
   insert_menu_extra_items: [null]
-  ui_expand_setup: (->)
+  ui_expand_setup: ->
+    st.editor.ui_expand_on() if Cookie.get("ui_is_expanded")
+    return
+  ui_expand_toggle: ->
+    if Cookie.get("ui_is_expanded")
+      Cookie.del "ui_is_expanded"
+      return st.editor.ui_expand_off()
+    else
+      Cookie.set "ui_is_expanded", "1"
+      return st.editor.ui_expand_on()
+  ui_expand_on: ->
+    $("#st-edit-pagetools-expand, #st-pagetools-expand").attr(
+      "title", loc("info.normal-view")
+    ).text(loc("edit.normal")).addClass "contract"
+    $("#st-edit-mode-container, #mainWrap").addClass "expanded"
+    $(window).trigger "resize"
+    unless $("body").css("overflow") == "hidden"
+      st.editor._originalBodyOverflow = $("body").css("overflow")
+      $("body").css "overflow", "hidden"
+    unless $("html").css("overflow") == "hidden"
+      st.editor._originalHTMLOverflow = $("html").css("overflow")
+      $("html").css "overflow", "hidden"
+    window.scrollTo 0, 0
+    return
+  ui_expand_off: ->
+    $("#st-edit-pagetools-expand, #st-pagetools-expand").attr(
+      "title", loc("info.expand-view")
+    ).text(loc("edit.expand")).removeClass "contract"
+    $("#st-edit-mode-container, #mainWrap").removeClass "expanded"
+    $(window).trigger "resize"
+    $("html").css "overflow", st.editor._originalHTMLOverflow || "auto"
+    $("body").css "overflow", st.editor._originalBodyOverflow || "auto"
+    return
   pre_edit_hook: (wikiwyg_launcher, cleanup_callback) ->
     $.ajax
       type: "POST"

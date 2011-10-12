@@ -111,9 +111,7 @@ text_like | 所以 | |
 | wait_for_element_visible_ok | link=tagger %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Tagging Profile login as %%tag_user%%, tag "fog %%start_time%%" |  |
-| type-lookahead-ok | new_tag | fog |
-| wait_for_element_visible_ok | link=fog %%start_time%% |  |
-| click_and_pause | link=fog %%start_time%% |  |
+| select-autocompleted-option-ok | new_tag | fog |
 
 | *Comment* | Test Case: Tagging Profile. re-open profile, check tag "fog %%start_time%%" |  |
 | open_ok | /st/profile |  |

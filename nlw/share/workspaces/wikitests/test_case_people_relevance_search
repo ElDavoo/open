@@ -60,9 +60,7 @@
 | st-logoutin | %%eusersix%% | %%password%% |
 | open_ok | /st/edit_profile |  |
 | wait_for_element_visible_ok | field_supervisor | 30000 |
-| type-lookahead-ok | xpath=//div[@id='field_supervisor']/input[@class='relationship'] | Caroline |
-| wait-for-element-present-ok | link=Caroline Kennedy |  |
-| click-ok | link=Caroline Kennedy |  |
+| select-autocompleted-option-ok | xpath=//div[@id='field_supervisor']/input[@class='relationship'] | Caroline |
 | wait_for_element_visible_ok | update_profile | 30000 |
 | st-pause-click | 5000 | update_profile |
 

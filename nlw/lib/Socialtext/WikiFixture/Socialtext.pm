@@ -1244,10 +1244,118 @@ sub st_click_reset_password {
 }
 
 sub type_lookahead_ok {
-    my ($self, $locator, $text) = @_;
+    die "Deprecated - Please use select-autocompleted-option-ok\n";
+}
+
+sub _autocomplete_element {
+    my $locator = shift;
+    return qq{window.jQuery(selenium.browserbot.findElement("$locator"))};
+}
+
+sub _autocomplete_widget {
+    my $locator = shift;
+    return _autocomplete_element($locator) . ".autocomplete('widget')";
+};
+
+sub _autocomplete_search {
+    my ($self, $locator, $type) = @_;
+
+    my $el = _autocomplete_element($locator);
+    my $widget = _autocomplete_widget($locator);
+
+    # Clear the auto complete
+    $self->{selenium}->get_eval(qq{$widget.find("li").remove()});
+
+    # Wait until our element is present
     $self->wait_for_element_present_ok($locator);
-    $self->type_ok($locator, $text);
-    $self->{selenium}->do_command("keyUp", $locator, substr($text,-1));
+
+    # Search for $type_text
+    $self->{selenium}->type_ok($locator, $type);
+    $self->{selenium}->get_eval(qq{$el.autocomplete("search", "$type")});
+
+    # Wait for items to be rendered
+    $self->wait_for_condition("$widget.find('li').size() > 0", 30000);
+
+    # return the number of li elements
+    return $self->get_eval("$widget.find('li').size()");
+}
+
+sub _autocomplete_trigger_event {
+    my ($self, $locator, $key) = @_;
+    my $el = _autocomplete_element($locator);
+    my $type = 'keydown.autocomplete';
+    $self->{selenium}->get_eval(
+        qq{$el.trigger({type:"$type",keyCode:window.jQuery.ui.keyCode.$key})}
+    );
+}
+
+sub _autocomplete_selected_option {
+    my ($self, $locator) = @_;
+    my $widget = _autocomplete_widget($locator);
+    return $self->get_eval("$widget.find('.ui-state-hover').text()")
+}
+
+sub _autocomplete_error {
+    my ($self, $locator) = @_;
+    my $widget = _autocomplete_widget($locator);
+    return $self->get_eval("$widget.find('.ui-autocomplete-error').text()")
+}
+
+sub has_autocompleted_options_ok {
+    my ($self, $locator, $type) = @_;
+    my $elements = $self->_autocomplete_search($locator, $type);
+    ok !$self->_autocomplete_error($locator), 'has_autocompleted_options';
+}
+
+sub has_no_autocompleted_options_ok {
+    my ($self, $locator, $type) = @_;
+    my $elements = $self->_autocomplete_search($locator, $type);
+    is $elements, 1, 'has_autocompleted_options';
+    is $self->_autocomplete_error($locator), "No matches for '$type'",
+        'has_no_autocompleted_options';
+}
+
+sub _autocompleted_option_exists {
+    my ($self, $locator, $type, $match) = @_;
+    my $elements = $self->_autocomplete_search($locator, $type);
+
+    # Click down until the correct item is selected
+    for (1 .. $elements) {
+        $self->_autocomplete_trigger_event($locator, 'DOWN');
+        if ($match eq $self->_autocomplete_selected_option($locator)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+sub autocompleted_option_exists {
+    my ($self, $locator, $type, $match) = @_;
+    ok $self->_autocompleted_option_exists($locator, $type, $match),
+        "autocompleted_option_exists $match";
+}
+
+sub autocompleted_option_not_exists {
+    my ($self, $locator, $type, $match) = @_;
+    ok !$self->_autocompleted_option_exists($locator, $type, $match),
+        "autocompleted_option_not_exists $match";
+}
+
+sub select_autocompleted_option_ok {
+    my ($self, $locator, $type, $match) = @_;
+    $match ||= $type;
+
+    my $elements = $self->_autocomplete_search($locator, $type);
+
+    # Click down until the correct item is selected
+    for (1 .. $elements) {
+        $self->_autocomplete_trigger_event($locator, 'DOWN');
+        last if $match eq $self->_autocomplete_selected_option($locator);
+    }
+
+    # Just select the element we're on - this might just be the last match
+    $self->_autocomplete_trigger_event($locator, 'ENTER');
+    return;
 }
 
 sub st_unchecked_ok {

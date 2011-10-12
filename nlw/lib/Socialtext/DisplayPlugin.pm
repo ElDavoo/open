@@ -415,8 +415,6 @@ sub _render_display {
             recent_changes => \@recent_changes,
             include_breadcrumbs     => $include_breadcrumbs,
             breadcrumbs             => \@breadcrumbs,
-            enable_unplugged        =>
-                $self->hub->current_workspace->enable_unplugged,
             st_page_accessories     => $st_page_accessories,
         },
     );
