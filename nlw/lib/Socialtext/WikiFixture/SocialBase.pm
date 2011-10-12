@@ -3004,12 +3004,14 @@ sub st_purge_widget {
 }
 
 sub add_widget_ok {
-    my ($self, $url, $src, $col) = @_;
+    my ($self, $url, $src_or_id, $col) = @_;
 
     my @layout = ([], [], []);
 
     # Add the new widget
-    push @{$layout[$col || 2]}, { src => $src, install => 1 };
+    push @{$layout[$col || 2]}, $src_or_id =~ m{^\d+$}
+        ? { install => 1, gadget_id => $src_or_id }
+        : { install => 1, src => $src_or_id };
 
     # add old gadgets 
     $self->get_json($url);
