@@ -1783,7 +1783,12 @@ Put to the specified URI
 
 =cut
 
-sub put { shift->_call_method('put', @_) }
+sub put {
+    my $self = shift;
+    my $uri = shift;
+    diag "PUT $uri";
+    $self->_call_method('put', $uri, @_)
+}
 
 =head2 put_json( uri, json )
 
