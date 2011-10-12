@@ -127,7 +127,7 @@ iframe {
     });
 
     $(function(){
-        $('#st-savebutton-[% gadget.instance_id %]').val("[% loc('widget.preview') %]");
+        $('#st-savebutton-[% gadget.instance_id %]').val("[% loc('widget.preview') %]").button();
     });
     $('#gadget-[% gadget.instance_id %]-content').hide();
     $('#gadget-[% gadget.instance_id %]-preferences').show();
