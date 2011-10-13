@@ -11,7 +11,6 @@ use Socialtext::TT2::Renderer;
 use Socialtext::l10n;
 use Socialtext::Stax;
 use Socialtext::Timer;
-use Socialtext::Workspace;
 use Socialtext::String ();
 use Apache::Cookie;
 use Email::Address;
@@ -115,6 +114,7 @@ has 'default_workspace' => (
     is => 'ro', isa => 'Maybe[HashRef]', lazy_build => 1
 );
 method _build_default_workspace {
+    require Socialtext::Workspace;
     my $ws = Socialtext::Workspace->Default;
 
     return ( defined $ws && $ws->has_user( $->hub->current_user ) )
@@ -429,6 +429,7 @@ method _build_legacy_user_info {
 
 has user_info => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 method _build_user_info {
+    require Socialtext::Workspace;
     my $user = $->hub->current_user;
     my $ws = Socialtext::Workspace->Default;
     return {
