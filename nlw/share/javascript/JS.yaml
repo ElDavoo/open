@@ -257,7 +257,7 @@
 'l10n-%.js':
     compress: 1
     parts:
-        - l10n/%.js
+        - {l10n: '%'}
     expand: 
         - en
         - zz
