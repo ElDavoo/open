@@ -48,7 +48,9 @@ span.widgetHeaderTitleText {
 }
 
 .widgetHeader .buttons {
-    height: 0px;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 .widgetHeaderButtons .close,
 .widgetHeaderButtons .minimize,
@@ -123,6 +125,7 @@ iframe {
     // buttons when the user actually clicks
     $('#st-savebutton-[% gadget.instance_id %]').live('click', function(){
         $('#st-savebutton-[% gadget.instance_id %]').data('clicked', true);
+        $('#gadget-[% gadget.instance_id %]-settings').show();
         return true;
     });
 
