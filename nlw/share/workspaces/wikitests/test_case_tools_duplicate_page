@@ -5,8 +5,9 @@
 | call | st-edit-fill-page | ws=%%workspace%% | title=Duplicate This Page %%start_time%% | content=Duplicate This Page %%start_time%% content |
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test tag |  |
-| wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
-| click_ok | st-edit-mode-tagbutton |  |
+| click_and_pause | //a[contains(@class,"cke_button_wysiwyg")] | 2000 |
+| click_ok | //a[contains(@class,"cke_button_st_add_tags")] |  |
+
 | wait_for_element_visible_ok | st-tagqueue-field | 30000 |
 | type_ok | st-tagqueue-field | Duplicate This Tag %%start_time%% |
 | click_ok | st-tagqueue-addbutton |  |
@@ -23,15 +24,15 @@
 
 | *Comment* | Deliberately use non-space containing pagename for location_like_ok test |  |
 | type_ok | st-duplicate-newname | Page_Duplicated_%%start_time%% |
-| click_and_wait | st-duplicate-savelink |  |
+| st-pause-click | 4000 | st-duplicate-savelink |
 
-| *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |  |  |
-| location_like | `/%%workspace%%/page_duplicated_%%start_time%%` |  |  |  |
-| wait_for_element_visible_ok | contentRight | 30000 |  |  |
-| text_like | st-display-mode-widgets | Duplicate This Tag %%start_time%% |  |  |
-| wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |  |  |
-| text_like | st-page-titletext | Page_Duplicated_%%start_time%% |  |  |
-| st_check_files_if_highperms | wikitest.jpg |  |  |  |
+| *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |
+| location_like | `/%%workspace%%/page_duplicated_%%start_time%%` |  |
+| wait_for_element_visible_ok | contentRight | 30000 |
+| text_like | st-display-mode-widgets | Duplicate This Tag %%start_time%% |
+| wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |
+| text_like | st-page-titletext | Page_Duplicated_%%start_time%% |
+| st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |  |  |
 
