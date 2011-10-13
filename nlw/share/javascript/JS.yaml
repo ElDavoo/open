@@ -18,6 +18,9 @@
 'jquery-1.6.2.min.js':
     parts:
         - contrib/jquery-1.6.2.min.js
+'jquery.dataTables.min.js':
+    parts:
+        - contrib/jquery.dataTables.min.js
 'push-client.js':
     parts:
         - activities/push-client.js
