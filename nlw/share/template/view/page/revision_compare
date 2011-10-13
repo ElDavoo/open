@@ -4,7 +4,36 @@
 
 [% WRAPPER $frame_name buttons=buttons id="revisions" title="${display_title}: ${display_title_decorator}" %]
 
-<div class="grid_20 widget">
+<div class="grid_24">
+  <div id="revision-tools">
+    <ul>
+      <li>
+        <a href="[% "${script_name}?${page_uri}" %]">
+          [% loc('revision.current') %]
+        </a>
+      </li>
+      <li>
+        <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% prev_id %];mode=[%mode%]">
+          [% loc('revision.previous-compare') %]
+        </a>
+      </li>
+      <li><a href="[% script_name %]?action=revision_list;page_id=[% page_uri %]">[% loc('revision.all') %]</a></li>
+      <li><a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% next_id %];mode=[%mode%]">[% loc('revision.next-compare') %]</a></li>
+      <li>
+        <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]">
+          [% IF mode != 'source' %]
+            [% loc('revision.color') %]
+          [% ELSE %]
+            [% loc('revision.view') %]
+          [% END %]
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="clear"></div>
+
+<div class="grid_24 widget">
   <h1 title="[% display_title %]">[% display_title %] : <span class="st-page-title-decorator">[% loc('revision.compare') %]</h1>
 
   [% FOR col IN header %]
@@ -27,34 +56,12 @@
 
   <div class="content">
     [% FOR row IN diff_rows %]
-      <div class="grid_10 alpha">[% row.before %]</div>
-      <div class="grid_10 omega">[% row.after %]</div>
+      <div class="grid_12 alpha">[% row.before %]</div>
+      <div class="grid_12 omega">[% row.after %]</div>
     [% END %]
     <div class="clear"></div>
   </div>
 </div>
-
-<div class="grid_4 widget">
-  <h1>[% loc('Links') %]</h1>
-
-  <div class="content" id="st-revision-buttons">
-    <ul>
-      <li><a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% prev_id %];mode=[%mode%]">[% loc('revision.previous-compare') %]</a></li>
-      <li><a href="[% script_name %]?action=revision_list;page_id=[% page_uri %]">[% loc('revision.all') %]</a></li>
-      <li><a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% next_id %];mode=[%mode%]">[% loc('revision.next-compare') %]</a></li>
-      <li>
-        <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]">
-          [% IF mode != 'source' %]
-            [% loc('revision.color') %]
-          [% ELSE %]
-            [% loc('revision.view') %]
-          [% END %]
-        </a>
-      </li>
-    </ul>
-  </div>
-</div>
-
 <div class="clear"></div>
 
 <script>
