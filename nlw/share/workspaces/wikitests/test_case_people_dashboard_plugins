@@ -1,3 +1,5 @@
+*On hold until Activities widget can handle disabling certain plugins*
+
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: People Dashboard Plugins |  |
@@ -29,7 +31,7 @@
 | post-signal | %%signal1%% |  |
 | post-signal | %%signal2%% |  |
 
-| *Comment* | Test Case: People Dashboard Plugins Setup Activities Widget |  |
+| *Comment* | Test Case: People Dashboard Plugins Setup Activities Widget |  |  |
 | call | [single-activities-widget] | activity=all-events | contributor=everyone |
 
 | *Comment* | Test Case: People Dashboard Plugins Set event limit to 25 |  |
@@ -50,7 +52,7 @@
 
 | *Comment* | Test Case: People Dashboard Plugins Disable Signals, see only pages, people tags |  |
 | st-admin | disable-plugin --plugin signals --account %%acct%% | The signals plugin is now disabled |
-| refresh |  |  |
+| open_ok | /st/dashboard |  |
 | st-name-widget | 1 | activities_widget |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 5000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
@@ -60,7 +62,7 @@
 
 | *Comment* | Test Case: People Dashboard Plugins disable people see only pages NOT people tags or signals |  |
 | st-admin | disable-plugin --plugin people --account %%acct%% | is now disabled |
-| refresh |  |  |
+| open_ok | /st/dashboard |  |
 | st-name-widget | 1 | activities_widget |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 5000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
@@ -70,7 +72,7 @@
 
 | *Comment* | Test Case: People Dashboard Plugins enable signals (also enables people) |  |
 | st-admin | enable-plugin --plugin signals --account %%acct%% | is now enabled |
-| refresh |  |  |
+| open_ok | /st/dashboard |  |
 | st-name-widget | 1 | activities_widget |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 5000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
@@ -84,4 +86,4 @@
 | st-admin | delete-workspace --no-export --w %%ws%% |  |
 | delete-account | %%acct%% |  |
 
-| *Comment* | Test Case: People Dashboard Plugins COMPLETED |
+| *Comment* | Test Case: People Dashboard Plugins COMPLETED |  |
