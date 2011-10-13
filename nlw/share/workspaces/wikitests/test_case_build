@@ -148,7 +148,7 @@ text_like | mobile_event_list | qr/signal 1 %%start_time%%.+By you.+reply 1 %%st
 | st-send-reply | reply 1 %%start_time%% |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | reply 1 %%start_time%% | 30000 |
-| text_like | //div[@class='replies'] | qr/reply 1 %%start_time%%.+By you less than a minute ago/ism |
+| text_like | //body | qr/reply 1 %%start_time%%.+By you less than a minute ago/ism |
 
 | *Comment* | Build Testcases TEARDOWN |  |
 | st-process-jobs |  |  |
