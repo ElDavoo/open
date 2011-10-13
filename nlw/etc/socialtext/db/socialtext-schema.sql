@@ -1434,7 +1434,9 @@ CREATE TABLE theme (
     is_default boolean NOT NULL,
     foreground_shade text DEFAULT '' NOT NULL,
     logo_image_id bigint,
-    favicon_image_id bigint
+    favicon_image_id bigint,
+    header_link_color text DEFAULT '' NOT NULL,
+    background_link_color text DEFAULT '' NOT NULL
 );
 
 CREATE SEQUENCE theme_theme_id
@@ -3069,4 +3071,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '152');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '153');

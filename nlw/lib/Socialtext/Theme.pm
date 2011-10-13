@@ -11,10 +11,11 @@ use YAML ();
 use namespace::clean -except => 'meta';
 
 my @COLUMNS = qw( theme_id name header_color header_image_id
-    header_image_tiling header_image_position background_color
-    background_image_id background_image_tiling background_image_position
-    primary_color secondary_color tertiary_color header_font body_font
-    is_default foreground_shade logo_image_id favicon_image_id
+    header_image_tiling header_image_position header_link_color
+    background_color background_image_id background_image_tiling
+    background_image_position background_link_color primary_color
+    secondary_color tertiary_color header_font body_font is_default
+    foreground_shade logo_image_id favicon_image_id
 );
 
 my @UPLOADS = qw(header_image background_image logo_image favicon_image);
@@ -181,10 +182,12 @@ sub ValidSettings {
         header_image_id => \&_valid_attachment_id,
         header_image_tiling => \&_valid_tiling,
         header_image_position => \&_valid_position,
+        header_link_color => \&_valid_hex_color,
         background_color => \&_valid_hex_color,
         background_image_id => \&_valid_attachment_id,
         background_image_tiling => \&_valid_tiling,
         background_image_position => \&_valid_position,
+        background_link_color => \&_valid_hex_color,
         primary_color => \&_valid_hex_color,
         secondary_color => \&_valid_hex_color,
         tertiary_color => \&_valid_hex_color,
