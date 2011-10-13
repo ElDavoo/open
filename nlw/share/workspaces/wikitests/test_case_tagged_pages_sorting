@@ -142,6 +142,7 @@ SEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSE
 
 | call | st-edit-new-page | ws=%%sorting_workspace%% | title=Search Sort 5 | content=simple simple more simple most simple |
 
+| pause_ok | 8000 |  |  |  |
 | st-process-jobs |  |  |  |  |
 
 | *Comment* | Test Case: Tagged Page Sorting. Sorting search results. Do the SEARCH again. |  |

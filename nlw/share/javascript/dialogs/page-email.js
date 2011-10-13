@@ -35,18 +35,18 @@ st.dialog.register('page-email', function(opts) {
 
     dialog.find('input[name="email_page_subject"]').select().focus();
 
-    $('#email_add').click(function () {
+    $('#email_add').button().click(function () {
         clearHelp();
         $('#email_source option:selected').appendTo('#email_dest');
         return false;
     });
 
-    $('#email_remove').click(function () {
+    $('#email_remove').button().click(function () {
         $('#email_dest option:selected').remove();
         return false;
     });
 
-    $('#email_all').click(function () {
+    $('#email_all').button().click(function () {
         clearHelp();
         var startIndex = 0;
         var fetch_user_pageful = function () {
@@ -66,7 +66,7 @@ st.dialog.register('page-email', function(opts) {
         return false;
     });
 
-    $('#email_none').click(function () {
+    $('#email_none').button().click(function () {
         $('#email_dest option').remove();
         return false;
     });
@@ -93,7 +93,7 @@ st.dialog.register('page-email', function(opts) {
             }
         });
 
-    $('#email_add').click(function () {
+    $('#email_add').button().click(function () {
         dialog.find('.error').html('');
         var val = $('#email_recipient').val();
         var email = val.replace(/^.*<(.*)>$/, '$1');

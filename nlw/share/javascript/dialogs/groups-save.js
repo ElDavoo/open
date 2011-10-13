@@ -3,7 +3,7 @@
 socialtext.dialog.register('groups-save', function(opts) {
     var dialog = socialtext.dialog.createDialog({
         html: socialtext.dialog.process('groups-save.tt2', opts),
-        title: loc('Saving')
+        title: loc('Saving'),
         buttons: [
             {
                 id: 'groups-save',

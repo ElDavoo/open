@@ -16,7 +16,7 @@ call | [st-edit-new-page] | ws=%%workspace%% | title=Link Interface %%start_time
 | type_ok | st-newpage-pagename-edit | Link Interface %%start_time%% |
 
 | wait_for_element_visible_ok | //a[contains(@class,"cke_button_st_wikilink")] | 5000 |
-| click_ok | //a[contains(@class,"cke_button_st_wikilink")] |  |
+| MouseOver_ok | //a[contains(@class,"cke_button_st_wikilink")] |  |
 | click_ok | //a[contains(@class,"cke_button_st_wikilink")] |  |
 | wait_for_element_visible_ok | wiki-link-text | 5000 |
 | type_ok | wiki-link-text | TC: Link Interface |
@@ -32,9 +32,9 @@ call | [st-edit-new-page] | ws=%%workspace%% | title=Link Interface %%start_time
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |  |  |
 | click_ok | st-edit-button-link |  |  |  |
 | wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 10000 |  |  |
-| click_ok | //a[contains(@class,"cke_button_wikitext")] |  |  |  |
+| MouseOver_ok | //a[contains(@class,"cke_button_wikitext")] |  |  |  |
 
-| *Comment* | VOODOO: click WIKITEXT again |  |
+| *Comment* | click WIKITEXT |  |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 
 | *Comment* | Test Case: Link Interface. verify wiki link rendered correctly |  |
@@ -43,12 +43,10 @@ call | [st-edit-new-page] | ws=%%workspace%% | title=Link Interface %%start_time
 | wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 5000 |  |  |
 | verifyValue | //textarea[contains(@class,"cke_source")] | `"TC: Link Interface"{link: %%workspace%% [Link Interface LinkMe %%start_time%%] section two}` |  |  |
 
-^ END
-
-| *Comment* | Test Case: Link Interface Bogus Input |  |
-| wait_for_element_visible_ok | //a[contains(@class,"cke_button_wysiwyg")] | 5000 |
-| click_ok | //a[contains(@class,"cke_button_wysiwyg")] |  |
-| wait_for_element_present_ok | //a[contains(@class,"cke_button_st_wikilink")] | 5000 |
+| *Comment* | Test Case: Link Interface Bogus Input - reopen |  |
+| open_ok | %%workspace%%/Link Interface %%start_time%% |  |
+| wait_for_element_visible_ok | //a[contains(@class,"cke_button_st_wikilink")] | 5000 |
+| MouseOver_ok | //a[contains(@class,"cke_button_st_wikilink")] |  |
 | click_ok | //a[contains(@class,"cke_button_st_wikilink")] |  |
 | wait_for_element_visible_ok | wiki-link-text | 5000 |
 | type_ok | wiki-link-text | TC: Link Interface |
@@ -58,17 +56,17 @@ call | [st-edit-new-page] | ws=%%workspace%% | title=Link Interface %%start_time
 | *Comment* | Test Case: Link Interface pause is necessary for the error to appear |  |
 | pause | 5000 |  |
 | text_like | That workspace does not exist |  |
-| wait_for_element_visible_ok | st-widget-link-cancelbutton | 30000 |
+| wait_for_element_visible_ok | st-widget-link-cancelbutton | 5000 |
 | click_ok | st-widget-link-cancelbutton |  |
-| wait_for_element_not_visible_ok | add-wiki-link | 30000 |
+| wait_for_element_not_visible_ok | add-wiki-link | 5000 |
 
 | *Comment* | Test Case: Link Interface get a fresh page for Web Link |  |
 | open_ok | /%%workspace%%/?action=new_page |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Link Interface Web Link %%start_time%% |
-| click_ok | //a[contains(@class,"cke_button_wysiwyg")] |  |
-| pause | 5000 |  |
 | include | [Test Case: Link Interface Web Link] |  |
+
+^ END
 
 | *Comment* | Test Case: Link Interface make a section link |  |
 | *Comment* | Insert some required whitespace for the section link |  |

@@ -37,13 +37,13 @@
         </select>
       </td>
       <td>
-        <a class="button" id="email_all">[% loc('email.add-all') %]"</a>
+        <a class="button" id="email_all">[% loc('email.add-all') %]</a>
         <br/>
         <br/>
-        <a class="button" id="email_remove">[% loc('do.remove') %]"</a>
+        <a class="button" id="email_remove">[% loc('do.remove') %]</a>
         <br/>
         <br/>
-        <a class="button" id="email_none">[% loc('do.remove-all') %]"</a>
+        <a class="button" id="email_none">[% loc('do.remove-all') %]</a>
       </td>
     </tr>
     <tr>
