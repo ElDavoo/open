@@ -6,6 +6,7 @@
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test tag |  |
 | click_and_pause | //a[contains(@class,"cke_button_wysiwyg")] | 2000 |
+| MouseOver_ok | //a[contains(@class,"cke_button_st_add_tags")] |  |
 | click_ok | //a[contains(@class,"cke_button_st_add_tags")] |  |
 
 | wait_for_element_visible_ok | st-tagqueue-field | 30000 |
