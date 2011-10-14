@@ -78,8 +78,6 @@ for my $lang (sort { en($a) cmp en($b) } @ARGV) {
     gen_js('zq' => \%zq);
 }
 
-system("dev-bin/jsmake 2>/dev/null");
-
 say $_ for sort @outs;
 
 sub zz {

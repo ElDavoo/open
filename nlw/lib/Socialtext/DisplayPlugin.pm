@@ -37,6 +37,7 @@ sub register {
     $registry->add(action => 'page_info');
     $registry->add(action => 'preview');
     $registry->add(action => 'homepage');
+    $registry->add(wafl => date => 'Socialtext::Date::Wafl');
 
     $self->_register_prefs($registry);
 }
@@ -612,5 +613,17 @@ cgi 'signal_comment_to_network';
 # For Page Creator integration
 cgi 'new_title';
 cgi 'variables';
+
+package Socialtext::Date::Wafl;
+
+use base 'Socialtext::Formatter::WaflPhrase';
+
+sub html {
+    my $self = shift;
+    my $raw_date = $self->arguments;
+    my $date = eval { $self->hub->timezone->date_local($raw_date) };
+    $date = $raw_date if $@;
+    return $date;
+}
 
 1;

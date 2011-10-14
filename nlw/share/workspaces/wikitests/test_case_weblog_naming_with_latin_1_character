@@ -11,6 +11,7 @@
 | type_ok | workspace.do.create_blog | claus´ blog %%start_time%% |
 | wait_for_element_visible_ok | link=Save | 3000 |
 | click_and_wait | link=Save |  |
+| pause | 10000 |  |
 | wait_for_element_visible_ok | controls | 30000 |
 | text_like | controls | claus´ blog %%start_time%% |
 
