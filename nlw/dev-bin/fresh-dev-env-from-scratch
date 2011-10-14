@@ -13,7 +13,7 @@ HELPEN=0
 FIXTURE='ALL'
 PAUSE=0
 UPDATE_WIDGETS=1
-MINIFY_JS=1
+MINIFY=1
 CONTEXTUAL=0
 STAGING=0
 DATABASE_LOCALE=en_US.UTF-8
@@ -21,7 +21,7 @@ while getopts "jhmbpwscC" OPT; do
   case $OPT in
     h) HELPEN=1;;
     m) FIXTURE=admin_no_pages;;
-    j) MINIFY_JS=0;;
+    j) MINIFY=0;;
     s) STAGING=1;;
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;;
@@ -104,7 +104,7 @@ dev-bin/link-externals --all
 # Start the supervisor
 dev-bin/setup-supervisors start
 
-[ $MINIFY_JS == 0 ] && bin/st-config set minify_javascript 0
+[ $MINIFY == 0 ] && bin/st-config set minify_javascript 0 && bin/st-config set minify_css 0
 
 if [ $PAUSE == 0 ]; then
     echo "Starting nginx and apache-perl"
