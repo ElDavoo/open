@@ -279,7 +279,7 @@ sub _coffee_to_text {
         unlink $output;
         return $content;
     }
-    warn "No coffee compiler found in PATH, skipping...\n" if $class->verbose;
+    warn "No coffee compiler found in PATH, skipping...\n" if $VERBOSE;
     return '';
 }
 
