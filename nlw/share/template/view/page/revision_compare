@@ -55,7 +55,7 @@
   <h1 title="[% display_title %]">[% display_title %] : <span class="st-page-title-decorator">[% loc('revision.compare') %]</h1>
 
   [% FOR col IN header %]
-    <div class="grid_10 vpad5 [% IF col.first %]alpha[% ELSE %]omega[% END %]">
+    <div class="grid_12 [% IF col.first %]alpha[% ELSE %]omega[% END %]">
       <h2 title="[% display_title %]">[% col.link %]</h2>
       <div class="st-revision-tags">
         [% loc('revision.tags:') %]&nbsp;[% col.tags %]
