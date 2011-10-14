@@ -76,7 +76,7 @@ sub CleanAll {
     }
 }
 
-my $coffee_compiler = which('coffee');
+my $coffee_compiler = which('st-coffee');
 sub BuildCoffee {
     my $class = shift;
     find({
