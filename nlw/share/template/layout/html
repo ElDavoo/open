@@ -68,7 +68,7 @@
       <div class="container_24">
         <div class="grid_12 title">
           [% IF theme.account_logo %]
-          <img height="34" width="201" src="[% theme.account_logo %]" />
+          <img src="[% theme.account_logo %]" />
           [% END %]
         </div>
         <div class="grid_12">

@@ -7,6 +7,8 @@ use Socialtext::File qw(mime_type);
 use Socialtext::AppConfig;
 use Socialtext::User;
 use Socialtext::Upload;
+use Socialtext::Image;
+use File::Temp;
 use YAML ();
 use namespace::clean -except => 'meta';
 
@@ -352,12 +354,15 @@ sub _CreateAttachmentsIfNeeded {
         my $filename = delete $params->{$temp_field};
         next unless $filename;
 
+        my $tempfile = "$themedir/$filename";
+        $tempfile = $class->ResizeFile($tempfile)
+            if $temp_field eq 'logo_image';
+
         my $db_field = $temp_field . "_id";
 
         my @parts = split(/\./, $filename);
         my $mime_guess = 'image/'. $parts[-1];
 
-        my $tempfile = "$themedir/$filename";
         my $file = Socialtext::Upload->Create(
             creator => $creator,
             temp_filename => $tempfile,
@@ -369,6 +374,16 @@ sub _CreateAttachmentsIfNeeded {
 
         $params->{$db_field} = $file->attachment_id;
     }
+}
+
+sub ResizeFile {
+    my $self = shift;
+    my $file = shift;
+
+    my $spec = Socialtext::Image::spec_resize_get('account');
+    Socialtext::Image::spec_resize($spec, $file => $file);
+
+    return $file;
 }
 
 sub _chown_file_if_needed {
