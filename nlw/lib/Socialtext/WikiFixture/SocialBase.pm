@@ -38,6 +38,7 @@ use YAML qw/LoadFile/;
 use DateTime;
 use File::Basename;
 use File::Spec;
+use Test::Socialtext::User;
 
 # mix-in some commands from the Socialtext fixture
 # XXX move bodies to SocialBase?
@@ -785,6 +786,14 @@ sub create_user {
     return $user;
 }
 
+sub delete_recklessly {
+    my $self = shift;
+    my $user_id = shift;
+
+    Test::Socialtext::User->delete_recklessly($user_id);
+    diag "User ${user_id} deleted recklessly\n";
+}
+
 sub user_primary_account {
     my $self = shift;
     my $username = shift;
@@ -837,9 +846,24 @@ sub delete_user {
 sub deactivate_user {
     my $self = shift;
     my $email = shift;
+
     my $user = Socialtext::User->Resolve($email);
 
     $user->deactivate();
+}
+
+sub reactivate_user {
+    my $self = shift;
+    my $username = shift;
+    my $account_name = shift;
+
+    my $account = $account_name
+        ? Socialtext::Account->new(name => $account_name)
+        : Socialtext::Account->Default();
+
+    my $user = Socialtext::User->Resolve($username);
+
+    $user->reactivate(account => $account);
 }
 
 sub create_group {
@@ -1119,7 +1143,6 @@ sub add_user_to_account {
     my $role = $role_name
         ? Socialtext::Role->new(name => $role_name)
         : undef;
-
     $acct->assign_role_to_user( user => $user, role => $role );
 
     diag "Added User $user_name"

@@ -1,7 +1,7 @@
 package Socialtext::Rest::Page;
 # @COPYRIGHT@
 
-use strict;
+use 5.12.0;
 use warnings;
 
 # REVIEW: Can this be made into a Socialtext::Entity?
@@ -23,6 +23,11 @@ sub make_GETter {
     my ( $content_type ) = @_;
     return sub {
         my ( $self, $rest ) = @_;
+
+        # If the UA has no preference other than '*/*', default to text/html.
+        unless (grep { $_ ne '*/*' } $rest->getContentPrefs) {
+            $content_type = 'text/html';
+        }
 
         $self->if_authorized(
             'GET',
@@ -47,7 +52,7 @@ sub make_GETter {
                     $self->hub->pages->current($page);
                     my @etag = ();
 
-                    if ( $content_type eq 'text/x.socialtext-wiki' ) {
+                    if ( $content_type ~~ ['text/x.socialtext-wiki', 'application/xhtml+xml'] ) {
                         my $etag = $page->revision_id();
                         @etag = ( -Etag => $etag );
 
@@ -147,6 +152,7 @@ sub _page_type_is_valid { 1 }
     no warnings 'once';
     *GET_wikitext = make_GETter( 'text/x.socialtext-wiki' );
     *GET_html = make_GETter( 'text/html' );
+    *GET_xhtml = make_GETter( 'application/xhtml+xml' );
 }
 
 # look in the link_dictionary query parameter to figure out
@@ -185,6 +191,7 @@ sub GET_json {
             my $wikitext = $rest->query->param('wikitext');
             my $metadata = $rest->query->param('metadata');
             my $html     = $rest->query->param('html');
+            my $xhtml    = $rest->query->param('xhtml');
 
             my $link_dictionary = $self->_link_dictionary($rest);
             my $page = $self->page;
@@ -220,9 +227,15 @@ sub GET_json {
                 my $to_wikitext = sub {
                     $addtional_content->('text/x.socialtext-wiki');
                 };
+                my $to_xhtml = sub {
+                    $addtional_content->('application/xhtml+xml', $link_dictionary);
+                };
                 if ($verbose) {
                     $page_hash->{wikitext} = $to_wikitext->();
                     $page_hash->{html} = $to_html->();
+                    if ($page_hash->{type} eq 'xhtml') {
+                        $page_hash->{xhtml} = $to_xhtml->();
+                    }
                     $page_hash->{last_editor_html} = 
                         $self->hub->viewer->text_to_html(
                             "\n{user: $page_hash->{last_editor}}\n"
@@ -236,6 +249,9 @@ sub GET_json {
                 }
                 elsif ($wikitext) {
                     $page_hash->{wikitext} = $to_wikitext->();
+                }
+                elsif ($xhtml) {
+                    $page_hash->{xhtml} = $to_xhtml->();
                 }
                 elsif ($html) {
                     $page_hash->{html} = $to_html->();
@@ -292,8 +308,8 @@ sub DELETE {
     );
 }
 
-sub PUT_wikitext {
-    my ( $self, $rest ) = @_;
+sub _put_with_type {
+    my ( $self, $rest, $type ) = @_;
 
     my $unable_to_edit = $self->page_locked_or_unauthorized();
     return $unable_to_edit if ($unable_to_edit);
@@ -312,6 +328,7 @@ sub PUT_wikitext {
     }
 
     $page->update_from_remote(
+        type => ($type || $self->_default_page_type),
         content => $rest->getContent(),
     );
 
@@ -320,6 +337,16 @@ sub PUT_wikitext {
         -Location => $self->full_url
     );
     return '';
+}
+
+sub PUT_wikitext {
+    my ( $self, $rest ) = @_;
+    return $self->_put_with_type($rest, 'wiki');
+}
+
+sub PUT_xhtml {
+    my ( $self, $rest ) = @_;
+    return $self->_put_with_type($rest, 'xhtml');
 }
 
 sub PUT_html {
@@ -361,7 +388,7 @@ sub _default_page_type { 'wiki' }
 sub _acceptable_page_types {
     my $self = shift;
     my $type = shift;
-    return $type =~ m/^wiki|spreadsheet$/;
+    return $type =~ m/^wiki|spreadsheet|xhtml$/;
 }
 
 sub PUT_json {
@@ -390,6 +417,17 @@ sub PUT_json {
     }
     else {
         $object->{date} = Socialtext::Date->now(hires => 1);
+    }
+
+    if (not defined $object->{content}) {
+        if (defined $object->{xhtml}) {
+            $object->{type} ||= 'xhtml';
+            $object->{content} = delete $object->{xhtml};
+        }
+        elsif (defined $object->{wikitext}) {
+            $object->{type} ||= 'wiki';
+            $object->{content} = delete $object->{wikitext};
+        }
     }
 
     if (my $t = $object->{type}) {

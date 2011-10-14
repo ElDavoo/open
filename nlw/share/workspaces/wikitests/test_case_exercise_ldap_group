@@ -42,17 +42,17 @@
 | wait_for_text_present_ok | Motorhead | 30000 |
 | text_like | st-editing-tools-edit | Motorhead |
 | st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
+| st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | text_like | //body | Motorhead |
 | select-frame | relative=parent |  |
 | st-name-widget | 2 | workspaces_widget |
-| st-widget-title-like | workspaces_widget | Workspaces |
+| st-widget-title | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | link=%%ldapy_ws%% | 30000 |
 | select-frame | relative=parent |  |
 | st-name-widget | 3 | membership_widget |
-| st-widget-title-like | membership_widget | Membership |
+| st-widget-title | membership_widget | Membership |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | link=Eddie Clarke | 30000 |
 | wait_for_element_visible_ok | link=Lemmy Kilmister | 30000 |

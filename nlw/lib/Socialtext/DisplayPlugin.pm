@@ -1,6 +1,6 @@
 # @COPYRIGHT@
 package Socialtext::DisplayPlugin;
-use strict;
+use 5.12.0;
 use warnings;
 
 use base 'Socialtext::Plugin';
@@ -80,9 +80,15 @@ sub new_page {
     $uri = $uri . ';caller_action=' . $self->cgi->caller_action
         if $self->cgi->caller_action;
 
-    if ($self->hub->current_workspace->enable_spreadsheet) {
-        $uri = $uri . ';page_type=' . $self->cgi->page_type
-            if $self->cgi->page_type;
+    given ($self->cgi->page_type) {
+        when ('spreadsheet') {
+            $uri .= ';page_type=' . $self->cgi->page_type
+                if $self->hub->current_workspace->enable_spreadsheet;
+        }
+        when ('xhtml') {
+            $uri .= ';page_type=' . $self->cgi->page_type
+                if $self->hub->current_workspace->enable_xhtml;
+        }
     }
 
     $uri = $uri . ';page_name=' . $page->uri . '#edit';
@@ -169,9 +175,8 @@ sub display {
             $start_in_edit_mode = 1;
         }
         my $page_type = $self->cgi->page_type || '';
-        $page->page_type(
-            $page_type eq 'spreadsheet' && 'spreadsheet' || 'wiki'
-        );
+        $page_type = 'wiki' unless $page_type ~~ ['spreadsheet', 'xhtml'];
+        $page->page_type( $page_type );
         push @new_tags, $self->_new_tags_to_add();
         if (my $template = $self->cgi->template) {
             my $tmpl_page = $self->hub->pages->new_from_name($template);
@@ -179,15 +184,19 @@ sub display {
                 my @template_tags = (lc('template'), lc(loc('tag.template')));
                 push @new_tags, grep { not( lc($_) ~~ @template_tags ) }
                                 @{ $tmpl_page->tags };
-                my $content = $tmpl_page->content;
 
-                if (my $variables = $self->cgi->variables) {
-                    my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
-                    my %vars;
-                    while (my ($key, $val) = each %$decoded_vars) {
-                        $vars{lc $key} = $val;
+                my $content = '';
+                if ($page_type eq 'wiki') {
+                    $content = $tmpl_page->to_wikitext;
+
+                    if (my $variables = $self->cgi->variables) {
+                        my $decoded_vars = Socialtext::JSON::decode_json_utf8($variables) || {};
+                        my %vars;
+                        while (my ($key, $val) = each %$decoded_vars) {
+                            $vars{lc $key} = $val;
+                        }
+                        $content =~ s/%%(.*?)%%/$vars{lc $1}/eg;
                     }
-                    $content =~ s/%%(.*?)%%/$vars{lc $1}/eg;
                 }
 
                 if ($page->mutable) {
@@ -303,6 +312,9 @@ sub _render_display {
             new_tags                => $new_tags,
             attachments             => $attachments,
             new_attachments         => $new_attachments,
+            variables               => (Socialtext::JSON::decode_json_utf8(
+                $self->cgi->variables || '{}'
+            ) || {}),
             watching                => $self->hub->watchlist->page_watched,
             login_and_edit_path => '/challenge?'
                 . uri_escape(
@@ -412,6 +424,7 @@ sub _get_page_info {
         incoming    => $self->hub->backlinks->all_backlinks_for_page($page),
         caller      => ($self->cgi->caller_action || ''),
         is_active   => $page->active,
+        is_xhtml => $page->is_xhtml,
         is_spreadsheet => $page->is_spreadsheet,
         Socialtext::BrowserDetect::safari()
                 ? (raw_wikitext => $page->content)

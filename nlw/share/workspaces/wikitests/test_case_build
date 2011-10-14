@@ -83,7 +83,7 @@
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 | st-name-widget | 1 | newbie |
-| st-widget-title-like | newbie | I'm new. What do I do? |
+| st-widget-title | newbie | I'm new. What do I do? |
 | wait_for_text_present_ok | edited Example Page: Project Tracking in %%wiki%%. | 30000 |
 
 | *Comment* | Build Testcases check people directory and profile page |  |
@@ -92,7 +92,7 @@
 | click_and_wait | //a[@class='realName'] |  |
 | location_like | /st/profile/%%user_id%% |  |
 | st-name-widget | 5 | wikis |
-| st-widget-title-like | wikis | Workspaces |
+| st-widget-title | wikis | Workspaces |
 | st-select-widget-frame | wikis |  |
 | wait_for_text_present_ok | %%wiki%% | 30000 |
 | select-frame | relative=parent |  |
@@ -125,12 +125,11 @@
 | click_ok | st-create-content-link |  |
 | wait_for_element_visible_ok | st-create-content-savelink | 30000 |
 | click_and_wait | st-create-content-savelink |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | page content |
-| type_ok | st-newpage-pagename-edit | page title |
-| st-page-save |  |  |
+
+
+| call | st-edit-save-page | title=page content | content=page title |
+
+
 | wait_for_text_present_ok | Created by | 30000 |
 | text_like | pageAttribution | qr/Created by.+%%user_with_spaces%%/ |
 | wait_for_text_present_ok | page content | 30000 |

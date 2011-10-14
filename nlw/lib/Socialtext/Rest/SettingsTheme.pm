@@ -68,7 +68,7 @@ sub PUT_theme {
             return;
         }
 
-        for my $key qw(header_image_id background_image_id) {
+        for my $key (qw(header_image_id background_image_id)) {
             my $value = $updates->{$key};
             next unless $value;
 

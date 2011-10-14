@@ -55,6 +55,7 @@ Socialtext.double_click_to_edit = false;
 Socialtext.double_click_to_edit = true;
 [% END %]
 
+Socialtext.editor = { insert_menu_extra_items: [ null ] };
 [% FILTER decorate('js-bootstrap') %]
 [% END %]
 
@@ -77,8 +78,10 @@ function nlw_make_plugin_path(rest) {
 
 [% DEFAULT attachments = [] %]
 [% DEFAULT new_attachments = [] %]
+[% DEFAULT variables = [] %]
 Socialtext.attachments = [% attachments.json %];
 Socialtext.new_attachments = [% new_attachments.json %];
+Socialtext.variables = [% variables.json %];
 
 Socialtext.page_id = '[% page.id %]';
 [% END %]
@@ -148,6 +151,10 @@ v.hub.current_workspace.allows_html_wafl = true;
 
 [% IF current_workspace.enable_spreadsheet %]
 v.hub.current_workspace.enable_spreadsheet = true;
+[% END %]
+
+[% IF current_workspace.enable_xhtml %]
+v.hub.current_workspace.enable_xhtml = true;
 [% END %]
 
 })();

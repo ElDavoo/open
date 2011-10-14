@@ -1,13 +1,9 @@
 | *Comment* | Test Case: Tools: Duplicate Page |
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test page |  |
-| open_ok | /%%workspace%%/?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | Duplicate This Page %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | Duplicate This Page %%start_time%% content |
+
+| call | st-edit-fill-page | ws=%%workspace%% | title=Duplicate This Page %%start_time%% | content=Duplicate This Page %%start_time%% content |
+
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test tag |  |
 | wait_for_element_visible_ok | st-edit-mode-tagbutton | 30000 |
@@ -39,14 +35,9 @@
 | st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |
-| open_ok | /%%workspace%%/?Duplicate This Page %%start_time%% |  |
-| click_ok | st-edit-button-link |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | Duplicate This Page %%start_time%% NEW content |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+
+| call | st-edit-this-page | ws=%%workspace%% | thispage=Duplicate This Page %%start_time%% | content=Duplicate This Page %%start_time%% NEW content |
+
 
 | *Comment* | Test Case: Tools: Duplicate Page. Duplicate the edited page and Cancel |  |
 | click_ok | link=Duplicate Page |  |
@@ -77,8 +68,8 @@
 | *Comment* | Test Case: Tools: Duplicate Page. verify duplicate of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_duplicated_%%start_time%% |  |
 | click_and_wait | link=Compare Revisions |  |
-| text_like | contentContainer | Duplicate This Page %%start_time%% content |
-| text_like | contentContainer | Duplicate This Page %%start_time%% NEW content |
+| text_like | content | Duplicate This Page %%start_time%% content |
+| text_like | content | Duplicate This Page %%start_time%% NEW content |
 
 | *Comment* | Test Case: Tools: Duplicate Page TEARDOWN |  |
 | st-process-jobs |  |  |

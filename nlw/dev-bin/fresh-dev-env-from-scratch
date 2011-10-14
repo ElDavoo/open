@@ -88,6 +88,10 @@ dev-bin/st-make-all @all
 rm -f etc/socialtext/db/cache.*.sql
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
+
+# Needs wikid to import legacy wiki pages
+NLWCTL_QUIET=1 dev-bin/nlwctl start -w
+
 dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
 [ $DATABASE_LOCALE != 'C' ] && bin/st-db reset_db_locale $DATABASE_LOCALE
 [ $HELPEN == 1 ] && dev-bin/make-test-fixture --home_dir $HOME --fixture help
@@ -120,6 +124,9 @@ bin/st-admin enable-plugin --all-accounts \
     --plugin push \
     --plugin analytics \
     --plugin like \
+
+bin/st-admin enable-plugin --all-workspaces \
+    --plugin ckeditor \
 
 bin/st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 

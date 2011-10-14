@@ -1,15 +1,16 @@
 package Socialtext::MakeJS;
 # @COPYRIGHT@
-use strict;
+use 5.12.0;
 use warnings;
 use Socialtext::System qw(shell_run);
-use Socialtext::JSON qw(encode_json);
 use JavaScript::Minifier::XS qw(minify);
 use Template;
 use YAML;
+use JSON::XS ();
 use File::chdir;
 use Jemplate;
 use FindBin;
+use Encode qw(encode_utf8 decode_utf8);
 use Compress::Zlib;
 use File::Slurp qw(slurp write_file);
 use File::Find qw(find);
@@ -82,8 +83,9 @@ sub BuildCoffee {
         wanted => sub {
             my $coffee = $File::Find::name;
             return unless -f $coffee and $coffee =~ /\.coffee$/;
-            (my $js = $coffee) =~ s/\.coffee$/.js/;
-            $class->_js_from_coffee($js);
+            if ($coffee_compiler) {
+                system $coffee_compiler => -c => $coffee;
+            }
         },
     }, @_);
 }
@@ -146,8 +148,6 @@ sub Build {
 
     my $parts = $info->{parts} || die "$target has no parts!";
 
-    $class->BuildCoffee($CWD);
-
     # Iterate over parts, building as we go
     my @last_modifieds;
     for my $part (@$parts) {
@@ -193,12 +193,13 @@ sub Build {
 sub _part_last_modified {
     my ($class, $part) = @_;
     my @files;
-    local $CWD = "$CODE_BASE/$part->{dir}";
+    local $CWD = (($part->{dir} =~ m{^/}) ? $part->{dir} : "$CODE_BASE/$part->{dir}");
     push @files, "JS.yaml";
     push @files, glob($part->{file}) if $part->{file};
     push @files, $part->{template} if $part->{template};
     push @files, $part->{config} if $part->{config};
     push @files, $part->{json} if $part->{json};
+    push @files, $part->{coffee} if $part->{coffee};
     push @files, glob("$part->{shindig_feature}/*") if $part->{shindig_feature};
 
     if ($part->{jemplate} and -f $part->{jemplate}) {
@@ -218,23 +219,12 @@ sub _part_last_modified {
     return map { modified($_) } @files;
 }
 
-sub _js_from_coffee {
-    my ($class, $js) = @_;
-    my $coffee = $js;
-    $coffee =~ s/\.js$/.coffee/ or return;
-    -f $coffee or return;
-    return if -f $js and modified($js) > modified($coffee);
-    if ($coffee_compiler) {
-        warn "Building $js from $coffee...\n" if $VERBOSE;
-        system $coffee_compiler => -c => $coffee;
-        return;
-    }
-    warn "No coffee compiler found in PATH, skipping...\n" if $VERBOSE;
-}
-
 sub _part_to_text {
     my ($class, $part) = @_;
-    local $CWD = "$CODE_BASE/$part->{dir}";
+    local $CWD = (($part->{dir} =~ m{^/}) ? $part->{dir} : "$CODE_BASE/$part->{dir}");
+    if ($part->{coffee}) {
+        return $class->_coffee_to_text($part);
+    }
     if ($part->{file}) {
         return $class->_file_to_text($part);
     }
@@ -280,15 +270,30 @@ sub _shindig_feature_to_text {
         "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
 }
 
+sub _coffee_to_text {
+    my ($class, $part) = @_;
+    if ($coffee_compiler) {
+        system $coffee_compiler => -c => $part->{coffee};
+        (my $output = $part->{coffee}) =~ s{\.coffee$}{.js};
+        my $content = $class->_file_to_text({ file => $output });
+        unlink $output;
+        return $content;
+    }
+    warn "No coffee compiler found in PATH, skipping...\n" if $class->verbose;
+    return '';
+}
+
 sub _file_to_text {
     my ($class, $part) = @_;
     my $text = '';
     for my $file (glob($part->{file})) {
-        $class->_js_from_coffee($file);
         $text .= "// BEGIN $part->{file}\n" unless $part->{nocomment};
-        $text .= slurp($file);
+        $text .= decode_utf8(slurp($file));
     }
-    return $text;
+
+    # Ensure text is UTF-8 compatible and without BOM marks
+    $text =~ s/\x{FEFF}//g;
+    return encode_utf8($text);
 }
 
 sub _template_to_text {
@@ -366,7 +371,10 @@ sub _json_to_text {
     my $name = $part->{name} || die "name required";
     my $text = '';
     $text .= $part->{nocomment} ? '' : "// BEGIN $part->{json}\n";
-    $text .= "$name = " . encode_json(YAML::LoadFile($part->{json})) . ";";
+    $text .= "$name = " . JSON::XS->new->ascii->allow_nonref->canonical(1)->encode(
+        YAML::LoadFile($part->{json})
+    ) . ";";
+    $text .= $part->{epilogue} if $part->{epilogue};
     return $text;
 }
 

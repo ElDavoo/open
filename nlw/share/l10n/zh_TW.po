@@ -4460,7 +4460,7 @@ msgstr "您剛才編輯的%1顯示如下。您可以從此處複製貼上您的�
 
 #: share/skin/s3/template/view/page_locked:17
 msgid "edit.view-locked"
-msgstr "您的更改的原始wikitext 如下。您可以從此處複製您的更改。"
+msgstr "您的更改的源碼格式如下。您可以從此處複製您的更改。"
 
 #: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
@@ -6009,7 +6009,7 @@ msgstr "新密碼不符合"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2171
 msgid "error.new-sheet-name-required"
-msgstr "請提供一個新的試算表的名稱。"
+msgstr "請提供一個新的頁面名稱。"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:1139 lib/Socialtext/Handler/ControlPanel.pm:1187
 msgid "error.no-account-id!"
@@ -6192,7 +6192,7 @@ msgstr "名為『%1』的頁面不存在"
 #. (loc("page.type-"+type)
 #: share/skin/s3/javascript/lightbox/create_content.js:73
 msgid "error.no-page=type,tag"
-msgstr "找不到有『%2』標籤的%1"
+msgstr "找不到有『範本』或『template』標籤的頁面"
 
 #: lib/Socialtext/User/Factory.pm:465
 msgid "error.no-password-for-new-user"
@@ -6538,7 +6538,7 @@ msgstr "註冊號被停用。"
 
 #: lib/Socialtext/Handler/Base.pm:122 lib/Socialtext/Handler/ControlPanel.pm:52 lib/Socialtext/Rest.pm:62
 msgid "error.relogin"
-msgstr "登入會話已過期，請重新認証。"
+msgstr "登入階段已過期，請重新認証。"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:230
 msgid "error.remove-account-widget"
@@ -6853,7 +6853,7 @@ msgstr "無法修改系統建立用戶的名字"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:479
 msgid "error.sheet-contention:"
-msgstr "當您編輯的時候，<span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 儲存了試算表的一個版本，並且我們無法調和這個變化。您想："
+msgstr "當您編輯的時候，<span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 儲存了此頁面的另一個版本，並且我們無法調和這個變化。您想："
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2183
 msgid "error.sheet-name-exists"
@@ -6865,7 +6865,7 @@ msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2098 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2179
 msgid "error.sheet-title-too-long"
-msgstr "試算表名稱太長。請縮短名稱，再試一次。"
+msgstr "頁面名稱太長。請縮短名稱，再試一次。"
 
 #: lib/Socialtext/CLI.pm:428
 msgid "error.show-pref-for-multiple-plugins"
@@ -8840,6 +8840,9 @@ msgstr "RSS 訂閱項目"
 msgid "insert.file"
 msgstr "本頁面的附帶檔案"
 
+msgid "insert.file-image"
+msgstr "本頁面的附帶圖片"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:30
 msgid "insert.from-the-web"
 msgstr "從網路..."
@@ -10412,6 +10415,9 @@ msgstr "%1的副本"
 msgid "page.edit"
 msgstr "編輯"
 
+msgid "page.edit-as-xhtml"
+msgstr "編輯"
+
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
 msgid "page.edit=title"
@@ -10622,6 +10628,9 @@ msgstr "試算表"
 msgid "page.type-wiki"
 msgstr "頁面"
 
+msgid "page.type-xhtml"
+msgstr "頁面"
+
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
 msgstr "解鎖頁面"
@@ -10786,7 +10795,7 @@ msgstr "相關度"
 
 #: share/plugin/people/template/lite/profile.html:13
 msgid "people.stop-following"
-msgstr "停止下面的"
+msgstr "停止關注"
 
 msgid "people.tag-name"
 msgstr "標籤名稱"
@@ -11654,7 +11663,7 @@ msgstr "由："
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "revision.color"
-msgstr "顏色查看（無格式的）"
+msgstr "以源碼格式檢視"
 
 #: share/skin/s3/template/view/page/revision_compare:49
 msgid "revision.compare"
@@ -11716,7 +11725,7 @@ msgstr "標籤："
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "revision.view"
-msgstr "查看含格式的"
+msgstr "以顯示格式檢視"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:59
 msgid "sc.add-tags"
@@ -11846,7 +11855,7 @@ msgstr "向下"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2527
 msgid "sc.edit-more"
-msgstr "編輯更多"
+msgstr "繼續編輯"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:254
 msgid "sc.edit-revision"
@@ -11862,11 +11871,11 @@ msgstr "編輯："
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:439
 msgid "sc.enter-sheet-name"
-msgstr "輸入新的試算表的名稱"
+msgstr "輸入新的頁面名稱"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:440
 msgid "sc.enter-sheet-title"
-msgstr "為您的試算表輸入一個有意義的和獨特的名稱。"
+msgstr "為您的頁面輸入一個有意義的和獨特的名稱。"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:56
 msgid "sc.erase"
@@ -12119,7 +12128,7 @@ msgstr "另存為..."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:480
 msgid "sc.save-as-new-revision"
-msgstr "作為一個新的版本儲存在目前試算表"
+msgstr "作為一個新的版本儲存在目前頁面"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14
 msgid "sc.save-changes"
@@ -12139,11 +12148,11 @@ msgstr "儲存一個新的名稱："
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:455
 msgid "sc.save-with-suggested-name"
-msgstr "儲存試算表名稱為 \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
+msgstr "儲存頁面名稱為 \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:451
 msgid "sc.sheet-already-exists"
-msgstr "試算表已經存在"
+msgstr "頁面已經存在"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1029 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:214
 msgid "sc.sheet-settings"
@@ -12151,7 +12160,7 @@ msgstr "試算表設定"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:442
 msgid "sc.sheet-title:"
-msgstr "試算表名稱："
+msgstr "頁面名稱："
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
 msgid "sc.show-preview"
@@ -14953,3 +14962,6 @@ msgstr "插入影片"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "插入一個小工具"
+
+msgid "xhtml.creating"
+msgstr "正在建立頁面..."

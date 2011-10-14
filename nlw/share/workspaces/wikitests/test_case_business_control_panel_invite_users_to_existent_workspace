@@ -1,3 +1,6 @@
+
+*Will convert to TUX when confirmation message is restored or confirmed deleted*
+
 | *Comment* | Test Case: Test Case: Business Control Panel Invite Users to Existent Workspace |  |
 
 | set | email1 | group-1-ews-%%start_time%%@ken.socialtext.com |

@@ -363,7 +363,7 @@ div #controls.empty {
         height: 8px !important;
 }
 
-body#contentPage div#controls,body#settingsPage div#controls,body#dashBoard div#controls, body#revisions div#controls,body#settingsPage div#controls, #socialcalc-header {
+body#contentPage div#controls,body#settingsPage div#controls,body#dashBoard div#controls, body#revisions div#controls,body#settingsPage div#controls, #socialcalc-header, #ckeditor-header {
 	height: 44px;
 	background: url(../images/contentControlsTile.png) repeat-x top left;
 }
@@ -1080,6 +1080,11 @@ div#contentColumns div#contentLeft p strong {
 body#blog div#contentColumns div#contentLeft img {
 	margin-top: 20px;
 	border: #cfcfcf 6px solid;
+}
+
+body#blog div#contentColumns div#contentLeft div.signal img {
+	margin-top: 0px;
+	border: none;
 }
 
 div.messageBox {

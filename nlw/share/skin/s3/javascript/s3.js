@@ -24,6 +24,7 @@ function is_reserved_pagename(pagename) {
     }
 }
 
+(function(){
 // Create a document.hasFocus function that tests whether we've lost focus
 var chrome = /chrome/.test( navigator.userAgent.toLowerCase() );
 if (typeof(document.hasFocus) == 'undefined' || chrome){
@@ -40,6 +41,7 @@ if (typeof(document.hasFocus) == 'undefined' || chrome){
     }
     document.hasFocus = function() { return focus }
 }
+})();
 
 /* DO NOT EDIT THIS FUNCTION! run dev-bin/generate-title-to-id-js.pl instead */
 function page_title_to_page_id (str) {
@@ -330,7 +332,7 @@ $(function() {
     // Fix the global nav for IE6
     //$('#mainNav ul.level2').createSelectOverlap({noPadding: true});
 
-    $('table.sort')
+    $('table.sort, table[data-sort]')
         .each(function() { Socialtext.make_table_sortable(this) });
 
     $('#st-page-boxes-toggle-link')
@@ -468,6 +470,16 @@ $(function() {
         );
     }
 
+    var ckeditor_uri = nlw_make_plugin_path(
+        "/ckeditor/javascript/socialtext-ckeditor.js" + _gz
+    );
+    if (Socialtext.ckeditor_make_time) {
+        ckeditor_uri = ckeditor_uri.replace(
+            /(\d+\.\d+\.\d+\.\d+)/,
+            '$1.' + Socialtext.ckeditor_make_time
+        );
+    }
+
     function get_lightbox (lightbox, cb) {
         Socialtext.lightbox_loaded = Socialtext.lightbox_loaded || {};
         if (Socialtext.lightbox_loaded[lightbox]) {
@@ -544,7 +556,7 @@ $(function() {
                 oncomplete: function () {
                     $.get(Page.pageUrl(page_id), function (html) {
                         $('#content_'+page_id).html(html);
-                    });
+                    }, 'html');
                 }
             });
             ge.show();
@@ -758,9 +770,18 @@ $(function() {
 
     Socialtext.load_editor = function () {
         $.ajaxSettings.cache = true;
-        if (Socialtext.page_type == 'spreadsheet' && Socialtext.wikiwyg_variables.hub.current_workspace.enable_spreadsheet) {
+        var current_workspace = Socialtext.wikiwyg_variables.hub.current_workspace;
+
+        if (Socialtext.page_type == 'spreadsheet' && current_workspace.enable_spreadsheet) {
             $.getScript(socialcalc_uri, function () {
                 Socialtext.start_spreadsheet_editor();
+                $('#bootstrap-loader').hide();
+            });
+        }
+        else if (current_workspace.enable_xhtml) {
+            // Always auto-convert "wiki" pages to xhtml
+            $.getScript(ckeditor_uri, function () {
+                Socialtext.start_xhtml_editor();
                 $('#bootstrap-loader').hide();
             });
         }

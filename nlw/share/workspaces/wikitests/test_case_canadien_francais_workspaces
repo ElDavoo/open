@@ -64,8 +64,8 @@
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Display in Workspace Widget in Dashboard |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=Add Widget | 30000 |
-| click_and_wait | link=Add Widget |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_and_wait | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Workspaces | 30000 |
 | click_and_wait | gallery-widget-Workspaces |  |
 | text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%(?!Workspace)/ |

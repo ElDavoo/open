@@ -268,11 +268,13 @@
             '*/*':           &default [Socialtext::Rest::Page, GET_html]
             'text/html':              *default
             'text/x.socialtext-wiki': [Socialtext::Rest::Page, GET_wikitext]
+            'application/xhtml+xml':  [Socialtext::Rest::Page, GET_xhtml]
             'application/json':       [Socialtext::Rest::Page, GET_json]
             'text/x-yaml':            [Socialtext::Rest::Page, GET_yaml]
         'DELETE': [Socialtext::Rest::Page, DELETE]
         'PUT':
             'text/x.socialtext-wiki': [Socialtext::Rest::Page, PUT_wikitext]
+            'application/xhtml+xml':  [Socialtext::Rest::Page, PUT_xhtml]
             'application/json':       [Socialtext::Rest::Page, PUT_json]
             'text/html':              [Socialtext::Rest::Page, PUT_html]
             '*/*':                    [Socialtext::Rest::Page, bad_type]
