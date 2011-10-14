@@ -1,13 +1,15 @@
+*On hold until template functionality is restored in no-calc wikis*
+
 | *Comment* | Test Case: Create Content |  |
-| set | select_template | `//div[@id='create-content-from-template']/select` |
+| set | select_template | `//div[@class='from-template']/select` |
 | set | copy_from | `//div[@id='create-content-from-page']/input[2]` |
 
 | st-admin | disable-plugin --w %%workspace%% --plugin socialcalc |  |
 
 | *Comment* | Test Case: Create Content: reload page after disabling spreadsheets |  |
 | open_ok | /%%workspace%% |  |
-| wait_for_element_visible_ok | link=+ New Page | 30000 |
-| click_ok | link=+ New Page |  |
+| wait_for_element_visible_ok | st-create-content-link | 30000 |
+| click_ok | st-create-content-link |  |
 
 | *Comment* | Test Case: Create Content: verify radio buttons |  |
 | wait_for_element_visible_ok | blank-radio | 5000 |
@@ -25,11 +27,10 @@
 
 | *Comment* | Test Case: Create Content: make blank, template, and copied pages |  |
 
-| *Comment* | Test Case: Create Content: use Blank |  |
-| click_and_wait | st-create-content-savelink |  |
+| *Comment* | Test Case: Create Content: use Blank |  |  |
+| click_and_wait | st-create-content-savelink |  |  |
 
 | call | st-edit-save-page | title=Create Page %%start_time%% | content=Have some Create Page %%start_time%% Content |
-
 
 | *Comment* | Test Case: Create Content: tag blank as Template |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
@@ -46,12 +47,12 @@
 | check_ok | use-template-radio |  |
 | select_ok | %%select_template%% | Create Page %%start_time%% |
 | click_and_wait | st-create-content-savelink |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 30000 |
+| click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 30000 |
 | verifyValue | st-newpage-pagename-edit | Untitled Page |
-| verifyValue | wikiwyg_wikitext_textarea | Have some Create Page %%start_time%% Content |
+| verifyValue | //textarea[contains(@class,"cke_source")] | Have some Create Page %%start_time%% Content |
 | type_ok | st-newpage-pagename-edit | Create Page %%start_time%% from Template |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
