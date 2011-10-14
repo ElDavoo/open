@@ -1283,6 +1283,38 @@ msgstr "忽略錯誤"
 msgid "bug.report"
 msgstr "報告錯誤"
 
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:3
+msgid "ckeditor.checking-for-edit-contention"
+msgstr "檢查其他人對此頁面的更改"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:4
+msgid "ckeditor.generating-page-content"
+msgstr "產生頁面內容"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
+msgid "ckeditor.page-save-progress"
+msgstr "頁面儲存進度"
+
+#: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.tt2:5
+msgid "ckeditor.saving-page-content-kb"
+msgstr "正在儲存頁面 (<span id=\"st-xhtml-save-progress-size\">?</span> kB)"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:187 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switch-modes?"
+msgstr "確定要切換模式？"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:185 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.switching-to-wikitext-mode-will-result-in-loss-of-some-formatting-on-this-page"
+msgstr "切換模式將使某些格式<strong>消失</strong>。"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:183 share/plugin/ckeditor/share/javascript/WikitextArea.js:228
+msgid "ckeditor.wikitext-does-not-support-all-rich-text-formatting"
+msgstr "Wiki 源碼尚未支援所有豐富文字格式。"
+
+#: share/plugin/ckeditor/share/javascript/WikitextArea.coffee:172 share/plugin/ckeditor/share/javascript/WikitextArea.js:216
+msgid "ckeditor.wikitext-mode-warning"
+msgstr "源碼格式警示"
+
 #: lib/Socialtext/Wikiwyg/AnalyzerPlugin.pm:11
 msgid "class.analyzer"
 msgstr "分析"
