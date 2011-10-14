@@ -1,0 +1,20 @@
+---
+background_color: '#181818'
+background_image: ~
+background_image_position: left top
+background_image_tiling: repeat
+background_link_color: '#f58025'
+base_theme: Starfish
+body_font: Helvetica
+favicon_image: ~
+foreground_shade: light
+header_color: '#181818'
+header_font: Georgia
+header_image: ~
+header_image_position: left top
+header_image_tiling: repeat
+header_link_color: '#ffffff'
+logo_image: ic_logo_white.gif
+primary_color: '#f58025'
+secondary_color: '#f58025'
+tertiary_color: '#e8e8e8'
