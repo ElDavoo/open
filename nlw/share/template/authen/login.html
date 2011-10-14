@@ -9,7 +9,7 @@
   [% END %]
 
   <div class="grid_8">
-    <div class="login_field">
+    <div class="first_field login_field">
       <h2><label for="username">[% username_label %]</label></h2>
       <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus="autofocus" />
     </div>
@@ -41,6 +41,9 @@
         <div class="clear"></div>
         [% INCLUDE errors_and_messages %]
       [% END %]
+    </div>
+    <div class="login_field">
+      [% INCLUDE 'authen/element/forgot_password_link' %]
     </div>
   </div>
 
