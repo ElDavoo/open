@@ -118,7 +118,6 @@ sub public_workspaces {
         push @workspaces, $ws;
         last if (scalar(@workspaces) == WORKSPACE_LIST_SIZE);
     }
-    use Data::Dump 'dump'; dump \@workspaces;
 
     return @workspaces;
 }
