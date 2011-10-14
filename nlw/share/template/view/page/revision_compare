@@ -12,34 +12,40 @@
           [% loc('revision.current') %]
         </a>
       </li>
+      <li>&#166;</li>
+      <li><a href="[% script_name %]?action=revision_list;page_id=[% page_uri %]">[% loc('revision.all') %]</a></li>
+      <li>&#166;</li>
       <li>
         <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% prev_id %];mode=[%mode%]">
           [% loc('revision.previous-compare') %]
         </a>
       </li>
-      <li><a href="[% script_name %]?action=revision_list;page_id=[% page_uri %]">[% loc('revision.all') %]</a></li>
-      <li><a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% next_id %];mode=[%mode%]">[% loc('revision.next-compare') %]</a></li>
-      [% IF mode != 'html' %]
-        <li>
+      <li>&#166;</li>
+      <li>
+        [% IF mode != 'html' %]
           <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=html">
-              [% loc('Highlight') %]
-          </a>
-        </li>
-      [% END %]
-      [% IF mode != 'wikitext' %]
-        <li>
+        [% END %]
+        [% loc('Highlight') %]
+        [% IF mode != 'html' %]</a>[% END %]
+      </li>
+      <li>&#166;</li>
+      <li>
+        [% IF mode != 'wikitext' %]
           <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=wikitext">
-            [% loc('Wikitext') %]
-          </a>
-        </li>
-      [% END %]
-      [% IF mode != 'view' %]
-        <li>
+        [% END %]
+        [% loc('Wikitext') %]
+        [% IF mode != 'wikitext' %]</a>[% END %]
+      </li>
+      <li>&#166;</li>
+      <li>
+        [% IF mode != 'view' %]
           <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=view">
-            [% loc('view') %]
-          </a>
-        </li>
-      [% END %]
+        [% END %]
+        [% loc('View') %]
+        [% IF mode != 'view' %]</a>[% END %]
+      </li>
+      <li>&#166;</li>
+      <li><a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% next_id %];mode=[%mode%]">[% loc('revision.next-compare') %]</a></li>
     </ul>
   </div>
 </div>

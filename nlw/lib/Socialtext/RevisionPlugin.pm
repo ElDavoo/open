@@ -107,7 +107,7 @@ sub revision_view {
       }
     }
 
-    my $output = $self->cgi->mode eq 'source'
+    my $output = $self->cgi->mode eq 'html'
       ? do { local $_ = $self->html_escape( $page->content ); s/$/<br \/>/gm; $_ }
       : $page->to_html;
 
