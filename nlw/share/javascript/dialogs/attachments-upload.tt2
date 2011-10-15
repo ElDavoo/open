@@ -27,7 +27,7 @@
 [% BLOCK duplicate_attachment_warning %]
     <p class="tip">[% tip %]</p>
     <div class="more" style="display:none">
-     <img src="/static/skin/s3/images/warning.png" />
+     <img src="/static/images/icons/warning.png" />
      <p></p>
     </div>
 
