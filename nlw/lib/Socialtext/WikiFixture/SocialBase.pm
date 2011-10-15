@@ -651,7 +651,7 @@ sub create_account {
     my $ws = Socialtext::Workspace->new(name => 'admin');
     $acct->enable_plugin($_) for qw/people dashboard widgets signals groups/;
     if ($ws) {
-        $ws->enable_plugin($_) for qw/socialcalc/;
+        $ws->enable_plugin($_) for qw/socialcalc ckeditor/;
     }
     $self->{account_id} = $acct->account_id;
     diag "Created account $name ($self->{account_id})";
@@ -1191,7 +1191,7 @@ sub create_workspace {
 
     $ws->assign_role_to_account(account => $account) if ($allusers);
 
-    $ws->enable_plugin($_) for qw/socialcalc/;
+    $ws->enable_plugin($_) for qw/socialcalc ckeditor/;
     $self->{workspace_id} = $ws->workspace_id;
     diag "Created workspace $name";
     return $ws;
