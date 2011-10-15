@@ -12,6 +12,8 @@ Test Wikitext and XHTML page types via the REST API
 | add-member       | %%user_a%%                             | %%ws%%     |            |
 | http-user-pass   | %%user_a%%                             | qwerty     |            |
 
+| st-admin | enable-plugin --workspace %%ws%% --plugin ckeditor |
+
 | comment | PUT with wikitext                   |                                     |     |
 | PUT     | /data/workspaces/%%ws%%/pages/page1 | Content-Type=text/x.socialtext-wiki | One |
 | code-is | 201                                 |                                     |     |
