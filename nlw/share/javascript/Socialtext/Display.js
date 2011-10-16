@@ -239,6 +239,8 @@ $(function() {
     $('#st-create-content-link').button().click(function() {
         st.dialog.show('create-content');
     });
+    // Make Invite! link a button
+    $('#st-wiki-subnav-link-invite').button();
 });
 
 
