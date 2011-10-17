@@ -28,7 +28,7 @@
             [% IF gadget.content_type == 'inline'; INCLUDE widget/inline.tt2; ELSE; INCLUDE widget/iframe.tt2; END %]
             <div class="clear"></div>
         </div>
-        [% IF editing && !gadget.parent_instance_id  %]
+        [% IF pushable  %]
         <div id="gadget-[% gadget.instance_id %]-push" class="widgetPush">
             <input class="push-widget" name="[% gadget.title %]" id="push_[% gadget.instance_id %]" type="checkbox" /> <label for="push_[% gadget.instance_id %]">[% loc('widget.push-all') %]</label>
         </div>

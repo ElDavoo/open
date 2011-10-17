@@ -17,31 +17,36 @@
         [% loc('revision.current') %]
       </a>
     </li>
-    <li>
-      <a href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% next_revision %];mode=[% mode %]">
-        [% loc('revision.previous') %]
-      </a>
-    </li>
+    <li>&#166;</li>
     <li>
       <a href="[% script_name %]?action=revision_list;page_id=[% page_uri %]">
         [% loc('revision.all') %]
       </a>
     </li>
+    <li>&#166;</li>
+    <li>
+      <a href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% next_revision %];mode=[% mode %]">
+        [% loc('revision.previous') %]
+      </a>
+    </li>
+    <li>&#166;</li>
     <li>
       <a href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% previous_revision %];mode=[% mode %]">
         [% loc('revision.next') %]
       </a>
     </li>
+    <li>&#166;</li>
     <li>
-      <a href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% revision_id %];mode=[% IF mode != 'source' %]source[% END %]">
-        [% IF mode == 'source' %]
+      <a href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% revision_id %];mode=[% IF mode != 'html' %]html[% END %]">
+        [% IF mode == 'html' %]
           [% loc('revision.normal-view') %]
         [% ELSE %]
-          [% loc('do.source-view') %]
+          [% loc('HTML View') %]
         [% END %]
       </a>
     </li>
     [% IF checker.check_permission('edit') AND ! page_locked_for_user %]
+    <li>&#166;</li>
     <li>
         <a href="#" id="st-revision-restorebutton" onclick="jQuery('#restore-form').submit(); return false">
           [% loc("page.restore=revision", human_readable_revision) %]

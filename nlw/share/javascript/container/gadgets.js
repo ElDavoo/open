@@ -449,28 +449,20 @@ container.toggleSetup = function (id) {
     return;
 }
 
-container._make_query = function (args) {
-    var list = [];
-    for (var key in args) {
-        var val = typeof(args[key]) == 'object' ? gadgets.json.stringify(args[key]) : args[key];
-        list.push(key + '=' + val);
-    }
-    return list.join('&');
-}
-
 function _getLayout () {
     var cols = [];
     jQuery('.widgetColumn').each(function(col) {
         cols[col] = [];
-        jQuery('.widget:not(.waflWidget)', this).each(function(row){
-            var $this = $(this);
-            if ($this.parents('.wiki').length) { return; }
+        jQuery('.widget:not(.waflWidget)', this).each(function(row, widget){
+            var $widget = $(widget);
+            if ($widget.parents('.wiki').length) { return; }
 
-            var instance_id = $this.find('input[name=instance_id]').val();
+            var instance_id = $widget.find('input[name=instance_id]').val();
             var gadget = {
                 instance_id: instance_id,
-                gadget_id: $this.find('input[name=gadget_id]').val(),
-                minimized: $this.hasClass('minimized')
+                gadget_id: $widget.find('input[name=gadget_id]').val(),
+                minimized: $widget.hasClass('minimized'),
+                push: $widget.find('.push-widget').is(':checked')
             };
 
             // also add any pending changes to the gadget
@@ -596,7 +588,9 @@ container.renderGadget = function(data, template_vars, node) {
         workspaces: workspaces,
         accounts: accounts,
         loc: loc,
-        editing: $('#dashboard-save-layout').is(':visible')
+        pushable: self._in_edit_mode
+            && self.type == 'account_dashboard'
+            && !data.parent_instance_id
     }, template_vars));
 
     // insert the widget at col/row
@@ -737,6 +731,10 @@ container.leaveEditMode = function() {
     // Show view mode buttons
     $('#globalNav .editMode').hide();
     $('#globalNav .viewMode').show();
+
+    // Get rid of push checkboxes
+    $('.widgetColumn .widgetPush').remove();
+
     self._in_edit_mode = false;
 };
 

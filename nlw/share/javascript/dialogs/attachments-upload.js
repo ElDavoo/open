@@ -165,6 +165,8 @@ AttachmentUpload.prototype = {
             self.refreshUploadedAttachmentsList();
         });
         st.page.refreshPageContent();
+
+        $('#st-attachments-attach-filename').attr('disabled', false);
     },
 
     refreshUploadedAttachmentsList: function() {

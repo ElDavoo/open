@@ -261,7 +261,12 @@ footer
     .settings
       background: transparent url(#{$static}/images/icons/configure-darker-12.png) no-repeat top left
     .fix
-      /* XXX
+  .widgetPush
+    background: #EEE
+    text-align: center
+    margin-top: 10px
+    font-style: italic
+    color: #666
 
 /**
  * Dropdowns
@@ -622,6 +627,15 @@ td.widgetUserPrefsButtons
   padding-top: 15px
   input
     cursor: pointer
+
+#st-login-form
+  padding-top: 5px
+  .login_field
+    padding: 5px 10px
+  .publicWorkspaces
+    border-left: 1px dashed #ccc
+    min-height: 200px
+    padding: 5px 0 0 10px
 
 @import wiki.sass
 @import control.sass

@@ -16,11 +16,11 @@ Test Wikitext and XHTML page types via the REST API
 | PUT     | /data/workspaces/%%ws%%/pages/page1 | Content-Type=text/x.socialtext-wiki | One |
 | code-is | 201                                 |                                     |     |
 
-| comment     | GET HTML representation                    |           |
-| GET         | /data/workspaces/%%ws%%/pages/page1?html=1 | text/html |
-| code-is     | 200                                        |           |
-| header-like | Content-Type                               | text/html |
-| body-like   | qr/One/                                    |           |
+| comment     | GET HTML representation             |           |
+| GET         | /data/workspaces/%%ws%%/pages/page1 | text/html |
+| code-is     | 200                                 |           |
+| header-like | Content-Type                        | text/html |
+| body-like   | qr/One/                             |           |
 
 | comment     | GET Wikitext representation         |                        |
 | GET         | /data/workspaces/%%ws%%/pages/page1 | text/x.socialtext-wiki |
@@ -92,11 +92,11 @@ Test Wikitext and XHTML page types via the REST API
 | PUT     | /data/workspaces/%%ws%%/pages/page2 | Content-Type=application/xhtml+xml | One |
 | code-is | 201                                 |                                    |     |
 
-| comment     | GET HTML representation                    |           |
-| GET         | /data/workspaces/%%ws%%/pages/page2?html=1 | text/html |
-| code-is     | 200                                        |           |
-| header-like | Content-Type                               | text/html |
-| body-like   | qr/One/                                    |           |
+| comment     | GET HTML representation             |           |
+| GET         | /data/workspaces/%%ws%%/pages/page2 | text/html |
+| code-is     | 200                                 |           |
+| header-like | Content-Type                        | text/html |
+| body-like   | qr/One/                             |           |
 
 | comment     | GET Wikitext representation         |                        |
 | GET         | /data/workspaces/%%ws%%/pages/page2 | text/x.socialtext-wiki |

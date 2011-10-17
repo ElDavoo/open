@@ -32,7 +32,6 @@ sub GET_css {
         my $sass = Socialtext::SASSy->new(
             account => $self->account,
             filename => $filename,
-            style => $rest->query->param('style') || 'compressed',
         );
         $sass->render if $sass->needs_update;
 

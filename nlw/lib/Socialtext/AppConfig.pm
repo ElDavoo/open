@@ -1277,6 +1277,14 @@ Default: 1
 
 =for code type => SCALAR_TYPE
 
+=head2 minify_css
+
+Set this to false disables the css minifier.
+
+Default: 1
+
+=for code type => SCALAR_TYPE
+
 =head2 analytics_id
 
 Server-wide Google Analytics

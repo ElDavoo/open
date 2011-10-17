@@ -14,7 +14,7 @@
       <input id="st-attachments-attach-filename" size="45" type="file" name="file"/>
     </p>
     <input type="hidden" id="st-attachments-attach-editmode" name="editmode" value="0"/>
-    <input type="hidden" id="st-attachments-attach-embed" name="embed" value="1"/>
+    <input type="hidden" id="st-attachments-attach-embed" name="embed-in-editor" value="1"/>
     <input type="hidden" id="st-attachments-attach-replace" name="replace" value="0" />
     <div class="warning" id="st-attachments-duplicate-menu" style="display:none">
         [% INCLUDE duplicate_attachment_warning %]
@@ -27,7 +27,7 @@
 [% BLOCK duplicate_attachment_warning %]
     <p class="tip">[% tip %]</p>
     <div class="more" style="display:none">
-     <img src="/static/skin/s3/images/warning.png" />
+     <img src="/static/images/icons/warning.png" />
      <p></p>
     </div>
 

@@ -22,7 +22,16 @@ has 'account' => ( is => 'ro', isa => 'Socialtext::Account', required => 1 );
 has 'filename' => ( is => 'ro', isa => 'Str', required => 1 );
 
 # style an be: compact, compressed, or expanded.
-has 'style' => ( is => 'ro', isa => 'Str', default => 'compressed' );
+has 'style' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
+sub _build_style {
+    my $minify = eval {
+        require Socialtext::AppConfig;
+        return Socialtext::AppConfig->minify_css eq 'on';
+    };
+    $minify = 1 if $@;
+
+    return $minify ? 'compressed' : 'expanded';
+}
 
 has 'files' => (
     is => 'ro', isa => 'ArrayRef', lazy_build => 1, auto_deref => 1,
@@ -90,11 +99,12 @@ method render {
     $Socialtext::System::SILENT_RUN = 1;
     shell_run(
         '/opt/ruby/1.8/bin/sass',
-        '--compass',
-        '-I', $self->code_base . '/sass', # Add sass files from starfish
-        '-t', $self->style,
-        $self->sass_file,
-        $self->css_file,
+        '--compass',                            # http://compass-style.org/
+        '-I', $self->code_base . '/sass',       # Add sass files from starfish
+        '-t', $self->style,                     # compressed or expanded
+        $self->style eq 'expanded' ? ('-l'):(), # line numbers when expanded
+        $self->sass_file,                       # Input
+        $self->css_file,                        # Output
     );
 }
 
