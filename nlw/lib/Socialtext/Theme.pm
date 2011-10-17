@@ -346,7 +346,7 @@ sub _CreateAttachmentsIfNeeded {
     my $themedir = shift;
     my $params = shift;
 
-    my $creator = Socialtext::User->SystemUser;
+    my $creator = delete $params->{creator} || Socialtext::User->SystemUser;
 
     # Don't worry about breaking links to old upload objects, they'll get
     # auto-cleaned.
