@@ -34,12 +34,6 @@ st.dialog.register('page-email', function(opts) {
 
     dialog.find('input[name="email_page_subject"]').select().focus();
 
-    $('#email_add').button().click(function () {
-        clearHelp();
-        $('#email_source option:selected').appendTo('#email_dest');
-        return false;
-    });
-
     $('#email_remove').button().click(function () {
         $('#email_dest option:selected').remove();
         return false;
@@ -70,6 +64,34 @@ st.dialog.register('page-email', function(opts) {
         return false;
     });
 
+    function acceptEmail(val) {
+        clearHelp();
+        dialog.find('.error').html('');
+        var email = val.replace(/^.*<(.*)>$/, '$1');
+        if (!val) {
+            return false;
+        }
+        else if (!st.check_email(val)) {
+            dialog.find('.error').html(loc('error.invalid=email', val))
+            $('#email_page_add_one').focus();
+            return false;
+        }
+        else {
+            var matches = $.grep(
+                $('#email_dest option'),
+                function(opt) {
+                    var val = opt.value.replace(/^.*<(.*)>$/, '$1');
+                    return val == email;
+                }
+            );
+            if (!matches.length) {
+                $('<option />')
+                    .val(email).text(val).appendTo('#email_dest');
+            }
+            return false;
+        }
+    }
+
     $('#email_recipient')
         .lookahead({
             url: '/data/workspaces/' + Socialtext.wiki_id + '/users',
@@ -84,39 +106,16 @@ st.dialog.register('page-email', function(opts) {
                 return item.title;
             },
             onAccept: function(id, item) {
-                $('#email_recipient').val(id);
-                $('#email_recipient').blur();
-                $('#email_add').click();
+                acceptEmail(id);
+                setTimeout(function() {
+                    $('#email_recipient').val('');
+                }, 0);
             }
         });
 
     $('#email_add').button().click(function () {
-        dialog.find('.error').html('');
-        var val = $('#email_recipient').val();
-        var email = val.replace(/^.*<(.*)>$/, '$1');
-        if (!val) {
-            return false;
-        }
-        else if (!st.check_email(val)) {
-            dialog.find('.error').html(loc('error.invalid=email', val))
-            $('#email_page_add_one').focus();
-            return false;
-        }
-        else {
-            $('#email_recipient').val('').focus();
-            var matches = $.grep(
-                $('#email_dest option'),
-                function(opt) {
-                    var val = opt.value.replace(/^.*<(.*)>$/, '$1');
-                    return val == email;
-                }
-            );
-            if (!matches.length) {
-                $('<option />')
-                    .val(email).text(val).appendTo('#email_dest');
-            }
-            return false;
-        }
+        acceptEmail($('#email_recipient').val());
+        $('#email_recipient').val('');
     });
 
     dialog.find('form').submit(function () {
