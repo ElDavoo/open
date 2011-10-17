@@ -1,3 +1,5 @@
+*On hold until st-edit-mobile-page works*
+
 | *Comment* | Test Case: Include Page |  |
 
 | set | tcipw | page-include-%%start_time%% |
@@ -45,7 +47,7 @@ Repeat test using Miki/Lite access.
 
 | *Comment* | Test Case: Include Page. Open the included page for editing |  |
 
-| call | st-edit-mobile-page | value=`{include: [%%ip_title%%]}` |
+| call | [st-edit-mobile-page] | value=`{include: [%%ip_title%%]}` |
 
 Include a page in a public wiki page when logged in. Test for content and edit button.
 Repeat test using Miki/Lite access.
@@ -75,7 +77,7 @@ Repeat test using Miki/Lite access.
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI Open the included page for editing |  |
 
-| call | st-edit-mobile-page | value=`{include: [%%ip_title%%]}` |
+| call | [st-edit-mobile-page] | value=`{include: [%%ip_title%%]}` |
 
 | click_and_wait | st-cancel-layout |  |
 
