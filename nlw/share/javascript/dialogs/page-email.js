@@ -4,7 +4,6 @@ st.dialog.register('page-email', function(opts) {
     function clearEmails () {
         if (firstAdd) {
             $('#email_dest option').remove();
-            $('#email_dest').removeClass("lookahead-prompt");
         }
     };
     function clearHelp() {
@@ -78,18 +77,16 @@ st.dialog.register('page-email', function(opts) {
                 return user.display_name
                      + ' <' + user.email_address +'>';
             },
+            getEntryThumbnail: function(user) {
+                return '/data/people/' + user.orig.user_id + '/small_photo';
+            },
             displayAs: function (item) {
                 return item.title;
             },
             onAccept: function(id, item) {
+                $('#email_recipient').val(id);
                 $('#email_recipient').blur();
                 $('#email_add').click();
-            }
-        })
-        .focus(function() {
-            if ($(this).hasClass('lookahead-prompt')) {
-                $(this).val("");
-                $(this).removeClass("lookahead-prompt");
             }
         });
 
