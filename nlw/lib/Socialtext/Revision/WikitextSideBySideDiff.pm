@@ -125,3 +125,22 @@ sub enspan_new {
 
 1;
 
+=head1 NAME
+
+Socialtext::Revision::WikitextSideBySideDiff - Wikitext Revision Compare
+
+=head1 SYNOPSIS
+
+  package Socialtext::Revision::WikitextSideBySideDiff;
+  my $differ = Socialtext::Revision::WikitextSideBySideDiff->new(
+    before_page => $before_page,
+    after_page => $new_page,
+    hub => $hub,
+  );
+  my $rows = $differ->diff_rows;
+
+=head1 DESCRIPTION
+
+Compare the wikitext from two revisions.
+
+=cut

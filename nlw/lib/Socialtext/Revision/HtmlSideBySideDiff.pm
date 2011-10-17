@@ -41,3 +41,22 @@ sub diff_rows {
 
 1;
 
+=head1 NAME
+
+Socialtext::Revision::HtmlSideBySideDiff - HTML Revision Compare
+
+=head1 SYNOPSIS
+
+  package Socialtext::Revision::HtmlSideBySideDiff;
+  my $differ = Socialtext::Revision::HtmlSideBySideDiff->new(
+    before_page => $before_page,
+    after_page => $new_page,
+    hub => $hub,
+  );
+  my $rows = $differ->diff_rows;
+
+=head1 DESCRIPTION
+
+Compare the HTML from two revisions.
+
+=cut
