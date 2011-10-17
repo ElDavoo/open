@@ -9,12 +9,14 @@
 
         <div class="buttons">
             [% UNLESS gadget.classes.cannot_remove %]
-                <a class="close" [% IF gadget.fixed %]style="display:none"[% END %] href="#" onclick="gadgets.container.remove('[% gadget.instance_id %]'); return false"></a>
+                <a class="close" [% UNLESS editing && !gadget.fixed %]style="display:none"[% END %] href="#" onclick="gadgets.container.remove('[% gadget.instance_id %]'); return false"></a>
             [% END %]
             [% IF gadget.has_prefs %]
-                <a class="settings" [% IF gadget.fixed %]style="display:none"[% END %] href="#" id="gadget-[% gadget.instance_id %]-settings" onclick="gadgets.container.toggleSetup('[% gadget.instance_id %]'); return false"></a>
+                <a class="settings" [% UNLESS editing && !gadget.fixed %]style="display:none"[% END %] href="#" id="gadget-[% gadget.instance_id %]-settings" onclick="gadgets.container.toggleSetup('[% gadget.instance_id %]'); return false"></a>
             [% END %]
-            <a class="hidden fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.instance_id %]'); return false"></a>
+            [% IF lockable %]
+                <a style="display:none" class="fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.instance_id %]'); return false"></a>
+            [% END %]
         </div>
     </div>
 
@@ -28,7 +30,7 @@
             [% IF gadget.content_type == 'inline'; INCLUDE widget/inline.tt2; ELSE; INCLUDE widget/iframe.tt2; END %]
             <div class="clear"></div>
         </div>
-        [% IF pushable  %]
+        [% IF editing && pushable  %]
         <div id="gadget-[% gadget.instance_id %]-push" class="widgetPush">
             <input class="push-widget" name="[% gadget.title %]" id="push_[% gadget.instance_id %]" type="checkbox" /> <label for="push_[% gadget.instance_id %]">[% loc('widget.push-all') %]</label>
         </div>
