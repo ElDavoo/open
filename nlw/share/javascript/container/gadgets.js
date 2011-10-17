@@ -579,8 +579,6 @@ container.renderGadget = function(data, template_vars, node) {
         data.classes[c] = true;
     });
 
-    console.log(self._in_edit_mode, self.live_edit);
-
     // Render the widget
     var html = Jemplate.process(self.template, $.extend({
         view: self.view,
