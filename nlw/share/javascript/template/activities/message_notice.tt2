@@ -16,4 +16,6 @@
     <span>[% loc('activities.composing-reply-to=person', person) %]</span>
 [% ELSIF className == 'restrictiveFilters' %]
     <span>[% loc('activities.signal-sent-click-to-adjust-filters') %]</span>
+[% ELSIF className == 'newMessages' %]
+    <span>[% loc('<a href="#" class="update">[quant,_1,new activity,new activities]</a>', new_count) %]</span>
 [% END %]
