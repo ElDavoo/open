@@ -3021,16 +3021,17 @@ sub _widget_layout {
 }
 
 sub add_widget_ok {
-    my ($self, $url, $src_or_id, $col) = @_;
-    $col //= 2;
+    my ($self, $url, $src_or_id, $data) = @_;
+    $data = decode_json($data || '{}');
+    my $col = delete $data->{col} // 2;
 
     # Get the original layout
     my $layout = $self->_widget_layout($url);
 
     # Add the new widget
     unshift @{$layout->[$col]}, $src_or_id =~ m{^\d+$}
-        ? { install => 1, gadget_id => $src_or_id }
-        : { install => 1, src => $src_or_id };
+        ? { install => 1, gadget_id => $src_or_id, %$data }
+        : { install => 1, src => $src_or_id, %$data };
     
     # Set the new layout
     $self->put_json($url, encode_json({ gadgets => $layout }));
@@ -3040,6 +3041,18 @@ sub add_widget_ok {
     $self->json_parse;
     my ($gadget) = grep { $_->{col} == $col and !$_->{row} } @{$self->{json}};
     $self->{instance_id} = $gadget->{instance_id}
+}
+
+sub purge_dashboards_in_account {
+    my ($self, $account_id) = @_;
+
+    my $url = "/st/account/$account_id/dashboard";
+
+    # Get the current layout
+    my $layout = $self->_widget_layout($url);
+
+    # Purge
+    $self->put_json($url, encode_json({ gadgets => $layout, purge => 1 }));
 }
 
 sub set_widget_prefs {
