@@ -1,5 +1,3 @@
-*On hold until st-edit-mobile-page works*
-
 | *Comment* | Test Case: Include Page |  |
 
 | set | tcipw | page-include-%%start_time%% |
@@ -38,16 +36,19 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | link=TC Include Page %%start_time%% | 30000 |
 | text_like | link=TC Include Page %%start_time%% | TC Include Page %%start_time%% |
 
-| *Comment* | Test Case: Include Page. Run the same test in Miki |  |
-| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+TUXTODO: Reinstate the miki tests if there is a mobile editor again.
 
-| wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
-| text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
-| text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
+*Comment* | Test Case: Include Page. Run the same test in Miki | |
 
-| *Comment* | Test Case: Include Page. Open the included page for editing |  |
+open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% | |
 
-| call | [st-edit-mobile-page] | value=`{include: [%%ip_title%%]}` |
+wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
+text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
+text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
+
+*Comment* | Test Case: Include Page. Open the included page for editing | |
+
+call | [st-edit-mobile-page] | value=`{include: [%%ip_title%%]}` |
 
 Include a page in a public wiki page when logged in. Test for content and edit button.
 Repeat test using Miki/Lite access.
@@ -66,20 +67,22 @@ Repeat test using Miki/Lite access.
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 | wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 30000 |
 | text_like | contentTitle | %%ip_title%% |
-| verifyValue | wikiwyg_wikitext_textarea | %%ip_content%% |
+| verifyValue | //textarea[contains(@class,"cke_source")] | %%ip_content%% |
+| st-page-save |  |  |
 
-| *Comment* | Test Case: Include Page. PUBLIC MIKI Run the same test in Miki |  |
-| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+*Comment* | Test Case: Include Page. PUBLIC MIKI Run the same test in Miki | |
 
-| wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
-| text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
-| text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
+open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% | |
 
-| *Comment* | Test Case: Include Page. PUBLIC MIKI Open the included page for editing |  |
+wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
+text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
+text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
 
-| call | [st-edit-mobile-page] | value=`{include: [%%ip_title%%]}` |
+*Comment* | Test Case: Include Page. PUBLIC MIKI Open the included page for editing | |
 
-| click_and_wait | st-cancel-layout |  |
+call | [st-edit-mobile-page] | value=`{include: [%%ip_title%%]}` |
+
+click_and_wait | st-cancel-layout | |
 
 Logout from Miki. Test for content and edit button in page view.
 Repeat test using Miki/Lite access.
@@ -101,21 +104,23 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 30000 |
 | text_like | contentTitle | %%ip_title%% |
 | verifyValue | //textarea[contains(@class,"cke_source")] | %%ip_content%% |
+| st-page-save |  |  |
 
-| *Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Run the same test in Miki |  |
-| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+*Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Run the same test in Miki | |
 
-| wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
-| text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
-| text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
+open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% | |
 
-| *Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Open the included page for editing |  |
+wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
+text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
+text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
 
-| call | st-edit-mobile-page | value=`{include: [%%ip_title%%]}` |
+*Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Open the included page for editing | |
+
+call | st-edit-mobile-page | value=`{include: [%%ip_title%%]}` |
 
 | *Comment* | Test Case: Include Page. AUTH. Login. Open the included page for editing |  |
 | st-admin | set-permissions --w %%tcipw%% --p public-join-to-edit | The permissions for the %%tcipw%% workspace have been changed to public-join-to-edit. |
-| st-login |  |  |
+| st-logoutin |  |  |
 
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
@@ -129,44 +134,50 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 30000 |
 | text_like | contentTitle | %%ip_title%% |
 | verifyValue | //textarea[contains(@class,"cke_source")] | %%ip_content%% |
+| st-page-save |  |  |
 
-| *Comment* | Test Case: Include Page. AUTH MIKI Run the same test in Miki |  |
-| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
-| wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
-| text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
-| text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
+*Comment* | Test Case: Include Page. AUTH MIKI Run the same test in Miki | |
 
-| *Comment* | Test Case: Include Page. AUTH MIKI Open the included page for editing |  |
+open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% | |
+wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
+text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
+text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
 
-| call | st-edit-mobile-page | value=`{include: [%%ip_title%%]}` |
+*Comment* | Test Case: Include Page. AUTH MIKI Open the included page for editing | |
 
-| click_and_wait | st-cancel-layout |  |
+call | st-edit-mobile-page | value=`{include: [%%ip_title%%]}` |
+
+click_and_wait | st-cancel-layout | |
 
 Logout from Miki. Test for content and edit button in page view.
 Repeat test using Miki/Lite access.
 
-| *Comment* | Test Case: Include Page. AUTH MIKI. LOGOUT from Miki |  |
-| click_and_wait | link=Log out |  |
-| wait_for_element_visible_ok | st-login-form |  |
+*Comment* | Test Case: Include Page. AUTH MIKI. LOGOUT from Miki | |
+
+click_and_wait | link=Log out | |
+wait_for_element_visible_ok | st-login-form | |
 
 | *Comment* | Test Case: Include Page. AUTH LOGGED OUT. Open page in page view while logged out |  |
+| st-logout |  |  |
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
 | wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
 | text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
 
 | *Comment* | Test Case: Include Page. AUTH LOGGED OUT. CANNOT Open the included page for editing |  |
-| wait_for_element_not_present_ok | link=Edit | 10000 |
+| wait_for_element_not_present_ok | //a[@class="smallEditButton"] | 10000 |
 
-| *Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. Run the same test in Miki |  |
-| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
+*Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. Run the same test in Miki | |
 
-| wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
-| text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
-| text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
+open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% | |
 
-| *Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. CANNOT Open the included page for editing |  |
-| wait_for_element_not_present_ok | link=Edit | 10000 |
+wait_for_element_visible_ok | link=%%ip_title%% | 30000 |
+text_like | //div[@class='wiki-include-title'] | %%ip_title%% |
+text_like | //div[@class='wiki-include-content'] | %%ip_content%% |
+
+*Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. CANNOT Open the included page for editing | |
+
+wait_for_element_not_present_ok | link=Edit | 10000 |
 
 Incipient include works in browser and MIKI
 
@@ -175,7 +186,7 @@ Incipient include works in browser and MIKI
 | *Comment* | Test Case: Include Page. Create an Incipient Include |  |  |  |
 | st-login |  |  |  |  |
 
-| call | st-edit-this-page | ws=%%tcipw%% | thispage=TC Include Page %%start_time%% | content=`{include: [%%tcipii%%]}` |
+| call | [st-edit-this-page] | ws=%%tcipw%% | thispage=TC Include Page %%start_time%% | `content={include: [%%tcipii%%]}` |
 
 | wait_for_element_visible_ok | link=%%tcipii%% | 30000 |
 | text_like | //div[@class='wiki-include-title'] | %%tcipii%% |
@@ -183,54 +194,54 @@ Incipient include works in browser and MIKI
 
 | *Comment* | Test Case: Include Page. Open the incipient included page for editing using the Edit button |  |
 | click_ok | //a[@class="smallEditButton"] |  |
-| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
-| click_ok | st-create-content-savelink |  |
 | wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 30000 |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 | wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 30000 |
 | text_like | contentTitle | %%tcipii%% |
-| verifyValue | //textarea[contains(@class,"cke_source")] | qr/Replace this text with your own/ |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Include Page. Open the incipient included page for editing using the link |  |
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
-| click_ok | link=%%tcipii%% |  |
-| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
-| click_ok | st-create-content-savelink |  |
-| wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext") | 30000 |
-| click_ok | //a[contains(@class,"cke_button_wikitext") |  |
+| click_and_wait | link=%%tcipii%% |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| click_ok | st-edit-button-link |  |
+| wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 30000 |
+| click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 | wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 30000 |
 | text_like | contentTitle | %%tcipii%% |
-| verifyValue | //textarea[contains(@class,"cke_source")] | qr/Replace this text with your own/ |
+| st-page-save |  |  |
 
 repeat in Miki
 
-| *Comment* | Test Case: Include Page MIKI. Open the including page |  |
-| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
-| wait_for_element_visible_ok | link=%%tcipii%% | 30000 |
-| text_like | //div[@class='wiki-include-title'] | %%tcipii%% |
-| text_like | //div[@class='wiki-include-content'] | qr/Replace this text with your own/ |
+*Comment* | Test Case: Include Page MIKI. Open the including page | |
 
-| *Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the Edit button |  |
-| *Comment* | Test Case: Include Page MIKI. Page opens for editing |  |
-| click_and_wait | link=%%tcipii%% |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
+open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% | |
+wait_for_element_visible_ok | link=%%tcipii%% | 30000 |
+text_like | //div[@class='wiki-include-title'] | %%tcipii%% |
+text_like | //div[@class='wiki-include-content'] | qr/Replace this text with your own/ |
 
-| call | st-edit-mobile-page | value=qr/^$/ |
+*Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the Edit button | |
+*Comment* | Test Case: Include Page MIKI. Page opens for editing | |
 
-| click_and_wait | st-cancel-layout |  |
+click_and_wait | link=%%tcipii%% | |
+wait_for_element_visible_ok | link=Edit | 30000 |
 
-| *Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the link |  |
-| *Comment* | Test Case: Include Page MIKI. Page appears but not in edit mode. Use Edit link. |  |
+call | st-edit-mobile-page | value=qr/^$/ |
 
-| open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
-| click_and_wait | link=%%tcipii%% |  |
-| text_like | qr/Replace this text with your own/ |  |
-| click_and_wait | link=Edit |  |
-| wait_for_element_visible_ok | edit_textarea | 30000 |
-| type_ok | edit_textarea | %%tcipii%% Hello From Miki |
-| click_and_wait | //input[@value='Save'] |  |
-| wait_for_element_visible_ok | link=Edit | 30000 |
-| text_like | %%tcipii%% Hello From Miki |  |
+click_and_wait | st-cancel-layout | |
+
+*Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the link | |
+*Comment* | Test Case: Include Page MIKI. Page appears but not in edit mode. Use Edit link. | |
+
+open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% | |
+click_and_wait | link=%%tcipii%% | |
+text_like | qr/Replace this text with your own/ | |
+click_and_wait | link=Edit | |
+wait_for_element_visible_ok | edit_textarea | 30000 |
+type_ok | edit_textarea | %%tcipii%% Hello From Miki |
+click_and_wait | //input[@value='Save'] | |
+wait_for_element_visible_ok | link=Edit | 30000 |
+text_like | %%tcipii%% Hello From Miki | |
 
 Include a page from a different workspace. This test assumes the existence of help-en
 
@@ -239,7 +250,7 @@ Include a page from a different workspace. This test assumes the existence of he
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | click_ok | st-edit-button-link |  |
 
-| call | st-save-page | content=`{include: help-en [socialtext documentation]}` |
+| call | [st-save-page] | `content={include: help-en [socialtext documentation]}` |
 
 | wait_for_element_visible_ok | link=socialtext documentation | 30000 |
 | text_like | st-page-titletext | TC Include Page %%start_time%% |

@@ -3,14 +3,18 @@ TODO: Mail can be sent with and without Attachments
 TODO: find a way to test user chooser
 
 | *Comment* | Test Case: Email |  |  |
+| set | em_wiki | em_wiki_%%start_time%% |  |
+| st-admin | create-workspace --name %%em_wiki%% --title %%em_wiki%% | was created |  |
 | st-admin | create-user --email %%start_time%%_one@ken.socialtext.net --password 123456 |  |  |
-| st-admin | add-member --email %%start_time%%_one@ken.socialtext.net --workspace %%workspace%% |  |  |
+| st-admin | add-member --email %%start_time%%_one@ken.socialtext.net --workspace %%em_wiki%% |  |  |
 | st-admin | create-user --email %%start_time%%_two@ken.socialtext.net --password 123456 |  |  |
-| st-admin | add-member --email %%start_time%%_two@ken.socialtext.net --workspace %%workspace%% |  |  |
+| st-admin | add-member --email %%start_time%%_two@ken.socialtext.net --workspace %%em_wiki%% |  |  |
+| st-admin | add-member --email %%username%% --workspace %%em_wiki%% |  |  |
+| st-process-jobs |  |  |  |
 
-| open_ok | /%%workspace%%/?action=new_page |  |  |
+| open_ok | /%%em_wiki%%/?action=new_page |  |  |
 
-| call | st-edit-save-page | title=`[Announcements and Links] àèéìòù %%start_time%%` | content=Email title %%start_time%% |
+| call | [st-edit-save-page] | title=`[Announcements and Links] àèéìòù %%start_time%%` | content=Email title %%start_time%% |
 
 | *Comment* | Test Case: Email. Default content. |  |
 | click_ok | //a[@title='Email this page '] |  |
@@ -91,23 +95,23 @@ TODO: find a way to test user chooser
 | type_ok | email_recipient | foobar2ken.socialtext.net |
 | click_ok | email_add |  |
 | wait_for_text_present_ok | "foobar2ken.socialtext.net" is not a valid email address. |  |
-| type_ok | email_recipient | %%workspace%%@%%wikiemail%% |
+| type_ok | email_recipient | %%em_wiki%%@%%wikiemail%% |
 | click_ok | email_add |  |
-| text_like | email_page_user_choices | %%workspace%%@%%wikiemail%% |
+| text_like | email_page_user_choices | %%em_wiki%%@%%wikiemail%% |
 
 | *Comment* | Test Case: Email Note and Attachments |  |
 | text_like | email_page_add_note | Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at: |
-| text_like | email_page_add_note | /%%workspace%%/announcements_and_links_%C3%A0%C3%A8%C3%A9%C3%AC%C3%B2%C3%B9_%%start_time%% |
+| text_like | email_page_add_note | /%%em_wiki%%/announcements_and_links_%C3%A0%C3%A8%C3%A9%C3%AC%C3%B2%C3%B9_%%start_time%% |
 | type_ok | email_page_add_note | Note %%start_time%% from Test Case: Email |
 
-| *Comment* | Test Case: Email sending page to %%workspace%%@%%wikiemail%% |  |
+| *Comment* | Test Case: Email sending page to %%em_wiki%%@%%wikiemail%% |  |
 | click_ok | email_send |  |
 
 | *Comment* | Pausing 90 seconds for first email delivery |
 | pause | 90000 |
 
 | *Comment* | Test Case: Email Check Reception |  |
-| open_ok | /%%workspace%%/index.cgi?Email subject %%start_time%% |  |
+| open_ok | /%%em_wiki%%/index.cgi?Email subject %%start_time%% |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | Email subject %%start_time%% |
 | text_like | st-page-content | Email title %%start_time%% |
@@ -116,9 +120,9 @@ TODO: find a way to test user chooser
 | wait_for_element_present_ok | //a[@title='Email this page '] | 30000 |
 | click_ok | //a[@title='Email this page '] |  |
 | wait_for_element_visible_ok | email_recipient | 30000 |
-| type_ok | email_recipient | %%workspace%%@%%wikiemail%% |
+| type_ok | email_recipient | %%em_wiki%%@%%wikiemail%% |
 | click_ok | email_add |  |
-| text_like | email_page_user_choices | %%workspace%%@%%wikiemail%% |
+| text_like | email_page_user_choices | %%em_wiki%%@%%wikiemail%% |
 | type_ok | email_page_subject | Email subject %%start_time%% |
 | click_ok | email_send |  |
 
@@ -126,7 +130,7 @@ TODO: find a way to test user chooser
 | pause | 90000 |
 
 | *Comment* | Test Case: Email Check that the new page is there |  |
-| open_ok | /%%workspace%%/index.cgi?Email_subject_%%start_time%% |  |
+| open_ok | /%%em_wiki%%/index.cgi?Email_subject_%%start_time%% |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | Email subject %%start_time%% |
 | text_like | st-page-content | email_subject_%%start_time%% |
@@ -135,20 +139,20 @@ TODO: find a way to test user chooser
 | click_ok | //a[@title='Email this page '] |  |
 | wait_for_element_visible_ok | st-email-form | 30000 |
 | wait_for_element_visible_ok | email_recipient | 30000 |
-| type_ok | email_recipient | %%workspace%%@%%wikiemail%% |
+| type_ok | email_recipient | %%em_wiki%%@%%wikiemail%% |
 | click_ok | email_add |  |
-| text_like | email_page_user_choices | %%workspace%%@%%wikiemail%% |
+| text_like | email_page_user_choices | %%em_wiki%%@%%wikiemail%% |
 | type_ok | email_page_subject | Fw: Fwd: Re: Email subject %%start_time%% |
 | click_ok | email_send |  |
 | wait_for_element_not_present_ok | st-email-form | 30000 |
 
-| open_ok | /%%workspace%%/index.cgi?Email_subject_%%start_time%% |  |
+| open_ok | /%%em_wiki%%/index.cgi?Email_subject_%%start_time%% |  |
 | click_ok | //a[@title='Email this page '] |  |
 | wait_for_element_visible_ok | st-email-form | 30000 |
 | wait_for_element_visible_ok | email_recipient | 30000 |
-| type_ok | email_recipient | %%workspace%%@%%wikiemail%% |
+| type_ok | email_recipient | %%em_wiki%%@%%wikiemail%% |
 | click_ok | email_add |  |
-| text_like | email_page_user_choices | %%workspace%%@%%wikiemail%% |
+| text_like | email_page_user_choices | %%em_wiki%%@%%wikiemail%% |
 | type_ok | email_page_subject | Re: Fw: Fwd: Email subject %%start_time%% |
 | click_ok | email_send |  |
 | wait_for_element_not_present_ok | st-email-form | 30000 |
@@ -157,13 +161,13 @@ TODO: find a way to test user chooser
 | *Comment* | The page wants to receive itself, then send itself again |
 | pause | 90000 |
 
-| open_ok | /%%workspace%%/index.cgi?Email_subject_%%start_time%% |  |
+| open_ok | /%%em_wiki%%/index.cgi?Email_subject_%%start_time%% |  |
 | click_ok | //a[@title='Email this page '] |  |
 | wait_for_element_visible_ok | st-email-form | 30000 |
 | wait_for_element_visible_ok | email_recipient | 30000 |
-| type_ok | email_recipient | %%workspace%%@%%wikiemail%% |
+| type_ok | email_recipient | %%em_wiki%%@%%wikiemail%% |
 | click_ok | email_add |  |
-| text_like | email_page_user_choices | %%workspace%%@%%wikiemail%% |
+| text_like | email_page_user_choices | %%em_wiki%%@%%wikiemail%% |
 | type_ok | email_page_subject | Fwd: Fw: Re: Email subject %%start_time%% |
 | click_ok | email_send |  |
 
@@ -172,16 +176,15 @@ TODO: find a way to test user chooser
 | pause | 90000 |
 
 | *Comment* | Test Case: Email check that the new content from all mailings are added to the original page by counting the number of repetitions |  |
-| open_ok | /%%workspace%%/index.cgi?Email_subject_%%start_time%% |  |
+| open_ok | /%%em_wiki%%/index.cgi?Email_subject_%%start_time%% |  |
 | wait_for_element_visible_ok | st-page-titletext | 10000 |
 | text_like | st-page-titletext | Email subject %%start_time%% |
 | text_like | st-page-content | qr/email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%/ |
 
 | *Comment* | Test Case: Email Teardown |  |
 
-| st-admin | remove-member --email %%start_time%%_one@ken.socialtext.net --workspace %%workspace%% |  |
-| st-admin | remove-member --email %%start_time%%_two@ken.socialtext.net --workspace %%workspace%% |  |
-| st-admin | purge-page --w %%workspace%% --page `[Announcements and Links] àèéìòù %%start_time%%` | was purged |
-| st-admin | purge-page --w %%workspace%% --page email_subject_%%start_time%% | was purged |
+| deactivate-user | %%start_time%%_one@ken.socialtext.net |  |
+| deactivate-user | %%start_time%%_two@ken.socialtext.net |  |
+| delete-workspace | %%em_wiki%% |  |
 
 | *Comment* | Test Case: Email COMPLETED |  |
