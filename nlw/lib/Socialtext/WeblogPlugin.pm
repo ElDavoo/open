@@ -170,6 +170,7 @@ sub create_weblog {
     my $blog_tag = shift;
 
     $blog_tag =~ s/^\s+|\s+$//g;
+    $blog_tag = Socialtext::Encode::ensure_is_utf8($blog_tag);
 
     # reset errors to get around the fact that errors is effectively 
     # class level because all the object methods in plugins aren't 
@@ -205,7 +206,6 @@ sub create_weblog {
     my $content = loc("blog.first-post-body=tag", $blog_tag);
     $rev->body_ref(\$content);
     $first_post->store( user => $self->hub->current_user );
-
     return $blog_tag;
 }
 

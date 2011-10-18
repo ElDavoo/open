@@ -62,7 +62,7 @@ jQuery(document).ready(function() {
 </div>
 <div class="grid_20">
   <div id="settings-main">
-    <form method="POST" action="">
+    <form accept-charset="UTF-8" method="POST" action="">
       <p>
         <a class="save" href="#">[% loc('do.save') %]</a>
         <a class="cancel" href="#">[% loc('do.cancel') %]</a>
