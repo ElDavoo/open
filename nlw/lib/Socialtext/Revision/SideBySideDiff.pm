@@ -73,3 +73,17 @@ sub header {
 
 1;
 
+=head1 NAME
+
+Socialtext::Revision::SideBySideDiff - Base revision compare class
+
+=head1 SYNOPSIS
+
+  package Socialtext::Revision::HtmlSideBySideDiff;
+  use base 'Socialtext::Revision::SideBySideDiff';
+
+=head1 DESCRIPTION
+
+Base revision compare class. Handles tags and layout.
+
+=cut

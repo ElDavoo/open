@@ -168,5 +168,8 @@ nlw_make_plugin_path = function(rest) { return st.nlw_make_plugin_path(rest) }
 $('input.initial').live('click', function() {
   $(this).removeClass('initial').val('');
 });
+$('input.initial').live('keydown', function() {
+  $(this).removeClass('initial').val('');
+});
 
 })(jQuery);

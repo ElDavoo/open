@@ -138,6 +138,11 @@ sub PUT_layout {
                 # set preferences if they're being passed as part of the layout
                 $gadget->set_preferences($g->{preferences})
                     if $g->{preferences};
+
+                if (exists $g->{fixed}) {
+                    $gadget->fix if $g->{fixed} and !$gadget->fixed;
+                    $gadget->unfix if !$g->{fixed} and $gadget->fixed;
+                }
             }
         }
 

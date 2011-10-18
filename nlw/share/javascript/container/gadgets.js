@@ -588,9 +588,9 @@ container.renderGadget = function(data, template_vars, node) {
         workspaces: workspaces,
         accounts: accounts,
         loc: loc,
-        pushable: self._in_edit_mode
-            && self.type == 'account_dashboard'
-            && !data.parent_instance_id
+        editing: self._in_edit_mode || self.live_edit,
+        pushable: self.type == 'account_dashboard' && !data.parent_instance_id,
+        lockable: self.type == 'account_dashboard'
     }, template_vars));
 
     // insert the widget at col/row
@@ -640,32 +640,30 @@ container._float_fixed_gadget = function (id) {
     this.updateLayout();
 }
 
-container.fix = function (id) {
+container.fix = function (instance_id) {
     var self = this;
-    var $li = jQuery('#gadget-'+id);
+    var $li = jQuery('#gadget-'+instance_id);
     var $widget = $li.find('.widget');
     var fixed = $li.hasClass('fixed');
     var $button = $li.find('a.fix');
 
-    jQuery.ajax({
-        type: 'PUT',
-        contentType: 'application/json',
-        url:  this.base_url + '/gadgets/' + id,
-        data: gadgets.json.stringify({'fixed':fixed ? '0':'1'}),
-        success: function (url) {
-            if (fixed) {
-                jQuery('#gadget-'+id+' img.icon').show();
-                $li.addClass('draggable').removeClass('fixed');
-                $button.addClass('unfixed').removeClass('fixed');
-            }
-            else {
-                jQuery('#gadget-'+id+' img.icon').hide();
-                $li.addClass('fixed').removeClass('draggable');
-                $button.addClass('fixed').removeClass('unfixed');
-            }
-            self._float_fixed_gadget(id);
-        }
-    });
+    if (!this._in_edit_mode) throw new Error("Must be in edit mode");
+
+    if (!this.pendingChanges[instance_id])
+        this.pendingChanges[instance_id] = {};
+    this.pendingChanges[instance_id].fixed = !fixed;
+
+    if (fixed) {
+        jQuery('#gadget-'+instance_id+' img.icon').show();
+        $li.addClass('draggable').removeClass('fixed');
+        $button.addClass('unfixed').removeClass('fixed');
+    }
+    else {
+        jQuery('#gadget-'+instance_id+' img.icon').hide();
+        $li.addClass('fixed').removeClass('draggable');
+        $button.addClass('fixed').removeClass('unfixed');
+    }
+    self._float_fixed_gadget(instance_id);
 };
 
 container.makeEditable = function($widget) {
@@ -707,7 +705,7 @@ container.enterEditMode = function() {
     self.showNotice(true);
 
     // Make widgets editable
-    $('.widgetHeader .settings, .widgetHeader .close').show();
+    $('.widgetHeader').find('.settings, .fix, .close').show();
     $('.widgetColumn')
         .children('.widget:not(.cannot_move)')
         .removeClass('fixed').addClass('draggable');
@@ -725,7 +723,7 @@ container.leaveEditMode = function() {
     self.showNotice(false);
 
     // Make widgets un-editable
-    $('.widgetHeader .settings, .widgetHeader .close').hide();
+    $('.widgetHeader').find('.settings, .fix, .close').hide();
     $('.widgetColumn').children().removeClass('draggable').addClass('fixed');
     
     // Show view mode buttons

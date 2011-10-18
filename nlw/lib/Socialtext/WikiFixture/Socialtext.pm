@@ -293,7 +293,7 @@ sub st_check_files_if_highperms {
     my ($self, $file) = @_;
     my $browser = ((($ENV{sauce_browser} || $ENV{selenium_browser} || '') =~ /(\w+)/) ? $1 : 'firefox');
     if ($browser=~/firefox/ )  {
-        $self->handle_command('text_like','contentRight',$file);
+        $self->handle_command('text_like','st-display-mode-widgets',$file);
     }
 }
 
@@ -763,25 +763,17 @@ sub st_watch_page {
  
     #which aspect of the HTML id we will look at to determine
     #If the correct value is set
-    my $s3_id_type;
-    if (defined($page_name) and length($page_name)>0) {
-        $s3_id_type = 'title';
-    } else {
-        $s3_id_type = 'class';
-    }
+    my $s3_id_type = 'title'; # legacy
     
-    my $s3_expected = $watch_on ? 'watch on' : 'watch';
-    my $is_s3 = 0;
-    if ($self->{'skin'} eq 's3') { 
-        $is_s3 = 1; 
-    } 
+    my $s3_expected = $watch_on ? 'Stop Watching' : 'Watch';
+    my $is_s3 = 1; #legacy
     $page_name = '' if $page_name and $page_name =~ /^#/; # ignore comments
     $verify_only = '' if $verify_only and $verify_only =~ /^#/; # ignore comments
 
     unless ($page_name) {
         #my $html_type = $is_s3 ? "a" : "img";
             
-        return $self->_watch_page_xpath("//li[\@id='st-watchlist-indicator']", 
+        return $self->_watch_page_xpath("//li[\@id='st-watchlist-indicator']/a", 
                                         $watch_re, $verify_only, $s3_expected, $is_s3, $s3_id_type);
     }
 
