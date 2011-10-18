@@ -36,7 +36,7 @@
   <form name='revisions' id="compare_revisions" onsubmit="return check_revisions(this);">
     <input type="hidden" name="action" value="revision_compare" />
     <input type="hidden" name="page_name" value="[% page_uri %]" />
-    <input type="hidden" name="mode" value="source" />
+    <input type="hidden" name="mode" value="html" />
   <table class="dataTable">
     <tbody>
     <tr>
