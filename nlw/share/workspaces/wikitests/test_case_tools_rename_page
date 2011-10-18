@@ -1,5 +1,3 @@
-*On hold until st_check_files_if_highperms is updated*
-
 | *Comment* | Test Case: Tools: Rename Page |  |  |  |
 
 | *Comment* | Test Case: Tools: Rename Page Create test page |  |  |  |
@@ -43,7 +41,7 @@
 | wait_for_element_visible_ok | st-rename-error | 30000 |
 | text_like | st-rename-error | The page name you selected, "Untitled Page", is not allowed. Please enter or change the page name. |
 | click_ok | st-rename-cancellink |  |
-| wait_for_element_not_visible_ok | st-rename-form | 30000 |
+| wait_for_element_not_present_ok | st-rename-form | 30000 |
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the edited page |  |
 | click_and_wait | link=Dashboard | navigate away and back |
@@ -58,7 +56,7 @@
 | click_and_wait | st-rename-savelink |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify 2nd rename using space-containing URL |  |
-| location_like | `/%%workspace%%/page_renamed_%%start_time%%` |  |
+| location_like | `/%%workspace%%/Page_Renamed_%%start_time%%` |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_renamed_%%start_time%% |  |

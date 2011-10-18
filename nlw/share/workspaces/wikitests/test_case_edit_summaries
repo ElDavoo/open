@@ -1,5 +1,3 @@
-*On hold until st-watch-page works*
-
 | *Comment* | Test Case: Edit Summaries |  |  |
 
 | *Comment* | Test Case: Edit Summaries - create a page from file, because we can't type newlines with type_ok |  |  |  |
@@ -45,7 +43,7 @@
 
 | *Comment* | Test Case: Edit Summaries. Check List Views |  |
 | *Comment* | Test Case: Edit Summaries - Search defaults to summaries, the rest default to titles |  |
-| click_and_wait | link=What's New |  |
+| select_and_wait | st-jump-to | label=What's New |
 | wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
 | click_and_wait | link=Summaries |  |
 | wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
@@ -53,7 +51,7 @@
 | text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
 
 | *Comment* | Test Case: Edit Summaries - Recently Viewed |  |
-| click_and_wait | link=Recently Viewed |  |
+| select_and_wait | st-jump-to | label=Recently Viewed |
 | wait_for_element_visible_ok | link=Summaries | 30000 |
 | click_and_wait | link=Summaries |  |
 | wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
@@ -61,15 +59,7 @@
 | text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
 
 | *Comment* | Test Case: Edit Summaries - Your Watchlist |  |
-| click_and_wait | link=Your Watchlist |  |
-| wait_for_element_visible_ok | link=Summaries | 30000 |
-| click_and_wait | link=Summaries |  |
-| wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
-| text_like | st-listview-form | Edit summary: A second summary for a wikitest %%start_time%% |
-| text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
-
-| *Comment* | Test Case: Edit Summaries - My Watchlist |  |
-| click_and_wait | link=My Watchlist |  |
+| select_and_wait | st-jump-to | label=Watchlist |
 | wait_for_element_visible_ok | link=Summaries | 30000 |
 | click_and_wait | link=Summaries |  |
 | wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
@@ -77,7 +67,7 @@
 | text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
 
 | *Comment* | Test Case: Edit Summaries - All Pages (better set the sort) |  |
-| click_and_wait | link=All Pages |  |
+| select_and_wait | st-jump-to | label=All Pages |
 | wait_for_element_visible_ok | link=Summaries | 30000 |
 | click_and_wait | link=Summaries |  |
 | select_and_wait | sort-picker | label=Revisions |
@@ -86,18 +76,18 @@
 | text_like | st-listview-form | Edit summary: A second summary for a wikitest %%start_time%% |
 | text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
 
-| *Comment* | Test Case: Edit Summaries - Orphaned Pages |  |
-| click_and_wait | link=Orphaned Pages |  |
-| wait_for_element_visible_ok | link=Summaries | 30000 |
-| click_and_wait | link=Summaries |  |
-| select_and_wait | sort-picker | label=Revisions |
-| select_and_wait | sort-picker | label=Date Last Edited |
-| wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
-| text_like | st-listview-form | Edit summary: A second summary for a wikitest %%start_time%% |
-| text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
-| click_and_wait | link=Edit Summaries %%start_time%% |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
-| st-watch-page | 0 |  |
+| *Comment* | Test Case: Edit Summaries - Orphaned Pages |  |  |
+| select_and_wait | st-jump-to | label=Orphan Pages |  |
+| wait_for_element_visible_ok | link=Summaries | 30000 |  |
+| click_and_wait | link=Summaries |  |  |
+| select_and_wait | sort-picker | label=Revisions |  |
+| select_and_wait | sort-picker | label=Date Last Edited |  |
+| wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |  |
+| text_like | st-listview-form | Edit summary: A second summary for a wikitest %%start_time%% |  |
+| text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |  |
+| click_and_wait | link=Edit Summaries %%start_time%% |  |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |  |
+| st-watch-page | 0 |  |  |
 
 | *Comment* | Test Case: Edit Summaries teardown |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page edit_summaries_%%start_time%% | was purged |  |
