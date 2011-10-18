@@ -17,7 +17,7 @@
     [% IF theme.account_favicon %]
       <link rel="shortcut icon" type="image/x-icon" href="[% theme.account_favicon %]" />
     [% END %]
-    <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" />
 
     [% IF feeds %]
       [% IF feeds.rss %]
