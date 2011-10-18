@@ -182,6 +182,12 @@ Socialtext.prototype.setupPageHandlers = function() {
         return false;
     });
 
+    if (Number(st.double_click_to_edit)) {
+        jQuery("#st-page-content").one("dblclick", function() {
+            jQuery("#st-edit-button-link").click();
+        });
+    }
+
     if (st.page.is_new
         && st.page.title != loc("page.untitled")
         && st.page.title != loc("sheet.untitled")
