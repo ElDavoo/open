@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-28 18:42+0800\n"
+"PO-Revision-Date: 2011-10-18 00:25-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1480,7 +1480,7 @@ msgstr "My Watchlist"
 
 #: share/skin/s3/template/lite/workspace_list/my_workspaces:5 share/skin/s3/template/view/settings:41
 msgid "nav.my-wikis"
-msgstr "My Workspaces"
+msgstr "All My Workspaces"
 
 #: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:142 share/skin/s3/template/layout/user_frame:147 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:224
 msgid "nav.news"
@@ -2399,7 +2399,7 @@ msgstr "Public workspaces"
 
 #: share/skin/s3/template/element/workspace_list/public_workspaces:5
 msgid "wiki.public:"
-msgstr "You have free access to view and contribute to any of these public wikis:"
+msgstr "Public workspaces on this server:"
 
 #: share/skin/s3/template/element/search_form:23
 msgid "wiki.search-all:"

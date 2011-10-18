@@ -133,7 +133,7 @@ TODO: find a way to test user chooser
 | open_ok | /%%em_wiki%%/index.cgi?Email_subject_%%start_time%% |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | Email subject %%start_time%% |
-| text_like | st-page-content | email_subject_%%start_time%% |
+| text_like | st-page-content | email_subject |
 
 | *Comment* | Test Case: Email send another email with Fwd: Fw: Re: in front of the title |  |
 | click_ok | //a[@title='Email this page '] |  |
@@ -179,7 +179,7 @@ TODO: find a way to test user chooser
 | open_ok | /%%em_wiki%%/index.cgi?Email_subject_%%start_time%% |  |
 | wait_for_element_visible_ok | st-page-titletext | 10000 |
 | text_like | st-page-titletext | Email subject %%start_time%% |
-| text_like | st-page-content | qr/email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%.+email_subject_%%start_time%%/ |
+| text_like | st-page-content | qr/email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject/ |
 
 | *Comment* | Test Case: Email Teardown |  |
 

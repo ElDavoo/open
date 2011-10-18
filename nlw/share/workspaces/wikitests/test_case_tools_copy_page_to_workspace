@@ -1,3 +1,5 @@
+*On hold until CPTW no longer redirects you to new page*
+
 | *Comment* | Test Case: Tools: Copy Page to Workspace |
 
 | set | newspace | newspace-%%start_time%% |
