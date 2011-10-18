@@ -293,7 +293,7 @@ sub st_check_files_if_highperms {
     my ($self, $file) = @_;
     my $browser = ((($ENV{sauce_browser} || $ENV{selenium_browser} || '') =~ /(\w+)/) ? $1 : 'firefox');
     if ($browser=~/firefox/ )  {
-        $self->handle_command('text_like','contentRight',$file);
+        $self->handle_command('text_like','st-display-mode-widgets',$file);
     }
 }
 
