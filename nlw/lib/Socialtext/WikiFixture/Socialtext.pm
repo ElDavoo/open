@@ -771,17 +771,14 @@ sub st_watch_page {
     }
     
     my $s3_expected = $watch_on ? 'watch on' : 'watch';
-    my $is_s3 = 0;
-    if ($self->{'skin'} eq 's3') { 
-        $is_s3 = 1; 
-    } 
+    my $is_s3 = 1; #legacy
     $page_name = '' if $page_name and $page_name =~ /^#/; # ignore comments
     $verify_only = '' if $verify_only and $verify_only =~ /^#/; # ignore comments
 
     unless ($page_name) {
         #my $html_type = $is_s3 ? "a" : "img";
             
-        return $self->_watch_page_xpath("//li[\@id='st-watchlist-indicator']", 
+        return $self->_watch_page_xpath("//li[\@id='st-watchlist-indicator'] a", 
                                         $watch_re, $verify_only, $s3_expected, $is_s3, $s3_id_type);
     }
 
