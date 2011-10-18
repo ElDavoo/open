@@ -31,7 +31,7 @@
           [% IF mode == 'source' %]
             [% loc('revision.normal-view') %]
           [% ELSE %]
-            [% loc('do.source-view') %]
+            [% loc('HTML View') %]
           [% END %]
         </a>
       </li>
