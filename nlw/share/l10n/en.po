@@ -89,7 +89,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-10-17 23:06-0700\n"
+"PO-Revision-Date: 2011-10-18 00:25-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10883,7 +10883,7 @@ msgstr "My Watchlist"
 
 #: share/skin/s3/template/lite/workspace_list/my_workspaces:5 share/skin/s3/template/view/settings:41
 msgid "nav.my-wikis"
-msgstr "My Workspaces"
+msgstr "All My Workspaces"
 
 #: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:142 share/skin/s3/template/layout/user_frame:147 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:224 lib/Socialtext/RecentChangesPlugin.pm:268
 msgid "nav.news"
