@@ -65,7 +65,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-10-06 13:15+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10963,6 +10963,9 @@ msgstr "«Recent Changes in Tag %1 in workspace %2»"
 #: share/skin/s3/template/element/listview_tabs:7 share/skin/s3/template/view/empty_watchlist:9 share/skin/s3/template/view/page/display:241
 msgid "nav.recently-viewed"
 msgstr "«Recently Viewed»"
+
+msgid "nav.register"
+msgstr "«Register»"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/search/search.html:12 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
 msgid "nav.search"
