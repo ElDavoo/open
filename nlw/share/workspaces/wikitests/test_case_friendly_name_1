@@ -116,14 +116,13 @@ text_like | //div[@class='signal_body'][1] | %%fname%% |
 | click_ok | //a[@title='Email this page '] |  |  |
 | wait_for_element_visible_ok | email_recipient | 30000 |  |
 
-| autocompleted-option-exists | email_recipient | %%first_name_prefix%% | %%fname%% |
+| autocompleted-option-exists | email_recipient | %%first_name_prefix%% | %%firstname%% %%lastname%% |
 
 | open_ok | /%%fname_wiki%%/%%fname_page%% |  |
 | wait_for_element_present_ok | //a[@title='Email this page '] | 30000 |
 | click_ok | //a[@title='Email this page '] |  |
 | wait_for_element_visible_ok | email_recipient | 30000 |
 
-| autocompleted-option-exists | email_recipient | %%shared_name%% | %%fname%% <%%fname_user%%> |
 | autocompleted-option-exists | email_recipient | %%shared_name%% | %%fname%% |
 | autocompleted-option-exists | email_recipient | %%first_letters_after_shared%% | %%first_name%% %%last_name%% |
 

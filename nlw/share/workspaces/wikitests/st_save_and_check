@@ -6,4 +6,4 @@
 | pause_ok | 1000 |  |
 | wait_for_element_visible_ok | st-page-content | 10000 |
 | pause_ok | 1000 |  |
-| text_like | st-page-content | %%content%% |
+| text_like | update-attribution | Updated by |
