@@ -127,6 +127,9 @@ sub PUT_layout {
                         fixed => $g->{fixed},
                         class => $g->{class}
                     );
+
+                    # Update the gadget_instance_id now that it's installed
+                    $g->{gadget_instance_id} = $gadget->gadget_instance_id;
                 }
             
                 # Move this widget to it's position
@@ -135,11 +138,16 @@ sub PUT_layout {
                 # set preferences if they're being passed as part of the layout
                 $gadget->set_preferences($g->{preferences})
                     if $g->{preferences};
+
+                if (exists $g->{fixed}) {
+                    $gadget->fix if $g->{fixed} and !$gadget->fixed;
+                    $gadget->unfix if !$g->{fixed} and $gadget->fixed;
+                }
             }
         }
 
-        for my $gadget_id (keys %gadgets) {
-            my $gadget = $self->container->get_gadget_instance($gadget_id);
+        for my $instance_id (keys %gadgets) {
+            my $gadget = $self->container->get_gadget_instance($instance_id);
             $gadget->free_children;
             $gadget->delete;
         }
@@ -148,6 +156,9 @@ sub PUT_layout {
             my $gadget = shift @$gadget_position;
             $gadget->position(@$gadget_position)
         }
+
+        # Pass back $data so it can be used `around` PUT_layout
+        return $data;
     });
 }
 

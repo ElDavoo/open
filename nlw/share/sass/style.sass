@@ -185,7 +185,7 @@ header
     padding-top: 25px
     color: #fff
   a
-    color: $primary_color
+    color: $header_link_color
     text-decoration: none
   .topLinks
     margin-top: 30px
@@ -206,7 +206,7 @@ footer
   height: 40px
   position: relative
   a
-    color: #c6b93b
+    color: $background_link_color
   .socialtext
     margin-top: 7px
   .tagline
@@ -254,14 +254,26 @@ footer
       width: 12px
       height: 12px
       margin: 5px
+      background-color: transparent
+      background-image: none
+      background-repeat: no-repeat
+      background-position: top left
     .close:hover, .settings:hover, .fix:hover
       @include opacity(70)
     .close
-      background: transparent url(#{$static}/images/icons/close-darker-12.png) no-repeat top left
+      background-image: url(#{$static}/images/icons/close-darker-12.png)
     .settings
-      background: transparent url(#{$static}/images/icons/configure-darker-12.png) no-repeat top left
-    .fix
-      /* XXX
+      background-image: url(#{$static}/images/icons/configure-darker-12.png)
+    .fixed
+      background-image: url(#{$static}/images/icons/lock-locked-15.png)
+    .unfixed
+      background-image: url(#{$static}/images/icons/lock-unlocked-15.png)
+  .widgetPush
+    background: #EEE
+    text-align: center
+    margin-top: 10px
+    font-style: italic
+    color: #666
 
 /**
  * Dropdowns
@@ -617,6 +629,21 @@ td.listview-watchlist
     font-size: 10pt
     padding: 1px 5px
 
+td.widgetUserPrefsButtons
+  text-align: center
+  padding-top: 15px
+  input
+    cursor: pointer
+
+#st-login-form
+  padding-top: 5px
+  .login_field
+    padding: 5px 10px
+  .publicWorkspaces
+    border-left: 1px dashed #ccc
+    min-height: 200px
+    padding: 5px 0 0 10px
+
 @import wiki.sass
 @import control.sass
 @import jquery-ui.sass
@@ -625,3 +652,4 @@ td.listview-watchlist
 @import socialcalc.sass
 @import jdMenu.sass
 @import autocomplete.sass
+@import revision.sass

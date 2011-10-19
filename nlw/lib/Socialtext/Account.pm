@@ -510,6 +510,11 @@ sub import_file {
     my $import_name = $opts{name};
     my $hub = $opts{hub};
 
+    unless ($opts{dir}) {
+        require File::Basename;
+        $opts{dir} = File::Basename::dirname($import_file);
+    }
+
     my $hash = LoadFile($import_file);
 
     my $version = $hash->{version};

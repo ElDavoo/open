@@ -26,6 +26,7 @@ var addContent = {
                     }
                 },
                 {
+                    id: 'add-update-content-cancel',
                     text: loc('do.cancel'),
                     click: function() { self.dialog.close() }
                 }

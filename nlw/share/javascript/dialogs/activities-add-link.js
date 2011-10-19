@@ -8,10 +8,12 @@ socialtext.dialog.register('activities-add-link', function(opts) {
         params: opts.params,
         buttons: [
             {
+                id: 'activities-add-link-ok',
                 text: loc('do.ok'),
                 click: function() { dialog.find('form').submit() }
             },
             {
+                id: 'activities-add-link-cancel',
                 text: loc('do.cancel'),
                 click: function() { dialog.close() }
             }

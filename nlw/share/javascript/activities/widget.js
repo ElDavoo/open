@@ -215,7 +215,6 @@ $.extend(Activities.Widget.prototype, {
                 display_limit: self.display_limit,
                 static_path: self.static_path,
                 share: self.share,
-                unread: $(self.node).find('.filter_bar .new'),
                 onPost: function(signal) {
                     self.pushClient.seenSignal(signal.signal_id);
                 },

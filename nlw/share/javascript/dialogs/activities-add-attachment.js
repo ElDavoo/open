@@ -8,12 +8,14 @@ socialtext.dialog.register('activities-add-attachment', function(opts) {
         height: 200,
         buttons: [
             {
+                id: 'activities-add-attachment-upload',
                 text: loc('do.upload'),
                 click: function() {
                     dialog.find('form').submit();
                 }
             },
             {
+                id: 'activities-add-attachment-cancel',
                 text: loc('do.cancel'),
                 click: function() {
                     dialog.close();

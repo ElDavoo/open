@@ -78,8 +78,6 @@ for my $lang (sort { en($a) cmp en($b) } @ARGV) {
     gen_js('zq' => \%zq);
 }
 
-system("dev-bin/jsmake 2>/dev/null");
-
 say $_ for sort @outs;
 
 sub zz {
@@ -130,7 +128,7 @@ sub gen_po {
     my $en_po = "share/l10n/en.po";
     $en_po = $use_first = '' if $lang eq 'en';
     system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} $en_po > $po_file");
-    my @diff_lines = grep { /^[-+] / and not /PO-Revision-Date/ } qx(git diff $po_file);
+    my @diff_lines = grep { /^(?!---|\+\+\+)[-+]/ and not /PO-Revision-Date/ } qx(git diff $po_file);
     system(git => checkout => $po_file) unless @diff_lines;
     if ($lang ne 'en') {
         system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file.orig");

@@ -28,13 +28,16 @@
 
 | *Comment* | Verify original first and last names: %%fname%% %%lname%% |  |
 | open_ok | /st/profile |  |
-| text_like | %%fname%% %%lname%% |  |
+| text_like | Profile |  |
+| wait_for_element_visible_ok | st-edit-profile | 5000 |
 
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | click_and_wait | st-edit-profile |  |
+| wait_for_text_present_ok | Edit Profile | 10000 |
+| wait_for_element_visible_ok | `xpath=(//iframe)[1]` | 10000 |
+| select_frame | `xpath=(//iframe)[1]` |  |
 
 | *Comment* | Test Case: Edit Profile. Verify profile fields present. |  |
-| wait_for_text_present_ok | Edit Profile | 10000 |
 | wait_for_element_visible_ok | photo-upload-button | 5000 |
 | wait_for_element_visible_ok | update_profile | 5000 |
 
@@ -70,7 +73,7 @@
 
 | text_like | profile-edit-form | Blog |
 | text_like | profile-edit-form | Personal |
-| text_like | profile-edit-form | LinkedIn |
+| text_like | profile-edit-form | Linkedin |
 | text_like | profile-edit-form | Facebook |
 
 | *Comment* | Test Case: Edit Profile. Verify original names. |  |
@@ -101,8 +104,6 @@
 | type_ok | communicator_sn | MSOCS %%short_e_user%% |
 
 | *Comment* | Test Case: Edit Profile. Need to select users in a common account |  |
-
-TUXTODO: restore these tests when manager field returns
 
 | wait_for_element_visible_ok | field_supervisor | 5000 |
 | select-autocompleted-option-ok | xpath=//div[@id='field_supervisor']/input[contains(@class,'relationship')] | %%short_super%% |

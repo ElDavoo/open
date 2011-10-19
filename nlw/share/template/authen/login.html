@@ -9,16 +9,16 @@
   [% END %]
 
   <div class="grid_8">
-    <div class="vpad5">
+    <div class="first_field login_field">
       <h2><label for="username">[% username_label %]</label></h2>
       <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus="autofocus" />
     </div>
-    <div class="vpad5">
+    <div class="login_field">
       <h2><label for="password">[% loc('login.password:') %]</label></h2>
       <input id="password" name="password" type="password" size="30" value="" />
     </div>
 
-    <div class="vpad5">
+    <div class="login_field">
       <input class="checkbox" name="remember" type="checkbox" id="remember" value="1" />
       [% IF lite %]
         <span class="description">
@@ -32,17 +32,23 @@
       [% END %]
     </div>
 
-    [% IF lite %]
-      <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
-    [% ELSE %]
-      <input type="submit" class="hidden"/>
-      <a style="float:left" id="login_btn" href="#">[% loc('login.log-in') %]</a>
-      <div class="clear"></div>
-      [% INCLUDE errors_and_messages %]
-    [% END %]
+    <div class="login_field">
+      [% IF lite %]
+        <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
+      [% ELSE %]
+        <input type="submit" class="hidden"/>
+        <a style="float:left" id="login_btn" href="#">[% loc('login.log-in') %]</a>
+        <div class="clear"></div>
+        [% INCLUDE errors_and_messages %]
+      [% END %]
+    </div>
+    <div class="login_field">
+      [% INCLUDE 'authen/element/forgot_password_link' %]
+    </div>
   </div>
 
   <div class="grid_16">
+    [% INCLUDE 'element/workspace_list/public_workspaces' %]
   </div>
   <div class="clear vpad10"></div>
 </form>

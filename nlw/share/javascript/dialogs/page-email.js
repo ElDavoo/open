@@ -4,7 +4,6 @@ st.dialog.register('page-email', function(opts) {
     function clearEmails () {
         if (firstAdd) {
             $('#email_dest option').remove();
-            $('#email_dest').removeClass("lookahead-prompt");
         }
     };
     function clearHelp() {
@@ -35,18 +34,12 @@ st.dialog.register('page-email', function(opts) {
 
     dialog.find('input[name="email_page_subject"]').select().focus();
 
-    $('#email_add').click(function () {
-        clearHelp();
-        $('#email_source option:selected').appendTo('#email_dest');
-        return false;
-    });
-
-    $('#email_remove').click(function () {
+    $('#email_remove').button().click(function () {
         $('#email_dest option:selected').remove();
         return false;
     });
 
-    $('#email_all').click(function () {
+    $('#email_all').button().click(function () {
         clearHelp();
         var startIndex = 0;
         var fetch_user_pageful = function () {
@@ -66,36 +59,14 @@ st.dialog.register('page-email', function(opts) {
         return false;
     });
 
-    $('#email_none').click(function () {
+    $('#email_none').button().click(function () {
         $('#email_dest option').remove();
         return false;
     });
 
-    $('#email_recipient')
-        .lookahead({
-            url: '/data/workspaces/' + Socialtext.wiki_id + '/users',
-            linkText: function (user) {
-                return user.display_name
-                     + ' <' + user.email_address +'>';
-            },
-            displayAs: function (item) {
-                return item.title;
-            },
-            onAccept: function(id, item) {
-                $('#email_recipient').blur();
-                $('#email_add').click();
-            }
-        })
-        .focus(function() {
-            if ($(this).hasClass('lookahead-prompt')) {
-                $(this).val("");
-                $(this).removeClass("lookahead-prompt");
-            }
-        });
-
-    $('#email_add').click(function () {
+    function acceptEmail(val) {
+        clearHelp();
         dialog.find('.error').html('');
-        var val = $('#email_recipient').val();
         var email = val.replace(/^.*<(.*)>$/, '$1');
         if (!val) {
             return false;
@@ -106,7 +77,6 @@ st.dialog.register('page-email', function(opts) {
             return false;
         }
         else {
-            $('#email_recipient').val('').focus();
             var matches = $.grep(
                 $('#email_dest option'),
                 function(opt) {
@@ -120,6 +90,32 @@ st.dialog.register('page-email', function(opts) {
             }
             return false;
         }
+    }
+
+    $('#email_recipient')
+        .lookahead({
+            url: '/data/workspaces/' + Socialtext.wiki_id + '/users',
+            linkText: function (user) {
+                return user.display_name
+                     + ' <' + user.email_address +'>';
+            },
+            getEntryThumbnail: function(user) {
+                return '/data/people/' + user.orig.user_id + '/small_photo';
+            },
+            displayAs: function (item) {
+                return item.title;
+            },
+            onAccept: function(id, item) {
+                acceptEmail(id);
+                setTimeout(function() {
+                    $('#email_recipient').val('');
+                }, 0);
+            }
+        });
+
+    $('#email_add').button().click(function () {
+        acceptEmail($('#email_recipient').val());
+        $('#email_recipient').val('');
     });
 
     dialog.find('form').submit(function () {

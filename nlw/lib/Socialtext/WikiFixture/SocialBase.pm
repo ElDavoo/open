@@ -651,7 +651,7 @@ sub create_account {
     my $ws = Socialtext::Workspace->new(name => 'admin');
     $acct->enable_plugin($_) for qw/people dashboard widgets signals groups/;
     if ($ws) {
-        $ws->enable_plugin($_) for qw/socialcalc/;
+        $ws->enable_plugin($_) for qw/socialcalc ckeditor/;
     }
     $self->{account_id} = $acct->account_id;
     diag "Created account $name ($self->{account_id})";
@@ -1191,7 +1191,7 @@ sub create_workspace {
 
     $ws->assign_role_to_account(account => $account) if ($allusers);
 
-    $ws->enable_plugin($_) for qw/socialcalc/;
+    $ws->enable_plugin($_) for qw/socialcalc ckeditor/;
     $self->{workspace_id} = $ws->workspace_id;
     diag "Created workspace $name";
     return $ws;
@@ -1403,6 +1403,7 @@ sub set_gadget_id {
     );
     diag "Set variable $var_name to $self->{$var_name}";
 }
+sub set_widget_id { shift->set_gadget_id(@_) }
 
 sub set_latest_gadget_instance_id {
     my $self = shift;
@@ -1531,6 +1532,7 @@ sub delete {
     my ($self, $uri, $accept) = @_;
     $accept ||= 'text/html';
 
+    diag "DELETE: $uri";
     $self->_call_method('delete', $uri, [Accept => $accept]);
 }
 
@@ -1782,7 +1784,12 @@ Put to the specified URI
 
 =cut
 
-sub put { shift->_call_method('put', @_) }
+sub put {
+    my $self = shift;
+    my $uri = shift;
+    diag "PUT: $uri";
+    $self->_call_method('put', $uri, @_)
+}
 
 =head2 put_json( uri, json )
 
@@ -2996,13 +3003,10 @@ sub st_purge_widget {
     diag loc("test.deleted-widgets=count", $sth->rows)."\n";
 }
 
-sub add_widget_ok {
-    my ($self, $url, $src, $col) = @_;
+sub _widget_layout {
+    my ($self, $url) = @_;
 
     my @layout = ([], [], []);
-
-    # Add the new widget
-    push @{$layout[$col || 2]}, { src => $src, install => 1 };
 
     # add old gadgets 
     $self->get_json($url);
@@ -3012,12 +3016,60 @@ sub add_widget_ok {
             instance_id => $gadget->{instance_id},
         };
     }
-    
-    $self->put_json($url, encode_json({ gadgets => \@layout }));
 
-    my $layout = $self->get_json($url);
+    return \@layout;
+}
+
+sub add_widget_ok {
+    my ($self, $url, $src_or_id, $data) = @_;
+    $data = decode_json($data || '{}');
+    my $col = delete $data->{col} // 2;
+
+    # Get the original layout
+    my $layout = $self->_widget_layout($url);
+
+    # Add the new widget
+    unshift @{$layout->[$col]}, $src_or_id =~ m{^\d+$}
+        ? { install => 1, gadget_id => $src_or_id, %$data }
+        : { install => 1, src => $src_or_id, %$data };
+    
+    # Set the new layout
+    $self->put_json($url, encode_json({ gadgets => $layout }));
+    
+    # Get the instance id of the added widget
+    $self->get_json($url);
     $self->json_parse;
-    use Data::Dump 'dump'; scalar @{$self->{json}};
+    my ($gadget) = grep { $_->{col} == $col and !$_->{row} } @{$self->{json}};
+    $self->{instance_id} = $gadget->{instance_id}
+}
+
+sub purge_dashboards_in_account {
+    my ($self, $account_id) = @_;
+
+    my $url = "/st/account/$account_id/dashboard";
+
+    # Get the current layout
+    my $layout = $self->_widget_layout($url);
+
+    # Purge
+    $self->put_json($url, encode_json({ gadgets => $layout, purge => 1 }));
+}
+
+sub set_widget_prefs {
+    my ($self, $url, $instance_id, $prefs) = @_;
+
+    $prefs = decode_json($prefs);
+
+    # Get the original layout
+    my $layout = $self->_widget_layout($url);
+    for my $col (@$layout) {
+        for my $widget (@$col) {
+            $widget->{preferences} = $prefs
+                if $instance_id == $widget->{instance_id};
+        }
+    }
+
+    $self->put_json($url, encode_json({ gadgets => $layout }));
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }

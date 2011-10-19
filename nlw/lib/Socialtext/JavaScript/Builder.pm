@@ -46,6 +46,7 @@ method part_directory($part) {
     if ($part->{dir}) {
         return $part->{dir} =~ m{^/} ? $part->{dir} : "$base/$part->{dir}";
     }
+    return $base if $part->{l10n};
     return "$base/javascript/wikiwyg" if $part->{widget_template};
     return "$base/javascript/contrib/shindig" if $part->{shindig_feature};
     return "$base/plugin/$part->{plugin}/share/javascript" if $part->{plugin};
@@ -231,6 +232,16 @@ method _part_last_modified ($part) {
         push @files, 'Widgets.yaml';
         push @files, $template;
     }
+
+    if (my $lang = $part->{l10n}) {
+        push @files, "javascript/l10n/$lang.js";
+
+        # Also we might need to rebuild the js version
+        my %derived = ( zh_TW => 'zh_CN', zz => 'en', zq => 'en' );
+        $lang = $derived{$lang} || $lang;
+        push @files, glob("l10n/$lang/*.po");
+    }
+
     return map { $->modified($_) } @files;
 }
 
@@ -263,6 +274,9 @@ method part_to_text ($part) {
     }
     elsif ($part->{shindig_feature}) {
         return $->_shindig_feature_to_text($part);
+    }
+    elsif ($part->{l10n}) {
+        return $->_l10n_to_text($part);
     }
     else {
         die "Do not know how to create part: $part->{dir}";
@@ -465,6 +479,17 @@ method _widget_jemplate_to_text ($part) {
         $tt2->process($template, $data, $output_file)
             || die $tt2->error(), "\n";
     }
+}
+
+method _l10n_to_text ($part) {
+    local $CWD = $->code_base;
+    my $lang = $part->{l10n};
+
+    # Build this js file if we're in a dev-env
+    shell_run("../dev-bin/l10n-make-po-js", $lang)
+        if -f '../dev-bin/l10n-make-po-js';
+
+    return slurp("javascript/l10n/$lang.js");
 }
 
 method write_target ($target, $text, $compress) {

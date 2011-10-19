@@ -47,8 +47,8 @@
 | wait_for_element_not_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
 | wait_for_text_present_ok | Wikipedia | 5000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | st-save-widget-template | 10000 |
-| click_ok | st-save-widget-template |  |
+| wait_for_element_present_ok | save-layout-save | 10000 |
+| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -72,8 +72,8 @@
 | wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 5000 |
 | wait_for_element_visible_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | st-save-widget-template | 10000 |
-| click_ok | st-save-widget-template |  |
+| wait_for_element_present_ok | save-layout-save | 10000 |
+| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 5000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -98,8 +98,8 @@
 | wait_for_text_not_present_ok | Wikipedia | 5000 |
 | wait_for_element_visible_ok | st-save-layout | 5000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | st-save-widget-template | 5000 |
-| click_ok | st-save-widget-template |  |
+| wait_for_element_present_ok | save-layout-save | 5000 |
+| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -121,8 +121,8 @@
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | st-save-widget-template | 10000 |
-| click_ok | st-save-widget-template |  |
+| wait_for_element_present_ok | save-layout-save | 10000 |
+| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -159,8 +159,8 @@ TUXTODO: restore these tests when Revert To Default is restored
 | wait_for_element_not_visible_ok | dashboard-revert-no | 5000 |
 | wait_for_text_present_ok | Wikipedia | 5000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | st-save-widget-template | 10000 |
-| click_ok | st-save-widget-template |  |
+| wait_for_element_present_ok | save-layout-save | 10000 |
+| click_ok | save-layout-save |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
@@ -184,8 +184,8 @@ TUXTODO: restore these tests when Revert To Default is restored
 | wait_for_text_not_present_ok | Wikipedia | 5000 |
 | click_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | st-save-widget-template | 10000 |
-| click_ok | st-save-widget-template |  |
+| wait_for_element_present_ok | save-layout-save | 10000 |
+| click_ok | save-layout-save |  |
 | wait_for_text_not_present_ok | Wikipedia | 5000 |
 | wait_for_text_present_ok | Tags | 5000 |
 | wait_for_text_present_ok | Activities | 5000 |

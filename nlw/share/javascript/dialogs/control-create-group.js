@@ -22,6 +22,7 @@ socialtext.dialog.register('control-create-group', function(opts) {
                 },
                 {
                     text: loc('do.cancel'),
+                    id: 'st-group-create-cancel',
                     click: function() {
                         if ($.isFunction(opts.onClose)) opts.onClose();
                         dialog.close()

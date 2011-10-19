@@ -1,19 +1,21 @@
+*On hold until st-watch-page works*
+
 | *Comment* | Test Case: Edit Summaries |  |  |
 
-| *Comment* | Test Case: Edit Summaries - create a page from file, because we can't type newlines with type_ok |  |
-| st-admin | update-page --workspace %%workspace%% --email %%email%% --page "Edit Summaries %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Edit Summaries %%start_time%%" page has been created. |
+| *Comment* | Test Case: Edit Summaries - create a page from file, because we can't type newlines with type_ok |  |  |  |
+| st-admin | update-page --workspace %%workspace%% --email %%email%% --page "Edit Summaries %%start_time%%" < %%wikitest_client_files%%wikitest_toc.txt | The "Edit Summaries %%start_time%%" page has been created. |  |  |
 
-| *Comment* | Test Case: Edit Summaries. Create one edit summary |  |
+| *Comment* | Test Case: Edit Summaries. Create one edit summary |  |  |  |
 
-| call | [st-edit-fill-page] | ws=%%workspace%% | title=Edit Summaries %%start_time%% | content=test content |
+| call | [st-edit-no-save] | ws=%%workspace%% | page=Edit Summaries %%start_time%% | content=test content |
 
-| *Comment* | Test Case: Edit Summaries. type the summary |  |
-| wait_for_element_present_ok | st-edit-summary-text-area | 30000 |
-| click_ok | st-edit-summary-text-area |  |
-| type_ok | st-edit-summary-text-area | Quick Summary for my friends %%start_time%% |
-| st-page-save |  |  |
+| *Comment* | Test Case: Edit Summaries. type the summary |  |  |  |
+| wait_for_element_present_ok | st-edit-summary-text-area | 30000 |  |  |
+| click_ok | st-edit-summary-text-area |  |  |  |
+| type_ok | st-edit-summary-text-area | Quick Summary for my friends %%start_time%% |  |  |
+| st-page-save |  |  |  |  |
 
-| *Comment* | Test Case: Edit Summaries. Create a second edit summary. |  |
+| *Comment* | Test Case: Edit Summaries. Create a second edit summary. |  |  |  |
 
 | call | [st-edit-no-save] | ws=%%workspace%% | page=Edit Summaries %%start_time%% | content=test content |
 
@@ -97,7 +99,7 @@
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | st-watch-page | 0 |  |
 
-| *Comment* | Test Case: Edit Summaries teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page edit_summaries_%%start_time%% | was purged |
+| *Comment* | Test Case: Edit Summaries teardown |  |  |
+| st-admin | purge-page --workspace %%workspace%% --page edit_summaries_%%start_time%% | was purged |  |
 
 | *Comment* | Test case: Edit Summaries COMPLETED |  |  |

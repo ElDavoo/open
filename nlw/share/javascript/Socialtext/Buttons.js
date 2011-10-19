@@ -128,17 +128,6 @@ var button_handler = {
     /**
      * Revisions
      */
-    'st-revision-compare': function() {
-      var old_rev = jQuery('input[name=old_revision_id]:checked').val();
-      var new_rev = jQuery('input[name=new_revision_id]:checked').val();
-      if (old_rev == new_rev) {
-        alert(loc("error.same-revision"));
-      }
-      else {
-        document.getElementById('compare_revisions').submit();
-      }
-      return false;
-    },
     'st-revision-current': function() {
         window.location = st.page.full_uri;
     },

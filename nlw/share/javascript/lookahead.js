@@ -151,6 +151,7 @@
                 });
             },
             select: function(event, ui) {
+                console.log('select');
                 if (opts.onAccept) {
                     var item = withRealValue(ui.item);
                     opts.onAccept(item.value, item);
@@ -161,8 +162,26 @@
             }
         }));
 
+        var $input = this;
+        $input.keydown(function(event) {
+            if (opts.requireMatch) return;
+            switch (event.keyCode) {
+                case $.ui.keyCode.ENTER:
+                case $.ui.keyCode.NUMPAD_ENTER:
+                    // Accept the typed value
+                    if ($input.val() && opts.onAccept) {
+                        opts.onAccept($input.val());
+                        $input.autocomplete('close');
+                    }
+                    return;
+                default:
+                    return
+            }
+        });
+
         // Overload _renderItem to support icons and descriptions
-        this.data("autocomplete")._renderItem = function (ul, item) {
+        var autocompleter = this.data("autocomplete") || {};
+        autocompleter._renderItem = function (ul, item) {
             if (item.error) {
                 $('<li class="ui-autocomplete-error">' + item.error + '</li>')
                     .appendTo(ul);

@@ -168,7 +168,7 @@ $.extend(Activities.EventList.prototype, {
 
     updateDisplay: function() {
         var self = this;
-        if (self.unread) self.unread.hide();
+        if (self._paused);
 
         // Run all ondisplay callbacks
         while (self.ondisplay.length) self.ondisplay.shift()();
@@ -426,8 +426,6 @@ $.extend(Activities.EventList.prototype, {
         var new_events = 0
         var new_replies = 0
 
-        if (!self.unread) return;
-
         for (var i = 0; i < this.display_limit; i++) {
             var evt = this.events[i];
             if (!evt) continue;
@@ -444,24 +442,20 @@ $.extend(Activities.EventList.prototype, {
         }
 
         if (new_events || new_replies) {
-            var title = [];
-            if (new_events) {
-                title.push(
-                    loc('activities.new-events=count',new_events)
-                );
-            }
-            if (new_replies) {
-                title.push(
-                    loc('activities.new-replies=count',new_replies)
-                );
-            }
-            self.unread
-                .attr('title', title.join(', ').replace(/ /g, String.fromCharCode(0xA0)))
-                .html(loc('activities.new=count', new_events + new_replies))
-                .show()
-                .click(function() {
-                    self.updateDisplay();
-                });
+            self._paused = true;
+            self.clearMessages('newMessages');
+            self.showMessageNotice({
+                className: 'newMessages',
+                new_count: new_events + new_replies,
+                links: {
+                    '.update': function() {
+                        self.clearMessages('newMessages');
+                        self._paused = false;
+                        self.updateDisplay();
+                        return false;
+                    }
+                }
+            })
         }
     },
 

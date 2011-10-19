@@ -3,12 +3,20 @@
 [% USE decorate %]
 [% USE label_ellipsis %]
 
-[% SET buttons = [] %]
-[% buttons.push(['st-revision-current', loc('revision.current')]) %]
-[% buttons.push(['st-revision-compare', loc("do.compare-revisions")]) IF page.page_type != 'spreadsheet' %]
-
 [% WRAPPER $frame_name id="contentPage" title = loc("revision.all=page", display_title) %]
 <script language="javascript"><!--
+    function revisionCompare() {
+      var old_rev = jQuery('input[name=old_revision_id]:checked').val();
+      var new_rev = jQuery('input[name=new_revision_id]:checked').val();
+      if (old_rev == new_rev) {
+        alert(loc("error.same-revision"));
+      }
+      else {
+        document.getElementById('compare_revisions').submit();
+      }
+      return false;
+    };
+
     function preventSameRevisionCompare () {
         var newVal = $('input[name=new_revision_id]:checked:first').val();
         var oldVal = $('input[name=old_revision_id]:checked:first').val();
@@ -24,13 +32,32 @@
 
 <form class="listView" name='revisions' id="compare_revisions" onsubmit="return check_revisions(this);">
 
+[% IF page.page_type != 'spreadsheet' %]
+  <div class="grid_24">
+    <ul id="revision-tools">
+      <li>
+        <a href="[% "${script_name}?${page_uri}" %]">
+          [% loc('revision.current') %]
+        </a>
+      </li>
+      <li>&#166;</li>
+      <li>
+        <a href="#" onclick="return revisionCompare();">
+          [% loc('do.compare-revisions') %]
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="clear"></div>
+[% END %]
+
 <div class="widget">
   <h1 class="grid_24" title="[% display_title %]">[% display_title %]</h1>
   <div class="clear"></div>
 
   <input type="hidden" name="action" value="revision_compare" />
   <input type="hidden" name="page_name" value="[% page_uri %]" />
-  <input type="hidden" name="mode" value="source" />
+  <input type="hidden" name="mode" value="html" />
 
   <div class="content">
 

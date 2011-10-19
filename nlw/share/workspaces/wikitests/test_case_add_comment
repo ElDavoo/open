@@ -1,11 +1,11 @@
 | *Comment* | Test Case: Add Comment |
 
-| set | comment_nosignal | Do not signal this comment %%start_time%% |
-| set | comment_signal | Do signal this comment %%start_time%% |
+| set | comment_nosignal | Do not signal this comment %%start_time%% |  |  |
+| set | comment_signal | Do signal this comment %%start_time%% |  |  |
 
 | *Comment* | Test Case: Add Comment Create Test Page |  |  |  |
 
-| call | st-edit-new-page | ws=%%workspace%% | title=Comment Test Page %%start_time%% | content=Comment Test Page Content %%start_time%% |
+| call | [st-edit-new-page] | ws=%%workspace%% | title=Comment Test Page %%start_time%% | content=Comment Test Page Content %%start_time%% |
 
 | *Comment* | Test Case: Add Comment comment button |  |
 | wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |

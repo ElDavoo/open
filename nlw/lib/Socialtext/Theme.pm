@@ -7,14 +7,17 @@ use Socialtext::File qw(mime_type);
 use Socialtext::AppConfig;
 use Socialtext::User;
 use Socialtext::Upload;
+use Socialtext::Image;
+use File::Temp;
 use YAML ();
 use namespace::clean -except => 'meta';
 
 my @COLUMNS = qw( theme_id name header_color header_image_id
-    header_image_tiling header_image_position background_color
-    background_image_id background_image_tiling background_image_position
-    primary_color secondary_color tertiary_color header_font body_font
-    is_default foreground_shade logo_image_id favicon_image_id
+    header_image_tiling header_image_position header_link_color
+    background_color background_image_id background_image_tiling
+    background_image_position background_link_color primary_color
+    secondary_color tertiary_color header_font body_font is_default
+    foreground_shade logo_image_id favicon_image_id
 );
 
 my @UPLOADS = qw(header_image background_image logo_image favicon_image);
@@ -34,7 +37,12 @@ sub _build_background_image {
 
 sub _build_logo_image {
     my $self = shift;
-    return Socialtext::Upload->Get(attachment_id => $self->logo_id);
+    return Socialtext::Upload->Get(attachment_id => $self->logo_image_id);
+}
+
+sub _build_favicon_image {
+    my $self = shift;
+    return Socialtext::Upload->Get(attachment_id => $self->favicon_image_id);
 }
 
 sub Load {
@@ -176,10 +184,12 @@ sub ValidSettings {
         header_image_id => \&_valid_attachment_id,
         header_image_tiling => \&_valid_tiling,
         header_image_position => \&_valid_position,
+        header_link_color => \&_valid_hex_color,
         background_color => \&_valid_hex_color,
         background_image_id => \&_valid_attachment_id,
         background_image_tiling => \&_valid_tiling,
         background_image_position => \&_valid_position,
+        background_link_color => \&_valid_hex_color,
         primary_color => \&_valid_hex_color,
         secondary_color => \&_valid_hex_color,
         tertiary_color => \&_valid_hex_color,
@@ -198,9 +208,13 @@ sub ValidSettings {
     return 1;
 }
 
+sub ThemeDir {
+    return Socialtext::AppConfig->code_base . '/themes';
+}
+
 sub EnsureRequiredDataIsPresent {
     my $class = shift;
-    my $themedir = Socialtext::AppConfig->code_base . '/themes';
+    my $themedir = $class->ThemeDir();
 
     my $installed = { map { $_->{name} => $_ } @{$class->_AllThemes()} };
     my $all = YAML::LoadFile("$themedir/themes.yaml");
@@ -332,7 +346,7 @@ sub _CreateAttachmentsIfNeeded {
     my $themedir = shift;
     my $params = shift;
 
-    my $creator = Socialtext::User->SystemUser;
+    my $creator = delete $params->{creator} || Socialtext::User->SystemUser;
 
     # Don't worry about breaking links to old upload objects, they'll get
     # auto-cleaned.
@@ -340,12 +354,15 @@ sub _CreateAttachmentsIfNeeded {
         my $filename = delete $params->{$temp_field};
         next unless $filename;
 
+        my $tempfile = "$themedir/$filename";
+        $tempfile = $class->ResizeFile($tempfile)
+            if $temp_field eq 'logo_image';
+
         my $db_field = $temp_field . "_id";
 
         my @parts = split(/\./, $filename);
         my $mime_guess = 'image/'. $parts[-1];
 
-        my $tempfile = "$themedir/$filename";
         my $file = Socialtext::Upload->Create(
             creator => $creator,
             temp_filename => $tempfile,
@@ -357,6 +374,16 @@ sub _CreateAttachmentsIfNeeded {
 
         $params->{$db_field} = $file->attachment_id;
     }
+}
+
+sub ResizeFile {
+    my $self = shift;
+    my $file = shift;
+
+    my $spec = Socialtext::Image::spec_resize_get('account');
+    Socialtext::Image::spec_resize($spec, $file => $file);
+
+    return $file;
 }
 
 sub _chown_file_if_needed {

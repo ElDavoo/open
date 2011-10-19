@@ -1,12 +1,18 @@
 (function ($) {
 
 socialtext.dialog.register('groups-save', function(opts) {
-    var buttons = {};
-    buttons[loc('do.ok')] = function() { dialog.close() };
     var dialog = socialtext.dialog.createDialog({
         html: socialtext.dialog.process('groups-save.tt2', opts),
         title: loc('Saving'),
-        buttons: buttons
+        buttons: [
+            {
+                id: 'groups-save',
+                text: loc('do.ok'),
+                click: function() {
+                    dialog.close();
+                }
+            }
+        ]
     });
 
     var group_data = {};

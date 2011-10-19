@@ -61,7 +61,7 @@ sub copy_to_workspace {
         return encode_json({done=>1});
     }
 
-    return encode_json({ page_exists => 1, target_workspace => $target_ws });
+    return encode_json({ page_exists => 1, target_workspace => $target_ws->title });
 }
 
 sub mass_copy_to {
