@@ -101,6 +101,9 @@ perl -le 'print "User-agent: *\nDisallow: /"' > ~/.nlw/root/docroot/robots.txt
 # Finish linking in external repos
 dev-bin/link-externals --all
 
+# Re-generate .po and .js files
+dev-bin/jsmake loc
+
 # Start the supervisor
 dev-bin/setup-supervisors start
 
