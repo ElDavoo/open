@@ -535,11 +535,11 @@ around remove_user => sub {
     my $self = shift;
     my %p = (
         user => undef,
-        and_admins => 0,
+        reckless => 0,
         @_
     );
 
-    unless ($p{and_admins}) {
+    unless ($p{reckless}) {
         my $userRole = $self->role_for_user($p{user}, direct => 1);
         my $admin = Socialtext::Role->Admin();
         if ($userRole->name eq $admin->name) {
@@ -567,7 +567,7 @@ sub delete {
 
     my $mc = $self->users();
     while ( my $user = $mc->next() ) {
-        $self->remove_user(user => $user);
+        $self->remove_user(user => $user, reckless => 1);
     }
 
     Socialtext::EmailAlias::delete_alias( $self->name );
