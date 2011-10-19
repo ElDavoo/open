@@ -161,11 +161,17 @@ sub MakeExportable {
 
     for my $image_name (@UPLOADS) {
         my $id_field = $image_name . "_id";
-        my $image = Socialtext::Upload->Get(attachment_id=>$data->{$id_field});
-        my $copy_to = $themedir . "/" . $image->filename;
-        $image->copy_to_file($copy_to);
 
-        $data->{$image_name} = $image->filename;
+        if (defined $data->{$id_field}) {
+            my $image = Socialtext::Upload->Get(attachment_id=>$data->{$id_field});
+            my $copy_to = $themedir . "/" . $image->filename;
+            $image->copy_to_file($copy_to);
+            $data->{$image_name} = $image->filename;
+        }
+        else {
+            $data->{$image_name} = undef;
+        }
+
         delete $data->{$id_field};
     }
 
