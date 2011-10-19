@@ -70,11 +70,6 @@
             </td>
         </div>
         <div class="postWrap">
-            [% IF this.show_popout %]
-            <a class="pop_out" href="#" id="[% id('pop_out') %]">
-                <img src="[% this.static_path %]/skin/s3/images/expand-icon.png"/>
-            </a>
-            [% END %]
             <a href="#" class="btn post" id="[% id('post') %]">[% loc('activities.post') %]</a>
             <div class="count" id="[% id('count') %]"></div>
         </div>

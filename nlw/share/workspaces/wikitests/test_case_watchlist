@@ -1,8 +1,12 @@
-tuxhold until st-watch-page is rewritten
 
 user adds page to watchlist using Watchlist icon at top of sidebar icon turns color to indicate membership in watchlist
 
 | *Comment* | STARTING Test case: Watchlist |
+
+| set | wl_user | wl.user.%%start_time%%@david.socialtext.net |
+| create-user | %%wl_user%% | %%password%% |
+| st-admin | add-member --workspace %%workspace%% --email %%wl_user%% | now has the role |
+| st-logoutin | %%wl_user%% | %%password%% |
 
 | *Comment* | Test case: Watchlist watch |  |
 | st-admin | update-page --w %%workspace%% --e %%email%% --p "Watchlist %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
@@ -43,7 +47,7 @@ Visit some individual pages in the workspace; add them to the watchlist. View wa
 | st-is-watched | 1 |  |
 
 | *Comment* | Test case: Watchlist has three pages |  |
-| click_and_wait | link=My Watchlist |  |
+| select_and_wait | st-jump-to | label=Watchlist |
 | wait_for_element_visible_ok | content | 30000 |
 | text_like | content | Pages You're Watching |
 | text_like | content | AAA %%start_time%% |
@@ -80,7 +84,8 @@ Remove all pages from watchlist; watchlist displays "No watchlist for USER ID in
 | text_like | content | Watchlist %%start_time%% |
 | st-is-watched | 1 | Watchlist %%start_time%% |
 | st-admin | purge-page --w %%workspace%% --page watchlist_%%start_time%% | was purged |
-| click_and_wait | link=My Watchlist |  |
+| select_and_wait | st-jump-to | label=Blogs |
+| select_and_wait | st-jump-to | label=Watchlist |
 | text_unlike | content | Watchlist %%start_time%% |
 
 | *COMMENT* | verifyTextPresent No watchlist for | can't do this until we find a way to clear the watchlist
@@ -90,8 +95,6 @@ and the watchlist is not empty |
 | *Comment* | Test case: Watchlist SORTING |  |
 
 Set up to check sorting. (↑) (↓)
-
-| click_and_wait | link=My Watchlist |  |
 
 | *Comment* | Test case: Watchlist title sort |  |
 | select_and_wait | sort-picker | label=Title |
@@ -123,7 +126,7 @@ add a new page for date and revision sorting
 
 | *Comment* | Test case: Watchlist create an additional rev |  |
 | st-admin | update-page --w %%workspace%% --e %%email%% --p "New Watchlist %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been updated |
-| click_and_wait | link=My Watchlist |  |
+| select_and_wait | st-jump-to | label=Watchlist |
 
 title sort
 
@@ -179,7 +182,7 @@ contains %%email%% as a substring and that messes up other tests like Test Case:
 | st-admin | update-page --email %%s_user%% --workspace %%workspace%% --page "BBB %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "BBB %%start_time%%" page has been updated. |
 
 | *Comment* | Test Case: Watchlist navigate away and reload Watchlist |  |
-| click_and_wait | link=My Watchlist |  |
+| select_and_wait | st-jump-to | label=Watchlist |
 
 Last Edited By sort
 
@@ -200,6 +203,7 @@ Last Edited By sort
 | st_admin | purge-page --w %%workspace%% --page bbb_%%start_time%% | was purged |
 | st_admin | purge-page --w %%workspace%% --page ccc_%%start_time%% | was purged |
 | st_admin | purge-page --w %%workspace%% --page new_watchlist_%%start_time%% | was purged |
+| deactivate-user | %%wl_user%% |  |
 
 | *Comment* | Test case: Watchlist COMPLETED |  |
 

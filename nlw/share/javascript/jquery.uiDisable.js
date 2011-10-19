@@ -1,5 +1,5 @@
 (function($){
-    $.fn.uiDisable = function() {
+    $.fn.uiDisable = function(style) {
         this.each(function() {
             var $disabled = $('<div class="uiDisabled"></div>')
                 .height('100%')
@@ -9,6 +9,7 @@
                     '<div class="background"></div>'
                 )
                 .prependTo($(this));
+            if (style) $disabled.find('.spinner').css(style);
             $(this).data('disabled', $disabled);
         });
         return this;
