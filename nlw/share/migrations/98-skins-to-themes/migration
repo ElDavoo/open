@@ -4,9 +4,12 @@ use strict;
 use warnings;
 use Try::Tiny;
 use Socialtext::Account;
+use Socialtext::Migration::Utils qw(ensure_socialtext_schema);
 use Socialtext::SQL qw(sql_execute);
 use Socialtext::Theme;
 use YAML qw(LoadFile);
+
+ensure_socialtext_schema(153);
 
 do_for_custom_accounts(sub {
     my ($theme,$name) = @_;
