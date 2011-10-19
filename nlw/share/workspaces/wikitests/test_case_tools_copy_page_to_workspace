@@ -1,3 +1,5 @@
+*On hold until clicking Copy Page doesn't crash Sel*
+
 | *Comment* | Test Case: Tools: Copy Page to Workspace |
 
 | set | newspace | newspace-%%start_time%% |
@@ -19,8 +21,7 @@
 | call | [st-edit-new-page] | ws=%%workspace%% | title=%%this_title%% | content=%%this_content%% |
 | call | [st-tag-page] | tag_to_apply=%%this_tag%% |  |  |
 
-| st_upload_if_highperms | wikitest.jpg |  |
-
+| st_upload_if_highperms | wikitest.jpg |  |  |  |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Copy the page |  |
 | click_ok | link=Copy Page to Workspace |  |
@@ -69,7 +70,7 @@
 | click_ok | st-copy-savelink |  |
 | wait_for_element_visible_ok | st-copy-error | 5000 |
 | text_like | st-copy-error | The new page name you selected, "Page Copied %%start_time%%", is already in use |
-| *Comment* | Test Case: Tools: Copy Page to Workspace. Force copy  |  |
+| *Comment* | Test Case: Tools: Copy Page to Workspace. Force copy |  |
 | click_and_wait | st-copy-savelink |  |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. verify copy of edited page |  |

@@ -1,13 +1,15 @@
+*On hold until it stops crashing Sel*
+
 | *Comment* | Test Case: Tools: Duplicate Page |  |
 | *Comment* | Test Case: Tools: Duplicate Page Create test page |  |
 
-| set | this_title | Duplicate This Page %%start_time%% |
-| set | this_id | duplicate_this_page_%%start_time%% |
-| set | new_title | Page_Duplicated_%%start_time%% |
-| set | new_id | Page_Duplicated_%%start_time%% |
-| set | this_content | Duplicate This Page %%start_time%% content |
-| set | new_content | Duplicate This Page %%start_time%% NEW content |
-| set | this_tag | Duplicate This Tag %%start_time%% |
+| set | this_title | Duplicate This Page %%start_time%% |  |  |
+| set | this_id | duplicate_this_page_%%start_time%% |  |  |
+| set | new_title | Page_Duplicated_%%start_time%% |  |  |
+| set | new_id | Page_Duplicated_%%start_time%% |  |  |
+| set | this_content | Duplicate This Page %%start_time%% content |  |  |
+| set | new_content | Duplicate This Page %%start_time%% NEW content |  |  |
+| set | this_tag | Duplicate This Tag %%start_time%% |  |  |
 
 | call | st-edit-fill-page | ws=%%workspace%% | title=%%this_title%% | content=%%this_content%% |
 
@@ -34,15 +36,15 @@
 | type_ok | st-duplicate-newname | %%new_title%% |
 | st-pause-click | 4000 | st-duplicate-savelink |
 
-| *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |
-| location_like | `/%%workspace%%/%%new_id%%` |  |
-| wait_for_element_visible_ok | st-display-mode-widgets | 30000 |
-| text_like | st-display-mode-widgets | %%this_tag%% |
-| wait_for_element_visible_ok | link=%%this_tag%% | 30000 |
-| text_like | st-page-titletext | %%new_title%% |
-| st_check_files_if_highperms | wikitest.jpg |  |
+| *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |  |  |
+| location_like | `/%%workspace%%/%%new_id%%` |  |  |  |
+| wait_for_element_visible_ok | st-display-mode-widgets | 30000 |  |  |
+| text_like | st-display-mode-widgets | %%this_tag%% |  |  |
+| wait_for_element_visible_ok | link=%%this_tag%% | 30000 |  |  |
+| text_like | st-page-titletext | %%new_title%% |  |  |
+| st_check_files_if_highperms | wikitest.jpg |  |  |  |
 
-| *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |
+| *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |  |  |
 
 | call | st-edit-this-page | ws=%%workspace%% | thispage=%%this_title%% | content=%%new_content%% |
 
