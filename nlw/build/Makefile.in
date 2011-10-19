@@ -251,6 +251,7 @@ install-nlw-psgi: install-ok
 
 DIR=$(subst install-,,$@)
 $(INSTALL_FILE_TARGETS): install-ok 
+	@[ "$(DIR)" = "l10n" ] && ./dev-bin/l10n-make-po-js || true
 	$(INSTALL_ST) -d $(ST_INSTALL_DIR)/$(DIR)
 	$(CP_DIR) share/$(DIR) $(ST_INSTALL_DIR)
 	$(CHOWN_DIR_ST) $(ST_INSTALL_DIR)/$(DIR)
