@@ -468,6 +468,21 @@ $.extend(Activities.AppData.prototype, {
         return enabled;
     },
 
+    updateFilterText: function() {
+        // update text (but after this handler completes)
+        this.findId('expander').html(loc(
+            'Showing <span class="filter">[_1]</span> ' +
+            'from <span class="filter">[_2]</span> ' +
+            'within <span class="filter">[_3] [_4]</span>',
+            this.get('action').title,
+            this.get('feed').title,
+            this.get('network').title,
+            this.findId('filters').is(':visible')
+                ? '<span class="arrow">&#9662;</span>'
+                : '<span class="arrow">&#9656;</span>'
+        ));
+    },
+
     bind: function() {
         var self = this;
 
@@ -488,16 +503,7 @@ $.extend(Activities.AppData.prototype, {
                         .addClass('selectedOption');
 
                     // update text (but after this handler completes)
-                    setTimeout(function() {
-                        $(self.node).find('.filterText').html(
-                            loc(
-                                'Showing <span class="filter">[_1]</span> from <span class="filter">[_2]</span> within <span class="filter">[_3]</span>',
-                                self.get('action').title,
-                                self.get('feed').title,
-                                self.get('network').title
-                            )
-                        );
-                    }, 0);
+                    setTimeout(function() { self.updateFilterText() }, 0);
                 });
         });
         self.findId('filters').find('input:checked').change();
@@ -528,15 +534,13 @@ $.extend(Activities.AppData.prototype, {
 
         self.findId('expander').toggle(
             function() {
-                $(this).find('.collapsed').hide();
-                $(this).find('.expanded').show();
                 self.findId('filters').show();
+                self.updateFilterText();
                 return false;
             },
             function() {
-                $(this).find('.expanded').hide();
-                $(this).find('.collapsed').show();
                 self.findId('filters').hide();
+                self.updateFilterText();
                 return false;
             }
         );

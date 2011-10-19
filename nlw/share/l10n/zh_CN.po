@@ -1248,7 +1248,7 @@ msgstr "查看"
 
 #: lib/Socialtext/WorkspacesUIPlugin.pm:116
 msgid "blog.weblog-sort-order"
-msgstr "Weblog sort order"
+msgstr "Blog sort order"
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"

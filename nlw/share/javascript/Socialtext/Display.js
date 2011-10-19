@@ -159,7 +159,14 @@ Socialtext.prototype.setupPageHandlers = function() {
      */
     $('#st-edit-button-link').button().click(function() {
         var $button = $(this);
-        $('#content').uiDisable();
+        $('#content').uiDisable({
+            'height': '20px',
+            'top':
+                - $('#content').offset().top // Move to the body top
+                + $(window).scrollTop()      // top of the window
+                + $(window).height() / 2     // middle of the window
+                - 10                         // half the height back
+        });
         if (st.page.type == 'spreadsheet') {
             $.getScript(st.nlw_make_js_path('socialtext-socialcalc.jgz'), function() {
                 Socialtext.start_spreadsheet_editor();
@@ -174,6 +181,12 @@ Socialtext.prototype.setupPageHandlers = function() {
         });
         return false;
     });
+
+    if (Number(st.double_click_to_edit)) {
+        jQuery("#st-page-content").one("dblclick", function() {
+            jQuery("#st-edit-button-link").click();
+        });
+    }
 
     if (st.page.is_new
         && st.page.title != loc("page.untitled")

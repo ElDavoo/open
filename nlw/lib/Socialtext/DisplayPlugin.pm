@@ -348,9 +348,11 @@ sub _render_display {
         $self->hub->rest->request->header_in('Accept-Encoding');
     };
     $self->hub->helpers->add_js_bootstrap({
-        template_name      => scalar $self->cgi->template,
-        start_in_edit_mode => $start_in_edit_mode,
-        accept_encoding    => $accept_encoding,
+        template_name        => scalar $self->cgi->template,
+        start_in_edit_mode   => $start_in_edit_mode,
+        accept_encoding      => $accept_encoding,
+        double_click_to_edit =>
+            $self->hub->wikiwyg->preferences->wikiwyg_double->value,
         page => {
             id              => $page->page_id,
             title           => $page->title,
@@ -405,8 +407,6 @@ sub _render_display {
                   . '?action=edit;page_name=' . $page->uri
                 ),
             feeds => $self->_feeds( $self->hub->current_workspace, $page ),
-            wikiwyg_double =>
-                $self->hub->wikiwyg->preferences->wikiwyg_double->value,
             Socialtext::BrowserDetect::safari()
                 ? ( raw_wikitext => $page->content ) : (),
             current_user_workspace_count =>

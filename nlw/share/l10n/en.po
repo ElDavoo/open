@@ -129,7 +129,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-15 13:07+0800\n"
+"PO-Revision-Date: 2011-10-18 19:23-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1552,7 +1552,7 @@ msgstr "View"
 
 #: lib/Socialtext/WorkspacesUIPlugin.pm:116
 msgid "blog.weblog-sort-order"
-msgstr "Weblog sort order"
+msgstr "Blog sort order"
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"

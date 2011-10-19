@@ -1,13 +1,18 @@
-| *Comment* | st-edit-save-page: content=%%content%% |  |
+| *Comment* | st-save-page: content=%%content%% |  |
 
-| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 10000 |
+| wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 10000 |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
-| wait_for_element_present_ok | //textarea[contains(@class,"cke_source")] | 10000 |
+| wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 10000 |
 | pause_ok | 4000 |  |
 | type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
+| pause_ok | 1000 |  |
+| type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
+| pause_ok | 1000 |  |
+| type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
+| pause_ok | 1000 |  |
+| type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
+| pause_ok | 1000 |  |
+| type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
+| pause_ok | 4000 |  |
 
-| *Comment* | DON'T call st-page save, try inline |  |
-| pause_ok | 5000 |  |
-| wait_for_element_visible_ok | st-save-button-link | 5000 |
-| click_and_wait | st-save-button-link |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| call | [st-save-and-check] | content=%%content%% |
