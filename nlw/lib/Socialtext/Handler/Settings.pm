@@ -17,6 +17,7 @@ has 'space' => (
     is => 'ro', isa => 'Maybe[Socialtext::Workspace]', lazy_build => 1);
 has 'settings' => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 has 'message' => (is => 'rw', isa => 'Str', default => '');
+has 'warning' => (is => 'rw', isa => 'Str', default => '');
 has 'invite_errors' => (is => 'rw', isa => 'Maybe[HashRef]', default => undef);
 
 sub _build_space {
@@ -311,8 +312,17 @@ sub POST_space {
             }
         }
     };
-    if (my $e = $@) {
-        st_log->error("Could not save settings: $e");
+    if ( my $e = Exception::Class->caught('Socialtext::Exception::User') ) {
+        if ($e->error eq 'ADMIN_REQUIRED') {
+            st_log->error("Could not save settings: " . $e->error);
+            $self->warning(loc('[_1] could not be removed because a workspace requires at least one admin.', $e->username));
+        }
+        else {
+            st_log->error("Could not save settings: " . $e->error);
+            $self->message(loc('error.saving-settings'));
+        }
+    } elsif ($@) {
+        st_log->error("Could not save settings: $@");
         $self->message(loc('error.saving-settings'));
     }
     else {
@@ -479,6 +489,7 @@ sub _settings_vars {
     }
     $vars->{spaces} = \@spaces;
     $vars->{message} = $self->message;
+    $vars->{warning} = $self->warning;
 
     return $vars;
 }

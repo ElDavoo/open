@@ -68,8 +68,12 @@ jQuery(document).ready(function() {
         <a class="cancel" href="#">[% loc('do.cancel') %]</a>
       </p>
 
+      [% IF warning %]
+        <p class="setting_warning">[% warning %]</p>
+      [% END %]
+
       [% IF message %]
-        <p>[% message %]</p>
+        <p class="setting_message">[% message %]</p>
       [% END %]
 
       [% main_content %]
