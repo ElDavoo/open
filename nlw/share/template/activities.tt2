@@ -7,6 +7,14 @@
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang %].jgz"></script>
         [% INCLUDE widget/syndicator %]
         [% INCLUDE 'element/wiki/js-bootstrap' %]
+        <style>
+          body {
+            min-width: 200px;
+            background: #fff;
+            margin: 0;
+            width: 100%
+          }
+        </style>
         <script>
             $(function() {
                 var activities = new Activities.Widget({
@@ -36,7 +44,7 @@
             });
         </script>
     </head>
-    <body style="background:white; margin:0; width:100%" class="container_24">
+    <body class="container_24">
         <div class="grid_24">
             <div id="content" class="activitiesWidget"></div>
         </div>
