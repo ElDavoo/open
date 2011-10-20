@@ -17,7 +17,7 @@
 | wait_for_element_not_present_ok | link=Add Tag | 5000 |
 | wait_for_element_not_present_ok | link=Upload Files | 5000 |
 | wait_for_element_visible_ok | link=Log in | 5000 |
-| wait_for_element_visible_ok | link=nav.register | 5000 |
+| wait_for_element_visible_ok | //a[@href='/nlw/register.html?redirect_to='] | 5000 |
 | click_and_wait | link=Settings |  |
 | location_like | /nlw/login.html |  |
 
@@ -35,4 +35,4 @@
 | st-admin | deactivate-user --e user_%%start_time%%@ken.socialtext.net |  |
 | delete-workspace | %%auth_w%% |  |
 
-| *Comment* | Test Case: Public Read Only COMPLETED |
+| *Comment* | Test Case: Public Read Only COMPLETED |  |

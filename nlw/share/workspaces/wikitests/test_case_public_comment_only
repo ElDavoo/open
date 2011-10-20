@@ -18,7 +18,7 @@
 | wait_for_element_not_present_ok | link=Add Tag | 5000 |
 | wait_for_element_not_present_ok | link=Upload Files | 5000 |
 | wait_for_element_visible_ok | link=Log in | 5000 |
-| wait_for_element_visible_ok | link=nav.register |  |
+| wait_for_element_visible_ok | //a[@href='/nlw/register.html?redirect_to='] |  |
 
 | click_and_wait | link=Settings |  |
 | location_like | /nlw/login.html |  |
@@ -29,11 +29,11 @@
 
 | wait_for_element_visible_ok | link=Settings | 5000 |
 | click_and_wait | link=Settings |  |
-| text_like | Global Settings |
+| text_like | Global Settings |  |
 
 | *Comment* | Test Case: Public-Comment-Only TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | deactivate-user --e user_%%start_time%%@ken.socialtext.net |  |
-| delete-workspace | %%auth_w%% |
+| delete-workspace | %%auth_w%% |  |
 
-| *Comment* | Test Case: Public-Comment-Only COMPLETED |
+| *Comment* | Test Case: Public-Comment-Only COMPLETED |  |

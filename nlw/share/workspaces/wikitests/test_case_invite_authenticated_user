@@ -1,9 +1,8 @@
-
 *On hold until Reset Password works*
 
 | *Comment* | Test Case: Invite Authenticated User Invite new users |  |
 
-| set | invite | `//input[@class='lookahead-prompt']` |
+| set | invite | `//input[contains(@class,'lookahead-prompt')]` |
 | set | userdotone | user.o |
 | set | userdottwo | user.t |
 | set | userone | user one |
@@ -76,7 +75,6 @@
 | include | Test Case: Preferences UI User Teardown |  |
 
 | *Comment* | Test case: Invite Authenticated User COMPLETED |  |
-
 
 TODO: for some reason typing an unknown user into the lookahead doesn't work. Find a way to test malformed user
 type_ok | %%invite%% | `%%start_time%%.malformed2ken.socialtext.net` |
