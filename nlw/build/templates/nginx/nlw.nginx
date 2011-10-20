@@ -84,7 +84,7 @@
     rewrite ^/js/(.+)$ /nlw/js/$1;
     [%- END %]
 
-    location ~ "^/nlw/js/(.+.js)$" {
+    location ~ "^/nlw/js/(.+.(?:js|htc))$" {
         alias [% config.data_root_dir %]/storage/javascript/$1;
         expires 1y;
         internal;
