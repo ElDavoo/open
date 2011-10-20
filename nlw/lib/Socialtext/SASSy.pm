@@ -113,14 +113,39 @@ __END__
 
 =head1 NAME
 
-Socialtext::Handler::theme - rebuilds JS as needed in a dev-env
+Socialtext::SASSy - SASS to CSS Conversion
 
 =head1 SYNOPSIS
 
-  # its mapped in automatically in "uri_map.yaml"
+    # Create an object
+    my $sass = Socialtext::SASSy->new(
+        # filename without the extension (.sass or .css is appended)
+        filename => 'grids.fixed',
+
+        # output filename without the extension (optional)
+        output_filename => "output-name",
+
+        # Directory name to create
+        dir_name => 'Testing', # will become $CACHE/theme/Te/sting
+
+        # Params to pass into sass file as variables
+        params => {
+            varname => '10px'
+        },
+    );
+
+    # Potentially render the .css and .sass files
+    $sass->render if $sass->needs_update;
+
+    # File paths:
+    my $sass_file = $sass->sass_file;
+    my $css_file = $css->css_file;
+
+    # Now send this URL to the browser:
+    my $css_url = $sass->protected_uri("output-name.css")
 
 =head1 DESCRIPTION
 
-Rebuilds JS as necessary in your dev-env.
+Builds a CSS file from a SASS file
 
 =cut
