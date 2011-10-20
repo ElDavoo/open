@@ -1,4 +1,3 @@
-
 *On hold until Blog Navigation editing is un-bugged*
 
 *Note: Assumes is being run on test-data workspace*
@@ -6,12 +5,12 @@
 | *Comment* | Test Case: Weblog Archive and Navigation |
 
 | wait_for_element_visible_ok | st-jump-to | 5000 |
-| select_and_wait | st-jump-to | link=Blogs |
+| select_and_wait | st-jump-to | label=Blogs |
 | wait_for_element_visible_ok | page-control-category-selector | 30000 |
 | select_ok | page-control-category-selector | label=Recent Changes |
 | is_selected_ok | page-control-category-selector | label=Recent Changes |
 
-| *Comment* | Test Case: Weblog Archive and Navigation - verify six links |
+| *Comment* | Test Case: Weblog Archive and Navigation - verify six links |  |
 | wait_for_element_visible_ok | //a[contains(text(),'July 2010')] | 10000 |
 | wait_for_element_visible_ok | //a[contains(text(),'July 2009')] | 10000 |
 | wait_for_element_visible_ok | //a[contains(text(),'May 2008')] | 10000 |
@@ -52,4 +51,4 @@
 | st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --page navigation_for_recent_changes | was purged |
 
-| *Comment* | Test Case: Weblog Archive and Navigation COMPLETED |
+| *Comment* | Test Case: Weblog Archive and Navigation COMPLETED |  |
