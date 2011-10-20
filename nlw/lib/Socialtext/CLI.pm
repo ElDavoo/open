@@ -2280,6 +2280,37 @@ sub set_account_config {
         'The account config for ' . $account->name() . ' has been updated.' );
 }
 
+sub set_account_theme {
+    my $self = shift;
+    my $account = $self->_require_account;
+    my $prefs = $account->prefs;
+    my $current = $prefs->all_prefs->{theme};
+    my $updates = {};
+
+    # This block (including the remove_tree one) may belong to
+    # Socialtext::Account as an ->update_theme method...
+    require Socialtext::Theme;
+    while ( my ($key, $value) = splice @{ $self->{argv} }, 0, 2 ) {
+        $updates->{$key} = $value;
+        unless (Socialtext::Theme->ValidSettings($updates)) {
+            return $self->_error("Invalid theme setting: $key = $value");
+        }
+    }
+    my $settings = {%$current, %$updates};
+    $prefs->save({theme=>$settings});
+
+    require Socialtext::SASSy;
+    my $sass = Socialtext::SASSy->new(
+        account => $account,
+        filename => 'style.css',
+    );
+    require File::Path;
+    File::Path::remove_tree($sass->cache_dir);
+
+    $self->_success(
+        'The account theme for ' . $account->name() . ' has been updated.' );
+}
+
 sub _update_account_prefs {
     my $self = shift;
     my $account = shift;
@@ -4218,6 +4249,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   import-account --directory [--name] [--noindex]
   set-account-config --account <key> <value>
   show-account-config --account
+  set-account-theme --account <key> <value>
   reset-account-skin --account <account> --skin <skin>
 
   PLUGINS
@@ -4828,6 +4860,13 @@ the command line.
 
 Given a valid account, this shows all key/value pair combinations for
 that account.
+
+=head2 set-account-theme --account <key> <value>
+
+Given a valid theme preference key, this sets the value of the
+key for the specified account's theme.
+
+You can pass multiple key value pairs on the command line.
 
 =head2 reset-account-skin --account --skin <skin>
 
