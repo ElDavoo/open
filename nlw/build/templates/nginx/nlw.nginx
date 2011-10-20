@@ -76,7 +76,6 @@
     location /nlw/theme {
         internal;
         alias [% config.cache_dir %]/theme/;
-        expires 1y;
     }
 
     rewrite ^/js/[\d\.]+/(.+)$ /js/$1;
