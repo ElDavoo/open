@@ -1,0 +1,22 @@
+$white: #ffffff
+$black: #000000
+$light: #dddddd
+$dark: #333333
+
+$primary_contrast: $white
+@if lightness($primary_color) > 50%
+  $primary_contrast: $black
+
+$primary_complement: $black
+@if (lightness($primary_color) > 50%)
+  $primary_complement: darken($primary_color, 6)
+@else
+  $primary_complement: lighten($primary_color, 10)
+
+$primary_contrast_disabled: $light
+@if (lightness($primary_color) > 50%)
+  $primary_contrast_disabled: $dark
+
+$header_contrast: $light
+@if (lightness($header_color) > 50%)
+  $header_contrast: $dark

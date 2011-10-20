@@ -1,6 +1,7 @@
 @import reset.sass
 @import text.sass
 @import mixins.sass
+@import colors.sass
 
 $margin: 10px
 
@@ -180,14 +181,12 @@ header
   -moz-box-shadow: 3px 3px 4px #000000
   -webkit-box-shadow: 3px 3px 4px #000000
   box-shadow: 3px 3px 4px #000000
+  color: $header_contrast
   /* For IE 8 XXX (Untested)
   -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')"
   background: $header_background
   .title
-    font-family: $header_font
-    font-size: 35px
     padding-top: 25px
-    color: #fff
   a
     color: $header_link_color
     text-decoration: none
