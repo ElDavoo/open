@@ -210,6 +210,7 @@
     color: #fff
   .expander
     display: block
+    padding-right: 0
     .filterText
       line-height: 20px
     .arrow
@@ -220,6 +221,13 @@
     .filter
       white-space: nowrap
       font-weight: bold
+      &.last
+        position: relative
+        padding-right: 20px
+        .ui-icon
+          position: absolute
+          right: 0
+          top: -1px
   .searchText
     width: 73%
   .filters

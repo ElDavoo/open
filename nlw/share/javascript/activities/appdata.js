@@ -473,13 +473,13 @@ $.extend(Activities.AppData.prototype, {
         this.findId('expander').html(loc(
             'Showing <span class="filter">[_1]</span> ' +
             'from <span class="filter">[_2]</span> ' +
-            'within <span class="filter">[_3] [_4]</span>',
+            'within <span class="filter last">[_3] [_4]</span>',
             this.get('action').title,
             this.get('feed').title,
             this.get('network').title,
             this.findId('filters').is(':visible')
-                ? '<span class="arrow">&#9662;</span>'
-                : '<span class="arrow">&#9656;</span>'
+                ? '<span class="ui-icon ui-icon-circle-triangle-s"></span>'
+                : '<span class="ui-icon ui-icon-circle-triangle-e"></span>'
         ));
     },
 
