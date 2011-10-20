@@ -7,12 +7,9 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Entity';
 
-sub GET_css {
-    my $self = shift;
-    my $rest = shift;
-
-    my $width = $self->width;
-    my $cols = $self->cols;
+method GET_css ($rest) {
+    my $width = $->width;
+    my $cols = $->cols;
     my $output = "grids.$cols.$width";
 
     my $sass = Socialtext::SASSy->new(
@@ -39,3 +36,18 @@ sub GET_css {
         '-X-Accel-Redirect'   => $sass->protected_uri("$output.css"),
     );
 }
+
+=head1 NAME
+
+Socialtext::Handler::Base - CSS handler for adaptive grids
+
+=head1 SYNOPSIS
+
+  GET /st/grids/:cols/:width
+
+=head1 DESCRIPTION
+
+This handler defines CSS representations tailor-made to the specified
+number of columns under a given screen width.
+
+=cut
