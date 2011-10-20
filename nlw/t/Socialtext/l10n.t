@@ -3,12 +3,13 @@
 use utf8;
 use strict;
 use warnings;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 11;
 use Socialtext::AppConfig;
 
 fixtures(qw( empty ));
 
 BEGIN {
+    is system('l10n-make-po-js'), 0, "l10n-make-po-js runs without error";
     use_ok 'Socialtext::l10n', qw(:all);
 }
 
