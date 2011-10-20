@@ -1,5 +1,3 @@
-*On hold until Restore Page works*
-
 | *Comment* | Test Case: Tools: Delete Page |  |  |  |
 
 | *Comment* | Test Case: Tools: Delete Page: Create test page |  |  |  |
@@ -44,13 +42,11 @@
 | open_ok | /%%workspace%%/?Backlink Page %%start_time%% |  |
 | text_like | content | Delete Page %%start_time%% |
 | click_ok | link=Delete Page %%start_time%% |  |
-| wait_for_element_visible_ok | blank-radio | 20000 |
-| click_ok | blank-radio |  |
-| wait_for_element_visible_ok | st-create-content-savelink | 20000 |
-| click_and_wait | st-create-content-savelink |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | New Content %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 10000 |
+| click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
+| wait_for_element_present_ok | //textarea[contains(@class,"cke_source")] | 10000 |
+| pause_ok | 4000 |  |
+| type_ok | //textarea[contains(@class,"cke_source")] | New Content %%start_time%% |
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Tools: Delete Page: five revisions, 3/2/1/2/1 |  |
