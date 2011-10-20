@@ -1,6 +1,5 @@
 [% MACRO selected(types) FOR type = types; IF type == container.type %] selected [% END; END %]
 
-<div class="staticUnderline"></div>
 <div class="[% selected(['dashboard']) %]grid_3 navGrid first">
   <div class="navLink">
       <a class="dashboard" href="/st/dashboard">[% loc('nav.dashboard') %]</a>
@@ -38,6 +37,7 @@
     </div>
     <div class="clear"></div>
   </div>
+  <div class="underline"></div>
 </div>
 <div class="clear"></div>
 
