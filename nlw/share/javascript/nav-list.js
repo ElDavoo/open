@@ -34,6 +34,8 @@ function fetchData(entries, index, callback) {
 $.fn.navList = function(entries) {
     var self = this;
 
+    if (Number(st.viewer.is_guest)) return;
+
     fetchData(entries, 0, function() {
         $(self).each(function() {
             $(this).append(Jemplate.process('nav-list.tt2', {

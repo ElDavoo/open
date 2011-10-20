@@ -151,7 +151,6 @@
                 });
             },
             select: function(event, ui) {
-                console.log('select');
                 if (opts.onAccept) {
                     var item = withRealValue(ui.item);
                     opts.onAccept(item.value, item);

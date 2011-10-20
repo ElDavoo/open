@@ -128,15 +128,15 @@ Compare top two revisions | only difference is in added tag
 | *Comment* | Test Case: Tagging Compare Revisions |  |
 | open_ok | /%%t_ws%%/?tag page 3 %%start_time%% |  |
 | click_and_wait | link=2 Revisions |  |
-| wait_for_element_visible_ok | st-revision-compare | 30000 |
-| click_and_wait | st-revision-compare |  |
+| wait_for_element_visible_ok | link=Compare Revisions | 30000 |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Tags:.+Tags:\s*tagtest %%start_time%%/ |  |
 
 Click on that tag in third page | list appears with correct three pages
 Click on any link in list | that page appears
 
 | click_and_wait | link=All Revisions |  |
-| click_and_wait | st-revision-current |  |
+| click_and_wait | link=Back To Current Revision |  |
 | click_and_wait | link=tagtest %%start_time%% |  |
 | click_and_wait | link=tag page 3 %%start_time%% |  |
 | text_like | st-page-titletext | tag page 3 %%start_time%% |
@@ -155,7 +155,7 @@ Compare top two revisions | only difference is in deleted tag
 | *Comment* | The revision number did not change but the tag should be gone |  |
 | open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |  |
 | click_and_wait | link=3 Revisions |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Tags:\s*tagtest %%start_time%%/m |  |
 | text_like | qr/Tags:\s*$/m |  |
 
@@ -173,19 +173,18 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | call | [st-edit-new-page] | ws=%%t_ws%% | content=tag page 4 %%start_time%% content | title=tag page 4 %%start_time%% |
 
-| *Comment* | Test Case: Tagging verify suggestions foo bar, fog, and Foster City |  |
-| wait_for_element_visible_ok | link=Add Tag | 30000 |
-| click_ok | link=Add Tag |  |
-| wait_for_element_visible_ok | st-tags-field | 30000 |
-| type_lookahead_ok | st-tags-field | fo |
-| wait_for_element_visible_ok | link=foster City %%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=foo bar %%start_time%% | 30000 |
-| wait_for_element_visible_ok | link=fog %%start_time%% | 30000 |
+| *Comment* | Test Case: Tagging verify suggestions foo bar, fog, and Foster City |  |  |
+| wait_for_element_visible_ok | link=Add Tag | 30000 |  |
+| click_ok | link=Add Tag |  |  |
+| wait_for_element_visible_ok | st-tags-field | 30000 |  |
+| autocompleted-option-exists | st-tags-field | fo | foster City %%start_time%% |
+| autocompleted-option-exists | st-tags-field | fo | foo bar %%start_time%% |
+| autocompleted-option-exists | st-tags-field | fo | fog %%start_time%% |
 
-| *Comment* | Test Case: Tagging use lookahead to add a tag |  |
-| click_ok | link=foster City %%start_time%% |  |
-| wait_for_element_visible_ok | //a[@class='delete_icon'] | 30000 |
-| text_like | st-tags-listing | foster City %%start_time%% |
+| *Comment* | Test Case: Tagging use lookahead to add a tag |  |  |
+| select-autocompleted-option-ok | st-tags-field | fo | foster City %%start_time%% |
+| wait_for_element_visible_ok | //a[@class='delete_icon'] | 30000 |  |
+| text_like | st-tags-listing | foster City %%start_time%% |  |
 
 | *Comment* | Test Case: Tagging Teardown |  |
 | st-process-jobs |  |  |

@@ -158,6 +158,13 @@
         root [% config.data_root_dir %]/docroot;
     }
 
+    # Force IE8 to emulate IE7 to prevent it from crashing.
+    set $x_ua_compatible "";
+    if ($http_user_agent ~ "MSIE 8") {
+      set $x_ua_compatible "IE=EmulateIE7";
+    }
+    add_header X-UA-Compatible $x_ua_compatible;
+
     location ~ "^/static/.+\.js$" {
       # Safari doesn't like compressed JS, so *only* compress HTML content
       gzip_disable     "AppleWebKit";

@@ -29,6 +29,7 @@
 'socialtext-starfish.js':
     compress: 1
     parts:
+        - contrib/adapt.js
         - contrib/jquery-1.6.2.js
         - contrib/jquery-json-1.3.js
         - contrib/jquery-ui-1.8.5.js
@@ -288,7 +289,7 @@
         - activities/jquery.dropdown.js
         - socialtext-api.js
 
-# jQuery Mobile
+# jQuery Mobile (for OpenSocial Widgets)
 'socialtext-jqm.js':
     compress: 1
     parts:
@@ -303,10 +304,12 @@
         - { jemplate: 'template' }
         - like-indicator.js
 
+# jQuery Mobile (for Mobile UI)
 'socialtext-mobile.js':
    compress: 1
    parts:
         - jquery-1.6.2.min.js
+        - coffee: mobile.coffee
         - contrib/jquery.mobile-1.0b2.min.js
         - loc.js
         - Socialtext.js

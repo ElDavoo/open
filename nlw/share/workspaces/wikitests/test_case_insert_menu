@@ -1,7 +1,6 @@
 | *Comment* | STARTING Test Case: Insert Menu |  |
 
 * Fixture: SocialWidgets
-
 The Insert Menu no longer works in WIKI TEXT mode.
 Nothing but typing does.
 So type in a bunch of wikitext and see what happens.
@@ -10,12 +9,12 @@ TUXTODO: add more wikitext. Use the method call after it is fixed to take newlin
 Verify what is seen in the page after Save.
 
 | set | new_title | Insert Menu %%start_time%% |  |
-| set | content | `----\n{link: Foobar}\n^^ Foobar\n[%%title%%]` |
+| set | content | `----\n{link: Foobar}\n^^ Foobar\n[%%title%%]` |  |
 
 | *Comment* | Test Case: Insert Menu. Insert some content in WIKITEXT mode. Save. |  |
 | open_ok | /%%workspace%%/?action=new_page |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 5000 |
-| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 5000 |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 30000 |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 | wait_for_element_present_ok | //textarea[contains(@class,"cke_source")] | 5000 |
 | type_ok | //textarea[contains(@class,"cke_source")] | %%content%% |
