@@ -719,6 +719,11 @@
             '*/*':       [Socialtext::Handler::Settings, bad_type]
         '*':             [Socialtext::Handler::Settings, bad_method]
 -
+    '/st/grids/:cols/:width':
+        'GET':
+            '*/*': [Socialtext::Handler::Grids, GET_css]
+        '*':       [Socialtext::Handler::Grids, bad_method]
+-
     '/settings/default_workspace':
         'GET':  
             '*/*': &default     [Socialtext::Rest::Settings::DefaultWorkspace, bad_type]

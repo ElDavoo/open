@@ -41,6 +41,21 @@
 
     <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
 
+    <script>
+      var ADAPT_CONFIG = {
+        path: '/st/grids/24/',
+        dynamic: true,
+        range: [
+          '0px    to 1100px = 960',
+          '1100px to 1280px = 1080',
+          '1280px to 1600px = 1200',
+          '1600px to 1920px = 1560',
+          '1940px to 2540px = 1920',
+          '2540px           = 2520'
+        ]
+      };
+    </script>
+
     [% javascript = javascript || [] %] 
     [% javascript.unshift("l10n-${loc_lang}.jgz") %]
     [% javascript.unshift("socialtext-starfish.jgz") %]

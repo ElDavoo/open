@@ -29,6 +29,7 @@
 'socialtext-starfish.js':
     compress: 1
     parts:
+        - contrib/adapt.js
         - contrib/jquery-1.6.2.js
         - contrib/jquery-json-1.3.js
         - contrib/jquery-ui-1.8.5.js

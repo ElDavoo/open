@@ -16,10 +16,9 @@ use namespace::clean -except => 'meta';
 
 use constant code_base => Socialtext::AppConfig->code_base;
 use constant is_dev_env => Socialtext::AppConfig->is_dev_env;
-use constant static_path => Socialtext::Helpers->static_path;
 
-has 'account' => ( is => 'ro', isa => 'Socialtext::Account', required => 1 );
 has 'filename' => ( is => 'ro', isa => 'Str', required => 1 );
+has 'dir_name' => ( is => 'ro', isa => 'Str', required => 1 );
 
 # style an be: compact, compressed, or expanded.
 has 'style' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
@@ -33,6 +32,8 @@ sub _build_style {
     return $minify ? 'compressed' : 'expanded';
 }
 
+has 'params' => ( is => 'ro', isa => 'HashRef' );
+
 has 'files' => (
     is => 'ro', isa => 'ArrayRef', lazy_build => 1, auto_deref => 1,
 );
@@ -40,8 +41,9 @@ method _build_files { return [ glob($self->code_base . '/sass/*') ] }
 
 has 'dir' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 method _build_dir {
-    my $name = $self->account->name;
-    return join('/', 'theme', substr($name, 0, 2), substr($name, 2));
+    return join('/',
+        'theme', substr($self->dir_name, 0, 2), substr($self->dir_name, 2)
+    );
 }
 
 has 'cache_dir' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
@@ -49,16 +51,22 @@ method _build_cache_dir {
     return Socialtext::Paths::cache_directory($self->dir);
 }
 
+has 'output_filename' => ( is => 'rw', isa => 'Str' );
+
 has 'sass_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 method _build_sass_file {
     mkpath $self->cache_dir unless -d $self->cache_dir;
-    return $self->cache_dir . '/' . $self->filename . '.out.sass';
+    $self->output_filename($self->filename . '.out')
+        unless $self->output_filename;
+    return $self->cache_dir . '/' . $self->output_filename . '.sass';
 }
 
 has 'css_file' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 method _build_css_file {
     mkpath $self->cache_dir unless -d $self->cache_dir;
-    return $self->cache_dir . '/' . $self->filename . '.out.css';
+    $self->output_filename($self->filename . '.out')
+        unless $self->output_filename;
+    return $self->cache_dir . '/' . $self->output_filename . '.css';
 }
 
 method protected_uri($file) {
@@ -75,23 +83,12 @@ method needs_update {
 }
 
 method render {
-    my $theme = $self->account->prefs->all_prefs->{theme};
-
-    $theme->{static} = '"' . $self->static_path . '"';
-
-    my @lines;
-
     # Variable Expansion
-    for my $key (keys %$theme) {
-        push @lines, "\$$key: $theme->{$key}\n" if defined $theme->{$key};
+    my @lines;
+    for my $key (keys %{$self->params}) {
+        push @lines, "\$$key: " . $self->params->{$key} . "\n"
+            if defined $self->params->{$key};
     }
-    push @lines, $self->_fg_helper($theme);
-
-    if ($self->filename eq 'style') {
-        push @lines, $self->_bg_helper('background' => $theme);
-        push @lines, $self->_bg_helper('header' => $theme);
-    }
-
     push @lines, "\@import " . $self->filename . ".sass\n";
 
     set_contents($self->sass_file, join('', @lines));
@@ -106,42 +103,6 @@ method render {
         $self->sass_file,                       # Input
         $self->css_file,                        # Output
     );
-}
-
-method _fg_helper($theme) {
-    my $shade = $theme->{foreground_shade};
-
-    my $foreground = {
-        light => '#CCCCCC',
-        dark => '#111111',
-    }->{$shade};
-    die "no fg_helper for $shade" unless $foreground;
-
-    return "\$foreground_color: $foreground\n\n";
-}
-
-method _bg_helper($which, $theme) {
-    my $acct_id = $self->account->account_id;
-
-    my $selector = {
-        background => 'body',
-        header => 'header',
-    }->{$which};
-    die "no bg_helper for $which" unless $selector;
-
-    my $attrs;
-    if (defined $theme->{$which."_image_id"}) {
-        $attrs = "background: ".
-            $theme->{$which."_color"} ." ".
-            "url(/data/accounts/$acct_id/theme/images/$which) ".
-            $theme->{$which."_image_tiling"} ." ".
-            $theme->{$which."_image_position"};
-    }
-    else {
-        $attrs = "background-color: ". $theme->{$which."_color"};
-    }
-
-    return "$selector\n  $attrs\n\n";
 }
 
 no Moose;

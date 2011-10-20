@@ -1,5 +1,6 @@
 package Socialtext::Rest::AccountTheme;
 use Moose;
+use methods-invoker;
 use Socialtext::Account;
 use Socialtext::Theme;
 use Socialtext::SASSy;
@@ -12,6 +13,8 @@ use Socialtext::Paths;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::SettingsTheme';
+
+use constant static_path => Socialtext::Helpers->static_path;
 
 has 'account' => (is=>'ro', isa=>'Maybe[Socialtext::Account]', lazy_build=>1);
 sub _build_account {
@@ -29,9 +32,20 @@ sub GET_css {
 
         $rest->header(-type=>"text/$ext");
 
+        my $params = $self->account->prefs->all_prefs->{theme};
+        $params->{static} = '"' . $self->static_path . '"';
+        $params->{foreground_color} = $self->_fg_helper($params);
+
+        if ($filename eq 'style') {
+            $params->{body_background}
+                = $self->_bg_helper(background => $params);
+            $params->{header_background} = $self->_bg_helper(header => $params);
+        }
+
         my $sass = Socialtext::SASSy->new(
-            account => $self->account,
+            dir_name => $self->account->name,
             filename => $filename,
+            params => $params,
         );
         $sass->render if $sass->needs_update;
 
@@ -48,6 +62,37 @@ sub GET_css {
         );
     });
 }
+
+method _fg_helper($theme) {
+    my $shade = $theme->{foreground_shade};
+
+    my $foreground = {
+        light => '#CCCCCC',
+        dark => '#111111',
+    }->{$shade};
+    die "no fg_helper for $shade" unless $foreground;
+
+    return $foreground;
+}
+
+method _bg_helper($which, $theme) {
+    my $acct_id = $self->account->account_id;
+
+    my $attrs;
+    if (defined $theme->{$which."_image_id"}) {
+        $attrs =
+            $theme->{$which."_color"} ." ".
+            "url(/data/accounts/$acct_id/theme/images/$which) ".
+            $theme->{$which."_image_tiling"} ." ".
+            $theme->{$which."_image_position"};
+    }
+    else {
+        $attrs = $theme->{$which."_color"};
+    }
+
+    return $attrs;
+}
+
 
 override '_build_prefs' => sub {
     my $self = shift;
