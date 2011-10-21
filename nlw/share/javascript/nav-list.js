@@ -46,7 +46,7 @@ $.fn.navList = function(entries) {
 
             $node.find('ul.navList li:last').addClass('last');
 
-            if ($.browser.msie && $.browser.version <= 7) {
+            if ($.browser.msie && $.browser.version <= 8) {
                 $node.mouseover(function() {
                     $node.addClass('hover');
                 })
