@@ -14,7 +14,7 @@
     border-left: 2px solid #000
     left: 0
     width: 100%
-  &:hover
+  &:hover, &.hover
     z-index: 101
     .underline
       background-color: #c6b93b
@@ -25,11 +25,11 @@
   top: 45px
   left: 0
   background-color: #fff
-  border-top: 2px solid #c6b93b
+  border-top: 2px solid $secondary_color
   width: 100%
 
 .selected .underline
-  background-color: #c6b93b
+  background-color: $secondary_color
 
 a
   &:visited, &:active
@@ -84,9 +84,9 @@ a
       &.last
         border-bottom: none
       &.entries
+        *width: 100% // IE ONLY
         max-height: 300px
         overflow-y: auto
-        overflow-x: hidden
         border-bottom: none
     &.navList
       position: absolute
