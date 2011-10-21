@@ -11,7 +11,7 @@
   .navItem, .navLink
     height: 45px
     position: absolute
-    border-left: 2px solid #000
+    border-left: 2px solid $darkest
     left: 0
     width: 100%
   &:hover, &.hover
@@ -24,7 +24,7 @@
   position: absolute
   top: 45px
   left: 0
-  background-color: #fff
+  background-color: $lightest
   border-top: 2px solid $secondary_color
   width: 100%
 
@@ -58,11 +58,6 @@ a
       background-image: url(#{$static}/images/icons/#{$foreground_shade}/groups-25.png)
     &.people
       background-image: url(#{$static}/images/icons/#{$foreground_shade}/people-25.png)
-  .selected .navLink
-    background-color: #000
-    background: rgb(0, 0, 0)
-    background: rgba(0, 0, 0, 0.3)
-    filter: alpha(opacity = 30)
 
 .buttons
   float: right
@@ -99,9 +94,9 @@ a
       z-index: 1000
       -webkit-overflow-scrolling: touch
       margin: 0
-      border-left: 2px solid #000
-      border-right: 2px solid #000
-      border-bottom: 2px solid #000
+      border-left: 2px solid $darkest
+      border-right: 2px solid $darkest
+      border-bottom: 2px solid $darkest
       background: $body_background
   &:hover, &.hover
     .navList
