@@ -1,3 +1,4 @@
+[%# vim: set et sts=2 sw=2: %]
 <script language="javascript">
 
 jQuery(document).ready(function() {
@@ -8,7 +9,7 @@ jQuery(document).ready(function() {
         for (var i in newUsers) {
             li = jQuery('<li>')
               .append(newUsers[i].best_full_name)
-              .append('<a id="' + newUsers[i].user_id + '" href="#" class="remove icon"><span>remove</span><div class="removeIcon"></div></a>')
+              .append('<a id="' + newUsers[i].user_id + '" href="#" class="remove icon"><span>x</span><div class="removeIcon"></div></a>')
               .append('<input type="hidden" name="workspace.do.invite_user" value="' + newUsers[i].user_id + '">'); 
 
             if (i == 0) {
@@ -90,15 +91,15 @@ jQuery(document).ready(function() {
 
 [% IF space.domain_restriction %]<p>[% loc('Only users whose email address is in the "[_1]" domain may be invited to this workspace.', space.domain_restriction) %]</p>[% END %]
 
+<p>[% loc('Use the field below to search for users to add to this workspace. Then, click Save to add them. Each user will be notified via email.') %]</p>
 <div class="sub_alpha grid_sub_6 input-label">
   [% loc('Email address to invite') %]:
 </div>
 <div class="sub_omega grid_sub_18">
     <input id="user" name="please.ignore.me"
-      class="initial" type="text"
+      class="lookahead-prompt" type="text"
       value="[% loc('begin typing email here...') %]"
     />
-
     <div class="users" id="newUsers">
     </div>
 </div>

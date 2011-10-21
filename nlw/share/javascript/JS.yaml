@@ -25,6 +25,13 @@
     parts:
         - activities/push-client.js
 
+# IE thing
+'Selection.htc':
+    parts:
+        -
+            file: wikiwyg/Selection.htc
+            nocomment: 1
+
 # Socialtext files
 'socialtext-starfish.js':
     compress: 1

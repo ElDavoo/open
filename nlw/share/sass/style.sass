@@ -25,6 +25,7 @@ body
     margin-top: -8px
 
 #content
+  position: relative
   zoom: 1
   background-color: #fff
   padding-top: 8px
@@ -348,7 +349,6 @@ div.users ul
     width: 50%
 
 #globalNav
-  position: relative
   @import globalNav.sass
 
 .activitiesWidget
@@ -477,6 +477,14 @@ ul.vertical_actions
   li
     line-height: 1.5em
     margin-left: 1em
+
+// Horizontal menu
+ul.horizontal-menu
+  li
+    display: inline
+    list-style-type: none
+    padding-right: 0.5em
+    margin-left: 0
 
 // Specific tables
 table.all_files

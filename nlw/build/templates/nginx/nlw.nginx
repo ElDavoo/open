@@ -76,7 +76,6 @@
     location /nlw/theme {
         internal;
         alias [% config.cache_dir %]/theme/;
-        expires 1y;
     }
 
     rewrite ^/js/[\d\.]+/(.+)$ /js/$1;
@@ -91,6 +90,14 @@
         internal;
         types {}
         default_type application/javascript;
+    }
+
+    location ~ "^/nlw/js/(.+.htc)$" {
+        alias [% config.data_root_dir %]/storage/javascript/$1;
+        expires 1y;
+        internal;
+        types {}
+        default_type 'text/x-component';
     }
     
     location ~ "^/nlw/js/(.+.jgz)$" {

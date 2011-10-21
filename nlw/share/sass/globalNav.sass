@@ -5,6 +5,7 @@
 .navGrid
   height: 50px
   position: relative
+  z-index: 100
   margin: 0
   padding: 0 $margin
   .navItem, .navLink
@@ -13,10 +14,12 @@
     border-left: 2px solid #000
     left: 0
     width: 100%
-  &:hover .underline
-    background-color: $secondary_color
+  &:hover, &.hover
+    z-index: 101
+    .underline
+      background-color: $secondary_color
 
-.staticUnderline, .underline
+.underline, .staticUnderline
   height: 3px
   position: absolute
   top: 45px
@@ -69,25 +72,37 @@ a
 
 // Drop downs
 .navGrid
-  .navList
-    width: 100%
-    position: absolute
-    top: 42px
-    left: 0
-    padding: 3px
-    color: $foreground_color
-    display: none
-    z-index: 1000
-    -webkit-overflow-scrolling: touch
+  ul
+    list-style: none
     margin: 0
-    border-left: 2px solid #000
-    border-right: 2px solid #000
-    border-bottom: 2px solid #000
-    background: $background_color
-    .navListItems
-      max-height: 300px
-      overflow-y: auto
-      overflow-x: hidden
+    padding: 0
+    li
+      margin: 0
+      padding: 3px 10px 3px 0
+      border-bottom: 1px solid fade-out($secondary_color, 0.8)
+      white-space: nowrap
+      &.last
+        border-bottom: none
+      &.entries
+        *width: 100% // IE ONLY
+        padding-right: 0
+        max-height: 300px
+        overflow-y: auto
+        border-bottom: none
+    &.navList
+      position: absolute
+      top: 42px
+      left: 0
+      padding: 3px
+      color: $foreground_color
+      display: none
+      z-index: 1000
+      -webkit-overflow-scrolling: touch
+      margin: 0
+      border-left: 2px solid #000
+      border-right: 2px solid #000
+      border-bottom: 2px solid #000
+      background: $body_background
   &:hover, &.hover
     .navList
       display: block

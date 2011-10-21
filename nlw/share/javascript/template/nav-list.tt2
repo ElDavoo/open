@@ -1,34 +1,37 @@
-<div class="navList [% IF entry.exists('icon') %] icons[% END %]">
+<ul class="navList [% IF entry.exists('icon') %] icons[% END %]">
     [%- FOR entry = entries -%]
         [% IF entry.data %]
             [% IF entry.data.size %]
-                <div class="navListItems">
-                [%- FOR item = entry.data -%]
-                    [%- IF entry.exists('icon') -%]
-                        <div class="grid_sub_6 sub_alpha"><img src="[% entry.icon(item) %]"/></div>
-                        <div class="grid_sub_18 sub_omega">[% INCLUDE navListLink %]</div>
-                        <div class="clear vpad3"></div>
-                    [%- ELSE -%]
-                        <div>[% INCLUDE navListLink %]</div>
+                <li class="entries">
+                    <ul>
+                    [%- FOR item = entry.data -%]
+                        [%- IF entry.exists('icon') -%]
+                            <li>
+                                <img src="[% entry.icon(item) %]"/>
+                                [% INCLUDE navListLink %]
+                            </li>
+                        [%- ELSE -%]
+                            <li>[% INCLUDE navListLink %]</li>
+                        [%- END -%]
                     [%- END -%]
-                [%- END -%]
-                </div>
+                    </ul>
+                </li>
             [% ELSE %]
-                <div class="navListItem emptynotice">[% entry.emptyMessage %]</div>
+                <li class="emptynotice">[% entry.emptyMessage %]</li>
             [% END %]
         [% ELSE %]
             [% IF entry.href.defined OR entry.onclick.defined %]
-            <div class="navListItem">
+            <li>
                 <a href="[% entry.href || '#' %]"[% IF entry.onclick.defined %] onClick="[% entry.onclick %]"[% END %]>[% entry.title %]</a>
-            </div>
+            </li>
             [% ELSE %]
-            <div class="navListItem">
+            <li>
                 <a class="label" name="st-dropaction-[% action.title %]">[% action.title %]</a>
-            </div>
+            </li>
             [% END %]
         [% END %]
     [%- END -%]
-</div>
+</ul>
 
 [% BLOCK navListLink %]
     <a [% IF entry.defaultId AND item.default %] id="[% entry.defaultId %]"[% END %]href="[% entry.href(item) %]">
