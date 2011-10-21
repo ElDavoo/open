@@ -1,13 +1,18 @@
-$white: #ffffff
-$black: #000000
-$light: #dddddd
-$dark: #333333
+$lightest: #ffffff
+$light: #e8e8e8
+$lighter: #cccccc
+$grey: #999999
+$darker: #333333
+$darkest: #000000
 
-$primary_contrast: $white
+$red: #d93636
+$alert_background: #ffeecc
+
+$primary_contrast: $lightest
 @if lightness($primary_color) > 50%
-  $primary_contrast: $black
+  $primary_contrast: $darkest
 
-$primary_complement: $black
+$primary_complement: $darkest
 @if (lightness($primary_color) > 50%)
   $primary_complement: darken($primary_color, 6)
 @else
@@ -15,8 +20,8 @@ $primary_complement: $black
 
 $primary_contrast_disabled: $light
 @if (lightness($primary_color) > 50%)
-  $primary_contrast_disabled: $dark
+  $primary_contrast_disabled: $darker
 
-$header_contrast: $light
+$header_contrast: $lightest
 @if (lightness($header_color) > 50%)
-  $header_contrast: $dark
+  $header_contrast: $darkest

@@ -18,7 +18,7 @@ body
 
 #st-system-status
   position: relative
-  background-color: #FA8072
+  background-color: $red
   text-align: center
   padding: 0.5em 1em
   .uiDisabled
@@ -27,7 +27,7 @@ body
 #content
   position: relative
   zoom: 1
-  background-color: #fff
+  background-color: $lightest
   padding-top: 8px
   .uiDisabled
     margin-top: -8px
@@ -41,7 +41,7 @@ a
 // Icons
 a.icon-delete
   padding: 4px
-  background: white url(#{$static}/images/icons/close-darker-8.png) no-repeat 0 0px
+  background: $lightest url(#{$static}/images/icons/close-darker-8.png) no-repeat 0 0px
   &:hover
     background-image: url(#{$static}/images/icons/close-gray-8.png)
 
@@ -169,12 +169,12 @@ h4
     position: absolute
     top: 1px
     left: 5px
-    color: #fff
+    color: $lightest
 
 /* Search boxes */
 .searchText
   padding-left: 18px
-  background: white url(#{$static}/images/icons/search-darker-15.png) no-repeat 0 0px
+  background: $lightest url(#{$static}/images/icons/search-darker-15.png) no-repeat 0 0px
 
 header
   height: 100px
@@ -285,7 +285,7 @@ ul
     z-index: 3500
     /* above the signalthis iframe
     display: block
-    background-color: #FFF
+    background-color: $lightest
     padding: 0
     margin: 0
     text-align: left
@@ -311,7 +311,7 @@ ul
       &.selected
         background-color: #F4F0CB
       &.disabled
-        background-color: #FFF
+        background-color: $lightest
         a
           color: #CCC
           cursor: default
@@ -632,7 +632,7 @@ p.setting_warning
   .prefix
     float: left
     background: #999
-    color: #fff
+    color: $lightest
     text-transform: uppercase
     margin: 3px 5px 0 5px
     font-size: 10pt
