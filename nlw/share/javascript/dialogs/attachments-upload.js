@@ -186,7 +186,7 @@ socialtext.dialog.register('attachments-upload', function(opts) {
                 id: 'st-attachments-attach-closebutton',
                 click: function() { dialog.close() }
             }
-        ],
+        ]
     });
 
     var uploader = new AttachmentUpload({ dialog: dialog });
