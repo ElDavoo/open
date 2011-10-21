@@ -43,6 +43,8 @@ $.fn.navList = function(entries) {
                 entries: entries
             }));
 
+            $(this).find('ul.navList li:last').addClass('last');
+
             if ($.browser.msie && $.browser.version < 7) {
                 $(this).parents('.navList')
                     .mouseover(function() {
