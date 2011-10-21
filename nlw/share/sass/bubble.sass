@@ -9,12 +9,12 @@
  * Border and thought bubble triangle
 
 .bubble
-  background: #FFF
+  background: $lightest
   padding: 6px
   text-align: left
   float: left
   /* Rounded border
-  border: 2px solid #666
+  border: 2px solid $grey
   -webkit-border-radius: 5px
   -moz-border-radius: 5px
   border-radius: 5px
@@ -41,13 +41,13 @@
     left: 40px
     border-width: 20px 20px 0
     border-style: solid
-    border-color: #666 transparent
+    border-color: $grey transparent
   .after
     bottom: -17px
     left: 41px
     border-width: 19px 19px 0
     border-style: solid
-    border-color: #fff transparent
+    border-color: $lightest transparent
   &.top
     .before
       top: -20px
@@ -90,11 +90,11 @@
   background: url(#{$static}/images/icons/thumbsup-black-15.png) no-repeat center left
 
 .like-indicator
-  color: #666
+  color: $primary_color
   &:hover
     text-decoration: none
   &.immutable
-    color: #000
+    color: $darkest
     white-space: nowrap
   &.loading
     background-image: url(#{$static}/images/ajax-loader.gif)
@@ -123,14 +123,14 @@
     font-weight: bold
     padding: 5px
   .like-count, .likers, .like-button
-    border-top: 1px solid #aaa
+    border-top: 1px solid $lighter
   .like-filter
     padding: 5px 0
     text-align: center
   .like-count
     font-weight: bold
     font-style: italic
-    color: #666
+    color: $grey
     padding: 5px 10px
   .like-filter
     a
@@ -145,7 +145,7 @@
   .like-button
     padding: 8px 0 3px 8px
     .like-indicator
-      color: #000
+      color: $lightest
       font-weight: bold
   .paging
     padding: 10px
@@ -179,17 +179,17 @@
     margin-left: 0
   .follow
     text-align: left
-    border-top: 1px solid #CCCBCC
+    border-top: 1px solid $lighter
     margin-top: 5px
     padding: 5px
     height: 13px
   .followPersonButton
-    color: #000
+    color: $lightest
     text-decoration: none
     height: 18px
     float: left
     &:hover
-      color: #000
+      color: $lightest
       text-decoration: none
       height: 18px
       float: left
