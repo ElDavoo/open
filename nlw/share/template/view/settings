@@ -43,18 +43,8 @@ jQuery(document).ready(function() {
             [% space.title %]
           [% END %]
         </div>
-        <ul>
-          [% FOREACH pref IN space.prefs %]
-            <li>
-              [% IF pref.active %]
-                <strong>[% pref.title %]</strong>
-              [% ELSE %]
-                <a href="/st/settings/[% space.id %]/prefs/[% pref.name %]">
-                  [% pref.title %]</a>
-              [% END %]
-            </li>
-          [% END %]
-        </ul>
+        [% INCLUDE linkset %] 
+        [% IF space.active %] [% links = PROCESS linkset %] [% END %]
       [% END %]
       </div>
     </div>
@@ -63,24 +53,56 @@ jQuery(document).ready(function() {
 <div class="grid_20">
   <div id="settings-main">
     <form accept-charset="UTF-8" method="POST" action="">
-      <p>
-        <a class="save" href="#">[% loc('do.save') %]</a>
-        <a class="cancel" href="#">[% loc('do.cancel') %]</a>
-      </p>
+        <ul class="horizontal-menu">
+          <li><a class="save" href="#">[% loc('do.save') %]</a></li>
+          <li><a class="cancel" href="#">[% loc('do.cancel') %]</a></li>
+          [% FOREACH space IN spaces %]
+            [% IF space.active %]
+              [% FOREACH pref IN space.prefs %]
+                <li>
+                  [% IF pref.active %]
+                    <strong>[% pref.title %]</strong>
+                  [% ELSE %]
+                    <a href="/st/settings/[% space.id %]/prefs/[% pref.name %]">
+                      [% pref.title %]</a>
+                  [% END %]
+                </li>
+                [% IF ! loop.last %]<li>&#166;</li>[% END %]
+              [% END %]
+            [% END %]
+          [% END %]
+        </ul>
+      [% IF warning %]
+        <p class="setting_warning">[% warning %]</p>
+      [% END %]
 
       [% IF message %]
-        <p>[% message %]</p>
+        <p class="setting_message">[% message %]</p>
       [% END %]
 
       [% main_content %]
 
-      <p>
-        <a class="save" href="#">[% loc('do.save') %]</a>
-        <a class="cancel" href="#">[% loc('do.cancel') %]</a>
-      </p>
+      <ul class="horizontal-menu">
+        <li><a class="save" href="#">[% loc('do.save') %]</a></li>
+        <li><a class="cancel" href="#">[% loc('do.cancel') %]</a></li>
+      </ul>
     </form>
   </div>
 </div>
 <div class="clear"></div>
 [% END %]
 
+[% BLOCK linkset %]
+<ul>
+  [% FOREACH pref IN space.prefs %]
+    <li>
+      [% IF pref.active %]
+        <strong>[% pref.title %]</strong>
+      [% ELSE %]
+        <a href="/st/settings/[% space.id %]/prefs/[% pref.name %]">
+          [% pref.title %]</a>
+      [% END %]
+    </li>
+  [% END %]
+</ul>
+[% END %]

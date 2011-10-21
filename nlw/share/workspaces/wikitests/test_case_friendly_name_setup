@@ -83,7 +83,7 @@
 
 | *Comment* | Test Case Friendly Name Setup edit a page with user wafl |  |  |  |
 
-| call | st-edit-new-page | ws=%%fname_wiki%% | title=%%fname_page%% | content=user wafl {user: %%fname_user%%} |
+| call | [st-edit-new-page] | ws=%%fname_wiki%% | title=%%fname_page%% | content=user wafl {user: %%fname_user%%} |
 
 | *Comment* | Test Case Friendly Name Setup comment on a page |  |
 | wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 30000 |

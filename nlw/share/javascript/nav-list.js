@@ -32,33 +32,28 @@ function fetchData(entries, index, callback) {
 }
 
 $.fn.navList = function(entries) {
-    var self = this;
+    var $nodes = $(this);
+
+    if (Number(st.viewer.is_guest)) return;
 
     fetchData(entries, 0, function() {
-        $(self).each(function() {
-            $(this).append(Jemplate.process('nav-list.tt2', {
+        $nodes.each(function(_, node) {
+            var $node = $(node);
+            $node.append(Jemplate.process('nav-list.tt2', {
                 loc: loc,
                 entries: entries
             }));
 
-            if ($.browser.msie && $.browser.version < 7) {
-                $(this).parents('.navList')
-                    .mouseover(function() {
-                        $(this).addClass('hover');
-                    })
-                    .mouseout(function() {
-                        $(this).removeClass('hover');
-                    });
-            }
+            $node.find('ul.navList li:last').addClass('last');
 
-            $('.scrollingNav', this).each(function() {
-                // Show a maximum of 8 entries (AKA cross-browser max-height)
-                var height = $(this).hasClass('has_icons') ? 30 : 20;
-                if ($(this).find('.navListItem').size() >= 8) {
-                    $(this).height(height * 8);
-                    $(this).css('overflow-y', 'scroll');
-                }
-            });
+            if ($.browser.msie && $.browser.version <= 7) {
+                $node.mouseover(function() {
+                    $node.addClass('hover');
+                })
+                $node.mouseout(function() {
+                    $node.removeClass('hover');
+                });
+            }
         });
     });
 };

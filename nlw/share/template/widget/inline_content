@@ -1,7 +1,6 @@
 [% PROCESS widget.html IF file_exists('widget.html') %]
 
 <script type="text/javascript">
-<!--
 (function() {
     var gadgets = rescopedGadgetsObject(__MODULE_ID__);
     var opensocial = rescopedOpensocialObject(__MODULE_ID__);
@@ -12,5 +11,4 @@
         [% PROCESS widget.js | minify %]
     [% END %]
 })();
--->
 </script>

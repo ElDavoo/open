@@ -1,5 +1,7 @@
-| *Comment* | Test Case: Home |  |
-| *Comment* | Test Case: Home Weblog |  |
+*On hold until Weblog Home actually works*
+
+| *Comment* | Test Case: Home |  |  |
+| *Comment* | Test Case: Home Weblog |  |  |
 
 | call | [st-spaces-accordion] | index=1 | section=Features |
 
@@ -9,13 +11,12 @@
 | click_and_wait | link=Save |  |
 | wait_for_text_present_ok | Saved | 5000 |
 
-| *Comment* | Test Case: Home Weblog - verify weblog Home %%start_time%% Blog |  |
-| open_ok | /%%workspace%% |  |
-| wait_for_text_present_ok | Blog: |
-| text_like | qr/Blog:.+Home %%start_time%% Blog/ism |  |
+| *Comment* | Test Case: Home Weblog - verify weblog Home %%start_time%% Blog |  |  |
+| open_ok | /%%workspace%% |  |  |
+| wait_for_text_present_ok | Blog: |  |  |
+| text_like | qr/Blog:.+Home %%start_time%% Blog/ism |  |  |
 
-
-| *Comment* | Test Case: Home - set Central Page |  |
+| *Comment* | Test Case: Home - set Central Page |  |  |
 
 | call | [st-spaces-accordion] | index=1 | section=Features |
 

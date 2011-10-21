@@ -1,4 +1,4 @@
-<div id="[% id('label-insert') %]" class="insert omega grid_24">
+<div id="[% id('label-insert') %]" class="insert omega grid_sub_24">
 [% IF showDirect %]
     <span>[% loc('Private') %]</span>
     <a id="[% id('startPrivate') %]" title="[% loc('activities.send-private-message') %]" class="setupWikiwyg startPrivate icon" href="#"></a>

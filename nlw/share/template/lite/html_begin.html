@@ -9,59 +9,12 @@
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/miki.css" />
         [% IF enable_jquery_mobile %]
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-mobile.jgz"></script>
+        [% END %]
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang || 'en' %].jgz"></script>
         [% INCLUDE 'element/wiki/js-bootstrap' %]
-        <script type="text/javascript">
-        $(document).bind("mobileinit", function(){
+        <script type="text/javascript"><!--
             Socialtext.mobile = true;
-            console.log('mobile init');
-
-            // Disable Ajax link transitions under Selenium.
-            var isSelenium = (
-                (typeof seleniumAlert != 'undefined' && seleniumAlert)
-                || (typeof Selenium != 'undefined' && Selenium)
-                || ((typeof window.top != 'undefined' && window.top)
-                    && (window.top.selenium_myiframe
-                        || window.top.seleniumLoggingFrame)
-                || ((typeof window.top.opener != 'undefined' && window.top.opener)
-                    && (window.top.opener.selenium_myiframe
-                        || window.top.opener.seleniumLoggingFrame))
-                )
-            );
-
-            $.extend($.mobile, {
-                defaultTransition: 'fade',
-                ajaxEnabled: false,
-                ajaxFormsEnabled: false,
-                ajaxLinksEnabled: false, // !isSelenium,
-                hashListeningEnabled: false,
-                gradeA: function(){
-                    return(
-                        $.support.mediaquery
-                            && ($.browser.webkit || $.browser.mozilla)
-                    );
-                }
-            });
-
-            if ($.support.mediaquery && ($.browser.webkit || $.browser.mozilla)) {
-                // {bz: 4791}: Tapping an item in a list should highlight the item
-                // with the same styling as "mousedown".
-                $(".ui-btn").live({
-                    click: function() {
-                        var theme = $(this).attr( "data-theme" );
-                        $(this).removeClass( "ui-btn-up-" + theme ).addClass( "ui-btn-down-" + theme );
-                    }
-                });
-            }
-        });
-        </script>
-        [% ELSE %]
-            <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang || 'en' %].jgz"></script>
-            [% INCLUDE 'element/wiki/js-bootstrap' %]
-            <script type="text/javascript"><!--
-                Socialtext.mobile = true;
-            --></script>
-        [% END %]
+        --></script>
         <meta name = "viewport" content = "width=device-width, initial-scale=1">
     </head>
     <body>

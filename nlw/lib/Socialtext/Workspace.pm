@@ -530,6 +530,60 @@ sub delete_search_index {
     }
 }
 
+around assign_role_to_user => sub {
+    my $orig = shift;
+    my $self = shift;
+    my %p = (
+        user => undef, role => undef, actor => undef, reckless => 0, @_);
+
+        my $currentRole = $self->role_for_user($p{user}, direct => 1);
+        if ($currentRole and !$p{reckless}) {
+            my $admin = Socialtext::Role->Admin();
+            if ($currentRole->role_id == $admin->role_id
+                 and $p{role}->role_id ne $admin->role_id) {
+                my $count = $self->role_count(
+                    role   => Socialtext::Role->Admin(),
+                    direct => 1,
+                );
+            Socialtext::Exception::User->throw(
+                error => 'ADMIN_REQUIRED',
+                user => $p{user},
+                username => $p{user}->username,
+            ) if $count < 2;
+        }
+    }
+
+    $orig->($self, %p);
+};
+
+around remove_user => sub {
+    my $orig = shift;
+    my $self = shift;
+    my %p = (
+        user => undef,
+        reckless => 0,
+        @_
+    );
+
+    unless ($p{reckless}) {
+        my $userRole = $self->role_for_user($p{user}, direct => 1);
+        my $admin = Socialtext::Role->Admin();
+        if ($userRole->name eq $admin->name) {
+            my $count = $self->role_count(
+                role => Socialtext::Role->Admin(),
+                direct => 1,
+            );
+            Socialtext::Exception::User->throw(
+                error => 'ADMIN_REQUIRED',
+                user => $p{user},
+                username => $p{user}->username,
+            ) if $count < 2;
+        }
+    }
+
+    $orig->($self, %p);
+};
+
 sub delete {
     my $self = shift;
     my $timer = Socialtext::Timer->new;
@@ -539,7 +593,7 @@ sub delete {
 
     my $mc = $self->users();
     while ( my $user = $mc->next() ) {
-        $self->remove_user(user => $user);
+        $self->remove_user(user => $user, reckless => 1);
     }
 
     Socialtext::EmailAlias::delete_alias( $self->name );

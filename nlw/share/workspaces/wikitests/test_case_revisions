@@ -1,5 +1,3 @@
-*On hold until intermittent failures are figured out*
-
 | *Comment* | START Test Case: Revisions |  |  |  |
 
 | *Comment* | Test Case: Revisions: Create a page with five revisions |  |  |  |
@@ -31,8 +29,8 @@
 | *Comment* | Test Case: Revisions: Check for sorting and the "Compare Revisions" button |  |
 | wait_for_element_visible_ok | //a[contains(@href,'action=revision_list')] | 5000 |
 | click_and_wait | `//a[contains(@href,'action=revision_list')]` |  |
-| wait_for_element_visible_ok | st-revision-current | 5000 |
-| click_and_wait | st-revision-current |  |
+| wait_for_element_visible_ok | link=Back To Current Revision | 5000 |
+| click_and_wait | link=Back To Current Revision |  |
 | wait_for_text_present_ok | revision number five | 5000 |
 | wait_for_element_visible_ok | //a[contains(@href,'action=revision_list')] | 5000 |
 | click_and_wait | `//a[contains(@href,'action=revision_list')]` |  |
@@ -73,12 +71,12 @@
 | wait_for_element_visible_ok | //a[contains(@href,'action=revision_list')] | 5000 |
 | click_and_wait | `//a[contains(@href,'action=revision_list')]` |  |
 | text_like | qr/Revision 5.+Revision 4.+Revision 3.+Revision 2.+Revision 1/ |  |
-| wait_for_element_visible_ok | st-revision-compare | 5000 |
+| wait_for_element_visible_ok | link=Compare Revisions | 5000 |
 
 | *Comment* | Test Case: Revisions: Check the correct radio buttons are set |  |
 | verifyValue | new_revision_id | on |
 | verifyValue | document.revisions.old_revision_id[1] | on |
-| click_and_wait | st-revision-current |  |
+| click_and_wait | link=Back To Current Revision |  |
 | text_like | revision number five |  |
 | wait_for_element_visible_ok | //a[contains(@href,'action=revision_list')] | 5000 |
 | click_and_wait | `//a[contains(@href,'action=revision_list')]` |  |
@@ -90,7 +88,7 @@
 | verifyValue | document.revisions.old_revision_id[1] | on |
 
 | *Comment* | Test Case: Revisions: Comparing revisions |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Revision 4.+Revision 5.+four.+five/s |  |
 
 | click_and_wait | link=All Revisions |  |
@@ -98,7 +96,7 @@
 | click_ok | document.revisions.new_revision_id[1] |  |
 
 | *Comment* | Test Case: Revisions: test Next compare button |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Revision 1.+Revision 4.+one.+four/s |  |
 | wait_for_element_visible_ok | link=Next Compare | 5000 |
 | click_and_wait | link=Next Compare | 5000 |
@@ -134,53 +132,51 @@
 
 | *Comment* | Test Case: Revisions: Comparing revision to itself |  |
 | click_and_wait | link=All Revisions |  |
-| wait_for_element_visible_ok | st-revision-compare | 5000 |
+| wait_for_element_visible_ok | link=Compare Revisions | 5000 |
 | click_ok | document.revisions.old_revision_id[2] |  |
 | click_ok | document.revisions.new_revision_id[2] |  |
-| click_ok | st-revision-compare |  |
+| click_ok | link=Compare Revisions |  |
 
 | *Comment* | Test Case: Revisions. cannot compare revision to itself |  |
 | verifyAlert | You cannot compare a revision to itself. |  |
 
 | *Comment* | Test Case: Revisions: older vs. younger |  |
-| click_and_wait | st-revision-current |  |
+| click_and_wait | link=Back To Current Revision |  |
 | text_like | revision number five |  |
 | wait_for_element_visible_ok | //a[contains(@href,'action=revision_list')] | 5000 |
 | click_and_wait | `//a[contains(@href,'action=revision_list')]` |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Revision 4.+Revision 5.+four.+five/s |  |
 
 | *Comment* | Test Case: Revisions: younger vs. older |  |
 | click_and_wait | link=All Revisions |  |
 | click_ok | old_revision_id |  |
 | click_ok | document.revisions.new_revision_id[1] |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 | text_like | qr/Revision 5.+Revision 4.+five.+four/s |  |
 
 | *Comment* | Test Case: Revisions: Checking revision formatting views |  |
 | open_ok | /%%workspace%%/test case revisions %%start_time%% |  |
 | wait_for_element_visible_ok | //a[contains(@href,'action=revision_list')] | 5000 |
 | click_and_wait | `//a[contains(@href,'action=revision_list')]` |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 
 | text_like | content | four |
 | text_like | content | five |
-| text_like | `[revision number five] %%start_time%%` |  |
-
-| click_and_wait | link=Formatted View |  |
 | text_unlike | content | `[revision number five] %%start_time%%` |
 | text_like | content | `revision number five %%start_time%%` |
 
-| click_and_wait | link=Wikitext View |  |
+| click_and_wait | link=Wikitext |  |
 | text_like | content | four |
 | text_like | content | five |
+| text_like | content | `[revision number five] %%start_time%%` |
 
 | click_and_wait | link=Revision 4 |  |
 | text_like | Revision 4 |  |
 | text_like | revision number four |  |
 
 | click_and_wait | link=All Revisions |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 | click_and_wait | link=Revision 5 |  |
 | text_like | Revision 5 |  |
 | text_like | revision number five |  |
@@ -210,7 +206,7 @@ from Compare Revisions, click the link above the older version | older version a
 | text_like | revision number two %%start_time%% |  |
 | click_and_wait | link=All Revisions |  |
 | click_ok | document.revisions.old_revision_id[3] |  |
-| click_and_wait | st-revision-compare |  |
+| click_and_wait | link=Compare Revisions |  |
 | click_and_wait | //strong |  |
 | text_like | revision number two %%start_time%% |  |
 | click_and_wait | link=All Revisions |  |
@@ -218,8 +214,8 @@ from Compare Revisions, click the link above the older version | older version a
 | *Comment* | Test Case: Revisions: Restoring revision |  |
 | wait_for_element_visible_ok | link=Revision 2 | 5000 |
 | click_and_wait | link=Revision 2 |  |
-| text_like | link=Source View | Source View |
-| click_and_wait | link=Source View |  |
+| text_like | link=HTML View | HTML View |
+| click_and_wait | link=HTML View |  |
 | text_like | link=Normal View | Normal View |
 | click_and_wait | st-revision-restorebutton |  |
 
@@ -227,7 +223,7 @@ from Compare Revisions, click the link above the older version | older version a
 | wait_for_element_visible_ok | link=6 revisions | 5000 |  |  |
 | click_and_wait | link=6 revisions |  |  |  |
 | text_like | qr/Revision 2.+Revision 5.+Revision 4.+Revision 3.+Revision 2.+Revision 1/s |  |  |  |
-| click_and_wait | st-revision-current |  |  |  |
+| click_and_wait | link=Back To Current Revision |  |  |  |
 | text_like | revision number two |  |  |  |
 
 | *Comment* | Test Case: Revisions: TEARDOWN |  |

@@ -390,7 +390,6 @@ sub export {
     my $export_file = $opts{file} || "$dir/account.yaml";
     my %prefs = $self->_mangle_pref_blob_for_export($dir);
 
-    my $logo_ref = $self->logo->logo;
     my $data     = {
         %prefs,
         # versioning
@@ -401,7 +400,6 @@ sub export {
         skin_name                  => $self->skin_name,
         email_addresses_are_hidden => $self->email_addresses_are_hidden,
         users                      => $self->all_users_as_hash(want_private_fields => 1),
-        logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
         plugins                    => [ $self->plugins_enabled ],
         plugin_preferences         =>

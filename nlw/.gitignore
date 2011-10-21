@@ -24,6 +24,7 @@ share/l10n/*.po
 share/workspaces/wikitests/wikitests.1.tar.gz
 share/javascript/l10n
 share/javascript/Socialtext/Editor.js
+share/javascript/mobile.js
 messages.mo
 nlw-en.po
 lib/Socialtext/Handler/ControlPanel.pm

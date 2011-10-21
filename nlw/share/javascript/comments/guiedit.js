@@ -101,7 +101,7 @@ GuiEdit.prototype.show = function () {
     this.area = jQuery('textarea', this.container).get(0);
 
     if (this.area.addBehavior) {
-        this.area.addBehavior(nlw_make_s3_path('/javascript/Selection.htc'));
+        this.area.addBehavior(st.nlw_make_js_path('Selection.htc'));
     }
 
     if ($('#st-comment-signal_network').size() > 0) {

@@ -17,6 +17,7 @@ has 'space' => (
     is => 'ro', isa => 'Maybe[Socialtext::Workspace]', lazy_build => 1);
 has 'settings' => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 has 'message' => (is => 'rw', isa => 'Str', default => '');
+has 'warning' => (is => 'rw', isa => 'Str', default => '');
 has 'invite_errors' => (is => 'rw', isa => 'Maybe[HashRef]', default => undef);
 
 sub _build_space {
@@ -181,6 +182,18 @@ sub POST_space {
     }
 
     my $redirect = '';
+    my @remove = $q->param('workspace.do.remove_user');
+    my @admins = $q->param('workspace.do.should_be_admin');
+    my @password_reset = $q->param('workspace.do.reset_password');
+    my $admin = Socialtext::Role->Admin;
+    my $member = Socialtext::Role->Member;
+    my @admins_left = grep { not $_ ~~ @remove } @admins;
+    my ($user_id, $role_id);
+    if ( 0 == scalar(@admins_left)) {
+        $self->warning(loc('A workspace requires at least one admin.'));
+        return $self->get_space_html($rest);
+    }
+
     eval {
         $self->hub->current_workspace($self->space);
         if (my $space_settings = $settings->{workspace}) {
@@ -204,22 +217,33 @@ sub POST_space {
             }
 
             if (my @valid = $q->param('workspace.do.valid_user')) {
-                my @remove = $q->param('workspace.do.remove_user');
-                my @admins = $q->param('workspace.do.should_be_admin');
-                my @password_reset = $q->param('workspace.do.reset_password');
 
-                my $admin = Socialtext::Role->Admin;
-                my $member = Socialtext::Role->Member;
+                # Process admin adds first so we make sure the workspace has
+                # admins later on when we remove admins/users
+                foreach my $ids (@valid) {
+                    ($user_id, $role_id) = split /\./, $ids;
+                    
+                    my $be_admin = grep { $user_id eq $_ } @admins;
+                    next unless $be_admin and $role_id == $member->role_id;
+
+                    my $user = Socialtext::User->new(user_id => $user_id);
+                    next unless $user;
+                    next unless $self->space->has_user($user, direct => 1);
+
+                    $self->space->assign_role_to_user(
+                        user => $user,
+                        role => $admin,
+                        actor => $self->rest->user,
+                    );
+                }
 
                 foreach my $ids (@valid) {
-                    my ($user_id, $role_id) = split /\./, $ids;
+                    ($user_id, $role_id) = split /\./, $ids;
                     
                     my $needs_reset = grep { $user_id eq $_ } @password_reset; 
                     my $needs_removal = grep { $user_id == $_ } @remove;
                     my $be_admin = grep { $user_id eq $_ } @admins;
-                    my $role_changed = $be_admin
-                        ? $role_id == $member->role_id
-                        : $role_id == $admin->role_id;
+                    my $role_changed = ($role_id == $admin->role_id and !$be_admin);
 
                     next unless $needs_reset or $needs_removal or $role_changed;
 
@@ -244,21 +268,13 @@ sub POST_space {
                     }
 
                     if ($role_changed) {
-                        if ($be_admin) {
-                            $self->space->assign_role_to_user(
-                                user => $user,
-                                role => $admin,
-                                actor => $self->rest->user,
-                            );
-                        } else {
-                            $self->space->assign_role_to_user(
-                                user => $user,
-                                role => $member,
-                                actor => $self->rest->user,
-                            );
-                            $redirect = '/st/settings'
-                                if $user->user_id == $self->rest->user->user_id;
-                        }
+                        $self->space->assign_role_to_user(
+                            user => $user,
+                            role => $member,
+                            actor => $self->rest->user,
+                        );
+                        $redirect = '/st/settings'
+                            if $user->user_id == $self->rest->user->user_id;
                     }
                 }
             }
@@ -311,8 +327,22 @@ sub POST_space {
             }
         }
     };
-    if (my $e = $@) {
-        st_log->error("Could not save settings: $e");
+    if ( my $e = Exception::Class->caught('Socialtext::Exception::User') ) {
+        if ($e->error eq 'ADMIN_REQUIRED') {
+            st_log->error("Could not save settings: " . $e->error);
+            if (grep { $user_id == $_ } @remove) {
+                $self->warning(loc('[_1] could not be removed because a workspace requires at least one admin.', $e->username));
+            }
+            else {
+                $self->warning(loc('[_1] could not be removed because a workspace requires at least one admin.', $e->username));
+            }
+        }
+        else {
+            st_log->error("Could not save settings: " . $e->error);
+            $self->message(loc('error.saving-settings'));
+        }
+    } elsif ($@) {
+        st_log->error("Could not save settings: $@");
         $self->message(loc('error.saving-settings'));
     }
     else {
@@ -479,6 +509,7 @@ sub _settings_vars {
     }
     $vars->{spaces} = \@spaces;
     $vars->{message} = $self->message;
+    $vars->{warning} = $self->warning;
 
     return $vars;
 }

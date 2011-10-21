@@ -95,7 +95,7 @@ jQuery(document).ready(function() {
 </div>
 <div class="sub_omega grid_sub_18">
     <input id="user" name="please.ignore.me"
-      class="initial" type="text"
+      class="lookahead-prompt" type="text"
       value="[% loc('begin typing email here...') %]"
     />
 
