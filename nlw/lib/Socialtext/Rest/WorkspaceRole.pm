@@ -11,9 +11,6 @@ sub modify_roles {
 
     eval { sql_txn {
         $call->();
-        conflict(
-            errors => ["Workspaces need to include at least one admin."]
-        ) unless $self->workspace->has_at_least_one_admin();
     }};
     my $e;
     if ($e = Exception::Class->caught('Socialtext::Exception::Conflict')) {
