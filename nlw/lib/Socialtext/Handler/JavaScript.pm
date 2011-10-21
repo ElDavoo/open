@@ -20,13 +20,17 @@ method GET ($rest) {
 
     my $builder = Socialtext::JavaScript::Builder->new;
     return $self->no_resource($file) unless $builder->is_target($file);
+
+    my $content_type = $file =~ /\.htc$/
+        ? 'text/x-component'
+        : 'application/javascript';
     
     my $path = $builder->target_path($file);
     $builder->build($file) if !-f $path or $ENV{NLW_DEV_MODE};
     $rest->header(
         -status               => HTTP_200_OK,
         '-content-length'     => -s $path,
-        -type                 => 'application/javascript',
+        -type                 => $content_type,
         -pragma               => undef,
         '-cache-control'      => undef,
         'Content-Disposition' => "filename=\"$file\"",
