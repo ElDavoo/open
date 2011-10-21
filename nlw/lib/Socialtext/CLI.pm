@@ -2283,8 +2283,6 @@ sub set_account_config {
 sub set_account_theme {
     my $self = shift;
     my $account = $self->_require_account;
-    my $prefs = $account->prefs;
-    my $current = $prefs->all_prefs->{theme};
     my $updates = {};
 
     # This block (including the remove_tree one) may belong to
@@ -2296,17 +2294,7 @@ sub set_account_theme {
             return $self->_error("Invalid theme setting: $key = $value");
         }
     }
-    my $settings = {%$current, %$updates};
-    $prefs->save({theme=>$settings});
-
-    require Socialtext::SASSy;
-    my $sass = Socialtext::SASSy->new(
-        account => $account,
-        filename => 'style.css',
-    );
-    require File::Path;
-    File::Path::remove_tree($sass->cache_dir);
-
+    $account->update_theme_prefs($updates);
     $self->_success(
         'The account theme for ' . $account->name() . ' has been updated.' );
 }

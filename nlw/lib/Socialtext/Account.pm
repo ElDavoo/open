@@ -31,6 +31,7 @@ use MIME::Base64 ();
 use Socialtext::JSON::Proxy::Helper;
 use File::Basename qw(dirname);
 use namespace::clean -except => 'meta';
+use Scalar::Util 'reftype';
 
 our $VERSION = '0.01';
 
@@ -1424,6 +1425,31 @@ sub create_central_workspace {
 
     $self->pref_table->set(central_workspace => $wksp->name);
     return $wksp;
+}
+
+sub update_theme_prefs {
+    my ($self, $updates) = @_;
+
+    die 'Usage: $account->update_theme_prefs(HASHREF)'
+        unless reftype($updates) eq 'HASH';
+
+    require Socialtext::Theme;
+    unless (Socialtext::Theme->ValidSettings($updates)) {
+        die "Invalid theme setting:\n" . YAML::Dump($updates);
+    }
+
+    my $prefs = $self->prefs;
+    my $current = $prefs->all_prefs->{theme};
+    my $settings = {%$current, %$updates};
+    $prefs->save({ theme => $settings });
+
+    require Socialtext::SASSy;
+    my $sass = Socialtext::SASSy->new(
+        account => $self,
+        filename => 'style.css',
+    );
+    require File::Path;
+    File::Path::remove_tree($sass->cache_dir);
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
