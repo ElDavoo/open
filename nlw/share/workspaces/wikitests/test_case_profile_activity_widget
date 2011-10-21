@@ -131,7 +131,7 @@
 | wait_for_element_present_ok | //div[@class='setupWikiwyg wikiwyg'] | 10000 |
 | text_like | qr/What are you working on/ism |  |
 | click_and_pause | //div[@class='setupWikiwyg wikiwyg'] | 2000 |
-| wait_for_element_not_present_ok | //div[@class='message mention'] | 5000 |
+| wait_for_text_present_ok | You are composing a message to Yourself | 10000 |
 
 | *Comment* | Test Case: Profile Activity Widget TEARDOWN |  |
 | st-process-jobs |  |  |
