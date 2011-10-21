@@ -179,7 +179,7 @@ TODO: find a way to test user chooser
 | open_ok | /%%em_wiki%%/index.cgi?Email_subject_%%start_time%% |  |
 | wait_for_element_visible_ok | st-page-titletext | 10000 |
 | text_like | st-page-titletext | Email subject %%start_time%% |
-| text_like | st-page-content | qr/email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject/ |
+| text_like | st-page-content | qr/email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject.+email_subject/ |
 
 | *Comment* | Test Case: Email Teardown |  |
 

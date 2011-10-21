@@ -19,8 +19,6 @@
 | st-admin | clone-workspace --workspace test-data --target test-data3 | The test-data workspace has been cloned to test-data3 |
 | st-admin | set-workspace-config --workspace test-data3 title test-data3 | The workspace config for test-data3 has been updated. |
 
-| st-admin | add-member --e %%iws_user%% --workspace test-data2 |  |
-| st-admin | add-member --e %%iws_user%% --workspace test-data3 |  |
 | st-admin | add-workspace-admin --e %%req_admin%% --workspace test-data3 | now has the role |
 
 | *Comment* | Test Case: Inter Workspace Search process jobs for cloned workspaces |  |
@@ -55,7 +53,6 @@
 | st-result | qr/jabber.+%%title%%/ |  |
 
 | *Comment* | Test Case: Inter Workspace Search Remove %%username%% from test-data2 and search again |  |
-| st-admin | remove-workspace-admin --workspace test-data2 --email %%iws_user%% |  |
 | st-admin | remove-member --workspace test-data2 --email %%iws_user%% |  |
 | st-process-jobs |  |  |
 
@@ -144,13 +141,12 @@
 | st-result | 0 results |  |
 
 | *Comment* | Test Case: Inter Workspace Search UNSUBSCRIBE |  |
-| *Comment* | Add back test-data2, remove %%username%% from test-data3 |  |
+| *Comment* | Add back test-data2, remove %%iws_user%% from test-data3 |  |
 | st-admin | clone-workspace --workspace test-data --target test-data2 --overwrite | The test-data workspace has been cloned to test-data2 |
 | st-admin | set-workspace-config --workspace test-data2 title test-data2 | The workspace config for test-data2 has been updated. |
 
-| st-login |  |  |
-| st-admin | remove-workspace-admin --w test-data3 --u %%username%% |  |
-| st-admin | remove-member --w test-data3 --u %%username%% |  |
+| st-login | %%iws_user%% | %%password%% |
+| st-admin | remove-member --w test-data3 --u %%iws_user%% |  |
 
 | open_ok | /%%workspace%% |  |  |  |  |
 | select_ok | st-search-action | label=My Workspaces |  |  |  |
@@ -169,10 +165,10 @@
 | st-process-jobs |  |  |  |  |
 | st-admin | delete-workspace --workspace from-scratch --no-export |  |  |  |
 | st-admin | create-workspace --empty --name from-scratch --title From-Scratch --empty | A new workspace named "from-scratch" was created. |  |  |
-| st-admin | add-member --workspace from-scratch --email %%email%% | now has the role of 'member' in the from-scratch Workspace |  |  |
+| st-admin | add-member --workspace from-scratch --email %%iws_user%% | now has the role of 'member' in the from-scratch Workspace |  |  |
 | st-process-jobs |  |  |  |  |
 
-| call | st-edit-new-page | ws=from-scratch | title=jabber | content=jabber |
+| call | [st-edit-new-page] | ws=from-scratch | title=jabber | content=jabber |
 
 | *Comment* | Test Case: Inter Workspace Search index new page explicitly just in case ceq is tetchy |  |
 | st-process-jobs | PageIndex | from-scratch |
@@ -189,6 +185,8 @@
 
 | *Comment* | Test Case: Inter Workspace Search TEARDOWN |  |
 | st-process-jobs |  |  |
+| deactivate-user | %%iws_user%% |  |
+| deactivate-user | %%req_admin%% |  |
 | delete-workspace | test-data2 | Recklessly deleting |
 | delete-workspace | test-data3 | Recklessly deleting |
 | delete-workspace | from-scratch | Recklessly deleting |
