@@ -1,14 +1,14 @@
 .sttable
   border-collapse: collapse
   margin: 0.1em 0.1em 1em 0.1em
-  border: 1px solid #ccc
+  border: 1px solid $lighter
   th
-    border: 1px solid #ccc
+    border: 1px solid $lighter
     text-align: left
   td
-    border-left: 1px dotted #ccc
-    border-right: 1px dotted #ccc
-    border-bottom: 1px solid #ccc
+    border-left: 1px dotted $lighter
+    border-right: 1px dotted $lighter
+    border-bottom: 1px solid $lighter
   tr
     td, th
       padding: 0.1em 0.5em
@@ -16,28 +16,28 @@
     font-weight: bold
     font-size: 90%
     text-transform: uppercase
-    background: #e8e8e8
+    background-color: $light
     padding: 3px 5px
   thead tr td
-    background: #ffc
+    background-color: $tertiary_color
     text-align: center
   tfoot
     tr td
-      background: #ffc
+      background-color: $tertiary_color
       text-align: center
     margin-top: 3px
   tbody tr th
     font-weight: normal
   table tbody tr:nth-child(even) td
-    background: #f2f6f1
+    background-color: $light
   .table_messages
     margin: 0
     white-space: nowrap
     float: right
     .error
-      color: #FC5555
+      color: $red
     .status
-      color: #36C
+      color: $primary_color
 
 .input-label
   text-align: right
@@ -46,8 +46,8 @@
   -webkit-border-radius: 5px
   -moz-border-radius: 5px
   border-radius: 5px
-  border: 1px solid #ccc
-  background-color: #dfebed
+  border: 1px solid $lighter
+  background-color: $tertiary_color
   ul
     margin: 0px
     li
