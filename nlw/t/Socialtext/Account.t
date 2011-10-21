@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 112;
+use Test::Socialtext tests => 110;
 use Test::Socialtext::User;
 use Test::Socialtext::Fatal;
 use Test::Differences;
@@ -155,13 +155,6 @@ Exporting_account_people: {
     is $users[1]{email_address}, 'devnull2@example.com', 'user 2 email';
     is $users[2]{username}, 'dummy3', 'user 3 username';
     is $users[2]{email_address}, 'devnull3@example.com', 'user 3 email';
-
-    {
-        use bytes;
-        ok $data->{logo}, 'logo was exported';
-        my $exported_logo = MIME::Base64::decode($data->{logo});
-        ok $$logo_ref eq $exported_logo, 'exported the correct image';
-    }
 }
 
 # Now blow the account and users away for the re-import
