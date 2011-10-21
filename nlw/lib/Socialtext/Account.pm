@@ -1445,6 +1445,7 @@ sub update_theme_prefs {
     my $sass = Socialtext::SASSy->new(
         account => $self,
         filename => 'style.css',
+        dir_name => $self->name,
     );
     require File::Path;
     File::Path::remove_tree($sass->cache_dir);
