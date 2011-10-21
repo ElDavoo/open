@@ -6,7 +6,7 @@
 </div>
 <div class="clear"></div>
 
-<div class="prefix_5 alpha grid_15">[% loc('If the name you provide does not end with "Blog", the system will add "Blog" to the name you provide. After clicking Save, you will be taken right to the your blog.') %]</div>
+<div class="prefix_5 alpha grid_15">[% loc('If the name you provide does not end with "Blog", the system will add "Blog" to the name you provide. After clicking Save, you will be taken right to the blog.') %]</div>
 <div class="clear"></div>
 
 <hr />
