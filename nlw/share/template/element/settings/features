@@ -1,8 +1,10 @@
+[%# vim: set et sts=2 sw=2: %]
 <script type="text/javascript">
 jQuery(document).ready(function() {
 
-    jQuery('input[name=workspace.setting.homepage_weblog]').lookahead({
+    jQuery('input[name="workspace.setting.homepage_weblog"]').lookahead({
         url: '[%- space.rest_url -%]/tags',
+        requireMatch: true,
         filterValue: function (val) {
             return val + '.*(We)?blog$';
         },
