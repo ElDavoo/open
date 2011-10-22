@@ -18,6 +18,7 @@ use File::Basename qw(basename dirname);
 use File::Which qw(which);
 use Clone qw(clone);
 use Carp qw(confess);
+use Cwd qw(abs_path);
 use lib dirname(__FILE__)."/../../../plugins/widgets/lib";
 
 use namespace::clean -except => 'meta';
@@ -77,6 +78,7 @@ sub CleanAll {
 }
 
 my $coffee_compiler = which('st-coffee');
+$coffee_compiler = abs_path($coffee_compiler);
 sub BuildCoffee {
     my $class = shift;
     find({
