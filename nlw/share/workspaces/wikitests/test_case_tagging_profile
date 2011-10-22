@@ -32,8 +32,6 @@
 | wait_for_element_visible_ok | link=fog creek %%start_time%% | 30000 |
 | text_like | link=fog creek %%start_time%% | fog creek %%start_time%% |
 
-
-
 | *Comment* | Test Case: Tagging Profile. foo bar tag added |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
 | type_ok | new_tag | foo bar %%start_time%% |
@@ -110,8 +108,8 @@ text_like | 所以 | |
 | click_ok | //input[@value='Add Tag'] |  |
 | wait_for_element_visible_ok | link=tagger %%start_time%% | 30000 |
 
-| *Comment* | Test Case: Tagging Profile login as %%tag_user%%, tag "fog %%start_time%%" |  |
-| select-autocompleted-option-ok | new_tag | fog |
+| *Comment* | Test Case: Tagging Profile login as %%tag_user%%, tag "fog %%start_time%%" |  |  |
+| select-autocompleted-option-ok | new_tag | fog | fog %%start_time%% |
 
 | *Comment* | Test Case: Tagging Profile. re-open profile, check tag "fog %%start_time%%" |  |
 | open_ok | /st/profile |  |
@@ -127,15 +125,17 @@ text_like | 所以 | |
 | wait_for_element_visible_ok | link=Tools | 30000 |
 | click_and_wait | link=Add this tag to me |  |
 
+| BREAK |  |  |
+
 | *Comment* | Test Case: Tagging Profile. Add tag to someone |  |
 | wait_for_element_visible_ok | link=Tools | 30000 |
 | click_ok | link=Add this tag to someone |  |
-| wait_for_element_visible_ok | add_tag_person | 30000 |
+| wait_for_element_visible_ok | person_to_tag | 30000 |
 | type_ok | add_tag_person | %%fname%% %%mname%% %%lname%% |
 
 TODO: typing into textbox does not cause tag to be added ????
 
- wait_for_page_to_load | 30000 | |
+wait_for_page_to_load | 30000 | |
 text_like | link=%%fname%% %%mname%% %%lname%% | %%fname%% %%mname%% %%lname%% |
 
 | *Comment* | Test Case: Tagging Profile TEARDOWN |  |

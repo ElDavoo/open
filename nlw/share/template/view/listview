@@ -142,10 +142,10 @@
     <div class="toggle">
       [% loc('nav.show:') %]
       [% IF summaries %]
-        <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('page.titles') %]</a> | 
-        [% loc('page.summaries') %]
+        <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('page.titles') %]</a> &#166; 
+        <strong>[% loc('page.summaries') %]</strong>
       [% ELSE %]
-        [% loc('page.titles') %] |
+        <strong>[% loc('page.titles') %]</strong> &#166;
         <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('page.summaries') %]</a>
       [% END %]
       [% IF pager %]

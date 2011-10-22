@@ -61,7 +61,7 @@
 | type_ok | last_name | Duck |
 | wait_for_element_visible_ok | register_btn | 30000 |
 | click_and_wait | register_btn |  |
-| text_like | An email confirming your registration has been sent to %%to_ws_user%% |  |
+| wait_for_text_present_ok | An email confirming your registration has been sent to %%to_ws_user%%. | 10000 |
 
 | *Comment* | Test Case: Join. login to %%to_ws%% as %%username%% and open the confirmation email |  |
 | st-logoutin | %%username%% | %%password%% |

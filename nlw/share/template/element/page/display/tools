@@ -4,10 +4,10 @@
 [% BLOCK subtools %]
   <li class="item" id="[% id %]">
     <a class="collapsed" href="#">
-      [% name %] <span class="arrow">&#x25b6;</span>
+      [% name %] <span class="arrow">&#9658;</span>
     </a>
     <a class="expanded" href="#">
-      [% name %] <span class="arrow">&#x25bc;</span>
+      [% name %] <span class="arrow">&#9660;</span>
     </a>
     <ul class="subtools">
       [% content %]
@@ -22,9 +22,9 @@
 [% END %]
 
 <div class="widget">
-  <div class="pad4">
+  <div class="showHide">
     [% INCLUDE 'element/page/display/edit-button' %]
-    <a id="st-page-boxes-hide-link" href="#"><span class="arrow">&#x25bc;</span>[% loc('nav.hide') %]</a>
+    <a id="st-page-boxes-hide-link" href="#"><span class="arrow">&#9658;</span>[% loc('nav.hide') %]</a>
   </div>
   <div class="content">
     <ul class="tools">
