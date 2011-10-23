@@ -248,6 +248,22 @@ msgstr "users can see pages without logging in."
 msgid "config.yes"
 msgstr "Yes"
 
+#: share/skin/s3/template/view/page/revision_compare:32
+msgid "diff.highlight"
+msgstr "Highlight"
+
+#: share/skin/s3/template/view/page/revision:34
+msgid "diff.html-view"
+msgstr "HTML View"
+
+#: share/skin/s3/template/view/page/revision_compare:46
+msgid "diff.view"
+msgstr "View"
+
+#: share/skin/s3/template/view/page/revision_compare:39
+msgid "diff.wikitext"
+msgstr "Wikitext"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
 msgstr "Add"
@@ -1877,14 +1893,14 @@ msgstr "Titles"
 msgid "page.top"
 msgstr "Top of page"
 
-msgid "page.type-xhtml"
-msgstr "Page"
-
 msgid "page.type-spreadsheet"
 msgstr "Spreadsheet"
 
 #: share/skin/s3/javascript/lightbox/create_content.js:9
 msgid "page.type-wiki"
+msgstr "Page"
+
+msgid "page.type-xhtml"
 msgstr "Page"
 
 #: share/skin/s3/template/view/page/display:96

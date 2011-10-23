@@ -248,6 +248,18 @@ msgstr "用户无需登录即可查看页面。"
 msgid "config.yes"
 msgstr "是"
 
+msgid "diff.highlight"
+msgstr "高亮检视"
+
+msgid "diff.html-view"
+msgstr "HTML 检视"
+
+msgid "diff.view"
+msgstr "检视"
+
+msgid "diff.wikitext"
+msgstr "源码格式"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
 msgstr "添加"

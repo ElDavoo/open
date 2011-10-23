@@ -1131,6 +1131,10 @@ msgstr "Recent Changes In %1 Workspace"
 msgid "email.sent-from-socialtext-appliance"
 msgstr "This email was sent from the Socialtext Appliance."
 
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "email.signal-mention-by=user"
+msgstr "Signal mention by %1"
+
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:78
 msgid "email.socialtext"
 msgstr "Socialtext"
@@ -3195,15 +3199,15 @@ msgstr "Revision %1"
 msgid "page.summary-comment"
 msgstr "(comment)"
 
-msgid "page.type-xhtml"
-msgstr "Page"
-
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:23
 msgid "page.type-spreadsheet"
 msgstr "Spreadsheet"
 
 #: lib/Socialtext/Pluggable/Plugin/Default.pm:45
 msgid "page.type-wiki"
+msgstr "Page"
+
+msgid "page.type-xhtml"
 msgstr "Page"
 
 #. ($page->name, $workspace->title()
@@ -3530,9 +3534,6 @@ msgstr "%1 - RSS Search for %2"
 #: lib/Socialtext/Page.pm:1133
 msgid "sheet.creating"
 msgstr "Creating a New Spreadsheet..."
-
-msgid "xhtml.creating"
-msgstr "Creating a Page..."
 
 #: lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"
@@ -4131,3 +4132,6 @@ msgstr "Welcome"
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:62
 msgid "wiki.welcome-confirm=name"
 msgstr "Welcome to the %1 workspace - please confirm your email to join"
+
+msgid "xhtml.creating"
+msgstr "Creating a Page..."

@@ -17,6 +17,10 @@ msgstr "Checking for Edit Contention"
 msgid "ckeditor.generating-page-content"
 msgstr "Generating Page Content"
 
+#: share/plugin/ckeditor/share/javascript/Editor.coffee:170 share/plugin/ckeditor/share/javascript/Editor.js:221
+msgid "ckeditor.ie6-not-supported"
+msgstr "Sorry, Internet Explorer 6 and earlier versions are not supported."
+
 #: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
 msgid "ckeditor.page-save-progress"
 msgstr "Page Save Progress"

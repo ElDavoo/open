@@ -1084,6 +1084,9 @@ msgstr "%1 工作区的最近更新"
 msgid "email.sent-from-socialtext-appliance"
 msgstr "此电子邮件发送自 Socialtext 设备。"
 
+msgid "email.signal-mention-by=user"
+msgstr "%1 在讯息里提及您"
+
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:78
 msgid "email.socialtext"
 msgstr "Socialtext"

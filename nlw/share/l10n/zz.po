@@ -1595,6 +1595,10 @@ msgstr "Zzzzzzzz zzz Zzzz Zzzzzzzzzz"
 msgid "ckeditor.generating-page-content"
 msgstr "Zzzzzzzzzz Zzzz Zzzzzzz"
 
+#: share/plugin/ckeditor/share/javascript/Editor.coffee:170 share/plugin/ckeditor/share/javascript/Editor.js:221
+msgid "ckeditor.ie6-not-supported"
+msgstr "Zzzzz, Zzzzzzzz Zzzzzzzz 6 zzz zzzzzzz zzzzzzzz zzz zzz zzzzzzzzz."
+
 #: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
 msgid "ckeditor.page-save-progress"
 msgstr "Zzzz Zzzz Zzzzzzzz"
@@ -4478,6 +4482,22 @@ msgstr "Zzzz zzzzz"
 msgid "desktop.thank-you"
 msgstr "Zzzzz zzz! :-)"
 
+#: share/skin/s3/template/view/page/revision_compare:32
+msgid "diff.highlight"
+msgstr "Zzzzzzzzz"
+
+#: share/skin/s3/template/view/page/revision:34
+msgid "diff.html-view"
+msgstr "ZZZZ Zzzz"
+
+#: share/skin/s3/template/view/page/revision_compare:46
+msgid "diff.view"
+msgstr "Zzzz"
+
+#: share/skin/s3/template/view/page/revision_compare:39
+msgid "diff.wikitext"
+msgstr "Zzzzzzzz"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
 msgstr "Zzz"
@@ -5357,6 +5377,10 @@ msgstr "Zzzz zz zzzzz zzz zzzzzzzzzzz zzzzz:"
 #: share/template/email/openid/workspace-invitation-body.html:24 share/template/email/openid/workspace-invitation.txt:10
 msgid "email.sign-in-with-openid-now"
 msgstr "Zzz zzz zzz zzzz zzzz zzz zzzzzz zzzzz ZzzzZZ. Zz zzz Zzzzzzzzzz zzzzz zzzzzz, zzzzzz zzzzz zzzz ZzzzZZ zzzz zzz zzzzzzzzz zzzzz zzz zzz zzzz zz zzzzzzzzzz zz zzz ZzzzZZ zzzz zz zzzzzz zzzz zzzzzzzz. Zzzz zzz zzzz zzzzzzzz zzzz zzzzzzzz, zzz zzzz zz zzzz zzzz zz zzz Zzzzzzzzzz zzzz zzz zz zzzz zz zzzzzz zzz zzzzzzzzz."
+
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "email.signal-mention-by=user"
+msgstr "Zzzzzz zzzzzzz zz %1"
 
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:78
 msgid "email.socialtext"

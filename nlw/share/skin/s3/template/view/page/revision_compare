@@ -29,21 +29,21 @@
       [% IF mode != 'html' %]
         <li class="flexButtonBlue">
           <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=html">
-          [% loc('Highlight') %]
+          [% loc('diff.highlight') %]
           </a>
         </li>
       [% END %]
       [% IF mode != 'wikitext' %]
         <li class="flexButtonBlue">
           <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=wikitext">
-          [% loc('Wikitext') %]
+          [% loc('diff.wikitext') %]
           </a>
         </li>
       [% END %]
       [% IF mode != 'view' %]
         <li class="flexButtonBlue">
           <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=view">
-          [% loc('View') %]
+          [% loc('diff.view') %]
           </a>
         </li>
       [% END %]

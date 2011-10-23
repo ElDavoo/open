@@ -1291,6 +1291,9 @@ msgstr "检查其他人对此页面的更改"
 msgid "ckeditor.generating-page-content"
 msgstr "产生页面内容"
 
+msgid "ckeditor.ie6-not-supported"
+msgstr "抱歉，本系统不支持 Internet Explorer 6 及之前版本的浏览器。"
+
 #: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
 msgid "ckeditor.page-save-progress"
 msgstr "页面保存进度"
@@ -4069,6 +4072,18 @@ msgstr "文本颜色"
 msgid "desktop.thank-you"
 msgstr "感谢！ :-)"
 
+msgid "diff.highlight"
+msgstr "高亮检视"
+
+msgid "diff.html-view"
+msgstr "HTML 检视"
+
+msgid "diff.view"
+msgstr "检视"
+
+msgid "diff.wikitext"
+msgstr "源码格式"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
 msgstr "添加"
@@ -4942,6 +4957,9 @@ msgstr "使用下方信息登录："
 #: share/template/email/openid/workspace-invitation-body.html:24 share/template/email/openid/workspace-invitation.txt:10
 msgid "email.sign-in-with-openid-now"
 msgstr "您现在可以使用 OpenID 登录我们的系统。在 Socialtext 登录界面，请输入您的 OpenID 到指定区域，您即会被重定向至 OpenID 网站以确认您的身份。一旦您完成身份认证，您会返回至 Socialtext 网站并能够访问工作区。"
+
+msgid "email.signal-mention-by=user"
+msgstr "%1 在讯息里提及您"
 
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:78
 msgid "email.socialtext"

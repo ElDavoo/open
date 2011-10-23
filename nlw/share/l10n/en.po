@@ -1595,6 +1595,10 @@ msgstr "Checking for Edit Contention"
 msgid "ckeditor.generating-page-content"
 msgstr "Generating Page Content"
 
+#: share/plugin/ckeditor/share/javascript/Editor.coffee:170 share/plugin/ckeditor/share/javascript/Editor.js:221
+msgid "ckeditor.ie6-not-supported"
+msgstr "Sorry, Internet Explorer 6 and earlier versions are not supported."
+
 #: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
 msgid "ckeditor.page-save-progress"
 msgstr "Page Save Progress"
@@ -4478,6 +4482,22 @@ msgstr "Text color"
 msgid "desktop.thank-you"
 msgstr "Thank you! :-)"
 
+#: share/skin/s3/template/view/page/revision_compare:32
+msgid "diff.highlight"
+msgstr "Highlight"
+
+#: share/skin/s3/template/view/page/revision:34
+msgid "diff.html-view"
+msgstr "HTML View"
+
+#: share/skin/s3/template/view/page/revision_compare:46
+msgid "diff.view"
+msgstr "View"
+
+#: share/skin/s3/template/view/page/revision_compare:39
+msgid "diff.wikitext"
+msgstr "Wikitext"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
 msgstr "Add"
@@ -5357,6 +5377,10 @@ msgstr "Sign in using the information below:"
 #: share/template/email/openid/workspace-invitation-body.html:24 share/template/email/openid/workspace-invitation.txt:10
 msgid "email.sign-in-with-openid-now"
 msgstr "You can now sign into our system using OpenID. On the Socialtext login screen, please input your OpenID into the indicated field and you will be redirected to the OpenID site to verify your identity. Once you have verified your identity, you will be sent back to the Socialtext site and be able to access the workspace."
+
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "email.signal-mention-by=user"
+msgstr "Signal mention by %1"
 
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:78
 msgid "email.socialtext"
