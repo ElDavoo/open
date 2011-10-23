@@ -39,6 +39,7 @@
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% restrict_invitation_to_search 1 | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% show_title_below_logo 0 | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% show_welcome_message_below_logo 1 | The workspace config for %%temp_ws_name%% has been updated. |
+| *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% skin_name | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% sort_weblogs_by_create 1 | The workspace config for %%temp_ws_name%% has been updated. |
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% title | The workspace config for %%temp_ws_name%% has been updated. |
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% unmasked_email_domain | The workspace config for %%temp_ws_name%% has been updated. |
@@ -84,6 +85,7 @@
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/restrict_invitation_to_search *: *1/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/show_title_below_logo *: *0/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/show_welcome_message_below_logo *: *1/ |
+| *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/skin_name/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/sort_weblogs_by_create *: *1/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/title/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/unmasked_email_domain/ |

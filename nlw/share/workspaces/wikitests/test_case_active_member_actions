@@ -4,8 +4,8 @@
 
 | *Comment* | Test Case: Active Members Actions - View Profile for %%logged_in_user%% |  |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | st-edit-profile | 30000 |
-| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| wait_for_element_visible_ok | link=Edit Profile | 30000 |
+| wait_for_element_visible_ok | link=Edit Layout | 30000 |
 | text-like | st-editing-tools-edit | %%logged_in_user%% |
 
 | *Comment* | Test Case: Active Members Actions - A couple Edits for %%logged_in_user%% |  |

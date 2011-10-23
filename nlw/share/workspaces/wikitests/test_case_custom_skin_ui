@@ -1,4 +1,4 @@
-| *Comment* | Test Case: Custom Desktop Theme |  |
+| *Comment* | Test Case: Custom Skin UI |  |
 
 | set | user | csui_user_%%start_time%%@david.socialtext.net |
 | set | acct | csui_account_%%start_time%% |
@@ -10,7 +10,7 @@
 | st-admin | add-member --email %%user%% --workspace %%wiki%% | now has the role |  |
 | st-admin | give-accounts-admin --email %%user%% | now has accounts |  |
 
-| *Comment* | Test Case: Custom Desktop Theme check the contents of the control panel |  |
+| *Comment* | Test Case: Custom Skin UI check the contents of the control panel |  |
 | st-logoutin | %%user%% | %%password%% |
 | open_ok | /nlw/control/account/%%account_id%%/desktop |  |
 | wait_for_text_present_ok | %%acct%% account | 30000 |
@@ -28,7 +28,7 @@
 | wait_for_text_present_ok | The color applied to links. Most applications use a shade of blue | 30000 |
 | wait_for_text_present_ok | The color applied to highlighted elements, such as the background of the Post button | 30000 |
 
-| *Comment* | Test Case: Custom Desktop Theme check the default color values |  |
+| *Comment* | Test Case: Custom Skin UI check the default color values |  |
 | verifyValue | desktop_logo_uri | /static/skin/common/images/sd-logo.png |
 | verifyValue | desktop_header_gradient_top | #4C739B |
 | verifyValue | desktop_header_gradient_bottom | #506481 |
@@ -38,7 +38,7 @@
 | verifyValue | desktop_link_color | #0081F8 |
 | verifyValue | desktop_highlight_color | #FFFDD3 |
 
-| *Comment* | Test Case: Custom Desktop Theme assign new values |  |
+| *Comment* | Test Case: Custom Skin UI assign new values |  |
 | type_ok | desktop_logo_uri | newlogo |
 | type_ok | desktop_header_gradient_top | #111111 |
 | type_ok | desktop_header_gradient_bottom | #222222 |
@@ -50,7 +50,7 @@
 | click_and_wait | //input[@value='Submit'] |  |
 | wait_for_text_present_ok | Settings have been saved. Desktop users need to logout and login again to apply the new skin. | 30000 |
 
-| *Comment* | Test Case: Custom Desktop Theme check that new values have been saved |  |
+| *Comment* | Test Case: Custom Skin UI check that new values have been saved |  |
 | open_ok | /nlw/control/account/%%account_id%%/desktop |  |
 | verifyValue | desktop_logo_uri | newlogo |
 | verifyValue | desktop_header_gradient_top | #111111 |
@@ -61,7 +61,7 @@
 | verifyValue | desktop_link_color | #666666 |
 | verifyValue | desktop_highlight_color | #777777 |
 
-| *Comment* | Test Case: Custom Desktop Theme reset values to default, check |  |
+| *Comment* | Test Case: Custom Skin UI reset values to default, check |  |
 | wait_for_element_visible_ok | //input[@value='Reset to Default'] | 30000 |
 | click_ok | //input[@value='Reset to Default'] |  |
 | verifyConfirmation | The values have been reset to default. Do you want to apply them now? |  |
@@ -75,10 +75,10 @@
 | verifyValue | desktop_link_color | #0081F8 |
 | verifyValue | desktop_highlight_color | #FFFDD3 |
 
-| *Comment* | Test Case: Custom Desktop Theme TEARDOWN |  |
+| *Comment* | Test Case: Custom Skin UI TEARDOWN |  |
 | st-process-jobs |  |  |
 | deactivate-user | %%user%% |  |
 | delete-workspace | %%wiki%% | Recklessly deleting |
 | delete-account | %%acct%% | Recklessly deleting |
 
-| *Comment* | Test Case: Custom Desktop Theme COMPLETED |  |
+| *Comment* | Test Case: Custom Skin UI COMPLETED |  |

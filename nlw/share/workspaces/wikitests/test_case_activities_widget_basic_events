@@ -1,6 +1,3 @@
-
-*On hold until wikis work*
-
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Activities Widget Basic Events |
@@ -52,7 +49,7 @@
 | text_like | st-editing-tools-edit | Welcome |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 1 | activities_widget |
-| st-widget-title | activities_widget | Activities |
+| st-widget-title-like | activities_widget | Activities |
 | st-widget-settings | activities_widget |  |
 | wait_for_element_visible_ok | limit | 30000 |
 | select_ok | limit | 25 |
@@ -76,7 +73,7 @@
 | open_ok | /st/profile |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | profile_activity |
-| st-widget-title | profile_activity | Activities |
+| st-widget-title-like | profile_activity | Activities |
 | st_verify_text_in_activities_widget | profile_activity | She rocks in the treehouse %%start_time%% |
 | st_verify_text_in_activities_widget | profile_activity | Rockin and a bopin %%start_time%% |
 | st_verify_text_in_activities_widget | profile_activity | All the little birds %%start_time%% |

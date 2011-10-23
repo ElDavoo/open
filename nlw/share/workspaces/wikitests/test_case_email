@@ -9,9 +9,14 @@ TODO: find a way to test user chooser
 | st-admin | add-member --email %%start_time%%_two@ken.socialtext.net --workspace %%workspace%% |  |
 
 | open_ok | /%%workspace%%/?action=new_page |  |
-
-| call | st-edit-save-page | title=`[Announcements and Links] àèéìòù` | content=Email title %%start_time%% |
-
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | `[Announcements and Links] àèéìòù` |
+| type_ok | st-newpage-pagename-edit | Email title %%start_time%% |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Email. Default content. |  |
 | click_ok | st-pagetools-email |  |

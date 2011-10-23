@@ -38,7 +38,7 @@
 | open_ok | /st/profile/%%sametime_userid%% |  |
 | wait_for_text_present_ok | Profile | 30000 |
 | st-name-widget | 1 | profile_widget |
-| st-widget-title | profile_widget | Profile |
+| st-widget-title-like | profile_widget | Profile |
 | st-select-widget-frame | profile_widget |  |
 | text_like | Sametime |  |
 | text_like | %%sametime_sn%% |  |

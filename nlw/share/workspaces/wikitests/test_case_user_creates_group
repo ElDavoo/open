@@ -36,19 +36,20 @@
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
 | wait_for_element_visible_ok | st-create-group-next | 30000 |
-| wait_for_element_visible_ok | st-create-group-cancel | 30000 |
-| click_ok | st-create-group-cancel | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
+| click_ok | st-lightbox-cancel-create-group | 30000 |
 | wait_for_element_not_present_ok | st-create-group-next | 30000 |
-| wait_for_element_not_present_ok | st-create-group-cancel | 30000 |
+| wait_for_element_not_present_ok | st-lightbox-cancel-create-group | 30000 |
 
 | *Comment* | Test Case: User Creates Group enabled, create group |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
 | wait_for_element_visible_ok | st-create-group-next | 30000 |
-| wait_for_element_visible_ok | st-create-group-cancel | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
 | click_and_wait | st-create-group-next |  |
+| wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
-| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
+| text_like | //body | Create a Group |
 
 | *Comment* | Test Case: User Creates Group. Actually Create a Group |  |
 | st-name-widget | 1 | create_group |
@@ -70,7 +71,7 @@
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page |  |
 | wait_for_text_present_ok | %%groupname%% | 30000 |
 | st-name-widget | 1 | information_widget |
-| st-widget-title | information_widget | Information |
+| st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | text_like | //body | Administrators |
 | text_like | //body | %%short_groupuser%% |
@@ -78,19 +79,19 @@
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Workspaces |  |
 | st-name-widget | 2 | workspaces_widget |
-| st-widget-title | workspaces_widget | Workspaces |
+| st-widget-title-like | workspaces_widget | Workspaces |
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_text_present_ok | This group is not a member of any workspaces | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Activities Widget |  |
 | st-name-widget | 4 | activity_widget |
-| st-widget-title | activity_widget | Activities |
+| st-widget-title-like | activity_widget | Activities |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Membership |  |
 | st-name-widget | 3 | people_widget |
-| st-widget-title | people_widget | Membership |
+| st-widget-title-like | people_widget | Membership |
 | st-select-widget-frame | people_widget |  |
 | wait_for_element_visible_ok | //a[contains(@href,'?profile')] | 30000 |
 | wait_for_text_present_ok | %%short_groupuser%% | 30000 |
@@ -126,12 +127,13 @@
 | *Comment* | Test Case: User Creates Group lookahead fails if you go too fast |  |
 | *Comment* | Test Case: User Creates Group check all elements while JS is loading |  |
 | wait_for_text_present_ok | Before creating a group, you can search names and descriptions for existing groups. | 30000 |
+| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 10000 |
 | wait_for_element_visible_ok | //input[@id='self-join-radio'] | 10000 |
 | wait_for_element_visible_ok | //input[@id='private-radio'] | 10000 |
-| wait_for_element_visible_ok | st-create-group-next | 10000 |
-| wait_for_element_visible_ok | st-create-group-cancel | 10000 |
+| wait_for_element_visible_ok | //a[@id='st-create-group-next'] | 10000 |
+| wait_for_element_visible_ok | //a[@id='st-lightbox-cancel-create-group'] | 10000 |
 | pause | 3000 | wait for JS anyway |
-| type_lookahead_ok | //div[@class='lookahead']/input | %%group_prefix%% |
+| type_lookahead_ok | //input[@class='lookahead-prompt'] | %%group_prefix%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%group_suffix%%')] | 30000 |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'Show all results...')] | 30000 |
 | click_and_wait | //div[@class='lookaheadItem']/a[contains(text(),'Show all results...')] |  |
@@ -142,8 +144,9 @@
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
 | wait_for_element_visible_ok | st-create-group-next | 30000 |
-| wait_for_element_visible_ok | st-create-group-cancel | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
 | click_and_wait | st-create-group-next |  |
+| wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | st-name-widget | 1 | create_group |
 | st-select-widget-frame | create_group |  |
@@ -153,6 +156,7 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name, see error |  |
+| wait_for_element_visible_ok | create-group | 30000 |
 | click_ok | create-group |  |
 | wait_for_text_present_ok | group already exists | 10000 |
 
@@ -160,8 +164,9 @@
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
 | wait_for_element_visible_ok | st-create-group-next | 30000 |
-| wait_for_element_visible_ok | st-create-group-cancel | 30000 |
+| wait_for_element_visible_ok | st-lightbox-cancel-create-group | 30000 |
 | click_and_wait | st-create-group-next |  |
+| wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | wait_for_element_visible_ok | st-cancel-create-group | 30000 |
 | click_and_wait | st-cancel-create-group |  |
@@ -175,7 +180,8 @@
 | set | group_id_11 | %%group_id%% |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
-| open | /st/create_group |  |
+| open | /?create_group |  |
+| wait_for_element_visible_ok | link=? | 30000 |
 | wait_for_element_visible_ok | create-group | 30000 |
 | st-name-widget | 1 | create_group |
 | st-select-widget-frame | create_group |  |

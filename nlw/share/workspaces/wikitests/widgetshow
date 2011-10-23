@@ -15,8 +15,8 @@
 | st-logoutin | %%ws_user%% | %%password%% |
 
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-add-widget | 30000 |
-| click_and_wait | st-add-widget |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 
 | *Comment* | SEE Widget Gallery |  |
 | pause | %%pt%% |  |

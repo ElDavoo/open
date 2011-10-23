@@ -1,6 +1,3 @@
-
-*On hold until pop-out button is reimplemented or confirmed deleted*
-
 | *Comment* | Test Case: Activities Widget with REAL Popout |  |
 
 * Fixture: SocialWidgets
@@ -21,7 +18,7 @@
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 1 | activities_widget |
-| st-widget-title | activities_widget | Activities |
+| st-widget-title-like | activities_widget | Activities |
 | st_verify_text_within_activities_widget | What would you do %%start_time%% |  |
 
 | *Comment* | Test Case: Activities Widget with REAL Popout At Dashboard pop it out |  |

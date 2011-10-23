@@ -42,11 +42,11 @@ Visit some individual pages in the workspace; add them to the watchlist. View wa
 
 | *Comment* | Test case: Watchlist has three pages |  |
 | click_and_wait | link=My Watchlist |  |
-| wait_for_element_visible_ok | content | 30000 |
-| text_like | content | Pages You're Watching |
-| text_like | content | AAA %%start_time%% |
-| text_like | content | BBB %%start_time%% |
-| text_like | content | CCC %%start_time%% |
+| wait_for_element_visible_ok | contentContainer | 30000 |
+| text_like | contentContainer | Pages You're Watching |
+| text_like | contentContainer | AAA %%start_time%% |
+| text_like | contentContainer | BBB %%start_time%% |
+| text_like | contentContainer | CCC %%start_time%% |
 | st-is-watched | 1 | AAA %%start_time%% |
 | st-is-watched | 1 | BBB %%start_time%% |
 | st-is-watched | 1 | CCC %%start_time%% |
@@ -61,9 +61,9 @@ Watchlist icon reverses color to indicate a member of watchlist.
 | st-watch-page | 0 | AAA %%start_time%% |
 | st-watch-page | 0 | BBB %%start_time%% |
 | st-watch-page | 0 | CCC %%start_time%% |
-| text_like | content | AAA %%start_time%% |
-| text_like | content | BBB %%start_time%% |
-| text_like | content | CCC %%start_time%% |
+| text_like | contentContainer | AAA %%start_time%% |
+| text_like | contentContainer | BBB %%start_time%% |
+| text_like | contentContainer | CCC %%start_time%% |
 | st-watch-page | 1 | AAA %%start_time%% |
 | st-is-watched | 1 | AAA %%start_time%% |
 | st-watch-page | 1 | BBB %%start_time%% |
@@ -75,11 +75,11 @@ When a page that is on the watchlist is deleted, it is removed from the watchlis
 Remove all pages from watchlist; watchlist displays "No watchlist for USER ID in "
 
 | *Comment* | Test case: Watchlist delete page |  |
-| text_like | content | Watchlist %%start_time%% |
+| text_like | contentContainer | Watchlist %%start_time%% |
 | st-is-watched | 1 | Watchlist %%start_time%% |
 | st-admin | purge-page --w %%workspace%% --page watchlist_%%start_time%% | was purged |
 | click_and_wait | link=My Watchlist |  |
-| text_unlike | content | Watchlist %%start_time%% |
+| text_unlike | contentContainer | Watchlist %%start_time%% |
 
 | *COMMENT* | verifyTextPresent No watchlist for | can't do this until we find a way to clear the watchlist
 otherwise this test is not rerunnable when it fails
@@ -93,22 +93,22 @@ Set up to check sorting. (↑) (↓)
 
 | *Comment* | Test case: Watchlist title sort |  |
 | select_and_wait | sort-picker | label=Title |
-| wait_for_element_visible_ok | content | 30000 |
-| text_like | content | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%/ |
+| wait_for_element_visible_ok | contentContainer | 30000 |
+| text_like | contentContainer | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%/ |
 
 | *Comment* | label=Title (desc) |  |
 | select_and_wait | sort-picker | label=Title (↓) |
-| text_like | content | qr/CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
+| text_like | contentContainer | qr/CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
 
 | *Comment* | label=Title (asc) |  |
 | select_and_wait | sort-picker | label=Title (↑) |
-| text_like | content | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%/ |
+| text_like | contentContainer | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%/ |
 
 | *Comment* | Create Date, should start descending |  |
 | select_and_wait | sort-picker | label=Date Created |
-| text_like | content | qr/CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
+| text_like | contentContainer | qr/CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
 | select_and_wait | sort-picker | label=Date Created (↑) |
-| text_like | content | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%/ |
+| text_like | contentContainer | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%/ |
 
 add a new page for date and revision sorting
 
@@ -127,43 +127,43 @@ title sort
 
 | *Comment* | Test case: Watchlist sort by title |  |
 | select_and_wait | sort-picker | label=Title |
-| text_like | content | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
+| text_like | contentContainer | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
 
 | *Comment* | label=Title (desc) |  |
 | select_and_wait | sort-picker | label=Title (↓) |
-| text_like | content | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
+| text_like | contentContainer | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
 
 | *Comment* | label=Title (asc) |  |
 | select_and_wait | sort-picker | label=Title (↑) |
-| text_like | content | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
+| text_like | contentContainer | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
 
 check for date sorting
 
 | *Comment* | Test case: Watchlist sort by Date |  |
 | select_and_wait | sort-picker | label=Date Last Edited |
-| text_like | content | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
+| text_like | contentContainer | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
 
 | *Comment* | label=Date (asc) |  |
 | select_and_wait | sort-picker | label=Date Last Edited (↑) |
-| text_like | content | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
+| text_like | contentContainer | qr/AAA %%start_time%%.+BBB %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
 
 | *Comment* | label=Date (desc) |  |
 | select_and_wait | sort-picker | label=Date Last Edited (↓) |
-| text_like | content | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
+| text_like | contentContainer | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+BBB %%start_time%%.+AAA %%start_time%%/ |
 
 Revisions sort
 
 | *Comment* | Test case: Watchlist sort by Revisions |  |
 | select_and_wait | sort-picker | label=Revisions |
-| text_like | content | qr/New Watchlist %%start_time%%.+AAA %%start_time%%/ |
+| text_like | contentContainer | qr/New Watchlist %%start_time%%.+AAA %%start_time%%/ |
 
 | *Comment* | label=Revisions (asc) |  |
 | select_and_wait | sort-picker | label=Revisions (↑) |
-| text_like | content | qr/AAA %%start_time%%.+New Watchlist %%start_time%%/ |
+| text_like | contentContainer | qr/AAA %%start_time%%.+New Watchlist %%start_time%%/ |
 
 | *Comment* | label=Revisions (desc) |  |
 | select_and_wait | sort-picker | label=Revisions (↓) |
-| text_like | content | qr/New Watchlist %%start_time%%.+AAA %%start_time%%/ |
+| text_like | contentContainer | qr/New Watchlist %%start_time%%.+AAA %%start_time%%/ |
 
 create a user that lexically precedes the logged in user by creating a user that begins with start_time
 However, don't use %%email%% in that username because that permanently creates another user name in the user DB that
@@ -183,15 +183,15 @@ Last Edited By sort
 
 | *Comment* | Test case: Watchlist sort by Last Edited By |  |
 | select_and_wait | sort-picker | label=Last Edited By |
-| text_like | content | qr/BBB %%start_time%%.+AAA %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
+| text_like | contentContainer | qr/BBB %%start_time%%.+AAA %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
 
 | *Comment* | label=Last Edited By (desc) |  |
 | select_and_wait | sort-picker | label=Last Edited By (↓) |
-| text_like | content | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+AAA %%start_time%%.+BBB %%start_time%%/ |
+| text_like | contentContainer | qr/New Watchlist %%start_time%%.+CCC %%start_time%%.+AAA %%start_time%%.+BBB %%start_time%%/ |
 
 | *Comment* | label=Last Edited By (asc) |  |
 | select_and_wait | sort-picker | label=Last Edited By (↑) |
-| text_like | content | qr/BBB %%start_time%%.+AAA %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
+| text_like | contentContainer | qr/BBB %%start_time%%.+AAA %%start_time%%.+CCC %%start_time%%.+New Watchlist %%start_time%%/ |
 
 | *Comment* | Test case: Watchlist Teardown |  |
 | st_admin | purge-page --w %%workspace%% --page aaa_%%start_time%% | was purged |

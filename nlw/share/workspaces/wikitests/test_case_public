@@ -51,8 +51,8 @@
 
 | *Comment* | Test Case: Public. Verify central page is home page |  |
 | open_ok | /%%auth_w%%/index.cgi |  |
-| text_like | content | Test Case Public |
-| text_like | content | qr/Socialtext Workspaces contain pages/i |
+| text_like | contentContainer | Test Case Public |
+| text_like | contentContainer | qr/Socialtext Workspaces contain pages/i |
 | click_and_wait | link=Settings |  |
 | text_like | errors-and-messages | To set your preferences for a workspace, you must be logged in. |
 

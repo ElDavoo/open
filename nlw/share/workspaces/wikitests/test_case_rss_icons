@@ -20,9 +20,14 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 
 | *Comment* | Test Case: RSS Icons page with Chinese chars in title can't do from command line |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-
-| call | st-edit-save-page | content=A simple page with a Chinese character title | title=牛愛我 |
-
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | A simple page with a Chinese character title |
+| type_ok | st-newpage-pagename-edit | 牛愛我 |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: RSS Icons . Force index since this is testing for indexed pages that have been deleted. |  |
 | st-admin | index-workspace --workspace %%workspace%% --sync | The %%workspace%% workspace has been indexed. |

@@ -1,9 +1,15 @@
 | *Comment* | Test Case: Tools: Export as HTML |
 
 | *Comment* | Test Case: Tools: Export as HTML Create test page |  |
-
-| call | st-edit-new-page | ws=%%workspace%% | title=HTML %%start_time%% | content=HTML %%start_time%% content |
-
+| open_ok | /%%workspace%%/?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | HTML %%start_time%% |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | HTML %%start_time%% content |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st-page-save |  |  |
 
 TODO: Selenium unhappy with HTML opening in new window.
 

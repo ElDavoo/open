@@ -16,12 +16,12 @@
 
 | *Comment* | Test Case: Workspace Privacy Public Workspace Save is still public |  |
 | open_ok | /%%wspriv%%/?action=users_settings |  |
-| click_and_wait | link=Workspace Privacy |  |
+| clickAndWait | link=Workspace Privacy |  |
 | text_like | //body | Do you want to set up this workspace as: |
 | wait_for_element_visible_ok | //input[@name='permission_set_name' and @value='member-only'] | 30000 |
 | wait_for_element_visible_ok | //input[@name='permission_set_name' and @value='not-member-only'] | 30000 |
-| click_and_wait | link=Save |  |
-| click_and_wait | link=Log out |  |
+| clickAndWait | link=Save |  |
+| clickAndWait | link=Log out |  |
 
 | *Comment* | Test Case: Workspace Privacy verify public |  |
 | wait_for_element_present_ok | st-edit-button-link | 5000 |
@@ -36,8 +36,8 @@
 | text_like | //body | Do you want to set up this workspace as: |
 | wait_for_element_visible_ok | //input[@name='permission_set_name' and @value='member-only'] | 30000 |
 | wait_for_element_visible_ok | //input[@name='permission_set_name' and @value='not-member-only'] | 30000 |
-| click_and_wait | link=Save |  |
-| click_and_wait | link=Log out |  |
+| clickAndWait | link=Save |  |
+| clickAndWait | link=Log out |  |
 
 | *Comment* | Test Case: Workspace Privacy verify public read only |  |
 | wait_for_element_not_present_ok | st-edit-button-link | 5000 |
@@ -54,8 +54,8 @@
 | wait_for_element_visible_ok | //input[@name='permission_set_name' and @value='not-member-only'] | 30000 |
 
 | *Comment* | Ensure type of public-ness permissions are preserved on save event |
-| click_and_wait | link=Save |  |
-| click_and_wait | link=Log out |  |
+| clickAndWait | link=Save |  |
+| clickAndWait | link=Log out |  |
 | wait_for_element_not_present_ok | st-edit-button-link | 5000 |
 | wait_for_element_present_ok | st-comment-button-link | 5000 |
 | wait_for_element_not_present_ok | st-edit-button-link-bottom | 5000 |
@@ -70,12 +70,12 @@
 | wait_for_element_visible_ok | //input[@name='permission_set_name' and @value='not-member-only'] | 30000 |
 
 | *Comment* | Ensure type of public-ness permissions are preserved on save event |
-| click_and_wait | link=Save |  |
-| click_and_wait | link=Log out |  |
+| clickAndWait | link=Save |  |
+| clickAndWait | link=Log out |  |
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 
 | *Comment* | Test Case: Workspace Privacy Join |  |
-| click_and_wait | link=Join to edit |  |
+| clickAndWait | link=Join to edit |  |
 | wait_for_element_visible_ok | email_address | 30000 |
 | wait_for_element_visible_ok | register_password | 30000 |
 | wait_for_element_visible_ok | register_password2 | 30000 |
@@ -99,12 +99,12 @@
 
 | *Comment* | Test Case: Workspace Privacy set to member only, see change |
 | click_ok | //input[@name='permission_set_name' and @value='member-only'] |  |
-| click_and_wait | link=Save |  |
+| clickAndWait | link=Save |  |
 | text_like | //body | Workspaces are private by default. All users need to log in to view pages. Only workspace admins can invite new users |
 | text_like | //body | If you need public workspaces that can be viewed by users without logging in, please contact Socialtext Support. |
 | wait_for_element_not_present_ok | //input[@name='permission_set_name' and @value='member-only'] | 30000 |
 | wait_for_element_not_present_ok | //input[@name='permission_set_name' and @value='not-member-only'] | 30000 |
-| click_and_wait | link=Log out |
+| clickAndWait | link=Log out |
 | *Comment* | Test Case: Workspace Privacy verify private |  |
 | wait_for_element_visible_ok | username | 5000 |
 | wait_for_element_visible_ok | password | 5000 |
@@ -114,14 +114,14 @@
 | *Comment* | Test Case: Workspace Privacy email from guest/authenticated user |  |
 | st-login |  |  |
 | open_ok | /%%wspriv%%/ |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Workspace Privacy |  |
+| clickAndWait | link=Settings |  |
+| clickAndWait | link=Workspace Privacy |  |
 | click_ok | //input[@name='guest_has_email_in' and @value='1'] |  |
-| click_and_wait | link=Save |  |
-| text_like | content | Anyone can send email to %%wspriv%%. |
+| clickAndWait | link=Save |  |
+| text_like | contentContainer | Anyone can send email to %%wspriv%%. |
 | click_ok | //input[@name='guest_has_email_in' and @value='0'] |  |
-| click_and_wait | link=Save |  |
-| text_like | content | Only registered users can send email to %%wspriv%%. |
+| clickAndWait | link=Save |  |
+| text_like | contentContainer | Only registered users can send email to %%wspriv%%. |
 
 | *Comment* | Test Case: Workspace Privacy TEARDOWN |  |
 | st-process-jobs | PageIndex | %%wspriv%% |

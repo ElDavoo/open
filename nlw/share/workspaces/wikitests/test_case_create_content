@@ -28,9 +28,14 @@
 
 | *Comment* | Test Case: Create Content: use Blank |  |
 | click_and_wait | st-create-content-savelink |  |
-
-| call | st-edit-save-page | title=Create Page %%start_time%% | content=Have some Create Page %%start_time%% Content |
-
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | st-newpage-pagename-edit | Create Page %%start_time%% |
+| type_ok | wikiwyg_wikitext_textarea | Have some Create Page %%start_time%% Content |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Create Content: tag blank as Template |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
@@ -109,28 +114,40 @@
 | click_ok | link=+ New Page |  |
 | wait_for_element_visible_ok | spreadsheet-radio | 5000 |
 
-| *Comment* | Test Case: Create Content. Create and save spreadsheet |  |
-| open_ok | /%%workspace%% |  |
-| wait_for_element_visible_ok | link=+ New Page | 30000 |
-| click_ok | link=+ New Page |  |
-| wait_for_element_visible_ok | spreadsheet-radio | 5000 |
-| click_ok | spreadsheet-radio |  |
-| click_and_wait | st-create-content-savelink |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| verifyValue | st-newpage-pagename-edit | Untitled Page |
-| type_ok | st-newpage-pagename-edit | Create Sheet %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+TODO: make blank, template, and copied spreadsheets if Selenium can handle it
 
-| *Comment* | Test Case: Create Content. Verify spreadsheet |  |
-| wait_for_element_visible_ok | st-page-titletext | 30000 |
-| text_like | st-page-titletext | Create Sheet %%start_time%% |
+| type_ok | %%copy_from%% | Create Page %%start_time%% |
+|  wait_for_element_visible_ok |  %%select_template%% |  5000 |
+| select_ok | %%select_template%% | Create Page %%start_time%% from Template |
+| select_ok | %%select_template%% | Create Page %%start_time%% from Copy |
+
+| click_ok | st-create-content-cancellink |  |
+| wait_for_element_not_visible_ok | st-create-content-cancellink | 5000 |
 
 | *Comment* | Test Case: Create Content. TEARDOWN |  |
-| st-process-jobs |  |  |
+|  st-process-jobs |  |  |
+| st-admin | enable-plugin --w %%workspace%% --plugin socialcalc |  |
 | st-admin | purge-page --w %%workspace%% --page create_page_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page create_page_%%start_time%%_from_template | was purged |
 | st-admin | purge-page --w %%workspace%% --page create_page_%%start_time%%_from_copy | was purged |
-| st-admin | purge-page --w %%workspace%% --page create_sheet_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Create Content. COMPLETED |  |
+
+^ DONE_TESTING
+
+| st-admin | enable-plugin --w %%workspace%% --plugin socialcalc | The socialcalc plugin is now enabled for workspace %%workspace%% |
+
+| open_ok | /%%workspace%% |  |
+| wait_for_element_visible_ok | link=+ New Page | 30000 |
+
+| click_ok | link=+ New Page |  |
+| wait_for_element_visible_ok | spreadsheet-radio | 5000 |
+| click_ok | spreadsheet-radio |  |
+| answerOnNextPrompt | New SS %%start_time%% |  |
+| click_and_wait | st-create-content-savelink |  |
+
+| verifyPrompt | Enter a New Spreadsheet Page Name |  |
+
+| pause | 10000 |  |
+
+NOTE: Selenium does NOT support JavaScript prompts that are generated in a page's onload() event handler. In this case a visible dialog WILL be generated and Selenium will hang until someone manually clicks OK.

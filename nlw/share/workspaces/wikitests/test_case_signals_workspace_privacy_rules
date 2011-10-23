@@ -34,7 +34,7 @@
 | st-logoutin | %%default_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 4 | activities_widget |
-| st-widget-title | activities_widget | Activities |
+| st-widget-title-like | activities_widget | Activities |
 | st-text-unlike-in-activities-widget | activities_widget | %%signal1_text%% |
 | st-text-unlike-in-activities-widget | activities_widget | %%signal2_text%% |
 | st-text-unlike-in-activities-widget | activities_widget | %%signal3_text%% |

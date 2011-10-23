@@ -1,6 +1,4 @@
 
-*On hold until Create New Group button in all groups CP works*
-
 | *Comment* | Test Case: Control Panel Create Group |  |
 
 | set | email1 | group1%%start_time%%@ken.socialtext.net |

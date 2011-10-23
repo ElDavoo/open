@@ -22,9 +22,15 @@
 | *Comment* | Test Case: Hidden Email Address for Public wiki. Removed file upload test so IE and Safari will succeed. |  |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify user WAFL |  |
-
-| call | st-edit-new-page | ws=%%he_ws%% | title=`{user: %%he_mail%%}` | content=Hidden Email %%start_time%% |
-
+| open_ok | /%%he_ws%%/?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | `{user: %%he_mail%%}` |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | Hidden Email %%start_time%% |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st_pause_click | 2000 | st-save-button-link | and_wait |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create comment |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
@@ -46,23 +52,23 @@
 | open-ok | /%%he_ws%% |  |
 | click_and_wait | link=What's New |  |
 | text_like | Changes in Last |  |
-| text_like | content | %%he_name%% |
-| text_unlike | content | %%he_regex%% |
+| text_like | contentContainer | %%he_name%% |
+| text_unlike | contentContainer | %%he_regex%% |
 | click_and_wait | link=All Pages |  |
-| text_like | content | %%he_name%% |
-| text_unlike | content | %%he_regex%% |
+| text_like | contentContainer | %%he_name%% |
+| text_unlike | contentContainer | %%he_regex%% |
 | click_and_wait | link=Orphaned Pages |  |
-| text_like | content | %%he_name%% |
-| text_unlike | content | %%he_regex%% |
+| text_like | contentContainer | %%he_name%% |
+| text_unlike | contentContainer | %%he_regex%% |
 | click_and_wait | link=Recently Viewed |  |
-| text_like | content | %%he_name%% |
-| text_unlike | content | %%he_regex%% |
+| text_like | contentContainer | %%he_name%% |
+| text_unlike | contentContainer | %%he_regex%% |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify Comment |  |
 | open_ok | /%%he_ws%%/?Hidden email %%start_time%% |  |
-| text_like | content | Hidden Email Comment %%start_time%% |
-| text_like | content | qr/contributed by.+%%he_name%%/ |
-| text_unlike | content | %%he_regex%% |
+| text_like | contentContainer | Hidden Email Comment %%start_time%% |
+| text_like | contentContainer | qr/contributed by.+%%he_name%%/ |
+| text_unlike | contentContainer | %%he_regex%% |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify user WAFL |  |
 | text_like | st-page-content | %%he_name%% |
@@ -71,28 +77,28 @@
 | *Comment* | Test Case: Hidden email Address for Public wiki verify weblog |  |
 | click_and_wait | link=Blogs |  |
 | text_like | %%he_name%% |  |
-| text_unlike | content | %%he_regex%% |
+| text_unlike | contentContainer | %%he_regex%% |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki at revision pages |  |
 | open_ok | /%%he_ws%%/index.cgi?action=revision_list;page_name=hidden_email_%%start_time%% |  |
-| text_like | content | Revision 2 |
-| text_like | content | Revision 1 |
-| text_like | content | %%he_name%% |
-| text_unlike | content | %%he_regex%% |
+| text_like | contentContainer | Revision 2 |
+| text_like | contentContainer | Revision 1 |
+| text_like | contentContainer | %%he_name%% |
+| text_unlike | contentContainer | %%he_regex%% |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki address in searched pages |  |
 | st-admin | index-page --workspace %%he_ws%% --page hidden_email_%%start_time%% |  |
 | type_ok | st-search-term | Hidden Email Comment %%start_time%% |
 | click_and_wait | st-search-submit |  |
-| text_like | content | %%he_name%% |
-| text_unlike | content | %%he_regex%% |
+| text_like | contentContainer | %%he_name%% |
+| text_unlike | contentContainer | %%he_regex%% |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki in user list |  |
 | *Comment* | Authenticated user should see `@hidden` |  |
 | st-login |  |  |
 | open_ok | /%%he_ws%%/?action=users_listall |  |
-| text_unlike | content | %%he_name%% |
-| text_like | content | %%he_hidden%% |
+| text_unlike | contentContainer | %%he_name%% |
+| text_like | contentContainer | %%he_hidden%% |
 
 | *Comment* | Test Case: Hidden Email Address for Public wiki TEARDOWN |  |
 | *Comment* | Process all jobs before deleting workspace to avoid hanging ceq jobs |  |

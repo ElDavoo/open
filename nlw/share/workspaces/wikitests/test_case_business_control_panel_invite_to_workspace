@@ -1,6 +1,3 @@
-
-*Will convert to TUX when the confirmation message is restored or confirmed deliberately deleted*
-
 | *Comment* | Test Case: Business Control Panel Invite To Workspace |  |
 
 | set | email1 | group-1-%%start_time%%@ken.socialtext.com |

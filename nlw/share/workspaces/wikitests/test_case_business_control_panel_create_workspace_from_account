@@ -1,9 +1,5 @@
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account |  |
 
-| set | bcp_user | bcp.user.%%start_time%%@david.socialtext.net |
-| set | bcp_user_prefix | bcp |
-| set | bcp_user_suffix | %%start_time%% |
-
 | set | acct | acct-for-account-%%start_time%% |
 | set | wstitle | WS For Account %%start_time%% |
 | set | wsname | ws-for-account-%%start_time%% |
@@ -12,10 +8,9 @@
 | set | alttitle | Alt For Account %%start_time%% |
 | set | altname | differws-%%start_time%% |
 
-| *Comment* | Test Case: Business Control Panel Create Workspace from Account - create acct |  |  |
-| create-account | %%acct%% | was created |  |
-| create-account | %%altacct%% | was created |  |
-| create-user | %%bcp_user%% | %%password%% | %%acct%% |
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account - create acct |  |
+| create-account | %%acct%% | was created |
+| create-account | %%altacct%% | was created |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account. find account by search |  |
 | open_ok | /nlw/control/account |  |
@@ -45,11 +40,11 @@
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account - a workspace admin |  |
 | wait_for_element_visible_ok | addUserLookahead | 30000 |
-| type-lookahead-ok | addUserLookahead | %%bcp_user_prefix%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%bcp_user_suffix%%')] | 5000 |
-| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%bcp_user_suffix%%')] |  |
-| wait_for_element_visible_ok | link=%%bcp_user%% | 20000 |
-| wait_for_text_present_ok | Showing 1 - 1 of 1 | 30000 |
+| type-lookahead-ok | addUserLookahead | %%short_username%% |
+| wait_for_element_visible_ok | link=%%short_username%% | 5000 |
+| click_ok | link=%%short_username%% |  |
+| wait_for_element_visible_ok | link=%%username%% | 20000 |
+| wait_for_text_present_ok | Users (1) | 30000 |
 | wait_for_element_present_ok | userTable-dropdown-2-0 | 30000 |
 | select_ok | userTable-dropdown-2-0 | label=Admin |
 | pause | 10000 |  |
@@ -81,11 +76,11 @@
 | click_ok | link=%%altacct%% |  |
 | pause | 10000 |  |
 | wait_for_element_visible_ok | addUserLookahead | 30000 |
-| type-lookahead-ok | addUserLookahead | %%bcp_user_prefix%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%bcp_user_suffix%%')] | 5000 |
-| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%bcp_user_suffix%%')] |  |
-| wait_for_element_visible_ok | link=%%bcp_user%% | 20000 |
-| wait_for_text_present_ok | Showing 1 - 1 of 1 | 30000 |
+| type-lookahead-ok | addUserLookahead | %%short_username%% |
+| wait_for_element_visible_ok | link=%%short_username%% | 5000 |
+| click_ok | link=%%short_username%% |  |
+| wait_for_element_visible_ok | link=%%username%% | 20000 |
+| wait_for_text_present_ok | Users (1) | 30000 |
 | select_ok | userTable-dropdown-2-0 | label=Admin |
 | pause | 10000 |  |
 | wait_for_element_visible_ok | create | 30000 |
@@ -105,7 +100,6 @@ TODO: test the error conditions which were all buggy
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account TEARDOWN |  |
 
 | st-process-jobs |  |  |
-| deactivate-user | %%bcp_user%% |  |
 | st-admin | delete-workspace --no-export --w %%wsname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%altname%% | has been deleted |
 | delete-account | %%acct%% | has been deleted |

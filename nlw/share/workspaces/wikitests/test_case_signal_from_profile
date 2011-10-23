@@ -31,7 +31,7 @@
 | st-find-user | wikitester |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | activities |
-| st-widget-title | activities | Activities |
+| st-widget-title-like | activities | Activities |
 | st-send-signal-via-activities-widget | activities | %%signal%% |
 
 | *Comment* | Test Case: Signal From Profile. Public mention appears in wikitester profile activities widget |  |
@@ -43,7 +43,7 @@
 | click_and_wait | link=%%spshort%% |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | spactivities |
-| st-widget-title | spactivities | Activities |
+| st-widget-title-like | spactivities | Activities |
 | st-verify-text-in-activities-widget | spactivities | %%signal%% |
 | wait_for_element_visible_ok | //div[@id='lastsignal']/a[contains(text(),'wikitester')] | 5000 |
 | text_like | //div[@id='lastsignal'] | %%signal%% |
@@ -69,7 +69,7 @@
 | st-find-user | wikitester |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | activities |
-| st-widget-title | activities | Activities |
+| st-widget-title-like | activities | Activities |
 
 | *Comment* | Test Case: Signal From Profile. Send a private mention |  |
 | *Comment* | NOTE: FAILS IN IE 6 even though Se checks the box, |  |
@@ -92,7 +92,7 @@
 | click_and_wait | link=%%spshort%% |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 3 | spactivities |
-| st-widget-title | spactivities | Activities |
+| st-widget-title-like | spactivities | Activities |
 | st-verify-text-in-activities-widget | spactivities | %%private%% |
 | st-verify-text-in-activities-widget | spactivities | %%public%% |
 
@@ -107,7 +107,7 @@
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-name-widget | 1 | dbactivities |
-| st-widget-title | dbactivities | Activities |
+| st-widget-title-like | dbactivities | Activities |
 | st-verify-text-in-activities-widget | dbactivities | %%private%% |
 | st-verify-text-in-activities-widget | dbactivities | %%public%% |
 

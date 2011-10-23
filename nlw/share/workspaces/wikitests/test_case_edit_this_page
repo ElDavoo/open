@@ -1,13 +1,22 @@
+
 | *Comment* | Starting Test Case: Edit This Page |  |
 | *Comment* | %%username%% - %%email%% - %%short_username%% |  |
+
+
+
+
 
 | *Comment* | Test Case: Edit This Page wants Dashboard |  |
 | st-admin | enable-plugin --account %%hostname%% --p dashboard |  |
 
 | *Comment* | Test Case: Edit This Page content |  |
-
-| call | st-edit-fill-page | ws=%%workspace%% | title=Edit This Page %%start_time%% | content=Edit This Page content %%start_time%% |
-
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | st-newpage-pagename-edit | Edit This Page %%start_time%% |
+| type_ok | wikiwyg_wikitext_textarea | Edit This Page content %%start_time%% |
 
 | *Comment* | Test Case: Edit This Page Expand/Normal test |  |
 | wait_for_element_visible_ok | link=Expand | 30000 |
@@ -209,9 +218,12 @@
 | *Comment* | Test Case: Edit This Page lower left edit link |  |
 | text_like | bottomButtons | Edit |
 | click_ok | link=Edit | index=1 |
-
-| call | st-save-page | content=Edit This Page %%start_time%% |
-
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | Edit This Page %%start_time%% |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st-page-save |  |  |
 | wait_for_text_present_ok | Edit This Page %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Edit This Page edit tips |  |

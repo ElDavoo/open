@@ -16,73 +16,73 @@
 | wait_for_element_visible_ok | link=Mine | 30000 |
 | pause | %%pt%% |  |
 
-| click_and_wait | link=Workspaces |
+| clickAndWait | link=Workspaces |
 | *Comment* | SEE MIKI Workspace List |
 | pause | %%pt%% |
 
-| click_and_wait | link=Canonical Test Data Set |
+| clickAndWait | link=Canonical Test Data Set |
 | *Comment* | SEE MIKI Details on Canonical Test Data Workspace |
 | pause | %%pt%% |
 
-| click_and_wait | link=What's New |
+| clickAndWait | link=What's New |
 | *Comment* | SEE MIKI Recent Changes |
 | pause | %%pt%% |
 
-| click_and_wait | link=Tags |
+| clickAndWait | link=Tags |
 | *Comment* | SEE MIKI Tag List |
 | pause | %%pt%% |
 
 | wait_for_element_visible_ok | link=Next page > | 30000 |
-| click_and_wait | link=Next page > |  |
+| clickAndWait | link=Next page > |  |
 | wait_for_element_visible_ok | link=Welcome | 30000 |
-| click_and_wait | link=Welcome |
+| clickAndWait | link=Welcome |
 | *Comment* | SEE MIKI Pages in welcome category |
 | pause | %%pt%% |
 
-| click_and_wait | link=Search |
+| clickAndWait | link=Search |
 | *Comment* | SEE MIKI Search Box |
 | pause | %%pt%% |
 
 | type_ok | search_term | wiki |
-| click_and_wait | search |  |
+| clickAndWait | search |  |
 | *Comment* | SEE MIKI search results for "wiki" |  |
 | pause | %%pt%% |  |
 
-| click_and_wait | link=Announcements and Links |
+| clickAndWait | link=Announcements and Links |
 | *Comment* | SEE MIKI Announcements and Links |
 | pause | %%pt%% |
 
-| click_and_wait | link=Edit |
+| clickAndWait | link=Edit |
 | *Comment* | SEE MIKI Edit |
 | pause | %%pt%% |
 
-| click_and_wait | st-cancel-layout |
+| clickAndWait | link=Cancel |
 | *Comment* | SEE MIKI Edit Cancelled |
 | pause | %%pt%% |
 
-| click_and_wait | link=Edit |
+| clickAndWait | link=Edit |
 | *Comment* | SEE MIKI Edit again |
 | pause | %%pt%% |
 
-| click_and_wait | st-miki-edit-sumbit |
+| clickAndWait | st-miki-edit-sumbit |
 | *Comment* | SEE MIKI Save |
 | pause | %%pt%% |
 
-| click_and_wait | link=Log out |
+| clickAndWait | link=Log out |
 | *Comment* | SEE MIKI Login page |
 | pause | %%pt%% |
 
-| click_and_wait | link=I don't know my password. |
+| clickAndWait | link=I don't know my password. |
 | *Comment* | SEE MIKI password reset page |
 | pause | %%pt%% |
 
-| click_and_wait | link=Log in to Socialtext |
+| clickAndWait | link=Log in to Socialtext |
 | *Comment* | SEE MIKI login |
 | pause | %%pt%% |
 
 | type_ok | username | %%username%% |
 | type_ok | password | %%password%% |
-| click_and_wait | //input[@value='Log in'] |  |
+| clickAndWait | //input[@value='Log in'] |  |
 
 | *Comment* | SEE MIKI logged in |
 | pause | %%pt%% |

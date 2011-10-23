@@ -37,9 +37,12 @@
 | open_ok | /%%ma%%?Mobile Activity %%start_time%% 0000 |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | click_ok | st-edit-button-link |  |
-
-| call | st-save-page | content=%%mau%% continues the conversation in %%ma%% |
-
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | %%mau%% continues the conversation in %%ma%% |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link | 60000 |
 
 | st-logoutin |  |  |

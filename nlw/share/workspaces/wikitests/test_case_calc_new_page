@@ -20,9 +20,11 @@
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% |  |
 | pause | 5000 |  |
-
-| call | st-edit-new-sheet | ws=%%workspace%% | title=np ss %%start_time%% |  |
-
+| open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | np ss %%start_time%% |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| click_ok | st-save-button-link |  |
 
 | *Comment* | Test Case: Calc New Page. Page Already Exists |  |
 | *Comment* | Test Case: Calc New Page. This fails if you go too fast. setSpeed 2000 |  |
@@ -43,9 +45,11 @@
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% Two |  |
 | pause | 5000 |  |
-
-| call | st-edit-new-sheet | ws=%%workspace%% | title=np ss %%start_time%% Two |  |
-
+| open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | np ss %%start_time%% Two |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| click_ok | st-save-button-link |  |
 
 | *Comment* | Test Case: Calc New Page. Page Already Exists |  |
 | *Comment* | Test Case: Calc New Page. Use duplicate option suggest |  |

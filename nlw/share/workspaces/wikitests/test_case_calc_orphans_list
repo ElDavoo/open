@@ -42,17 +42,22 @@
 edit a page to include a link to an orphan sheet | link appears in page
 
 | *Comment* | Test Case: Calc Orphans List. Create a link to the second orphan sheet |  |
-
-| call | st-edit-new-page | ws=%%workspace%% | title=orphan page 1 %%start_time%% | content=`[orphan sheet 2 %%start_time%%]` |
-
+| open_ok | /%%workspace%%/index.cgi?orphan page 1 %%start_time%% |  |
+| wait_for_element_visible_ok | st-create-content-savelink |  |
+| click_ok | st-create-content-savelink |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | `[orphan sheet 2 %%start_time%%]` |
+| click_and_wait | link=Save |  |
 
  "What's New -> Orphaned Pages"<http://.../> | linked sheet no longer in orphans list
 
 | *Comment* | Test Case: Calc Orphans List. second sheet should no longer be orphan |  |
 | open_ok | /%%workspace%%/?action=recent_changes |  |
 | click_and_wait | link=Orphaned Pages |  |
-| text_unlike | content | orphan sheet 2 %%start_time%% |
-| text_like | content | orphan sheet 1 %%start_time%% |
+| text_unlike | contentContainer | orphan sheet 2 %%start_time%% |
+| text_like | contentContainer | orphan sheet 1 %%start_time%% |
 
 | *Comment* | Test Case: Calc Orphans List. Teardown |  |
 

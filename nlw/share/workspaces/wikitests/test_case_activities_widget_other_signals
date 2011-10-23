@@ -1,6 +1,3 @@
-
-*On hold until wikis work*
-
 | *Comment* | Test Case: Activities Widget Other Signals |
 
 * Fixture: SocialWidgets
@@ -56,7 +53,7 @@
 | wait_for_text_present_ok | Activities | 30000 |
 
 | st-name-widget | 1 | activities_widget |
-| st-widget-title | activities_widget | Activities |
+| st-widget-title-like | activities_widget | Activities |
 | st-widget-settings | activities_widget |  |
 | wait_for_element_visible_ok | limit | 30000 |
 | select_ok | limit | 25 |

@@ -13,10 +13,10 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 
-| *Comment* | Test Case: New Page. try to save with existing page title np %%start_time%% |  |
+| *Comment* | Test Case: New Page. try to save with existing page title | np %%start_time%% |
 | type_ok | st-newpage-pagename-edit | np %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| *Comment* | Test Case: New Page. can't fold because click Save will fail |  |
+
 | click_ok | st-save-button-link |  |
 
 | *Comment* | Test Case: New Page. Page Already Exists |  |
@@ -56,10 +56,8 @@
 | click_and_wait | st-create-content-savelink |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | text_like | st-editing-title | np %%start_time%% 3 |
-| text_unlike | //body | Export to CSV |
+| text_unlike | //body | Export to CSV |  | *Comment* | Test Case: New Page. Teardown |  |
 
-| *Comment* | Test Case: New Page. TEARDOWN |  |
-| st-process-jobs |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page np_%%start_time%%_2 | was purged |
 | st-admin | purge-page --workspace %%workspace%% --page np_%%start_time%% | was purged |
 

@@ -21,18 +21,16 @@
 | wait_for_element_present_ok | link=%%group_name%% | 30000 |
 | click_and_wait | link=%%group_name%% |  |
 | text_like | //body | %%group_name%% |
-| wait_for_element_not_present_ok | st-join-group | 5000 |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | %%group_name%% | 5000 |
+| wait_for_text_present_ok | %%group_name%% | 30000 |
 | select-frame | relative=parent |  |
-
 | st-name-widget | 2 | workspaces_widget |
-| st-name-widget | 4 | signals_widget |
-| st-name-widget | 3 | members_widget |
-
+| st-name-widget | 3 | signals_widget |
+| st-name-widget | 4 | members_widget |
 | st-select-widget-frame | workspaces_widget |  |
-| wait_for_element_visible_ok | link=%%group_ws%% | 5000 |
+| wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
 | select-frame | relative=parent |  |
 | st_verify_text_in_activities_widget | signals_widget | to the group |
 | st_verify_text_in_activities_widget | signals_widget | to the workspace |
@@ -43,10 +41,14 @@
 | st-logoutin | %%account_user%% | %%password%% |
 | st_open_noeval | /st/group/%%private_grp_id%% |  |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
+| text_unlike | //body | %%group_name%% |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
 
 | st-logoutin | %%non_account_user%% | %%password%% |
 | st_open_noeval | /st/group/%%private_grp_id%% |  |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
+| text_unlike | //body | %%group_name%% |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
 
 | *Comment* | Group Home at Different Levels Make %%self_join_grp_id%% a self-join group |  |
 | st-logoutin |  |  |
@@ -54,42 +56,45 @@
 
 | open_ok | /st/group/%%self_join_grp_id%% |  |
 | st-name-widget | 1 | information_widget |
-| st-widget-title | information_widget | Information |
+| st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | %%self_join_grp%% | 5000 |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 | text_like | //body | (private) |
 | text_unlike | //body | (self-join) |
 | select-frame | relative=parent |  |
 
-| *Comment* | Group Home at Different Levels prepare the permission switch |  |
+| *Comment* | Group Home at Different Levels do not click Edit, wrong frame level |  |
 | open_ok | /st/edit_group/%%self_join_grp_id%% |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
 | pause | 8000 |  |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | st-create-group-next | 5000 |
-| wait_for_element_present_ok | st-create-group-cancel | 5000 |
-| wait_for_element_present_ok | self-join-radio | 5000 |
+| wait_for_element_present_ok | st-create-group-next | 30000 |
+| wait_for_element_present_ok | st-lightbox-cancel-create-group | 3000 |
+| wait_for_element_present_ok | self-join-radio | 30000 |
 | check_ok | self-join-radio |  |
-| is_checked_ok | self-join-radio |  |
-
-| *Comment* | Group Home at Different Levels DO THE PERMISSION SWITCH |  |
 | click_ok | st-create-group-next |  |
 | pause | 8000 |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | Group Type | 5000 |
+| wait_for_text_present_ok | Group Type | 30000 |
 | text_like | //body | qr/self-join.+Change/ism |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | create-group | 5000 |
-| click_and_wait | create-group |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| click_ok | create-group |  |
 
-| *Comment* | Group Home at Different Levels VERIFY THE PERMISSION SWITCH |  |
+FOR SOME BIZARRE REASON, THIS create-group OPENS A NEW WINDOW.
+
+| *Comment* | Test Case: Group Home at Different Levels See Group is changed to self-join |  |
+| wait_for_element_present_ok | link=%%self_join_grp%% | 30000 |
+| click_and_wait | link=%%self_join_grp%% |  |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | %%self_join_grp%% | 5000 |
+| wait_for_text_present_ok | %%self_join_grp%% | 10000 |
 | text_like | //body | (self-join) |
 | select-frame | relative=parent |  |
 
@@ -97,8 +102,8 @@
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
-| wait_for_element_not_present_ok | st-join-group | 5000 |
-| wait_for_element_visible_ok | st-leave-group | 5000 |
+| wait_for_element_not_present_ok | st-join-group | 10000 |
+| wait_for_element_visible_ok | st-leave-group | 10000 |
 
 | st-name-widget | 2 | workspaces_widget |
 | st-name-widget | 3 | signals_widget |
@@ -114,24 +119,19 @@
 | st-logoutin | %%account_user%% | %%password%% |
 
 | open_ok | /st/group/%%self_join_grp_id%% |  |
-
-TUXTODO: restore tests if title bar comes back
-wait_for_element_visible_ok | //div[@class='groupsTitle'] | 30000 |
-text_like | //div[@class='groupsTitle'] | %%self_join_grp%% |
-
+| wait_for_element_visible_ok | //div[@class='groupsTitle'] | 30000 |
+| text_like | //div[@class='groupsTitle'] | %%self_join_grp%% |  |
 | wait_for_element_visible_ok | st-join-group | 30000 |
-| click_and_wait | st-join-group |  |
-| wait_for_text_present_ok | bookmarklet | 10000 |
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | Administrators | 5000 |
-| wait_for_text_present_ok | %%self_join_grp%% | 5000 |
+| wait_for_text_present_ok | Administrators | 30000 |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
 | select-frame | relative=parent |  |
 
 | st-name-widget | 2 | workspaces_widget |
-| st-name-widget | 4 | signals_widget |
-| st-name-widget | 3 | members_widget |
+| st-name-widget | 3 | signals_widget |
+| st-name-widget | 4 | members_widget |
 
 | st_verify_text_in_activities_widget | signals_widget | added %%short_username%% to the group |
 
@@ -142,6 +142,7 @@ text_like | //div[@class='groupsTitle'] | %%self_join_grp%% |
 | *Comment* | Test Case: Group Home at Different Levels self-join group / different account member |  |
 | st-logoutin | %%non_account_user%% | %%password%% |
 | st-open-noeval | /st/group/%%self_join_grp_id%% |  |
+| wait_for_element_not_present_ok | st-join-group | 30000 |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
 
 | *Comment* | Test Case: Group Home at Different Levels TEARDOWN |  |

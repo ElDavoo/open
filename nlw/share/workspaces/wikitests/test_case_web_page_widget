@@ -5,7 +5,7 @@
 
 | *Comment* | Test Case: Web Page Widget. Configure the widget for socialtext.com |  |
 | st-name-widget | 1 | webpage |
-| st-widget-title | webpage | Web Page |
+| st-widget-title-like | webpage | Web Page |
 | st-widget-settings | webpage |  |
 | wait_for_element_visible_ok | //input[contains(@name,'title')] | 30000 |
 | type_ok | //input[contains(@name,'title')] | Web Page %%start_time%% |
@@ -19,7 +19,7 @@
 
 | *Comment* | Test Case: Web Page Widget. Verify the widget |  |
 | wait_for_text_present_ok | Web Page %%start_time%% | 30000 |
-| st-widget-title | webpage | Web Page %%start_time%% |
+| st-widget-title-like | webpage | Web Page %%start_time%% |
 | wait_for_element_visible_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` | 10000 |
 
 | *Comment* | Test Case: Web Page Widget. Verify divs. Don't use is_text_present, use divs, FF4 has trouble with text ! |

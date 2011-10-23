@@ -1,6 +1,3 @@
-
-*On hold until workspaces are implemented*
-
 .pre
   Create a group named $group_name, populate %%group_id%% with the group id in account %%group_acct%%
   Create a variable %%group_user%% also %%group_short%%

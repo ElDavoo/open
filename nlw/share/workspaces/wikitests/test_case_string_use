@@ -43,7 +43,7 @@ Set default values if they are not defined by the caller
 | *Comment* | Test Case: String Use: check tag 1 |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% title |
-| text_like | content | %%test_string%% content |
+| text_like | contentContainer | %%test_string%% content |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | text_like | st-tags-listing | %%test_string%% tag 1 |
 
@@ -77,7 +77,7 @@ Set default values if they are not defined by the caller
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_dupe |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% dupe |
-| text_like | content | %%test_string%% content |
+| text_like | contentContainer | %%test_string%% content |
 | text_like | st-tags-listing | %%test_string%% tag 2 |
 
 | *Comment* | Test Case: String Use: rename |  |
@@ -91,20 +91,21 @@ Set default values if they are not defined by the caller
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% rename |
-| text_like | content | %%test_string%% content |
+| text_like | contentContainer | %%test_string%% content |
 | text_like | st-tags-listing | %%test_string%% tag 2 |
 
 | *Comment* | Test Case: String Use: Comment on the rename page |  |
 | click_ok | st-comment-button-link |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%test_string%% comment |
-| st-click-pause | link=Save | 5000 |
+| click_ok | link=Save |  |
+| pause | 5000 | for comment to save |
 
 | *Comment* | Test Case: String Use: verify comment on the rename page |  |
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
-| wait_for_element_visible_ok | content | 30000 |
-| text_like | content | %%test_string%% comment |
-| text_like | content | qr/contributed\s+by/i |
+| wait_for_element_visible_ok | contentContainer | 30000 |
+| text_like | contentContainer | %%test_string%% comment |
+| text_like | contentContainer | qr/contributed\s+by/i |
 
 | *Comment* | Test Case: String Use: Roundtripping Link Text for a widget in the duplicate page |  |
 | *Comment* | The following test DOES NOT actually find errors that trash the UI because Selenium manages to "click" all the buttons even when the interface is completely bolluxed by nasty data in the page. |  |
@@ -142,13 +143,19 @@ Set default values if they are not defined by the caller
 
 | *Comment* | This regexp carefully tests for the page content being just the link text and no other garbage |  |
 | *Comment* | in the last line in st page maincontent. DO NOT CHANGE IT. |  |
-| text_like | content | qr/^\s*%%test_string_esc%%/m |
+| text_like | contentContainer | qr/^\s*%%test_string_esc%%/m |
 
 | *Comment* | Test Case: String Use: Your Notepad |  |
 | *Comment* | Your Notepad wants an existing page |  |
-
-| call | st-edit-new-page | ws=%%workspace%% | title=%%test_string%% pad | content=%%test_string%% pad content |
-
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | st-newpage-pagename-edit | %%test_string%% pad |
+| type_ok | wikiwyg_wikitext_textarea | %%test_string%% pad content |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: String Use: set Your Notepad |  |
 | open_ok | /%%workspace%%/?action=users_settings |  |
@@ -161,7 +168,7 @@ Set default values if they are not defined by the caller
 | open_ok | /%%workspace%%/?%%test_string%% pad |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%test_string%% pad |
-| text_like | content | %%test_string%% pad content |
+| text_like | contentContainer | %%test_string%% pad content |
 
 | *Comment* | Test Case: String Use: try TOC |  |
 | open_ok | /%%workspace%%/index.cgi?%%test_id%%_rename |  |
@@ -186,7 +193,7 @@ Set default values if they are not defined by the caller
 
 | *Comment* | Test Case: String Use: test for TOC blow up (If this fails under IE, that's okay) |  |
 | pause | 10000 |  |
-| text_like | content | qr/does not have any headers/ |
+| text_like | contentContainer | qr/does not have any headers/ |
 
 | *Comment* | Test Case: String Use: TEARDOWN |  |
 | st-process-jobs |  |  |

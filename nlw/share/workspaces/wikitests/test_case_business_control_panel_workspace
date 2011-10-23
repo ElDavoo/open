@@ -1,6 +1,3 @@
-
-*Will convert to TUX when confirmation message is restored*
-
 | *Comment* | Test case: Business Control Panel Workspace |  |
 
 | set | new_acct | acct-wstest-%%start_time%% |

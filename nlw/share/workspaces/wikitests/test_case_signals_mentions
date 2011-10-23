@@ -69,7 +69,7 @@
 | open_ok | /st/signals |  |
 | st-find-user | %%search_for_actor%% |  |
 | st-name-widget | 3 | activities |
-| st-widget-title | activities | Activities |
+| st-widget-title-like | activities | Activities |
 | st-send-signal-in-activities-widget | %%privatetext%% | 1 |
 
 | *Comment* | Test Case: Signals Mentions - fourth non-mention signal by someone else |  |
@@ -83,7 +83,7 @@
 | *Comment* | Test Case: Signals Mentions - Load %%actor%% Activity Widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
-| st-widget-title | activities_widget | Activities |
+| st-widget-title-like | activities_widget | Activities |
 | st-widget-settings | activities_widget |  |
 | wait_for_element_visible_ok | limit | 30000 |
 | select-ok | limit | 25 |

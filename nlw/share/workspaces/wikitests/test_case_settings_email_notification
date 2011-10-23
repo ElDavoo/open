@@ -1,19 +1,17 @@
-THIS TEST is obsolete, at least until email_notify_is_enabled works.
-
 | *Comment* | Test Case: Settings: Email Notification |  |
 
 | *Comment* | Test Case: Settings: Email Notification enable |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Workspace Features |  |
+| clickAndWait | link=Settings |  |
+| clickAndWait | link=Workspace Features |  |
 | click_ok | //input[@name='email_notify_is_enabled' and @value='1'] |  |
-| click_and_wait | link=Save |  |
+| clickAndWait | link=Save |  |
 | text_like | contentLeft | Email Notification |
 
 | *Comment* | Test Case: Settings: Email Notification disable |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Workspace Features |  |
+| clickAndWait | link=Settings |  |
+| clickAndWait | link=Workspace Features |  |
 | click_ok | //input[@name='email_notify_is_enabled' and @value='0'] |  |
-| click_and_wait | link=Save |  |
+| clickAndWait | link=Save |  |
 | text_unlike | contentLeft | Email Notification |
 
 | *Comment* | Test Case: Settings: Email Notification COMPLETED |  |

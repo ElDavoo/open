@@ -1,14 +1,23 @@
 | *Comment* | STARTING Test Case: Link Interface |  |
 
 | *Comment* | Test Case: Link Interface create page to be linked to |  |
-
-| call | st-edit-new-page | ws=%%workspace%% | title=Link Interface LinkMe %%start_time%% | content=Link Interface LinkMe %%start_time%% content |
-
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | st-newpage-pagename-edit | Link Interface LinkMe %%start_time%% |
+| type_ok | wikiwyg_wikitext_textarea | Link Interface LinkMe %%start_time%% content |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Link Interface create page containing the link |  |
-
-| call | st-edit-fill-page | ws=%%workspace%% | title=Link Interface %%start_time%% | content=Link Interface Content %%start_time%% |
-
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | st-newpage-pagename-edit | Link Interface %%start_time%% |
+| type_ok | wikiwyg_wikitext_textarea | Link Interface Content %%start_time%% |
 
 | *Comment* | Test Case: Link Interface. switch to Simple, use Link dialog to make the wiki link |  |
 | wait_for_element_visible_ok | link=Rich Text | 30000 |

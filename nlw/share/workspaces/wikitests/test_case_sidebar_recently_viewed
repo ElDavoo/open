@@ -14,9 +14,9 @@
 | *Comment* | Test Case: Sidebar: Recently Viewed Change screen layout to show breadcrumbs |  |
 
 | open_ok | /%%workspace%%/?action=users_settings |  |
-| click_and_wait | link=Screen Layout |  |
+| clickAndWait | link=Screen Layout |  |
 | check_ok | display__include_breadcrumbs |  |
-| click_and_wait | link=Save |  |
+| clickAndWait | link=Save |  |
 
 | open_ok | /%%workspace%%/?TC Sidebar RV 3 %%start_time%% |  |
 | open_ok | /%%workspace%%/?TC Sidebar RV 2 %%start_time%% |  |
@@ -36,7 +36,7 @@
 
 | *Comment* | Test Case: Sidebar: Recently Viewed. list view |  |
 | open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
-| click_and_wait | link=Recently Viewed |  |
+| clickAndWait | link=Recently Viewed |  |
 | text_like | link=TC Sidebar RV 1 %%start_time%% | TC Sidebar RV 1 %%start_time%% |
 | text_like | link=TC Sidebar RV 2 %%start_time%% | TC Sidebar RV 2 %%start_time%% |
 | text_like | qr/TC Sidebar RV 1 %%start_time%%.+TC Sidebar RV 2 %%start_time%%/ |  |
@@ -58,9 +58,9 @@
 
 | *Comment* | Test Case: Sidebar: Recently Viewed. uncheck sidebar |  |
 | open_ok | /%%workspace%%/index.cgi?action=users_settings |  |
-| click_and_wait | link=Screen Layout |  |
+| clickAndWait | link=Screen Layout |  |
 | uncheck_ok | display__include_breadcrumbs |  |
-| click_and_wait | link=Save |  |
+| clickAndWait | link=Save |  |
 | open_ok | /%%workspace%%/?TC Sidebar RV 3 %%start_time%% |  |
 | text_unlike | contentRight | Announcements and Links |
 | text_unlike | contentRight | TC Sidebar RV 2 %%start_time%% |
