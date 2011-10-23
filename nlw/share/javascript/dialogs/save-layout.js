@@ -19,6 +19,7 @@ socialtext.dialog.register('save-layout', function() {
                         success: function() {
                             dialog.close();
                             gadgets.container.leaveEditMode();
+                            $('#st-wiki-subnav-link-invite').show();
                         }
                     });
                 }

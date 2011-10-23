@@ -11,6 +11,7 @@ var button_handler = {
 
     // layouts
     'st-edit-layout':  function() {
+        $('#st-wiki-subnav-link-invite').hide();
         gadgets.container.enterEditMode();
     },
     'st-save-layout': function() {
@@ -22,6 +23,7 @@ var button_handler = {
             // Just save
             gadgets.container.saveAdminLayout({
                 success: function() {
+                    $('#st-wiki-subnav-link-invite').show();
                     gadgets.container.leaveEditMode();
                 }
             });
@@ -30,11 +32,19 @@ var button_handler = {
     'st-cancel-layout': function() {
         gadgets.container.loadLayout(
             gadgets.container.base_url,
-            function() { gadgets.container.leaveEditMode() }
+            function() {
+                $('#st-wiki-subnav-link-invite').show();
+                gadgets.container.leaveEditMode()
+            }
         );
     },
     'st-revert-layout': function() {
+        $('#st-wiki-subnav-link-invite').show();
         gadgets.container.loadDefaults();
+    },
+
+    'st-account-theme': function() {
+        location = '/nlw/control/account/' + gadgets.container.account_id + '/theme?origin=st-admin-dashboard'
     },
 
     /**
