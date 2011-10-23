@@ -130,9 +130,12 @@ Socialtext::editor =
       title: title
       close: ->
         Socialtext::editor.hideLightbox()
-      width: $('#lightbox').width()
+      width: 20 + $('#lightbox').width()
       height: Math.min($(window).height(), ($('#lightbox').height() + opts.extraHeight))
     $(opts.focus).focus() if opts.focus
+    if $.browser.msie
+      # Fix hidden label bug in IE by touching its width attribute
+      $('#lightbox label').css width: 'auto'
     opts.callback?()
     return
 
