@@ -1425,6 +1425,13 @@ sub create_central_workspace {
     return $wksp;
 }
 
+sub remove_theme_prefs {
+    my ($self) = @_;
+    my $prefs = $self->prefs;
+    $prefs->save({ theme => undef });
+    $self->_clean_theme_cache;
+}
+
 sub update_theme_prefs {
     my ($self, $updates) = @_;
 
@@ -1440,7 +1447,11 @@ sub update_theme_prefs {
     my $current = $prefs->all_prefs->{theme};
     my $settings = {%$current, %$updates};
     $prefs->save({ theme => $settings });
+    $self->_clean_theme_cache;
+}
 
+sub _clean_theme_cache {
+    my ($self) = @_;
     require Socialtext::SASSy;
     my $sass = Socialtext::SASSy->new(
         account => $self,
