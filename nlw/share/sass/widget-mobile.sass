@@ -11,10 +11,10 @@ body.mobile
     padding-top: 0px
     padding-left: 0px
     a
-      color: white
+      color: $lightest
       text-decoration: none
   a
-    color: blue
+    color: $primary_color
     text-decoration: underline
   .inlineWidget
     margin: 0
@@ -122,18 +122,18 @@ ul#signal_network-list
   z-index: 3500
   /* above the signalthis iframe
   display: block
-  background-color: #FFF
+  background-color: $lightest
   padding: 0
   margin: 0
   text-align: left
   width: 120px
-  border: 1px solid black
+  border: 1px solid $darkest
   border-top: none
   li
     display: block
     list-style: none
     margin: 0
-    border-top: 1px solid black
+    border-top: 1px solid $darkest
     overflow: hidden
   a
     white-space: nowrap
@@ -142,14 +142,14 @@ ul#signal_network-list
     padding: 8px
     font-size: 13px
     width: 100%
-    font-family: arial, helvetica, sans-serif
+    font-family: $body_font
   li:hover
-    background-color: #F4F0CB
+    background-color: $tertiary_color
 
 /* Hovered option
 
 ul.dropdownOptions li.hover
-  background-color: #F4F0CB
+  background-color: $tertiary_color
 
 .mobile ul.dropdownOptions li:hover a, ul.dropdownOptions li.hover a
   text-decoration: underline
@@ -159,11 +159,11 @@ ul.dropdownOptions li.hover
 .mobile
   ul.dropdownOptions li
     &.selected
-      background-color: #F4F0CB
+      background-color: $tertiary_color
     &.disabled
-      background-color: #FFF
+      background-color: $lightest
       a
-        color: #CCC
+        color: $lighter
         cursor: default
         text-decoration: none
         &:hover
