@@ -13,7 +13,7 @@ $margin: 10px
 body
   font-size: 12px
   font-family: $body_font
-  color: #333
+  color: $darker
   background: $body_background
 
 #st-system-status
@@ -56,10 +56,10 @@ input
   padding: 2px 5px
   font-size: 110%
   border-radius: 2px
-  border: 1px solid #ccc
+  border: 1px solid $lighter
   &.disabled
-    background-color: #eee
-    color: #666
+    background-color: $light
+    color: $darker
   &.hidden
     /* For hiding submit buttons
     display: block
@@ -68,19 +68,19 @@ input
     position: absolute
     @include opacity(0)
   &.initial
-    color: #999
+    color: $grey
 
 select
   -webkit-border-radius: 2px
   -moz-border-radius: 2px
   border-radius: 2px
-  border: 1px solid #ccc
+  border: 1px solid $lighter
 
 /**
  * Headings
 
 h1, h2, h3, h4
-  color: #333
+  color: $darker
   padding: 0
   margin: 0
 
@@ -126,14 +126,14 @@ h4
   font-weight: bold
 
 .error
-  color: #be3b3f
+  color: $red
 
 .opaque
   @include opacity(50)
 
 .warning
-  background-color: #fffcdd
-  border: 1px solid #d5d6d5
+  background-color: $alert_background
+  border: 1px solid $lighter
   padding: 5px
   .more p
     display: inline
@@ -144,21 +144,18 @@ h4
 .tabs
   text-align: center
   padding: 5px 0
-  border-bottom: 1px solid #ccc
+  border-bottom: 1px solid $lighter
   a
     margin: 0 5px
   span
     margin: 0 5px
     font-weight: bold
 
-.avatar img
-  border: 1px solid #ccc
-
 /**
  * Progress Bar
 
 .progressbar
-  border: 1px solid #ccc
+  border: 1px solid $lighter
   height: 17px
   position: relative
   border-radius: 2px
@@ -237,13 +234,13 @@ footer
   .widgetTitle
     float: left
   .placeholder
-    border: 3px dotted #ccc
+    border: 3px dotted $lighter
 
 .widget
   margin-bottom: 15px
   .content
     padding-top: 10px
-    border-top: 1px solid #ccc
+    border-top: 1px solid $lighter
   .buttons
     float: right
     .close, .settings, .fix
@@ -267,11 +264,11 @@ footer
     .unfixed
       background-image: url(#{$static}/images/icons/lock-unlocked-15.png)
   .widgetPush
-    background: #EEE
+    background: $light
     text-align: center
     margin-top: 10px
     font-style: italic
-    color: #666
+    color: $darker
 
 /**
  * Dropdowns
@@ -297,7 +294,7 @@ ul
       list-style: none
       margin: 0
       padding: 3px
-      border-top: 1px solid black
+      border-top: 1px solid $darkest
       overflow: hidden
     a
       white-space: nowrap
@@ -305,15 +302,15 @@ ul
       font-size: 11px
     li
       &:hover, &.hover
-        background-color: #F4F0CB
+        background-color: $tertiary_color
       &:hover a, &.hover a
         text-decoration: underline
       &.selected
-        background-color: #F4F0CB
+        background-color: $tertiary_color
       &.disabled
         background-color: $lightest
         a
-          color: #CCC
+          color: $lighter
           cursor: default
           text-decoration: none
           &:hover
@@ -330,13 +327,13 @@ div.users ul
       color: black
 
 .notice
-  background-color: #FFFEDF
-  border: 1px solid #759FB1
+  background-color: $alert_background
+  border: 1px solid $darker
   padding: 4px
   text-align: center
   display: none
   .error
-    color: #D00
+    color: $red
   pre.error
     text-align: left
     margin: auto
@@ -358,7 +355,7 @@ div.users ul
     z-index: 2001
     width: 100%
     height: 100%
-    background: #eee
+    background: $light
     @include opacity(70)
   .spinner
     z-index: 2002
@@ -407,8 +404,8 @@ div.users ul
   -webkit-border-radius: 2px
   -moz-border-radius: 2px
   border-radius: 2px
-  border: 1px solid #ccc
-  background-color: #dfebed
+  border: 1px solid $lighter
+  background-color: $tertiary_color
   .pad
     padding: 0px 3px
   .top
@@ -455,7 +452,7 @@ ul.horizontal_actions
   img
     margin-right: 5px
   .separator
-    border-right: #8B8B8B 1px dotted
+    border-right: $grey 1px dotted
   li
     padding: 0 10px 0 10px
     margin-left: 0
@@ -605,7 +602,7 @@ div.sample-email
     padding: 5px 0
     line-height: 25px
     &.odd
-      background-color: #eee
+      background-color: $light
 
 div#tooManyResults
   margin-top: 1em
@@ -617,7 +614,7 @@ td.listview-watchlist
   padding-top: 6px !important
 
 p.setting_warning
-  color: #770000
+  color: $red
   font-weight: bold
 
 #contentWarning
@@ -625,13 +622,13 @@ p.setting_warning
 
 .containerTitle
   margin-bottom: 5px
-  border-bottom: 1px solid #ccc
+  border-bottom: 1px solid $lighter
   height: 30px
   img, h1
     float: left
   .prefix
     float: left
-    background: #999
+    background: $grey
     color: $lightest
     text-transform: uppercase
     margin: 3px 5px 0 5px
@@ -649,7 +646,7 @@ td.widgetUserPrefsButtons
   .login_field
     padding: 5px 10px
   .publicWorkspaces
-    border-left: 1px dashed #ccc
+    border-left: 1px dashed $lighter
     min-height: 200px
     padding: 5px 0 0 10px
 
