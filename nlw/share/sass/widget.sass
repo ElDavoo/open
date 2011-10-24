@@ -7,7 +7,7 @@
   display: none
 
 div.myContent h4 a
-  color: #005295
+  color: $primary_color
   font-weight: normal
   font-size: 12px
 
@@ -58,7 +58,7 @@ table
 body
   font-size: 11px
   font-family: $body_font
-  color: #333
+  color: $lighter
 
 td, li
 
@@ -87,14 +87,14 @@ h4, h5, h6
   margin: 0.5em 0
 
 hr
-  color: #999
+  color: $grey
   height: 1px
 
 ol, ul
   padding-left: 2em
 
 pre
-  background: #e8e8e8
+  background: $light
   padding: 0.25em
   margin: 0.5em 0
 
@@ -108,16 +108,14 @@ img
   &.avatar
     width: 27px
     height: 27px
-    border: #c5c5c5 1px solid
   &.bigAvatar
     width: 62px
     height: 62px
-    border: #c5c5c5 1px solid
     float: left
 
 div
   &.border
-    border-bottom: #cacaca 1px dotted
+    border-bottom: $lighter 1px dotted
     clear: both
     margin: 0 auto 10px
     height: 10px
@@ -130,9 +128,9 @@ div
   &.myContent
     margin: 0 auto
     text-align: left
-    color: #666
+    color: $lighter
     h4
-      color: #005295
+      color: $primary_color
       font-weight: normal
       font-size: 12px
     div.commentInfo
@@ -164,7 +162,7 @@ div
   &.calendarList
     margin: 0 auto
     text-align: left
-    color: #005295
+    color: $primary_color
     table
       width: 100%
       tr
@@ -174,7 +172,7 @@ div
           text-indent: 17px
         &.oddRow
           td, th
-            background: #f1fbea
+            background: $tertiary_color
   &#peopleList, &#bigWidgetContent div#peopleList
     text-align: left
     margin: 0 auto
@@ -182,9 +180,9 @@ div
     width: 100%
     li
       width: 100%
-      color: #005295
+      color: $primary_color
       &.oddRow
-        background: #f1fbea
+        background-color: $tertiary_color
       img
         margin-left: 14px
         padding-top: 5px
@@ -200,13 +198,13 @@ div
     width: 100%
     li
       width: 100%
-      color: #005295
+      color: $primary_color
       /* margin-top: 10px;
        *margin-bottom: 10px;
       text-align: left
       margin: 10px
       &.oddRow
-        background: #f1fbea
+        background: $tertiary_color
       img
         margin-left: 14px
         position: relative
@@ -222,10 +220,10 @@ div
       width: 100%
       li
         width: 100%
-        color: #005295
+        color: $primary_color
         text-indent: 14px
         &.oddRow
-          background: #f1fbea
+          background: $tertiary_color
   &#tagWidget
     text-align: left
     margin: 0 auto
