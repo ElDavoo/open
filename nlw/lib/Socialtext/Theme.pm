@@ -273,10 +273,22 @@ sub _valid_tiling {
 }
 
 sub _valid_font {
-    my $font = shift;
+    my $list = shift;
 
-    return grep { $font eq $_ }
-        qw(Arial Georgia Helvetica Lucinda Trebuchet Times)
+    return 0 unless $list;
+
+    my @fonts = split(/,\s*/, $list);
+    return 0 unless scalar(@fonts) > 0;
+
+    my @valid = qw(
+        Arial Georgia Helvetica Lucinda Trebuchet Times serif sans-serif);
+
+    for my $font (@fonts) {
+        warn "testing $font\n";
+        return 0 unless grep { $font eq $_ } @valid;
+    }
+
+    return 1;
 }
 
 sub _valid_attachment_id {
