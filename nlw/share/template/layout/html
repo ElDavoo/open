@@ -83,7 +83,7 @@
       <div class="container_24">
         <div class="grid_12 title">
           [% IF theme.account_logo %]
-          <img src="[% theme.account_logo %]" />
+          <a href="/"><img src="[% theme.account_logo %]" /></a>
           [% END %]
         </div>
         <div class="grid_12">
