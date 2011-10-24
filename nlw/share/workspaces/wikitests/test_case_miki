@@ -1,3 +1,5 @@
+*On hold unti Mobile Signals is back*
+
 | *Comment* | STARTING Test Case: Miki |  |
 
 * Fixture: SocialWidgets
@@ -32,7 +34,7 @@
 | add_member | %%mikiuser%% | %%ws%% |  |
 | add_member | %%othermikiuser%% | %%ws%% |  |
 
-| st-logoutin | %%othermikiuser%% | %%password%% |
+| st-logoutin | %%othermikiuser%% | %%password%% |  |
 
 | *Comment* | Test case: Miki Open global nav, should be signals |  |
 | open_ok | /st/dashboard/ |  |
