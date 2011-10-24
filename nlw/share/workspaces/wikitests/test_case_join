@@ -1,3 +1,5 @@
+*This test has an intermittent failure where in some cases the "An email has been sent..." message does not appear*
+
 | *Comment* | Test Case: Join. |  |
 
 | *Comment* | Test Case: Join. Define a fresh account and a ws in it |  |
