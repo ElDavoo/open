@@ -8,6 +8,13 @@
     <input type="hidden" name="workspace_name" value="[% target_workspace.name%]" />
   [% END %]
 
+  [% IF login_message %]
+    <div id="st-system-status">
+      <div class="grid_24">[% login_message %]</div>
+    <div class="clear"></div>
+    </div>
+  [% END %]
+
   <div class="grid_8">
     <div class="first_field login_field">
       <h2><label for="username">[% username_label %]</label></h2>
