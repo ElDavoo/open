@@ -1,6 +1,6 @@
 body
   font-family: $body_font
-  background: white !important
+  background: $lightest !important
 
 th
   overflow: hidden
@@ -12,33 +12,33 @@ th
 
 .wip
   font-weight: normal
-  color: #f99
+  color: $red
   margin-left: 5px
   display: inline
 
 .black
-  background: #666
+  background: $darker
   height: 2px
 
 .gap
-  background: #666
+  background: $darker
   width: 1px
 
 .heading
   vertical-align: baseline
 
 .odd
-  background: #eee
+  background: $light
 
 .ui-hover
-  background: #333
+  background: $darker
 
 .card
-  border: 1px solid #ccc
+  border: 1px solid $lighter
   margin-bottom: 10px
-  box-shadow: 2px 2px 2px #888
-  -moz-box-shadow: 1px 1px 2px #888
-  -webkit-box-shadow: 1px 1px 2px #888
+  box-shadow: 2px 2px 2px $grey
+  -moz-box-shadow: 1px 1px 2px $grey
+  -webkit-box-shadow: 1px 1px 2px $grey
   border-radius: 5px
   -moz-border-radius: 5px
   -webkit-border-radius: 5px
@@ -46,11 +46,11 @@ th
   margin: 3px
 
 .bug
-  border: 1px solid #ccc
+  border: 1px solid $lighter
   margin-bottom: 10px
-  box-shadow: 2px 2px 2px #888
-  -moz-box-shadow: 1px 1px 2px #888
-  -webkit-box-shadow: 1px 1px 2px #888
+  box-shadow: 2px 2px 2px $grey
+  -moz-box-shadow: 1px 1px 2px $grey
+  -webkit-box-shadow: 1px 1px 2px $grey
   border-radius: 5px
   -moz-border-radius: 5px
   -webkit-border-radius: 5px
@@ -66,14 +66,14 @@ th
   pointer: cursor
   display: block
   text-decoration: none
-  color: black
+  color: $darkest
   border-radius: 5px
   -moz-border-radius: 5px
   -webkit-border-radius: 5px
   padding: 2px
   &:hover
     max-height: 100px
-    color: blue
+    color: $primary_color
     background: __UP_HoverBackground__ !important
 
 .content
@@ -115,11 +115,12 @@ div
   &.ui-page-active
     text-align: center
   &.colorpicker_submit
+    color: $primary_contrast
     border-radius: 4px
     -moz-border-radius: 4px
     -webkit-border-radius: 4px
-    background: url("/nlw/plugin/widgets/css/images/icons-18-white.png") no-repeat scroll 0 0 #224488 !important
-    border: 3px solid #666
+    background: url("/nlw/plugin/widgets/css/images/icons-18-white.png") no-repeat scroll 0 0 $primary_color !important
+    border: 3px solid $tertiary_color
     background-position: -252px 50% !important
     width: 20px
     cursor: pointer
@@ -156,10 +157,10 @@ input.color
   width: 70px !important
 
 #home
-  background: white
+  background: $lightest
   div.ui-content
     padding: 0px
-    background: white
+    background: $lightest
 
 .ui-body-c
   text-shadow: none !important
