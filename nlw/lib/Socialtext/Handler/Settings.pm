@@ -189,11 +189,11 @@ sub POST_space {
     my $member = Socialtext::Role->Member;
     my @admins_left = grep { not $_ ~~ @remove } @admins;
     my ($user_id, $role_id);
-    if ( 0 == scalar(@admins_left)) {
+
+    if ( $self->pref eq 'manage' and 0 == scalar(@admins_left)) {
         $self->warning(loc('A workspace requires at least one admin.'));
         return $self->get_space_html($rest);
     }
-
     eval {
         $self->hub->current_workspace($self->space);
         if (my $space_settings = $settings->{workspace}) {

@@ -178,13 +178,7 @@ h4
 
 header
   height: 100px
-  /* Drop shadow
-  -moz-box-shadow: 3px 3px 4px #000000
-  -webkit-box-shadow: 3px 3px 4px #000000
-  box-shadow: 3px 3px 4px #000000
-  color: $header_contrast
-  /* For IE 8 XXX (Untested)
-  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000')"
+  @include dropshadow(3,3,4,$darkest)
   background: $header_background
   .title
     padding-top: 25px

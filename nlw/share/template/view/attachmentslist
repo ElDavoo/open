@@ -4,12 +4,20 @@
 [% WRAPPER $frame_name id="listPage" %]
   [% INCLUDE element/page/navigation %]
   [% IF checker.check_permission('delete') %]
-    <form action="[% script_name %]" method="post">
+    <form name="actions" action="[% script_name %]" method="post">
   [% END %]
   <div id="controls">
     <div class="prefix_18 grid_6" id="controlsRight">
       [% IF checker.check_permission('delete') %]
-        <input type="submit" value="[% loc('file.delete-selected') %]" name="button"/>
+        <a 
+          id="st-attachments-delete" 
+          class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" 
+          role="button"
+          href="#" 
+          onclick="document.forms['actions'].submit(); return false;"
+        >
+          <span class="ui-button-text">[% loc('file.delete-selected') %]</span>
+        </a>
         <input type="hidden" name="action" value="attachments_delete" />
         <input type="hidden" name="caller_action" value="[% hub.action %]" />
       [% END %]
@@ -21,6 +29,12 @@
       <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
     </div>
     <div class="clear"></div>
+    [% IF pager %]
+      <div class="grid_24">
+        [% INCLUDE "view/paging" %]
+      </div>
+      <div class="clear"></div>
+    [% END %]
     <div class="grid_1">
       <div class="selectall">
         <input type="checkbox" id="st-listview-selectall"/>
@@ -61,12 +75,6 @@ $('#st-listview-selectall').click(function () {
 });
     </script>
     <div class="clear"></div>
-    [% IF pager %]
-      <div class="grid_24">
-        [% INCLUDE "view/paging" %]
-      </div>
-      <div class="clear"></div>
-    [% END %]
     <div class="grid_24">
       <table class="dataTable fixed all_files">
         [% IF ! offset; offset = 0; END %]

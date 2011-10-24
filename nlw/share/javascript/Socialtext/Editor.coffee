@@ -16,6 +16,8 @@ Socialtext::editor =
     $("#st-edit-pagetools-expand, #st-pagetools-expand").attr(
       "title", loc("info.normal-view")
     ).text(loc("edit.normal")).addClass "contract"
+    # IE peekaboo bug workaround:
+    $('#globalNav .navGrid').css 'visibility', 'hidden'
     $("#st-edit-mode-container, #mainWrap").addClass "expanded"
     $(window).trigger "resize"
     unless $("body").css("overflow") == "hidden"
@@ -30,6 +32,8 @@ Socialtext::editor =
     $("#st-edit-pagetools-expand, #st-pagetools-expand").attr(
       "title", loc("info.expand-view")
     ).text(loc("edit.expand")).removeClass "contract"
+    # IE peekaboo bug workaround:
+    $('#globalNav .navGrid').css 'visibility', 'visible'
     $("#st-edit-mode-container, #mainWrap").removeClass "expanded"
     $(window).trigger "resize"
     $("html").css "overflow", st.editor._originalHTMLOverflow || "auto"
@@ -126,9 +130,12 @@ Socialtext::editor =
       title: title
       close: ->
         Socialtext::editor.hideLightbox()
-      width: $('#lightbox').width()
+      width: 20 + $('#lightbox').width()
       height: Math.min($(window).height(), ($('#lightbox').height() + opts.extraHeight))
     $(opts.focus).focus() if opts.focus
+    if $.browser.msie
+      # Fix hidden label bug in IE by touching its width attribute
+      $('#lightbox label').css width: 'auto'
     opts.callback?()
     return
 

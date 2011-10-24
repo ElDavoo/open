@@ -139,15 +139,13 @@
 | *Comment* | Test Case: User Likes a Page check that revisions have proper like numbers |  |
 | wait_for_element_visible_ok | link=2 Revisions | 30000 |
 | click_and_wait | link=2 Revisions |  |
-| wait_for_text_present_ok | 0 likes | 30000 |
-| wait_for_element_visible_ok | //a[@class='like-indicator immutable'] | 30000 |
 | wait_for_text_present_ok | 2 likes | 30000 |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others immutable'] | 30000 |
-| text_like | qr/Revision 2.+0 likes.+Revision 1.+2 likes/ |  |
+| text_like | qr/Revision 2.+Revision 1.+2 likes/ |  |
 
 | *Comment* | Test Case: User Likes a Page second user unlikes and relikes the page, 2nd revision now has a like |  |
-| wait_for_element_visible_ok | st-revision-current | 30000 |
-| click_and_wait | st-revision-current |  |
+| wait_for_element_visible_ok | link=Back To Current Revision | 30000 |
+| click_and_wait | link=Back To Current Revision |  |
 | wait_for_text_present_ok | Revised | 10000 |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
 | click_ok | //a[@class='like-indicator me others'] |  |
