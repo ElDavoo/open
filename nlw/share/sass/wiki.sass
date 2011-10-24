@@ -21,7 +21,7 @@
       &#controls-right-revisions
         background-image: none
         text-align: center
-        border-bottom: 1px solid #ccc
+        border-bottom: 1px solid $lighter
         padding: 0 0 5px 0
       &#st-comment-button
         background-image: url(#{$static}/images/icons/conversation-black-15.png)
@@ -91,18 +91,18 @@
 // Attachments
 #dropbox
   display: none
-  border: 2px solid #DDD
+  border: 2px solid $lighter
   -moz-border-radius: 8px
   -webkit-border-radius: 8px
-  background-color: #FEFFEC
+  background-color: $light
   text-align: center
-  color: #BBB
+  color: $lighter
   font-size: 2em
   margin: 10px 20px
   padding: 30px 0
   &.over
-    background-color: #CBCCCB
-    color: #666
+    background-color: $tertiary_color
+    color: $darker
 
 .dropbox-progress
   margin: 5px 20px
@@ -111,23 +111,23 @@
 #st-attachment-listing
   li
     padding: 0 5px
-    border-bottom: 1px #e8e8e8 solid
+    border-bottom: 1px $light solid
     list-style: none
     margin: 0
   .fileInfo
-    color: #CCC
+    color: $lighter
     font-style: italic
     a
-      color: #CCC
+      color: $lighter
       font-style: italic
       text-decoration: underline
   li
     &.hover, &:hover
-      background-color: #FFFCE0
+      background-color: $tertiary_color
     &.hover .fileInfo, &:hover .fileInfo
-      color: #888
+      color: $grey
     &.hover .fileInfo a, &:hover .fileInfo a
-      color: #0C5A9A
+      color: $primary_color
 
 #st-edit-summary
   float: left
@@ -136,13 +136,13 @@
     float: left
     input
       width: 200px
-      background: #fff
+      background-color: $lightest
       &.default
-        background: transparent
+        background-color: transparent
         &.focus
-          background: #fff
+          background-color: $lightest
       &.focus
-        background: #fff
+        background-color: $lightest
   .signal
     float: left
     white-space: nowrap
@@ -161,8 +161,8 @@
 .comment
   display: none
   textarea
-    background-color: #FFFFDD
-    border: 1px solid black
+    background-color: $alert_background
+    border: 1px solid $darkest
     width: 95%
     height: 100px
   .formButtons li
@@ -173,7 +173,7 @@
   height: 25px
   padding-bottom: 5px
   margin-bottom: 5px
-  border-bottom: 1px dashed #ccc 
+  border-bottom: 1px dashed $lighter
   .spaces
     padding: 2px 0
     margin: 3px 0
@@ -185,7 +185,7 @@
 #st-page-attribution
   padding: 5px 0
   height: 25px
-  border-top: 1px dashed #ccc 
+  border-top: 1px dashed $lighter
 
 .showHide
   height: 30px
@@ -210,14 +210,14 @@
 .pagination-container
   margin: 0.5em 0
   padding: 0.5em 0
-  border-bottom: 1px #ccc solid
-  border-top: 1px #ccc solid
+  border-bottom: 1px $lighter solid
+  border-top: 1px $lighter solid
   .paging-numbers
     .paging-button
       a, b
         padding: 2px 8px
       a
-        background: #f8f8f8
+        background: $light
 
 .dataTable
   tbody
@@ -239,7 +239,7 @@
         .byline
           font-size: 93%
           margin: 0.5em 0 0.5em 17px
-          color: #999
+          color: $grey
           font-style: italic
 
 #st-listview-form
@@ -249,7 +249,7 @@
   .toggle, .sort_options
     margin-top: 0.25em 0
   .dataTable
-    border-top: 1px #ccc solid
+    border-top: 1px $lighter solid
     margin-top: 3px
     width: 100%
 
