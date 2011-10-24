@@ -284,7 +284,6 @@ sub _valid_font {
         Arial Georgia Helvetica Lucinda Trebuchet Times serif sans-serif);
 
     for my $font (@fonts) {
-        warn "testing $font\n";
         return 0 unless grep { $font eq $_ } @valid;
     }
 
