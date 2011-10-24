@@ -19,12 +19,12 @@
 .profileWidget
   margin: 0 auto
   text-align: left
-  color: #666
+  color: $darker
   .collapsed
     display: none
   .profile
     text-align: left
-    color: #666
+    color: $darker
     .bold
       font-weight: bold
       font-size: 11px
@@ -44,7 +44,7 @@
     height: 16px
   a.heading
     text-decoration: none
-    color: #666
+    color: $darker
   .profile
     .fieldTitle
       float: left
@@ -71,7 +71,6 @@
     margin: 10px 0
     text-align: left
     .tag
-      color: #005295
       list-style: none
       margin-right: 1em
       float: left
@@ -81,8 +80,6 @@
         &.icon-delete
           display: block
           margin: 3px
-      &.oddRow
-        background: #F1FBEA none repeat scroll 0% 0%
   .entry
     white-space: nowrap
     height: 30px
@@ -95,18 +92,19 @@
 
 .myWorkspacesWidget
   .default td
-    background-color: #eee
+    background-color: $light
     font-weight: bold
   .ws-views
-    color: $secondary_color
+    color: $darker
     text-align: right
+    padding-right: 3px
   .ws-contrib
-    color: $primary_color
+    color: $darker
     text-align: right
     padding-right: 10px
   span
     text-align: left
-    color: #000
+    color: $darkest
   table
     width: 100%
     tr td
@@ -133,16 +131,16 @@
     .asset
       padding: 0 0 5px 0
     .timeframe
-      border-top: 1px solid #999
+      border-top: 1px solid $grey
       padding-left: 25px
       padding-bottom: 10px
       legend
         padding: 0 7px
         font-weight: bold
-        color: #999
+        color: $grey
     .empty
       padding: 0 0 15px 30px
-      color: #999
+      color: $grey
       font-style: italic
     .assetTitle
       position: relative
@@ -163,17 +161,17 @@
       top: 1px
       width: 20px
       padding: 3px 0
-      background-color: #424242
-      color: #fff
+      background-color: $darker
+      color: $lightest
       margin: 0 0 0 7px
     .arrow
       font-size: 14px
     .right
-      color: #919191
+      color: $grey
       left: 48px
       top: 2px
     .down
-      color: #3198f5
+      color: $primary_color
       left: 31px
       top: 19px
   .assetTitle
@@ -188,20 +186,20 @@
     right: 5px
     top: 0
     img
-      border: 1px solid #000
+      border: 1px solid $darkest
       width: 27px
       height: 27px
   .assetTags .tag
-    color: #666
+    color: $grey
     font-size: 10pt
     a
-      color: #666
+      color: $grey
       font-size: 10pt
   .assetList
     text-align: left
   .moreMentions
     padding: 3px
-    background-color: #F1FBDF
+    background-color: $light
     margin: 5px 48px 0 30px
     text-align: center
     padding: 7px 0
@@ -219,7 +217,7 @@
   top: 0
   left: 0
   .background
-    background: #fff
+    background: $lightest
     opacity: 0.8
     filter: alpha(opacity = 80)
     width: 100%
@@ -233,7 +231,7 @@
   font-size: 12px
   a
     font-size: 12px
-  color: #555
+  color: $darker
   text-align: left
   .description
     font-style: italic
@@ -242,13 +240,13 @@
   .filterSection
     margin: 0 0 15px 5px
   .disabled
-    color: #ddd
+    color: $lighter
     .filterSectionTitle, ul.list li.selected, .lookahead
-      color: #ddd
+      color: $lighter
   .filterSectionTitle
     font-weight: bold
     margin-bottom: 5px
-    color: #999
+    color: $grey
     a
       text-decoration: none
   ul.list
@@ -263,12 +261,12 @@
     cursor: pointer
     margin: 3px 0
     &.selected
-      color: #555
+      color: $darker
       font-weight: bold
       text-decoration: none
       cursor: default
     &.fixed
-      color: #555
+      color: $darker
       text-decoration: none
       cursor: default
   .afterTime input, .beforeTime input
@@ -285,9 +283,9 @@
   .permalink
     margin: 5px 10px 5px 5px
     padding: 3px 0 5px 0
-    border: 1px solid #666
+    border: 1px solid $darker
     text-align: center
-    background-color: #fffce0
+    background-color: $alert_background
 
 .explorePermalinkDialog
   .description
@@ -311,14 +309,14 @@
     position: absolute
     right: 5px
     *right: 0px
-    border: 4px solid #DDDDFF
+    border: 4px solid $lighter
   .top
     cursor: move
     text-align: left
     font-size: 120%
     font-weight: bold
     width: 100%
-    background: #DDF
+    background-color: $lighter
     padding: 4px 0
     text-indent: 4px
   .signals
@@ -332,7 +330,7 @@
   span.networks
     white-space: nowrap
   .main
-    background: #EEE
+    background-color: $tertiary_color
   .sent
     font-size: 15px
     font-weight: bold
