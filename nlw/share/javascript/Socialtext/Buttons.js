@@ -44,7 +44,9 @@ var button_handler = {
     },
 
     'st-account-theme': function() {
-        location = '/nlw/control/account/' + gadgets.container.account_id + '/theme?origin=st-admin-dashboard'
+        location = '/nlw/control/account/' + gadgets.container.account_id + '/theme?' + (
+            'origin=/st/account/' + gadgets.container.account_id + '/dashboard'
+        );
     },
 
     /**
