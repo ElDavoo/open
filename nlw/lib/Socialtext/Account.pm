@@ -1428,7 +1428,7 @@ sub create_central_workspace {
 sub remove_theme_prefs {
     my ($self) = @_;
     my $prefs = $self->prefs;
-    $prefs->save({ theme => undef });
+    $prefs->delete('theme');
     $self->_clean_theme_cache;
 }
 
