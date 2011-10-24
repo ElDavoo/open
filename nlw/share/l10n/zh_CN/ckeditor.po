@@ -17,6 +17,9 @@ msgstr "检查其他人对此页面的更改"
 msgid "ckeditor.generating-page-content"
 msgstr "产生页面内容"
 
+msgid "ckeditor.ie6-not-supported"
+msgstr "抱歉，本系统不支持 Internet Explorer 6 及之前版本的浏览器。"
+
 #: share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.coffee:74 share/plugin/ckeditor/share/javascript/dialogs/ckeditor-save.js:89
 msgid "ckeditor.page-save-progress"
 msgstr "页面保存进度"

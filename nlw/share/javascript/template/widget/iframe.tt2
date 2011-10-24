@@ -18,5 +18,5 @@
         marginheight="0" 
         allowtransparency="true"
         id="[% gadget.instance_id %]-iframe"
-        style="overflow:[% overflow %];height:[% height %]px;width: 92%">
+        style="overflow:[% overflow %];height:[% height %]px;width: 100%">
 </iframe>

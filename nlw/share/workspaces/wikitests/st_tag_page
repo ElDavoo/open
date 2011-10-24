@@ -1,3 +1,4 @@
+| refresh |  |  |
 | setSpeed | 1000 |  |
 | wait_for_element_visible_ok | st-tags-addlink | 10000 |
 | click_ok | st-tags-addlink |  |
