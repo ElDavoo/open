@@ -24,7 +24,6 @@
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% email_notification_from_address random-email@socialtext.com | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% email_notify_is_enabled 0 | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% email_weblog_dot_address 1 | The workspace config for %%temp_ws_name%% has been updated. |
-| st-admin | set-workspace-config --workspace %%temp_ws_name%% enable_unplugged 1 | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% external_links_open_new_window 0 | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% header_logo_link_uri http://slashdot.org/ | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% homepage_is_dashboard 0 | The workspace config for %%temp_ws_name%% has been updated. |
@@ -69,7 +68,6 @@
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/email_notification_from_address *: *random-email@socialtext.com/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/email_notify_is_enabled *: *0/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/email_weblog_dot_address *: *1/ |
-| st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/enable_unplugged *: *1/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/external_links_open_new_window *: *0/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/header_logo_link_uri *: .*slashdot.org/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/homepage_is_dashboard *: *0/ |
