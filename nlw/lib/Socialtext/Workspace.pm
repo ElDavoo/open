@@ -536,15 +536,15 @@ around assign_role_to_user => sub {
     my %p = (
         user => undef, role => undef, actor => undef, reckless => 0, @_);
 
-        my $currentRole = $self->role_for_user($p{user}, direct => 1);
-        if ($currentRole and !$p{reckless}) {
-            my $admin = Socialtext::Role->Admin();
-            if ($currentRole->role_id == $admin->role_id
-                 and $p{role}->role_id ne $admin->role_id) {
-                my $count = $self->role_count(
-                    role   => Socialtext::Role->Admin(),
-                    direct => 1,
-                );
+    my $currentRole = $self->role_for_user($p{user}, direct => 1);
+    if ($currentRole and !$p{reckless}) {
+        my $admin = Socialtext::Role->Admin();
+        if ($currentRole->role_id == $admin->role_id
+             and $p{role}->role_id != $admin->role_id) {
+            my $count = $self->role_count(
+                role   => Socialtext::Role->Admin(),
+                direct => 1,
+            );
             Socialtext::Exception::User->throw(
                 error => 'ADMIN_REQUIRED',
                 user => $p{user},
