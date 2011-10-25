@@ -5,55 +5,10 @@
         <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" />
     <script>
       var ADAPT_CONFIG = {
-        path: '/st/grids/24/',
-        dynamic: true,
+        path: '/st/grids/1/',
+        dynamic: false,
         range: [
-          '0px    to 290px  = 260',
-          '290px  to 310px  = 280',
-          '310px  to 330px  = 300',
-          '330px  to 350px  = 320',
-          '350px  to 370px  = 340',
-          '370px  to 390px  = 360',
-          '390px  to 410px  = 380',
-          '410px  to 430px  = 400',
-          '430px  to 450px  = 420',
-          '450px  to 470px  = 440',
-          '470px  to 490px  = 460',
-          '490px  to 510px  = 480',
-          '510px  to 530px  = 500',
-          '530px  to 550px  = 520',
-          '550px  to 570px  = 540',
-          '570px  to 590px  = 560',
-          '590px  to 610px  = 580',
-          '610px  to 630px  = 600',
-          '630px  to 650px  = 620',
-          '650px  to 670px  = 640',
-          '670px  to 690px  = 660',
-          '690px  to 710px  = 680',
-          '710px  to 730px  = 700',
-          '730px  to 750px  = 720',
-          '750px  to 770px  = 740',
-          '770px  to 790px  = 760',
-          '790px  to 810px  = 780',
-          '810px  to 830px  = 800',
-          '830px  to 850px  = 820',
-          '850px  to 870px  = 840',
-          '870px  to 890px  = 860',
-          '890px  to 910px  = 880',
-          '910px  to 930px  = 900',
-          '930px  to 950px  = 920',
-          '950px  to 970px  = 940',
-          '970px  to 990px  = 960',
-          '990px  to 1010px = 980',
-          '1010px to 1030px = 1000',
-          '1030px to 1050px = 1020',
-          '1050px to 1070px = 1040',
-          '1070px to 1090px = 1060',
-          '1090px to 1280px = 1080',
-          '1280px to 1600px = 1200',
-          '1600px to 1920px = 1560',
-          '1940px to 2540px = 1920',
-          '2540px           = 2520'
+          '0px = full'
         ]
       };
     </script>
@@ -72,10 +27,13 @@
         <script>
             $(function() {
                 var activities = new Activities.Widget({
-                    [% IF link_dictionary;
-                        "link_dictionary: '$link_dictionary',";
-                       END
-                    %]
+                    [% IF link_dictionary %]
+                        link_dictionary: [% link_dictionary %]
+                    [% END %]
+                    [% IF signals_only %]
+                        fixed_action: 'action-signals',
+                        signals_only: true,
+                    [% END %]
                     show_direct: 1,
                     ui_template: 'ui.activities.tt2',
                     instance_id: Number([% id %]),

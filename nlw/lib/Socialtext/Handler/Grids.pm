@@ -12,15 +12,25 @@ method GET_css ($rest) {
     my $cols = $->cols;
     my $output = "grids.$cols.$width";
 
+    my $params = {
+        containers => $cols,
+        margin => '10px',
+    };
+
+    my $filename;
+    if ($width =~ /^\d+$/) {
+        $filename = 'grids.fixed';
+        $params->{width} = "${width}px";
+    }
+    elsif ($width eq 'full') {
+        $filename = 'grids.full';
+    }
+
     my $sass = Socialtext::SASSy->new(
-        filename => 'grids.fixed',
+        filename => $filename,
         output_filename => $output,
         dir_name => 'Global',
-        params => {
-            containers => $cols,
-            width => "${width}px",
-            margin => '10px',
-        },
+        params => $params,
     );
     $sass->render if $sass->needs_update;
 

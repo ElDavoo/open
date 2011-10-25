@@ -60,36 +60,42 @@ Socialtext::editor =
         $('<div />', class: "lightbox", id: "st-edit-check")
           .append("<span class='title'>#{loc('edit.warning')}</span>")
           .append("<p>#{loc('page.opened-for-edit=user,ago', user_link, time_ago)}</p>")
+          .append('<input type="hidden" class="continue" />')
           .append(user_business_card)
-          .append("""
-            <div class="buttons">
-              <a href="#" class="continue">#{loc('edit.force')}</a>
-              <a href="#" class="close">#{loc('edit.return-to-page-view')}</a>
-            </div>
-          """)
           .appendTo('body')
         $('#st-edit-check .buttons a').button()
         Socialtext::editor.showLightbox
           speed: 0
           content: "#st-edit-check"
-          close: "#st-edit-check .close"
+          extraHeight: 100
+          buttons: [
+            {
+              text: loc('edit.force')
+              click: ->
+                $.ajax
+                  type: "POST"
+                  url: location.pathname
+                  data:
+                    action: "edit_start"
+                    page_name: st.page.title
+                    revision_id: st.page.revision_id
+                
+                $('#st-edit-check .continue').val 1
+                Socialtext::editor.hideLightbox()
+                return false
+            }
+            {
+              text: loc('edit.return-to-page-view')
+              click: ->
+                st.editor.hideLightbox()
+                return false
+            }
+          ]
           callback: ->
             $("#bootstrap-loader").hide()
             bootstrap = false
-            $("#st-edit-check .continue").removeClass("checked").unbind("click").click ->
-              $.ajax
-                type: "POST"
-                url: location.pathname
-                data:
-                  action: "edit_start"
-                  page_name: st.page.title
-                  revision_id: st.page.revision_id
-              
-              $("#st-edit-check .continue").addClass "checked"
-              Socialtext::editor.hideLightbox()
-            
             $("#lightbox").bind "dialogclose", ->
-              unless $("#st-edit-check .continue").hasClass("checked")
+              unless $("#st-edit-check .continue").val()
                 $('#st-display-mode-widgets').show()
                 cleanup_callback?()
               $("#st-edit-check").remove()
@@ -117,12 +123,7 @@ Socialtext::editor =
     )
     title = opts.title || $('#lightbox span.title, #lightbox div.title').text()
     $('#lightbox span.title, #lightbox div.title').remove()
-    $('#lightbox div.buttons input, #lightbox a.button, #lightbox input.button').button()
-    if opts.close
-      $(opts.close).click ->
-        Socialtext::editor.hideLightbox()
-        return false
-    opts.extraHeight += 60
+    opts.extraHeight += 70
     $('#lightbox').dialog
       modal: true
       zIndex: 2002
@@ -132,6 +133,7 @@ Socialtext::editor =
         Socialtext::editor.hideLightbox()
       width: 20 + $('#lightbox').width()
       height: Math.min($(window).height(), ($('#lightbox').height() + opts.extraHeight))
+      buttons: opts.buttons
     $(opts.focus).focus() if opts.focus
     if $.browser.msie
       # Fix hidden label bug in IE by touching its width attribute

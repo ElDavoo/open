@@ -1,3 +1,5 @@
+*On hold until Export as HTML works again*
+
 | *Comment* | Test Case: Calc Tools: Export as HTML |
 
 | *Comment* | Test Case: Calc Tools: Export as HTML Create test page |  |
@@ -19,4 +21,4 @@ TODO: Put in some content and test for the content when that becomes possible
 | *Comment* | Test Case: Calc Tools: Export as HTML Teardown |  |
 | st-admin | purge-page --w %%workspace%% --page export_html_spreadsheet_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Calc Tools: Export as HTML COMPLETED |
+| *Comment* | Test Case: Calc Tools: Export as HTML COMPLETED |  |

@@ -1,15 +1,15 @@
 // updated by reed@bertopro.com on 3/16/10 (March) 10-03-16b
 
-body.xhtml
+body.wiki.xhtml
   font: 13px / 1.3 "Helvetica Neue", Arial, "Liberation Sans", FreeSans, sans-serif
 
-.xhtml ol
+.wiki.xhtml ol
   padding-left: 35px
 
 .wiki ol
   padding-left: 1em
 
-.wiki, .xhtml
+.wiki
   padding: 0 !important
   line-height: normal !important
   font-size: 12px !important
@@ -50,7 +50,7 @@ body.xhtml
   td
     line-height: 15px
 
-.xhtml
+.wiki.xhtml
   p, li
     line-height: normal !important
   td
@@ -69,7 +69,7 @@ div#contentColumns div#contentLeft .wiki p
 
 // Headings
 
-.wiki, .xhtml
+.wiki
   h1, h2, h3, h4, h5, h6
     font-weight: normal
     line-height: 1.2 !important
@@ -80,7 +80,7 @@ div#contentColumns div#contentLeft .wiki p
   h3
     font-size: 1.4em
 
-.xhtml
+.wiki.xhtml
   h1, h2, h3
     margin-bottom: 0.5em
     margin-top: 0.5em
@@ -97,7 +97,7 @@ div#contentColumns div#contentLeft .wiki h3
   font-size: 1.4em
   margin-bottom: 0.5em
 
-.wiki, .xhtml
+.wiki
   h4
     font-size: 1.2em
     margin-bottom: 0.5em
@@ -222,7 +222,7 @@ div#contentColumns div#contentLeft .wiki h3
   sup, sub
     line-height: 0
 
-.xhtml
+.wiki.xhtml
   table.formatter_table
     @include table-base
   table.xhtml_table
@@ -237,7 +237,7 @@ div#contentColumns div#contentLeft .wiki h3
 
 // Misc classes
 
-.wiki, .xhtml
+.wiki
   .small
     font-size: .8em
     margin-bottom: 1.875em
@@ -338,7 +338,7 @@ div
 td .wafl_box
   margin-bottom: 0
 
-.xhtml
+.wiki.xhtml
   table
     border-collapse: collapse
   table[border], table[border] td
@@ -353,7 +353,7 @@ td .wafl_box
       background-image: url(../images/unsorted.png)
       background-color: #eee
 
-.wiki, .xhtml
+.wiki
   .wiki-include-page
     margin: 0 0 1em 0
     padding: 1em 0 1em 0
@@ -366,6 +366,8 @@ td .wafl_box
     a
       font-weight: normal
       &.incipient
+        border-bottom: 1px dashed
+        text-decoration: none
   .wiki-include-content
     margin-left: 2em
   table.sort td.header

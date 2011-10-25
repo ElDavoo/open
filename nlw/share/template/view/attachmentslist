@@ -7,7 +7,11 @@
     <form name="actions" action="[% script_name %]" method="post">
   [% END %]
   <div id="controls">
-    <div class="prefix_18 grid_6" id="controlsRight">
+   <div id="deleteFiles">
+    <div class="grid_18">
+      <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
+    </div>
+    <div class="grid_6 right" id="controlsRight">
       [% IF checker.check_permission('delete') %]
         <a 
           id="st-attachments-delete" 
@@ -22,12 +26,10 @@
         <input type="hidden" name="caller_action" value="[% hub.action %]" />
       [% END %]
     </div>
+   </div> 
     <div class="clear"></div>
   </div>
   <div id="contentContainer">
-    <div class="grid_24">
-      <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
-    </div>
     <div class="clear"></div>
     [% IF pager %]
       <div class="grid_24">
