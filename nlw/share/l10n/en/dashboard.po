@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-28 16:36+0800\n"
+"PO-Revision-Date: 2011-10-25 07:06-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr "Revert to default"
 
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"
-msgstr "Save..."
+msgstr "Save"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:2
 msgid "dashboard.save-confirmation"
@@ -185,7 +185,7 @@ msgstr "No"
 
 #: share/plugin/dashboard/template/dashboard_links:25 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
 msgid "do.revert-to-default"
-msgstr "Revert to Default…"
+msgstr "Revert to Default"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
 msgid "do.save"
