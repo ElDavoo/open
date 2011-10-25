@@ -1,4 +1,5 @@
 @import mixins.sass
+@import colors.sass
 
 .visible
   display: block
@@ -25,8 +26,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   outline: 0
   font-size: 100%
   background: transparent
-
-body
 
 ol, ul
   list-style: auto
@@ -59,8 +58,6 @@ body
   font-size: 11px
   font-family: $body_font
   color: $light
-
-td, li
 
 a
   color: $primary_color
@@ -166,8 +163,7 @@ div
     table
       width: 100%
       tr
-        td
-        th
+        td, th
           font-weight: normal
           text-indent: 17px
         &.oddRow
