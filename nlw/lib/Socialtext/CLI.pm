@@ -2291,7 +2291,11 @@ sub set_account_theme {
     while ( my ($key, $value) = splice @{ $self->{argv} }, 0, 2 ) {
         $updates->{$key} = $value;
         unless (Socialtext::Theme->ValidSettings($updates)) {
-            return $self->_error("Invalid theme setting: $key = $value");
+            my $error = "Invalid theme setting: $key = $value";
+            if (my @values = Socialtext::Theme->ValidValuesForKey($key)) {
+                $error .= "\nValid values:\n\n" . join("\n", map { "    $_" } @values);
+            }
+            return $self->_error($error);
         }
     }
     $account->update_theme_prefs($updates);
