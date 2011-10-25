@@ -466,9 +466,6 @@ sub st_create_wikipage {
     $self->{selenium}->open_ok($url);
     $self->handle_command('wait_for_element_visible_ok','st-newpage-pagename-edit',30000);
     $self->handle_command('type_ok','st-newpage-pagename-edit',$pagename);
-    $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
-    $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
-    $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
     $self->handle_command('wait_for_element_visible_ok','st-save-button-link',5000);
     $self->handle_command('click_and_wait','st-save-button-link');
 }
@@ -485,13 +482,15 @@ sub st_update_wikipage {
     my $url = '/' . $workspace . '/?'  . $page;
            
     $self->{selenium}->open_ok($url);
-    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 3000);
+    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link', 30000);
     $self->handle_command('click_ok', 'st-edit-button-link');
     $self->handle_command('wait_for_element_present_ok','//a[contains(@class,"cke_button_wikitext")]',5000);
     $self->handle_command('click_ok','//a[contains(@class,"cke_button_wikitext")]');
     $self->handle_command('wait_for_element_present_ok','//textarea[contains(@class,"cke_source")]',5000);
     $self->handle_command('type_ok','//textarea[contains(@class,"cke_source")]',$content);
-    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
+    $self->handle_command('type_ok','//textarea[contains(@class,"cke_source")]',$content);
+    $self->handle_command('type_ok','//textarea[contains(@class,"cke_source")]',$content);
+    $self->handle_command('wait_for_element_visible_ok','st-save-button-link',5000);
     $self->handle_command('click_and_wait','st-save-button-link');
 }
 
