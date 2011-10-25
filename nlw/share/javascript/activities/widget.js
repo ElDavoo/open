@@ -179,7 +179,7 @@ $.extend(Activities.Widget.prototype, {
 
         this.findId('pop_out').click(function() {
             var poptarget = self.signals_only
-                    ? ('/st/signalspop?' + self.instance_id)
+                    ? ('/st/signalspop?id=' + self.instance_id)
                     : ('/st/activities?id=' + self.instance_id);
             var new_window = window.open(
                 poptarget, '_blank',

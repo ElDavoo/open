@@ -27,10 +27,13 @@
         <script>
             $(function() {
                 var activities = new Activities.Widget({
-                    [% IF link_dictionary;
-                        "link_dictionary: '$link_dictionary',";
-                       END
-                    %]
+                    [% IF link_dictionary %]
+                        link_dictionary: [% link_dictionary %]
+                    [% END %]
+                    [% IF signals_only %]
+                        fixed_action: 'action-signals',
+                        signals_only: true,
+                    [% END %]
                     show_direct: 1,
                     ui_template: 'ui.activities.tt2',
                     instance_id: Number([% id %]),
