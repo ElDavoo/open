@@ -1,1 +1,1 @@
-<a href="[% href || '#' %]" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"[% IF id %] id="[% id %][% END %] role="button"><span class="ui-button-text">[% text %]</span></a>
+<a href="[% href || '#' %]" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"[% IF id %] id="[% id %]"[% END %] role="button"><span class="ui-button-text">[% text %]</span></a>
