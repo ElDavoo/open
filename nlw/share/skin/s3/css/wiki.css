@@ -1,39 +1,39 @@
-body.xhtml {
+body.wiki.xhtml {
   font-family: Verdana, Arial, sans-serif; }
 
-.xhtml ol {
+.wiki.xhtml ol {
   padding-left: 35px; }
 
 .wiki ol {
   padding-left: 25px; }
 
-.wiki, .xhtml {
+.wiki {
   padding: 0 !important;
   line-height: normal !important;
   font-size: 12px !important; }
-  .wiki ul, .xhtml ul {
+  .wiki ul {
     padding-left: 25px; }
-  .wiki ol, .xhtml ol {
+  .wiki ol {
     list-style: decimal outside none; }
-  .wiki ul, .xhtml ul {
+  .wiki ul {
     list-style: disc outside none; }
-    .wiki ul ul, .xhtml ul ul {
+    .wiki ul ul {
       list-style-type: circle; }
-  .wiki ol ul, .xhtml ol ul {
+  .wiki ol ul {
     list-style-type: circle; }
-  .wiki ol ol ul, .wiki ol ul ul, .xhtml ol ol ul, .xhtml ol ul ul {
+  .wiki ol ol ul, .wiki ol ul ul {
     list-style-type: square; }
-  .wiki ul ol ul, .wiki ul ul ul, .xhtml ul ol ul, .xhtml ul ul ul {
+  .wiki ul ol ul, .wiki ul ul ul {
     list-style-type: square; }
-  .wiki li, .xhtml li {
+  .wiki li {
     padding: 3px 0px; }
-  .wiki table td, .wiki th, .xhtml table td, .xhtml th {
+  .wiki table td, .wiki th {
     vertical-align: top; }
-  .wiki table.st-ss td, .wiki table.st-ss th, .xhtml table.st-ss td, .xhtml table.st-ss th {
+  .wiki table.st-ss td, .wiki table.st-ss th {
     vertical-align: inherit; }
-  .wiki p, .wiki li, .xhtml p, .xhtml li {
+  .wiki p, .wiki li {
     font-size: 12px !important; }
-  .wiki td, .xhtml td {
+  .wiki td {
     font-size: 12px; }
 
 .wiki p, .wiki li {
@@ -41,9 +41,9 @@ body.xhtml {
 .wiki td {
   line-height: 15px; }
 
-.xhtml p, .xhtml li {
+.wiki.xhtml p, .wiki.xhtml li {
   line-height: normal !important; }
-.xhtml td {
+.wiki.xhtml td {
   line-height: normal !important; }
 
 #st-revision-display {
@@ -59,21 +59,21 @@ div#contentColumns div#contentLeft .wiki p {
 html .wiki a:hover, html .xhtml a:hover {
   color: #33a8ff; }
 
-.wiki h1, .wiki h2, .wiki h3, .wiki h4, .wiki h5, .wiki h6, .xhtml h1, .xhtml h2, .xhtml h3, .xhtml h4, .xhtml h5, .xhtml h6 {
+.wiki h1, .wiki h2, .wiki h3, .wiki h4, .wiki h5, .wiki h6 {
   font-weight: normal;
   color: #0a94df;
   line-height: 1.2 !important; }
-.wiki h1, .xhtml h1 {
+.wiki h1 {
   font-size: 2em; }
-.wiki h2, .xhtml h2 {
+.wiki h2 {
   font-size: 1.7em; }
-.wiki h3, .xhtml h3 {
+.wiki h3 {
   font-size: 1.4em; }
 
-.xhtml h1, .xhtml h2, .xhtml h3 {
+.wiki.xhtml h1, .wiki.xhtml h2, .wiki.xhtml h3 {
   margin-bottom: 0.5em;
   margin-top: 0.5em; }
-.xhtml br + br + h1, .xhtml br + br + h2, .xhtml br + br + h3 {
+.wiki.xhtml br + br + h1, .wiki.xhtml br + br + h2, .wiki.xhtml br + br + h3 {
   margin-top: 0em; }
 
 .wiki h1, .wiki h3 {
@@ -85,54 +85,54 @@ div#contentColumns div#contentLeft .wiki h3 {
   font-size: 1.4em;
   margin-bottom: 0.5em; }
 
-.wiki h4, .xhtml h4 {
+.wiki h4 {
   font-size: 1.2em;
   margin-bottom: 0.5em; }
-.wiki h5, .xhtml h5 {
+.wiki h5 {
   font-size: 1em;
   font-weight: bold;
   margin-bottom: 0.5em; }
-.wiki h6, .xhtml h6 {
+.wiki h6 {
   font-size: 1em;
   font-weight: bold; }
-.wiki h1 img, .wiki h2 img, .wiki h3 img, .wiki h4 img, .wiki h5 img, .wiki h6 img, .xhtml h1 img, .xhtml h2 img, .xhtml h3 img, .xhtml h4 img, .xhtml h5 img, .xhtml h6 img {
+.wiki h1 img, .wiki h2 img, .wiki h3 img, .wiki h4 img, .wiki h5 img, .wiki h6 img {
   margin: 0; }
-.wiki p, .xhtml p {
+.wiki p {
   margin-bottom: 1.2em !important;
   margin-top: 0 !important; }
-  .wiki p img.left, .xhtml p img.left {
+  .wiki p img.left {
     padding: 0;
     border: 1px #999999 solid;
     margin: 1.5em;
     float: left;
     margin: 1.5em 1.5em 1.5em 0; }
-  .wiki p img.right, .xhtml p img.right {
+  .wiki p img.right {
     float: right;
     margin: 1.5em 0 1.5em 1.5em; }
-.wiki span.nlw_phrase img, .xhtml span.nlw_phrase img {
+.wiki span.nlw_phrase img {
   float: none;
   margin: 0px;
   vertical-align: baseline; }
-.wiki blockquote, .xhtml blockquote {
+.wiki blockquote {
   margin: 1em 0px 1em 40px; }
-.wiki strong, .xhtml strong {
+.wiki strong {
   font-weight: bold; }
-.wiki em, .xhtml em {
+.wiki em {
   font-style: italic; }
-.wiki dfn, .xhtml dfn {
+.wiki dfn {
   font-style: italic;
   font-weight: bold; }
-.wiki abbr, .wiki acronym, .xhtml abbr, .xhtml acronym {
+.wiki abbr, .wiki acronym {
   border-bottom: 1px dotted #666666; }
-.wiki address, .xhtml address {
+.wiki address {
   margin: 0 0 1.5em;
   font-style: italic; }
-.wiki del, .wiki strike, .xhtml del, .xhtml strike {
+.wiki del, .wiki strike {
   color: #666666; }
-.wiki pre, .wiki code, .xhtml pre, .xhtml code {
+.wiki pre, .wiki code {
   margin: 1.5em 0;
   white-space: pre; }
-.wiki pre, .wiki code, .wiki tt, .xhtml pre, .xhtml code, .xhtml tt {
+.wiki pre, .wiki code, .wiki tt {
   font: 1em "andale mono", "lucida console", monospace;
   line-height: 1.5; }
 
@@ -176,122 +176,122 @@ div#contentColumns div#contentLeft .wiki h3 {
 .wiki sup, .wiki sub {
   line-height: 0; }
 
-.xhtml table.formatter_table {
+.wiki.xhtml table.formatter_table {
   border-collapse: collapse;
   width: auto;
   margin-left: 1px; }
-  .xhtml table.formatter_table.st-ss {
+  .wiki.xhtml table.formatter_table.st-ss {
     border-collapse: inherit;
     margin-bottom: inherit;
     width: inherit; }
-  .xhtml table.formatter_table th {
+  .wiki.xhtml table.formatter_table th {
     font-weight: bold;
     background: #cccccc; }
-  .xhtml table.formatter_table.st-ss th {
+  .wiki.xhtml table.formatter_table.st-ss th {
     font-weight: inherit;
     background: inherit; }
-  .xhtml table.formatter_table th, .xhtml table.formatter_table td {
+  .wiki.xhtml table.formatter_table th, .wiki.xhtml table.formatter_table td {
     border: 1px solid black;
     padding: 0.2em; }
-  .xhtml table.formatter_table.st-ss th, .xhtml table.formatter_table.st-ss td {
+  .wiki.xhtml table.formatter_table.st-ss th, .wiki.xhtml table.formatter_table.st-ss td {
     border: inherit;
     padding: inherit;
     font-size: inherit;
     line-height: inherit; }
-  .xhtml table.formatter_table.borderless th, .xhtml table.formatter_table.borderless td {
+  .wiki.xhtml table.formatter_table.borderless th, .wiki.xhtml table.formatter_table.borderless td {
     border: none;
     padding: 0.2em; }
-  .xhtml table.formatter_table tr.even td {
+  .wiki.xhtml table.formatter_table tr.even td {
     background: #e5ecf9; }
-  .xhtml table.formatter_table tfoot {
+  .wiki.xhtml table.formatter_table tfoot {
     font-style: italic; }
-  .xhtml table.formatter_table caption {
+  .wiki.xhtml table.formatter_table caption {
     background: #eeeeee; }
-  .xhtml table.formatter_table.st-ss tr.even td {
+  .wiki.xhtml table.formatter_table.st-ss tr.even td {
     background: inherit; }
-  .xhtml table.formatter_table.st-ss tfoot {
+  .wiki.xhtml table.formatter_table.st-ss tfoot {
     font-style: inherit; }
-  .xhtml table.formatter_table.st-ss caption {
+  .wiki.xhtml table.formatter_table.st-ss caption {
     background: inherit; }
-.xhtml table.xhtml_table {
+.wiki.xhtml table.xhtml_table {
   margin-bottom: 1.2em; }
-.xhtml sup, .xhtml sub {
+.wiki.xhtml sup, .wiki.xhtml sub {
   font-size: smaller; }
-.xhtml sup {
+.wiki.xhtml sup {
   vertical-align: super; }
-.xhtml sub {
+.wiki.xhtml sub {
   vertical-align: sub; }
 
-.wiki, .xhtml {
+.wiki {
   /* {bz: 1445}: Gecko needs this to show left border of collapsed tables. */
   padding-left: 1px; }
-  .wiki .small, .xhtml .small {
+  .wiki .small {
     font-size: 0.8em;
     margin-bottom: 1.875em;
     line-height: 1.875em; }
-  .wiki .large, .xhtml .large {
+  .wiki .large {
     font-size: 1.2em;
     line-height: 2.5em;
     margin-bottom: 1.25em; }
-  .wiki .hide, .xhtml .hide {
+  .wiki .hide {
     display: none; }
-  .wiki .quiet, .xhtml .quiet {
+  .wiki .quiet {
     color: #666666; }
-  .wiki .loud, .xhtml .loud {
+  .wiki .loud {
     color: black; }
-  .wiki .highlight, .xhtml .highlight {
+  .wiki .highlight {
     background: yellow; }
-  .wiki .added, .xhtml .added {
+  .wiki .added {
     background: #006600;
     color: white; }
-  .wiki .removed, .xhtml .removed {
+  .wiki .removed {
     background: #990000;
     color: white; }
-  .wiki .first, .xhtml .first {
+  .wiki .first {
     margin-left: 0;
     padding-left: 0; }
-  .wiki .last, .xhtml .last {
+  .wiki .last {
     margin-right: 0;
     padding-right: 0; }
-  .wiki .top, .xhtml .top {
+  .wiki .top {
     margin-top: 0;
     padding-top: 0; }
-  .wiki .bottom, .xhtml .bottom {
+  .wiki .bottom {
     margin-bottom: 0;
     padding-bottom: 0; }
-  .wiki:first-child, .xhtml:first-child {
+  .wiki:first-child {
     padding-top: 1em; }
-  .wiki a.incipient, .wiki .wafl_existence_error, .xhtml a.incipient, .xhtml .wafl_existence_error {
+  .wiki a.incipient, .wiki .wafl_existence_error {
     border-bottom: 1px #25a800 dashed;
     color: #25a800; }
-  .wiki a.incipient:hover, .wiki .wafl_existence_error:hover, .xhtml a.incipient:hover, .xhtml .wafl_existence_error:hover {
+  .wiki a.incipient:hover, .wiki .wafl_existence_error:hover {
     color: #d82500;
     text-decoration: none;
     border-bottom: 1px #d82500 solid; }
-  .wiki .wafl_box, .wiki .fetchrss_box, .xhtml .wafl_box, .xhtml .fetchrss_box {
+  .wiki .wafl_box, .wiki .fetchrss_box {
     background: white;
     color: inherit;
     padding: 0 0 3px 0;
     margin-bottom: 0;
     border: 2px solid #d6d6d6; }
-  .wiki .wafl_titlebox, .wiki .fetchrss_titlebox, .xhtml .wafl_titlebox, .xhtml .fetchrss_titlebox {
+  .wiki .wafl_titlebox, .wiki .fetchrss_titlebox {
     background: #efefef;
     font-size: 120%;
     padding: 0.5em;
     margin-bottom: 0.25em;
     border-bottom: 2px solid #d6d6d6; }
-  .wiki .wafl_titlebox a, .wiki .fetchrss_titlebox a, .xhtml .wafl_titlebox a, .xhtml .fetchrss_titlebox a {
+  .wiki .wafl_titlebox a, .wiki .fetchrss_titlebox a {
     font-weight: normal; }
-  .wiki .wafl_items, .wiki .fetchrss_items, .xhtml .wafl_items, .xhtml .fetchrss_items {
+  .wiki .wafl_items, .wiki .fetchrss_items {
     padding: 0 1em 0 1em; }
-  .wiki ul.item_list, .xhtml ul.item_list {
+  .wiki ul.item_list {
     list-style-type: none;
     margin-left: 0; }
-    .wiki ul.item_list li.item a, .xhtml ul.item_list li.item a {
+    .wiki ul.item_list li.item a {
       font-weight: inherit; }
-  .wiki ul.fetchrss_items li.fetchrss_item a, .xhtml ul.fetchrss_items li.fetchrss_item a {
+  .wiki ul.fetchrss_items li.fetchrss_item a {
     font-weight: inherit; }
-  .wiki ul.item_list li.item p.snippet, .wiki ul.fetchrss_items li.fetchrss_item p.fetchrss_description, .xhtml ul.item_list li.item p.snippet, .xhtml ul.fetchrss_items li.fetchrss_item p.fetchrss_description {
+  .wiki ul.item_list li.item p.snippet, .wiki ul.fetchrss_items li.fetchrss_item p.fetchrss_description {
     margin-top: 0.25em !important; }
 
 .wafl_box .wafl_items .wiki ul, .wafl_box .wafl_items ul.item_list {
@@ -320,68 +320,70 @@ div#contentColumns div#contentLeft div.wafl_box div.wafl_items ul.item_list li p
 td .wafl_box {
   margin-bottom: 0; }
 
-.xhtml table {
+.wiki.xhtml table {
   border-collapse: collapse; }
-.xhtml table[border], .xhtml table[border] td {
+.wiki.xhtml table[border], .wiki.xhtml table[border] td {
   border: 1px solid black; }
-.xhtml table[border="0"], .xhtml table[border="0"] td {
+.wiki.xhtml table[border="0"], .wiki.xhtml table[border="0"] td {
   border: 0px !important; }
-.xhtml table.sort tr:first-child td, .xhtml table[data-sort] tr:first-child td {
+.wiki.xhtml table.sort tr:first-child td, .wiki.xhtml table[data-sort] tr:first-child td {
   padding-right: 24px !important;
   background-position: top right;
   background-repeat: no-repeat;
   background-image: url(../images/unsorted.png);
   background-color: #eeeeee; }
 
-.wiki .wiki-include-page, .xhtml .wiki-include-page {
+.wiki .wiki-include-page {
   margin: 0 0 1em 0;
   padding: 1em 0 1em 0;
   background: white url(../images/includeTile.png) repeat-y scroll top left;
   border: none; }
-.wiki .wiki-include-title, .xhtml .wiki-include-title {
+.wiki .wiki-include-title {
   font-size: 150%;
   margin-left: 1.33em;
   margin-bottom: 0.5em; }
-  .wiki .wiki-include-title a, .xhtml .wiki-include-title a {
+  .wiki .wiki-include-title a {
     color: #33a8ff;
     font-weight: normal; }
-    .wiki .wiki-include-title a.incipient, .xhtml .wiki-include-title a.incipient {
-      color: #fc6500; }
-.wiki .wiki-include-content, .xhtml .wiki-include-content {
+    .wiki .wiki-include-title a.incipient {
+      color: #fc6500;
+      border-bottom: 1px dashed;
+      text-decoration: none; }
+.wiki .wiki-include-content {
   margin-left: 2em; }
-.wiki table.sort td.header, .xhtml table.sort td.header {
+.wiki table.sort td.header {
   padding-right: 24px !important;
   background-position: top right;
   background-repeat: no-repeat;
   background-image: url(../images/unsorted.png);
   background-color: #eeeeee; }
-  .wiki table.sort td.header.headerSortUp, .xhtml table.sort td.header.headerSortUp {
+  .wiki table.sort td.header.headerSortUp {
     background-image: url(../images/sorted-up.png); }
-  .wiki table.sort td.header.headerSortDown, .xhtml table.sort td.header.headerSortDown {
+  .wiki table.sort td.header.headerSortDown {
     background-image: url(../images/sorted-down.png); }
-  .wiki table.sort td.header:hover, .xhtml table.sort td.header:hover {
+  .wiki table.sort td.header:hover {
     background-image: url(../images/unsorted-hover.png); }
-  .wiki table.sort td.header.headerSortUp:hover, .xhtml table.sort td.header.headerSortUp:hover {
+  .wiki table.sort td.header.headerSortUp:hover {
     background-image: url(../images/sort-up-hover.png); }
-  .wiki table.sort td.header.headerSortDown:hover, .xhtml table.sort td.header.headerSortDown:hover {
+  .wiki table.sort td.header.headerSortDown:hover {
     background-image: url(../images/sort-down-hover.png); }
-.wiki .syntaxhighlighter, .xhtml .syntaxhighlighter {
+.wiki .syntaxhighlighter {
   overflow-y: hidden !important; }
-  .wiki .syntaxhighlighter .toolbar, .xhtml .syntaxhighlighter .toolbar {
+  .wiki .syntaxhighlighter .toolbar {
     display: none !important; }
-.wiki ul.waflWidget, .xhtml ul.waflWidget {
+.wiki ul.waflWidget {
   list-style: none;
   margin: 0;
   padding: 0; }
-  .wiki ul.waflWidget .widgetHeaderButtons, .xhtml ul.waflWidget .widgetHeaderButtons {
+  .wiki ul.waflWidget .widgetHeaderButtons {
     display: none; }
-.wiki div.widget div.widgetHeaderTitle, .xhtml div.widget div.widgetHeaderTitle {
+.wiki div.widget div.widgetHeaderTitle {
   font-size: 11px;
   padding-left: 12px;
   padding-top: 6px;
   font-weight: bold;
   white-space: nowrap; }
-  .wiki div.widget div.widgetHeaderTitle img, .xhtml div.widget div.widgetHeaderTitle img {
+  .wiki div.widget div.widgetHeaderTitle img {
     display: none; }
 
 img.st-widget {
