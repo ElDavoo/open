@@ -1295,7 +1295,7 @@ sub remove_member {
     my $user = Socialtext::User->Resolve($email);
     die "No such user $email" unless $user;
 
-    $ws->remove_user(user => $user);
+    $ws->remove_user(user => $user, reckless => 1);
     diag "Removed user $email from $workspace";
 }
 
