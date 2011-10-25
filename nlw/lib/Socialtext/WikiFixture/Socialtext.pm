@@ -1284,7 +1284,10 @@ sub _autocomplete_trigger_event {
 sub _autocomplete_selected_option {
     my ($self, $locator) = @_;
     my $widget = _autocomplete_widget($locator);
-    return $self->get_eval("$widget.find('.ui-state-hover').text()")
+    my $text = $self->get_eval("$widget.find('.ui-state-hover').text()");
+    $text =~ s{\s*$}{};
+    $text =~ s{^\s*}{};
+    return $text;
 }
 
 sub _autocomplete_error {
