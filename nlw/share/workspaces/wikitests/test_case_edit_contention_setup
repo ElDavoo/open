@@ -3,7 +3,7 @@
 | *Comment* | short username is %%short_username%%. atmail is %%atmail%% |  |
 
 | set | ec_page | Special Edit Contention Page |
-| st-admin | purge-page --w %%workspace%% --p "%%ec_page%%" | was purged |
+| st-admin | purge-page --w %%workspace%% --p "%%ec_page%%" |  |
 | st-process-jobs |  |  |
 | st-admin | update-page --w %%workspace%% --e %%email%% --p "%%ec_page%%" < %%wikitest_client_files%%wikitest.txt |  |
 | st-process-jobs |  |  |
