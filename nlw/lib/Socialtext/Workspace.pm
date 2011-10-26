@@ -536,21 +536,45 @@ around assign_role_to_user => sub {
     my %p = (
         user => undef, role => undef, actor => undef, reckless => 0, @_);
 
-        my $currentRole = $self->role_for_user($p{user}, direct => 1);
-        if ($currentRole and !$p{reckless}) {
-            my $admin = Socialtext::Role->Admin();
-            if ($currentRole->role_id == $admin->role_id
-                 and $p{role}->role_id ne $admin->role_id) {
-                my $count = $self->role_count(
-                    role   => Socialtext::Role->Admin(),
-                    direct => 1,
-                );
+    my $currentRole = $self->role_for_user($p{user}, direct => 1);
+    if ($currentRole and !$p{reckless}) {
+        my $admin = Socialtext::Role->Admin();
+        if ($currentRole->role_id == $admin->role_id
+             and $p{role}->role_id != $admin->role_id) {
+            my $count = $self->role_count(
+                role   => Socialtext::Role->Admin(),
+                direct => 1,
+            );
             Socialtext::Exception::User->throw(
                 error => 'ADMIN_REQUIRED',
                 user => $p{user},
                 username => $p{user}->username,
             ) if $count < 2;
         }
+    }
+
+    $orig->($self, %p);
+};
+
+around assign_role_to_group => sub {
+    my $orig = shift;
+    my $self = shift;
+    my %p = @_;
+
+   $p{role} ||= $self->role_default($p{group});
+
+    my $current_role = $self->role_for_group($p{group}, direct => 1);
+    return if $current_role && $current_role->role_id == $p{role}->role_id;
+
+    my $admin = Socialtext::Role->Admin();
+    my $new_is_admin = $p{role}->role_id == $admin->role_id;
+    my $is_admin = $current_role && $current_role->role_id == $admin->role_id;
+
+    if ($is_admin && !$new_is_admin && !$p{reckless}) {
+        my $admin_count = $self->role_count(role => $admin, direct => 1);
+
+        Socialtext::Exception::Conflict->throw(error => 'ADMIN_REQUIRED')
+            unless $admin_count > 1;
     }
 
     $orig->($self, %p);
@@ -578,6 +602,29 @@ around remove_user => sub {
                 user => $p{user},
                 username => $p{user}->username,
             ) if $count < 2;
+        }
+    }
+
+    $orig->($self, %p);
+};
+
+around remove_group => sub {
+    my $orig = shift;
+    my $self = shift;
+    my %p = @_;
+
+    unless ($p{reckless}) {
+        my $current_role = $self->role_for_group($p{group}, direct => 1);
+        Socialtext::Exception::Conflict->throw(error => 'NO_ROLE')
+            unless $current_role;
+
+        my $admin = Socialtext::Role->Admin();
+
+        if ($current_role->role_id == $admin->role_id) {
+            my $admin_count = $self->role_count(role => $admin, direct => 1);
+
+            Socialtext::Exception::Conflict->throw(error => 'ADMIN_REQUIRED')
+                unless $admin_count > 1;
         }
     }
 

@@ -131,11 +131,11 @@ $.extend(Activities.Widget.prototype, {
     resetFiltersForSignal: function(signal) {
         // Unless we're showing all events, select signals
         if (this.appdata.get('action').id != 'action-all-events') {
-            this.findId('action').dropdownSelectId('action-signals');
+            this.appdata.checkFilter('action', 'action-signals');
         }
 
         // show from everyone - not my follows or conversations
-        this.findId('feed').dropdownSelectId('feed-everyone');
+        this.appdata.checkFilter('feed', 'feed-everyone');
 
         // Select the target network unless we're showing all networks
         if (this.appdata.get('network').value != 'all') {

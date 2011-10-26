@@ -24,11 +24,11 @@
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | wait_for_element_visible_ok | //a[contains(@class,'ui-dialog-titlebar-close')] | 5000 |
 | click_ok | //a[contains(@class,'ui-dialog-titlebar-close')] |  |
-| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_present_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
-| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | click_ok | st-cancel-layout |  |
 | open_ok | /st/profile |  |
@@ -44,11 +44,9 @@
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
-| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
 | wait_for_text_present_ok | Wikipedia | 5000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | save-layout-save | 10000 |
-| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -61,8 +59,8 @@
 
 | *Comment* | Test Case: Widgets in Profile change widget preferences |  |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | `xpath=(//a[@class='settings'])[4]` | 5000 |
-| click_ok | `xpath=(//a[@class='settings'])[4]` |  |
+| wait_for_element_visible_ok | `xpath=(//a[@class='settings'])[2]` | 5000 |
+| click_ok | `xpath=(//a[@class='settings'])[2]` |  |
 | wait_for_text_present_ok | Language: | 5000 |
 | wait_for_element_visible_ok | //select[@name='lang'] | 5000 |
 | select_ok | //select[@name='lang'] | label=French |
@@ -72,8 +70,6 @@
 | wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 5000 |
 | wait_for_element_visible_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | save-layout-save | 10000 |
-| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 5000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -93,13 +89,11 @@
 | *Comment* | Test Case: Widgets in Profile use X button to remove widget |  |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | `xpath=(//a[@class='close'])[3]` | 30000 |
-| click_ok | `xpath=(//a[@class='close'])[3]` |  |
+| wait_for_element_visible_ok | `xpath=(//a[@class='close'])[2]` | 30000 |
+| click_ok | `xpath=(//a[@class='close'])[2]` |  |
 | wait_for_text_not_present_ok | Wikipedia | 5000 |
 | wait_for_element_visible_ok | st-save-layout | 5000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | save-layout-save | 5000 |
-| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -116,13 +110,11 @@
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
-| wait_for_element_not_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | save-layout-save | 10000 |
-| click_ok | save-layout-save |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
 | wait_for_element_visible_ok | st-edit-layout | 5000 |
 
@@ -135,12 +127,11 @@
 | st-widget-title | none | Colleagues |
 
 | *Comment* | Test Case: Widgets in Profile TEARDOWN |  |
-| st-admin | deactivate-user --email %%wip_user%% | been removed |
+| st-admin | deactivate-user --email %%wip_user%% |  |
 
 | *Comment* | Test Case: Widgets in Profile COMPLETED |  |
 
 ^ END
-
 TUXTODO: restore these tests when Revert To Default is restored
 
 | *Comment* | Test Case: Widgets in Profile start to revert to default, click no |  |

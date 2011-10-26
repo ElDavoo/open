@@ -71,6 +71,7 @@ Socialtext::editor =
           buttons: [
             {
               text: loc('edit.force')
+              id: 'edit_anyway'
               click: ->
                 $.ajax
                   type: "POST"
@@ -86,6 +87,7 @@ Socialtext::editor =
             }
             {
               text: loc('edit.return-to-page-view')
+              id: 'edit_return'
               click: ->
                 st.editor.hideLightbox()
                 return false

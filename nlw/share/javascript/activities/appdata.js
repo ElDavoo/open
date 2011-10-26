@@ -679,6 +679,13 @@ $.extend(Activities.AppData.prototype, {
         }
     },
 
+    checkFilter: function(key, id) {
+        var $inputs = this.findId('filters').find('.' + key);
+        if ($inputs.filter(':checked').attr('id') != id) {
+            $inputs.filter('#'+id).click();
+        }
+    },
+
     selectNetwork: function(network_id) {
         if (this.getValue('network') != network_id) {
             this.set('network', network_id);
@@ -688,9 +695,7 @@ $.extend(Activities.AppData.prototype, {
             this.selectSignalToNetwork(network_id);
         }
 
-        if (this.findId('network').dropdownId() != network_id) {
-            this.findId('network').dropdownSelectId(network_id);
-        }
+        this.checkFilter('network', network_id);
 
         this.findId('groupscope').text(this.get('network').title);
     },

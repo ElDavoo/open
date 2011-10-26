@@ -3,15 +3,7 @@
         <title>[% loc('activities.socialtext-activities') %]</title>
         <meta name="viewport" content="width=240" />
         <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" />
-    <script>
-      var ADAPT_CONFIG = {
-        path: '/st/grids/1/',
-        dynamic: false,
-        range: [
-          '0px = full'
-        ]
-      };
-    </script>
+        [% INCLUDE 'element/js-adapt-fullscreen' %]
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-starfish.jgz"></script>
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang %].jgz"></script>
         [% INCLUDE widget/syndicator %]

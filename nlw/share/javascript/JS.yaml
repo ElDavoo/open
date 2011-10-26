@@ -110,8 +110,6 @@
         - activities/editor.js
         - activities/event_list.js
         - activities/widget.js
-        - activities/explore_filters.js
-        - activities/explore.js
         - activities/last_signal.js
         - activities/network_dropdown.js
 'shindig-inline.js':
