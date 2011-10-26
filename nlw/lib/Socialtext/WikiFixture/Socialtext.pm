@@ -1240,7 +1240,16 @@ sub type_lookahead_ok {
 
 sub _autocomplete_element {
     my $locator = shift;
-    return qq{window.jQuery(selenium.browserbot.findElement("$locator"))};
+    my $element = qq{selenium.browserbot.findElement("$locator")};
+    return qq{
+        (function(){
+            var el = $element;
+            var win = el.ownerDocument.defaultView
+                ? el.ownerDocument.defaultView
+                : el.ownerDocument.parentWindow;
+            return win.jQuery(el);
+        })()
+    };
 }
 
 sub _autocomplete_widget {
