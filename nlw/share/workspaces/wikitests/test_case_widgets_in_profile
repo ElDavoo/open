@@ -127,7 +127,7 @@
 | st-widget-title | none | Colleagues |
 
 | *Comment* | Test Case: Widgets in Profile TEARDOWN |  |
-| st-admin | deactivate-user --email %%wip_user%% | been removed |
+| st-admin | deactivate-user --email %%wip_user%% |  |
 
 | *Comment* | Test Case: Widgets in Profile COMPLETED |  |
 

@@ -1,7 +1,7 @@
+*On hold until Show All Results in Create A Group lookahead is fixed*
 
 | *Comment* | Test Case: User Creates Group |
 | *Comment* | Avatar will be uploaded from %%wikitest_client_files%% |
-
 
 * Fixture: SocialWidgets
 
@@ -123,16 +123,16 @@
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
 
-| *Comment* | Test Case: User Creates Group lookahead fails if you go too fast |  |
-| *Comment* | Test Case: User Creates Group check all elements while JS is loading |  |
-| wait_for_text_present_ok | Before creating a group, you can search names and descriptions for existing groups. | 30000 |
-| wait_for_element_visible_ok | //input[@id='self-join-radio'] | 10000 |
-| wait_for_element_visible_ok | //input[@id='private-radio'] | 10000 |
-| wait_for_element_visible_ok | st-create-group-next | 10000 |
-| wait_for_element_visible_ok | st-create-group-cancel | 10000 |
-| pause | 3000 | wait for JS anyway |
+| *Comment* | Test Case: User Creates Group lookahead fails if you go too fast |  |  |
+| *Comment* | Test Case: User Creates Group check all elements while JS is loading |  |  |
+| wait_for_text_present_ok | Before creating a group, you can search names and descriptions for existing groups. | 30000 |  |
+| wait_for_element_visible_ok | //input[@id='self-join-radio'] | 10000 |  |
+| wait_for_element_visible_ok | //input[@id='private-radio'] | 10000 |  |
+| wait_for_element_visible_ok | st-create-group-next | 10000 |  |
+| wait_for_element_visible_ok | st-create-group-cancel | 10000 |  |
+| pause | 3000 | wait for JS anyway |  |
 | select-autocompleted-option-ok | //div[@class='lookahead']/input | %%group_prefix%% | Show all results... |
-| wait_for_text_present_ok | Group names and descriptions matching '%%group_prefix%% OR %%group_prefix%%*' | 30000 |
+| wait_for_text_present_ok | Group names and descriptions matching '%%group_prefix%% OR %%group_prefix%%*' | 30000 |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | open_ok | /st/dashboard |  |
@@ -201,4 +201,4 @@
 | delete-group | %%group_id_10%% | Recklessly deleting |
 | delete-group | %%group_id_11%% | Recklessly deleting |
 
-| *Comment* | Test Case: User Creates Group COMPLETED |
+| *Comment* | Test Case: User Creates Group COMPLETED |  |

@@ -68,7 +68,7 @@
 | st-process-jobs |  |  |
 | st-logoutin | %%euserone%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| st-search-for | Search People: | Kennedy |
+| st-search-for | People | Kennedy |
 | wait_for_text_present_ok | People matching 'Kennedy' | 30000 |
 | wait_for_text_present_ok | Showing 1 - 6 of 6 total. | 30000 |
 | text-like | `qr/Caroline Kennedy.*Bobby Kennedy.*%%usersix%%.*%%userthree%%.*%%usertwo%%.*%%userfour%%/` |  |
