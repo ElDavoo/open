@@ -78,7 +78,7 @@
     <meta name="keywords" content="[% loc('about.keywords') %]"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
   </head>
-  <body class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
+  <body style="display: none" class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
     <header>
       <div class="container_24">
         <div class="grid_12 title">
