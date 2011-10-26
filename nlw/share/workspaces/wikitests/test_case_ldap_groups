@@ -1,8 +1,10 @@
-| *Comment* | Test Case: LDAP Groups |
+*On hold until we figure out why Create LDAP Group fails if the test has been run once before*
+
+| *Comment* | Test Case: LDAP Groups |  |
 
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: LDAP Groups Creates a group, exercises it, and tears down |
+| *Comment* | Test Case: LDAP Groups Creates a group, exercises it, and tears down |  |
 
 | st-admin | give-accounts-admin --u %%username%% |  |
 

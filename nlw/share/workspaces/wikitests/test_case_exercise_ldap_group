@@ -12,7 +12,7 @@
 | open_ok | / |  |
 | st-logoutin | Lemmy Kilmister | ld@pu53r |
 | open_ok | /%%ldapy_ws%%/ |  |
-| text_like | //body | You are not authorized to view this workspace |
+| text_like | //body | Log in |
 
 | *Comment* | Test Case: Exercise LDAP Group Add an account |  |
 | create-account | %%ldapy_account%% |  |
@@ -40,7 +40,7 @@
 
 | *Comment* | Test Case: Exercise LDAP see the workspace, see the members on the group home page |  |
 | wait_for_text_present_ok | Motorhead | 30000 |
-| text_like | st-editing-tools-edit | Motorhead |
+| text_like | content | Motorhead |
 | st-name-widget | 1 | information_widget |
 | st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
@@ -72,7 +72,7 @@
 | st-logoutin | Lemmy Kilmister | ld@pu53r |
 | st-admin | remove-member --g %%created_group_id%% --w %%ldapy_ws%% |  |
 | open_ok | /%%ldapy_ws%%/ |  |
-| text_like | //body | You are not authorized to view this workspace |
+| text_like | //body | Log in |
 
 | *Comment* | Test Case: Exercise LDAP Group TEARDOWN |  |
 
