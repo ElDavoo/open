@@ -88,9 +88,11 @@
         </div>
         <div class="grid_12">
           <div class="topLinks right">
-            <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
-            <span class="pad5"></span>
-            <span id="st-wikinav-setting"><a href="/st/settings">[% loc('nav.settings') %]</a></span> |
+            [% UNLESS user.is_guest %]
+              <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
+              <span class="pad5"></span>
+              <span id="st-wikinav-setting"><a href="/st/settings">[% loc('nav.settings') %]</a></span> |
+            [% END %]
             [% IF user.is_business_admin %]
                 <span><a href="/nlw/control">[% loc('nav.control-panel') %]</a></span> |
             [% END %]
@@ -126,7 +128,8 @@
           </div>
 
           <div class="searchForm">
-            [% INCLUDE element/search_form %]
+            [% INCLUDE element/search_form
+                IF !user.is_guest || workspace_present %]
           </div>
         </div>
         <div class="clear"></div>
