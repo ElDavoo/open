@@ -134,7 +134,9 @@
     </header>
 
     <div class="container_24">
-      <div id="globalNav">[% INCLUDE element/main_nav %]</div>
+      <div id="globalNav">
+        [% INCLUDE element/main_nav | decorate('nav') %]
+      </div>
       [% IF system_status %]
         <div id="st-system-status">
         <div class="grid_24">[% system_status %]</div>
