@@ -296,11 +296,11 @@ $.extend(Activities.Editor.prototype, {
     keyPressHandler: function (e) {
         var self = this;
         var key = e.charCode || e.keyCode;
-        if (key == 13) { // Return
+        if (key == $.ui.keyCode.ENTER) {
             self.submitHandler();
             return false;
         }
-        else if (key == 64 && !$.mobile) { // @
+        else if (key == "@".charCodeAt(0) && !$.mobile) {
             var typed = self.wikiwyg.current_mode.getInnerText();
             if (typed == '' || /\s$/.test(typed)) {
                 self._noblur = true;
