@@ -172,10 +172,7 @@ $.extend(Activities.Editor.prototype, {
 
         if (self.onBlur) {
             mode.bind('blur', function(e) {
-                if (!self._noblur) {
-                    self.onBlur();
-                }
-                self._noblur = false;
+                if (!self._noblur) self.onBlur();
             });
         }
 
@@ -186,8 +183,7 @@ $.extend(Activities.Editor.prototype, {
                 return false;
             })
             .mousedown(function() {
-                self._noblur = true;
-                setTimeout(function(){ self._noblur = false }, 500);
+                self.holdBlur();
             });
 
         // The click handler that loaded wikiwyg has been run already, so
@@ -235,8 +231,7 @@ $.extend(Activities.Editor.prototype, {
         // Don't blur wikiwyg when we click a lookahead link
         $toolbar.find('.hideOnBlur')
             .unbind('mousedown').mousedown(function (){
-                self._noblur = true;
-                setTimeout(function(){ self._noblur = false }, 500);
+                self.holdBlur();
                 return false
             }
         );
@@ -290,17 +285,31 @@ $.extend(Activities.Editor.prototype, {
         });
     },
 
+    // Prevent the submit from being run for 500ms
+    holdSubmit: function() {
+        var self = this;
+        self._nosubmit = true;
+        setTimeout(function() { self._nosubmit = false }, 500);
+    },
+
+    // Prevent the blur from being triggered for 500ms
+    holdBlur: function() {
+        var self = this;
+        self._noblur = true;
+        setTimeout(function(){ self._noblur = false }, 500);
+    },
+
     keyPressHandler: function (e) {
         var self = this;
         var key = e.charCode || e.keyCode;
         if (key == $.ui.keyCode.ENTER) {
-            self.submitHandler();
+            if (!self._nosubmit) self.submitHandler();
             return false;
         }
         else if (key == "@".charCodeAt(0) && !$.mobile) {
             var typed = self.wikiwyg.current_mode.getInnerText();
             if (typed == '' || /\s$/.test(typed)) {
-                self._noblur = true;
+                self.holdBlur();
                 self.showMentionLookahead();
                 return false;
             }
@@ -1206,6 +1215,7 @@ $.extend(Activities.Editor.prototype, {
                     user_id: item.value,
                     best_full_name: item.title
                 }, el);
+                self.holdSubmit();
             }
         });
     },
