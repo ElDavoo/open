@@ -236,7 +236,45 @@ div
   &.tablib_content_container
     margin: 5pt
 
+.error, .row_error
+  display: none
+  color: $red
+
+.widgetTitle
+  color: $darker
+
+#lookahead, #message
+  border: 1px solid $grey
+
+.lookahead-prompt
+  color: $darkest
+
 /* widget Styles Start
+
+/* groups widgets Start
+
+span.typeChange
+  color: $primary_color
+  text-decoration: underline
+  &:hover
+    cursor: pointer
+
+#group-membership
+  .icon div.removeIcon
+    background-image: url(#{$static}/images/icons/close-darker-8.png)
+  li.deleted .icon div.removeIcon
+    background-image: url(#{$static}/images/icons/close-gray-8.png)
+  a.icon span
+    background-color: $tertiary_color
+    border: 1px solid $darker
+  .empty_message
+    background-color: $tertiary_color
+    color: $darker
+  .note_message
+    background-color: $tertiary_color
+
+/* groups widgets End
+
 
 /* my content widget Start
 
