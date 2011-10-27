@@ -9,7 +9,7 @@ use Socialtext::AppConfig;
 fixtures(qw( empty ));
 
 BEGIN {
-    is system('l10n-make-po-js'), 0, "l10n-make-po-js runs without error";
+    is system('jsmake'), 0, "jsmake runs without error";
     use_ok 'Socialtext::l10n', qw(:all);
 }
 

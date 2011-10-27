@@ -61,11 +61,21 @@
     &.insertTag
       display: none // Needs input from tracy
 
-.hideLink
+.hideLink, .replyLink, .like-signal, .like-reply
   display: block
+  margin: 0 2px
   padding-left: 12px
   float: right
-  background: transparent no-repeat url(#{$static}/images/icons/close-black-8.png) 0 4px
+.hideLink, .replyLink
+  background-color: transparent
+  background-repeat:  no-repeat
+  background-position: 0 4px
+.hideLink
+  background-image: url(#{$static}/images/icons/close-black-8.png)
+.replyLink
+  padding-left: 16px
+  background-image: url(#{$static}/images/icons/reply-darker-16.png)
+  background-position: -1px -2px
 
 .private span, .insert span
   margin-left: 5px
