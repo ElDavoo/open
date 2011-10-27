@@ -172,10 +172,7 @@ $.extend(Activities.Editor.prototype, {
 
         if (self.onBlur) {
             mode.bind('blur', function(e) {
-                if (self._noblur) {
-                    mode.set_focus();
-                }
-                else {
+                if (!self._noblur) {
                     self.onBlur();
                 }
                 self._noblur = false;
