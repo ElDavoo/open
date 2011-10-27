@@ -6,7 +6,9 @@
 
 [% MACRO jump_menu BLOCK %]
 <select id="st-jump-to">
-  <option selected value=""></option>
+  [% IF action == 'display' %]
+    <option selected="selected" value="">[% loc('Select...') %]</option>
+  [% END %]
   [% jump_option("recent_changes", loc('nav.news')) %]
   [% jump_option("display_watchlist", loc('nav.watchlist')) %]
   [% jump_option("breadcrumbs_list", loc('Recently Viewed')) %]
@@ -22,7 +24,8 @@
 <script>
   $('#st-jump-to').change(function() {
       var cgi_params = $(this).find('option:selected').val();
-      location = '/' + st.workspace.name + '?' + cgi_params;
+      if (cgi_params != '')
+        location = '/' + st.workspace.name + '?' + cgi_params;
   });
 </script>
 [% END %]
