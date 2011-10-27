@@ -1,5 +1,3 @@
-*On hold until password retrieval is restored*
-
 | *Comment* | Test Case: Signals Login/Logout expects to be included in a testset |  |
 
 | set | inout_user | inout_%%start_time%%@ken.socialtext.net |
@@ -41,13 +39,13 @@
 | click_and_wait | link=I don't know my password. |  |
 | text_like | Socialtext password help |  |
 | type_ok | username | mr.poopypants |
-| click_and_wait | //input[@value='Submit'] |  |
+| click_and_wait | st-forgot-password-submit |  |
 | st-message | mr.poopypants is not registered as a user. Try a different entry? |  |
 
 | *Comment* | Test Case: Signals Login/Logout Forgotten password (good user): |  |
 | text_like | Socialtext password help |  |
 | type_ok | username | %%inout_user%% |
-| click_and_wait | //input[@value='Submit'] |  |
+| click_and_wait | st-forgot-password-submit |  |
 | st-message | An email with instructions on changing your password has been sent to %%inout_user%% |  |
 | st-force-confirmation | %%inout_user%% | %%password%% |
 

@@ -1,5 +1,3 @@
-*On hold until we figure out why it's not working on the default setup*
-
 Note: This test relies on the default content of the test-data workspace
 
 | *Comment* | Starting Test Case: Sidebar: Incoming Links |  |  |  |
@@ -22,9 +20,10 @@ edit and save new page | existing page appears in new page incoming links
 | *Comment* | Test Case: Sidebar: Incoming Links. create a backlink |  |  |  |
 | click_ok | link=TC Incoming Links New Page %%start_time%% |  |  |  |
 
-| wait_for_text_present_ok | Replace this text with your own. | 30000 |  |  |
+| wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 30000 |  |  |
 
-| call | [st-edit-this-page] | ws=%%workspace%% | thispage=TC Incoming Links New Page %%start_time%% | content=TC Incoming Links New Page %%start_time%% content |
+| call | [st-fill-editor] | title=TC Incoming Links New Page %%start_time%% | content=TC Incoming Links New Page %%start_time%% content |  |
+| st-page-save |  |  |  |  |
 
 | *Comment* | Test Case: Sidebar: Incoming Links. verify backlinks |  |
 | wait_for_element_visible_ok | link=TC Incoming Links %%start_time%% | 10000 |
