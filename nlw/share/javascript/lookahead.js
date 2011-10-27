@@ -124,8 +124,8 @@
                             if (results.length >= opts.count) {
                                 if (opts.showAll) {
                                     results.push({
-                                        title: loc("lookahead.all-results"),
-                                        displayAs: request.term,
+                                        title: loc("Show All Results"),
+                                        label: loc('Show All Results'),
                                         noThumbnail: true,
                                         onAccept: function() {
                                             opts.showAll(request.term)
@@ -151,7 +151,10 @@
                 });
             },
             select: function(event, ui) {
-                if (opts.onAccept) {
+                if (ui.item.onAccept) {
+                    ui.item.onAccept();
+                }
+                else if (opts.onAccept) {
                     var item = withRealValue(ui.item);
                     opts.onAccept(item.value, item);
                 }
