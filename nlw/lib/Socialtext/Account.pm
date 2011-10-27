@@ -1434,18 +1434,25 @@ sub remove_theme_prefs {
 
 sub update_theme_prefs {
     my ($self, $updates) = @_;
-
-    die 'Usage: $account->update_theme_prefs(HASHREF)'
-        unless reftype($updates) eq 'HASH';
-
-    require Socialtext::Theme;
-    unless (Socialtext::Theme->ValidSettings($updates)) {
-        die "Invalid theme setting:\n" . YAML::Dump($updates);
-    }
-
     my $prefs = $self->prefs;
     my $current = $prefs->all_prefs->{theme};
-    my $settings = {%$current, %$updates};
+    my $settings;
+    
+    if (ref $updates eq 'CODE') {
+        $settings = $updates->($current);
+    }
+    elsif (reftype $updates eq 'HASH') {
+        $settings = {%$current, %$updates};
+    }
+    else {
+        die 'Usage: $account->update_theme_prefs(HASHREF|CODEREF)';
+    }
+
+    require Socialtext::Theme;
+    unless (Socialtext::Theme->ValidSettings($settings)) {
+        die "Invalid theme setting:\n" . YAML::Dump($settings);
+    }
+
     $prefs->save({ theme => $settings });
     $self->_clean_theme_cache;
 }
