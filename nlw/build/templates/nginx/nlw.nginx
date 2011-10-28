@@ -141,10 +141,10 @@
         alias [% config.data_root_dir %]/attachments/;
         expires 1y;
     }
-    # Used with X-Accel-Redirect to serve new-style attachments from nginx
+    # Same as above, but for endpoints with mutable content (e.g. account logo)
     location /nlw/attachments-uncached/ {
         internal;
-        alias /Users/audreyt/.nlw/root/attachments/;
+        alias [% config.data_root_dir %]/attachments/;
         add_header Cache-Control "public, must-revalidate, max-age=0, post-check=0, pre-check=30";
         add_header X-Cache "HIT from attachments-uncached";
     }
