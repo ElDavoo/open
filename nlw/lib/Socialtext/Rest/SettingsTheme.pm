@@ -5,7 +5,10 @@ use Socialtext::HTTP qw(:codes);
 use Socialtext::Prefs::System;
 use Socialtext::Upload;
 use Socialtext::JSON qw(encode_json decode_json);
+use Socialtext::Image;
 use namespace::clean -except => 'meta';
+
+use constant AccountLogoSpec => Socialtext::Image::spec_resize_get('account');
 
 extends 'Socialtext::Rest::Entity';
 
@@ -94,9 +97,19 @@ sub GET_image {
         my $image = $self->upload;
         return $self->no_resource('image') unless $image;
 
-        $image->ensure_stored();
+        my $image_uri = $image->uncached_protected_uri; 
+        my $content_length;
+        if ($self->filename eq 'logo' and not $rest->query->param('size')) {
+            $image->ensure_scaled(spec => AccountLogoSpec);
+            $image_uri .= "." . AccountLogoSpec;
+        }
+        else {
+            $image->ensure_stored();
+            $content_length = $image->content_length;
+        }
+
         return $self->serve_file(
-            $rest, $image, $image->uncached_protected_uri, $image->content_length);
+            $rest, $image, $image_uri, $content_length);
     });
 }
 
