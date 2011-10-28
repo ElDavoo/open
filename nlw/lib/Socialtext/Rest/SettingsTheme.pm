@@ -96,7 +96,7 @@ sub GET_image {
 
         $image->ensure_stored();
         return $self->serve_file(
-            $rest, $image, $image->protected_uri, $image->content_length);
+            $rest, $image, $image->uncached_protected_uri, $image->content_length);
     });
 }
 
