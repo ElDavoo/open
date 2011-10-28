@@ -52,9 +52,9 @@
 | pause_ok | 5000 |  |
 
 | *Comment* | Test Case: Signals Wiki Link post signal the hard way |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | xpath=(//a[@role='button'])[2] | 5000 |
 | pause | 3000 |  |
-| click_ok | //a[@role='button'] |  |
+| click_ok | xpath=(//a[@role='button'])[2] |  |
 | wait_for_element_visible_ok | link=%%link_text%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'#%%section%%')] | 30000 |
 

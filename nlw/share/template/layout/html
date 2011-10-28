@@ -78,19 +78,21 @@
     <meta name="keywords" content="[% loc('about.keywords') %]"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
   </head>
-  <body class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
+  <body style="visibility: hidden" class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
     <header>
       <div class="container_24">
         <div class="grid_12 title">
           [% IF theme.account_logo %]
-          <img src="[% theme.account_logo %]" />
+          <a href="/"><img src="[% theme.account_logo %]" /></a>
           [% END %]
         </div>
         <div class="grid_12">
           <div class="topLinks right">
-            <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
-            <span class="pad5"></span>
-            <span id="st-wikinav-setting"><a href="/st/settings">[% loc('nav.settings') %]</a></span> |
+            [% UNLESS user.is_guest %]
+              <span id="st-wikinav-profile">[% loc('Welcome <a href="/st/profile/[_1]">[_2]</a>', user.userid, user.username) %]</span>
+              <span class="pad5"></span>
+              <span id="st-wikinav-setting"><a href="/st/settings">[% loc('nav.settings') %]</a></span> |
+            [% END %]
             [% IF user.is_business_admin %]
                 <span><a href="/nlw/control">[% loc('nav.control-panel') %]</a></span> |
             [% END %]
@@ -126,7 +128,8 @@
           </div>
 
           <div class="searchForm">
-            [% INCLUDE element/search_form %]
+            [% INCLUDE element/search_form
+                IF !user.is_guest || workspace_present %]
           </div>
         </div>
         <div class="clear"></div>
@@ -134,7 +137,9 @@
     </header>
 
     <div class="container_24">
-      <div id="globalNav">[% INCLUDE element/main_nav %]</div>
+      <div id="globalNav">
+        [% INCLUDE element/main_nav | decorate('nav') %]
+      </div>
       [% IF system_status %]
         <div id="st-system-status">
         <div class="grid_24">[% system_status %]</div>

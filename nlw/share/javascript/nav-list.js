@@ -39,6 +39,7 @@ $.fn.navList = function(entries) {
     fetchData(entries, 0, function() {
         $nodes.each(function(_, node) {
             var $node = $(node);
+            $node.find('ul').remove();
             $node.append(Jemplate.process('nav-list.tt2', {
                 loc: loc,
                 entries: entries
@@ -55,24 +56,6 @@ $.fn.navList = function(entries) {
                 });
             }
         });
-    });
-};
-
-$.fn.peopleNavList = function(nodes) {
-    $(this).each(function() {
-        $(this).navList([
-            { title: loc("nav.people-directory"), href: "/?action=people" },
-            {
-                url: "/data/people/" + Socialtext.userid + "/watchlist",
-                icon: function(p) {
-                    return '/data/people/' + p.id + '/small_photo'
-                },
-                href: function(p) { if (p) return '/st/profile/' + p.id },
-                title: function(p) { return p.best_full_name },
-                emptyMessage:
-                    loc("nav.no-followers")
-            }
-        ]);
     });
 };
 

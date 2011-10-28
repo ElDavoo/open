@@ -47,7 +47,7 @@
             </div>
         [% END %]
 
-        [% IF this.signals_enabled %]
+        [% IF this.signals_enabled && (event.open || event.num_replies) %]
             <div class="top_line"></div>
             <div class="clear"></div>
 

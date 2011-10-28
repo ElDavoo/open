@@ -14,8 +14,11 @@
 [% END %]
 
 [% BLOCK signal_actions %]
-<a href="#" class="hideLink">[% loc('signals.delete') %]</a>
-<div class="[% IF event.context.in_reply_to %]like-reply[% ELSE %]like-signal[% END %] right"></div>
+    [% UNLESS event.context.in_reply_to OR event.num_replies %]
+    <a href="#" class="replyLink">[% loc('signals.reply') %]</a>
+    [% END %]
+    <div class="[% IF event.context.in_reply_to %]like-reply[% ELSE %]like-signal[% END %]"></div>
+    <a href="#" class="hideLink">[% loc('signals.delete') %]</a>
 [% END %]
 
 [% BLOCK like_body %]

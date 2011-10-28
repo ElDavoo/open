@@ -131,11 +131,11 @@ $.extend(Activities.Widget.prototype, {
     resetFiltersForSignal: function(signal) {
         // Unless we're showing all events, select signals
         if (this.appdata.get('action').id != 'action-all-events') {
-            this.findId('action').dropdownSelectId('action-signals');
+            this.appdata.checkFilter('action', 'action-signals');
         }
 
         // show from everyone - not my follows or conversations
-        this.findId('feed').dropdownSelectId('feed-everyone');
+        this.appdata.checkFilter('feed', 'feed-everyone');
 
         // Select the target network unless we're showing all networks
         if (this.appdata.get('network').value != 'all') {
@@ -179,7 +179,7 @@ $.extend(Activities.Widget.prototype, {
 
         this.findId('pop_out').click(function() {
             var poptarget = self.signals_only
-                    ? ('/st/signalspop?' + self.instance_id)
+                    ? ('/st/signalspop?id=' + self.instance_id)
                     : ('/st/activities?id=' + self.instance_id);
             var new_window = window.open(
                 poptarget, '_blank',

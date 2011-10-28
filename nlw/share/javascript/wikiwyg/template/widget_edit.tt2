@@ -64,10 +64,7 @@
 </div>
 </div>
 </div>
-<div class="buttons">
-    <input id="st-widget-savebutton" type="submit" value=[% loc('do.save') %] />
-    <input id="st-widget-cancelbutton" type="reset" value=[% loc('do.cancel') %] />
-</div>
+<input type="submit" class="hidden" value=[% loc('do.save') %] />
 </form>
 
 <! BLOCK CONTROL_ROW -!>

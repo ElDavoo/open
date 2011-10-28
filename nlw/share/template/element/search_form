@@ -10,18 +10,20 @@ DEFAULT
 -%]
 <form id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
 
-  <input id="st-[%sid%]-term" name="search_term" class="[% UNLESS html_escaped_search_term %]initial [% END %]searchText" type="text" value="[% html_escaped_search_term || loc('Search in:') %]" />
-
   <select id="st-[%sid%]-action" name="action" class="searchSelect">
     [% IF workspace_present %]
-    <option value="search_workspace" id="st-[%sid%]-this-ws" [% IF search == "workspace" %]selected="selected" [% END %]>[% loc("wiki.search") %]</option>
+    <option value="search_workspace" id="st-[%sid%]-this-ws" [% IF search == "workspace" %]selected="selected" [% END %]>[% loc("wiki.search:") %]</option>
     [% END %]
     [% UNLESS user.is_guest %]
-      <option value="search_workspaces" id="st-[%sid%]-all-ws" [% IF search == "workspaces"  %]selected="selected" [% END %]>[% loc("wiki.search-all") %]</option>
+      <option value="search_workspaces" id="st-[%sid%]-all-ws" [% IF search == "workspaces"  %]selected="selected" [% END %]>[% loc("wiki.search-all:") %]</option>
       [% FILTER decorate('search_box') %][% END %]
     [% END %]
-    <input id="st-[%sid%]-submit" class="hidden"  type="submit" value="" />
   </select>
+
+  <input id="st-[%sid%]-term" name="search_term" class="[% UNLESS html_escaped_search_term %]initial [% END %]searchText" type="text" value="[% html_escaped_search_term %]" />
+
+  <input id="st-[%sid%]-submit" type="submit" value="Go" />
+
   [% IF action == 'search' AND scope == '_'; search = 'workspace';
     ELSIF action == 'search' AND scope == '*'; search = 'workspaces';
     ELSE; search = action.match('search_(.*)').0;
@@ -35,6 +37,7 @@ DEFAULT
      END
    %]
   <script>
+    $('#st-[%sid%]-submit').button();
     Socialtext.stickySearch({
       scope: "[% search_scope %]",
 

@@ -1167,6 +1167,10 @@ msgstr "Recent Changes In %1 Workspace"
 msgid "email.sent-from-socialtext-appliance"
 msgstr "This email was sent from the Socialtext Appliance."
 
+#: lib/Socialtext/Job/SignalMentionNotify.pm:59
+msgid "email.signal-mention-by=user"
+msgstr "Signal mention by %1"
+
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:78
 msgid "email.socialtext"
 msgstr "Socialtext"

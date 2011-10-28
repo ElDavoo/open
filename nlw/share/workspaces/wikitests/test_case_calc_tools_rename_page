@@ -31,7 +31,7 @@
 | click_and_wait | link=Rename Spreadsheet %%start_time%% |  |
 | text_like | st-page-titletext | Rename Spreadsheet %%start_time%% |
 | text_like | content | Page renamed to Renamed_Spreadsheet_%%start_time%% |
-| click_and_wait | controls-right-revisions |  |
+| click_and_wait | link=3 Revisions |  |
 | text_like | content | qr/Revision 2/ |
 
 | open_ok | /%%workspace%%/?Renamed_Spreadsheet_%%start_time%% |  |
@@ -55,7 +55,7 @@
 | wait_for_element_visible_ok | st-rename-error | 30000 |
 | text_like | st-rename-error | The new page name you selected, "Rename Spreadsheet %%start_time%%", is already in use. Please choose a different name. |
 | click_and_wait | st-rename-savelink |  |
-| click_and_wait | controls-right-revisions |  |
+| click_and_wait | link=4 Revisions |  |
 | text_like | content | Revision 2 |
 
 | *Comment* | Test Case: Calc Tools: Rename Page TEARDOWN |  |

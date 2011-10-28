@@ -61,22 +61,32 @@
 [% END %]
 
 [% BLOCK mobile_signals %]
-    <div class="mainInput" style="margin: 0">
-        <div>
-            <td colspan="2" style="text-align: right" align="right">
-                <span class="networks">[% post_to_prompt || loc('activities.post-to') %]
-                    <span class="signal_network select" id="[% id('signal_network') %]"></span>
-                </span>
-            </td>
-        </div>
-        <div class="postWrap">
-            <a href="#" class="btn post" id="[% id('post') %]">[% loc('activities.post') %]</a>
-            <div class="count" id="[% id('count') %]"></div>
-        </div>
-        <div id="[% id('mainWikiwyg') %]" class="mainWikiwyg setupWikiwyg wikiwyg">
-            <div class="clearHandler">[% this.startText %]</div>
+    <div class="grid_sub_20 sub_alpha">
+        <div class="networks">
+            [% post_to_prompt || loc('activities.post-to') %]
+            <span class="signal_network select" id="[% id('signal_network') %]"></span>
         </div>
     </div>
+    <div class="grid_sub_4 sub_omega">
+        [% IF this.show_popout %]
+        <a class="pop_out" href="#" id="[% id('pop_out') %]"></a>
+        [% END %]
+    </div>
+    <div class="clear"></div>
+
+    <div class="grid_sub_20 sub_alpha">
+        <div class="mainWikiwyg">
+            <div id="[% id('mainWikiwyg') %]" class="setupWikiwyg wikiwyg">
+                <div class="clearHandler">[% this.startText %]</div>
+            </div>
+        </div>
+    </div>
+    <div class="sub_omega grid_sub_4 post">
+        <a href="#" id="[% id('post') %]">[% loc('Go') %]</a>
+        <div class="count" id="[% id('count') %]"></div>
+    </div>
+    <div class="clear"></div>
+
     <div class="links">
         <h3 class="title">Link</h3>
         <div class="cancel" href="#">X</div>

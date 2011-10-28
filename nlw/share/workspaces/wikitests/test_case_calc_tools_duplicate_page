@@ -1,3 +1,5 @@
+*On hold until duplicate page no longer crashes Sel*
+
 | *Comment* | Test Case: Calc Tools: Duplicate Spreadsheet |  |
 
 | *Comment* | Test Case: Calc Tools: Duplicate Spreadsheet Create test page |  |
@@ -16,12 +18,11 @@
 | wait_for_element_visible_ok | link=Duplicate Spreadsheet Tag %%start_time%% | 30000 |
 | st_upload_if_highperms | wikitest.jpg |  |
 
-
 | *Comment* | Test Case: Calc Tools: Duplicate Page Test Duplicate popup, duplicate the page |  |
 | click_ok | link=Duplicate Page |  |
 | wait_for_element_visible_ok | st-duplicate-savelink | 30000 |
 | click_and_wait | st-duplicate-savelink |  |
-| wait_for_element_visible_ok | st-page-titletext |
+| wait_for_element_visible_ok | st-page-titletext |  |
 | text_like | st-page-titletext | Duplicate of Dupe Spreadsheet %%start_time%% |
 
 | *Comment* | Test Case: Calc Tools: Duplicate Page Edit first page, save over second page |  |
@@ -36,7 +37,6 @@
 | text_like | st-page-titletext | Duplicate of Dupe Spreadsheet %%start_time%% |
 | wait_for_element_visible_ok | link=Duplicate Spreadsheet Tag %%start_time%% | 30000 |
 | st_check_files_if_highperms | wikitest.jpg |  |
-
 
 | *Comment* | Test Case: Calc Tools: Duplicate Page TEARDOWN |  |
 | st-process-jobs |  |  |
