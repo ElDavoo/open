@@ -1,5 +1,3 @@
-THIS TEST IS tuxhold BECAUSE TYPING INTO THE lookahead WITH Se DOES NOT PRODUCE THE EXPECTED DROPDOWN
-
 | *Comment* | Test Case: User: Primary Account |  |
 
 | st-config | set self_registration 1 |  |
@@ -97,7 +95,7 @@ wait_for_text_present_ok | Added user %%invite_user_2%% | 30000 |
 | wait_for_text_present_ok | An email confirming your registration has been sent to %%invite_user_4%%. | 30000 |
 | st-login | %%join_admin%% | %%password%% |
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
-| wait_for_text_present_ok | %%invite_user_4%% |  |
+| wait_for_text_present_ok | %%invite_user_4_short%% |  |
 | click_and_wait | link=%%invite_user_4_short%% <%%invite_user_4%%> |  |
 | wait_for_text_present_ok | Accounts ( | 30000 |
 | text_like | accountsCount | 1 |

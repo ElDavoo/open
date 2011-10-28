@@ -1,17 +1,22 @@
-*On hold until lookaheads work again*
+*On hold until signal deletion permissions are restored*
 
 | *Comment* | Test Case: Private Signal |  |
 
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Private Signal - create two users |  |
+| set | ps_acct | ps-account-%%start_time%% |
 | set | psshort | psuser%%start_time%% |
 | set | psuser | `%%psshort%%@ken.socialtext.net` |
 | set | psshort_two | psusertwo%%start_time%% |
 | set | psusertwo | `%%psshort_two%%@ken.socialtext.net` |
+| set | psshort_three | psuserthree%%start_time%% |
+| set | psuserthree | `%%psshort_three%%@david.socialtext.net` |
 
-| create-user | %%psuser%% | %%password%% |
-| create-user | %%psusertwo%% | %%password%% |
+| create-account | %%ps_acct%% |  |  |
+| create-user | %%psuser%% | %%password%% | %%ps_acct%% |
+| create-user | %%psusertwo%% | %%password%% | %%ps_acct%% |
+| create-user | %%psuserthree%% | %%password%% | %%ps_acct%% |
 
 | st-admin | enable-plugin --all-accounts --plugin signals |  |
 | st-logoutin | %%psuser%% | %%password%% |
@@ -38,14 +43,20 @@
 | wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort_two%% |
 | st-type_signal | %%private%% |  |
-| click_ok | //a[@role='button'] |  |
+| click_ok | xpath=(//a[@role='button'])[2] |  |
 | wait-for-element-not-present-ok | //div[@class='message private'] | 10000 |
 
 | *Comment* | Test Case: Private Signal %%psshort_two%% replies to private signal |  |
 | st-logoutin | %%psusertwo%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | %%private%% | 30000 |
-| st-send-reply | %%private_reply%% |  |
+| wait_for_element_visible_ok | //a[@class='replyLink'] | 30000 |
+| click_ok | //a[@class='replyLink'] |  |
+| wait_for_element_visible_ok | //body[@class='wiki signals'] | 30000 |
+| type_ok | //body[@class='wiki signals'] | %%private_reply%% |
+| wait_for_element_visible_ok | xpath=(//a[@role='button'])[3] | 10000 |
+| click_ok | xpath=(//a[@role='button'])[3] |  |
+| wait_for_text_present_ok | By you | 30000 |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends pubmsg to %%psshort_two%% |  |
 | st-logoutin | %%psuser%% | %%password%% |
@@ -59,7 +70,7 @@
 | st-verify-text-in-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Private Signal. login as another user, see public but not private signals. |  |
-| st-logoutin | %%username%% | %%password%% |
+| st-logoutin | %%psuserthree%% | %%password%% |
 
 | open_ok | /st/signals |
 | st-verify-text-in-activities-widget | %%signal%% |
@@ -68,10 +79,10 @@
 | st-text-unlike-in-activities-widget | %%private_reply%% |
 
 | *Comment* | Test Case: Private Signal. Start privmsg, cancel, send public msg |  |
-| set | cancel | Public Hello after Cancel to %%psshort%% from %%short_username%% |
-| set | private | Private Hello to %%psshort%% from %%short_username%% |
+| set | cancel | Public Hello after Cancel to %%psshort%% from %%psshort_three%% |
+| set | private | Private Hello to %%psshort%% from %%psshort_three%% |
 
-| *Comment* | Test Case: Private Signal. %%short_username%% initiates privmsg to %%psshort%% |  |
+| *Comment* | Test Case: Private Signal. %%psshort_three%% initiates privmsg to %%psshort%% |  |
 | wait_for_element_present_ok | //a[@title='Send a private message'] | 10000 |
 | click_ok | //a[@title='Send a private message'] |  |
 | wait_for_element_visible_ok | //input[@autocomplete='off'] | 10000 |
@@ -84,7 +95,8 @@
 | click_ok | //a[@class='cancel'] |  |
 | wait_for_element_not_present_ok | //div[@class='message private'] | 10000 |
 | st-type_signal | %%cancel%% |  |
-| click_ok | //a[@role='button'] |  |
+| click_ok | xpath=(//a[@role='button'])[2] |  |
+| wait_for_text_present_ok | By you | 30000 |
 
 | *Comment* | Test Case: Private Signal send and verify the public signal |  |
 | open_ok | /st/signals |  |
@@ -109,5 +121,6 @@
 | st-process-jobs |  |  |
 | st-admin | deactivate-user --e %%psuser%% |  |
 | st-admin | deactivate-user --e %%psusertwo%% |  |
+| delete-account | %%ps_acct%% |  |
 
 | *Comment* | Test Case: Private Signal COMPLETED |  |
