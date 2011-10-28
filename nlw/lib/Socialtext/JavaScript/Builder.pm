@@ -235,10 +235,12 @@ method _part_last_modified ($part) {
 
     if (my $lang = $part->{l10n}) {
         push @files, "javascript/l10n/$lang.js";
+        push @files, "l10n/$lang.po";
 
         # Also we might need to rebuild the js version
         my %derived = ( zh_TW => 'zh_CN', zz => 'en', zq => 'en' );
         $lang = $derived{$lang} || $lang;
+        push @files, "l10n/$lang.po";
         push @files, glob("l10n/$lang/*.po");
     }
 

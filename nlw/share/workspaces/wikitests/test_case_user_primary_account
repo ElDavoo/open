@@ -1,5 +1,3 @@
-THIS TEST IS tuxhold BECAUSE TYPING INTO THE lookahead WITH Se DOES NOT PRODUCE THE EXPECTED DROPDOWN
-
 | *Comment* | Test Case: User: Primary Account |  |
 
 | st-config | set self_registration 1 |  |
@@ -49,7 +47,8 @@ THIS TEST IS tuxhold BECAUSE TYPING INTO THE lookahead WITH Se DOES NOT PRODUCE 
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_3_short%% | 30000 |
 | click_and_wait | link=%%invite_user_3_short%% <%%invite_user_3%%> |  |
-| wait_for_text_present_ok | Accounts (1) | 30000 |
+| wait_for_text_present_ok | Accounts ( | 30000 |
+| text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account invite user to account through Invite! UI, check their account |  |
@@ -62,7 +61,8 @@ THIS TEST IS tuxhold BECAUSE TYPING INTO THE lookahead WITH Se DOES NOT PRODUCE 
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_1_short%% |  |
 | click_and_wait | link=%%invite_user_1_short%% <%%invite_user_1%%> |  |
-| wait_for_text_present_ok | Accounts (1) | 30000 |
+| wait_for_text_present_ok | Accounts ( | 30000 |
+| text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account add single user to account via Control Panel, check |  |
@@ -77,7 +77,8 @@ wait_for_text_present_ok | Added user %%invite_user_2%% | 30000 |
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_2%% | 30000 |
 | click_and_wait | link=%%invite_user_2_short%% <%%invite_user_2%%> |  |
-| wait_for_text_present_ok | Accounts (1) | 30000 |
+| wait_for_text_present_ok | Accounts ( | 30000 |
+| text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account add multiple users to account via Control Panel, check |  |
@@ -94,9 +95,10 @@ wait_for_text_present_ok | Added user %%invite_user_2%% | 30000 |
 | wait_for_text_present_ok | An email confirming your registration has been sent to %%invite_user_4%%. | 30000 |
 | st-login | %%join_admin%% | %%password%% |
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
-| wait_for_text_present_ok | %%invite_user_4%% |  |
+| wait_for_text_present_ok | %%invite_user_4_short%% |  |
 | click_and_wait | link=%%invite_user_4_short%% <%%invite_user_4%%> |  |
-| wait_for_text_present_ok | Accounts (1) | 30000 |
+| wait_for_text_present_ok | Accounts ( | 30000 |
+| text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account TEARDOWN |  |
