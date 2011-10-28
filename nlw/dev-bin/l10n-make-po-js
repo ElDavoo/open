@@ -10,10 +10,19 @@ use FindBin '$RealBin';
 use lib "$RealBin/../lib";
 use Socialtext::l10n::DevUtils;
 use Socialtext::JSON;
+use List::MoreUtils 'uniq';
 
 chdir "$RealBin/..";
 
-if (!@ARGV) {
+if (@ARGV) {
+    my %DerivedFrom = qw(
+        zz    en
+        zq    en
+        zh_TW zh_CN
+    );
+    @ARGV = uniq map { $DerivedFrom{$_} // $_ } @ARGV;
+}
+else {
     @ARGV = map {
         s!^share/l10n/(.+)/lib\.po!$1!; $_
     } glob("share/l10n/*/lib.po")
