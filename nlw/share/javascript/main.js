@@ -92,10 +92,12 @@ function set_main_frame_margin() {
         spacer.style.height = new_top_margin + 'px';
     }
 }
+
 jQuery(function() {
     jQuery(window).bind("resize", set_main_frame_margin).trigger("resize");
+});
 
-    // Maximize the window if we're running under Selenium
+    // Show <body> and maximize the window if we're running under Selenium
     try { if (
         (typeof seleniumAlert != 'undefined' && seleniumAlert)
         || (typeof Selenium != 'undefined' && Selenium)
@@ -107,10 +109,10 @@ jQuery(function() {
                 || window.top.opener.seleniumLoggingFrame))
         )
     ) {
+        document.body.style.visibility = 'visible';
         top.window.moveTo(0,0);
         top.window.resizeTo(screen.availWidth, screen.availHeight);
     } } catch (e) {}
-});
 
 function check_revisions(form) {
     var r1;
