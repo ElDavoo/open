@@ -1,4 +1,3 @@
-
 *On hold until pop-out button is reimplemented or confirmed deleted*
 
 | *Comment* | Test Case: Activities Widget with REAL Popout |  |
@@ -29,7 +28,7 @@
 | click_ok | //a[@class='pop_out'] |  |
 
 | *Comment* | Test Case: Activities Widget with REAL Popout At Dashboard Wait for popout, then Select it |  |
-| pause | 10000 |
+| pause | 10000 |  |
 | selectWindow | Socialtext Activities |  |
 
 | *Comment* | Test Case: Activities Widget with REAL Popout Examine Popout Page |  |
@@ -39,7 +38,7 @@
 | st_verify_text_in_activities_widget | Lend me your ears and I'll sing you a song %%start_time%% |  |
 
 | st_send_signal_in_activities_widget | And I'll try not to sing out of key %%start_time%% |  |
-| st_verify_text_on_activities_widget | And I'll try not to sing out of key %%start_time%% |  |
+| st_verify_text_in_activities_widget | And I'll try not to sing out of key %%start_time%% |  |
 
 TODO: send signals, send replies, etc.
 
