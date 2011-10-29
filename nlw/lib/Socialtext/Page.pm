@@ -1075,7 +1075,7 @@ sub content_as_type {
         return $self->_content_as_html($p{link_dictionary}, $p{no_cache});
     }
     elsif ($type eq $XHTML_TYPE and $self->page_type eq 'xhtml') {
-        return '<div xmlns="http://www.w3.org/1999/xhtml" class="xhtml">'
+        return '<div xmlns="http://www.w3.org/1999/xhtml" class="wiki xhtml">'
              . ${ $self->body_ref }
              . '</div>';
     }
