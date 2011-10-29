@@ -95,7 +95,6 @@ function set_main_frame_margin() {
 
 jQuery(function() {
     jQuery(window).bind("resize", set_main_frame_margin).trigger("resize");
-});
 
     // Show <body> and maximize the window if we're running under Selenium
     try { if (
@@ -109,10 +108,11 @@ jQuery(function() {
                 || window.top.opener.seleniumLoggingFrame))
         )
     ) {
-        document.body.style.visibility = 'visible';
         top.window.moveTo(0,0);
         top.window.resizeTo(screen.availWidth, screen.availHeight);
-    } } catch (e) {}
+        document.body.style.visibility = 'visible';
+    } } catch (e) {};
+});
 
 function check_revisions(form) {
     var r1;
