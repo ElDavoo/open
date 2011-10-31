@@ -11,8 +11,6 @@
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" />
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/mobile.css" />
 
-        <title>[% loc('activities.socialtext-activities') %]</title>
-
         [% INCLUDE 'element/js-adapt-fullscreen' %]
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-starfish.jgz"></script>
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang %].jgz"></script>
@@ -86,10 +84,12 @@
             </div>
         </div>
 
-
-        <div class="container_24 inlineWidget" style="margin-top: 35px; margin-bottom: 20px">
+        <div class="container_24 inlineWidget" style="margin-top: 38px; margin-bottom: 20px">
             <div class="grid_24">
                 <div id="content" class="activitiesWidget">
+                    <div style="text-align: center">
+                        <img id="spinner" src="[% static_path %]/images/ajax-loader.gif"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,7 +130,7 @@
 
 <li class="ui-block-e">
     
-<a href="/m/workspace_list" rel="external" id="mobile-signals" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.wikis') %]</span></span></a>
+<a href="/m/workspace_list" rel="external" id="mobile-workspace_list" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.wikis') %]</span></span></a>
     
 </li>
 

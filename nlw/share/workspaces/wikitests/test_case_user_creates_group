@@ -1,5 +1,3 @@
-*On hold until Show All Results in Create A Group lookahead is fixed*
-
 | *Comment* | Test Case: User Creates Group |
 | *Comment* | Avatar will be uploaded from %%wikitest_client_files%% |
 
@@ -132,7 +130,6 @@
 | wait_for_element_visible_ok | st-create-group-cancel | 10000 |  |
 | pause | 3000 | wait for JS anyway |  |
 | select-autocompleted-option-ok | //div[@class='lookahead']/input | %%group_prefix%% | Show all results... |
-| wait_for_text_present_ok | Group names and descriptions matching '%%group_prefix%% OR %%group_prefix%%*' | 30000 |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | open_ok | /st/dashboard |  |
