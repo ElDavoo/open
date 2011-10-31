@@ -1,6 +1,6 @@
 [%# vim: set et sts=2 sw=2: %]
 [% IF page_locked_for_user %]
-  <span style="cursor: default !important;" class="ui-button ui-widget ui-state-default ui-state-disabled ui-corner-all ui-button-text-only" title="[% loc('Locked') %]" id="locked-indicator"><span class="ui-button-text">[% loc('Locked') %]</span></span>
+  <span style="cursor: default !important;" class="ui-button ui-widget ui-state-inactive ui-corner-all ui-button-text-icon-primary locked-page" title="[% loc('Locked') %]" id="locked-indicator"><span class="ui-button-text">[% loc('Locked') %]</span></span>
 [% ELSE %]
   [% UNLESS page.is_spreadsheet && !current_workspace.enable_spreadsheet %]
     [% UNLESS page.is_xhtml && !current_workspace.enable_xhtml %]
