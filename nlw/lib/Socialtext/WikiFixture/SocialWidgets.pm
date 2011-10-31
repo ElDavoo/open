@@ -417,7 +417,10 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 sub st_send_reply {
     my ($self, $signaltosend, $is_mobile) = @_;
     #TODO: click on something else in IE
-    my $replyLink = '//div[@class="wikiwyg"]';
+    my $firstReplyLink = '//a[@class="replyLink"]';
+    my $subsequentReplyLink = '//div[@class="wikiwyg"]';
+    my $firstReply = $self->{selenium}->is_element_present($firstReplyLink);
+    my $replyLink = $firstReply ? $firstReplyLink : $subsequentReplyLink; 
     $self->handle_command('wait_for_element_visible_ok', $replyLink, 15000);
     $self->handle_command('click_ok', $replyLink);
 
