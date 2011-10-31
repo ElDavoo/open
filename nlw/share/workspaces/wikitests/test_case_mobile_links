@@ -42,27 +42,6 @@ Word but not Link: Signal, What are you working on, People I follow, Previous pa
 Clicks: Activity People Workspaces Signals All refresh Mine
 Verify each one unlinks and the others link
 
-| *Comment* | Test Case: Mobile Links. Verify each one unlinks and the others link |  |
-| *Comment* | Test Case: Mobile Links. (TODO; commented out because in the new implementation the A's are still present & active the just don't _do_ anything |  |
-
- click_and_pause | link=Activity | |
-wait_for_element_not_present_ok | link=Activity | 30000 |
-wait_for_text_present_ok | Activity | 3000 |
-click_and_wait | link=People | |
-wait_for_element_not_present_ok | link=People | 3000 |
-wait_for_text_present_ok | People | 3000 |
-click_and_wait | link=Workspaces | |
-wait_for_element_not_present_ok | link=Workspaces | 3000 |
-wait_for_text_present_ok | Workspaces | 3000 |
-click_and_wait | link=Signals | |
-wait_for_element_not_present_ok | link=Signals | 3000 |
-wait_for_text_present_ok | Signals | 3000 |
-wait_for_text_present_ok | All | 3000 |
-wait_for_element_not_present_ok | link=All | 3000 |
-click_and_wait | link=Mine | |
-wait_for_element_not_present_ok | link=Mine | 3000 |
-wait_for_text_present_ok | Mine | 3000 |
-
 NOTE: A should be a link whenever you hit People
 
 | *Comment* | Test Case: Mobile Links. Verify three selected alpha links for People |  |
