@@ -1373,6 +1373,7 @@ sub st_uneditable_ok {
 
 sub st_mobile_account_select_ok {
     my ($self, $accountdesc) = @_;
+    $self->handle_command('open_ok', '/st/m/signals');
     if ($self->_is_wikiwyg()) { 
         $self->wait_for_element_visible_ok($self->{st_mobile_account_select}, 30000);
         $self->wait_for_element_present_ok("link=$accountdesc",30000);

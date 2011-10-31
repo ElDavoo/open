@@ -130,7 +130,7 @@
 
 <li class="ui-block-e">
     
-<a href="/m/workspace_list" rel="external" id="mobile-signals" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.wikis') %]</span></span></a>
+<a href="/m/workspace_list" rel="external" id="mobile-workspace_list" data-theme="a" class="ui-btn ui-btn-up-a"><span class="ui-btn-inner"><span class="ui-btn-text">[% loc('nav.wikis') %]</span></span></a>
     
 </li>
 
