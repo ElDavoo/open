@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-16 23:29+0800\n"
+"PO-Revision-Date: 2011-10-31 16:32+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1535,6 +1535,60 @@ msgstr "Usage Reports"
 #: share/plugin/control/template/control/report.html:100
 msgid "report.usage-ending-midnight-of:"
 msgstr "Usage ending midnight of:"
+
+msgid "setting.background_color"
+msgstr "Background of main screen and pull-down menus."
+
+msgid "setting.background_image"
+msgstr "Background image for the main screen."
+
+msgid "setting.background_image_position"
+msgstr "Placement of background image relative to screen."
+
+msgid "setting.background_image_tiling"
+msgstr "Specifies how background image should be repeated."
+
+msgid "setting.background_link_color"
+msgstr "Color of hyperlinks in footer."
+
+msgid "setting.body_font"
+msgstr "Font of body text."
+
+msgid "setting.favicon_image"
+msgstr "Background image for the header area."
+
+msgid "setting.header_color"
+msgstr "Background color of header area."
+
+msgid "setting.header_font"
+msgstr "Font of heading text."
+
+msgid "setting.header_image"
+msgstr "Background color of header area."
+
+msgid "setting.header_image_position"
+msgstr "Placement of header image relative to screen."
+
+msgid "setting.header_image_tiling"
+msgstr "Specifies how header image should be repeated."
+
+msgid "setting.header_link_color"
+msgstr "Color of hyperlinks in footer."
+
+msgid "setting.logo_image"
+msgstr "Logo image (auto-scaled to 201x34 pixels max.)"
+
+msgid "setting.foreground_shade"
+msgstr "Color of footer and menu text."
+
+msgid "setting.primary_color"
+msgstr "Color of hyperlinks and button background."
+
+msgid "setting.secondary_color"
+msgstr "Color of menu dividers."
+
+msgid "setting.tertiary_color"
+msgstr "Color of button labels."
 
 #: share/plugin/control/template/control/report.html:127
 msgid "time.1month"
