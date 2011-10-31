@@ -17,7 +17,8 @@ Socialtext.prototype.attachments = (function($) {
             var self = this;
 
             var html = Jemplate.process('page/attachments.tt2', {
-                attachments: st.page.attachments
+                attachments: st.page.attachments,
+                static_path: st.static_path
             });
             $('#st-attachment-listing').html(html);
 
