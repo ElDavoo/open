@@ -60,6 +60,20 @@
     </div>
 [% END %]
 
+[% BLOCK network_options %]
+    [% FOR account = this.signalAccounts %]
+        [% IF account.networks.size %]
+            <optgroup label="[% account.account_name %]">
+                [% FOR network = account.networks %]
+                    <option value="[% network.value %]">
+                        [% network.title %]
+                    </option>
+                [% END %]
+            </optgroup>
+        [% END %]
+    [% END %]
+[% END %]
+
 [% BLOCK mobile_signals %]
     <div class="grid_sub_20 sub_alpha">
         <div class="networks">

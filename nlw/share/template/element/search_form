@@ -8,7 +8,7 @@
 DEFAULT
     sid = 'search'
 -%]
-<form id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
+<form style="position:relative" id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
 
   <select id="st-[%sid%]-action" name="action" class="searchSelect">
     [% IF workspace_present %]
@@ -22,7 +22,8 @@ DEFAULT
 
   <input id="st-[%sid%]-term" name="search_term" class="[% UNLESS html_escaped_search_term %]initial [% END %]searchText" type="text" value="[% html_escaped_search_term %]" />
 
-  <input id="st-[%sid%]-submit" type="submit" value="Go" />
+  <input class="hidden" type="submit" />
+  <button class="submit" id="st-[%sid%]-submit"></button>
 
   [% IF action == 'search' AND scope == '_'; search = 'workspace';
     ELSIF action == 'search' AND scope == '*'; search = 'workspaces';
@@ -37,12 +38,26 @@ DEFAULT
      END
    %]
   <script>
-    $('#st-[%sid%]-submit').button();
     Socialtext.stickySearch({
       scope: "[% search_scope %]",
 
       // Search pages should not be sticky
       sticky: [% search_scope && !search ? 'true' : 'false' %]
     });
+
+    $('#st-[% sid %]-action').dropdown({
+        style: {
+            position: 'absolute',
+            right: '175px',
+            top: '2px'
+        }
+    });
+    $('#st-[%sid%]-submit').button({
+        text: false,
+        icons: {
+            primary: "ui-icon-search"
+        }
+    });
+
   </script>
 </form>

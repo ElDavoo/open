@@ -40,6 +40,7 @@
         - contrib/jquery-1.6.2.js
         - contrib/jquery-json-1.3.js
         - contrib/jquery-ui-1.8.5.js
+        - contrib/jquery.ui.selectmenu.js
         - contrib/jquery.ui.ipad.altfix.js
         - contrib/jquery.bgiframe.js
         - contrib/jquery.positionBy.js
@@ -58,6 +59,7 @@
         - Socialtext/Listview.js
         - socialtext-api.js
         - socialtext-container.js
+        - jquery.dropdown.js
         - jquery.uiDisable.js
         - bubble.js
         - like-indicator.js
@@ -101,7 +103,6 @@
 'socialtext-activities.js':
     parts:
         - contrib/jquery.timers.js
-        - activities/jquery.dropdown.js
         - socialtext-editor-light.js
         - cookie.js
         - activities/push-client.js
@@ -281,6 +282,7 @@
         - jquery.poll.js
         - jquery.selectOverlap.js
         - contrib/jquery-ui-1.8.5.js
+        - contrib/jquery.ui.selectmenu.js
         - lookahead.js
         - fades.js
         - loc.js
@@ -290,8 +292,7 @@
       # - madlibs.js
         - contrib/jquery.timers.js
       # - fields.js
-        - { jemplate: 'template/dropdown.tt2' }
-        - activities/jquery.dropdown.js
+        - jquery.dropdown.js
         - socialtext-api.js
 
 # jQuery Mobile (for OpenSocial Widgets)

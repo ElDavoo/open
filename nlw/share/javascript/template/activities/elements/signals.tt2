@@ -1,7 +1,10 @@
 <div class="grid_sub_20 sub_alpha">
     <div class="networks">
-        [% post_to_prompt || loc('activities.post-to') %]
-        <span class="signal_network select" id="[% id('signal_network') %]"></span>
+        <div class="post_to_prompt">
+            [% post_to_prompt || loc('activities.post-to') %]
+        </div>
+        <select class="signal_network select" id="[% id('signal_network') %]">
+        </select>
     </div>
 </div>
 <div class="grid_sub_4 sub_omega">

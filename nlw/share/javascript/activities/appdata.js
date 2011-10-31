@@ -137,11 +137,8 @@ $.extend(Activities.AppData.prototype, {
     },
 
     getList: function(key) {
-        if (key == 'network') {
+        if (key == 'network' || key == 'signal_network') {
             return this.networks();
-        }
-        if (key == 'signal_network') {
-            return this.signalNetworks();
         }
         else if (key == 'action') {
             return this.actions();
@@ -209,19 +206,22 @@ $.extend(Activities.AppData.prototype, {
         this.save(type, value);
     },
 
-    networks: function() {
-        var self = this;
-        if (self._networks) return self._networks;
-
+    sortNetworks: function(networks) {
         function name_sort(a,b) {
             var a_name = a.name || a.account_name;
             var b_name = b.name || b.account_name;
             return a_name.toUpperCase().localeCompare(b_name.toUpperCase());
         };
+        return networks.sort(name_sort);
+    },
+
+    networks: function() {
+        var self = this;
+        if (self._networks) return self._networks;
 
         var prim_acc_id = self.user_data.primary_account_id
-        var sorted_accounts = self.user_data.accounts.sort(name_sort);
-        var sorted_groups = self.user_data.groups.sort(name_sort);
+        var sorted_accounts = self.sortNetworks(self.user_data.accounts);
+        var sorted_groups = self.sortNetworks(self.user_data.groups);
 
         var networks = [];
 
@@ -248,11 +248,13 @@ $.extend(Activities.AppData.prototype, {
 
             if (self.isCurrentNetwork(acc.value)) {
                 networks.push(acc);
+                acc.num_groups = 0;
             }
 
             // Now find the groups in that account
             $.each(sorted_groups, function(i, grp) {
                 if (grp.primary_account_id == acc.account_id) {
+                    acc.num_groups++;
                     var additional = loc(
                         'signals.network-count=users', grp.user_count
                     );
@@ -313,19 +315,28 @@ $.extend(Activities.AppData.prototype, {
             || this.fixed_network == net;
     },
 
-    signalNetworks: function() {
+    signalAccounts: function() {
         var self = this;
-        if (self._signal_networks) return self._signal_networks;
+        if (self._signal_accounts) return self._signal_accounts;
 
-        var networks = [];
-        $.each(self.networks(), function(i, network) {
-            if (($.inArray('signals', network.plugins_enabled) != -1) && 
-                (network.value != 'all')) {
-                networks.push(network);
-            }
+        var accounts = [];
+        $.each(self.sortNetworks(self.user_data.accounts), function(i, acc) {
+            if (!~$.inArray('signals', acc.plugins_enabled)) return;
+
+            // clone and push
+            acc = $.extend(true, { networks: [] }, acc);
+            accounts.push(acc);
+
+            // Add all the target networks
+            $.each(self.networks(), function(i, net) {
+                var account_id = net.primary_account_id || net.account_id;
+                if (account_id == acc.account_id) {
+                    acc.networks.push(net);
+                }
+            });
         });
 
-        return self._signal_networks = networks;
+        return self._signal_accounts = accounts;
     },
 
     actions: function() {
@@ -511,24 +522,25 @@ $.extend(Activities.AppData.prototype, {
         var fixed_network = Boolean(
             self.fixed_network || self.networks().length <= 1
         );
-        var signal_network = this.get('signal_network');
+        var signal_network = self.get('signal_network');
         if (signal_network) {
-            this.findId('signal_network').dropdown({
-                selected: signal_network.id,
-                fixed: fixed_network,
-                width: (self.workspace_id ? '170px' : '150px'),
-                options: self.signalNetworks(),
-                onChange: function(option) {
-                    if (option.warn) {
+            self.findId('signal_network')
+                .html(self.processTemplate('network_options'))
+                .dropdown()
+                .change(function() {
+                    self.selectSignalToNetwork($(this).val());
+
+                    // Check for warnings
+                    var network = self.get('signal_network');
+                    if (network.warn) {
                         self.findId('signal_network_warning').fadeIn('fast');
                     }
                     else {
                         self.findId('signal_network_warning').fadeOut('fast');
                     }
-                    self.selectSignalToNetwork(option.id);
-                }
-            });
-            this.selectSignalToNetwork(signal_network.value);
+                });
+
+            self.selectSignalToNetwork(signal_network.value);
             self.setupSelectSignalToNetworkWarningSigns();
         }
 
@@ -657,10 +669,6 @@ $.extend(Activities.AppData.prototype, {
             .removeAttr('disabled')
             .parents('.filterOption').removeClass('disabledOption');
 
-        if (self.signalNetworks().length) {
-            self.findId('signal_network').dropdownEnable();
-        }
-
         if (not_conversations[action]) {
             $(self.node)
                 .find('input.feed#feed-conversations')
@@ -707,16 +715,12 @@ $.extend(Activities.AppData.prototype, {
 
         var network = this.getById('network', network_id);
         this._signalToNetwork = network_id;
-        if (this.findId('signal_network').dropdownId() != network_id) {
-            this.findId('signal_network').dropdownSelectId(network_id);
-        }
+        this.findId('signal_network').val(network_id);
         if ($.inArray('signals', network.plugins_enabled) == -1) {
             this.disableSignals();
         }
         else {
-            if (this.findId('signal_network').dropdownId() != network_id) {
-                this.findId('signal_network').dropdownSelectId(network_id);
-            }
+            this.findId('signal_network').val(network_id);
             this._signalToNetwork = network_id;
             this.onSelectSignalToNetwork(network);
         }
