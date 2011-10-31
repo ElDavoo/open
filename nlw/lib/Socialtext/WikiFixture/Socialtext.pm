@@ -342,14 +342,11 @@ Verifies that the page title (NOT HTML title) is correct.
 =cut
 
 sub st_page_title {
-    my ($self, $expected_title) = @_;
-    if ($self->{'skin'} eq 's2') {
-        $self->{selenium}->text_like('id=st-list-title', qr/\Q$expected_title\E/);
-    } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$expected_title\E/);
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
+
+    my ($self, $expectedTitle) = @_;
+    my $contentDiv = '//div[@id=\'content\']';
+
+    $self->handle_command('text_like',$contentDiv,qr/\Q$expectedTitle\E/ );
 }
 
 =head2 st_page_multi_view( $url, $numviews) 
@@ -604,30 +601,15 @@ Performs a search, and then validates the result page has the correct title.
 
 
 sub st_search {
-    my ($self, $opt1, $opt2) = @_;
-    my $sel = $self->{selenium};
- 
-    $sel->type_ok('st-search-term', $opt1);
-    
-    if ($self->{'skin'} eq 's2') {
-        $sel->click_ok('link=Search');
-    } elsif ($self->{'skin'} eq 's3') {
-        $sel->click_ok('st-search-submit');
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
-    
-    $sel->wait_for_page_to_load_ok($self->{selenium_timeout});
-    
-    $opt2 = '' unless defined $opt2;
+    my ($self, $searchFor, $resultTitle) = @_;
+    my $contentDiv = '//div[@id=\'content\']';
 
-    if ($self->{'skin'} eq 's2') {
-        $self->{selenium}->text_like('id=st-list-title', qr/\Q$opt2\E/);
-    } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$opt2\E/);
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
+    $self->handle_command('wait_for_element_visible_ok','st-search-term',5000);
+    $self->handle_command('wait_for_element_visible_ok','st-search-submit',5000);
+    $self->handle_command('type_ok','st-search-term',$searchFor);
+    $self->handle_command('click_and_wait','st-search-submit',15000);
+    $self->handle_command('text_like',$contentDiv,qr/\Q$resultTitle\E/ );
+    
 }
 
 =head2 st_result( $expected_result )
@@ -637,17 +619,10 @@ Validates that the search result content contains a correct result.
 =cut
 
 sub st_result {
-    my ($self, $opt1, $opt2) = @_;
+    my ($self, $result) = @_;
+    my $contentDiv = '//div[@id=\'content\']';
 
-    if ($self->{'skin'} eq 's2') {
-        $self->{selenium}->text_like('id=st-search-content', 
-                                 $self->quote_as_regex($opt1));
-    } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'content\']', $self->quote_as_regex($opt1));
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
-
+    $self->handle_command('text_like',$contentDiv,qr/\Q$result\E/ );
 }
 
 =head2 st_match_text ($match, $variable_name) 

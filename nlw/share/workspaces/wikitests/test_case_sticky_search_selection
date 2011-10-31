@@ -18,18 +18,19 @@
 | verifyValue | st-search-action | search_signals |
 | open_ok | /?action=workspaces_listall |  |
 | verifyValue | st-search-action | search_workspaces |
-| open_ok | /st/explore |  |
-| verifyValue | st-search-action | search_signals |
 
 | *Comment* | Test Case: Search Selection is Sticky set dashboard search to People, check |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=People |
+| pause_ok | 3000 |  |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search People: |
 | verifyValue | st-search-action | search_people |
+| pause_ok | 3000 |  |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_people |
+| pause_ok | 3000 |  |
 
 | *Comment* | Test Case: Search Selection is Sticky set dashboard search to Workspace, check |  |
 | select_ok | st-search-action | label=My Workspaces |
