@@ -306,7 +306,7 @@ sub st_upload_attachment_to_wikipage {
     $self->handle_command('wait_for_text_present_ok','Uploaded files: ' . $file, 30000);
     $self->handle_command('wait_for_element_visible_ok', 'st-attachments-attach-closebutton', 30000);
     $self->handle_command('click_ok', 'st-attachments-attach-closebutton');
-    $self->handle_command('pause', 5000, 'pause to register index job');
+    $self->handle_command('pause_ok', 5000, 'pause to register index job');
     $self->handle_command('st_process_jobs','AttachmentIndex');
     $self->handle_command('wait_for_element_visible_ok','link='.$file,30000);
 }
@@ -416,8 +416,8 @@ sub get_id_from_url {
 
 sub st_page_save {
     my ($self) = @_;
-    st_pause_click($self, 3000, 'st-save-button-link', 'andWait');
-    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link');
+    st_pause_click($self, 3000,'st-save-button-link','andWait');
+    $self->handle_command('wait_for_element_visible_ok','st-edit-button-link','15000');
 }
 
 =head2 st_pause_click
@@ -428,8 +428,9 @@ sub st_page_save {
 
 sub st_pause_click {
     my ($self, $pause, $locator, $andwait) = @_;
-    $self->handle_command('pause',$pause);
     my $cmd = $andwait ? 'click_and_wait' : 'click_ok';
+    diag "st_pause_click: pausing $pause, then $cmd $locator";
+    $self->handle_command('pause_ok',$pause);
     $self->handle_command($cmd, $locator);
 }
 
@@ -445,7 +446,7 @@ sub st_click_pause {
     my $mypause = $pause ? $pause : '15000';
     diag "st_click_pause: $cmd $locator, pausing $mypause";
     $self->handle_command($cmd, $locator);
-    $self->handle_command('pause',$mypause);
+    $self->handle_command('pause_ok',$mypause);
 }
 
 =head2 st_create_wikipage ( $workspace, pagename )
@@ -582,7 +583,7 @@ sub st_email_page {
     my ($self, $url, $email) = @_;
     $self->handle_command('open_ok',$url);
     $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
-    $self->handle_command('pause', 2000);
+    $self->handle_command('pause_ok', 2000);
     $self->handle_command('click_ok','st-pagetools-email');
     $self->handle_command('wait_for_element_visible_ok','st-email-lightbox', 30000);
     $self->handle_command('wait_for_element_visible_ok','email_recipient', 30000);
