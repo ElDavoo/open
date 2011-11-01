@@ -5,6 +5,7 @@ $.fn.extend({
         if (window.st && window.st.UA_is_Selenium) { return this; }
 
         this.selectmenu({
+            wrapperElement: '<span />',
             style: 'dropdown',
             width: 'auto'
         });

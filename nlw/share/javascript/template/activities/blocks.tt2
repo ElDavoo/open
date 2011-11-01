@@ -64,9 +64,9 @@
     [% FOR section = options %]
         [% IF section.networks.size %]
             <optgroup class="[% section.class %]" label="[% section.title %]">
-                [% FOR network = section.networks %]
-                    <option value="[% network.value %]">
-                        [% network.title %]
+                [% FOR net = section.networks %]
+                    <option value="[% net.value %]" class="[% net.class %]">
+                        [% net.title %]
                     </option>
                 [% END %]
             </optgroup>

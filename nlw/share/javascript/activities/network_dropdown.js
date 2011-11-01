@@ -51,10 +51,9 @@ $.extend(Activities.NetworkDropdown.prototype, {
                         self.appdata.selectSignalToNetwork($(this).val());
 
                         // Check for warnings
-                        var $optgroup = $(this).find('option:selected')
-                            .parents('optgroup');
+                        var $opt = $(this).find('option:selected')
 
-                        if ($optgroup.hasClass('warning')) {
+                        if ($opt.hasClass('warning')) {
                             self.findId('signal_network_warning')
                                 .fadeIn('fast');
                         }
@@ -76,8 +75,7 @@ $.extend(Activities.NetworkDropdown.prototype, {
             { title: loc('Workspace Groups'), networks: [] },
             {
                 title: loc('Non-Workspace Groups'),
-                networks: [],
-                'class': 'warning'
+                networks: []
             }
         ];
 
@@ -93,6 +91,7 @@ $.extend(Activities.NetworkDropdown.prototype, {
                 if (/^account-/.test(net.value)) {
                     if ((data.is_all_users_workspace) && (val == 'account-' + data.account_id)) {
                         // No warning signs for All-user workspace on the primary account
+                        net['class'] = 'warning';
                         sections[1].networks.push(net);
                     }
                     return;
@@ -100,6 +99,7 @@ $.extend(Activities.NetworkDropdown.prototype, {
 
                 var id = parseInt(net.value.substr(6));
                 if ($.grep(data.group_ids, function(g) { return (g == id) }).length == 0) {
+                    net['class'] = 'warning';
                     sections[1].networks.push(net);
                     return;
                 }
