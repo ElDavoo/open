@@ -39,31 +39,32 @@
 | wait_for_element_visible_ok | network-all | 5000 |
 | wait_for_element_visible_ok | account-%%account_id%% | 5000 |
 | wait_for_element_visible_ok | group-%%group_id%% | 5000 |
+| click_ok | //a[@class='expander'] | close it |
 
-| *Comment* | Test Case: Groups UI Send Signal to Group. "Post to" list shows account and group |  |
-| wait_for_element_present_ok | //a[@value='account-%%account_id%%'] | 5000 |
-| wait_for_element_present_ok | //a[@value='group-%%group_id%%'] | 5000 |
+| *Comment* | Test Case: Groups UI Send Signal to Group. "Post to" list - select account |  |
+| select_ok | //select[@class="signal_network select"] | value=account-%%account_id%% |
+| is_selected_ok | //select[@class="signal_network select"] | value=account-%%account_id%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%account_signal%% |  |
 | st-send-signal-in-activities-widget | %%account_signal%% |  |
 | st-verify-text-in-activities-widget | qr/%%group_acct%%.+By you.*minute.*ago\s*to/ism |  |
 | st-verify-text-in-activities-widget | %%account_signal%% |  |
-| open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Choose within %%group_name%% |  |
+| open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
 | click_ok | //a[@class='expander'] |  |
 | wait_for_element_visible_ok | group-%%group_id%% | 5000 |
 | click_ok | group-%%group_id%% |  |
-| mouseOver | //span[@class='signal_network select dropdown'] |  |
-| wait_for_element_visible_ok | //a[@value='group-%%group_id%%'] | 5000 |
-| click_ok | //a[@value='group-%%group_id%%'] |  |
+| click_ok | //a[@class='expander'] | close it |
+
+| select_ok | //select[@class="signal_network select"] | value=group-%%group_id%% |
+| is_selected_ok | //select[@class="signal_network select"] | value=group-%%group_id%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%group_signal%% |  |
-
-| st-send-signal-in-activities-widget | %%group_signal%% |
-| st-verify-text-in-activities-widget | qr/%%group_name%%.+By you.*minute.*ago\s*to/ism |
-| st-verify-text-in-activities-widget | %%group_signal%% |
+| st-send-signal-in-activities-widget | %%group_signal%% |  |
+| st-verify-text-in-activities-widget | qr/%%group_name%%.+By you.*minute.*ago\s*to/ism |  |
+| st-verify-text-in-activities-widget | %%group_signal%% |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. login as group member %%ssg_user%% |  |
 | st-logoutin | %%ssg_user%% | %%password%% |
@@ -77,18 +78,17 @@
 | click_ok | //a[@class='expander'] |  |
 | wait_for_element_visible_ok | group-%%group_id%% | 5000 |
 | click_ok | group-%%group_id%% |  |
+| click_ok | //a[@class='expander'] | close it |
 
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | I'm new | 30000 |
+| *Comment* | Test Case: Groups UI Send Signal to Group. Navigate away and back; check sticky settings |  |
+| open_ok | /?action=workspaces_listall |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
-| st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. see group signal only, not account signal |  |
 | st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |  |
 | st-verify-text-in-activities-widget | %%group_signal%% |  |
-
-| st_text_unlike_in_activities_widget | signals_widget | %%account_signal%% |
+| st_text_unlike_in_activities_widget | ignore | %%account_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within All my groups |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
@@ -96,12 +96,7 @@
 | wait_for_element_visible_ok | network-all | 5000 |
 | click_ok | network-all |  |
 | wait_for_text_present_ok | %%account_signal%% | 30000 |
-
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | I'm new | 30000 |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | Colleagues | 30000 |
-| st-name-widget | 1 | signals_widget |
+| click_ok | //a[@class='expander'] | close it |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Verify %%ssg_user%% sees both signals |  |
 | st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |  |
@@ -114,31 +109,23 @@
 | click_ok | //a[@class='expander'] |  |
 | wait_for_element_visible_ok | account-%%account_id%% | 5000 |
 | click_ok | account-%%account_id%% |  |
-| pause_ok | 2000 |  |
-
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | I'm new | 30000 |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | Colleagues | 30000 |
-| st-name-widget | 1 | signals_widget |
+| click_ok | //a[@class='expander'] | close it |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Verify %%ssg_user%% sees only account signal |  |
 | st-verify-text-in-activities-widget | %%account_signal%% |  |
-
-| st_text_unlike_in_activities_widget | signals_widget | %%group_signal%% |
+| st_text_unlike_in_activities_widget | ignore | %%group_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Verify non-member of %%group_name%% sees only account signals |  |
 | st-logoutin | %%ssg_non_member%% | %%password%% |
 
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
-| st-name-widget | 1 | signals_widget |
 
 | st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_acct%%/ |
 | st-verify-text-in-activities-widget | %%account_signal%% |
 
-| st_text_unlike_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
-| st_text_unlike_in_activities_widget | signals_widget | %%group_signal%% |
+| st_text_unlike_in_activities_widget | ignore | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
+| st_text_unlike_in_activities_widget | ignore | %%group_signal%% |
 
 | *Comment* | Groups UI Send Signal to Group search does not find group-only signal |  |
 | type_ok | st-search-term | %%group_name%% |
@@ -217,8 +204,8 @@
 | st-process-jobs |  |  |
 | delete-group | %%group_id%% |  |
 | delete-workspace | %%group_ws%% |  |
-| st-admin | deactivate-user --email %%ssg_user%% | has been removed |
-| st-admin | deactivate-user --email %%ssg_non_member%% | has been removed |
+| st-admin | deactivate-user --email %%ssg_user%% | has been deactivated |
+| st-admin | deactivate-user --email %%ssg_non_member%% | has been deactivated |
 | delete_account | %%group_acct%% | Recklessly deleting |
 
 | *Comment* | Groups UI Send Signal to Group COMPLETED |  |
