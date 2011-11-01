@@ -19,12 +19,9 @@
 | set | group12_id | %%group_id%% |  |
 | create-group | %%group21%% | %%acct2%% | %%msg_user%% |
 | set | group21_id | %%group_id%% |  |
-| st-process-jobs |  |  |  |
 
 | *Comment* | Test Case: Mobile Signals to Group check order of groups in Post to: menu |  |
 | st-logoutin | %%msg_user%% | %%password%% |
-| open_ok | /st/m/signals |  |
-| pause_ok | 5000 |  |
 | open_ok | /st/m/signals |  |
 | wait_for_element_visible_ok | link=%%acct1%% (primary, 1 user) | 30000 |
 | mouseOver | link=%%acct1%% (primary, 1 user) |  |
