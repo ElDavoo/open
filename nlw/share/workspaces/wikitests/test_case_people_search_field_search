@@ -1,26 +1,26 @@
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: People Search Field Search. Use these lines for stand-alone development |  |
-| set_default | userfive | user-five%%start_time%% |
-| set_default | euserfive | `"%%userfive%%@ken.socialtext.net"<mailto:%2525%2525userfive%2525%2525@ken.socialtext.net>` |
-| set_default | current_user | %%euserfive%% |
-| set_default | first | Joe |
-| set_default | middle | JH |
-| set_default | last | Harter |
-| set_default | default_field | default-five |
-| set_default | location | Oshkosh, WI |
-| set_default | diffacct | diff-acct%%start_time%% |
-| set_default | diffws | diff-ws%%start_time%% |
+| *Comment* | Test Case: People Search Field Search. Use these lines for stand-alone development |  |  |
+| set_default | userfive | user-five%%start_time%% |  |
+| set_default | euserfive | `%%userfive%%@ken.socialtext.net` |  |
+| set_default | current_user | %%euserfive%% |  |
+| set_default | first | Joe |  |
+| set_default | middle | JH |  |
+| set_default | last | Harter |  |
+| set_default | default_field | default-five |  |
+| set_default | location | Oshkosh, WI |  |
+| set_default | diffacct | diff-acct%%start_time%% |  |
+| set_default | diffws | diff-ws%%start_time%% |  |
 
 | set | names | %%first%% %%middle%% %%last%% |  |
 
-| *Comment* | Test Case: People Search Field Search. Restore these lines for stand-alone development |  |
+| *Comment* | Test Case: People Search Field Search. Restore these lines for stand-alone development |  |  |
 
-st-admin | create-account --name %%diffacct%% | |
-st-admin | create-user --e %%euserfive%% --p %%password%% --account %%diffacct%% | |
-st-admin | add-member --e %%euserfive%% --w %%diffws%% | |
+st-admin | create-account --name %%diffacct%% | | |
+st-admin | create-user --e %%euserfive%% --p %%password%% --account %%diffacct%% | | |
+st-admin | add-member --e %%euserfive%% --w %%diffws%% | | |
 st-logoutin | %%euserfive%% | %%password%% | |
-include | [Test Case: People Search Edit A Profile] | |
+include | [Test Case: People Search Edit A Profile] | | |
 
 | *Comment* | Test Case: People Search Field Search. Index %%names%% profile |  |
 | *Comment* | This test behaves as if indexing is delayed, so process all jobs, not just index jobs |  |
@@ -28,7 +28,7 @@ include | [Test Case: People Search Edit A Profile] | |
 
 | *Comment* | Test Case: People Search Field Search Access People. |  |
 | open_ok | /?action=people |  |
-| select_ok | st-search-action | label=People |
+| select_ok | st-search-action | label=Search People: |
 
 | *Comment* | Test Case: People Search Field Search. Search each field |  |
 | st-search | name:"%%names%%" | Showing 1 - 1 of 1 total |
@@ -73,7 +73,7 @@ include | [Test Case: People Search Edit A Profile] | |
 | text_like | %%names%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
-| st-search | yahoo:"%%default_field%% yahoo" | Showing 1 - 1 of 1 total |
+| st-search | `yahoo:"%%default_field%% yahoo"` | Showing 1 - 1 of 1 total |
 | text_like | %%names%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
@@ -81,7 +81,7 @@ include | [Test Case: People Search Edit A Profile] | |
 | text_like | %%names%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 
-| st-search | skype:"%%default_field%% skype" | Showing 1 - 1 of 1 total |
+| st-search | `skype:"%%default_field%% skype"` | Showing 1 - 1 of 1 total |
 | text_like | %%names%% |  |
 | st-search | NoSuch | Showing 1 - 0 of 0 total |
 

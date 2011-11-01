@@ -54,8 +54,8 @@
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Search; see all members |  |
 | open_ok | / |  |
-| wait_for_element_visible_ok | st-search-action | 10000 |
-| st-search-for | People | %%start_time%% |
+| wait_for_element_present_ok | st-search-action | 10000 |
+| st-search-for | Search People: | %%start_time%% |
 | wait_for_text_present_ok | People matching | 10000 |
 | text_like | content | qr/Showing 1 - 7 of 7 total/ism |
 | text_like | content | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
@@ -80,8 +80,8 @@
 | text_like | content | qr/%%utf8_first_name%% %%utf8_last_name%%/ism |
 
 | *Comment* | Test Case: Groups UI Filter Search Results by Group Search - Search within group, don't see member3 |  |
-| wait_for_element_visible_ok | st-search-action | 10000 |
-| select_ok | st-search-action | People |
+| wait_for_element_present_ok | st-search-action | 10000 |
+| select_ok | st-search-action | label=Search People: |
 | wait_for_element_visible_ok | st-search-term | 10000 |
 | type_ok | st-search-term | member |
 | wait_for_element_visible_ok | st-search-submit | 10000 |
