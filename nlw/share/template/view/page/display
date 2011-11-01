@@ -25,16 +25,22 @@
 
 <div id="st-editor" style="display:none"></div>
 
+<div class="showHide">
+  <div class="grid_18">
+    <h1 id="st-page-titletext" title="[% page.display_title %]">[% page.display_title %]</h1>
+  </div>
+  <div class="grid_6">
+    [% SET locked = page_locked_for_user %]
+    [% INCLUDE 'element/page/display/edit-button' %]
+    <a id="st-page-boxes-hide-link" href="#"><span class="arrow">&#9658;</span>[% loc('nav.hide') %]</a>
+    <a id="st-page-boxes-show-link" href="#"><span class="arrow">&#9660;</span>[% loc('nav.show') %]</a>
+  </div>
+  <div class="clear"></div>
+</div>
+
 <div id="st-display-mode-container" class="grid_18" data-expanded="grid_18" data-collapsed="grid_24">
 
-
   <div class="widget">
-    <div class="showHide">
-      <h1 class="grid_18 alpha omega" id="st-page-titletext" title="[% page.display_title %]">[% page.display_title %]</h1>
-      <a id="st-page-boxes-show-link" href="#"><span class="arrow">&#9660;</span>[% loc('nav.show') %]</a>
-    </div>
-    <div class="clear"></div>
-
     <div class="content" id="st-page-content">
       [% IF page.edit_in_progress %]
       <div id="contentWarning" class="grid_16 warning">

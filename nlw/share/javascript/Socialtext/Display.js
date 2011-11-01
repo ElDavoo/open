@@ -26,12 +26,14 @@ Socialtext.prototype.setupPageHandlers = function() {
         $container.addClass($container.data('collapsed'));
         $('#st-display-mode-widgets').hide();
         $('#st-page-boxes-show-link').show();
+        $('#st-page-boxes-hide-link').hide();
         return false;
     });
     $('#st-page-boxes-show-link').click(function() {
         $container.removeClass($container.data('collapsed'));
         $container.addClass($container.data('expanded'));
         $('#st-page-boxes-show-link').hide();
+        $('#st-page-boxes-hide-link').show();
         $('#st-display-mode-widgets').show();
         return false;
     });
