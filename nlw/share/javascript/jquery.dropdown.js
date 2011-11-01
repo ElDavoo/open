@@ -2,6 +2,8 @@
 
 $.fn.extend({
     dropdown: function(options) {
+        if (window.st && window.st.UA_is_Selenium) { return this; }
+
         this.selectmenu({
             style: 'dropdown',
             width: 'auto'
