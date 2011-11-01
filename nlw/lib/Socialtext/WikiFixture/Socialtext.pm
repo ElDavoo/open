@@ -342,8 +342,7 @@ sub st_page_title {
 
     my ($self, $expectedTitle) = @_;
     my $contentDiv = '//div[@id=\'content\']';
-
-    $self->handle_command('text_like',$contentDiv,qr/\Q$expectedTitle\E/ );
+    $self->handle_command('text_like',$contentDiv,$expectedTitle);
 }
 
 =head2 st_page_multi_view( $url, $numviews) 
@@ -604,8 +603,8 @@ sub st_search {
     $self->handle_command('wait_for_element_visible_ok','st-search-term',5000);
     $self->handle_command('wait_for_element_visible_ok','st-search-submit',5000);
     $self->handle_command('type_ok','st-search-term',$searchFor);
-    $self->handle_command('click_and_wait','st-search-submit',15000);
-    $self->handle_command('text_like',$contentDiv,qr/\Q$resultTitle\E/ );
+    $self->handle_command('click_and_wait','st-search-submit');
+    $self->handle_command('text_like',$contentDiv,$resultTitle );
     
 }
 
@@ -619,7 +618,7 @@ sub st_result {
     my ($self, $result) = @_;
     my $contentDiv = '//div[@id=\'content\']';
 
-    $self->handle_command('text_like',$contentDiv,qr/\Q$result\E/ );
+    $self->handle_command('text_like',$contentDiv,$result );
 }
 
 =head2 st_match_text ($match, $variable_name) 
