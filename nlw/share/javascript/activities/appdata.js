@@ -315,7 +315,7 @@ $.extend(Activities.AppData.prototype, {
             || this.fixed_network == net;
     },
 
-    signalAccounts: function() {
+    signalToOptions: function() {
         var self = this;
         if (self._signal_accounts) return self._signal_accounts;
 
@@ -324,14 +324,14 @@ $.extend(Activities.AppData.prototype, {
             if (!~$.inArray('signals', acc.plugins_enabled)) return;
 
             // clone and push
-            acc = $.extend(true, { networks: [] }, acc);
-            accounts.push(acc);
+            var section = { title: acc.account_name, networks: [] };
+            accounts.push(section);
 
             // Add all the target networks
             $.each(self.networks(), function(i, net) {
                 var account_id = net.primary_account_id || net.account_id;
                 if (account_id == acc.account_id) {
-                    acc.networks.push(net);
+                    section.networks.push(net);
                 }
             });
         });
@@ -525,23 +525,17 @@ $.extend(Activities.AppData.prototype, {
         var signal_network = self.get('signal_network');
         if (signal_network) {
             self.findId('signal_network')
-                .html(self.processTemplate('network_options'))
+                .html(
+                    self.processTemplate('network_options', {
+                        options: self.signalToOptions()
+                    })
+                )
                 .dropdown()
                 .change(function() {
                     self.selectSignalToNetwork($(this).val());
-
-                    // Check for warnings
-                    var network = self.get('signal_network');
-                    if (network.warn) {
-                        self.findId('signal_network_warning').fadeIn('fast');
-                    }
-                    else {
-                        self.findId('signal_network_warning').fadeOut('fast');
-                    }
                 });
 
             self.selectSignalToNetwork(signal_network.value);
-            self.setupSelectSignalToNetworkWarningSigns();
         }
 
         self.findId('expander').toggle(
@@ -558,100 +552,6 @@ $.extend(Activities.AppData.prototype, {
         );
 
         self.checkDisabledOptions();
-    },
-
-    setupSelectSignalToNetworkWarningSigns: function() {
-        var self = this;
-
-        if (!self.workspace_id) {
-            return;
-        }
-
-        if (!self.findId('signal_network').size()) {
-            return;
-        }
-
-        $.getJSON('/data/workspaces/' + self.workspace_id, function(data) {
-            var warningText = loc('info.edit-summary-signal-visibility');
-            var dropdown = self.findId('signal_network').get(0).dropdown;
-            var $firstGroup;
-            var seenWarning = false;
-            $.each(dropdown.options, function(i, option){
-                var val = option.value;
-                var $node = $(option.node);
-
-                if (/^account-/.test(val)) {
-                    if ((data.is_all_users_workspace) && (val == 'account-' + data.account_id)) {
-                        // No warning signs for All-user workspace on the primary account
-                        return;
-                    }
-
-                    option.warn = seenWarning = true;
-                    $node.attr('title', warningText);
-                    return;
-                }
-
-                var id = parseInt(val.substr(6));
-                if ($.grep(data.group_ids, function(g) { return (g == id) }).length == 0) {
-                    option.warn = seenWarning = true;
-                    $node.attr('title', warningText);
-                    return;
-                }
-
-                if (!$firstGroup) {
-                    $firstGroup = $('<li style="font-weight: bold" class="dropdownItem">Non-workspace Groups</li>').css({
-                        fontSize: '11px',
-                        lineHeight: '12px',
-                        fontFamily: 'arial,helvetica,sans-serif',
-                        background: 'url(/static/images/warning-icon.png) right top no-repeat'
-                    }).attr('title', warningText).prependTo(dropdown.listNode);
-
-                    $('<li style="font-weight: bold" class="dropdownItem">Workspace Groups</li>').css({
-                        fontSize: '11px',
-                        lineHeight: '12px',
-                        fontFamily: 'arial,helvetica,sans-serif'
-                    }).prependTo(dropdown.listNode);
-
-                    dropdown._selectOption(option);
-                    self.selectSignalToNetwork(option.value);
-                }
-
-                option.warn = false;
-                option.node = $node.parent('li').remove().insertBefore($firstGroup).find('a:first').get(0);
-
-                $(option.node).click(function() {
-                    dropdown.selectOption(option);
-                    return false;
-                });
-            });
-
-            if (!$firstGroup) {
-                $('<li style="font-weight: bold" class="dropdownItem">Non-workspace Groups</li>').css({
-                    fontSize: '11px',
-                    lineHeight: '12px',
-                    fontFamily: 'arial,helvetica,sans-serif',
-                    background: 'url(/static/images/warning-icon.png) right top no-repeat'
-                }).attr('title', warningText).prependTo(dropdown.listNode);
-
-                dropdown._selectOption(dropdown.selectedOption());
-            }
-
-            if ($firstGroup && !seenWarning) {
-                $firstGroup.remove();
-            }
-
-            if (dropdown.selectedOption().warn) {
-                self.findId('signal_network_warning').fadeIn('fast');
-            }
-            else {
-                self.findId('signal_network_warning').fadeOut('fast');
-            }
-
-            $(dropdown.listNode).css('overflow-x', 'hidden');
-            if ($('li', dropdown.listNode).size() > 7) {
-                $(dropdown.listNode).height(160).css('overflow-y', 'scroll');
-            }
-        });
     },
 
     checkDisabledOptions: function() {

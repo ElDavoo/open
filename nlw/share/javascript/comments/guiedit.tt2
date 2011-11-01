@@ -30,7 +30,7 @@
       <div class="signal">
         <input id="st-comment-st-edit-summary-signal-checkbox" type="checkbox" /><label for="st-comment-st-edit-summary-signal-checkbox">[% loc('comment.signal-to') %]</label>
         <input id="st-comment-st-edit-summary-signal-to" type="hidden" />
-        <span id="st-comment-signal_network">...</span>
+        <select id="st-comment-signal_network"></select>
         <img title="[% loc('info.edit-summary-signal-visibility') %]" style="vertical-align: top; display: none" src="/static/images/warning-icon.png" id="st-comment-signal_network_warning">
       </div>
     [% END %]

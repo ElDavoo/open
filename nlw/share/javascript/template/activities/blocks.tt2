@@ -61,10 +61,10 @@
 [% END %]
 
 [% BLOCK network_options %]
-    [% FOR account = this.signalAccounts %]
-        [% IF account.networks.size %]
-            <optgroup label="[% account.account_name %]">
-                [% FOR network = account.networks %]
+    [% FOR section = options %]
+        [% IF section.networks.size %]
+            <optgroup class="[% section.class %]" label="[% section.title %]">
+                [% FOR network = section.networks %]
                     <option value="[% network.value %]">
                         [% network.title %]
                     </option>

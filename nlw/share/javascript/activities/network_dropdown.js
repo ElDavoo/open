@@ -38,69 +38,77 @@ $.extend(Activities.NetworkDropdown.prototype, {
             self.appdata.selectSignalToNetwork = function(network){
                 self.findId('st-edit-summary-signal-to').val(network);
             };
+        
+            self.getSignalToNetworks(function(networks) {
+                self.findId('signal_network')
+                    .html(
+                        self.appdata.processTemplate('network_options', {
+                            options: networks
+                        })
+                    )
+                    .dropdown()
+                    .change(function() {
+                        self.appdata.selectSignalToNetwork($(this).val());
 
-            self.findId('signal_network').text('').dropdown({
-                selected: default_network,
-                fixed: null,
-                width: self.width || '170px',
-                options: self.appdata.signalNetworks(),
-                onChange: function(option) {
-                    if (option.warn) {
-                        self.findId('signal_network_warning').fadeIn('fast');
-                    }
-                    else {
-                        self.findId('signal_network_warning').fadeOut('fast');
-                    }
-                    self.appdata.selectSignalToNetwork(option.value);
-                    self.findId('st-edit-summary-signal-checkbox')
-                        .attr('checked', true);
-                }
+                        // Check for warnings
+                        var $optgroup = $(this).find('option:selected')
+                            .parents('optgroup');
+
+                        if ($optgroup.hasClass('warning')) {
+                            self.findId('signal_network_warning')
+                                .fadeIn('fast');
+                        }
+                        else {
+                            self.findId('signal_network_warning')
+                                .fadeOut('fast');
+                        }
+                        self.findId('st-edit-summary-signal-checkbox')
+                            .attr('checked', true);
+                    })
             });
+        });
+    },
 
-            self.findId('signal_network').children('a').css({ 
-                width: ( 
-                    self.width || ( 
-                        ($.browser.msie && $.browser.version < 7) 
-                            ? '85px' // IE6 
-                            : '105px' 
-                    ) 
-                ), 
-                verticalAlign: 'top', 
-                height: '30px', 
-                overflow: 'hidden', 
-                display: 'inline-block', 
-                whiteSpace: 'nowrap' 
-            }); 
+    getSignalToNetworks: function(cb) {
+        var self = this;
 
-            if ($.browser.msie) {
-                if (self.width) {
-                    self.findId('signal_network').children('a').css({
-                        height: '16px',
-                        marginTop: '7px'
-                    });
-                }
-                else {
-                    self.findId('signal_network').children('a').css({
-                        marginLeft: '-4px',
-                        marginTop: '-9px'
-                    });
-                }
+        var sections = [
+            { title: loc('Workspace Groups'), networks: [] },
+            {
+                title: loc('Non-Workspace Groups'),
+                networks: [],
+                'class': 'warning'
             }
-            else if (self.width) {
-                self.findId('signal_network').children('a').css({
-                    marginTop: '2px'
-                });
-            }
+        ];
 
-            self.findId('signal_network').find('.dropdownOptions').css({
-                'margin-top': '-15px',
-                'margin-left': '11em'
-            });
-            self.findId('signal_network').find('.dropdownOptions li').css({
-                'line-height': '16px'
+        $.getJSON('/data/workspaces/' + self.workspace_id, function(data) {
+            var warningText = loc('info.edit-summary-signal-visibility');
+            var dropdown = self.findId('signal_network').get(0);
+            var $firstGroup;
+            var seenWarning = false;
+            $.each(self.appdata.networks(), function(i, net) {
+                if (net.value == 'all') return;
+                if (!~$.inArray('signals', net.plugins_enabled)) return;
+
+                if (/^account-/.test(net.value)) {
+                    if ((data.is_all_users_workspace) && (val == 'account-' + data.account_id)) {
+                        // No warning signs for All-user workspace on the primary account
+                        sections[1].networks.push(net);
+                    }
+                    return;
+                }
+
+                var id = parseInt(net.value.substr(6));
+                if ($.grep(data.group_ids, function(g) { return (g == id) }).length == 0) {
+                    sections[1].networks.push(net);
+                    return;
+                }
+
+                sections[0].networks.push(net);
             });
 
-            self.appdata.setupSelectSignalToNetworkWarningSigns();
+            cb(sections);
+            return;
         });
     }
 });
