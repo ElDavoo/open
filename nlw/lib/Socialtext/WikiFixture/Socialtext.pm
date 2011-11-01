@@ -69,16 +69,13 @@ sub init {
         die "$_ is mandatory!" unless $self->{$_};
     }
    
-    #Get the workspace skin if the workspace attribute is set
-    #Otherwise, default to s3
+    #Default skin to s3 since skin is obsolete
     my $ws = Socialtext::Workspace->new( name => $self->{workspace} );
-    my $skin = 's3';
     if (defined($ws)) {
-        $skin = $ws->skin_name() || 's3';
         $self->{'workspace_id'} = $ws->workspace_id;
     }
   
-    $self->{'skin'} = $skin;
+    $self->{'skin'} = 's3';
     
     my $short_username = $self->{'username'};
     $short_username =~ s/^([\W\w\.]*)\@.+$/$1/; # truncate if email address
@@ -306,7 +303,7 @@ sub st_upload_attachment_to_wikipage {
     $self->handle_command('wait_for_text_present_ok','Uploaded files: ' . $file, 30000);
     $self->handle_command('wait_for_element_visible_ok', 'st-attachments-attach-closebutton', 30000);
     $self->handle_command('click_ok', 'st-attachments-attach-closebutton');
-    $self->handle_command('pause', 5000, 'pause to register index job');
+    $self->handle_command('pause_ok', 5000, 'pause to register index job');
     $self->handle_command('st_process_jobs','AttachmentIndex');
     $self->handle_command('wait_for_element_visible_ok','link='.$file,30000);
 }
@@ -342,14 +339,10 @@ Verifies that the page title (NOT HTML title) is correct.
 =cut
 
 sub st_page_title {
-    my ($self, $expected_title) = @_;
-    if ($self->{'skin'} eq 's2') {
-        $self->{selenium}->text_like('id=st-list-title', qr/\Q$expected_title\E/);
-    } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$expected_title\E/);
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
+
+    my ($self, $expectedTitle) = @_;
+    my $contentDiv = '//div[@id=\'content\']';
+    $self->handle_command('text_like',$contentDiv,$expectedTitle);
 }
 
 =head2 st_page_multi_view( $url, $numviews) 
@@ -416,8 +409,8 @@ sub get_id_from_url {
 
 sub st_page_save {
     my ($self) = @_;
-    st_pause_click($self, 3000, 'st-save-button-link', 'andWait');
-    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link');
+    st_pause_click($self, 3000,'st-save-button-link','andWait');
+    $self->handle_command('wait_for_element_visible_ok','st-edit-button-link','15000');
 }
 
 =head2 st_pause_click
@@ -428,8 +421,9 @@ sub st_page_save {
 
 sub st_pause_click {
     my ($self, $pause, $locator, $andwait) = @_;
-    $self->handle_command('pause',$pause);
     my $cmd = $andwait ? 'click_and_wait' : 'click_ok';
+    diag "st_pause_click: pausing $pause, then $cmd $locator";
+    $self->handle_command('pause_ok',$pause);
     $self->handle_command($cmd, $locator);
 }
 
@@ -445,7 +439,7 @@ sub st_click_pause {
     my $mypause = $pause ? $pause : '15000';
     diag "st_click_pause: $cmd $locator, pausing $mypause";
     $self->handle_command($cmd, $locator);
-    $self->handle_command('pause',$mypause);
+    $self->handle_command('pause_ok',$mypause);
 }
 
 =head2 st_create_wikipage ( $workspace, pagename )
@@ -582,7 +576,7 @@ sub st_email_page {
     my ($self, $url, $email) = @_;
     $self->handle_command('open_ok',$url);
     $self->handle_command('wait_for_element_visible_ok','st-pagetools-email', 30000);
-    $self->handle_command('pause', 2000);
+    $self->handle_command('pause_ok', 2000);
     $self->handle_command('click_ok','st-pagetools-email');
     $self->handle_command('wait_for_element_visible_ok','st-email-lightbox', 30000);
     $self->handle_command('wait_for_element_visible_ok','email_recipient', 30000);
@@ -603,30 +597,15 @@ Performs a search, and then validates the result page has the correct title.
 
 
 sub st_search {
-    my ($self, $opt1, $opt2) = @_;
-    my $sel = $self->{selenium};
- 
-    $sel->type_ok('st-search-term', $opt1);
-    
-    if ($self->{'skin'} eq 's2') {
-        $sel->click_ok('link=Search');
-    } elsif ($self->{'skin'} eq 's3') {
-        $sel->click_ok('st-search-submit');
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
-    
-    $sel->wait_for_page_to_load_ok($self->{selenium_timeout});
-    
-    $opt2 = '' unless defined $opt2;
+    my ($self, $searchFor, $resultTitle) = @_;
+    my $contentDiv = '//div[@id=\'content\']';
 
-    if ($self->{'skin'} eq 's2') {
-        $self->{selenium}->text_like('id=st-list-title', qr/\Q$opt2\E/);
-    } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'content\']', qr/\Q$opt2\E/);
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
+    $self->handle_command('wait_for_element_visible_ok','st-search-term',5000);
+    $self->handle_command('wait_for_element_visible_ok','st-search-submit',5000);
+    $self->handle_command('type_ok','st-search-term',$searchFor);
+    $self->handle_command('click_and_wait','st-search-submit');
+    $self->handle_command('text_like',$contentDiv,$resultTitle );
+    
 }
 
 =head2 st_result( $expected_result )
@@ -636,17 +615,10 @@ Validates that the search result content contains a correct result.
 =cut
 
 sub st_result {
-    my ($self, $opt1, $opt2) = @_;
+    my ($self, $result) = @_;
+    my $contentDiv = '//div[@id=\'content\']';
 
-    if ($self->{'skin'} eq 's2') {
-        $self->{selenium}->text_like('id=st-search-content', 
-                                 $self->quote_as_regex($opt1));
-    } elsif ($self->{'skin'} eq 's3') {
-        $self->{selenium}->text_like('//div[@id=\'content\']', $self->quote_as_regex($opt1));
-    } else {
-        ok 0, "Unknown skin type: $self->{'skin'}";
-    }
-
+    $self->handle_command('text_like',$contentDiv,$result );
 }
 
 =head2 st_match_text ($match, $variable_name) 
@@ -1458,15 +1430,8 @@ sub _click_user_row {
         $chk_xpath = "//tbody/tr[$row]$click_col";
         
         $sel->$method_name($chk_xpath);
-        if ($self->{'skin'} eq 's3') {
-            $self->click_and_wait('link=Save');
-            $sel->text_like('content', qr/\QChanges Saved\E/);
-         } elsif ($self->{'skin'} eq 's2') {
-            $self->click_and_wait('Button');
-            $sel->text_like('st-settings-section', qr/\QChanges Saved\E/);
-         } else {
-            ok 0, "Unknown skin type: $self->{'skin'}";
-        }
+        $self->click_and_wait('link=Save');
+        $sel->text_like('content', qr/\QChanges Saved\E/);
         return $chk_xpath;
     }
     ok 0, "Could not find '$email' in the table";

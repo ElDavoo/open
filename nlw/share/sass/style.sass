@@ -173,11 +173,6 @@ h4
     left: 5px
     color: $lightest
 
-/* Search boxes */
-.searchText
-  padding-left: 18px
-  background: $lightest url(#{$static}/images/icons/search-darker-15.png) no-repeat 2px 3px
-
 header
   height: 100px
   color: $header_contrast
@@ -195,7 +190,11 @@ header
     margin-top: 10px
     text-align: right
     .searchText
-      width: 100px
+      width: 140px
+      padding: 0 0 0 4px
+    .searchText, .submit, .ui-selectmenu
+      height: 25px
+      vertical-align: top
 
 /**
  * Footer
@@ -241,6 +240,11 @@ footer
     float: left
   .placeholder
     border: 3px dotted $light
+
+.locked-page
+  background-repeat: no-repeat !important
+  background-position: left !important
+  background-image: url(#{$static}/images/icons/lock-locked.png) !important
 
 .widget
   margin-bottom: 15px
@@ -678,6 +682,7 @@ td.widgetUserPrefsButtons
 @import wiki.sass
 @import control.sass
 @import jquery-ui.sass
+@import jquery-ui-selectmenu.sass
 @import bubble.sass
 @import ckeditor.sass
 @import socialcalc.sass

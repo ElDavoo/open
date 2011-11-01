@@ -27,7 +27,7 @@
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%a_username%% |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
@@ -56,7 +56,7 @@
 
 | *Comment* | Test Case: Signals Search. Search 2 signals %%z_username%% |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
@@ -99,7 +99,7 @@
 
 | *Comment* | Test Case: Signals Search. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
@@ -131,7 +131,7 @@
 
 | *Comment* | Test Case: Signals Search. re-open Signals to check hidden deleted signal |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
@@ -148,7 +148,7 @@
 | post-signal | d {user: %%z_username%%} Private Signal %%start_time%% |  |
 | st-process-jobs | SignalIndex |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Private Signal |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
@@ -164,7 +164,7 @@
 | st_process_jobs | SignalIndex |  |
 | pause | 4000 |  |
 | open_ok | /?signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |

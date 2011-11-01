@@ -18,142 +18,122 @@
 | verifyValue | st-search-action | search_signals |
 | open_ok | /?action=workspaces_listall |  |
 | verifyValue | st-search-action | search_workspaces |
-| open_ok | /st/explore |  |
-| verifyValue | st-search-action | search_signals |
 
 | *Comment* | Test Case: Search Selection is Sticky set dashboard search to People, check |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=People |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search People: |
 | verifyValue | st-search-action | search_people |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_people |
 
 | *Comment* | Test Case: Search Selection is Sticky set dashboard search to Workspace, check |  |
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | verifyValue | st-search-action | search_workspaces |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_workspaces |
 
 | *Comment* | Test Case: Search Selection is Sticky set wiki search to My Workspaces, check |  |
 | open_ok | /%%workspace%%/index.cgi? |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=My Workspaces |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | verifyValue | st-search-action | search_workspaces |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /%%workspace%%/index.cgi? |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_workspaces |
 
 | *Comment* | Test Case: Search Selection is Sticky set wiki search to This Workspace, check |  |
-| select_ok | st-search-action | label=This Workspace |
+| select_ok | st-search-action | label=Search This Workspace: |
 | verifyValue | st-search-action | search_workspace |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /%%workspace%%/index.cgi? |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_workspace |
 
 | *Comment* | Test Case: Search Selection is Sticky set wiki search to People, check |  |
-| select_ok | st-search-action | label=People |
+| select_ok | st-search-action | label=Search People: |
 | verifyValue | st-search-action | search_people |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /%%workspace%%/index.cgi? |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_people |
 
 | *Comment* | Test Case: Search Selection is Sticky set signals search to People, check |  |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=People |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search People: |
 | verifyValue | st-search-action | search_people |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_people |
 
 | *Comment* | Test Case: Search Selection is Sticky set signals search to Groups, check |  |
-| select_ok | st-search-action | label=Groups |
+| select_ok | st-search-action | label=Search Groups: |
 | verifyValue | st-search-action | search_groups |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_groups |
 
 | *Comment* | Test Case: Search Selection is Sticky set group search to People, check |  |
 | open_ok | /st/group/%%group_id%% |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=People |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search People: |
 | verifyValue | st-search-action | search_people |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /st/group/%%group_id%% |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_people |
 
 | *Comment* | Test Case: Search Selection is Sticky set group search to Signals, check |  |
-| select_ok | st-search-action | label=Signals |
+| select_ok | st-search-action | label=Search Signals: |
 | verifyValue | st-search-action | search_signals |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /st/group/%%group_id%% |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_signals |
 
 | *Comment* | Test Case: Search Selection is Sticky set people search to People, check |  |
 | open_ok | /?action=people |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=People |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search People: |
 | verifyValue | st-search-action | search_people |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /?action=people |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_people |
 
 | *Comment* | Test Case: Search Selection is Sticky set people search to Signals, check |  |
-| select_ok | st-search-action | label=Signals |
+| select_ok | st-search-action | label=Search Signals: |
 | verifyValue | st-search-action | search_signals |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /?action=people |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_signals |
 
 | *Comment* | Test Case: Search Selection is Sticky set workspaces search to Signals, check |  |
 | open_ok | /?action=workspaces_listall |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=Signals |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search Signals: |
 | verifyValue | st-search-action | search_signals |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /?action=workspaces_listall |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_signals |
 
 | *Comment* | Test Case: Search Selection is Sticky set workspaces search to My Workspaces, check |  |
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | verifyValue | st-search-action | search_workspaces |
 | st-logoutin | %%sticky_user%% | %%password%% |
 | open_ok | /?action=workspaces_listall |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_present_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_workspaces |
-
-| *Comment* | Test Case: Search Selection is Sticky set explore search to People, check |  |
-| open_ok | /st/explore |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=People |
-| verifyValue | st-search-action | search_people |
-| st-logoutin | %%sticky_user%% | %%password%% |
-| open_ok | /st/explore |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| verifyValue | st-search-action | search_people |
-
-| *Comment* | Test Case: Search Selection is Sticky set explore search to Signals, check |  |
-| select_ok | st-search-action | label=Signals |
-| verifyValue | st-search-action | search_signals |
-| st-logoutin | %%sticky_user%% | %%password%% |
-| open_ok | /st/explore |  |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| verifyValue | st-search-action | search_signals |
 
 | *Comment* | Test Case: Search Selection is Sticky TEARDOWN |  |
 | st-process-jobs |  |  |

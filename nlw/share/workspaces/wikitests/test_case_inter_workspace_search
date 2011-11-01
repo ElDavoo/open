@@ -28,19 +28,19 @@
 | *Comment* | Test Case: Inter Workspace Search. Select My Workspaces in Dashboard-context |  |
 | st-logoutin | %%iws_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | wiki | Pages matching 'wiki' |
-| is_selected_ok | st-search-action | label=My Workspaces |
+| is_selected_ok | st-search-action | label=Search My Workspaces: |
 
 | *Comment* | Test Case: Inter Workspace Search in People Context |  |
 | open_ok | /?action=people |  |
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | wiki | Pages matching 'wiki' |
-| is_selected_ok | st-search-action | label=My Workspaces |
+| is_selected_ok | st-search-action | label=Search My Workspaces: |
 
 | *Comment* | Test Case: Inter Workspace Search Search all the workspaces where %%username%% is a member - in WS Context |  |
 | open_ok | /%%workspace%%/ |  |
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 15 total |  |
 | *Comment* | Sort by Workspace. Unstick the sort mode |  |
@@ -56,7 +56,7 @@
 | st-admin | remove-member --workspace test-data2 --email %%iws_user%% |  |
 | st-process-jobs |  |  |
 
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 10 total |  |
 | select_and_wait | sort-picker | label=Title |
@@ -88,8 +88,8 @@
 
 | *Comment* | Test Case: Inter Workspace Search Login to %%workspace%% ws and search again |  |
 | st-login | %%iws_user%% | %%password%% |
-| wait_for_element_visible_ok | st-search-action | 30000 |
-| select_ok | st-search-action | label=My Workspaces |
+| wait_for_element_present_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 10 total |  |
 | select_and_wait | sort-picker | label=Title |
@@ -102,7 +102,7 @@
 | *Comment* | add user back to test-data2, delete test-data2 |  |
 
 | st-admin | add-member --workspace test-data2 --email %%iws_user%% | now has the role of 'member' in the test-data2 Workspace |
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 15 total |  |
 | select_and_wait | sort-picker | label=Title |
@@ -115,7 +115,7 @@
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace test-data2 --no-export | has been deleted |
 
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 
 | st-result | 10 total |  |
@@ -149,7 +149,7 @@
 | st-admin | remove-member --w test-data3 --u %%iws_user%% |  |
 
 | open_ok | /%%workspace%% |  |  |  |  |
-| select_ok | st-search-action | label=My Workspaces |  |  |  |
+| select_ok | st-search-action | label=Search My Workspaces: |  |  |  |
 | st-search | jabber | Pages matching 'jabber' |  |  |  |
 | st-result | 10 total |  |  |  |  |
 | select_and_wait | sort-picker | label=Title |  |  |  |
@@ -172,7 +172,7 @@
 
 | *Comment* | Test Case: Inter Workspace Search index new page explicitly just in case ceq is tetchy |  |
 | st-process-jobs | PageIndex | from-scratch |
-| select_ok | st-search-action | label=My Workspaces |
+| select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 11 total |  |
 | select_and_wait | sort-picker | label=Title |
