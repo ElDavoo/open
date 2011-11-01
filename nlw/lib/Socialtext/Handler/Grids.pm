@@ -26,7 +26,7 @@ method GET_css ($rest) {
         $filename = 'grids.full';
     }
 
-    my $sass = Socialtext::SASSy->new(
+    my $sass = Socialtext::SASSy->Fetch(
         filename => $filename,
         output_filename => $output,
         dir_name => 'Global',
