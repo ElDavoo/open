@@ -69,16 +69,13 @@ sub init {
         die "$_ is mandatory!" unless $self->{$_};
     }
    
-    #Get the workspace skin if the workspace attribute is set
-    #Otherwise, default to s3
+    #Default skin to s3 since skin is obsolete
     my $ws = Socialtext::Workspace->new( name => $self->{workspace} );
-    my $skin = 's3';
     if (defined($ws)) {
-        $skin = $ws->skin_name() || 's3';
         $self->{'workspace_id'} = $ws->workspace_id;
     }
   
-    $self->{'skin'} = $skin;
+    $self->{'skin'} = 's3';
     
     my $short_username = $self->{'username'};
     $short_username =~ s/^([\W\w\.]*)\@.+$/$1/; # truncate if email address
@@ -1434,15 +1431,8 @@ sub _click_user_row {
         $chk_xpath = "//tbody/tr[$row]$click_col";
         
         $sel->$method_name($chk_xpath);
-        if ($self->{'skin'} eq 's3') {
-            $self->click_and_wait('link=Save');
-            $sel->text_like('content', qr/\QChanges Saved\E/);
-         } elsif ($self->{'skin'} eq 's2') {
-            $self->click_and_wait('Button');
-            $sel->text_like('st-settings-section', qr/\QChanges Saved\E/);
-         } else {
-            ok 0, "Unknown skin type: $self->{'skin'}";
-        }
+        $self->click_and_wait('link=Save');
+        $sel->text_like('content', qr/\QChanges Saved\E/);
         return $chk_xpath;
     }
     ok 0, "Could not find '$email' in the table";
