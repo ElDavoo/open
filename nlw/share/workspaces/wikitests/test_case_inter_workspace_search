@@ -88,7 +88,7 @@
 
 | *Comment* | Test Case: Inter Workspace Search Login to %%workspace%% ws and search again |  |
 | st-login | %%iws_user%% | %%password%% |
-| wait_for_element_present_ok | st-search-action | 30000 |
+| wait_for_element_visible_ok | st-search-action | 30000 |
 | select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 10 total |  |

@@ -42,7 +42,7 @@
 
 | *Comment* | Test Case: Signals Search Pagination. Search for 44 Pagination %%start_time%% signals |  |
 | open_ok | /?signals |  |
-| wait_for_element_present_ok | st-search-action | 30000 |
+| wait_for_element_visible_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | "Pagination %%start_time%%" |
@@ -138,7 +138,7 @@ text-like | qr/%%a_name%%.+%%start_time%% 1.+%%a_name%%.+%%start_time%% 20/ism |
 
 | *Comment* | Test Case: Signals Search Pagination. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
-| wait_for_element_present_ok | st-search-action | 10000 |
+| wait_for_element_visible_ok | st-search-action | 10000 |
 | wait_for_element_visible_ok | st-search-term | 10000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
@@ -173,7 +173,7 @@ text-like | qr/%%a_name%%.+%%start_time%% 1.+%%a_name%%.+%%start_time%% 20/ism |
 
 | *Comment* | Test Case: Signals Search Pagination. open Signals to verify hidden deleted signal |  |
 | open_ok | /?signals |  |
-| wait_for_element_present_ok | st-search-action | 10000 |
+| wait_for_element_visible_ok | st-search-action | 10000 |
 | wait_for_element_visible_ok | st-search-term | 10000 |
 | is_selected_ok | st-search-action | id=st-search-signals |
 | type_ok | st-search-term | %%start_time%% |
