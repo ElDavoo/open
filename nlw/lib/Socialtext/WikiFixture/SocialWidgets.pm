@@ -637,15 +637,11 @@ sub st_find_user {
     my ($self, $user_id, $label) = @_;
     eval {
         $self->handle_command('open_ok','/?action=people;tag=;sortby=best_full_name;limit=20;account_id=all');
-        $self->handle_command('wait_for_text_present_ok','All People','10000');
-        $self->handle_command('wait_for_element_visible_ok','st-search-action', 5000);
         $self->handle_command('wait_for_element_visible_ok', 'st-search-term', 5000);
         $self->handle_command('wait_for_element_visible_ok', 'st-search-submit', 5000);
-        $self->handle_command('select_ok', 'st-search-action', 'People');
         $self->handle_command('type_ok', 'st-search-term', $user_id);
-        $self->handle_command('pause_ok', '1000');
+        $self->handle_command('pause_ok', '500');
         $self->handle_command('click_and_wait', 'st-search-submit');
-
         $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
         $self->handle_command('click_and_wait',"link=$user_id");
         $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
