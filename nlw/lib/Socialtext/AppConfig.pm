@@ -1285,6 +1285,14 @@ Default: 1
 
 =for code type => SCALAR_TYPE
 
+=head2 debug_selenium
+
+Pretend that the UA is selenium
+
+Default: 0
+
+=for code type => SCALAR_TYPE
+
 =head2 analytics_id
 
 Server-wide Google Analytics

@@ -309,6 +309,9 @@ method _build_js_bootstrap {
         # wikiwyg
         ui_is_expanded => $self->ui_is_expanded,
 
+        Socialtext::AppConfig->debug_selenium
+            ? ( UA_is_Selenium => 1 ) : (),
+
         perms => {
             edit => $->hub->checker->check_permission('edit')
         },
