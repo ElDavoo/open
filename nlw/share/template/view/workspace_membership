@@ -9,12 +9,12 @@
     </div>
     <div class="clear"></div>
     <div class="grid_16">
-      <h3>[% loc('Members') %]</h3>
+      <h3>[% loc('wiki.member-users') %]</h3>
       <table class="dataTable fixed" id="users">
       <tr>
         <td colspan="2"></td>
         <td style="padding-left: 0.5em">[% loc('user.role') %]</td>
-        <td style="padding-left: 0.5em">[% loc('Last Edit') %]</td>
+        <td style="padding-left: 0.5em">[% loc('user.last-edit') %]</td>
       </tr>
         [% FOREACH wuser = users %]
           [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
@@ -27,9 +27,9 @@
       </table>
     </div>
     <div class="grid_8">
-      <h3>[% loc('Groups') %]</h3>
+      <h3>[% loc('wiki.groups') %]</h3>
       [% IF groups.size == 0 %]
-        <p>[% loc('No groups are members of this workspace') %]</p>
+        <p>[% loc('wiki.no-member-groups') %]</p>
       [% ELSE %]
         <table class="dataTable fixed" id="groups">
         <tr><td colspan="2"></td><td style="padding-left: 0.5em">[% loc('user.role') %]</td></tr>
@@ -54,7 +54,7 @@
      <img class="pageType" src="[% static_path %]/images/icons/document-black-15.png" />
   [% END %]
   <a class="titleLink" href="/[% workspace.name %]/[% page.page_id %]">[% page.name | html %]</a>
-  [% loc('@') %]
+  [% loc('time.at') %]
   <span class="last-updated-by">[% page.local_edit_time %].</span>
 [% END %]
 

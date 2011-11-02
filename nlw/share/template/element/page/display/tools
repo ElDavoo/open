@@ -48,13 +48,13 @@
           [% INCLUDE tools_item
               id="st-admin-unlock-link"
               href="/$current_workspace.name/?page_name=$page.id;action=unlock_page"
-              text=loc('Locked')
+              text=loc('page.locked')
           %]
         [% ELSE %]
           [% INCLUDE tools_item
               id="st-admin-lock-link"
               href="/$current_workspace.name/?page_name=$page.id;action=lock_page"
-              text=loc('Unlocked')
+              text=loc('page.unlocked')
           %]
         [% END %]
       [% END %]
@@ -74,7 +74,7 @@
           %]
         [% END %]
 
-        [% WRAPPER subtools id="st-page-options" name=loc('Tools...') %]
+        [% WRAPPER subtools id="st-page-options" name=loc('nav.page-tools') %]
           [% INCLUDE tools_item
               id="st-pagetools-print"
               href="JavaScript:window.print()"
@@ -87,7 +87,7 @@
                   id="st-pagetools-email"
                   href="#"
                   title=loc('info.email-page')
-                  text=loc('... this page')
+                  text=loc('email.this-page')
               %]
             [% END %]
 
@@ -97,7 +97,7 @@
                   id="st-pagetools-emailtoworkspace"
                   href="mailto:$wiki.email_address"
                   title=wiki.email_address
-                  text=loc('... to this Workspace')
+                  text=loc('email.to-this-wiki')
               %]
               [% IF !locked %]
                 [% SET title = page.title | html_encode %]
@@ -106,7 +106,7 @@
                       id="st-pagetools-emailtopage"
                       href="mailto:$wiki.email_address?subject=$title"
                       title="To: $wiki.email_address / subject: $title"
-                      text=loc('... to this page')
+                      text=loc('email.to-this-page')
                       onclick="alert(loc('error.email-spreadsheet')); return false;"
                   %]
                 [% ELSE %]
@@ -114,7 +114,7 @@
                       id="st-pagetools-emailtopage"
                       href="mailto:$wiki.email_address?subject=$title"
                       title="To: $wiki.email_address / subject: $title"
-                      text=loc('... to this page')
+                      text=loc('email.to-this-page')
                   %]
                 [% END %]
               [% END %]

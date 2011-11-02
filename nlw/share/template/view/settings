@@ -1,4 +1,4 @@
-[% WRAPPER layout/html title=loc('User Settings') %]
+[% WRAPPER layout/html title=loc('settings.user-settings') %]
 
 <script>
 
@@ -28,9 +28,9 @@ jQuery(document).ready(function() {
       <h4>[% loc('nav.settings') %]</h4>
         <div class="top">
           [% IF section == 'global' %]
-            <strong>[% loc('Global Settings') %]</strong>
+            <strong>[% loc('settings.global-settings') %]</strong>
           [% ELSE %]
-            <a href="/st/settings">[% loc('Global Settings') %]</a>
+            <a href="/st/settings">[% loc('settings.global-settings') %]</a>
           [% END %]
         </div>
       <h4>[% loc('nav.wikis') %]</h4>

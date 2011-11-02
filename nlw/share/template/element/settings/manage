@@ -62,22 +62,22 @@ jQuery(document).ready(function() {
 
 [% IF invite_errors %]
   <p class="error">
-    [% loc('There were errors inviting the following users.') %]</p>
+    [% loc('error.inviting-users') %]</p>
     <ul>
   [% FOREACH error IN invite_errors.keys %]
       <li>
     [% IF error == 'ACCOUNT DOMAIN FILTER' %]
-      [% loc('The following users were not invited because their email domain does not match [_1].', space.domain_restriction) %]
+      [% loc('error.invite-users=domain-restriction', space.domain_restriction) %]
     [% ELSIF error == 'WORKSPACE INVITATION FILTER' %]
-      [% loc('The following users were not invited because their email address does not match the workspace invite filter "[_1]".', space.invitation_filter) %]
+      [% loc('error.invite-users=invitation-filter', space.invitation_filter) %]
     [% ELSIF error == 'USER DELETED' %]
-      [% loc('The following users were not invited because they have been deleted. If you wish to invite the users you first need to undelete them.') %]
+      [% loc('error.invite-users-deleted') %]
     [% ELSIF error == 'WORKSPACE RESTRICT TO REGISTERED' %]
-      [% loc('The following users were not invited because they are not registered users of Socialtext.') %]
+      [% loc('error.invite-users-unregistered') %]
     [% ELSIF error == 'INVALID EMAIL ADDRESS' %]
-      [% loc('The following email addresses are not valid.') %]
+      [% loc('error.invalid-email-addresses') %]
     [% ELSE %]
-      [% loc('The following users generated a [_1] error when attempting to invite.', error) %]
+      [% loc('error.invite-users=message', error) %]
     [% END %]
     [% PROCESS list_of_emails emails=invite_errors.$error %]
     </li>
@@ -85,20 +85,20 @@ jQuery(document).ready(function() {
     </ul>
 [% END %]
 
-[% IF space.require_registered %]<p>[% loc('Only registered Socialtext users may be invited to this workspace.') %]</p>[% END %]
+[% IF space.require_registered %]<p>[% loc('info.wiki-requires-registered') %]</p>[% END %]
 
-[% IF space.invitation_filter %]<p>[% loc('Only users whose email address matches the pattern "[_1]" may be invited to this workspace.', space.invitation_filter) %]</p>[% END %]
+[% IF space.invitation_filter %]<p>[% loc('info.wiki=invitation-filter', space.invitation_filter) %]</p>[% END %]
 
-[% IF space.domain_restriction %]<p>[% loc('Only users whose email address is in the "[_1]" domain may be invited to this workspace.', space.domain_restriction) %]</p>[% END %]
+[% IF space.domain_restriction %]<p>[% loc('info.wiki=domain-restriction', space.domain_restriction) %]</p>[% END %]
 
-<p>[% loc('Use the field below to search for users to add to this workspace. Then, click Save to add them. Each user will be notified via email.') %]</p>
+<p>[% loc('info.invite-users') %]</p>
 <div class="sub_alpha grid_sub_6 input-label">
-  [% loc('Email address to invite') %]:
+  [% loc('wiki.email-address-to-invite') %]:
 </div>
 <div class="sub_omega grid_sub_18">
     <input id="user" name="please.ignore.me"
       class="lookahead-prompt" type="text"
-      value="[% loc('begin typing email here...') %]"
+      value="[% loc('email.lookahead-prompt') %]"
     />
     <div class="users" id="newUsers">
     </div>
@@ -109,7 +109,7 @@ jQuery(document).ready(function() {
 
 [% IF space.auw_for %]
   <div class="grid_12">
-    [% loc('Note: All users of the [_1] account are members of this workspace.', space.auw_for) %]
+    [% loc('info.all-user-wiki=account', space.auw_for) %]
   </div>
   <div class="clear"></div>
 [% END %]
@@ -161,7 +161,7 @@ jQuery(document).ready(function() {
 
 [% IF space.groups.size > 0 %]
 <div class="grid_12">
-  <h3>[% loc('Member Groups') %]</h3>
+  <h3>[% loc('wiki.member-groups') %]</h3>
 
   <table>
     <tr>
