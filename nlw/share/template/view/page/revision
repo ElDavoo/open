@@ -41,7 +41,7 @@
         [% IF mode == 'html' %]
           [% loc('revision.normal-view') %]
         [% ELSE %]
-          [% loc('HTML View') %]
+          [% loc('diff.html-view') %]
         [% END %]
       </a>
     </li>

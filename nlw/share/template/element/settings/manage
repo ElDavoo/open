@@ -116,7 +116,7 @@ jQuery(document).ready(function() {
 
 [% IF space.users.size > 0 %]
 <div class="grid_12">
-  <h3>[% loc('Manage Users') %]</h3>
+  <h3>[% loc('settings.manage-users') %]</h3>
   <table>
     <tr>
       <th class="first">[% loc('do.remove') %]</th>

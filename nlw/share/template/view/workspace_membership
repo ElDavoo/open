@@ -13,7 +13,7 @@
       <table class="dataTable fixed" id="users">
       <tr>
         <td colspan="2"></td>
-        <td style="padding-left: 0.5em">[% loc('Role') %]</td>
+        <td style="padding-left: 0.5em">[% loc('user.role') %]</td>
         <td style="padding-left: 0.5em">[% loc('Last Edit') %]</td>
       </tr>
         [% FOREACH wuser = users %]
@@ -32,7 +32,7 @@
         <p>[% loc('No groups are members of this workspace') %]</p>
       [% ELSE %]
         <table class="dataTable fixed" id="groups">
-        <tr><td colspan="2"></td><td style="padding-left: 0.5em">[% loc('Role') %]</td></tr>
+        <tr><td colspan="2"></td><td style="padding-left: 0.5em">[% loc('user.role') %]</td></tr>
           [% FOREACH group = groups %]
             [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
               <td> <img src="/data/groups/[% group.id %]/photo" /> </td>

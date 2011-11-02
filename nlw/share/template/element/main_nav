@@ -78,7 +78,7 @@
 [% BLOCK groups_nav %]
 <div id="global-groups-directory" class="[% selected(['group_directory']) %]grid_3 navGrid">
   <div class="navLink">
-      <a class="groups" href="/st/groups">[% loc('Groups') %]</a>
+      <a class="groups" href="/st/groups">[% loc('nav.groups') %]</a>
   </div>
   <div class="underline"></div>
 </div>

@@ -131,7 +131,7 @@ Socialtext.prototype.dialog = (function($) {
 
         showError: function (message, onClose) {
             this.show('simple', {
-                title: loc('Error'),
+                title: loc('nav.error'),
                 message: '<div class="error">' + message + '</div>',
                 width: 400,
                 onClose: onClose
