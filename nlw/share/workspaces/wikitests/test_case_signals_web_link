@@ -23,8 +23,7 @@
 | click_ok | web-option |  |
 | wait_for_element_visible_ok | web-link-label | 5000 |
 | wait_for_element_visible_ok | web-link-destination | 5000 |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[1] | 5000 |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[2] | 5000 |
+| wait_for_element_visible_ok | activities-add-link-ok | 5000 |
 | text_like | //body | Required fields are indicated by an * |
 
 | *Comment* | Test Case: Signals Web Link setSpeed 3000 to allow for type-in |  |
@@ -34,7 +33,7 @@
 
 | *Comment* | Test Case: Signals Web Link setSpeed zero, click OK |  |
 | set_Speed | 0 |  |
-| click_ok | xpath=(//button[@role='button'])[1] | 5000 |
+| click_ok | activities-add-link-ok | 5000 |
 | pause_ok | 5000 |  |
 
 | *Comment* | Test Case: Signals Web Link post signal the hard way |  |

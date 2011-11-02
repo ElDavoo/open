@@ -37,7 +37,7 @@
 | st-logoutin | %%follower%% | %%password%% |
 | st-process-jobs | PeopleIndex |  |
 | open_ok | /st/dashboard |  |
-| st-search-for | People | %%short_signaler%% |
+| st-search-for | Search People: | %%short_signaler%% |
 | wait_for_element_visible_ok | link=%%short_signaler%% | 30000 |
 | click_and_wait | link=%%short_signaler%% |  |
 | wait_for_element_visible_ok | st-watchperson-indicator | 30000 |
@@ -52,12 +52,12 @@
 | st-verify-text-in-activities-widget | nfsig-%%start_time%% 46 |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination follower checks signals, filter to only People I Follow |  |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
-| wait_for_element_visible_ok | feed-followed | 30000 |
+| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |  |
+| click_ok | //a[@class='expander'] |  |  |
+| wait_for_element_visible_ok | feed-followed | 30000 |  |
 | click_ok | feed-followed |  |  |
-| pause_ok | 2000 |  |
-| open_ok | /st/signals |  |
+| pause_ok | 2000 |  |  |
+| open_ok | /st/signals |  |  |
 | st_text_unlike_in_activities_widget | signals | nfsig-%%start_time%% | 30000 |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination follower checks pagination |  |
@@ -78,15 +78,15 @@
 | wait_for_text_present_ok | ssig-%%start_time%% 15 | 30000 |
 | wait_for_text_present_ok | ssig-%%start_time%% 19 | 30000 |
 
-| *Comment* | Test Case: Signals Follow Filter With Pagination follower unfilters signals |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
-| wait_for_element_visible_ok | feed-everyone | 30000 |
+| *Comment* | Test Case: Signals Follow Filter With Pagination follower unfilters signals |  |  |
+| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |  |
+| click_ok | //a[@class='expander'] |  |  |
+| wait_for_element_visible_ok | feed-everyone | 30000 |  |
 | click_ok | feed-everyone |  |  |
-| pause_ok | 2000 |  |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | nfsig-%%start_time%% 65 | 30000 |
-| wait_for_text_present_ok | nfsig-%%start_time%% 46 | 30000 |
+| pause_ok | 2000 |  |  |
+| open_ok | /st/signals |  |  |
+| wait_for_text_present_ok | nfsig-%%start_time%% 65 | 30000 |  |
+| wait_for_text_present_ok | nfsig-%%start_time%% 46 | 30000 |  |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination TEARDOWN |  |
 | st-process-jobs |  |  |

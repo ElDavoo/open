@@ -30,20 +30,20 @@
 | set_Speed | 3000 |  |
 | text_like | //body | select an image or file to upload |
 | attach_file_ok | //form[@name='attachForm']//input | %%jpg_file%% |
-| wait_for_element_visible_ok | //button[@role='button'] | 30000 |
-| click_ok | //button[@role='button'] |  |
+| wait_for_element_visible_ok | activities-add-attachment-upload | 30000 |
+| click_ok | activities-add-attachment-upload |  |
 | wait_for_text_present_ok | %%jpg%% [x]; | 10000 |
 | click_ok | //a[contains(@class,'insertFile')] |  |
 | wait_for_element_visible_ok | //form[@name='attachForm']//input | 10000 |
 | attach_file_ok | //form[@name='attachForm']//input | %%txt_file%% |
-| wait_for_element_visible_ok | //button[@role='button'] | 30000 |
-| click_ok | //button[@role='button'] |  |
+| wait_for_element_visible_ok | activities-add-attachment-upload | 30000 |
+| click_ok | activities-add-attachment-upload |  |
 | wait_for_text_present_ok | %%jpg%% [x]; %%txt%% [x]; | 10000 |
 | click_ok | //a[contains(@class,'insertFile')] |  |
 | wait_for_element_visible_ok | //form[@name='attachForm']//input | 10000 |
 | attach_file_ok | //form[@name='attachForm']//input | %%zip_file%% |
-| wait_for_element_visible_ok | //button[@role='button'] | 30000 |
-| click_ok | //button[@role='button'] |  |
+| wait_for_element_visible_ok | activities-add-attachment-upload | 30000 |
+| click_ok | activities-add-attachment-upload |  |
 | wait_for_text_present_ok | %%jpg%% [x]; %%txt%% [x]; %%zip%% [x]; | 10000 |
 | set_Speed | 0 |  |
 

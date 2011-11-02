@@ -1,4 +1,4 @@
-*On hold until signal deletion permissions are restored*
+*On hold until st-text-unlike-in-activities-widget works again*
 
 | *Comment* | Test Case: Private Signal |  |
 
@@ -43,7 +43,7 @@
 | wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort_two%% |
 | st-type_signal | %%private%% |  |
-| click_ok | xpath=(//a[@role='button'])[2] |  |
+| click_ok | //a[@role='button'] |  |
 | wait-for-element-not-present-ok | //div[@class='message private'] | 10000 |
 
 | *Comment* | Test Case: Private Signal %%psshort_two%% replies to private signal |  |
@@ -54,8 +54,8 @@
 | click_ok | //a[@class='replyLink'] |  |
 | wait_for_element_visible_ok | //body[@class='wiki signals'] | 30000 |
 | type_ok | //body[@class='wiki signals'] | %%private_reply%% |
-| wait_for_element_visible_ok | xpath=(//a[@role='button'])[3] | 10000 |
-| click_ok | xpath=(//a[@role='button'])[3] |  |
+| wait_for_element_visible_ok | xpath=(//a[@role='button'])[2] | 10000 |
+| click_ok | xpath=(//a[@role='button'])[2] |  |
 | wait_for_text_present_ok | By you | 30000 |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends pubmsg to %%psshort_two%% |  |
@@ -95,7 +95,7 @@
 | click_ok | //a[@class='cancel'] |  |
 | wait_for_element_not_present_ok | //div[@class='message private'] | 10000 |
 | st-type_signal | %%cancel%% |  |
-| click_ok | xpath=(//a[@role='button'])[2] |  |
+| click_ok | //a[@role='button'] |  |
 | wait_for_text_present_ok | By you | 30000 |
 
 | *Comment* | Test Case: Private Signal send and verify the public signal |  |

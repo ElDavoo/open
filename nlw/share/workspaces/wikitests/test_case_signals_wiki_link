@@ -35,8 +35,7 @@
 | wait_for_element_visible_ok | add-a-link-form | 30000 |
 | wait_for_element_visible_ok | wiki-link-label | 5000 |
 | wait_for_element_visible_ok | wiki-link-workspace | 5000 |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[1] | 5000 |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[2] | 5000 |
+| wait_for_element_visible_ok | activities-add-link-ok | 5000 |
 | text_like | Required fields are indicated by an * |  |
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed 3000 to allow for type-in |  |
@@ -48,13 +47,13 @@
 | type_ok | wiki-link-section | %%section%% |
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed zero, click OK |  |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| click_ok | activities-add-link-ok |  |
 | pause_ok | 5000 |  |
 
 | *Comment* | Test Case: Signals Wiki Link post signal the hard way |  |
-| wait_for_element_visible_ok | xpath=(//a[@role='button'])[2] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
 | pause | 3000 |  |
-| click_ok | xpath=(//a[@role='button'])[2] |  |
+| click_ok | //a[@role='button'] |  |
 | wait_for_element_visible_ok | link=%%link_text%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'#%%section%%')] | 30000 |
 

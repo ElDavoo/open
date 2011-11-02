@@ -74,13 +74,10 @@
 | open_ok | /%%sge_wiki%%/signal_mention_by_%%sge_signaller_under%% |  |
 | wait_for_element_visible_ok | link=your settings | 30000 |
 | click_ok | link=your settings |  |
-
-TUXTODO: Does the your settings link work yet?
-
-pause | 20000 | |
-selectWindow | Signals | |
-wait_for_text_present_ok | Mentions of Me | 30000 |
-wait_for_text_present_ok | Private Messages | 30000 |
+| pause | 10000 |  |
+| selectWindow | User Settings |  |
+| wait_for_text_present_ok | Mentions of Me | 30000 |
+| wait_for_text_present_ok | Private Signals | 30000 |
 
 | *Comment* | Test Case: Signals Generate Email TEARDOWN |  |
 | st-process-jobs |  |  |

@@ -27,7 +27,7 @@
 | type_ok | //input[@name='video_url'] | %%vimeo_link%% |
 | pause | 30000 |  |
 | verifyValue | //input[@name='video_title'] | qr/%%vimeo_title%%/ |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@role='button'] | 5000 |
 | click_ok | //a[@role='button'] |  |
@@ -43,7 +43,7 @@
 | type_ok | //input[@name='video_url'] | %%youtube_link%% |
 | pause | 30000 |  |
 | verifyValue | //input[@name='video_title'] | qr/%%youtube_title%%/ |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@role='button'] | 5000 |
 | click_ok | //a[@role='button'] |  |
@@ -59,7 +59,7 @@
 | type_ok | //input[@name='video_url'] | %%slide_link%% |
 | pause | 30000 |  |
 | verifyValue | //input[@name='video_title'] | qr/%%slide_title%%/ |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@role='button'] | 5000 |
 | click_ok | //a[@role='button'] |  |
@@ -75,7 +75,7 @@
 | type_ok | //input[@name='video_url'] | %%google_link%% |
 | pause | 30000 |  |
 | verifyValue | //input[@name='video_title'] | qr/%%google_title%%/ |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@role='button'] | 5000 |
 | click_ok | //a[@role='button'] |  |
@@ -107,32 +107,32 @@
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |
 | type_ok | //input[@name='video_url'] | %%vimeo_link%% |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[1] | 30000 |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| wait_for_element_visible_ok | activities-add-video-ok | 30000 |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@title='Add a video link'] | 30000 |
 | click_ok | //a[@title='Add a video link'] |  |
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |
 | type_ok | //input[@name='video_url'] | %%youtube_link%% |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[1] | 30000 |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| wait_for_element_visible_ok | activities-add-video-ok | 30000 |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@title='Add a video link'] | 30000 |
 | click_ok | //a[@title='Add a video link'] |  |
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |
 | type_ok | //input[@name='video_url'] | %%slide_link%% |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[1] | 30000 |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| wait_for_element_visible_ok | activities-add-video-ok | 30000 |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@title='Add a video link'] | 30000 |
 | click_ok | //a[@title='Add a video link'] |  |
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |
 | type_ok | //input[@name='video_url'] | %%google_link%% |
-| wait_for_element_visible_ok | xpath=(//button[@role='button'])[1] | 30000 |
-| click_ok | xpath=(//button[@role='button'])[1] |  |
+| wait_for_element_visible_ok | activities-add-video-ok | 30000 |
+| click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
 | wait_for_element_visible_ok | //a[@role='button'] | 5000 |
 | click_ok | //a[@role='button'] |  |

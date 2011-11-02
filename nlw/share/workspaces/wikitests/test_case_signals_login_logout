@@ -50,7 +50,7 @@
 | st-force-confirmation | %%inout_user%% | %%password%% |
 
 | open_ok | / |  |
-| text_like | Log in to Socialtext |  |
+| text_like | Log in |  |
 
 | *Comment* | Test Case: Signals Login/Logout successful login: |  |
 | type_ok | username | %%inout_user%% |
