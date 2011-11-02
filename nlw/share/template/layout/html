@@ -78,7 +78,10 @@
     <meta name="keywords" content="[% loc('about.keywords') %]"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
   </head>
-  <body style="visibility: hidden" class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
+  <body class="starfish" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">
+    <style><!--
+        body { visibility: hidden; }
+    --></style>
     <header>
       <div class="container_24">
         <div class="grid_12 title">
