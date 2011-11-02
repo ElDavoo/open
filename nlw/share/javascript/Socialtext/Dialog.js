@@ -122,7 +122,7 @@ Socialtext.prototype.dialog = (function($) {
         
         showResult: function (opts) {
             this.show('simple', {
-                title: opts.title || loc('Result'),
+                title: opts.title || loc('nav.result'),
                 message: opts.message,
                 width: 400,
                 onClose: opts.onClose
