@@ -22,11 +22,15 @@
   [% jump_option("workspace_membership", loc('Membership')) %]
 </select>
 <script>
-  $('#st-jump-to').dropdown().change(function() {
-      var cgi_params = $(this).find('option:selected').val();
-      if (cgi_params != '')
-        location = '/' + st.workspace.name + '?' + cgi_params;
-  });
+  $('#st-jump-to')
+    .dropdown({
+      width: 200
+    })
+    .change(function() {
+        var cgi_params = $(this).find('option:selected').val();
+        if (cgi_params != '')
+          location = '/' + st.workspace.name + '?' + cgi_params;
+    });
 </script>
 [% END %]
 
