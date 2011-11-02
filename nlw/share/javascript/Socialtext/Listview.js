@@ -1,9 +1,11 @@
 Socialtext.prototype.setupListview = (function($){
     return function(query_start) {
-        $('#sort-picker').dropdown().live('change', function() {
-            var selected = jQuery('select#sort-picker').val();
-            window.location = query_start + ';' + selected;
-        });
+        $('#sort-picker')
+            .dropdown({ width: 150 })
+            .live('change', function() {
+                var selected = jQuery('select#sort-picker').val();
+                window.location = query_start + ';' + selected;
+            });
 
         $('#st-listview-submit-pdfexport').live('click', function() {
             if (!$('.st-listview-selectpage-checkbox:checked').size()) {
