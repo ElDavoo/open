@@ -78,7 +78,6 @@
             appendTo: 'body'
         };
 
-
         var targetWindow = opts.getWindow && opts.getWindow();
         if (targetWindow && targetWindow !== window && window.name) {
             var $j = window.parent.$;
@@ -158,6 +157,9 @@
                     var item = withRealValue(ui.item);
                     opts.onAccept(item.value, item);
                 }
+            },
+            change: function(event, ui) {
+                if ($.isFunction(opts.onChange)) opts.onChange(event, ui);
             },
             close: function(event, ui) {
                 if ($.isFunction(opts.onBlur)) opts.onBlur();
