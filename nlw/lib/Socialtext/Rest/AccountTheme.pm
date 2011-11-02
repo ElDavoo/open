@@ -122,7 +122,7 @@ override 'if_valid_request' => sub {
     }
     else {
         return $self->not_authorized()
-            unless $self->account->user_can(
+            unless $user->is_business_admin or $self->account->user_can(
                 user=>$user,
                 permission=>$permission,
             );
