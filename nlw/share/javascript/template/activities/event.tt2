@@ -54,7 +54,7 @@
             <div class="wikiwygWrapper">
                 <div class="wikiwyg" id="[% id("reply-$event.signal_id") %]">
                     <div class="clearHandler">
-                        [% loc('Reply to conversation »') %]
+                        [% loc('Add to conversation »') %]
                     </div>
                 </div>
                 [% INCLUDE lookahead %]
