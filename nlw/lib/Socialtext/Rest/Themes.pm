@@ -71,8 +71,11 @@ sub GET_image {
     return $self->no_resource('image') unless $image;
 
     $image->ensure_stored();
-    return $self->serve_file(
-        $rest, $image, $image->protected_uri, $image->content_length);
+
+    $self->serve_file(
+        $rest, $image, $image->uncached_protected_uri, $image->content_length
+    );
+    return;
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

@@ -27,6 +27,17 @@ Socialtext.prototype = {
 
     UA_is_MacOSX: navigator.userAgent.match(/Mac OS X/),
     UA_is_Safari: ($.browser.safari && parseInt($.browser.version) < 500),
+    UA_is_Selenium: (
+        (typeof seleniumAlert != 'undefined' && seleniumAlert)
+        || (typeof Selenium != 'undefined' && Selenium)
+        || ((typeof window.top != 'undefined' && window.top)
+            && (window.top.selenium_myiframe
+                || window.top.seleniumLoggingFrame)
+        || ((typeof window.top.opener != 'undefined' && window.top.opener)
+            && (window.top.opener.selenium_myiframe
+                || window.top.opener.seleniumLoggingFrame))
+        )
+    ),
 
     // For some templates
     loc: loc,
@@ -171,5 +182,16 @@ $('input.initial').live('click', function() {
 $('input.initial').live('keydown', function() {
   $(this).removeClass('initial').val('');
 });
+
+if (Socialtext.prototype.UA_is_Selenium) {
+    $(function() {
+        // Show <body> and maximize the window if we're running under Selenium
+        try { 
+            top.window.moveTo(0,0);
+            top.window.resizeTo(screen.availWidth, screen.availHeight);
+            document.body.style.visibility = 'visible';
+        } catch (e) {};
+    });
+}
 
 })(jQuery);

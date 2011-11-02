@@ -2,16 +2,18 @@
 
 $.fn.extend({
     dropdown: function(options) {
-        this.selectmenu({
+        if (window.st && window.st.UA_is_Selenium) { return this; }
+
+        this.selectmenu($.extend({
+            wrapperElement: '<span />',
             style: 'dropdown',
             width: 'auto'
-        });
+        }, options));
 
+        // Get the menu
         var $menu = this.next()
-        if (options && options.style) {
-            $menu.css(options.style);
-        }
 
+        // Change the arrow icon to be a triangle rather than an image
         $menu.find('.ui-selectmenu-icon').html('&nbsp;&#9662;');
         
         // Focusing the link puts a weird border around it, so let's

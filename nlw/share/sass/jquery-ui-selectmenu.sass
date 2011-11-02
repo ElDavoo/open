@@ -1,40 +1,65 @@
-/* Selectmenu
- *----------------------------------
-
+// Socialtext modifications
 .ui-selectmenu
-  display: inline
-  position: relative
-  height: 2em
-  text-decoration: none
-  overflow: hidden
   background: none
   border: none
   color: $primary_color
-  padding: 0 10px 0 5px
+  padding: 0 20px 0 5px
+  position: relative
+  .ui-selectmenu-status
+    padding: 0
 
 .ui-state-default .ui-selectmenu-icon
   background-image: none
   background: none
-  display: inline
+  text-indent: 0
+  right: 5px 
+  top: 1px 
+  margin: 0
+
+.ui-selectmenu-menu li.warning
+  padding-right: 10px
+  background: url(#{$static}/images/warning-icon.png) no-repeat right 4px
+.ui-selectmenu-menu li.warning.ui-state-hover
+  background-color: $primary_color
+
+/* Selectmenu
+ *----------------------------------
+
+.ui-selectmenu
+  display: block
+  display: inline-block
+  position: relative
+  height: auto
+  vertical-align: middle
+  text-decoration: none
+  overflow: hidden
+  zoom: 1
+
+.ui-selectmenu-icon
+  position: absolute
+  right: 6px
+  margin-top: -8px
+  top: 50%
 
 .ui-selectmenu-menu
-  z-index: 102 !important
   padding: 0
   margin: 0
-  list-style: none
   position: absolute
   top: 0
-  visibility: hidden
-  overflow: auto
-  ul, ol
-    margin: 0 
-  // XXX wont work
-  li.ui-selectmenu-group-Non-Workspace
-    padding-right: 10px
-    background: url(#{$static}/images/warning-icon.png) no-repeat right 4px
+  display: none
+  z-index: 1005
+  ul
+    padding: 0
+    margin: 0
+    list-style: none
+    position: relative
+    overflow: auto
+    overflow-y: auto
+    overflow-x: hidden
+
 
 .ui-selectmenu-open
-  visibility: visible
+  display: block
 
 .ui-selectmenu-menu-popup
   margin-top: -1px
@@ -53,13 +78,19 @@
   a
     line-height: 1.4em
     display: block
-    padding: .3em 1em
+    padding: .405em 1em
     outline: none
     text-decoration: none
 
 .ui-selectmenu-status
+  line-height: 1.4em
+  display: block
+  padding: .405em 1em
   outline: none
   text-decoration: none
+
+.ui-selectmenu-menu li.ui-state-disabled a, .ui-state-disabled
+  cursor: default
 
 .ui-selectmenu-menu li.ui-selectmenu-hasIcon a, .ui-selectmenu-hasIcon .ui-selectmenu-status
   padding-left: 20px
@@ -105,4 +136,20 @@
       margin: 0
       padding: 0
 
-/*for optgroups
+/* for optgroups
+
+/* IE6 workaround (dotted transparent borders)
+
+* html .ui-selectmenu-menu li
+  border-color: pink
+  filter: chroma(color = pink)
+  *width: 100%
+  a
+    position: relative
+
+/* IE7 workaround (opacity disabled)
+
+*+html .ui-state-disabled
+  color: silver
+  a
+    color: silver

@@ -80,8 +80,8 @@
 
 
         var targetWindow = opts.getWindow && opts.getWindow();
-        if (targetWindow && targetWindow !== window) {
-            var $j = window.parent.$
+        if (targetWindow && targetWindow !== window && window.name) {
+            var $j = window.parent.$;
             var offset = $j('iframe[name='+window.name+']').offset();
             options.appendTo = $j('body');
             options.position = {

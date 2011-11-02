@@ -266,6 +266,11 @@ sub protected_uri {
     return join('/', '/nlw/attachments', $class_or_self->relative_filename(@_));
 }
 
+sub uncached_protected_uri {
+    my $class_or_self = shift;
+    return join('/', '/nlw/attachments-uncached', $class_or_self->relative_filename(@_));
+}
+
 sub created_at_str { sql_format_timestamptz($_[0]->created_at) }
 
 *to_hash = *as_hash;

@@ -11,6 +11,17 @@ use Socialtext::Image;
 use File::Temp;
 use YAML ();
 use namespace::clean -except => 'meta';
+use Moose::Util::TypeConstraints;
+
+sub Enum {
+    my ($key, @values) = @_;
+    enum __PACKAGE__ . "::$key" => \@values;
+}
+
+Enum Font => qw( Arial Georgia Helvetica Lucida Times Trebuchet serif sans-serif );
+Enum Shade => qw( light dark );
+Enum Tiling => qw( repeat no-repeat repeat-x repeat-y );
+Enum Position => map { ("$_ top", "$_ center", "$_ bottom") } qw( left center right );
 
 my @COLUMNS = qw( theme_id name header_color header_image_id
     header_image_tiling header_image_position header_link_color
@@ -178,6 +189,27 @@ sub MakeExportable {
     return $data;
 }
 
+sub _valid {
+    my $key = shift;
+    my $checker = find_type_constraint(__PACKAGE__ . "::$key") or die "Cannot find constraint: $key";
+    return sub {
+        my $value = shift;
+
+        # Normalize Font Capitalization
+        $value =~ s{(\w)(\w*)}{\U$1\E\L$2\E}g if $key eq 'Font';
+
+        return $checker->check($value);
+    };
+}
+
+sub ValidValuesForKey {
+    my ($class, $key) = @_;
+    $key =~ s/.*_//g;
+    $key = ucfirst(lc $key);
+    my $checker = find_type_constraint(__PACKAGE__ . "::$key") or return;
+    wantarray ? @{$checker->values} : $checker->values;
+}
+
 sub ValidSettings {
     my $class = shift;
     my $settings = (@_ == 1) ? shift : {@_};
@@ -188,20 +220,20 @@ sub ValidSettings {
         base_theme_id => \&_valid_theme_id,
         header_color => \&_valid_hex_color,
         header_image_id => \&_valid_attachment_id,
-        header_image_tiling => \&_valid_tiling,
-        header_image_position => \&_valid_position,
+        header_image_tiling => _valid('Tiling'),
+        header_image_position => _valid('Position'),
         header_link_color => \&_valid_hex_color,
         background_color => \&_valid_hex_color,
         background_image_id => \&_valid_attachment_id,
-        background_image_tiling => \&_valid_tiling,
-        background_image_position => \&_valid_position,
+        background_image_tiling => _valid('Tiling'),
+        background_image_position => _valid('Position'),
         background_link_color => \&_valid_hex_color,
         primary_color => \&_valid_hex_color,
         secondary_color => \&_valid_hex_color,
         tertiary_color => \&_valid_hex_color,
-        header_font => \&_valid_font,
-        body_font => \&_valid_font,
-        foreground_shade => \&_valid_foreground_shade,
+        header_font => _valid('Font'),
+        body_font => _valid('Font'),
+        foreground_shade => _valid('Shade'),
     );
 
     for my $name ( keys %$settings ) {
@@ -256,40 +288,6 @@ sub _valid_hex_color {
     return lc($color) =~ /^#[0-9a-f]{6}$/;
 }
 
-sub _valid_position {
-    my $position = shift;
-    my @pos = split(/ /, $position);
-
-    return 0 unless scalar(@pos) == 2;
-    return 0 unless grep { lc($pos[0]) eq $_ } qw(left center right);
-    return 0 unless grep { lc($pos[1]) eq $_ } qw(top center bottom);
-    return 1;
-}
-
-sub _valid_tiling {
-    my $tiling = shift;
-
-    return grep { lc($tiling)  eq $_ } qw(repeat no-repeat repeat-x repeat-y);
-}
-
-sub _valid_font {
-    my $list = shift;
-
-    return 0 unless $list;
-
-    my @fonts = split(/,\s*/, $list);
-    return 0 unless scalar(@fonts) > 0;
-
-    my @valid = qw(
-        Arial Georgia Helvetica Lucinda Trebuchet Times serif sans-serif);
-
-    for my $font (@fonts) {
-        return 0 unless grep { $font eq $_ } @valid;
-    }
-
-    return 1;
-}
-
 sub _valid_attachment_id {
     my $id = shift;
 
@@ -321,12 +319,6 @@ sub _valid_theme_id {
     };
 
     return $count;
-}
-
-sub _valid_foreground_shade {
-    my $set = shift;
-
-    return grep { $set eq $_ } qw(light dark);
 }
 
 sub _attachment_url {

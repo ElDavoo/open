@@ -22,10 +22,6 @@
 [% END %]
 
 <div class="widget">
-  <div class="showHide">
-    [% INCLUDE 'element/page/display/edit-button' %]
-    <a id="st-page-boxes-hide-link" href="#"><span class="arrow">&#9658;</span>[% loc('nav.hide') %]</a>
-  </div>
   <div class="content">
     <ul class="tools">
       [% SET locked = page_locked_for_user %]

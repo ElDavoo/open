@@ -95,23 +95,6 @@ function set_main_frame_margin() {
 
 jQuery(function() {
     jQuery(window).bind("resize", set_main_frame_margin).trigger("resize");
-
-    // Show <body> and maximize the window if we're running under Selenium
-    try { if (
-        (typeof seleniumAlert != 'undefined' && seleniumAlert)
-        || (typeof Selenium != 'undefined' && Selenium)
-        || ((typeof window.top != 'undefined' && window.top)
-            && (window.top.selenium_myiframe
-                || window.top.seleniumLoggingFrame)
-        || ((typeof window.top.opener != 'undefined' && window.top.opener)
-            && (window.top.opener.selenium_myiframe
-                || window.top.opener.seleniumLoggingFrame))
-        )
-    ) {
-        top.window.moveTo(0,0);
-        top.window.resizeTo(screen.availWidth, screen.availHeight);
-        document.body.style.visibility = 'visible';
-    } } catch (e) {};
 });
 
 function check_revisions(form) {

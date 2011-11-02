@@ -18,7 +18,16 @@
     <a href="#" class="replyLink">[% loc('signals.reply') %]</a>
     [% END %]
     <div class="[% IF event.context.in_reply_to %]like-reply[% ELSE %]like-signal[% END %]"></div>
-    <a href="#" class="hideLink">[% loc('signals.delete') %]</a>
+
+    [% IF this.canDeleteSignal(event) %]
+        [% IF event.hidden %]
+            [% IF this.user_data.is_business_admin %]
+                <a href="#" class="expungeLink">[% loc('activities.expunge') %]</a>
+            [% END %]
+        [% ELSE %]
+            <a href="#" class="hideLink">[% loc('signals.delete') %]</a>
+        [% END %]
+    [% END %]
 [% END %]
 
 [% BLOCK like_body %]

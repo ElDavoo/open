@@ -31,6 +31,7 @@ use MIME::Base64 ();
 use Socialtext::JSON::Proxy::Helper;
 use File::Basename qw(dirname);
 use namespace::clean -except => 'meta';
+use Scalar::Util 'reftype';
 
 our $VERSION = '0.01';
 
@@ -1422,6 +1423,50 @@ sub create_central_workspace {
 
     $self->pref_table->set(central_workspace => $wksp->name);
     return $wksp;
+}
+
+sub remove_theme_prefs {
+    my ($self) = @_;
+    my $prefs = $self->prefs;
+    $prefs->delete('theme');
+    $self->_clean_theme_cache;
+}
+
+sub update_theme_prefs {
+    my ($self, $updates) = @_;
+    my $prefs = $self->prefs;
+    my $current = $prefs->all_prefs->{theme};
+    my $settings;
+    
+    if (ref $updates eq 'CODE') {
+        $settings = $updates->($current);
+    }
+    elsif (reftype $updates eq 'HASH') {
+        $settings = {%$current, %$updates};
+    }
+    else {
+        die 'Usage: $account->update_theme_prefs(HASHREF|CODEREF)';
+    }
+
+    require Socialtext::Theme;
+    unless (Socialtext::Theme->ValidSettings($settings)) {
+        die "Invalid theme setting:\n" . YAML::Dump($settings);
+    }
+
+    $prefs->save({ theme => $settings });
+    $self->_clean_theme_cache;
+}
+
+sub _clean_theme_cache {
+    my ($self) = @_;
+    require Socialtext::SASSy;
+    my $sass = Socialtext::SASSy->new(
+        account => $self,
+        filename => 'style.css',
+        dir_name => $self->name,
+    );
+    require File::Path;
+    File::Path::remove_tree($sass->cache_dir);
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

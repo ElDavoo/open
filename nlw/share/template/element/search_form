@@ -45,13 +45,7 @@ DEFAULT
       sticky: [% search_scope && !search ? 'true' : 'false' %]
     });
 
-    $('#st-[% sid %]-action').dropdown({
-        style: {
-            position: 'absolute',
-            right: '175px',
-            top: '2px'
-        }
-    });
+    $('#st-[% sid %]-action').dropdown();
     $('#st-[%sid%]-submit').button({
         text: false,
         icons: {
