@@ -513,6 +513,10 @@ $.extend(Activities.AppData.prototype, {
                     $(this).parents('.filterOption')
                         .addClass('selectedOption');
 
+                    if (type == 'network') {
+                        self.selectSignalToNetwork($(this).val());
+                    }
+
                     // update text (but after this handler completes)
                     setTimeout(function() { self.updateFilterText() }, 0);
                 });
@@ -609,8 +613,13 @@ $.extend(Activities.AppData.prototype, {
     },
 
     selectSignalToNetwork: function (network_id) {
+        if (network_id == 'all') return;
+
         if (this.getValue('signal_network') != network_id) {
             this.set('signal_network', network_id);
+        }
+        if (this.findId('signal_network').val() != network_id) {
+            this.findId('signal_network').dropdownSelectValue(network_id);
         }
 
         var network = this.getById('network', network_id);
