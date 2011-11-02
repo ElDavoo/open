@@ -339,7 +339,7 @@ sub user_frame_path {
     return Socialtext::Paths::cache_directory('user_frame');
 }
 
-has 'invite_url' => (is => 'ro', isa => 'Str', lazy_build => 1);
+has 'invite_url' => (is => 'ro', isa => 'Maybe[Str]', lazy_build => 1);
 method _build_invite_url { $->hub->pluggable->hook('template_var.invite_url') }
 
 method _render_user_frame {
