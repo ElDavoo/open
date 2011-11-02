@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-07-28 11:12-0700\n"
+"PO-Revision-Date: 2011-11-02 16:04-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "Remove"
 
 #: share/plugin/people/template/profile_links:21
 msgid "do.revert-to-default"
-msgstr "Revert to Default…"
+msgstr "Revert to Default..."
 
 #: share/plugin/people/share/widgets/profile_tags/widget.js:86
 msgid "error.add-profile-tag"
