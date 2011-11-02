@@ -5,10 +5,18 @@
     <span>[% loc('activities.composing-private-message-to=person', person) %]</span>
 [% ELSIF className == 'mention' %]
     <span>
-        [% IF isPrivate %]
-            [% loc('activities.composing-private-message-to=person', person) %]
+        [% IF user_id == viewer_id %]
+            [% IF isPrivate %]
+                [% loc('You are composing a private message to yourself') %]
+            [% ELSE %]
+                [% loc('You are composing a message to yourself') %]
+            [% END %]
         [% ELSE %]
-            [% loc('activities.composing-message-to=user', person) %]
+            [% IF isPrivate %]
+                [% loc('activities.composing-private-message-to=person', person) %]
+            [% ELSE %]
+                [% loc('activities.composing-message-to=user', person) %]
+            [% END %]
         [% END %]
         (<label>[% loc('activities.make-signal-private') %] <input class="toggle-private" [% IF isPrivate %]checked="checked"[% END %] type="checkbox"/></label>)
     </span>

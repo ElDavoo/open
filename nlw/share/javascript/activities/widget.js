@@ -79,6 +79,7 @@ $.extend(Activities.Widget.prototype, {
                     node: $(self.node).find('.mainWikiwyg'),
                     prefix: self.prefix,
                     share: self.share,
+                    viewer_id: self.viewer_id,
                     mention_user_id: self.mention_user_id,
                     mention_user_name: self.mention_user_name,
                     static_path: self.static_path,

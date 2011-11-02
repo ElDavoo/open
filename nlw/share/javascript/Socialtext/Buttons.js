@@ -152,13 +152,29 @@ var button_handler = {
     },
     'st-revision-view': function() {
         window.location = "[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]"
-    }
+    },
+
+    /**
+     * Invite
+     */
+    'st-wiki-subnav-link-invite': function() {
+        window.location = st.invite_url;
+    },
 };
 
 Socialtext.prototype.buttons = {
     show: function(buttons) {
         var self = this;
-        if (!buttons) return;
+        buttons = buttons || [];
+
+        if (st.invite_url) {
+            buttons.unshift(
+                [ "st-wiki-subnav-link-invite", loc("nav.invite!") ]
+            );
+        }
+ 
+        if (!buttons.length) return;
+
         $.each(buttons, function(_, b) {
             var button_id = b[0]
             var button_text = b[1]

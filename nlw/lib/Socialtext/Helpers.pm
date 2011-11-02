@@ -304,6 +304,8 @@ method _build_js_bootstrap {
         static_path => $->static_path,
         miki_url => $->miki_path,
 
+        invite_url => $->invite_url,
+
         content_types => $->hub->pluggable->content_types,
 
         # wikiwyg
@@ -337,6 +339,9 @@ sub user_frame_path {
     return Socialtext::Paths::cache_directory('user_frame');
 }
 
+has 'invite_url' => (is => 'ro', isa => 'Str', lazy_build => 1);
+method _build_invite_url { $->hub->pluggable->hook('template_var.invite_url') }
+
 method _render_user_frame {
     local $ENABLE_FRAME_CACHE = 0;
 
@@ -348,8 +353,7 @@ method _render_user_frame {
     my $loc_lang = $->hub->best_locale;
     my $is_guest = $->hub->current_user->is_guest ? 1 : 0;
 
-    my $can_invite = $->hub->pluggable->hook('template_var.invite_url');
-    $can_invite = ($can_invite ? 1 : 0);
+    my $can_invite = $self->invite_url ? 1 : 0;
 
     my $can_create_group = (
         (!$is_guest
