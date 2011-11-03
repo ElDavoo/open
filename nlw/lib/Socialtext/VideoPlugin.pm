@@ -89,6 +89,10 @@ our %Services = (
             if ($autoplay) {
                 $html =~ s/\?docid=/?autoplay=true&docid=/;
             }
+
+            # Allow dropdowns and dialog boxes to cover google videos
+            $html =~ s/<embed/<embed wmode="transparent"/;
+
             return $html;
         }
     },
