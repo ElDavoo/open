@@ -108,9 +108,14 @@ Socialtext::buttons =
       button_id = b[0]
       button_text = b[1]
       button_class = b[2]
-      $button = $("<button/>").addClass(button_class).attr("id", button_id).button(label: button_text).click(button_handler[button_id] or ->
-        throw new Error(button_id + " has no handler")
-      ).appendTo("#globalNav .buttons")
+      $button = $("<button />")
+        .addClass(button_class)
+        .attr("id", button_id)
+        .button(label: button_text)
+        .click(
+          button_handler[button_id] or
+            (-> throw new Error(button_id + " has no handler"))
+        ).appendTo("#globalNav .buttons")
     $ => @setup()
   
   setup: ->
