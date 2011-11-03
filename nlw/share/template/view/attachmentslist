@@ -30,6 +30,7 @@
     <div class="clear"></div>
   </div>
   <div id="contentContainer">
+      [% predicate_with_params = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];sortby=[% sortby %];direction=[% direction || sortdir.$sortby %][%- END %]
     <div class="clear"></div>
     [% IF pager %]
       <div class="grid_24">
@@ -43,7 +44,6 @@
       </div>
     </div>
     <div class="alpha grid_16">
-      [% predicate_with_params = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];sortby=[% sortby %];direction=[% direction || sortdir.$sortby %][%- END %]
       <div class="toggle">
         [% IF pager %]
           <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
