@@ -31,29 +31,33 @@ jQuery(document).ready(function() {
         });
     };
 
-    jQuery('#user').lookahead({
-        url: '/data/users',
-        clearOnHide: true,
-        requireMatch: [%- IF space.require_registered -%]true[%- ELSE -%]false[%- END -%],
-        params: {accept: 'application/json'},
-        linkText: function (user) {
-            return [user.best_full_name, user.user_id];
-        },
-        getEntryThumbnail: function(user) {
-            return '/data/people/' + user.value + '/small_photo';
-        },
-        displayAs: function(user) { return user.title; },
-        onAccept: function(id, item) {
-            jQuery('#user').val('');
+    jQuery('#user')
+      .one('click', function() {
+          $(this).removeClass('lookahead-prompt').val('');
+      })
+      .lookahead({
+          url: '/data/users',
+          clearOnHide: true,
+          requireMatch: [%- IF space.require_registered -%]true[%- ELSE -%]false[%- END -%],
+          params: {accept: 'application/json'},
+          linkText: function (user) {
+              return [user.best_full_name, user.user_id];
+          },
+          getEntryThumbnail: function(user) {
+              return '/data/people/' + user.value + '/small_photo';
+          },
+          displayAs: function(user) { return user.title; },
+          onAccept: function(id, item) {
+              jQuery('#user').val('');
 
-            var user = item.title
-                ? {best_full_name: item.title, user_id: item.value}
-                : {best_full_name: id, user_id: id};
+              var user = item.title
+                  ? {best_full_name: item.title, user_id: item.value}
+                  : {best_full_name: id, user_id: id};
 
-            newUsers.push(user);
-            renderNewUsers();
-        },
-    });
+              newUsers.push(user);
+              renderNewUsers();
+          },
+      });
 });
 
 </script>
