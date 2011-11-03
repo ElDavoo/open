@@ -263,7 +263,7 @@ $.extend(Activities.Widget.prototype, {
 
             if (self.mainEditor.isVisible()) {
                 if (self.fixed_action == 'action-signals' && self.initial_text){
-                    self.mainEditor.click();
+                    $('.mainWikiwyg .setupWikiwyg').click();
                 }
             }
         });
