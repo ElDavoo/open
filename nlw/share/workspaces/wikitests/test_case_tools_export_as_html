@@ -1,21 +1,13 @@
-*On hold until Export as HTML works again*
-
 | *Comment* | Test Case: Tools: Export as HTML |  |  |  |
 
 | *Comment* | Test Case: Tools: Export as HTML Create test page |  |  |  |
 
-| call | st-edit-new-page | ws=%%workspace%% | title=HTML %%start_time%% | content=HTML %%start_time%% content |
-
-TODO: Selenium unhappy with HTML opening in new window.
+| call | [st-edit-new-page] | ws=%%workspace%% | title=HTML %%start_time%% | content=HTML %%start_time%% content |
 
 | *Comment* | Test Case: Tools: Export as HTML Test Export |  |  |  |
-
-click_ok | //a[contains(@href,'action=display_html')] |
-
-TODO: HTML opens in new window. See if Selenium can select and test that window
-
-text_like | HTML %%start_time%% | |
-text_like | HTML %%start_time%% content | |
+| wait_for_element_present_ok | link=Export as HTML | 30000 |  |  |
+| click_and_wait | link=Export as HTML |  |  |  |
+| wait_for_text_present_ok | HTML %%start_time%% content | 30000 |  |  |
 
 | *Comment* | Test Case: Tools: Export as HTML Teardown |  |
 | st-admin | purge-page --w %%workspace%% --page html_%%start_time%% | was purged |

@@ -636,7 +636,7 @@ search for it and click on that user.
 sub st_find_user {
     my ($self, $user_id, $label) = @_;
     eval {
-        $self->handle_command('open_ok','/?action=people;tag=;sortby=best_full_name;limit=20;account_id=all');
+        $self->handle_command('open_ok','/st/people');
         $self->handle_command('wait_for_element_visible_ok', 'st-search-term', 5000);
         $self->handle_command('wait_for_element_visible_ok', 'st-search-submit', 5000);
         $self->handle_command('type_ok', 'st-search-term', $user_id);

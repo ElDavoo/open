@@ -9,8 +9,8 @@ This logoutin FOR STANDALONE TESTING ONLY
 st-logoutin | %%euserone%% | %%password%% |
 
 | *Comment* | Test Case: People Search Execute Search For User #1 by first name |  |
-| open_ok | / |  |
-| st-search-for | People | james |
+| open_ok | /st/people |  |
+| st-search-for | Search People: | james |
 | wait_for_text_present_ok | People matching | 30000 |
 | wait_for_element_visible_ok | link=James Q. Bach | 30000 |
 | wait_for_element_visible_ok | link=James T. Mcguire | 30000 |
@@ -20,8 +20,8 @@ st-logoutin | %%euserone%% | %%password%% |
 | text_unlike | content | qr/Markus Z. Gäèrtner/ism |
 
 | *Comment* | Test Case: People Search Execute Search For User #1 by last name |  |
-| open_ok | / |  |
-| st-search-for | People | mcguire |
+| open_ok | /st/people |  |
+| st-search-for | Search People: | mcguire |
 | wait_for_text_present_ok | People matching | 30000 |
 | wait_for_element_visible_ok | link=James T. Mcguire | 30000 |
 | text_like | content | qr/Showing 1 - 1 of 1 total/ism |
@@ -31,8 +31,8 @@ st-logoutin | %%euserone%% | %%password%% |
 | text_unlike | content | qr/Markus Z. Gäèrtner/ism |
 
 | *Comment* | Test Case: People Search Execute Search For User #1 by email address |  |
-| open_ok | / |  |
-| st-search-for | People | %%euserone%% |
+| open_ok | /st/people |  |
+| st-search-for | Search People: | %%euserone%% |
 | wait_for_text_present_ok | People matching | 30000 |
 | wait_for_element_visible_ok | link=James T. Mcguire | 30000 |
 | text_like | content | qr/Showing 1 - 1 of 1 total/ism |
@@ -42,8 +42,8 @@ st-logoutin | %%euserone%% | %%password%% |
 | text_unlike | content | qr/Markus Z. Gäèrtner/ism |
 
 | *Comment* | Test Case: People Search Execute Search For User #2 by location |  |
-| open_ok | / |  |
-| st-search-for | People | Palo Alto |
+| open_ok | /st/people |  |
+| st-search-for | Search People: | Palo Alto |
 | wait_for_text_present_ok | People matching | 30000 |
 | wait_for_element_visible_ok | link=James Q. Bach | 30000 |
 | text_like | content | qr/Showing 1 - 1 of 1 total/ism |
@@ -53,8 +53,8 @@ st-logoutin | %%euserone%% | %%password%% |
 | text_unlike | content | qr/Markus Z. Gäèrtner/ism |
 
 | *Comment* | Test Case: People Search Execute Search For User #3 Extra Fields |  |
-| open_ok | / |  |
-| st-search-for | People | default-three |
+| open_ok | /st/people |  |
+| st-search-for | Search People: | default-three |
 | wait_for_text_present_ok | People matching | 30000 |
 | wait_for_element_visible_ok | link=Michael S. Bolton | 30000 |
 | text_like | content | qr/Showing 1 - 1 of 1 total/ism |
@@ -64,8 +64,8 @@ st-logoutin | %%euserone%% | %%password%% |
 | text_unlike | content | qr/Markus Z. Gäèrtner/ism |
 
 | *Comment* | Test Case: People Search Execute Search For User #4 by Last Name & UTF-8 |  |
-| open_ok | / |  |
-| st-search-for | People | Gäèrtner |
+| open_ok | /st/people |  |
+| st-search-for | Search People: | Gäèrtner |
 | wait_for_text_present_ok | People matching | 30000 |
 | wait_for_element_visible_ok | link=Markus Z. Gäèrtner | 30000 |
 | text_like | content | qr/Showing 1 - 1 of 1 total/ism |
@@ -74,11 +74,11 @@ st-logoutin | %%euserone%% | %%password%% |
 | text_unlike | content | qr/Joe JJ. Harter/ism |
 
 | *Comment* | Test Case: People Search Execute Search For User #5 Shouldn't show up |  |
-| open_ok | / |  |
-| st-search-for | People | Harter |
+| open_ok | /st/people |  |
+| st-search-for | Search People: | Harter |
 | wait_for_text_present_ok | People matching | 30000 |
 | text_unlike | content | qr/James Q. Bach/ism |
 | text_unlike | content | qr/Joe JJ. Harter/ism |
 | text_unlike | content | qr/Markus Z. Gäèrtner/ism |
 
-| *Comment* | Test Case: People Search Execute Search COMPLETED |
+| *Comment* | Test Case: People Search Execute Search COMPLETED |  |

@@ -1,5 +1,3 @@
-*On hold until Export as HTML works again*
-
 | *Comment* | Test Case: Calc Tools: Export as HTML |
 
 | *Comment* | Test Case: Calc Tools: Export as HTML Create test page |  |
@@ -13,8 +11,9 @@
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 
 | *Comment* | Test Case: Calc Tools: Export as HTML Test Export |  |
-| open_ok | /%%workspace%%/index.cgi?action=display_html;page_name=export_HTML_Spreadsheet_%%start_time%% |  |
-| text_like | export_HTML_Spreadsheet_%%start_time%% |  |
+| wait_for_element_present_ok | link=Export as HTML | 30000 |
+| click_and_wait | link=Export as HTML |  |
+| wait_for_text_present_ok | A1 | 30000 |
 
 TODO: Put in some content and test for the content when that becomes possible
 
