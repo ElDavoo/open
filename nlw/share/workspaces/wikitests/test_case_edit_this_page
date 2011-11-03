@@ -1,4 +1,3 @@
-
 *On hold until we figure out the edit contention bug*
 
 | *Comment* | Starting Test Case: Edit This Page |  |
@@ -34,22 +33,20 @@
 | wait_for_text_present_ok | Edit This Page content %%start_time%% | 10000 |
 | text_like | st-page-content | Edit This Page content %%start_time%% |
 
-| *Comment* | Test Case: Edit This Page content |  |
+| *Comment* | Test Case: Edit This Page content |  |  |  |
 | call | [st-edit-fill-page] | ws=%%workspace%% | title=Edit This Page %%start_time%% | content=Edit This Page content %%start_time%% |
 
-TUXTODO: Is the Expand button working yet?
+| *Comment* | Test Case: Edit This Page Expand/Normal test |  |  |  |
+| wait_for_element_visible_ok | st-edit-pagetools-expand | 30000 |  |  |
+| click_ok | st-edit-pagetools-expand |  |  |  |
+| wait_for_element_visible_ok | link=Normal | %%epause%% |  |  |
+| click_ok | link=Normal |  |  |  |
+| wait_for_element_visible_ok | link=Expand | %%epause%% |  |  |
+| wait_for_element_visible_ok | st-save-button-link | %%epause%% |  |  |
 
- *Comment* | Test Case: Edit This Page Expand/Normal test | |
-wait_for_element_visible_ok | st-edit-pagetools-expand | 30000 |
-click_ok | st-edit-pagetools-expand | |
-wait_for_element_visible_ok | link=Normal | %%epause%% |
-click_ok | link=Normal | |
-wait_for_element_visible_ok | link=Expand | %%epause%% |
-wait_for_element_visible_ok | st-save-button-link | %%epause%% |
+| st-page-save |  |  |  |  |
 
-| st-page-save |  |  |
-
-| wait_for_text_present_ok | Edit This Page content %%start_time%% | 30000 |
+| wait_for_text_present_ok | Edit This Page content %%start_time%% | 30000 |  |  |
 
 | *Comment* | Test Case: Edit This Page verify editing buttons |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |

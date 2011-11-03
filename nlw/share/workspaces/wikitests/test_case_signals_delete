@@ -1,5 +1,3 @@
-*On hold until delete restrictions are restored*
-
 | *Comment* | Test Case: Signals Delete |  |
 
 | set | del_user | delete_user_%%start_time%%@david.socialtext.net |
