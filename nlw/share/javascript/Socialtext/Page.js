@@ -164,7 +164,7 @@ Socialtext.Page.prototype = {
                     self.setPageContent(data.html);
 
                     $('table.sort, table[data-sort]')
-                        .each(function() { Socialtext.make_table_sortable(this) });
+                        .each(function() { Socialtext.Page.make_table_sortable(this) });
 
                     // After upload, refresh the wikitext contents.
                     if ($('#wikiwyg_wikitext_textarea').size()) {
@@ -246,5 +246,32 @@ Socialtext.Page.title_to_page_id = function (str) {
     if (str == '') str = '_';
     return str.toLocaleLowerCase();
 }; /* function page_title_to_page_id */
+
+Socialtext.Page.make_table_sortable = function(table) {
+    if ($.browser.msie) { 
+        for (var i in table) {
+            if (i.match(/^jQuery\d+/)) {
+                table.removeAttribute(i);
+                $(table).removeAttr(i);
+                $('*', table).removeAttr(i);
+            }
+        }
+    }
+
+    if (!table) return;
+    if (typeof(table.config) != 'undefined' && table.config != null) {
+        // table.config = null;
+        $(table).trigger("update");
+    }
+    else {
+        $(table).addClass("sort");
+        $(table).tablesorter();
+    }
+};
+
+$(function(){
+    $('table.sort, table[data-sort]')
+        .each(function() { Socialtext.Page.make_table_sortable(this) });
+});
 
 })(jQuery);
