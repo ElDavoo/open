@@ -2,7 +2,7 @@
 
 <link rel="stylesheet" type="text/css" href="[% this.share %]/css/inline.css" media="screen" />
 
-<img src="/static/skin/s3/images/closeIcon.png" width="15" height="15"
+<img src="/static/images/icons/close-darker-12.png" width="12" height="12" style="padding-top: 2px"
      class="close" title="[% loc('activities.close-this-window') %]"
      onclick="var $frame = $('#st-signal-this-frame'); $frame.fadeOut(function(){$frame.remove()});"/>
 <div class="top">
