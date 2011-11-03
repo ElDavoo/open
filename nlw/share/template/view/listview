@@ -71,17 +71,13 @@
       [% IF feeds.rss.page %]
         <a style="float: left; margin-right: 10px; margin-top: 1px" href="[% feeds.rss.page.url %]"><img border="0" src="[% static_path %]/images/icons/rss.png"/></a>
       [% END %]
-      <ul class="jd_menu">
-        <li>
-          <a class="export" href="#" id="st-listtools-export">[% loc('do.export') %]</a>
-          <ul>
-            [% IF loc_system_lang != 'ja' %]
-            <li><a title="[% loc('nav.create-pdf') %]" id="st-listview-submit-pdfexport" href="#">[% loc('export.pdf') %]</a></li>
-            [% END %]
-            <li><a title="[% loc('nav.create-word') %]" id="st-listview-submit-rtfexport" href="#">[% loc('export.word') %]</a></li>
-          </ul>
-        </li>
-      </ul>
+      <select id="st-listtools-export" class="listtoolsExport">
+          <option class="export" value="export">[% loc('do.export') %]</option>
+          [% IF loc_system_lang != 'ja' %]
+          <option title="[% loc('nav.create-pdf') %]" class="pdfexport" href="#" value="pdf">[% loc('export.pdf') %]</option>
+          [% END %]
+          <option title="[% loc('nav.create-word') %]" class="rtfexport" href="#" value="rtf">[% loc('export.word') %]</option>
+      </select>
     </div>
   [% END %]
 

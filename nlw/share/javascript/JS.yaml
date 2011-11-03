@@ -42,9 +42,6 @@
         - contrib/jquery-ui-1.8.5.js
         - contrib/jquery.ui.selectmenu.js
         - contrib/jquery.ui.ipad.altfix.js
-        - contrib/jquery.bgiframe.js
-        - contrib/jquery.positionBy.js
-        - contrib/jquery.jdMenu.js
         - contrib/modernizr.js
         - contrib/utf8.js
         - {jemplate_runtime: jquery}

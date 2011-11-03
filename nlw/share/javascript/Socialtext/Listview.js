@@ -7,29 +7,39 @@ Socialtext.prototype.setupListview = (function($){
                 window.location = query_start + ';' + selected;
             });
 
-        $('#st-listview-submit-pdfexport').live('click', function() {
-            if (!$('.st-listview-selectpage-checkbox:checked').size()) {
-                alert(loc("error.no-page-pdf"));
-            }
-            else {
-                $('#st-listview-action').val('pdf_export')
-                $('#st-listview-filename').val(Socialtext.wiki_id + '.pdf');
-                $('#st-listview-form').submit();
-            }
-            return false;
-        });
+        $('#st-listtools-export')
+            .dropdown()
+            .change(function() {
+                var $checked = $('.st-listview-selectpage-checkbox:checked');
 
-        $('#st-listview-submit-rtfexport').live('click', function() {
-            if (!$('.st-listview-selectpage-checkbox:checked').size()) {
-                alert(loc("error.no-page-doc"));
-            }
-            else {
-                $('#st-listview-action').val('rtf_export')
-                $('#st-listview-filename').val(Socialtext.wiki_id + '.rtf');
-                $('#st-listview-form').submit();
-            }
-            return false;
-        });
+                switch($(this).val()) {
+                    case 'export':
+                        return;
+                    case 'pdf':
+                        if (!$checked.size()) {
+                            alert(loc("error.no-page-pdf"));
+                        }
+                        else {
+                            $('#st-listview-action').val('pdf_export')
+                            $('#st-listview-filename')
+                                .val(st.workspace.name + '.pdf');
+                            $('#st-listview-form').submit();
+                        }
+                        break;
+                    case 'rtf':
+                        if (!$checked.size()) {
+                            alert(loc("error.no-page-doc"));
+                        }
+                        else {
+                            $('#st-listview-action').val('rtf_export')
+                            $('#st-listview-filename')
+                                .val(st.workspace.name + '.rtf');
+                            $('#st-listview-form').submit();
+                        }
+                        break;
+                }
+                $(this).dropdownSelectValue('export');
+            });
 
         $('#st-listview-selectall').live('click', function () {
             var self = this;

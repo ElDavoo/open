@@ -548,17 +548,19 @@ div.peoplelist-desc
   padding-left: 19px
 
 // search export menu
-#st-listtools-export
-  background: url(#{$static}/images/icons/export-black-15.png) left center no-repeat
-  padding-left: 19px
-
-#st-listview-submit-pdfexport
-  background: url(#{$static}/images/icons/pdficon_small.gif) left center no-repeat
-  padding-left: 19px
-
-#st-listview-submit-rtfexport
-  background: url(#{$static}/images/icons/page_word.png) left center no-repeat
-  padding-left: 19px
+.listtoolsExport
+  margin-top: 1px
+  .ui-selectmenu-status
+    background: #fff url(#{$static}/images/icons/export-black-15.png) left center no-repeat
+    padding-left: 19px !important
+  li.export
+    display: none
+  .pdfexport a
+    background: url(#{$static}/images/icons/pdficon_small.gif) 3px 50% no-repeat
+    padding-left: 23px
+  .rtfexport a
+    background: url(#{$static}/images/icons/page_word.png) 3px 50% no-repeat
+    padding-left: 23px
 
 .tools
   padding-left: 10px
@@ -689,6 +691,5 @@ td.widgetUserPrefsButtons
 @import bubble.sass
 @import ckeditor.sass
 @import socialcalc.sass
-@import jdMenu.sass
 @import autocomplete.sass
 @import revision.sass
