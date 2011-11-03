@@ -14,9 +14,17 @@ if (window.parent && window.parent.$) {
     }
 }
 </script>
+<style><!--
+#setup {
+    visibility: hidden;
+}
+#setup.ui-page-active {
+    visibility: visible;
+}
+--></style>
+<script type="text/javascript" src="/js/[% app_version %]/socialtext-jqm.js"></script>
 <link rel="stylesheet" href="/static/[% app_version %]/javascript/contrib/colorpicker/css/colorpicker.css" type="text/css" />
 <link rel="stylesheet" href="/data/accounts/__ENV_primary_account__/theme/bubble.css" type="text/css" />
-<script type="text/javascript" src="/js/[% app_version %]/socialtext-jqm.js"></script>
 
 [% content %]
 
