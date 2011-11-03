@@ -34,6 +34,7 @@ sub register {
     $registry->add(action => 'display');
     $registry->add(action => 'submit_comment');
     $registry->add(action => 'random_page');
+    $registry->add(action => 'display_html');
     $registry->add(action => 'page_info');
     $registry->add(action => 'preview');
     $registry->add(action => 'homepage');
@@ -569,6 +570,28 @@ sub _getCurrentTagsJSON {
     my $text = encode_json($tags);
     return $text;
 
+}
+
+# XXX - the filtering being done here should be replaced with a
+# formatter subclass or LinkDictionary that is used just when formatting
+# is done for this method. See also Socialtext::Page::to_absolute_html()
+sub display_html {
+    my $self = shift;
+    my $page = $self->hub->pages->current;
+    my $html = $page->to_html;
+    my $title = $page->name;
+
+    my $base_uri = substr(Socialtext::URI::uri(), 0, -1);
+    $html = $self->qualify_links(
+        $html, $base_uri,
+    );
+
+    $self->screen_template('view/page/simple_html');
+    return $self->render_screen(
+        $self->hub->helpers->global_template_vars,
+        html => $html,
+        display_title => $title,
+    );
 }
 
 
