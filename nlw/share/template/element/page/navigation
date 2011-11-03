@@ -4,6 +4,21 @@
   <option [% IF action == option_action %]selected="selected"[% END %] value="action=[% option_action %][% suffix %]">[% text %]</option>
 [% END %]
 
+[% BLOCK workspace_selector %]
+<select id="st-workspace-list">
+  [% FOR ws = workspaceslist %]
+    <option value="/[% ws.name %]" [% IF ws.name == wiki.name %]selected="selected"[% END %]>[% ws.label %]</option>
+  [% END %]
+</select>
+<script>
+  $('#st-workspace-list')
+    .dropdown()
+    .change(function() {
+      document.location = $(this).val();
+    })
+</script>
+[% END %]
+
 [% MACRO jump_menu BLOCK %]
 <select id="st-jump-to">
   [% IF action == 'display' %]
@@ -36,7 +51,9 @@
   <div class="grid_18">
     <a href="/?action=workspaces_listall" class="spaces">[% loc('nav.wikis') %]</a>
     <span class="arrow">&gt;</span>
-    <a href="/[% wiki.name %]" class="spaceName">[% wiki.title %]</a>
+
+    [% INCLUDE workspace_selector %]
+
     <span class="arrow">&gt;</span>
     <span>[% loc('Jump to: [_1]', jump_menu) %]</a>
 
