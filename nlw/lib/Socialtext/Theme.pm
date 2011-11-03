@@ -31,6 +31,8 @@ my @COLUMNS = qw( theme_id name header_color header_image_id
     foreground_shade logo_image_id favicon_image_id
 );
 
+sub COLUMNS { @COLUMNS }
+
 my @UPLOADS = qw(header_image background_image logo_image favicon_image);
 
 has $_ => (is=>'ro', isa=>'Str', required=>1) for @COLUMNS;
