@@ -256,6 +256,14 @@ $(function() {
     });
     // Make Invite! link a button
     $('#st-wiki-subnav-link-invite').button();
+
+    if (location.hash.toLowerCase() == '#new_page' || location.search.toLowerCase() == '?_p=new_page') {
+        $('#st-create-content-link').click();
+    }
+
+    if (location.hash.toLowerCase() == '#new_page') {
+        $('#st-create-content-link').click();
+    }
 });
 
 
