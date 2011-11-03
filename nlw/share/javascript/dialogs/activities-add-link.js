@@ -82,13 +82,13 @@ socialtext.dialog.register('activities-add-link', function(opts) {
                 workspace: dialog.find('.wiki-link-workspace').val(),
                 page: dialog.find('.wiki-link-page').val(),
                 label: dialog.find('.wiki-link-label').val(),
-                section: dialog.find('.wiki-link-section').val(),
+                section: dialog.find('.wiki-link-section').val()
             });
         }
         else if (dialog.find('.web-option').is(':checked')) {
             opts.callback(dialog, {
                 label: dialog.find('.web-link-label').val(),
-                destination: dialog.find('.web-link-destination').val(),
+                destination: dialog.find('.web-link-destination').val()
             });
         }
         else {

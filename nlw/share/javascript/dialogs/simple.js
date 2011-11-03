@@ -13,7 +13,7 @@ socialtext.dialog.register('simple', function(opts) {
                     dialog.close();
                 }
             }
-        ],
+        ]
     });
 });
 

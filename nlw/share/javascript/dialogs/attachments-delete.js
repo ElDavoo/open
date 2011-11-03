@@ -18,7 +18,7 @@ socialtext.dialog.register('attachments-delete', function(opts) {
                 text: loc('do.close'),
                 click: function() { dialog.close() }
             }
-        ],
+        ]
     });
 });
 
