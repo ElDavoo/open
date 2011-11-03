@@ -1,7 +1,7 @@
 Socialtext.prototype.setupListview = (function($){
     return function(query_start) {
         $('#sort-picker')
-            .dropdown({ width: 150 })
+            .dropdown()
             .live('change', function() {
                 var selected = jQuery('select#sort-picker').val();
                 window.location = query_start + ';' + selected;
