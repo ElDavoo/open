@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-11-03 11:22+0800\n"
+"PO-Revision-Date: 2011-11-03 14:35+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Next"
 
 #: share/plugin/groups/template/group_links:24
 msgid "do.revert-to-default"
-msgstr "Revert to Default…"
+msgstr "Revert to Default..."
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3
 msgid "do.save"
