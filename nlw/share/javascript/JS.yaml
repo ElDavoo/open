@@ -47,7 +47,7 @@
         - {jemplate_runtime: jquery}
         - JemplatePlugin/*.js
         - Socialtext.js
-        - Socialtext/Buttons.js
+        - {coffee: Socialtext/Buttons.coffee}
         - Socialtext/Dialog.js
         - Socialtext/Search.js
         - Socialtext/Email.js
