@@ -18,9 +18,12 @@
   position: static
   margin: 0
 
-.ui-selectmenu-menu li.warning
-  padding-right: 10px
-  background: url(#{$static}/images/warning-icon.png) no-repeat right 4px
+.ui-selectmenu-menu
+  li.warning
+    padding-right: 10px
+    background: url(#{$static}/images/warning-icon.png) no-repeat right 4px
+  .ui-selectmenu-item-selected a
+    font-weight: bold
 .ui-selectmenu-menu li.warning.ui-state-hover
   background-color: $primary_color
 
