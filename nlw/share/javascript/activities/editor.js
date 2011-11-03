@@ -462,7 +462,6 @@ $.extend(Activities.Editor.prototype, {
     },
 
     showProfileMention: function() {
-        console.log(this.viewer_id);
         this.startMention({
             user_id: this.mention_user_id,
             best_full_name: this.mention_user_name
