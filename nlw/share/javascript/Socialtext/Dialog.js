@@ -122,7 +122,7 @@ Socialtext.prototype.dialog = (function($) {
         
         showResult: function (opts) {
             this.show('simple', {
-                title: opts.title || loc('Result'),
+                title: opts.title || loc('nav.result'),
                 message: opts.message,
                 width: 400,
                 onClose: opts.onClose
@@ -131,7 +131,7 @@ Socialtext.prototype.dialog = (function($) {
 
         showError: function (message, onClose) {
             this.show('simple', {
-                title: loc('Error'),
+                title: loc('nav.error'),
                 message: '<div class="error">' + message + '</div>',
                 width: 400,
                 onClose: onClose

@@ -25,7 +25,7 @@
         [% IF mode != 'html' %]
           <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=html">
         [% END %]
-        [% loc('Highlight') %]
+        [% loc('diff.highlight') %]
         [% IF mode != 'html' %]</a>[% END %]
       </li>
       <li>&#166;</li>
@@ -33,7 +33,7 @@
         [% IF mode != 'wikitext' %]
           <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=wikitext">
         [% END %]
-        [% loc('Wikitext') %]
+        [% loc('diff.wikitext') %]
         [% IF mode != 'wikitext' %]</a>[% END %]
       </li>
       <li>&#166;</li>
@@ -41,7 +41,7 @@
         [% IF mode != 'view' %]
           <a href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %];mode=view">
         [% END %]
-        [% loc('View') %]
+        [% loc('diff.view') %]
         [% IF mode != 'view' %]</a>[% END %]
       </li>
       <li>&#166;</li>

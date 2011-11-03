@@ -1099,6 +1099,10 @@ msgstr "Export to CSV"
 msgid "do.no"
 msgstr "No"
 
+#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:40
+msgid "do.theme"
+msgstr "Theme"
+
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:492 lib/Socialtext/Pluggable/Plugin/Signals.pm:502
 msgid "do.yes"
 msgstr "Yes"
@@ -2338,6 +2342,10 @@ msgstr "You cannot remove a user from their primary account."
 msgid "error.removing-last-admin"
 msgstr "Can't remove privileges of the last admin"
 
+#: lib/Socialtext/Handler/Settings.pm:334 lib/Socialtext/Handler/Settings.pm:337
+msgid "error.removing-last-wiki-admin=user"
+msgstr "%1 could not be removed because a workspace requires at least one admin."
+
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
 msgstr "There was an error with your request"
@@ -2692,6 +2700,10 @@ msgstr "Not Found"
 msgid "error.wiki-required=uri"
 msgstr "You must provide a workspace to this URI (%1)"
 
+#: lib/Socialtext/Handler/Settings.pm:194
+msgid "error.wiki-requires-at-least-one-admin"
+msgstr "A workspace requires at least one admin."
+
 #: lib/Socialtext/Workspace.pm:611
 msgid "error.wiki-title-required"
 msgstr "Workspace title is a required field."
@@ -2906,6 +2918,10 @@ msgstr "NOTE: You do not share a group with this person and cannot view their pr
 #: lib/Socialtext/WorkspacesUIPlugin.pm:59
 msgid "info.homepage-blog-data"
 msgstr "When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a weblog instead, enter that name here."
+
+#: lib/Socialtext/WorkspacesUIPlugin.pm:59
+msgid "info.homepage-or-blog"
+msgstr "When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a blog instead, enter that name here."
 
 #. ($wafl, $user->primary_account->name)
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:136
@@ -3724,6 +3740,60 @@ msgstr "Deleted %*(%1,uploaded widget)"
 #: lib/Socialtext/WikiFixture/SocialBase.pm:2947
 msgid "test.deleted-widgets=count"
 msgstr "Deleted %*(%1,widget)"
+
+msgid "theme.background_color"
+msgstr "Background Color"
+
+msgid "theme.background_image"
+msgstr "Background Image"
+
+msgid "theme.background_image_position"
+msgstr "Background Image Position"
+
+msgid "theme.background_image_tiling"
+msgstr "Background Image Tiling"
+
+msgid "theme.background_link_color"
+msgstr "Background Link Color"
+
+msgid "theme.body_font"
+msgstr "Body Font"
+
+msgid "theme.favicon_image"
+msgstr "Favicon Image"
+
+msgid "theme.foreground_shade"
+msgstr "Main Navigation Font Color"
+
+msgid "theme.header_color"
+msgstr "Header Color"
+
+msgid "theme.header_font"
+msgstr "Heading Font"
+
+msgid "theme.header_image"
+msgstr "Header Image"
+
+msgid "theme.header_image_position"
+msgstr "Header Image Position"
+
+msgid "theme.header_image_tiling"
+msgstr "Header Image Tiling"
+
+msgid "theme.header_link_color"
+msgstr "Header Link Color"
+
+msgid "theme.logo_image"
+msgstr "Logo Image"
+
+msgid "theme.primary_color"
+msgstr "Primary Color"
+
+msgid "theme.secondary_color"
+msgstr "Secondary Color"
+
+msgid "theme.tertiary_color"
+msgstr "Tertiary Color"
 
 #. ($self->hub->timezone->date_local( $_[0], dateonly => 1)
 #: lib/Socialtext/DisplayPlugin.pm:267

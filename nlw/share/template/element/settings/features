@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
 });
 </script>
 
-<h3>[% loc('Appearance') %]</h3>
+<h3>[% loc('settings.appearance') %]</h3>
 
 [% INCLUDE element/settings/setting_select
    pref='workspace.setting.title'
@@ -37,7 +37,7 @@ jQuery(document).ready(function() {
 
 <hr />
 
-<h3>[% loc('Features') %]</h3>
+<h3>[% loc('settings.features') %]</h3>
 
 [% INCLUDE element/settings/setting_select
    pref='workspace.setting.incoming_email_placement'
@@ -56,7 +56,7 @@ jQuery(document).ready(function() {
 
 <hr />
 
-<h3>[% loc('Privacy') %]</h3>
+<h3>[% loc('settings.privacy') %]</h3>
 
 [% INCLUDE element/settings/setting_select
    pref='workspace.permission.guest_has_email_in'

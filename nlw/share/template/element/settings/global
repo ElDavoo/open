@@ -24,22 +24,22 @@
   </div>
   <div class="clear"></div>
   
-  <div class="prefix_5 alpha grid_15">[% loc('New passwords must be at least 6 characters long. Use your email address and new password to log in again.') %]</div>
+  <div class="prefix_5 alpha grid_15">[% loc('info.reset-password-and-relogin') %]</div>
   <div class="clear"></div>
 
-  <div class="alpha grid_5 input-label">[% loc('Current Password') %]:</div>
+  <div class="alpha grid_5 input-label">[% loc('password.current') %]:</div>
   <div class="omega grid_15">
     <input type="password" name="user.old_password" value="" />
   </div>
   <div class="clear"></div>
 
-  <div class="alpha grid_5 input-label">[% loc('New Password') %]:</div>
+  <div class="alpha grid_5 input-label">[% loc('password.new') %]:</div>
   <div class="omega grid_15">
     <input type="password" name="user.new_password" value="" />
   </div>
   <div class="clear"></div>
 
-  <div class="alpha grid_5 input-label">[% loc('Retype New Password') %]:</div>
+  <div class="alpha grid_5 input-label">[% loc('password.retype') %]:</div>
   <div class="omega grid_15">
     <input type="password" name="user.new_password_retype" value="" />
   </div>

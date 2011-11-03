@@ -69,6 +69,10 @@ msgstr "Leave"
 msgid "do.next"
 msgstr "Next"
 
+#: share/plugin/groups/template/group_links:24
+msgid "do.revert-to-default"
+msgstr "Revert to Default…"
+
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3
 msgid "do.save"
 msgstr "Save"
@@ -224,6 +228,10 @@ msgstr "Delete This Group"
 msgid "groups.delete=name"
 msgstr "Delete %1"
 
+#: share/plugin/groups/template/grouplist:80
+msgid "groups.description"
+msgstr "Description"
+
 #: share/plugin/groups/share/widgets/edit_information/widget.js:163
 msgid "groups.description-1000-characters-max"
 msgstr "Description is limited to 1000 characters"
@@ -326,6 +334,14 @@ msgstr "next"
 msgid "groups.next-step"
 msgstr "Next"
 
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:24
+msgid "groups.no-groups"
+msgstr "No groups have been created. You can create a group by clicking on the Create Group button."
+
+#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:23
+msgid "groups.no-my-groups"
+msgstr "You do not belong to any groups."
+
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:11
 msgid "groups.no-other-members-use-form-below-to-invite"
 msgstr "Currently, you are the only member of this group.<br/>Use the form below to invite your colleagues."
@@ -367,10 +383,6 @@ msgstr "remove"
 msgid "groups.reset-photo"
 msgstr "Reset Photo"
 
-#: share/plugin/groups/template/group_links:24
-msgid "do.revert-to-default"
-msgstr "Revert to Default…"
-
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
 msgstr "Admin"
@@ -383,6 +395,10 @@ msgstr "Member"
 msgid "groups.save"
 msgstr "Save"
 
+#: share/plugin/groups/template/search_box_groups:1
+msgid "groups.search"
+msgstr "Groups"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "groups.search-before-creating"
 msgstr "Before creating a group, you can search names and descriptions for existing groups."
@@ -394,10 +410,6 @@ msgstr "type your search here..."
 #: share/plugin/groups/template/search_box_groups:1
 msgid "groups.search:"
 msgstr "Search Groups:"
-
-#: share/plugin/groups/template/search_box_groups:1
-msgid "groups.search"
-msgstr "Groups"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:39
 msgid "groups.self-join"

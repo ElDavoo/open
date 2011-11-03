@@ -357,6 +357,10 @@ msgstr "Add this tag to someone"
 msgid "people.add-tag-to-user=name:"
 msgstr "Add tag \"%1\" to user:"
 
+#: share/plugin/people/share/javascript/dialogs/add-tag-to-person.js:6
+msgid "people.add=tag"
+msgstr "Add Tag \"%1\""
+
 #: share/plugin/people/share/people.js:31
 msgid "people.cancel-add-tag"
 msgstr "cancel"
@@ -414,12 +418,12 @@ msgid "people.profile"
 msgstr "Profile"
 
 #: share/plugin/people/template/lite/people.html:7
-msgid "people.search:"
-msgstr "Search People:"
-
-#: share/plugin/people/template/lite/people.html:7
 msgid "people.search"
 msgstr "People"
+
+#: share/plugin/people/template/lite/people.html:7
+msgid "people.search:"
+msgstr "Search People:"
 
 #: share/plugin/people/template/lite/profile.html:109 share/plugin/people/template/lite/profile.html:126
 msgid "people.see-all-peers"
@@ -453,6 +457,10 @@ msgstr "Stop following"
 #: share/plugin/people/share/template/all_people-prefs.xml:2
 msgid "people.tag-name"
 msgstr "Tag Name"
+
+#: share/plugin/people/share/javascript/dialogs/add-tag-to-person.tt2:4
+msgid "people.to-person:"
+msgstr "To person:"
 
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"

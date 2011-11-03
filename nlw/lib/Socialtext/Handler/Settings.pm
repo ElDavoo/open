@@ -191,7 +191,7 @@ sub POST_space {
     my ($user_id, $role_id);
 
     if ( $self->pref eq 'manage' and 0 == scalar(@admins_left)) {
-        $self->warning(loc('A workspace requires at least one admin.'));
+        $self->warning(loc('error.wiki-requires-at-least-one-admin'));
         return $self->get_space_html($rest);
     }
     eval {
@@ -331,10 +331,10 @@ sub POST_space {
         if ($e->error eq 'ADMIN_REQUIRED') {
             st_log->error("Could not save settings: " . $e->error);
             if (grep { $user_id == $_ } @remove) {
-                $self->warning(loc('[_1] could not be removed because a workspace requires at least one admin.', $e->username));
+                $self->warning(loc('error.removing-last-wiki-admin=user', $e->username));
             }
             else {
-                $self->warning(loc('[_1] could not be removed because a workspace requires at least one admin.', $e->username));
+                $self->warning(loc('error.removing-last-wiki-admin=user', $e->username));
             }
         }
         else {

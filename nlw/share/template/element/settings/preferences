@@ -50,7 +50,7 @@
 
 <hr />
 
-<h3>[% loc('RSS') %]</h3>
+<h3>[% loc('settings.rss') %]</h3>
 
 [% FOREACH setting IN prefs.syndicate.keys %]
   [% INCLUDE element/settings/setting_select
