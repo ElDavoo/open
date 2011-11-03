@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-11-02 23:06+0800\n"
+"PO-Revision-Date: 2011-11-03 21:32+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1574,7 +1574,7 @@ msgid "info.favicon_image"
 msgstr "Icon (in .ico format) for browser's URL bar and bookmarks."
 
 msgid "info.foreground_shade"
-msgstr "Color of footer and menu text."
+msgstr "Brightness of footer and navigation menu text."
 
 msgid "info.header_color"
 msgstr "Background color of header area."

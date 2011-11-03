@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-10-18 19:23-0700\n"
+"PO-Revision-Date: 2011-11-03 21:31+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3763,7 +3763,7 @@ msgid "theme.favicon_image"
 msgstr "Favicon Image"
 
 msgid "theme.foreground_shade"
-msgstr "Main Navigation Font Color"
+msgstr "Navigation Font Brightness"
 
 msgid "theme.header_color"
 msgstr "Header Color"
