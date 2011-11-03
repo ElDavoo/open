@@ -123,12 +123,11 @@ container.resize_iframe = function(height) {
 };
 
 container.set_title = function(title) {
-    var element = document.getElementById(this.f + '-title-text');
     if (title.length >= 40 ) {
       title = title.substr(0,37); // same as template
       title = title + ' ...';
     }
-    $('.widgetHeaderTitleText', this.widgetNode()).html(
+    $('.widgetTitle h1', this.widgetNode()).html(
         title.replace(/&/g, '&amp;').replace(/</g, '&lt;')
     );
 };
