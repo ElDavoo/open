@@ -94,6 +94,10 @@ button_handler =
   "st-wiki-subnav-link-invite": ->
     window.location = st.invite_url
 
+  "widget-preview": -> st.widgetEditorInstance.preview()
+  "widget-publish": -> st.widgetEditorInstance.publish()
+  "widget-cancel": -> st.widgetEditorInstance.cancel()
+
 Socialtext::buttons =
   show: (buttons) ->
     buttons = buttons or []
