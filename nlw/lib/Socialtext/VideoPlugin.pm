@@ -110,6 +110,10 @@ our %Services = (
         html_filter => sub {
             my $html = shift;
             $html =~ s/<strong\b[^>]*>.*?<\/strong>//i;
+
+            # Allow dropdowns and dialog boxes to cover slideshare slides
+            $html =~ s{<param}{<param name="wmode" value="transparent"></param><param };
+
             return $html;
         }
     },
