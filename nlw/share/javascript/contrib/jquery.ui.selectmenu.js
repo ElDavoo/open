@@ -416,7 +416,7 @@ $.widget("ui.selectmenu", {
 		if ( o.maxHeight && o.maxHeight < listH ) {
 			this.list.height( o.maxHeight );
 		} else {
-			var winH = $( window ).height() / 3;
+			var winH = $( window ).height() / 2;
 			if ( winH < listH ) this.list.height( winH );
 		}
 		

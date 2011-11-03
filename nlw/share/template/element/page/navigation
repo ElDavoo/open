@@ -24,7 +24,7 @@
 <script>
   $('#st-jump-to')
     .dropdown({
-      width: 200
+      width: 150
     })
     .change(function() {
         var cgi_params = $(this).find('option:selected').val();
