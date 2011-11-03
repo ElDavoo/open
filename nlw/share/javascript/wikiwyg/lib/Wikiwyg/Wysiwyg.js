@@ -798,8 +798,11 @@ proto._do_table_up_or_down = function(e, direction, selector) {
 
 proto.enable_pastebin = function () {
     var self = this;
+    self.pastebin = jQuery('#pastebin').attr('contentWindow');
 
     if ($.browser.safari) {
+        if (!self.pastebin) { return }
+
         this.bind('keydown', function(e) {
             if (e.ctrlKey || e.metaKey) {
                 switch (e.which) {
@@ -819,8 +822,6 @@ proto.enable_pastebin = function () {
         self.enable_pastebin_webkit();
         return;
     }
-
-    self.pastebin = jQuery('#pastebin').attr('contentWindow');
 
     if (self.pastebin) {
         if (!self.pastebin.document.body) {
