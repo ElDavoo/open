@@ -7,7 +7,7 @@
     <div id="main">
         <div id='messages'></div>
 
-        <div id="loading">
+        <div id="loading" class="loading-spinner">
             <img id="spinner" src="[% this.static_path %]/images/ajax-loader.gif"/>
         </div>
 

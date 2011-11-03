@@ -5,7 +5,7 @@
 </div>
 
 <div id="[% id('messages') %]" class='messages'></div>
-<div id="[% id('loading') %]">
+<div class="loading-spinner" id="[% id('loading') %]">
     <img id="[% id('spinner') %]" src="[% this.static_path %]/images/ajax-loader.gif"/>
 </div>
 <div id="[% id('event_list') %]" class='event_list'>
