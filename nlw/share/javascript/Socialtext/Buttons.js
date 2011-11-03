@@ -219,4 +219,9 @@ Socialtext.prototype.buttons = {
     }
 }
 
+// Create jQueryUI buttons out of all simple buttons
+$(function() {
+    $('.simple-button').button();
+});
+
 })(jQuery);

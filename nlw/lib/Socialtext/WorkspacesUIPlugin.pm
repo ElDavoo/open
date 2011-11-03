@@ -56,7 +56,7 @@ sub homepage_weblog_data {
 
     return {
         title => loc('wiki.link'),
-        additional => loc('When users click on the title of a workspace, they go to the Central Page of the workspace. If you wish to use the name of a blog instead, enter that name here.'),
+        additional => loc('info.homepage-or-blog'),
     };
 }
 

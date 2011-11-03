@@ -22,15 +22,14 @@ sub _build_account {
     return Socialtext::Account->Resolve($self->acct)
 }
 
+# /data/accounts/<account_id>/theme/<filename>
 sub GET_css {
     my $self = shift;
     my $rest = shift;
 
     return $self->if_valid_request($rest => sub {
-        my ($filename, $ext) = $self->filename =~ m{^([-\w]+)\.(sass|css)$};
-        die 'Only .sass and .css are acceptable file extensions' unless $ext;
-
-        $rest->header(-type=>"text/$ext");
+        my ($filename, $ext) = $self->filename =~ m{^([-\w]+)\.(sass|css|html)$};
+        die 'Only sass, css, and html are acceptable file extensions' unless $ext;
 
         my $params = $self->account->prefs->all_prefs->{theme};
         $params->{static} = '"' . $self->static_path . '"';
@@ -42,19 +41,20 @@ sub GET_css {
             $params->{header_background} = $self->_bg_helper(header => $params);
         }
 
-        my $sass = Socialtext::SASSy->new(
+        my $sass = Socialtext::SASSy->Fetch(
             dir_name => $self->account->name,
             filename => $filename,
             params => $params,
         );
         $sass->render if $sass->needs_update;
 
-        my $size = $ext eq 'sass' ? -s $sass->sass_file : -s $sass->css_file;
+        my $file_sub = $ext . '_file';
+        my $size = $sass->$file_sub();
 
         $rest->header(
             -status               => HTTP_200_OK,
             '-content-length'     => $size || 0,
-            -type                 => $ext eq 'sass' ? 'text/plain' : 'text/css',
+            -type                 => $ext eq 'sass' ? 'text/plain' : "text/$ext",
             -pragma               => undef,
             '-cache-control'      => undef,
             'Content-Disposition' => qq{filename="$filename.$ext.txt"},

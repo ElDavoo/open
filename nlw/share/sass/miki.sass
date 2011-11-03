@@ -1,3 +1,5 @@
+@import colors.sass
+
 body
   font-family: $body_font
   margin: 0
@@ -16,39 +18,35 @@ div.clear
 .search
   margin: 5px
 
-.wiki-include-page
-  border-left: 1px solid #80a9f3
-  padding: 0px 10px 0px 5px
-  margin-left: 12px
-
 .bold
   font-weight: bold
 
 .logo
-  background: #17417F
+  background: $header_color
   padding: 5px
 
 .globalnav
-  background-color: #CEECFE
-  border-bottom: 1px solid #666
+  background-color: $background_color
+  border-bottom: 1px solid $darker
   padding: 3px 2px
+  color: $foreground_color
 
 .bottom
-  border-top: 1px solid #666
+  border-top: 1px solid $darker
 
 .subnav
-  background-color: #ddd
+  background-color: $light
   padding: 3px 2px
-  border-bottom: 1px solid #666
+  border-bottom: 1px solid $darker
 
 .paging
-  border-top: 1px solid #666
-  background-color: #ddd
+  border-top: 1px solid $darker
+  background-color: $light
   padding: 3px 2px
 
 .tabs
-  border-bottom: 1px solid #666
-  background-color: #ddd
+  border-bottom: 1px solid $darker
+  background-color: $light
   padding: 3px 2px
 
 .ui-mobile-viewport .tabs
@@ -74,20 +72,20 @@ div.clear
 
 .pageinfo
   padding: 3px 2px
-  border-top: 1px solid #666
-  background-color: #DDD
+  border-top: 1px solid $darker
+  background-color: $light
   padding-bottom: 5px
   ul, p
     margin: 0
 
 #errors-and-messages
-  background-color: #fbffbe
-  border: 1px solid #dedede
+  background-color: $tertiary_color
+  border: 1px solid $red
   padding: 5px
   font-weight: bold
 
 .signal_error
-  color: #f00
+  color: $red
   font-weight: bold
   padding: 10px 0 5px 5px
 
@@ -105,13 +103,13 @@ div.clear
   list-style: none
   padding: 0
   li
-    border-top: 1px solid #666
+    border-top: 1px solid $darker
     margin-left: 5px
     padding: 5px 0 3px 0
     clear: all
 
 .people_list li
-  border-top: 1px solid #666
+  border-top: 1px solid $darker
   margin-left: 5px
   padding: 5px 0 3px 0
   clear: all
@@ -122,7 +120,7 @@ div.clear
 .event_list
   img.avatar
     float: left
-    border: 1px solid #666 !important
+    border: 1px solid $darker !important
   .mainSection
     float: left
     margin-left: 5px
@@ -142,7 +140,7 @@ div.clear
 
 .ago_text
   font-style: italic
-  color: #666
+  color: $darker
   width: 100%
   white-space: nowrap !important
 
@@ -152,7 +150,7 @@ div.clear
 
 .people_search
   padding: 5px
-  border-bottom: 1px solid #666
+  border-bottom: 1px solid $darker
   input
     vertical-align: middle
 
@@ -181,7 +179,7 @@ div.clear
 
 .postsignal
   padding: 5px
-  border-bottom: 1px solid #666
+  border-bottom: 1px solid $darker
   form
     padding: 0
     margin: 0
@@ -194,14 +192,14 @@ div.clear
     float: left
     margin-right: 5px
     margin-left: 5px
-    border: 1px solid #666 !important
+    border: 1px solid $darker !important
   .info
     padding-bottom: 10px
     padding-left: 70px
     min-height: 75px
-    border-bottom: 1px solid #666
+    border-bottom: 1px solid $darker
   .section
-    border-top: 1px solid #666
+    border-top: 1px solid $darker
     &.first
       border-top: none
     padding-bottom: 10px
@@ -217,7 +215,7 @@ div.clear
     border: none
     &.avatar
       float: left
-      border: 1px solid #666
+      border: 1px solid $darker
       vertical-align: middle
       width: 27px !important
   .user_link

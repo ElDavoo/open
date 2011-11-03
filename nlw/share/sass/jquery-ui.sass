@@ -105,11 +105,11 @@
     font-family: $body_font
 
 .ui-widget-content
-  border: 1px solid #aaaaaa
-  background: white
-  color: #222222
+  border: 1px solid $light
+  background-color: $lightest
+  color: $darker
   a
-    color: #222222
+    color: $darker
 
 .ui-widget-header
   border: 1px solid $tertiary_color
@@ -117,7 +117,7 @@
   color: $tertiary_color
   font-weight: bold
   a
-    color: #222222
+    color: $primary_contrast
 
 /* Interaction states
  *----------------------------------
@@ -129,16 +129,16 @@
   color: $tertiary_color
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default
-  border: 1px solid #dfe0ed
+  border: 1px solid $tertiary_color
   background: $primary_color
   font-weight: normal
-  color: $tertiary_color
+  color: $primary_contrast
 
 .ui-state-default a
-  color: $tertiary_color
+  color: $primary_contrast
   text-decoration: none
   &:link, &:visited
-    color: $tertiary_color
+    color: $primary_contrast
     text-decoration: none
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus
@@ -146,27 +146,27 @@
   background: $primary_color
   @include opacity(70)
   font-weight: normal
-  color: $tertiary_color
+  color: $primary_contrast
 
 .ui-state-hover a
-  color: $tertiary_color
+  color: $primary_contrast
   text-decoration: none
   &:hover
-    color: $tertiary_color
+    color: $primary_contrast
     text-decoration: none
 
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
-  border: 1px solid #000
+  border: 1px solid $darkest
   background: $primary_color
   @include opacity(50)
   font-weight: normal
-  color: $tertiary_color
+  color: $primary_contrast
 
 .ui-state-active a
   color: $tertiary_color
   text-decoration: none
   &:link, &:visited
-    color: $tertiary_color
+    color: $primary_contrast
     text-decoration: none
 
 .ui-widget :active
@@ -176,20 +176,20 @@
  *----------------------------------
 
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight
-  border: 1px solid #fcefa1
-  background: #fbf9ee url(#{$static}/images/jqueryui/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x
-  color: #363636
+  border: 1px solid $red
+  background: $tertiary_color url(#{$static}/images/jqueryui/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x
+  color: $darker
 
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a, .ui-widget-header .ui-state-highlight a
-  color: #363636
+  color: $darker
 
 .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error
-  border: 1px solid #cd0a0a
-  background: #fef1ec url(#{$static}/images/jqueryui/ui-bg_inset-soft_95_fef1ec_1x100.png) 50% bottom repeat-x
-  color: #cd0a0a
+  border: 1px solid $red
+  background: $tertiary_color url(#{$static}/images/jqueryui/ui-bg_inset-soft_95_fef1ec_1x100.png) 50% bottom repeat-x
+  color: $red
 
 .ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a, .ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text
-  color: #cd0a0a
+  color: $red
 
 .ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary
   font-weight: bold
@@ -781,14 +781,14 @@
 /* Overlays
 
 .ui-widget-overlay
-  background: #aaaaaa url(#{$static}/images/jqueryui/ui-bg_diagonals-thick_70_aaaaaa_40x40.png) 50% 50% repeat
+  background: $light url(#{$static}/images/jqueryui/ui-bg_diagonals-thick_70_aaaaaa_40x40.png) 50% 50% repeat
   opacity: .30
   filter: Alpha(Opacity = 30)
 
 .ui-widget-shadow
   margin: -8px 0 0 -8px
   padding: 8px
-  background: #aaaaaa url(#{$static}/images/jqueryui/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x
+  background: $light url(#{$static}/images/jqueryui/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x
   opacity: .30
   filter: Alpha(Opacity = 30)
   -moz-border-radius: 8px

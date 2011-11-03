@@ -20,7 +20,20 @@ use constant is_dev_env => Socialtext::AppConfig->is_dev_env;
 has 'filename' => ( is => 'ro', isa => 'Str', required => 1 );
 has 'dir_name' => ( is => 'ro', isa => 'Str', required => 1 );
 
-# style an be: compact, compressed, or expanded.
+sub Fetch {
+    my $class = shift;
+    my %param = @_;
+
+    if ($param{filename} eq 'wikiwyg') {
+        require Socialtext::SASSy::Wikiwyg;
+        $class .= '::Wikiwyg';
+        $param{style} = 'compressed';
+    }
+
+    return $class->new(%param);
+}
+
+# style can be: compact, compressed, or expanded.
 has 'style' => ( is => 'ro', isa => 'Str', lazy_build => 1 );
 sub _build_style {
     my $minify = eval {
@@ -104,7 +117,6 @@ method render {
         $self->css_file,                        # Output
     );
 }
-
 no Moose;
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;

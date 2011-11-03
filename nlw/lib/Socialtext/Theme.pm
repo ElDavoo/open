@@ -18,7 +18,7 @@ sub Enum {
     enum __PACKAGE__ . "::$key" => \@values;
 }
 
-Enum Font => qw( Arial Georgia Helvetica Lucida Times Trebuchet );
+Enum Font => qw( Arial Georgia Helvetica Lucida Times Trebuchet serif sans-serif );
 Enum Shade => qw( light dark );
 Enum Tiling => qw( repeat no-repeat repeat-x repeat-y );
 Enum Position => map { ("$_ top", "$_ center", "$_ bottom") } qw( left center right );
@@ -231,8 +231,8 @@ sub ValidSettings {
         primary_color => \&_valid_hex_color,
         secondary_color => \&_valid_hex_color,
         tertiary_color => \&_valid_hex_color,
-        header_font => _valid('Font'),
-        body_font => _valid('Font'),
+        header_font => \&_valid_font,
+        body_font => \&_valid_font,
         foreground_shade => _valid('Shade'),
     );
 
@@ -286,6 +286,24 @@ sub _valid_hex_color {
     my $color = shift;
 
     return lc($color) =~ /^#[0-9a-f]{6}$/;
+}
+
+
+sub _valid_font {
+    my $list = shift;
+
+    return 0 unless $list;
+
+    my @fonts = split(/,\s*/, $list);
+    return 0 unless scalar(@fonts) > 0;
+
+    my @valid = __PACKAGE__->ValidValuesForKey('Font');
+
+    for my $font (@fonts) {
+        return 0 unless grep { lc $font eq lc $_ } @valid;
+    }
+
+    return 1;
 }
 
 sub _valid_attachment_id {

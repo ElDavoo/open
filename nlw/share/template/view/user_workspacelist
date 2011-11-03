@@ -6,9 +6,9 @@
     <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
     <table class="dataTable workspacelist">
       <tr>
-        <th>[% loc('Title') %]</th>
-        <th class="numeric">[% loc('nav.users') %]</th>
-        <th class="numeric">[% loc('Groups') %]</th>
+        <th>[% loc('wiki.wiki-title') %]</th>
+        <th class="numeric">[% loc('wiki.users') %]</th>
+        <th class="numeric">[% loc('wiki.groups') %]</th>
       </tr>
       [% FOREACH workspace = workspaces %]
         [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]

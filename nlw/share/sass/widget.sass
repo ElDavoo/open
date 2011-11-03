@@ -1,4 +1,5 @@
 @import mixins.sass
+@import colors.sass
 
 .visible
   display: block
@@ -7,7 +8,7 @@
   display: none
 
 div.myContent h4 a
-  color: #005295
+  color: $primary_color
   font-weight: normal
   font-size: 12px
 
@@ -25,8 +26,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   outline: 0
   font-size: 100%
   background: transparent
-
-body
 
 ol, ul
   list-style: auto
@@ -58,14 +57,13 @@ table
 body
   font-size: 11px
   font-family: $body_font
-  color: #333
-
-td, li
+  color: $darker
 
 a
   color: $primary_color
+  text-decoration: none
   &:hover
-    text-decoration: none
+    text-decoration: underline
 
 p
   margin: 0.5em 0
@@ -87,14 +85,14 @@ h4, h5, h6
   margin: 0.5em 0
 
 hr
-  color: #999
+  color: $grey
   height: 1px
 
 ol, ul
   padding-left: 2em
 
 pre
-  background: #e8e8e8
+  background: $lighter
   padding: 0.25em
   margin: 0.5em 0
 
@@ -108,16 +106,14 @@ img
   &.avatar
     width: 27px
     height: 27px
-    border: #c5c5c5 1px solid
   &.bigAvatar
     width: 62px
     height: 62px
-    border: #c5c5c5 1px solid
     float: left
 
 div
   &.border
-    border-bottom: #cacaca 1px dotted
+    border-bottom: $light 1px dotted
     clear: both
     margin: 0 auto 10px
     height: 10px
@@ -130,9 +126,8 @@ div
   &.myContent
     margin: 0 auto
     text-align: left
-    color: #666
     h4
-      color: #005295
+      color: $primary_color
       font-weight: normal
       font-size: 12px
     div.commentInfo
@@ -164,17 +159,16 @@ div
   &.calendarList
     margin: 0 auto
     text-align: left
-    color: #005295
+    color: $primary_color
     table
       width: 100%
       tr
-        td
-        th
+        td, th
           font-weight: normal
           text-indent: 17px
         &.oddRow
           td, th
-            background: #f1fbea
+            background: $tertiary_color
   &#peopleList, &#bigWidgetContent div#peopleList
     text-align: left
     margin: 0 auto
@@ -182,9 +176,9 @@ div
     width: 100%
     li
       width: 100%
-      color: #005295
+      color: $primary_color
       &.oddRow
-        background: #f1fbea
+        background-color: $tertiary_color
       img
         margin-left: 14px
         padding-top: 5px
@@ -200,13 +194,13 @@ div
     width: 100%
     li
       width: 100%
-      color: #005295
+      color: $primary_color
       /* margin-top: 10px;
        *margin-bottom: 10px;
       text-align: left
       margin: 10px
       &.oddRow
-        background: #f1fbea
+        background: $tertiary_color
       img
         margin-left: 14px
         position: relative
@@ -222,10 +216,10 @@ div
       width: 100%
       li
         width: 100%
-        color: #005295
+        color: $primary_color
         text-indent: 14px
         &.oddRow
-          background: #f1fbea
+          background: $tertiary_color
   &#tagWidget
     text-align: left
     margin: 0 auto
@@ -242,7 +236,45 @@ div
   &.tablib_content_container
     margin: 5pt
 
+.error, .row_error
+  display: none
+  color: $red
+
+.widgetTitle
+  color: $darker
+
+#lookahead, #message
+  border: 1px solid $grey
+
+.lookahead-prompt
+  color: $darkest
+
 /* widget Styles Start
+
+/* groups widgets Start
+
+span.typeChange
+  color: $primary_color
+  text-decoration: underline
+  &:hover
+    cursor: pointer
+
+#group-membership
+  .icon div.removeIcon
+    background-image: url(#{$static}/images/icons/close-darker-8.png)
+  li.deleted .icon div.removeIcon
+    background-image: url(#{$static}/images/icons/close-gray-8.png)
+  a.icon span
+    background-color: $tertiary_color
+    border: 1px solid $darker
+  .empty_message
+    background-color: $tertiary_color
+    color: $darker
+  .note_message
+    background-color: $tertiary_color
+
+/* groups widgets End
+
 
 /* my content widget Start
 
