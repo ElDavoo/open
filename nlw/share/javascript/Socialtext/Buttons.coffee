@@ -26,14 +26,14 @@ button_handler =
     gadgets.container.loadDefaults()
   
   "st-account-theme": ->
-    location = "/nlw/control/account/#{
+    window.location = "/nlw/control/account/#{
       gadgets.container.account_id
     }/theme?origin=/st/account/#{
       gadgets.container.account_id
     }/dashboard"
   
   "st-admin-dashboard": ->
-    location = "/st/account/#{
+    window.location = "/st/account/#{
       st.viewer.primary_account_id
     }/dashboard"
   
@@ -41,7 +41,7 @@ button_handler =
     st.dialog.show "groups-create"
   
   "st-edit-group": ->
-    location = "/st/edit_group/" + gadgets.container.group.id
+    window.location = "/st/edit_group/" + gadgets.container.group.id
   
   "st-leave-group": ->
     st.dialog.show "groups-leave", onConfirm: ->
@@ -57,7 +57,7 @@ button_handler =
       if data.errors
         st.dialog.showError data.errors[0]
       else
-        location = "/st/group/#{
+        window.location = "/st/group/#{
           gadgets.container.group.id
         }?_=self-joined"
   
@@ -71,32 +71,31 @@ button_handler =
   
   "st-cancel-create-group": ->
     if gadgets?.container?.group
-      location = "/st/group/#{gadgets.container.group.id}"
+      window.location = "/st/group/#{gadgets.container.group.id}"
     else
-      location = "/st/dashboard"
+      window.location = "/st/dashboard"
   
   "st-edit-profile": ->
-    location = "/st/edit_profile"
+    window.location = "/st/edit_profile"
   
   "st-revision-current": ->
-    location = st.page.full_uri
+    window.location = st.page.full_uri
   
   "st-revision-all": ->
   
   "st-revision-next": ->
   
   "st-revision-color": ->
-    location = "[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]"
+    window.location = "[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]"
   
   "st-revision-view": ->
-    location = "[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]"
+    window.location = "[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% old_revision_id %][% IF mode != 'source' %];mode=source[% END %]"
   
   "st-wiki-subnav-link-invite": ->
-    location = st.invite_url
+    window.location = st.invite_url
 
 Socialtext::buttons =
   show: (buttons) ->
-    self = this
     buttons = buttons or []
     if st.invite_url
       buttons.unshift [ "st-wiki-subnav-link-invite", loc("nav.invite!") ]
@@ -108,7 +107,7 @@ Socialtext::buttons =
       $button = $("<button/>").addClass(button_class).attr("id", button_id).button(label: button_text).click(button_handler[button_id] or ->
         throw new Error(button_id + " has no handler")
       ).appendTo("#globalNav .buttons")
-    $ -> self.setup()
+    $ => @setup()
   
   setup: ->
     updateNetworksWidget = ->
