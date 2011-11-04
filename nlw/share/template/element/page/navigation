@@ -1,7 +1,7 @@
 [%# vim: set et sts=2 sw=2: %]
 
 [% MACRO jump_option(option_action, text, suffix) BLOCK %]
-  <option [% IF action == option_action %]selected="selected"[% END %] value="action=[% option_action %][% suffix %]">[% text %]</option>
+  <option [% IF action == option_action %]selected="selected"[% END %] value="/[% wiki.name %]?action=[% option_action %][% suffix %]">[% text %]</option>
 [% END %]
 
 [% BLOCK workspace_selector %]
@@ -39,11 +39,11 @@
 </select>
 <script>
   $('#st-jump-to')
-    .dropdown({ width: '150px' })
-    .change(function() {
-        var cgi_params = $(this).find('option:selected').val();
-        if (cgi_params != '')
-          location = '/' + st.workspace.name + '?' + cgi_params;
+    .dropdown({
+      width: '150px',
+      select: function(ui, option) {
+        if (option.value.length) location = option.value;
+      }
     });
 </script>
 [% END %]
