@@ -23,7 +23,7 @@ DEFAULT
   <input id="st-[%sid%]-term" name="search_term" class="[% UNLESS html_escaped_search_term %]initial [% END %]searchText" type="text" value="[% html_escaped_search_term %]" />
 
   <input class="hidden" type="submit" />
-  <button class="submit" id="st-[%sid%]-submit"></button>
+  <a href="#" class="submit" id="st-[%sid%]-submit"></a>
 
   [% IF action == 'search' AND scope == '_'; search = 'workspace';
     ELSIF action == 'search' AND scope == '*'; search = 'workspaces';
@@ -46,12 +46,16 @@ DEFAULT
     });
 
     $('#st-[% sid %]-action').dropdown();
-    $('#st-[%sid%]-submit').button({
-        text: false,
-        icons: {
-            primary: "ui-icon-search"
-        }
-    });
+    $('#st-[%sid%]-submit')
+        .button({
+            text: false,
+            icons: {
+                primary: "ui-icon-search"
+            }
+        })
+        .click(function() {
+            $(this).parents('form').submit();
+        });
 
   </script>
 </form>
