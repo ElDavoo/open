@@ -3,7 +3,11 @@
 $.fn.extend({
     dropdown: function(options) {
         var self = this;
-        if (window.st && window.st.UA_is_Selenium) {
+
+        var mobile = /(Blackberry|iPad|iPod|iPhone|Android)/
+            .test(navigator.userAgent);
+
+        if (mobile || (window.st && window.st.UA_is_Selenium)) {
             if (options && options.select) {
                 self.change(function() {
                     options.select(self, self.find('option:selected').get(0));

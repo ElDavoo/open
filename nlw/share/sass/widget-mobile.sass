@@ -40,59 +40,14 @@ body.mobile
 ul#signal_network-list
   width: 150px
 
-.mobile ul.dropdownOptions
-  position: absolute
-  display: none
-  z-index: 3500
-  /* above the signalthis iframe
-  display: block
-  background-color: $lightest
-  padding: 0
-  margin: 0
-  text-align: left
-  width: 120px
-  border: 1px solid $darkest
-  border-top: none
-  li
-    display: block
-    list-style: none
-    margin: 0
-    border-top: 1px solid $darkest
-    overflow: hidden
-  a
-    white-space: nowrap
-    display: inline-block
-    /* Styles that are inherited in widgets:
-    padding: 8px
-    font-size: 13px
-    width: 100%
-    font-family: $body_font
-  li:hover
-    background-color: $tertiary_color
-
-/* Hovered option
-
-ul.dropdownOptions li.hover
-  background-color: $tertiary_color
-
-.mobile ul.dropdownOptions li:hover a, ul.dropdownOptions li.hover a
-  text-decoration: underline
-
-/* Selected option
-
 .mobile
-  ul.dropdownOptions li
-    &.selected
-      background-color: $tertiary_color
-    &.disabled
-      background-color: $lightest
-      a
-        color: $light
-        cursor: default
-        text-decoration: none
-        &:hover
-          text-decoration: none
   .activitiesWidget
+    .networks
+      height: 25px
+      .signal_network
+        width: 200px
+        padding: 0
+        font-size: 10px
     .permalink .event_list .event
       .outerEventText .signal_body
         font-size: 15px
@@ -106,7 +61,3 @@ ul.dropdownOptions li.hover
       margin-right: 0px !important
     .toolbar, .assetIcon
       display: none !important
-
-/* Disabled option
-
-/* Disabled option's link
