@@ -18,28 +18,28 @@ tuxhold until SAVE of GA values works
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%acct%% |
-| wait_for_element_visible_ok | st-submit-search-by-name | 5000 |
+| wait_for_element_visible_ok | st-submit-search-by-name | 15000 |
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%acct%% | 30000 |
 | click_and_wait | link=%%acct%% |  |
 
 | *Comment* | Test case: Business Control Panel Account Account Google Analytics See initially disabled |  |
-| wait_for_element_not_present_ok | ga_id | 5000 |
-| wait_for_element_not_present_ok | analytics-prefs-submit | 5000 |
-| wait_for_element_not_present_ok | ga_domains | 5000 |
+| wait_for_element_not_present_ok | ga_id | 15000 |
+| wait_for_element_not_present_ok | analytics-prefs-submit | 15000 |
+| wait_for_element_not_present_ok | ga_domains | 15000 |
 | text_like | Google Analytics (click to enable) |  |
-| wait_for_element_visible_ok | toggle_plugin_analytics | 5000 |
+| wait_for_element_visible_ok | toggle_plugin_analytics | 15000 |
 
 | *Comment* | Test case: Business Control Panel Account Account Google Analytics Enable the plugin |  |
 | click_ok | toggle_plugin_analytics |  |
 | wait_for_element_visible_ok | ga_id | 30000 |
-| wait_for_element_visible_ok | analytics-prefs-submit | 5000 |
-| wait_for_element_visible_ok | ga_domains | 5000 |
-| wait_for_element_visible_ok | st-multiple-domains | 5000 |
-| wait_for_element_visible_ok | st-single-domain | 5000 |
-| wait_for_element_visible_ok | st-multiple-domains | 5000 |
+| wait_for_element_visible_ok | analytics-prefs-submit | 15000 |
+| wait_for_element_visible_ok | ga_domains | 15000 |
+| wait_for_element_visible_ok | st-multiple-domains | 15000 |
+| wait_for_element_visible_ok | st-single-domain | 15000 |
+| wait_for_element_visible_ok | st-multiple-domains | 15000 |
 | type_ok | ga_id | %%gaid%% |
-| pause_ok | 5000 | wait before clicking multiple subdomains |
+| pause_ok | 15000 | wait before clicking multiple subdomains |
 | click_ok | st-multiple-subdomains |  |
 | is_checked_ok | st-multiple-subdomains |  |
 | is_checked_ok | st-mask-analytics |  |
@@ -48,34 +48,34 @@ tuxhold until SAVE of GA values works
 
 | wait_for_text_present_ok | Done | 45000 |
 
-| wait_for_text_present_ok | Google Analytics (click to disable) | 5000 |
+| wait_for_text_present_ok | Google Analytics (click to disable) | 15000 |
 
 | *Comment* | Test case: Business Control Panel Account Account Google Analytics Re-Find Account, Confirm Values |  |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%acct%% |
-| wait_for_element_visible_ok | st-submit-search-by-name | 5000 |
+| wait_for_element_visible_ok | st-submit-search-by-name | 15000 |
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%acct%% | 30000 |
 | click_and_wait | link=%%acct%% |  |
 | wait_for_element_visible_ok | analytics-prefs-submit | 30000 |
-| wait_for_element_visible_ok | ga_id | 5000 |
+| wait_for_element_visible_ok | ga_id | 15000 |
 | verifyValue | ga_id | %%gaid%% |
-| wait_for_element_visible_ok | st-multiple-domains | 5000 |
-| wait_for_element_visible_ok | st-multiple-subdomains | 5000 |
-| wait_for_element_visible_ok | st-single-domain | 5000 |
+| wait_for_element_visible_ok | st-multiple-domains | 15000 |
+| wait_for_element_visible_ok | st-multiple-subdomains | 15000 |
+| wait_for_element_visible_ok | st-single-domain | 15000 |
 | is_checked_ok | st-multiple-subdomains |  |
 | st_unchecked_ok | st-mask-analytics |  |
 | wait_for_text_present_ok | Google Analytics (click to disable) | 30000 |
 
 | *Comment* | Test case: Business Control Panel Account Account Google Analytics Disable analytics, refresh, see disabled |  |
-| wait_for_element_visible_ok | toggle_plugin_analytics | 5000 |
+| wait_for_element_visible_ok | toggle_plugin_analytics | 15000 |
 | click_ok | toggle_plugin_analytics |  |
 | wait_for_text_present_ok | Google Analytics (click to enable) | 10000 |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%acct%% |
-| wait_for_element_visible_ok | st-submit-search-by-name | 5000 |
+| wait_for_element_visible_ok | st-submit-search-by-name | 15000 |
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%acct%% | 30000 |
 | click_and_wait | link=%%acct%% |  |

@@ -61,8 +61,8 @@ TUXTODO: Is that confirmation message coming back?
 | click_and_wait | add-workspace |  |
 
 | wait_for_element_visible_ok | //select[@name='workspace_id'] | 30000 |
-| wait_for_element_present_ok | //select[@name='workspace_id']/option[contains(text(),'%%workspace%%')] | 5000 |
-| wait_for_element_not_present_ok | //select[@name='workspace_id']/option[contains(text(),'%%ws%%')] | 5000 |
+| wait_for_element_present_ok | //select[@name='workspace_id']/option[contains(text(),'%%workspace%%')] | 15000 |
+| wait_for_element_not_present_ok | //select[@name='workspace_id']/option[contains(text(),'%%ws%%')] | 15000 |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Add as admin |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |

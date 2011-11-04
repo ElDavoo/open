@@ -6,15 +6,15 @@
 | st-logout |  |  |
 
 | open_ok | /%%auth_w%%/ |  |
-| wait-for-element-present-ok | st-login-form | 5000 |
+| wait-for-element-present-ok | st-login-form | 15000 |
 | st-admin | create-user --email newuser_%%start_time%%@ken.socialtext.net --password %%password%% |  |
 | st-login | newuser_%%start_time%%@ken.socialtext.net | %%password%% |
 
 | open_ok | /%%auth_w%%/?Announcements and Links |  |
 | text_like | content | Upload Files |
 
-| wait_for_element_visible_ok | link=Edit | 5000 |
-| wait_for_element_visible_ok | link=Comment | 5000 |
+| wait_for_element_visible_ok | link=Edit | 15000 |
+| wait_for_element_visible_ok | link=Comment | 15000 |
 
 | *Comment* | Test Case: Authenticated-User-Only TEARDOWN |  |
 | delete-workspace | %%auth_w%% |  |

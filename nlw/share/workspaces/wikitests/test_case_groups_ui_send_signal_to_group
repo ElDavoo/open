@@ -36,9 +36,9 @@
 | *Comment* | Test Case: Groups UI Send Signal to Group. values for ".. within <group>" filter shows account and group |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
 | click_ok | //a[@class='expander'] |  |
-| wait_for_element_visible_ok | network-all | 5000 |
-| wait_for_element_visible_ok | account-%%account_id%% | 5000 |
-| wait_for_element_visible_ok | group-%%group_id%% | 5000 |
+| wait_for_element_visible_ok | network-all | 15000 |
+| wait_for_element_visible_ok | account-%%account_id%% | 15000 |
+| wait_for_element_visible_ok | group-%%group_id%% | 15000 |
 | click_ok | //a[@class='expander'] | close it |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. "Post to" list - select account |  |
@@ -54,7 +54,7 @@
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
 | click_ok | //a[@class='expander'] |  |
-| wait_for_element_visible_ok | group-%%group_id%% | 5000 |
+| wait_for_element_visible_ok | group-%%group_id%% | 15000 |
 | click_ok | group-%%group_id%% |  |
 | click_ok | //a[@class='expander'] | close it |
 
@@ -76,7 +76,7 @@
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within %%group_name%% |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
 | click_ok | //a[@class='expander'] |  |
-| wait_for_element_visible_ok | group-%%group_id%% | 5000 |
+| wait_for_element_visible_ok | group-%%group_id%% | 15000 |
 | click_ok | group-%%group_id%% |  |
 | click_ok | //a[@class='expander'] | close it |
 
@@ -93,7 +93,7 @@
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within All my groups |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
 | click_ok | //a[@class='expander'] |  |
-| wait_for_element_visible_ok | network-all | 5000 |
+| wait_for_element_visible_ok | network-all | 15000 |
 | click_ok | network-all |  |
 | wait_for_text_present_ok | %%account_signal%% | 30000 |
 | click_ok | //a[@class='expander'] | close it |
@@ -107,7 +107,7 @@
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within %%group_acct%% |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
 | click_ok | //a[@class='expander'] |  |
-| wait_for_element_visible_ok | account-%%account_id%% | 5000 |
+| wait_for_element_visible_ok | account-%%account_id%% | 15000 |
 | click_ok | account-%%account_id%% |  |
 | click_ok | //a[@class='expander'] | close it |
 

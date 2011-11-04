@@ -1,4 +1,4 @@
-| set | pause_time | 5000 |
+| set | pause_time | 15000 |
 
 | *Comment* | st-add-widget: %%widget%% |  |
 | wait_for_element_visible_ok | st-add-widget | 30000 |

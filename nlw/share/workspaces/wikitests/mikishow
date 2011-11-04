@@ -1,7 +1,7 @@
 | *Comment* | MikiShow. Watch the Mobile UI |  |
 | *Comment* | MikiShow expects to start at the Mobile home page |  |
 
-| set_default | pt | 5000 | defaults to five seconds |
+| set_default | pt | 15000 | defaults to five seconds |
 
 
 | open_ok | /st/dashboard/ |  |

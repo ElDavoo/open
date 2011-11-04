@@ -11,7 +11,7 @@ Set test_string to such a string, then make a widget with that as the link text,
 | call | [st-edit-fill-page] | ws=%%workspace%% | title=Nasty Double Dashes %%start_time%% | `content="%%test_string%%"{link: help [Socialtext Documentation]}` |
 
 | click_ok | //a[contains(@class,"cke_button_wysiwyg")] |  |
-| pause | 5000 | no choice but to pause until Simple interface appears |
+| pause | 15000 | no choice but to pause until Simple interface appears |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 

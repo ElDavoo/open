@@ -37,22 +37,22 @@
 | text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
 
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | click_ok | permission-change |  |
 | select-frame | relative=parent |  |
 
-| wait_for_element_present_ok | st-create-group-next | 5000 |
-| wait_for_element_present_ok | st-create-group-cancel | 5000 |
-| wait_for_element_present_ok | private-radio | 5000 |
+| wait_for_element_present_ok | st-create-group-next | 15000 |
+| wait_for_element_present_ok | st-create-group-cancel | 15000 |
+| wait_for_element_present_ok | private-radio | 15000 |
 | click_ok | private-radio |  |
 | is_checked_ok | private-radio |  |
 
 | *Comment* | Test Case: Self Join Group - wait for the f#$%^king JS to finish loading |  |
-| pause | 5000 |  |
+| pause | 15000 |  |
 
 | *Comment* | Test Case: Self Join Group - click_ok |  |
 | click_ok | st-create-group-next |  |
-| wait_for_element_not_present_ok | st-create-group-next | 5000 |
+| wait_for_element_not_present_ok | st-create-group-next | 15000 |
 
 | *Comment* | Test Case: Self Join Group - Verify Changed to private |  |
 | st-select-widget-frame | information_widget |  |
@@ -60,7 +60,7 @@
 | text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
-| wait_for_element_visible_ok | create-group | 5000 |
+| wait_for_element_visible_ok | create-group | 15000 |
 | click_and_wait | create-group |  |
 | get_id_from_url | first_group |  |
 
@@ -84,7 +84,7 @@ select-frame | relative=parent | |
 | text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
-| wait_for_element_visible_ok | create-group | 5000 |
+| wait_for_element_visible_ok | create-group | 15000 |
 | click_and_wait | create-group |  |
 | get_id_from_url | second_id |  |
 
@@ -104,22 +104,22 @@ select-frame | relative=parent | |
 | st-name-widget | 1 | information_widget |
 | st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | click_ok | permission-change |  |
 
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | st-create-group-next | 5000 |
-| wait_for_element_present_ok | st-create-group-cancel | 5000 |
-| wait_for_element_present_ok | self-join-radio | 5000 |
+| wait_for_element_present_ok | st-create-group-next | 15000 |
+| wait_for_element_present_ok | st-create-group-cancel | 15000 |
+| wait_for_element_present_ok | self-join-radio | 15000 |
 
 | click_ok | self-join-radio |  |
 | is_checked_ok | self-join-radio |  |
 
 | *Comment* | Test Case: Self Join Group - wait for the f#$%^king JS to finish loading |  |
-| pause | 5000 |  |
+| pause | 15000 |  |
 
 | click_ok | st-create-group-next |  |
-| wait_for_element_not_present_ok | st-create-group-next | 5000 |
+| wait_for_element_not_present_ok | st-create-group-next | 15000 |
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
@@ -127,7 +127,7 @@ select-frame | relative=parent | |
 | text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
 
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | create-group | 5000 |
+| wait_for_element_visible_ok | create-group | 15000 |
 | click_and_wait | create-group |  |
 | get_id_from_url | group_id |  |
 
@@ -138,12 +138,12 @@ text_like | //div[@class='groupsTitle'] | qr/self-join/ism |
 | st-admin | show-acls --w %%ws%% | permission set name: self-join |
 | st-admin | show-acls --w %%wstwo%% | permission set name: self-join |
 
-| wait_for_element_visible_ok | st-leave-group | 5000 |
+| wait_for_element_visible_ok | st-leave-group | 15000 |
 | click_ok | st-leave-group |  |
-| wait_for_element_visible_ok | st-lightbox-leave-group | 5000 |
+| wait_for_element_visible_ok | st-lightbox-leave-group | 15000 |
 | click_ok | st-lightbox-leave-group |  |
-| wait_for_text_present_ok | The group needs to include at least one admin. | 5000 |
-| wait_for_element_visible_ok | st-leave-group | 5000 |
+| wait_for_text_present_ok | The group needs to include at least one admin. | 15000 |
+| wait_for_element_visible_ok | st-leave-group | 15000 |
 
 | st-name-widget | 4 | members_widget |
 | st-select-widget-frame | members_widget |
@@ -154,9 +154,9 @@ text_like | //div[@class='groupsTitle'] | qr/self-join/ism |
 | st-logoutin | %%joiner%% | %%password%% |
 | open_ok | /st/group/%%group_id%% |  |
 
-| wait_for_element_visible_ok | st-join-group | 5000 |
+| wait_for_element_visible_ok | st-join-group | 15000 |
 | click_ok | st-join-group |  |
-| wait_for_element_visible_ok | st-leave-group | 5000 |
+| wait_for_element_visible_ok | st-leave-group | 15000 |
 
 | st-name-widget | 3 | members_widget |
 | st-widget-title | members_widget | Membership |
@@ -167,9 +167,9 @@ text_like | //div[@class='groupsTitle'] | qr/self-join/ism |
 
 | *Comment* | Test Case: Self Join Group Leave as different user |  |
 | click_ok | st-leave-group |  |
-| wait_for_element_visible_ok | st-lightbox-leave-group | 5000 |
+| wait_for_element_visible_ok | st-lightbox-leave-group | 15000 |
 | click_ok | st-lightbox-leave-group |  |
-| wait_for_element_visible_ok | st-join-group | 5000 |
+| wait_for_element_visible_ok | st-join-group | 15000 |
 
 | st-name-widget | 3 | members_widget |
 | st-widget-title | members_widget | Membership |
@@ -180,10 +180,10 @@ text_like | //div[@class='groupsTitle'] | qr/self-join/ism |
 
 | *Comment* | Test Case: Self Join Group. Login as a different account, not-discoverable, not-joinable |  |
 | st-logoutin | %%other_user%% | %%password%% |
-| wait_for_text_present_ok | Welcome | 5000 |
+| wait_for_text_present_ok | Welcome | 15000 |
 | st_open_noeval | /st/group/%%group_id%% |  |
-| wait_for_text_present_ok | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. | 5000 |
-| wait_for_element_not_present_ok | st-join-group | 5000 |
+| wait_for_text_present_ok | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. | 15000 |
+| wait_for_element_not_present_ok | st-join-group | 15000 |
 
 | *Comment* | Test Case: Self Join Group - Flip back to private |  |
 | st-logoutin | %%user%% | %%password%% |  |
@@ -192,22 +192,22 @@ text_like | //div[@class='groupsTitle'] | qr/self-join/ism |
 | st-name-widget | 1 | information_widget |
 | st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | click_ok | permission-change |  |
 
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | st-create-group-next | 5000 |
-| wait_for_element_present_ok | st-create-group-cancel | 5000 |
-| wait_for_element_present_ok | private-radio | 5000 |
+| wait_for_element_present_ok | st-create-group-next | 15000 |
+| wait_for_element_present_ok | st-create-group-cancel | 15000 |
+| wait_for_element_present_ok | private-radio | 15000 |
 
 | click_ok | private-radio |  |
 | is_checked_ok | private-radio |  |
 
 | *Comment* | Test Case: Self Join Group - wait for the f#$%^king JS to finish loading |  |
-| pause | 5000 |  |
+| pause | 15000 |  |
 
 | click_ok | st-create-group-next |  |
-| wait_for_element_not_present_ok | st-create-group-next | 5000 |
+| wait_for_element_not_present_ok | st-create-group-next | 15000 |
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
@@ -215,7 +215,7 @@ text_like | //div[@class='groupsTitle'] | qr/self-join/ism |
 | text_like | //span[@id='permission-set-loc'] | qr/private/ism |
 
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | create-group | 5000 |
+| wait_for_element_visible_ok | create-group | 15000 |
 | click_and_wait | create-group |  |
 | get_id_from_url | group_id |  |
 

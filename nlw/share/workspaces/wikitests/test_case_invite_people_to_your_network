@@ -156,7 +156,7 @@ TODO: verify cannot actually issue invitations via URL
 | st-admin | set-account-config --account "%%acct%%" allow_invitation 0 | The account config for %%acct%% has been updated |
 | click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| wait_for_element_not_present_ok | st-wiki-subnav-link-invite | 5000 |
+| wait_for_element_not_present_ok | st-wiki-subnav-link-invite | 15000 |
 
 | *Comment* | Test Case: Invite people. Re-enable invitations |  |
 | st-admin | set-account-config --account "%%acct%%" allow_invitation 1 | The account config for %%acct%% has been updated |

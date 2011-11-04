@@ -52,7 +52,7 @@
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
 
-| wait_for_element_visible_ok | st-jump-to | 5000 |
+| wait_for_element_visible_ok | st-jump-to | 15000 |
 | select_and_wait | st-jump-to | label=Watchlist |
 | wait_for_element_visible_ok | sort-picker | 30000 |
 | select_and_wait | sort-picker | label=Title |

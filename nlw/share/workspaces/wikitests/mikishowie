@@ -1,7 +1,7 @@
 | *Comment* | MikiShow IE. Watch the Mobile UI |  |
 | *Comment* | MikiShow expects to start at the Mobile home page |  |
 
-| set_default | pt | 5000 | defaults to five seconds |
+| set_default | pt | 15000 | defaults to five seconds |
 
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 

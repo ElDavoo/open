@@ -24,24 +24,24 @@
 
 | *Comment* | Test Case: Page Creator Widget check all widget galleries for widget |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | gallery-widget-Page Creator | 5000 |
-| wait_for_text_present_ok | Create pages from customized forms. | 5000 |
+| wait_for_element_visible_ok | gallery-widget-Page Creator | 15000 |
+| wait_for_text_present_ok | Create pages from customized forms. | 15000 |
 | open_ok | /st/group/%%group_id%% |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | gallery-widget-Page Creator | 5000 |
-| wait_for_text_present_ok | Create pages from customized forms. | 5000 |
+| wait_for_element_visible_ok | gallery-widget-Page Creator | 15000 |
+| wait_for_text_present_ok | Create pages from customized forms. | 15000 |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | gallery-widget-Page Creator | 5000 |
-| wait_for_text_present_ok | Create pages from customized forms. | 5000 |
+| wait_for_element_visible_ok | gallery-widget-Page Creator | 15000 |
+| wait_for_text_present_ok | Create pages from customized forms. | 15000 |
 
 | *Comment* | Test Case: Page Creator Widget create a template page to feed into the widget |  |
 | set | pp | `%%` |
@@ -59,7 +59,7 @@
 | click_ok | link=Widget... |  |
 | wait_for_element_visible_ok | gallery-widget-Page Creator | 30000 |
 | wait_for_text_present_ok | Create pages from customized forms. | 30000 |
-| pause_ok | 5000 | wait for gallery JS to load |
+| pause_ok | 15000 | wait for gallery JS to load |
 | click_ok | gallery-widget-Page Creator |  |
 
 | *Comment* | Test Case: Page Creator Widget takes a looooong time for the JS to load ... |  |
@@ -145,7 +145,7 @@
 
 | *Comment* | Test Case: Page Creator Widget use the widget to create a page |  |
 | wait_for_text_present_ok | Page Creator | 30000 |
-| pause_ok | 5000 |  |
+| pause_ok | 15000 |  |
 | selectFrame | //iframe[@class='widgetWindow'] |  |
 | wait_for_element_visible_ok | link-create-page |  |
 | click_ok | link-create-page |  |

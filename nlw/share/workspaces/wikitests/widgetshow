@@ -4,7 +4,7 @@
 | set | ws_acct | widgetshow_account_%%start_time%% |
 | set | ws_grp | widgetshow_group_%%start_time%% |
 | set | ws_wiki | widgetshow_wiki_%%start_time%% |
-| set_default | pt | 5000 |
+| set_default | pt | 15000 |
 
 | create-account | %%ws_acct%% |  |  |
 | create-user | %%ws_user%% | %%password%% | %%ws_acct%% |

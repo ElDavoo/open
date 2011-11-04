@@ -26,8 +26,8 @@
 | pause_ok | 15000 | I hate pause. Wait for the widget to load |
 | selectFrame | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` |  |
 | is_element_present_ok | //body | 10000 |
-| is_element_present_ok | //div[@class='primarymessaging'] | 5000 |
-| is_element_present_ok | //div[@id='sitenavigation'] | 5000 |
+| is_element_present_ok | //div[@class='primarymessaging'] | 15000 |
+| is_element_present_ok | //div[@id='sitenavigation'] | 15000 |
 | selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Web Page Widget. Verify scrolling |  |
@@ -42,12 +42,12 @@
 | *Comment* | Test Case: Web Page Widget. Verify divs again. Don't use is_text_present, use divs, FF4 has trouble with text ! |
 | selectFrame | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` |  |
 | is_element_present_ok | //body | 10000 |
-| is_element_present_ok | //div[@class='primarymessaging'] | 5000 |
-| is_element_present_ok | //div[@id='sitenavigation'] | 5000 |
+| is_element_present_ok | //div[@class='primarymessaging'] | 15000 |
+| is_element_present_ok | //div[@id='sitenavigation'] | 15000 |
 
 | *Comment* | Test Case: Web Page Widget. Verify content. These words might change in the future. |
-| is_element_present_ok | //div[@id='solution1']/h2[contains(text(),'Communicate')] | 5000 |
-| is_element_present_ok | //div[@id='sitenavigation']/a[contains(text(),'Home')] | 5000 |
+| is_element_present_ok | //div[@id='solution1']/h2[contains(text(),'Communicate')] | 15000 |
+| is_element_present_ok | //div[@id='sitenavigation']/a[contains(text(),'Home')] | 15000 |
 | selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Web Page Widget COMPLETED |  |

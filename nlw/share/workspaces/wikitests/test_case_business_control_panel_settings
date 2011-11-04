@@ -44,9 +44,9 @@
 
 | open_ok | /nlw/register.html |  |
 | wait_for_element_visible_ok | email_address | 30000 |
-| wait_for_element_visible_ok | register_password | 5000 |
-| wait_for_element_visible_ok | register_password2 | 5000 |
-| wait_for_element_visible_ok | register_btn | 5000 |
+| wait_for_element_visible_ok | register_password | 15000 |
+| wait_for_element_visible_ok | register_password2 | 15000 |
+| wait_for_element_visible_ok | register_btn | 15000 |
 | type_ok | email_address | %%new_user%% |
 | type_ok | register_password | password |
 | type_ok | register_password2 | password |
@@ -61,7 +61,7 @@
 | open_ok | /?action=workspace_list |  |
 | wait_for_element_visible_ok | link=Groups | 30000 |
 | text_like | You have free access |  |
-| wait_for_element_not_present_ok | link=Invite! | 5000 |
+| wait_for_element_not_present_ok | link=Invite! | 15000 |
 | text_unlike | //body | Invite! |
 
 | *Comment* | Test Case: Business Control Panel Settings - verify Invite! present for account admin |  |
@@ -88,9 +88,9 @@
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |
 | wait_for_element_visible_ok | email_address | 30000 |
-| wait_for_element_visible_ok | register_password | 5000 |
-| wait_for_element_visible_ok | register_password2 | 5000 |
-| wait_for_element_visible_ok | register_btn | 5000 |
+| wait_for_element_visible_ok | register_password | 15000 |
+| wait_for_element_visible_ok | register_password2 | 15000 |
+| wait_for_element_visible_ok | register_btn | 15000 |
 | type_ok | email_address | %%new_user%% |
 | type_ok | register_password | %%password%% |
 | type_ok | register_password2 | %%password%% |
@@ -124,13 +124,13 @@
 | open_ok | /?action=workspace_list |  |
 | wait_for_element_visible_ok | link=Groups | 30000 |
 | text_like | You have free access |  |
-| wait_for_element_present_ok | link=Create Group... | 5000 |
+| wait_for_element_present_ok | link=Create Group... | 15000 |
 
 | *Comment* | Test Case: Business Control Panel Settings - Set Group Create to anybody |  |
 | st-logoutin |  |  |
 | open_ok | /nlw/control/settings/ |  |
 | wait_for_element_visible_ok | group_create_update | 30000 |
-| wait_for_element_visible_ok | %%any_member_button%% | 5000 |
+| wait_for_element_visible_ok | %%any_member_button%% | 15000 |
 | check_ok | %%any_member_button%% |  |
 | click_and_wait | group_create_update |  |
 | wait_for_element_visible_ok | %%any_member_button%% | 30000 |

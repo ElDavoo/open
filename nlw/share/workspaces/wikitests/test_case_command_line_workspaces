@@ -161,7 +161,7 @@ the `--dir` option is not being tested. Testing it would require specifying a di
 | st-admin | clone-workspace --workspace %%cmdline_workspace%% --target %%cmdline_workspace%%-clone | qr/Cannot restore %%cmdline_workspace%%-clone workspace, it already exists/ |
 | st-admin | clone-workspace --workspace %%cmdline_workspace%% --target %%cmdline_workspace%%-clone --overwrite | qr/The %%cmdline_workspace%% workspace has been cloned to %%cmdline_workspace%%-clone/ |
 | st-admin | add-member --w %%cmdline_workspace%%-clone --e %%email%% |  |
-| pause | 5000 | open_ok was failing with no notice; matt inserted a modes pause |
+| pause | 15000 | open_ok was failing with no notice; matt inserted a modes pause |
 | open_ok | /%%cmdline_workspace%%-clone/index.cgi |  |
 | location_like | /%%cmdline_workspace%%-clone |  |
 

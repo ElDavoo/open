@@ -45,14 +45,14 @@
 | is_element_present_ok | content | link=%%central_page%% |
 | is_text_present_ok | I'm new. What do I do? |  |
 | st-widget-title | news | News and Announcements |
-| wait_for_element_visible_ok | link=Creating Your Socialtext Solution | 5000 |
+| wait_for_element_visible_ok | link=Creating Your Socialtext Solution | 15000 |
 
 | *Comment* | Test Case: New Default Dashboard check for page locking in central workspace |  |
 | st-admin | add-workspace-admin --workspace %%central%% --email %%ndd_user%% | has the role |
 
 | call | [st-spaces-accordion] | index=1 | section=Features |
 
-| wait_for_element_visible_ok | //input[@type="checkbox" and @name="workspace.setting.allows_page_locking"] | 5000 |
+| wait_for_element_visible_ok | //input[@type="checkbox" and @name="workspace.setting.allows_page_locking"] | 15000 |
 | is_checked_ok | //input[@type="checkbox" and @name="workspace.setting.allows_page_locking"] |  |
 
 | *Comment* | Test Case: New Default Dashboard login to old account as %%new_user%%, create central wiki |  |
@@ -62,7 +62,7 @@
 | is_element_present_ok | content | link=%%old_acct_page%% |
 | is_text_present_ok | I'm new. What do I do? |  |
 | st-widget-title | news | News and Announcements |
-| wait_for_element_visible_ok | link=Creating Your Socialtext Solution | 5000 |
+| wait_for_element_visible_ok | link=Creating Your Socialtext Solution | 15000 |
 
 
 | *Comment* | Test Case: New Default Dashboard login to old account, see old dashboard but new central wiki |  |
@@ -80,16 +80,16 @@
 | wait_for_element_visible_ok | st-admin-dashboard | 30000 |
 | click_and_wait | st-admin-dashboard |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
-| click_and_pause | gallery-widget-Active Content | 5000 |
-| wait_for_element_visible_ok | st-save-layout | 5000 |
+| click_and_pause | gallery-widget-Active Content | 15000 |
+| wait_for_element_visible_ok | st-save-layout | 15000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | save-layout-save | 5000 |
-| click_and_pause | save-layout-save | 5000 |
+| wait_for_element_visible_ok | save-layout-save | 15000 |
+| click_and_pause | save-layout-save | 15000 |
 
 | *Comment* | Test Case: New Default Dashboard login as newer member, see new dashboard |  |
 | st-logoutin | %%newer_user%% | %%password%% |
@@ -103,14 +103,14 @@
 | wait_for_element_visible_ok | st-admin-dashboard | 30000 |
 | click_and_wait | st-admin-dashboard |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | st-revert-layout | 5000 |
+| wait_for_element_visible_ok | st-revert-layout | 15000 |
 | click_and_pause | st-revert-layout | 8000 |
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | save-layout-save | 5000 |
-| click_and_pause | save-layout-save | 5000 |
+| wait_for_element_visible_ok | save-layout-save | 15000 |
+| click_and_pause | save-layout-save | 15000 |
 
 | *Comment* | Test Case: New Default Dashboard login as newest user, see default dashboard |  |
 | st-logoutin | %%newest_user%% | %%password%% |
@@ -128,7 +128,7 @@
 | wait_for_element_visible_ok | st-admin-dashboard | 30000 |
 | click_and_wait | st-admin-dashboard |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
-| wait_for_text_present_ok | I'm new. What do I do? | 5000 |
+| wait_for_text_present_ok | I'm new. What do I do? | 15000 |
 
 | *Comment* | Test Case: New Default Dashboard TEARDOWN |  |
 | st-process-jobs |  |  |

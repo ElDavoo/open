@@ -37,7 +37,7 @@
 | st-force-confirmation | %%reg_email%% | %%password%% |
 | st-login | %%reg_email%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | Welcome %%reg_name%% | 5000 |
+| wait_for_text_present_ok | Welcome %%reg_name%% | 15000 |
 | st-logout |  |  |
 
 | *Comment* | Test case: Self Register explicitly login to set the username field to the default username |  |

@@ -12,5 +12,5 @@
 | attach_file_ok | st-attachments-attach-filename | %%scheme%%://%%files_host%%/%%file%% |
 | wait_for_element_visible_ok | //a[contains(@href,'original/%%file%%')] | 30000 |
 | text_like | st-attachments-attach-uploadmessage | qr/Uploaded.+%%file%%/ |
-| wait_for_element_visible_ok | st-attachments-attach-closebutton | 5000 |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 15000 |
 | st_click_pause | st-attachments-attach-closebutton | 2000 |

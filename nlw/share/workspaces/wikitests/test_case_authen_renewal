@@ -5,7 +5,7 @@
 | *Comment* | Set a *really* low "soft limit" on authen cookies, login again, and wait for cookie to need renewal |
 | st-config | set auth_token_soft_limit 2 |
 | st-logoutin |  |
-| pause | 5000 |
+| pause | 15000 |
 
 * *Interruptable actions*
 

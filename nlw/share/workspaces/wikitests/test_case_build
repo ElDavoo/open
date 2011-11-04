@@ -21,29 +21,29 @@
 | st-logoutin | %%user%% | %%password%% |  |
 
 | *Comment* | Build Testcases check the control panel |  |
-| wait_for_element_visible_ok | link=Control Panel | 5000 |
+| wait_for_element_visible_ok | link=Control Panel | 15000 |
 | click_and_wait | link=Control Panel |  |
 | wait_for_text_present_ok | Welcome to the Socialtext Control Panel. | 30000 |
 | click_and_wait | link=Accounts |  |
-| wait_for_element_visible_ok | link=AnyCorp | 5000 |
+| wait_for_element_visible_ok | link=AnyCorp | 15000 |
 | click_and_wait | //a[@name='workspaces'] |  |
-| wait_for_element_visible_ok | link=admin | 5000 |
+| wait_for_element_visible_ok | link=admin | 15000 |
 | click_and_wait | link=Users |  |
 | click_and_wait | //a[@name='groups'] |  |
-| wait_for_text_present_ok | self-join | 5000 |
+| wait_for_text_present_ok | self-join | 15000 |
 | click_and_wait | link=Settings |  |
-| wait_for_text_present_ok | Global Settings | 5000 |
+| wait_for_text_present_ok | Global Settings | 15000 |
 
 | *Comment* | Build Testcases create a new wiki |  |
 | open_ok | /nlw/control/workspaces/new |  |
 | wait_for_element_visible_ok | workspace_title | 30000 |
 | type_ok | workspace_title | %%wiki%% |
-| wait_for_element_visible_ok | addUserLookahead | 5000 |
+| wait_for_element_visible_ok | addUserLookahead | 15000 |
 | select-autocompleted-option-ok | addUserLookahead | %%user_prefix%% |
 | wait_for_element_visible_ok | link=%%user%% | 30000 |
 | wait_for_element_visible_ok | userTable-dropdown-2-0 | 10000 |
 | select_ok | userTable-dropdown-2-0 | label=Admin |
-| pause | 5000 |  |
+| pause | 15000 |  |
 | click_and_wait | create |  |
 | wait_for_text_present_ok | Usage Reports | 30000 |
 
@@ -56,10 +56,10 @@
 
 | call | st-edit-save-page | title=%%page_title%% | content=%%page_content%% |
 
-| wait_for_text_present_ok | Created by | 5000 |
+| wait_for_text_present_ok | Created by | 15000 |
 | text_like | create-attribution | qr/Created by.+%%user_with_spaces%%/ |
-| wait_for_text_present_ok | %%page_title%% | 5000 |
-| wait_for_text_present_ok | %%page_content%% | 5000 |
+| wait_for_text_present_ok | %%page_title%% | 15000 |
+| wait_for_text_present_ok | %%page_content%% | 15000 |
 
 | *Comment* | Build Testcases comment on the page |  |
 | click_ok | //li[@id="st-comment-button"]/a |  |
@@ -68,7 +68,7 @@
 | click_ok | link=Save |  |
 | wait_for_text_present_ok | contributed by | 30000 |
 | text_like | st-page-content | qr/contributed by.+%%user_with_spaces%%/ |
-| wait_for_text_present_ok | %%page_comment%% | 5000 |
+| wait_for_text_present_ok | %%page_comment%% | 15000 |
 
 | *Comment* | Build Testcases check the what's new |  |
 | select_and_wait | st-jump-to | label=What's New |
@@ -93,7 +93,7 @@
 | click_and_wait | st-create-group-next |  |
 | wait_for_element_visible_ok | name | 10000 |
 | type_ok | name | %%group%% |
-| wait_for_element_visible_ok | create-group | 5000 |
+| wait_for_element_visible_ok | create-group | 15000 |
 | click_and_wait | create-group |  |
 | text_like | qr/Administrators.+%%user_with_spaces%%/ |  |
 
@@ -102,7 +102,7 @@
 | wait_for_text_present_ok | What do I do | 30000 |
 | st-name-widget | 3 | newsie |
 | st-widget-title | newsie | News and Announcements |
-| wait_for_text_present_ok | edited Example Page: Project Tracking in %%wiki%%. | 5000 |
+| wait_for_text_present_ok | edited Example Page: Project Tracking in %%wiki%%. | 15000 |
 
 | *Comment* | Build Testcases check people directory and profile page |  |
 | click_and_wait | link=People |  |
@@ -111,24 +111,24 @@
 | location_like | /st/profile/%%user_id%% |  |
 | st-name-widget | 5 | wikis |
 | st-widget-title | wikis | Workspaces |
-| wait_for_text_present_ok | %%wiki%% | 5000 |
+| wait_for_text_present_ok | %%wiki%% | 15000 |
 
 | *Comment* | Build Testcases check the group directory and group page |  |
 | click_and_wait | link=Groups |  |
 | wait_for_text_present_ok | All Available Groups | 30000 |
-| wait_for_element_visible_ok | link=%%group%% | 5000 |
+| wait_for_element_visible_ok | link=%%group%% | 15000 |
 | click_and_wait | link=%%group%% |  |
 | wait_for_text_present_ok | (self-join) | 30000 |
-| wait_for_text_present_ok | joined the group %%group%%. | 5000 |
+| wait_for_text_present_ok | joined the group %%group%%. | 15000 |
 
 | *Comment* | Build Testcases check mobile |  |
 | click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | mobile-activities |  |
 | click_and_wait | mobile-activities |  |
 | wait_for_text_present_ok | Recent Activities | 15000 |
-| wait_for_text_present_ok | commented on | 5000 |
+| wait_for_text_present_ok | commented on | 15000 |
 | text_like | //body | qr/%%user_with_spaces%%.+commented on.+%%page_title%%.+%%wiki%%.+%%page_comment%%.+%%user_with_spaces%%.+edited.+%%page_title%%.+%%wiki%%/ |
-| wait_for_element_visible_ok | link=%%page_title%% | 5000 |
+| wait_for_element_visible_ok | link=%%page_title%% | 15000 |
 | click_ok | link=%%page_title%% |  |
 | wait_for_text_present_ok | %%page_content%% | 30000 |
 | text_like | //body | qr/%%page_title%%.+%%page_comment%%.+contributed by.+%%user_with_spaces%%/ |

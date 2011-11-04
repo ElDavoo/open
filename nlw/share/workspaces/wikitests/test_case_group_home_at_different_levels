@@ -21,10 +21,10 @@
 | wait_for_element_present_ok | link=%%group_name%% | 30000 |
 | click_and_wait | link=%%group_name%% |  |
 | text_like | //body | %%group_name%% |
-| wait_for_element_not_present_ok | st-join-group | 5000 |
+| wait_for_element_not_present_ok | st-join-group | 15000 |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | %%group_name%% | 5000 |
+| wait_for_text_present_ok | %%group_name%% | 15000 |
 | select-frame | relative=parent |  |
 
 | st-name-widget | 2 | workspaces_widget |
@@ -32,7 +32,7 @@
 | st-name-widget | 3 | members_widget |
 
 | st-select-widget-frame | workspaces_widget |  |
-| wait_for_element_visible_ok | link=%%group_ws%% | 5000 |
+| wait_for_element_visible_ok | link=%%group_ws%% | 15000 |
 | select-frame | relative=parent |  |
 | st-verify-text-in-activities-widget | to the group |
 | st-verify-text-in-activities-widget | to the workspace |
@@ -56,7 +56,7 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | %%self_join_grp%% | 5000 |
+| wait_for_text_present_ok | %%self_join_grp%% | 15000 |
 | text_like | //body | (private) |
 | text_unlike | //body | (self-join) |
 | select-frame | relative=parent |  |
@@ -65,13 +65,13 @@
 | open_ok | /st/edit_group/%%self_join_grp_id%% |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | click_ok | permission-change |  |
 | pause | 8000 |  |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | st-create-group-next | 5000 |
-| wait_for_element_present_ok | st-create-group-cancel | 5000 |
-| wait_for_element_present_ok | self-join-radio | 5000 |
+| wait_for_element_present_ok | st-create-group-next | 15000 |
+| wait_for_element_present_ok | st-create-group-cancel | 15000 |
+| wait_for_element_present_ok | self-join-radio | 15000 |
 | check_ok | self-join-radio |  |
 | is_checked_ok | self-join-radio |  |
 
@@ -80,16 +80,16 @@
 | pause | 8000 |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | Group Type | 5000 |
+| wait_for_text_present_ok | Group Type | 15000 |
 | text_like | //body | qr/self-join.+Change/ism |
 | select-frame | relative=parent |  |
-| wait_for_element_visible_ok | create-group | 5000 |
+| wait_for_element_visible_ok | create-group | 15000 |
 | click_and_wait | create-group |  |
 
 | *Comment* | Group Home at Different Levels VERIFY THE PERMISSION SWITCH |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | %%self_join_grp%% | 5000 |
+| wait_for_text_present_ok | %%self_join_grp%% | 15000 |
 | text_like | //body | (self-join) |
 | select-frame | relative=parent |  |
 
@@ -97,8 +97,8 @@
 | st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/group/%%self_join_grp_id%% |  |
 | wait_for_text_present_ok | %%self_join_grp%% | 30000 |
-| wait_for_element_not_present_ok | st-join-group | 5000 |
-| wait_for_element_visible_ok | st-leave-group | 5000 |
+| wait_for_element_not_present_ok | st-join-group | 15000 |
+| wait_for_element_visible_ok | st-leave-group | 15000 |
 
 | st-name-widget | 2 | workspaces_widget |
 | st-name-widget | 3 | signals_widget |
@@ -125,8 +125,8 @@ text_like | //div[@class='groupsTitle'] | %%self_join_grp%% |
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | Administrators | 5000 |
-| wait_for_text_present_ok | %%self_join_grp%% | 5000 |
+| wait_for_text_present_ok | Administrators | 15000 |
+| wait_for_text_present_ok | %%self_join_grp%% | 15000 |
 | select-frame | relative=parent |  |
 
 | st-name-widget | 2 | workspaces_widget |

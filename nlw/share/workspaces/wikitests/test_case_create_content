@@ -12,10 +12,10 @@
 | click_ok | st-create-content-link |  |
 
 | *Comment* | Test Case: Create Content: verify radio buttons |  |
-| wait_for_element_visible_ok | blank-radio | 5000 |
-| wait_for_element_visible_ok | use-template-radio | 5000 |
-| wait_for_element_visible_ok | copy-page-radio | 5000 |
-| wait_for_element_not_present_ok | spreadsheet-radio | 5000 |
+| wait_for_element_visible_ok | blank-radio | 15000 |
+| wait_for_element_visible_ok | use-template-radio | 15000 |
+| wait_for_element_visible_ok | copy-page-radio | 15000 |
+| wait_for_element_not_present_ok | spreadsheet-radio | 15000 |
 
 | is_checked_ok | blank-radio |  |
 | check_ok | use-template-radio |  |
@@ -43,7 +43,7 @@
 
 | *Comment* | Test Case: Create Content: use Template |  |
 | click_ok | link=+ New Page |  |
-| wait_for_element_visible_ok | use-template-radio | 5000 |
+| wait_for_element_visible_ok | use-template-radio | 15000 |
 | check_ok | use-template-radio |  |
 | select_ok | %%select_template%% | Create Page %%start_time%% |
 | click_and_wait | st-create-content-savelink |  |
@@ -70,9 +70,9 @@
 
 | *Comment* | Test Case: Create Content: Copy |  |
 | click_ok | link=+ New Page |  |
-| wait_for_element_visible_ok | copy-page-radio | 5000 |
+| wait_for_element_visible_ok | copy-page-radio | 15000 |
 | check_ok | copy-page-radio |  |
-| wait_for_element_visible_ok | %%copy_from%% | 5000 |
+| wait_for_element_visible_ok | %%copy_from%% | 15000 |
 
 | *Comment* | Test Case: Create Content: the next click_ok makes this work in IE |  |
 | click_ok | %%copy_from%% |  |
@@ -106,13 +106,13 @@
 | open_ok | /%%workspace%% |  |
 | wait_for_element_visible_ok | link=+ New Page | 30000 |
 | click_ok | link=+ New Page |  |
-| wait_for_element_visible_ok | spreadsheet-radio | 5000 |
+| wait_for_element_visible_ok | spreadsheet-radio | 15000 |
 
 | *Comment* | Test Case: Create Content. Create and save spreadsheet |  |
 | open_ok | /%%workspace%% |  |
 | wait_for_element_visible_ok | link=+ New Page | 30000 |
 | click_ok | link=+ New Page |  |
-| wait_for_element_visible_ok | spreadsheet-radio | 5000 |
+| wait_for_element_visible_ok | spreadsheet-radio | 15000 |
 | click_ok | spreadsheet-radio |  |
 | click_and_wait | st-create-content-savelink |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |

@@ -31,7 +31,7 @@ TODO: this test is too long; split into two or three independent TCs
 
 | *Comment* | Test Case: Follow. Make %%short_username%% Follow %%fFname%% |  |
 | wait_for_element_visible_ok | //button[@title='Follow this person'] | 30000 |
-| pause | 5000 | needed for IE7 |
+| pause | 15000 | needed for IE7 |
 | click_ok | //button[@title='Follow this person'] |  |
 | wait_for_element_visible_ok | //button[@title='Stop following this person'] | 30000 |
 
@@ -68,7 +68,7 @@ TODO: this test is too long; split into two or three independent TCs
 | wait_for_element_present_ok | link=%%fFname%% | 30000 |
 | click_and_wait | link=%%fFname%% |  |
 | wait_for_element_visible_ok | //button[@title='Stop following this person'] | 30000 |
-| pause | 5000 | needed for IE7 |
+| pause | 15000 | needed for IE7 |
 | click_ok | //button[@title='Stop following this person'] |  |
 | wait_for_element_visible_ok | //button[@title='Follow this person'] | 30000 |
 

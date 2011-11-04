@@ -40,7 +40,7 @@
 
 | *Comment* | Test Case: Canadien Français (Groups) Test Sorting for Groups in Dropdown (TOD: How?) |  |  |
 | st-process-jobs |  |  |  |
-| pause | 5000 |  |  |
+| pause | 15000 |  |  |
 | st-logoutin | %%user%% | %%password%% |  |
 
 | *Comment* | Test Case: Canadien Français (Groups) Test Sorting for Groups-To-Join in Groups Directory |  |

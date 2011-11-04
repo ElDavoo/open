@@ -5,7 +5,7 @@
 | *Comment* | Test Case: New Page. Use the actual New Page button |  |
 | wait_for_element_visible_ok | st-create-content-link | 30000 |
 | click_ok | st-create-content-link |  |
-| wait_for_element_visible_ok | st-create-content-savelink | 5000 |
+| wait_for_element_visible_ok | st-create-content-savelink | 15000 |
 | click_and_wait | st-create-content-savelink |  |
 
 | *Comment* | Test Case: New Page. Create a new page in Wiki Text mode |  |  |
@@ -13,17 +13,17 @@
 | call | [st-fill-editor] | title=np %%start_time%% | content=test content |
 
 | *Comment* | Test Case: New Page. try to save with existing page title np %%start_time%% |  |
-| wait_for_element_visible_ok | st-save-button-link | 5000 |
+| wait_for_element_visible_ok | st-save-button-link | 15000 |
 | *Comment* | Test Case: New Page. can't fold because click Save will fail |  |
 | click_ok | st-save-button-link |  |
 
 | *Comment* | Test Case: New Page. Page Already Exists |  |
 | *Comment* | Test Case: New Page. Use duplicate option different |  |
 | wait_for_element_visible_ok | st-newxhtml-duplicate-option-different | 30000 |
-| wait_for_element_visible_ok | st-newxhtml-duplicate-pagename | 5000 |
+| wait_for_element_visible_ok | st-newxhtml-duplicate-pagename | 15000 |
 | click_ok | st-newxhtml-duplicate-pagename |  |
 | type_ok | st-newxhtml-duplicate-pagename | np %%start_time%% 2 |
-| wait_for_element_visible_ok | st-newxhtml-duplicate-okbutton | 5000 |
+| wait_for_element_visible_ok | st-newxhtml-duplicate-okbutton | 15000 |
 | click_and_wait | st-newxhtml-duplicate-okbutton |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | np %%start_time%% 2 |
@@ -33,7 +33,7 @@
 
 | call | [st-edit-fill-page] | ws=%%workspace%% | title=np %%start_time%% | content=test content |
 
-| wait_for_element_visible_ok | st-save-button-link | 5000 |
+| wait_for_element_visible_ok | st-save-button-link | 15000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-newxhtml-duplicate-interface | 30000 |
 | text_like | st-newxhtml-duplicate-interface | is already taken |
@@ -44,7 +44,7 @@
 
 | *Comment* | Test Case: New Page. cancel ends up at home eventually |  |
 | verifyConfirmation | Are you sure you want to navigate away from this page?\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page. |  |
-| wait_for_text_present_ok | This is the home page for %%title%% | 5000 |
+| wait_for_text_present_ok | This is the home page for %%title%% | 15000 |
 
 | *Comment* | Test Case: New Page. New Page from incipient title in URL |  |
 | open_ok | /%%workspace%%/np %%start_time%% 3 |  |

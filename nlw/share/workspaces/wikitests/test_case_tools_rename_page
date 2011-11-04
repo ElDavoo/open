@@ -17,8 +17,8 @@
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the page |  |
 | click_ok | link=Rename Page |  |
-| wait_for_element_visible_ok | st-rename-form | 5000 |
-| wait_for_element_visible_ok | st-rename-newname | 5000 |
+| wait_for_element_visible_ok | st-rename-form | 15000 |
+| wait_for_element_visible_ok | st-rename-newname | 15000 |
 
 | *Comment* | Deliberately use non-space containing name for location_like compare |  |
 | type_ok | st-rename-newname | %%new_title%% |
@@ -26,13 +26,13 @@
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename |  |
 | location_like | `/%%workspace%%/%%new_title%%` |  |
-| wait_for_element_visible_ok | st-display-mode-widgets | 5000 |
+| wait_for_element_visible_ok | st-display-mode-widgets | 15000 |
 | text_like | st-display-mode-widgets | %%this_tag%% |
 | text_like | st-page-titletext | %%new_title%% |
 | click_and_wait | link=%%this_title%% |  |
 | text_like | st-page-titletext | %%this_title%% |
 | text_like | content | Page renamed to %%new_title%% |
-| wait_for_element_visible_ok | link=%%this_tag%% | 5000 |
+| wait_for_element_visible_ok | link=%%this_tag%% | 15000 |
 | st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Rename Page. Edit the original the page |  |  |  |
@@ -41,24 +41,24 @@
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the edited page and Cancel |  |
 | click_ok | link=Rename Page |  |
-| wait_for_element_visible_ok | st-rename-form | 5000 |
-| wait_for_element_visible_ok | st-rename-newname | 5000 |
+| wait_for_element_visible_ok | st-rename-form | 15000 |
+| wait_for_element_visible_ok | st-rename-newname | 15000 |
 | type_ok | st-rename-newname | Untitled Page |
 | click_ok | st-rename-savelink |  |
 | wait_for_element_visible_ok | st-rename-error | 30000 |
 | text_like | st-rename-error | The page name you selected, "Untitled Page", is not allowed. Please enter or change the page name. |
-| st-click-pause | st-rename-cancellink | 5000 |
+| st-click-pause | st-rename-cancellink | 15000 |
 | location_like | %%this_id%% |  |
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the edited page. navigate away and back |  |
 | click_and_wait | link=Workspaces |  |
 | open_ok | /%%workspace%%/%%this_title%% |  |
 | click_ok | link=Rename Page |  |
-| wait_for_element_visible_ok | st-rename-savelink | 5000 |
-| wait_for_element_visible_ok | st-rename-newname | 5000 |
+| wait_for_element_visible_ok | st-rename-savelink | 15000 |
+| wait_for_element_visible_ok | st-rename-newname | 15000 |
 | type_ok | st-rename-newname | %%new_title%% |
 | click_ok | st-rename-savelink |  |
-| wait_for_element_visible_ok | st-rename-error | 5000 |
+| wait_for_element_visible_ok | st-rename-error | 15000 |
 | text_like | st-rename-error | The new page name you selected, "%%new_title%%", is already in use |
 
 | *Comment* | Test Case: Tools: Rename Page. Force Rename the edited page. |  |

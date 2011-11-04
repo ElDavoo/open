@@ -41,7 +41,7 @@
 | wait_for_element_visible_ok | link=be | 30000 |
 | wait_for_element_not_present_ok | link=bf | 30000 |
 | wait_for_element_visible_ok | mobile-paging-next | 30000 |
-| wait_for_element_not_present_ok | mobile-paging-previous | 5000 |
+| wait_for_element_not_present_ok | mobile-paging-previous | 15000 |
 | click_and_wait | link=aa |  |
 | wait_for_text_present_ok | tags-%%start_time%%-0 | 30000 |
 | wait_for_text_present_ok | tags-%%start_time%%-1 | 30000 |
@@ -99,8 +99,8 @@
 | wait_for_element_visible_ok | link=be | 30000 |
 | wait_for_element_not_present_ok | link=bf | 30000 |
 | wait_for_element_visible_ok | mobile-paging-next | 30000 |
-| wait_for_element_not_present_ok | mobile-paging-previous | 5000 |
-| wait_for_element_not_present_ok | mobile-paging-first | 5000 |
+| wait_for_element_not_present_ok | mobile-paging-previous | 15000 |
+| wait_for_element_not_present_ok | mobile-paging-first | 15000 |
 
 | *Comment* | Test Case: Mobile Tags TEARDOWN |  |
 | st-process-jobs |  |  |

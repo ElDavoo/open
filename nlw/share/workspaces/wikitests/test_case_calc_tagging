@@ -8,7 +8,7 @@ tuxhold until lookahead works
 
 | open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for entire page load |
+| pause | 15000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Calc Tagging. fog tag added |  |
@@ -32,7 +32,7 @@ tuxhold until lookahead works
 
 | *Comment* | Test Case: Calc Tagging. verify Chinese chars |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
-| pause | 5000 | pause needed because wait_for doesn't work on Chinese chars |
+| pause | 15000 | pause needed because wait_for doesn't work on Chinese chars |
 | text_like | st-tags-listing | 所以 |
 
 | *Comment* | Test Case: Calc Tagging. foo bar tag added |  |
@@ -82,7 +82,7 @@ Add any other tag to three different pages | tag is added
 | *Comment* | Tag Page 1 |  |
 | open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%201%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for entire page load |
+| pause | 15000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
@@ -100,7 +100,7 @@ Add any other tag to three different pages | tag is added
 | *Comment* | Tag Page 2 |  |
 | open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%202%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for entire page load |
+| pause | 15000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 | click_ok | link=Add Tag |  |
@@ -117,7 +117,7 @@ Add any other tag to three different pages | tag is added
 | *Comment* | Tag Page 3 |  |
 | open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%203%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for entire page load |
+| pause | 15000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
 | click_ok | link=Add Tag |  |
@@ -150,7 +150,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 | *Comment* | Test Case: Calc Tagging verify suggestions foo bar, fog, and Foster City |  |
 | open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%204%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for entire page load |
+| pause | 15000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
 | click_ok | link=Add Tag |  |

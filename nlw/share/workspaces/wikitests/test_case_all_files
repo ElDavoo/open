@@ -45,8 +45,8 @@
 | call | [st-attach-file] | ws=%%new_ws%% | title=%%new_title_1%% | file=wikitest.jpg |
 
 | *Comment* | Test Case: All Files verify jpg and doc uploads |  |
-| wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.jpg')] | 5000 |
-| wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.doc')] | 5000 |
+| wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.jpg')] | 15000 |
+| wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.doc')] | 15000 |
 | text_like | //a[contains(@href,'original/wikitest.jpg')] | wikitest.jpg |
 | text_like | //a[contains(@href,'original/wikitest.doc')] | wikitest.doc |
 

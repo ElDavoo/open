@@ -106,8 +106,8 @@
 
 | *Comment* | Test Case: Profile Activity Widget. "Post to" list shows all shared groups between viewer and viewee |  |
 | mouseOver | //span[@class='signal_network select dropdown'] |  |
-| wait_for_element_visible_ok | //a[@value='account-%%account_id%%'] | 5000 |
-| wait_for_element_visible_ok | //a[@value='group-%%group_id%%'] | 5000 |
+| wait_for_element_visible_ok | //a[@value='account-%%account_id%%'] | 15000 |
+| wait_for_element_visible_ok | //a[@value='group-%%group_id%%'] | 15000 |
 
 | *Comment* | Test Case: Profile Activity Widget. list values for "Showing <event-type>" filter are all the standard choices |  |
 | wait_for_element_visible_ok | action-all-events | 30000 |

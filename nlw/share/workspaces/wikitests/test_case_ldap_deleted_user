@@ -33,7 +33,7 @@ Also, you need base_dn.ldif in your wikitest_client_files directory.
 | *Comment* | Test case: user is treated as being logged in; "Edit" button is present, and so is "Logout" link |  |
 | open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
 | text_like | Changes in Last |  |
-| wait_for_element_visible_ok | logout_btn | 5000 |
+| wait_for_element_visible_ok | logout_btn | 15000 |
 
 | *Comment* | DELETE user from LDAP directory |  |
 | remove-ldap-user | %%test_user%% |  |

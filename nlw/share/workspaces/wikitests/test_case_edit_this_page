@@ -73,7 +73,7 @@
 | wait_for_element_visible_ok | st-xhtml-preview | 10000 |
 | text_like | st-preview-button-link | Edit More |
 | click_and_pause | st-preview-button-link | %%epause%% |
-| wait_for_element_present_ok | //a[contains(@class,"cke_button_wysiwyg")] | 5000 |
+| wait_for_element_present_ok | //a[contains(@class,"cke_button_wysiwyg")] | 15000 |
 | click_and_pause | //a[contains(@class,"cke_button_wysiwyg")] | %%epause%% |
 
 | *Comment* | Test Case: Edit This Page from Preview to WIKI |  |

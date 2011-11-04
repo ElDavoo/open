@@ -18,15 +18,15 @@
 
 | *Comment* | Test Case: Administer Dashboards - bring up DB, no administer button |  |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
-| wait_for_element_not_present_ok | st-admin-dashboard | 5000 |
+| wait_for_element_not_present_ok | st-admin-dashboard | 15000 |
 
 | *Comment* | Test Case: Administer Dashboards - add accounts admin |  |
 | st-admin | give-accounts-admin --e %%mwgmail%% --account "%%acct%%" | now has accounts admin access |
 | open_ok | /st/dashboard |  |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
-| wait_for_element_visible_ok | st-admin-dashboard | 5000 |
+| wait_for_element_visible_ok | st-admin-dashboard | 15000 |
 | click_and_wait | st-admin-dashboard |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-add-widget |  |
 | wait_for_element_visible_ok | st-save-layout |  |
@@ -35,7 +35,7 @@
 
 | *Comment* | Test Case: Administer Dashboards - Cancel |  |
 | click_ok | st-cancel-layout |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 
 | *Comment* | Test Case: Administer Dashboards - Add RSS Viewer |  |
@@ -45,9 +45,9 @@
 | click_ok | //a[@id='gallery-widget-RSS Viewer'] |  |
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | save-layout-save | 5000 |
+| wait_for_element_visible_ok | save-layout-save | 15000 |
 | click_ok | save-layout-save |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 
 | *Comment* | Test Case: Administer Dashboards - Test for RSS Viewer |  |
 | wait_for_text_present_ok | %%rss_header_text%% | 30000 |
@@ -55,9 +55,9 @@
 
 | *Comment* | Test Case: Administer Dashboards - Add Wikipedia |  |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-admin-dashboard | 5000 |
+| wait_for_element_visible_ok | st-admin-dashboard | 15000 |
 | click_and_wait | st-admin-dashboard |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
@@ -87,7 +87,7 @@
 | open_ok | /st/dashboard |  |
 | wait_for_element_visible_ok | st-admin-dashboard | 30000 |
 | click_and_wait | st-admin-dashboard |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
@@ -95,11 +95,11 @@
 | click_and_pause | //a[@id='gallery-widget-RSS Viewer'] | 4000 |
 
 | *Comment* | Test Case: Administer Dashboards - Save... but no force update |  |
-| wait_for_element_visible_ok | st-save-layout | 5000 |
+| wait_for_element_visible_ok | st-save-layout | 15000 |
 | click_ok | st-save-layout |  |
 | wait_for_text_present_ok | Save Confirmation | 30000 |
-| wait_for_element_visible_ok | save-layout-save | 5000 |
-| wait_for_element_visible_ok | force-update | 5000 |
+| wait_for_element_visible_ok | save-layout-save | 15000 |
+| wait_for_element_visible_ok | force-update | 15000 |
 | click_and_pause | save-layout-save | 2000 |
 
 | *Comment* | Test Case: Administer Dashboards - Saved... verify present |  |
@@ -120,7 +120,7 @@
 | st-logoutin | %%mwgmail%%-2 | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| wait_for_text_present_ok | %%rss_header_text%% | 5000 |
+| wait_for_text_present_ok | %%rss_header_text%% | 15000 |
 
 
 | *Comment* | Test Case: Administer Dashboards TEARDOWN |  |

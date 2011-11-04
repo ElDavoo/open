@@ -19,11 +19,11 @@
 
 | *Comment* | Test Case: Signals Web Link. Verify visible elements |  |
 | wait_for_element_visible_ok | add-a-link-form | 30000 |
-| wait_for_element_visible_ok | web-option | 5000 |
+| wait_for_element_visible_ok | web-option | 15000 |
 | click_ok | web-option |  |
-| wait_for_element_visible_ok | web-link-label | 5000 |
-| wait_for_element_visible_ok | web-link-destination | 5000 |
-| wait_for_element_visible_ok | activities-add-link-ok | 5000 |
+| wait_for_element_visible_ok | web-link-label | 15000 |
+| wait_for_element_visible_ok | web-link-destination | 15000 |
+| wait_for_element_visible_ok | activities-add-link-ok | 15000 |
 | text_like | //body | Required fields are indicated by an * |
 
 | *Comment* | Test Case: Signals Web Link setSpeed 3000 to allow for type-in |  |
@@ -33,11 +33,11 @@
 
 | *Comment* | Test Case: Signals Web Link setSpeed zero, click OK |  |
 | set_Speed | 0 |  |
-| click_ok | activities-add-link-ok | 5000 |
-| pause_ok | 5000 |  |
+| click_ok | activities-add-link-ok | 15000 |
+| pause_ok | 15000 |  |
 
 | *Comment* | Test Case: Signals Web Link post signal the hard way |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | pause | 3000 |  |
 | click_ok | //a[@role='button'] |  |
 | wait_for_text_present_ok | By you | 30000 |

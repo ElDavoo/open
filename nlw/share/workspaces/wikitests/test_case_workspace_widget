@@ -33,8 +33,8 @@
 
 | *Comment* | Test Case: Workspace Widget. Does Workspaces Widget have the right content? |  |
 | wait_for_text_present_ok | changes | 30000 |
-| wait_for_text_present_ok | views | 5000 |
-| wait_for_element_visible_ok | link=new page | 5000 |
+| wait_for_text_present_ok | views | 15000 |
+| wait_for_element_visible_ok | link=new page | 15000 |
 | is_element_present_ok | content | link=Other Wiki %%start_time%% |
 | text_like | content | Other Wiki %%start_time%% |
 | text_unlike | content | Workspace Widget |

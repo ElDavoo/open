@@ -6,10 +6,10 @@
 | call | [st-spaces-accordion] | index=1 | section=Features |
 
 | *Comment* | Test Case: Home Weblog - set weblog Home %%start_time%% Blog |  |
-| wait_for_element_visible_ok | //input[@name="workspace.setting.homepage_weblog"] | 5000 |
+| wait_for_element_visible_ok | //input[@name="workspace.setting.homepage_weblog"] | 15000 |
 | type_ok | //input[@name="workspace.setting.homepage_weblog"] | Home %%start_time%% Blog |
 | click_and_wait | link=Save |  |
-| wait_for_text_present_ok | Saved | 5000 |
+| wait_for_text_present_ok | Saved | 15000 |
 
 | *Comment* | Test Case: Home Weblog - verify weblog Home %%start_time%% Blog |  |  |
 | open_ok | /%%workspace%% |  |  |
@@ -21,11 +21,11 @@
 | call | [st-spaces-accordion] | index=1 | section=Features |
 
 | *Comment* | Test Case: Home - type X, then type Backspace to clear weblog |  |
-| wait_for_element_visible_ok | //input[@name="workspace.setting.homepage_weblog"] | 5000 |
+| wait_for_element_visible_ok | //input[@name="workspace.setting.homepage_weblog"] | 15000 |
 | type_ok | //input[@name="workspace.setting.homepage_weblog"] | X |
 | keyPress | //input[@name="workspace.setting.homepage_weblog"] | \008 |
 | click_and_wait | link=Save |  |
-| wait_for_text_present_ok | Saved | 5000 |
+| wait_for_text_present_ok | Saved | 15000 |
 
 | *Comment* | Test Case: Home - verify Central Page |  |
 | open_ok | /%%workspace%% |  |

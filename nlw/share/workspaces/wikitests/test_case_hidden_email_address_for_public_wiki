@@ -31,7 +31,7 @@
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Hidden Email Comment %%start_time%% |
 | wait_for_element_visible_ok | link=Save | 30000 |
-| st_click_pause | link=Save | 5000 |
+| st_click_pause | link=Save | 15000 |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create weblog |  |
 | open_ok | /st/settings/%%workspace_id%%/prefs/blog |  |

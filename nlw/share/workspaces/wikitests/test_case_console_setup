@@ -37,11 +37,11 @@
 | is_element_present_ok | setup-login-message |  |
 | is_element_present_ok | desktop_update_enabled |  |
 | is_element_present_ok | login_message |  |
-| wait_for_element_visible_ok | setup-login-message | 5000 |
+| wait_for_element_visible_ok | setup-login-message | 15000 |
 
 | *Comment* | Test Case: Console Setup. Set the server signal limit |  |
-| wait_for_element_visible_ok | signals_size_limit | 5000 |
-| wait_for_element_visible_ok | set_signals_size_limit | 5000 |
+| wait_for_element_visible_ok | signals_size_limit | 15000 |
+| wait_for_element_visible_ok | set_signals_size_limit | 15000 |
 | type_ok | signals_size_limit | -25 |
 | click_and_wait | set_signals_size_limit |  |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |

@@ -49,7 +49,7 @@
 | wait_for_element_visible_ok | new_tag | 30000 |
 | wait_for_element_visible_ok | st-watchperson-indicator | 30000 |
 
-| pause_ok | 5000 | needed for IE7. Serious. Sorry about that. |
+| pause_ok | 15000 | needed for IE7. Serious. Sorry about that. |
 | click_ok | st-watchperson-indicator |  |
 | wait_for_element_visible_ok | //button[@title='Stop following this person'] | 30000 |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
@@ -76,7 +76,7 @@
 | st-verify-text-in-activities-widget | qr/%%r4%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to people I follow, see only %%shortfollow%%'s activity |  |
-| wait_for_element_present_ok | //a[@class='expander'] | 5000 |
+| wait_for_element_present_ok | //a[@class='expander'] | 15000 |
 | click_ok | //a[@class='expander'] |  |
 | wait_for_element_visible_ok | feed-followed | 30000 |
 | click_ok | feed-followed |  |
@@ -88,9 +88,9 @@
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%r2%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to everyone, see all activities |  |
-| wait_for_element_present_ok | //a[@class='expander'] | 5000 |
+| wait_for_element_present_ok | //a[@class='expander'] | 15000 |
 | click_ok | //a[@class='expander'] |  |
-| wait_for_element_present_ok | feed-everyone | 5000 |
+| wait_for_element_present_ok | feed-everyone | 15000 |
 | click_ok | feed-everyone |  |
 | pause_ok | 2000 |  |
 | open_ok | /st/dashboard |  |

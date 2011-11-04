@@ -29,7 +29,7 @@
 | click_ok | st-duplicate-savelink |  |
 | wait_for_element_visible_ok | st-duplicate-error | 30000 |
 | text_like | st-duplicate-error | The page name you selected, "Untitled Page", is not allowed. Please enter or change the page name. |
-| st-click-pause | st-duplicate-cancellink | 5000 |
+| st-click-pause | st-duplicate-cancellink | 15000 |
 | location_like | `/%%dupe_ws%%/%%this_id%%` |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. Duplicate the edited page. navigate away and back |  |

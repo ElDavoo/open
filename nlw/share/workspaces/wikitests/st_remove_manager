@@ -1,6 +1,6 @@
 | open_ok | /st/edit_profile |  |
-| wait_for_element_visible_ok | field_supervisor | 5000 |
-| wait_for_element_present_ok | xpath=//div[@id='field_supervisor']/input[contains(@class, 'relationship')] | 5000 |
+| wait_for_element_visible_ok | field_supervisor | 15000 |
+| wait_for_element_present_ok | xpath=//div[@id='field_supervisor']/input[contains(@class, 'relationship')] | 15000 |
 | click_ok | xpath=//div[@id='field_supervisor']/input[contains(@class, 'relationship')] |  |
 
 | setSpeed | 500 |  |
@@ -29,7 +29,7 @@
 
 | type_ok | field_first_name | FN %%start_time%% |
 
-| wait_for_element_visible_ok | update_profile | 5000 |
-| pause | 5000 | settling time |
+| wait_for_element_visible_ok | update_profile | 15000 |
+| pause | 15000 | settling time |
 | click_and_wait | update_profile |  |
-| pause | 5000 | settling time |
+| pause | 15000 | settling time |

@@ -3,7 +3,7 @@
 | *Comment* | Test case: Calc Watchlist watch |  |
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for save |
+| pause | 15000 | I hate pause; needed for save |
 | st-page-save |  |  |
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
@@ -21,21 +21,21 @@ Visit some individual pages in the workspace; add them to the watchlist. View wa
 | *Comment* | Test case: Calc Watchlist check watchlist |  |
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20aaa%20spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for save |
+| pause | 15000 | I hate pause; needed for save |
 | st-page-save |  |  |
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
 
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20bbb%20spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for save |
+| pause | 15000 | I hate pause; needed for save |
 | st-page-save |  |  |
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
 
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20ccc%20spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for save |
+| pause | 15000 | I hate pause; needed for save |
 | st-page-save |  |  |
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
@@ -112,7 +112,7 @@ add a new page for date and revision sorting
 | *Comment* | Test case: Calc Watchlist date and rev sort |  |
 | open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20newpage%20spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for save |
+| pause | 15000 | I hate pause; needed for save |
 | st-page-save |  |  |
 | st-watch-page | 1 |  |
 | st-is-watched | 1 |  |
@@ -120,7 +120,7 @@ add a new page for date and revision sorting
 | *Comment* | Test case: Calc Watchlist create a SECOND revision, so revision sort places this page at the top |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause | 5000 | I hate pause; needed for save |
+| pause | 15000 | I hate pause; needed for save |
 | st-page-save |  |  |
 
 | wait_for_element_visible_ok | st-jump-to | 30000 |

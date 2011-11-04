@@ -1,6 +1,6 @@
 | *Comment* | st-save-and-check content=%%content%% |  |
 | pause_ok | 1000 |  |
-| wait_for_element_visible_ok | st-save-button-link | 5000 |
+| wait_for_element_visible_ok | st-save-button-link | 15000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | pause_ok | 1000 |  |

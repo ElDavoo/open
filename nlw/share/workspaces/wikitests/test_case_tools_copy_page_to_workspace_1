@@ -30,9 +30,9 @@
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Copy the page |  |
 | click_ok | link=Copy Page to Workspace |  |
-| wait_for_element_visible_ok | st-copy-workspace | 5000 |
-| wait_for_element_visible_ok | st-copy-newname | 5000 |
-| wait_for_element_visible_ok | st-copy-savelink | 5000 |
+| wait_for_element_visible_ok | st-copy-workspace | 15000 |
+| wait_for_element_visible_ok | st-copy-newname | 15000 |
+| wait_for_element_visible_ok | st-copy-savelink | 15000 |
 
 | select_ok | st-copy-workspace | label=%%newspace%% |
 | type_ok | st-copy-newname | %%copy_title%% |

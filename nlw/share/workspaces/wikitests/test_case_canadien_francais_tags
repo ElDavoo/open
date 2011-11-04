@@ -53,8 +53,8 @@
 
 | *Comment* | Test Case: Canadien Francais Tags Test Sorting for Page in All Tags |  |
 | open_ok | /%%ws%%/?action=category_list |  |
-| wait_for_element_visible_ok | link=%%tagA%% | 5000 |
-| wait_for_element_visible_ok | link=%%tagL%% | 5000 |
+| wait_for_element_visible_ok | link=%%tagA%% | 15000 |
+| wait_for_element_visible_ok | link=%%tagL%% | 15000 |
 | text_like | //body | qr/%%tagAA%%.+%%tagA%%.+%%tagL%%.+%%tagM%%.+%%tagN%%.+%%tagX%%/ |
 
 | *Comment* | Test Case: Canadien Francais Tags Now Tag /me/ |  |  |

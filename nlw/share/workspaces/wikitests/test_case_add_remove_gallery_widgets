@@ -28,7 +28,7 @@
 | click_ok | gallery-table-page-2 |  |
 | wait_for_element_visible_ok | gallery-table-dropdown-2-10 | 30000 |
 | select_ok | gallery-table-dropdown-2-10 | label=Hidden |
-| pause_ok | 5000 | nothing to wait for |
+| pause_ok | 15000 | nothing to wait for |
 
 | *Comment* | Test Case: Add Remove Gallery Widgets hid a 3rd party widget, added Quotes |  |
 | open_ok | /st/dashboard | 60000 |
@@ -45,7 +45,7 @@
 | click_ok | gallery-table-page-2 |  |
 | wait_for_element_visible_ok | gallery-table-dropdown-2-10 | 30000 |
 | select_ok | gallery-table-dropdown-2-10 | label=Visible |
-| pause_ok | 5000 | nothing to wait for |
+| pause_ok | 15000 | nothing to wait for |
 
 | *Comment* | Test Case: Add Remove Gallery Widgets restored a 3rd party widget |  |
 | open_ok | /st/dashboard | 60000 |
@@ -59,7 +59,7 @@
 | open_ok | /nlw/control/account/%%account_id%% |  |
 | wait_for_element_visible_ok | gallery-table-dropdown-2-4 | 30000 |
 | select_ok | gallery-table-dropdown-2-4 | label=Hidden |
-| pause_ok | 5000 | nothing to wait for |
+| pause_ok | 15000 | nothing to wait for |
 
 | *Comment* | Test Case: Add Remove Gallery Widgets hid an uploaded widget |  |
 | open_ok | /st/dashboard | 60000 |
@@ -72,7 +72,7 @@
 | open_ok | /nlw/control/account/%%account_id%% |  |
 | wait_for_element_visible_ok | gallery-table-dropdown-2-4 | 30000 |
 | select_ok | gallery-table-dropdown-2-4 | label=Visible |
-| pause_ok | 5000 | nothing to wait for |
+| pause_ok | 15000 | nothing to wait for |
 
 | *Comment* | Test Case: Add Remove Gallery Widgets restored an uploaded widget |  |
 | open_ok | /st/dashboard | 60000 |

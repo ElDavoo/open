@@ -30,11 +30,11 @@ Since a non-admin can't get to the Group edit page, this test was a non-sequitur
 
  *Comment* | Test Case: User Deactivates Group wait for the success msg at the dashboard | |
 wait_for_text_present_ok | The group, %%deac_group%%, has been successfully deleted. | 60000 |
-wait_for_element_not_present_ok | link=%%deac_group%% | 5000 |
+wait_for_element_not_present_ok | link=%%deac_group%% | 15000 |
 
 | *Comment* | Test Case: User Deactivates Group Link Login as other user, still do not see link |  |
 | st-logoutin | %%other_user%% | %%password%% |
-| wait_for_element_not_present_ok | link=%%deac_group%% | 5000 |
+| wait_for_element_not_present_ok | link=%%deac_group%% | 15000 |
 
 | *Comment* | Test Case: User Deactivates Group TEARDOWN |
 | st-process-jobs |  |  |

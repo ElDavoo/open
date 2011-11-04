@@ -37,7 +37,7 @@
 
 | *Comment* | Test Case: Wiki Page Caching. See link text, but not link. See attribution. |  |
 | wait_for_text_present_ok | This is a link to newws | 30000 |
-| wait_for_element_not_present_ok | link=This is a link to newws | 5000 |
+| wait_for_element_not_present_ok | link=This is a link to newws | 15000 |
 | wait_for_element_visible_ok | link=%%short_user2%% | 30000 |
 
 | *Comment* | Test Case: Wiki Page Caching Add %%short_username%% to %%newws%%, text becomes a link |  |

@@ -36,8 +36,8 @@
 | Comment | Test Case: Page Locking Check markup as user |  |
 | st-logoutin | %%member%% | %%password%% |
 | open_ok | /%%ws%%/?%%ppage%% |  |
-| wait_for_element_not_present_ok | st-edit-button-link | 5000 |
-| wait_for_element_not_present_ok | //li[@id="st-comment-button"]/a | 5000 |
+| wait_for_element_not_present_ok | st-edit-button-link | 15000 |
+| wait_for_element_not_present_ok | //li[@id="st-comment-button"]/a | 15000 |
 
 | *Comment* | Test Case: Page Locking TEARDOWN |  |
 | deactivate-user | %%member%% |  |

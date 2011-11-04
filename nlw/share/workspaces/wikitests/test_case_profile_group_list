@@ -94,36 +94,36 @@
 | open_ok | /st/profile/%%member_id%% |  |
 | st-widget-title | groups | Colleagues |
 | select_frame_ok | //iframe |  |
-| wait_for_element_visible_ok | //td[contains(text(),'Groups')] | 5000 |
+| wait_for_element_visible_ok | //td[contains(text(),'Groups')] | 15000 |
 | click_ok | //td[contains(text(),'Groups')] |  |
-| wait_for_element_visible_ok | link=%%group_a%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_b%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_c%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_d%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_e%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_f%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_g%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_h%% | 5000 |
-| wait_for_element_not_present_ok | link=%%member_group%% | 5000 |
+| wait_for_element_visible_ok | link=%%group_a%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_b%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_c%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_d%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_e%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_f%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_g%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_h%% | 15000 |
+| wait_for_element_not_present_ok | link=%%member_group%% | 15000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Profile Group List check widget in Signals page, see only groups that you are a member of |  |
 | open_ok | /st/signals |  |
-| wait_for_text_present_ok | Signals | 5000 |
+| wait_for_text_present_ok | Signals | 15000 |
 | st-widget-title | groups | Colleagues |
 | select_frame_ok | //iframe |  |
-| wait_for_element_visible_ok | //td[contains(text(),'Groups')] | 5000 |
+| wait_for_element_visible_ok | //td[contains(text(),'Groups')] | 15000 |
 | click_ok | //td[contains(text(),'Groups')] |  |
-| wait_for_element_visible_ok | link=%%group_a%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_c%% | 5000 |
-| wait_for_element_visible_ok | link=%%user_group%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_b%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_d%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_e%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_f%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_g%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_h%% | 5000 |
-| wait_for_element_not_present_ok | link=%%member_group%% | 5000 |
+| wait_for_element_visible_ok | link=%%group_a%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_c%% | 15000 |
+| wait_for_element_visible_ok | link=%%user_group%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_b%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_d%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_e%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_f%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_g%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_h%% | 15000 |
+| wait_for_element_not_present_ok | link=%%member_group%% | 15000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Profile Group List remove viewer from his links to groups A E F G H, then does not see groups A E F G H |  |
@@ -131,19 +131,19 @@
 | st-admin | remove-member --email %%viewer%% --workspace %%wiki_a%% | no longer has the role |
 | st-admin | remove-member --email %%viewer%% --group %%user_group_id%% | no longer a member |
 | open_ok | /st/profile/%%member_id%% |  |
-| wait_for_text_present_ok | %%member_name%% | 5000 |
+| wait_for_text_present_ok | %%member_name%% | 15000 |
 | st-widget-title | groups | Colleagues |
 | select_frame_ok | //iframe |  |
-| wait_for_element_visible_ok | //td[contains(text(),'Groups')] | 5000 |
+| wait_for_element_visible_ok | //td[contains(text(),'Groups')] | 15000 |
 | click_ok | //td[contains(text(),'Groups')] |  |
-| wait_for_element_visible_ok | link=%%group_b%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_c%% | 5000 |
-| wait_for_element_visible_ok | link=%%group_d%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_a%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_e%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_f%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_g%% | 5000 |
-| wait_for_element_not_present_ok | link=%%group_h%% | 5000 |
+| wait_for_element_visible_ok | link=%%group_b%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_c%% | 15000 |
+| wait_for_element_visible_ok | link=%%group_d%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_a%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_e%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_f%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_g%% | 15000 |
+| wait_for_element_not_present_ok | link=%%group_h%% | 15000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Profile Group List go to group D group page, remove viewer from connection to D by CLI, join button should produce error |  |
@@ -151,7 +151,7 @@
 | st-admin | remove-member --account %%acct_b%% --email %%viewer%% | no longer has the role |
 | st-process-jobs |  |  |
 | click_ok | st-join-group |  |
-| wait_for_text_present_ok | group not found | 5000 |
+| wait_for_text_present_ok | group not found | 15000 |
 
 | *Comment* | Test Case: Profile Group List TEARDOWN |  |
 | st-process-jobs |  |  |

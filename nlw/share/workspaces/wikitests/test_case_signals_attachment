@@ -48,11 +48,11 @@
 | set_Speed | 0 |  |
 
 | *Comment* | Test Case: Signals Attachment. post %%signal%%. Only works in Firefox |  |
-| wait_for_element_visible_ok | signalFrame | 5000 |
+| wait_for_element_visible_ok | signalFrame | 15000 |
 | select_frame | signalFrame |  |
 | type_ok | //body | %%signal%% |
 | select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | click_ok | //a[@role='button'] |  |
 
 | *Comment* | Test Case: Signals Attachment. see signal and uploaded files |  |

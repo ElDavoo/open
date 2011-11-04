@@ -80,7 +80,7 @@
 | *Comment* | Test Case: User Likes a Signal follow user 1, then check mouseover bubble for colleague list |  |
 | open_ok | /st/profile/%%user1_id%% |  |
 | wait_for_element_visible_ok | st-watchperson-indicator | 30000 |
-| pause_ok | 5000 | needed for IE7 |
+| pause_ok | 15000 | needed for IE7 |
 | click_ok | st-watchperson-indicator |  |
 | wait_for_element_visible_ok | //button[@title='Stop following this person'] | 30000 |
 | open_ok | /st/signals |  |
@@ -92,7 +92,7 @@
 | *Comment* | Test Case: User Likes a Signal unfollow user 1, then check mouseover bubble for lack of colleague list |  |
 | open_ok | /st/profile/%%user1_id%% |  |
 | wait_for_element_visible_ok | st-watchperson-indicator | 30000 |
-| pause_ok | 5000 | needed for IE7 |
+| pause_ok | 15000 | needed for IE7 |
 | click_ok | st-watchperson-indicator |  |
 | wait_for_element_visible_ok | //button[@title='Follow this person'] | 30000 |
 | open_ok | /st/signals |  |

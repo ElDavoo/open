@@ -89,7 +89,7 @@
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Cheeky')] | 30000 |
-| click_and_pause | //a[contains(@id,'gallery-widget-Cheeky')] | 5000 |
+| click_and_pause | //a[contains(@id,'gallery-widget-Cheeky')] | 15000 |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 5 | cheeky_quote | Cheeky Quotes |
@@ -99,7 +99,7 @@
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Boss Spy'] | 30000 |
-| click_and_pause | //a[@id='gallery-widget-Boss Spy'] | 5000 |
+| click_and_pause | //a[@id='gallery-widget-Boss Spy'] | 15000 |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 5 | cheeky_quote | boss_spy |

@@ -29,7 +29,7 @@
 | *Comment* | Verify original first and last names: %%fname%% %%lname%% |  |
 | open_ok | /st/profile |  |
 | text_like | Profile |  |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
 
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | click_and_wait | st-edit-profile |  |
@@ -38,8 +38,8 @@
 | select_frame | `xpath=(//iframe)[1]` |  |
 
 | *Comment* | Test Case: Edit Profile. Verify profile fields present. |  |
-| wait_for_element_visible_ok | photo-upload-button | 5000 |
-| wait_for_element_visible_ok | update_profile | 5000 |
+| wait_for_element_visible_ok | photo-upload-button | 15000 |
+| wait_for_element_visible_ok | update_profile | 15000 |
 
 | text_like | profile-edit-form | Name |
 | text_like | profile-edit-form | Organization |
@@ -105,15 +105,15 @@
 
 | *Comment* | Test Case: Edit Profile. Need to select users in a common account |  |
 
-| wait_for_element_visible_ok | field_supervisor | 5000 |
+| wait_for_element_visible_ok | field_supervisor | 15000 |
 | select-autocompleted-option-ok | xpath=//div[@id='field_supervisor']/input[contains(@class,'relationship')] | %%short_super%% |
 
-| wait_for_element_visible_ok | field_assistant | 5000 |
+| wait_for_element_visible_ok | field_assistant | 15000 |
 | select-autocompleted-option-ok | xpath=//div[@id='field_assistant']/input[contains(@class,'relationship')] | %%short_assistant%% |
 
 | *Comment* | Test Case: Edit Profile. Be conservative around clicking update |  |
-| wait_for_element_visible_ok | update_profile | 5000 |
-| pause | 5000 | settling time |
+| wait_for_element_visible_ok | update_profile | 15000 |
+| pause | 15000 | settling time |
 
 | *Comment* | Test Case: Edit Profile. IE gets a permissions error if you do anything more than click_ok and exit |  |
 | click_ok | update_profile |  |

@@ -38,13 +38,13 @@
 | st-name-widget | 1 | activities_widget |
 | st-widget-title | activities_widget | Activities |
 | st-widget-settings | activities_widget |  |
-| wait_for_element_visible_ok | limit | 5000 |
+| wait_for_element_visible_ok | limit | 15000 |
 | select_ok | limit | 25 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
-| wait_for_element_not_visible_ok | limit | 5000 |
+| wait_for_element_not_visible_ok | limit | 15000 |
 
 | *Comment* | Test Case: People Dashboard Plugins See pages, Signals, Tags |  |
-| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 5000 |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 15000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_like | //body | tagged themself %%tagtoadd%% |
 | text_like | //body | %%signal1%% |
@@ -54,7 +54,7 @@
 | st-admin | disable-plugin --plugin signals --account %%acct%% | The signals plugin is now disabled |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 1 | activities_widget |
-| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 5000 |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 15000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_like | //body | tagged themself %%tagtoadd%% |
 | text_unlike | //body | %%signal1%% |
@@ -64,7 +64,7 @@
 | st-admin | disable-plugin --plugin people --account %%acct%% | is now disabled |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 1 | activities_widget |
-| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 5000 |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 15000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_unlike | //body | tagged themself %%tagtoadd%% |
 | text_unlike | //body | %%signal1%% |
@@ -74,7 +74,7 @@
 | st-admin | enable-plugin --plugin signals --account %%acct%% | is now enabled |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 1 | activities_widget |
-| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 5000 |
+| wait_for_text_present_ok | edited %%page1%% in %%ws%% | 15000 |
 | text_like | //body | edited %%page2%% in %%ws%% |
 | text_like | //body | tagged themself %%tagtoadd%% |
 | text_like | //body | %%signal1%% |

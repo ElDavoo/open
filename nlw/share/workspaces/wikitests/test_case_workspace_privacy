@@ -17,20 +17,20 @@
 | *Comment* | Test Case: Workspace Privacy verify public |  |
 | st-logout |  |  |
 | open_ok | /%%wspriv%%/ |  |
-| wait_for_element_present_ok | st-edit-button-link | 5000 |
-| wait_for_element_present_ok | st-comment-button | 5000 |
+| wait_for_element_present_ok | st-edit-button-link | 15000 |
+| wait_for_element_present_ok | st-comment-button | 15000 |
 
 | *Comment* | Test Case: Workspace Privacy verify public read only |  |
 | st-admin | set-permissions --p public-read-only --w %%wspriv%% | have been changed |
 | open_ok | /%%wspriv%%/ |  |
-| wait_for_element_not_present_ok | st-edit-button-link | 5000 |
-| wait_for_element_not_present_ok | st-comment-button | 5000 |
+| wait_for_element_not_present_ok | st-edit-button-link | 15000 |
+| wait_for_element_not_present_ok | st-comment-button | 15000 |
 
 | *Comment* | Ensure type of public-ness permissions are preserved on save event |  |
 | st-admin | set-permissions --p public-comment-only --w %%wspriv%% | have been changed |
 | open_ok | /%%wspriv%%/ |  |
-| wait_for_element_not_present_ok | st-edit-button-link | 5000 |
-| wait_for_element_present_ok | st-comment-button | 5000 |
+| wait_for_element_not_present_ok | st-edit-button-link | 15000 |
+| wait_for_element_present_ok | st-comment-button | 15000 |
 
 | *Comment* | Test Case: Workspace Privacy Join |  |
 | st-admin | set-permissions --p public-join-to-edit --w %%wspriv%% | have been changed |

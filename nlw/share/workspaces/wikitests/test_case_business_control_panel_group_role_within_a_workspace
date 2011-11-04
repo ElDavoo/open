@@ -37,7 +37,7 @@
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | is_selected_ok | groupTable-dropdown-2-1 | label=Member |
 | select_ok | groupTable-dropdown-2-1 | label=Admin |
-| pause | 5000 |  |
+| pause | 15000 |  |
 | st-search-cp-workspace | %%group_ws%% | 1 |
 | is_selected_ok | groupTable-dropdown-2-0 | label=Admin |
 | is_selected_ok | groupTable-dropdown-2-1 | label=Admin |
@@ -46,7 +46,7 @@
 | select_ok | groupTable-dropdown-2-3 | label=Member |
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | select_ok | groupTable-dropdown-2-1 | label=Member |
-| pause | 5000 |  |
+| pause | 15000 |  |
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | select_ok | groupTable-dropdown-2-0 | label=Member |
 | wait_for_text_present_ok | Workspaces need to include at least one admin | 30000 |
@@ -140,7 +140,7 @@
 | text_like | //body | Groups (2) |
 | is_selected_ok | groupTable-dropdown-2-0 | label=Member |
 | is_selected_ok | groupTable-dropdown-2-1 | label=Member |
-| pause | 5000 |  |
+| pause | 15000 |  |
 
 | *Comment* | Test Case: Business Control Panel Group Role Add an admin GROUP, now batch remove membership for ws entirely succeeds |  |
 | st-search-cp-workspace | %%group_ws%% | 1 |

@@ -46,7 +46,7 @@
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | click_and_wait | link=%%fname%% |  |
 | wait_for_element_visible_ok | st-watchperson-indicator | 60000 |
-| pause | 5000 | needed for IE7 |
+| pause | 15000 | needed for IE7 |
 | click_ok | st-watchperson-indicator |  |
 | wait_for_element_visible_ok | //button[@title='Stop following this person'] | 60000 |
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_wiki%% |  |

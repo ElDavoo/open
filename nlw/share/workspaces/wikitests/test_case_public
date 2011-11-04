@@ -16,11 +16,11 @@
 
 | *Comment* | Test Case: Public. Verify buttons and links page top |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
-| wait_for_element_visible_ok | link=Comment | 5000 |
+| wait_for_element_visible_ok | link=Comment | 15000 |
 | text_like | content | Add Tag |
 | text_unlike | content | Upload Files |
-| wait_for_element_visible_ok | link=Log in | 5000 |
-| wait_for_element_visible_ok | //a[@href='/nlw/register.html?redirect_to='] | 5000 |
+| wait_for_element_visible_ok | link=Log in | 15000 |
+| wait_for_element_visible_ok | //a[@href='/nlw/register.html?redirect_to='] | 15000 |
 
 | *Comment* | Test Case: Public. Verify Guest can edit |  |
 | st-admin | update-page --w %%pub_w%% --e %%email%% --p "TC Public %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |

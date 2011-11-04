@@ -21,12 +21,12 @@
 | text_like | st-page-titletext | %%auth_w%% Title |
 
 | *Comment* | Test Case: Public Join to Edit. Verify buttons and links page top |  |
-| wait_for_element_not_present_ok | link=Edit | 5000 |
-| wait_for_element_not_present_ok | link=Comment | 5000 |
-| wait_for_element_not_present_ok | link=Add Tag | 5000 |
-| wait_for_element_not_present_ok | link=Upload Files | 5000 |
+| wait_for_element_not_present_ok | link=Edit | 15000 |
+| wait_for_element_not_present_ok | link=Comment | 15000 |
+| wait_for_element_not_present_ok | link=Add Tag | 15000 |
+| wait_for_element_not_present_ok | link=Upload Files | 15000 |
 | wait_for_element_visible_ok | link=Log in | 30000 |
-| wait_for_element_visible_ok | link=Join to edit | 5000 |
+| wait_for_element_visible_ok | link=Join to edit | 15000 |
 
 
 TODO: Join To Edit, Register, See redirect, membership, and editable. Logout. See Join To Edit.
@@ -42,11 +42,11 @@ TODO: test Join after just joining: Join. See dual Login/Membership page. Login.
 | open_ok | /%%auth_w%%/ |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%auth_w%% Title |
-| wait_for_element_not_present_ok | link=Edit | 5000 |
-| wait_for_element_not_present_ok | link=Comment | 5000 |
-| wait_for_element_not_present_ok | link=Add Tag | 5000 |
-| wait_for_element_not_present_ok | link=Upload Files | 5000 |
-| wait_for_element_visible_ok | link=Join to edit | 5000 |
+| wait_for_element_not_present_ok | link=Edit | 15000 |
+| wait_for_element_not_present_ok | link=Comment | 15000 |
+| wait_for_element_not_present_ok | link=Add Tag | 15000 |
+| wait_for_element_not_present_ok | link=Upload Files | 15000 |
+| wait_for_element_visible_ok | link=Join to edit | 15000 |
 
 TODO: Join. See immediate editable and membership.
 
@@ -58,7 +58,7 @@ TODO: Join. See immediate editable and membership.
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 | click_and_wait | link=Join to edit |  |
 | wait_for_element_visible_ok | username | 30000 |
-| wait_for_element_visible_ok | password | 5000 |
+| wait_for_element_visible_ok | password | 15000 |
 | type_ok | username | %%username%% |
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
@@ -73,8 +73,8 @@ TODO: Join. See immediate editable and membership.
 | *Comment* | Case 4: Logged in user, existing member |  |
 | open_ok | /%%auth_w%%/ |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
-| wait_for_element_visible_ok | link=Comment | 5000 |
-| wait_for_element_visible_ok | st-page-titletext | 5000 |
+| wait_for_element_visible_ok | link=Comment | 15000 |
+| wait_for_element_visible_ok | st-page-titletext | 15000 |
 | text_like | st-page-titletext | %%auth_w%% Title |
 
 | st-logout |  |  |

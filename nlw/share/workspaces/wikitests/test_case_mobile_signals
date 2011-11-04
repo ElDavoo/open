@@ -3,7 +3,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Mobile Signals. Click mobile from Dashboard, opens mobile signals |  |
-| wait_for_element_visible_ok | link=Mobile | 5000 |
+| wait_for_element_visible_ok | link=Mobile | 15000 |
 | click_and_wait | link=Mobile |  |
 
 | *Comment* | Test Case: Mobile Signals. Nav |  |

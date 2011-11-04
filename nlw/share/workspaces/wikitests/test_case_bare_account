@@ -16,16 +16,16 @@
 | open_ok | /st/dashboard |  |
 
 | call | [activities-widget] | activity=signals | contributor=everyone |
-| wait_for_text_present_ok | There are no new signals in the last 30 days | 5000 |  |
+| wait_for_text_present_ok | There are no new signals in the last 30 days | 15000 |  |
 
 | call | [activities-widget] | activity=comments | contributor=everyone |
-| wait_for_text_present_ok | There are no new comments in the last 30 days | 5000 |  |
+| wait_for_text_present_ok | There are no new comments in the last 30 days | 15000 |  |
 
 | call | [activities-widget] | activity=tags | contributor=everyone |
-| wait_for_text_present_ok | There are no new page tags in the last 30 days | 5000 |  |
+| wait_for_text_present_ok | There are no new page tags in the last 30 days | 15000 |  |
 
 | call | [activities-widget] | activity=people-events | contributor=everyone |
-| wait_for_text_present_ok | There are no new people events in the last 30 days | 5000 |  |
+| wait_for_text_present_ok | There are no new people events in the last 30 days | 15000 |  |
 
 | *Comment* | Test Case: Bare Account TEARDOWN |  |
 | st-admin | deactivate-user --e %%user%% |  |

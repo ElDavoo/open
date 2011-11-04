@@ -4,19 +4,19 @@ tuxhold until show/hide stickiness is restored
 
 | open_ok | %%workspace%%/?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet1%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause_ok | 5000 |  |
+| pause_ok | 15000 |  |
 | st-page-save |  |  |
 
 | open_ok | %%workspace%%/?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet2%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause_ok | 5000 |  |
+| pause_ok | 15000 |  |
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should be open |  |
 
 | wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
-| wait_for_element_visible_ok | st-tags-listing | 5000 |
-| wait_for_element_visible_ok | st-attachment-listing | 5000 |
+| wait_for_element_visible_ok | st-tags-listing | 15000 |
+| wait_for_element_visible_ok | st-attachment-listing | 15000 |
 | text_like | st-page-boxes-hide-link | hide |
 | text_like | st-display-mode-widgets | There are no pages that link to this page yet. |
 
@@ -24,18 +24,18 @@ tuxhold until show/hide stickiness is restored
 | click_ok | st-page-boxes-hide-link |  |
 
 | *Comment* | Test Case : Hide sidebar sidebar should be closed |  |
-| wait_for_element_visible_ok | st-page-boxes-show-link | 5000 |
-| wait_for_element_not_visible_ok | st-tags-listing | 5000 |
-| wait_for_element_not_visible_ok | st-attachment-listing | 5000 |
+| wait_for_element_visible_ok | st-page-boxes-show-link | 15000 |
+| wait_for_element_not_visible_ok | st-tags-listing | 15000 |
+| wait_for_element_not_visible_ok | st-attachment-listing | 15000 |
 | text_like | st-page-boxes-show-link | show |
 
 | *Comment* | Test Case : Hide sidebar open the sidebar |  |
 | click_ok | st-page-boxes-show-link |  |
 
 | *Comment* | Test Case : Hide sidebar sidebar should be open |  |
-| wait_for_element_visible_ok | st-page-boxes-hide-link | 5000 |
-| wait_for_element_visible_ok | st-tags-listing | 5000 |
-| wait_for_element_visible_ok | st-attachment-listing | 5000 |
+| wait_for_element_visible_ok | st-page-boxes-hide-link | 15000 |
+| wait_for_element_visible_ok | st-tags-listing | 15000 |
+| wait_for_element_visible_ok | st-attachment-listing | 15000 |
 | text_like | st-page-boxes-hide-link | hide |
 | text_like | content | There are no pages that link to this page yet. |
 
@@ -45,17 +45,17 @@ tuxhold until show/hide stickiness is restored
 
 | *Comment* | Test Case : Hide sidebar sidebar should still be closed |  |
 | wait_for_element_visible_ok | st-page-boxes-show-link | 30000 |
-| wait_for_element_not_visible_ok | st-tags-listing | 5000 |
-| wait_for_element_not_visible_ok | st-attachment-listing | 5000 |
+| wait_for_element_not_visible_ok | st-tags-listing | 15000 |
+| wait_for_element_not_visible_ok | st-attachment-listing | 15000 |
 | text_like | st-page-boxes-show-link | show |
 
 | *Comment* | Test Case : Hide sidebar open the sidebar on Hide Sidebar 1 page |  |
 | click_ok | st-page-boxes-show-link |  |
 
 | *Comment* | Test Case : Hide sidebar sidebar should be open |  |
-| wait_for_element_visible_ok | st-page-boxes-hide-link | 5000 |
-| wait_for_element_visible_ok | st-tags-listing | 5000 |
-| wait_for_element_visible_ok | st-attachment-listing | 5000 |
+| wait_for_element_visible_ok | st-page-boxes-hide-link | 15000 |
+| wait_for_element_visible_ok | st-tags-listing | 15000 |
+| wait_for_element_visible_ok | st-attachment-listing | 15000 |
 | text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar open the sidebar on the second page |  |
@@ -63,8 +63,8 @@ tuxhold until show/hide stickiness is restored
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should be open |  |
 | wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
-| wait_for_element_visible_ok | st-tags-listing | 5000 |
-| wait_for_element_visible_ok | st-attachment-listing | 5000 |
+| wait_for_element_visible_ok | st-tags-listing | 15000 |
+| wait_for_element_visible_ok | st-attachment-listing | 15000 |
 | text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar navigate to original page |  |
@@ -72,8 +72,8 @@ tuxhold until show/hide stickiness is restored
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should still be open |  |
 | wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
-| wait_for_element_visible_ok | st-tags-listing | 5000 |
-| wait_for_element_visible_ok | st-attachment-listing | 5000 |
+| wait_for_element_visible_ok | st-tags-listing | 15000 |
+| wait_for_element_visible_ok | st-attachment-listing | 15000 |
 | text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - what's new |  |  |
@@ -88,7 +88,7 @@ tuxhold until show/hide stickiness is restored
 
 | open_ok | /%%workspace%%/index.cgi?tc_hide_sidebar_spreadsheet2_%%start_time%% |  |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |
-| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 5000 |
+| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 15000 |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - uncheck what's new |  |  |
 
@@ -113,7 +113,7 @@ tuxhold until show/hide stickiness is restored
 
 | open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |  |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |  |
-| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 5000 |  |
+| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 15000 |  |
 
 | call | [st-spaces-accordion] | index=1 | section=Preferences |
 
@@ -123,7 +123,7 @@ tuxhold until show/hide stickiness is restored
 
 | open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
 | wait_for_element_not_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |
-| wait_for_element_not_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 5000 |
+| wait_for_element_not_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 15000 |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar TEARDOWN |  |
 

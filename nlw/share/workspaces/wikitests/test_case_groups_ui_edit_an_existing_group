@@ -24,7 +24,7 @@
 | click_and_wait | st-edit-group | 30000 |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
-| pause | 5000 |  |
+| pause | 15000 |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group Change the Values & Click Save |  |
 
@@ -44,7 +44,7 @@
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
-| pause | 5000 |  |
+| pause | 15000 |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group See the new values |  |
 | st-name-widget | 1 | info_widget |

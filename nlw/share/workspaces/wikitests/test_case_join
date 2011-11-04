@@ -33,23 +33,23 @@
 | *Comment* | Test Case: Join. Logged-in user joins immediately. |  |
 | open_ok | /%%acct_ws%% |  |
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
-| wait_for_element_not_present_ok | link=Edit | 5000 |
+| wait_for_element_not_present_ok | link=Edit | 15000 |
 | click_and_wait | link=Join to edit |  |
 | wait_for_text_present_ok | %%acct%% |  |
-| wait_for_element_visible_ok | link=Edit | 5000 |
-| wait_for_element_visible_ok | link=Comment | 5000 |
+| wait_for_element_visible_ok | link=Edit | 15000 |
+| wait_for_element_visible_ok | link=Comment | 15000 |
 
 | *Comment* | Test Case: Join. Disable self register and verify |  |
 | st-logout |  |  |
 | st-config | set self_registration 0 | Wrote updated config file |
 | open_ok | /%%acct_ws%% |  |
-| wait_for_element_not_present_ok | link=Join to edit | 5000 |
+| wait_for_element_not_present_ok | link=Join to edit | 15000 |
 | st-config | set self_registration 1 | Wrote updated config file |
 
 | *Comment* | Test Case: Join. New user joins and registers |  |
 | open_ok | /%%acct_ws%% |  |
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
-| wait_for_element_not_present_ok | link=Edit | 5000 |
+| wait_for_element_not_present_ok | link=Edit | 15000 |
 | click_and_wait | link=Join to edit |  |
 | wait_for_element_visible_ok | email_address | 30000 |
 | wait_for_element_visible_ok | register_password | 30000 |
@@ -92,8 +92,8 @@
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
 | location_like | /%%acct_ws%% |  |
-| wait_for_element_visible_ok | st-edit-button-link | 5000 |
-| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 5000 |
+| wait_for_element_visible_ok | st-edit-button-link | 15000 |
+| wait_for_element_visible_ok | //li[@id="st-comment-button"]/a | 15000 |
 | st-admin | get-user-account --u %%to_ws_user%% | Primary account for "%%to_ws_user%%" is %%acct%%. |
 
 | *Comment* | Test Case: Join TEARDOWN |  |

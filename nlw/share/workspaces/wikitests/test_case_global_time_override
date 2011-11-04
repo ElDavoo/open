@@ -32,10 +32,10 @@ Watch the test run and you can see it.
 | *Comment* | Test Case: Global Time Override set the global settings |  |
 | open_ok | /console/?rm=Setup |  |
 | wait_for_element_visible_ok | timezone__timezone | 30000 |
-| wait_for_element_visible_ok | timezone__dst | 5000 |
-| wait_for_element_visible_ok | timezone__date_display_format | 5000 |
-| wait_for_element_visible_ok | timezone__time_display_12_24 | 5000 |
-| wait_for_element_visible_ok | timezone__time_display_seconds | 5000 |
+| wait_for_element_visible_ok | timezone__dst | 15000 |
+| wait_for_element_visible_ok | timezone__date_display_format | 15000 |
+| wait_for_element_visible_ok | timezone__time_display_12_24 | 15000 |
+| wait_for_element_visible_ok | timezone__time_display_seconds | 15000 |
 | select_ok | timezone__timezone | label=+0300 Baghdad |
 | select_ok | timezone__dst | label=currently in DST |
 | select_ok | timezone__date_display_format | value=d_mmm_yy |
@@ -53,10 +53,10 @@ Watch the test run and you can see it.
 | st-logoutin | %%user%% | %%password%% |
 | open_ok | /st/settings |  |
 | wait_for_element_visible_ok | %%ttimezone%% | 30000 |
-| wait_for_element_visible_ok | %%tdst%% | 5000 |
-| wait_for_element_visible_ok | %%tformat%% | 5000 |
-| wait_for_element_visible_ok | %%t1224%% | 5000 |
-| wait_for_element_visible_ok | %%tsecs%% | 5000 |
+| wait_for_element_visible_ok | %%tdst%% | 15000 |
+| wait_for_element_visible_ok | %%tformat%% | 15000 |
+| wait_for_element_visible_ok | %%t1224%% | 15000 |
+| wait_for_element_visible_ok | %%tsecs%% | 15000 |
 | is_selected_ok | %%ttimezone%% | label=+0300 Baghdad |
 | is_selected_ok | %%tdst%% | label=currently in DST |
 
@@ -94,10 +94,10 @@ Watch the test run and you can see it.
 | st-logoutin | %%user%% | %%password%% |
 | open_ok | /st/settings |  |
 | wait_for_element_visible_ok | %%ttimezone%% | 30000 |
-| wait_for_element_visible_ok | %%tdst%% | 5000 |
-| wait_for_element_visible_ok | %%tformat%% | 5000 |
-| wait_for_element_visible_ok | %%t1224%% | 5000 |
-| wait_for_element_visible_ok | %%tsecs%% | 5000 |
+| wait_for_element_visible_ok | %%tdst%% | 15000 |
+| wait_for_element_visible_ok | %%tformat%% | 15000 |
+| wait_for_element_visible_ok | %%t1224%% | 15000 |
+| wait_for_element_visible_ok | %%tsecs%% | 15000 |
 
 | is_selected_ok | %%ttimezone%% | label=+0900 Japan, Korean |
 | is_selected_ok | %%tdst%% | label=never in DST |
@@ -128,7 +128,7 @@ Watch the test run and you can see it.
 | st_unchecked_ok | %%tsecs%% |  |
 
 | click_and_wait | link=Save |  |
-| wait_for_text_present_ok | Saved | 5000 |
+| wait_for_text_present_ok | Saved | 15000 |
 
 | *Comment* | THE VALUES WERE NOT SAVED |  |
 
@@ -140,10 +140,10 @@ Watch the test run and you can see it.
 | *Comment* | THIS TEST FAILS USER DOES NOT HAVE THE SETTINGS |  |
 | open_ok | /st/settings |  |
 | wait_for_element_visible_ok | %%ttimezone%% | 30000 |
-| wait_for_element_visible_ok | %%tdst%% | 5000 |
-| wait_for_element_visible_ok | %%tformat%% | 5000 |
-| wait_for_element_visible_ok | %%t1224%% | 5000 |
-| wait_for_element_visible_ok | %%tsecs%% | 5000 |
+| wait_for_element_visible_ok | %%tdst%% | 15000 |
+| wait_for_element_visible_ok | %%tformat%% | 15000 |
+| wait_for_element_visible_ok | %%t1224%% | 15000 |
+| wait_for_element_visible_ok | %%tsecs%% | 15000 |
 | is_selected_ok | %%ttimezone%% | label=+0100 Central European |
 | is_selected_ok | %%tdst%% | label=currently not in DST |
 
@@ -156,10 +156,10 @@ Watch the test run and you can see it.
 | st-logoutin | %%user2%% | %%password%% |
 | open_ok | /st/settings |  |
 | wait_for_element_visible_ok | %%ttimezone%% | 30000 |
-| wait_for_element_visible_ok | %%tdst%% | 5000 |
-| wait_for_element_visible_ok | %%tformat%% | 5000 |
-| wait_for_element_visible_ok | %%t1224%% | 5000 |
-| wait_for_element_visible_ok | %%tsecs%% | 5000 |
+| wait_for_element_visible_ok | %%tdst%% | 15000 |
+| wait_for_element_visible_ok | %%tformat%% | 15000 |
+| wait_for_element_visible_ok | %%t1224%% | 15000 |
+| wait_for_element_visible_ok | %%tsecs%% | 15000 |
 
 | is_selected_ok | %%ttimezone%% | label=+0900 Japan, Korean |
 | is_selected_ok | %%tdst%% | label=never in DST |
@@ -173,10 +173,10 @@ Watch the test run and you can see it.
 | st-logoutin | %%user3%% | %%password%% |
 | open_ok | /st/settings |  |
 | wait_for_element_visible_ok | %%ttimezone%% | 30000 |
-| wait_for_element_visible_ok | %%tdst%% | 5000 |
-| wait_for_element_visible_ok | %%tformat%% | 5000 |
-| wait_for_element_visible_ok | %%t1224%% | 5000 |
-| wait_for_element_visible_ok | %%tsecs%% | 5000 |
+| wait_for_element_visible_ok | %%tdst%% | 15000 |
+| wait_for_element_visible_ok | %%tformat%% | 15000 |
+| wait_for_element_visible_ok | %%t1224%% | 15000 |
+| wait_for_element_visible_ok | %%tsecs%% | 15000 |
 | is_selected_ok | %%ttimezone%% | label=+0300 Baghdad |
 | is_selected_ok | %%tdst%% | label=currently in DST |
 
@@ -207,10 +207,10 @@ Watch the test run and you can see it.
 | st-logoutin | %%user%% | %%password%% |
 | open_ok | /st/settings |  |
 | wait_for_element_visible_ok | %%ttimezone%% | 30000 |
-| wait_for_element_visible_ok | %%tdst%% | 5000 |
-| wait_for_element_visible_ok | %%tformat%% | 5000 |
-| wait_for_element_visible_ok | %%t1224%% | 5000 |
-| wait_for_element_visible_ok | %%tsecs%% | 5000 |
+| wait_for_element_visible_ok | %%tdst%% | 15000 |
+| wait_for_element_visible_ok | %%tformat%% | 15000 |
+| wait_for_element_visible_ok | %%t1224%% | 15000 |
+| wait_for_element_visible_ok | %%tsecs%% | 15000 |
 | is_selected_ok | %%ttimezone%% | label=+0100 Central European |
 | is_selected_ok | %%tdst%% | label=currently not in DST |
 

@@ -39,7 +39,7 @@
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | see, I commented |
 | wait_for_element_visible_ok | link=Save | 30000 |
-| st_click_pause | link=Save | 5000 |
+| st_click_pause | link=Save | 15000 |
 
 | *comment* | Test Case: Recent Changes check |  |
 | open_ok | /%%newspace%%/?action=recent_changes |  |
@@ -59,7 +59,7 @@
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | see, I commented |
 | wait_for_element_visible_ok | link=Save | 30000 |
-| st_click_pause | link=Save | 5000 |
+| st_click_pause | link=Save | 15000 |
 
 | *comment* | Test Case: Recent Changes check answers again |  |
 | open_ok | /%%newspace%%/?action=recent_changes |  |

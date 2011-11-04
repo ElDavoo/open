@@ -10,25 +10,25 @@
 | open_ok | /st/profile |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | st-revert-layout | 5000 |
-| wait_for_element_visible_ok | st-cancel-layout | 5000 |
-| wait_for_element_visible_ok | st-save-layout | 5000 |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-revert-layout | 15000 |
+| wait_for_element_visible_ok | st-cancel-layout | 15000 |
+| wait_for_element_visible_ok | st-save-layout | 15000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-cancel-layout |  |
 
 | *Comment* | Test Case: Widgets in Profile add widget then cancel, widget is gone |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
-| wait_for_element_visible_ok | //a[contains(@class,'ui-dialog-titlebar-close')] | 5000 |
+| wait_for_element_visible_ok | //a[contains(@class,'ui-dialog-titlebar-close')] | 15000 |
 | click_ok | //a[contains(@class,'ui-dialog-titlebar-close')] |  |
-| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 15000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_present_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
-| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 15000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | click_ok | st-cancel-layout |  |
 | open_ok | /st/profile |  |
@@ -40,89 +40,89 @@
 
 | *Comment* | Test sometimes adds a second widget or fails to change prefs. Slow it down ? |  |
 | set_speed_ok | 1000 |  |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 15000 |
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
-| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
-| wait_for_text_present_ok | Wikipedia | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 15000 |
+| wait_for_text_present_ok | Wikipedia | 15000 |
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 
 | *Comment* | Re-open for Selenium to be able to "see" the save confirmation dialog |  |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
 
 | *Comment* | Test Case: Widgets in Profile change widget preferences |  |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | `xpath=(//a[@class='settings'])[2]` | 5000 |
+| wait_for_element_visible_ok | `xpath=(//a[@class='settings'])[2]` | 15000 |
 | click_ok | `xpath=(//a[@class='settings'])[2]` |  |
-| wait_for_text_present_ok | Language: | 5000 |
-| wait_for_element_visible_ok | //select[@name='lang'] | 5000 |
+| wait_for_text_present_ok | Language: | 15000 |
+| wait_for_element_visible_ok | //select[@name='lang'] | 15000 |
 | select_ok | //select[@name='lang'] | label=French |
 | is_selected_ok | //select[@name='lang'] | label=French |
-| wait_for_element_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 5000 |
+| wait_for_element_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 15000 |
 | click_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` |  |
-| wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 5000 |
+| wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 15000 |
 | wait_for_element_visible_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 
 | *Comment* | Test Case: Widgets in Profile verify changed preferences |  |
 | *Comment* | Must reopen profile to refresh widget IDs for Selenium |  |
 | open_ok | /st/profile |  |
 
 | *Comment* | Test Case: Widgets in Profile wait for iframe headers |  |
-| wait_for_text_present_ok | Wikipedia | 5000 |
-| wait_for_text_present_ok | Colleagues | 5000 |
+| wait_for_text_present_ok | Wikipedia | 15000 |
+| wait_for_text_present_ok | Colleagues | 15000 |
 | st-name-widget | 4 | wiki |
 | st-widget-title | wiki | Wikipedia |
 | st-select-widget-frame | wiki |  |
-| wait_for_text_present_ok | Wiki Search (French) | 5000 |
+| wait_for_text_present_ok | Wiki Search (French) | 15000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Widgets in Profile use X button to remove widget |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | `xpath=(//a[@class='close'])[2]` | 30000 |
 | click_ok | `xpath=(//a[@class='close'])[2]` |  |
-| wait_for_text_not_present_ok | Wikipedia | 5000 |
-| wait_for_element_visible_ok | st-save-layout | 5000 |
+| wait_for_text_not_present_ok | Wikipedia | 15000 |
+| wait_for_element_visible_ok | st-save-layout | 15000 |
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | text_unlike | //body | Wikipedia |
 | st-widget-title | none | Colleagues |
 
 | *Comment* | Test Case: Widgets in Profile add widget back |  |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
-| wait_for_element_visible_ok | st-add-widget | 5000 |
+| wait_for_element_visible_ok | st-add-widget | 15000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
-| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 5000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 15000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-edit-profile | 10000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 
 | *Comment* | Re-open for Selenium to be able to "see" the save confirmation dialog again |  |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
-| wait_for_text_present_ok | Wikipedia | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
+| wait_for_text_present_ok | Wikipedia | 15000 |
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
 
@@ -136,49 +136,49 @@ TUXTODO: restore these tests when Revert To Default is restored
 
 | *Comment* | Test Case: Widgets in Profile start to revert to default, click no |  |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 | click_ok | st-revert-layout |  |
 | wait_for_text_present_ok | Are you sure you want to revert to the Socialtext defaults? | 30000 |
-| wait_for_element_visible_ok | dashboard-revert-yes | 5000 |
-| wait_for_element_visible_ok | dashboard-revert-no | 5000 |
+| wait_for_element_visible_ok | dashboard-revert-yes | 15000 |
+| wait_for_element_visible_ok | dashboard-revert-no | 15000 |
 | pause | 2000 |  |
 | click_ok | dashboard-revert-no |  |
-| wait_for_element_not_visible_ok | dashboard-revert-yes | 5000 |
-| wait_for_element_not_visible_ok | dashboard-revert-no | 5000 |
-| wait_for_text_present_ok | Wikipedia | 5000 |
+| wait_for_element_not_visible_ok | dashboard-revert-yes | 15000 |
+| wait_for_element_not_visible_ok | dashboard-revert-no | 15000 |
+| wait_for_text_present_ok | Wikipedia | 15000 |
 | click_ok | st-save-layout |  |
 | wait_for_element_present_ok | save-layout-save | 10000 |
 | click_ok | save-layout-save |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 
 | *Comment* | Test Case: Widgets in Profile revert to default |  |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | st-edit-profile | 5000 |
-| wait_for_element_visible_ok | st-edit-layout | 5000 |
+| wait_for_element_visible_ok | st-edit-profile | 15000 |
+| wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 | click_ok | st-revert-layout |  |
 | wait_for_text_present_ok | Are you sure you want to revert to the Socialtext defaults? | 30000 |
-| wait_for_element_visible_ok | dashboard-revert-yes | 5000 |
-| wait_for_element_visible_ok | dashboard-revert-no | 5000 |
+| wait_for_element_visible_ok | dashboard-revert-yes | 15000 |
+| wait_for_element_visible_ok | dashboard-revert-no | 15000 |
 | pause | 2000 |  |
 | click_ok | dashboard-revert-yes |  |
-| wait_for_element_not_visible_ok | dashboard-revert-yes | 5000 |
-| wait_for_element_not_visible_ok | dashboard-revert-no | 5000 |
-| wait_for_text_not_present_ok | Wikipedia | 5000 |
+| wait_for_element_not_visible_ok | dashboard-revert-yes | 15000 |
+| wait_for_element_not_visible_ok | dashboard-revert-no | 15000 |
+| wait_for_text_not_present_ok | Wikipedia | 15000 |
 | click_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
 | wait_for_element_present_ok | save-layout-save | 10000 |
 | click_ok | save-layout-save |  |
-| wait_for_text_not_present_ok | Wikipedia | 5000 |
-| wait_for_text_present_ok | Tags | 5000 |
-| wait_for_text_present_ok | Activities | 5000 |
+| wait_for_text_not_present_ok | Wikipedia | 15000 |
+| wait_for_text_present_ok | Tags | 15000 |
+| wait_for_text_present_ok | Activities | 15000 |
 | st-widget-title | none | Tags |
 | st-widget-title | none | Colleagues |

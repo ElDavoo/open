@@ -38,9 +38,9 @@
 | wait_for_element_present_ok | link=Mobile | 30000 |
 | click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| wait_for_element_visible_ok | link=Activity | 5000 |
-| wait_for_element_visible_ok | link=People | 5000 |
-| wait_for_element_visible_ok | link=Log out | 5000 |
+| wait_for_element_visible_ok | link=Activity | 15000 |
+| wait_for_element_visible_ok | link=People | 15000 |
+| wait_for_element_visible_ok | link=Log out | 15000 |
 
 | st_check_emergent_signal_wikiwyg_mobile |  |  |
 
@@ -58,10 +58,10 @@
 
 | *Comment* | Test case: Miki Send Signals |  |
 | st_prepare_signal_within_activities_widget | %%signal1%% |  |
-| wait_for_element_visible_ok | %%miki_signal_submit%% | 5000 |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 15000 |
 | click_and_pause | %%miki_signal_submit%% | 10000 |
-| wait_for_text_present_ok | less than a minute ago | 5000 |
-| wait_for_text_present_ok | %%signal1%% | 5000 |
+| wait_for_text_present_ok | less than a minute ago | 15000 |
+| wait_for_text_present_ok | %%signal1%% | 15000 |
 | text_like | //body | qr/%%signal1%%.+By.+minute.+to.+%%mikiacct%%/ism |
 
 | *Comment* | Test case: Miki MULTI Signals |  |
@@ -70,20 +70,20 @@
 
 | *Comment* | Test case: Miki Send one Signal |  |  |
 | st_prepare_signal_within_activities_widget | %%multisignal%% |  |  |
-| wait_for_element_visible_ok | %%miki_signal_submit%% | 5000 |  |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 15000 |  |
 | click_and_pause | %%miki_signal_submit%% | 10000 |  |
 
 | *Comment* | Test Case: Miki See signal under "all my groups" |  |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 5000 |  |
+| wait_for_element_visible_ok | //a[@class='expander'] | 15000 |  |
 | click_ok | //a[@class='expander'] |  |  |
-| wait_for_element_visible_ok | network-all | 5000 |  |
+| wait_for_element_visible_ok | network-all | 15000 |  |
 | click_ok | network-all |  |  |
-| wait_for_text_present_ok | less than a minute ago | 5000 |  |
-| wait_for_text_present_ok | %%multisignal%% | 5000 |  |
+| wait_for_text_present_ok | less than a minute ago | 15000 |  |
+| wait_for_text_present_ok | %%multisignal%% | 15000 |  |
 | text_like | //body | qr/%%multisignal%%.+By.+minute.+to.+%%othermikiacct%%/ism |  |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
-| wait_for_element_visible_ok | link=Log out | 5000 |
+| wait_for_element_visible_ok | link=Log out | 15000 |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
@@ -91,9 +91,9 @@
 | wait_for_element_present_ok | link=Mobile | 30000 |
 | click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| wait_for_element_visible_ok | link=Activity | 5000 |
-| wait_for_element_visible_ok | link=Log out | 5000 |
-| wait_for_element_visible_ok | link=People | 5000 |
+| wait_for_element_visible_ok | link=Activity | 15000 |
+| wait_for_element_visible_ok | link=Log out | 15000 |
+| wait_for_element_visible_ok | link=People | 15000 |
 | text_like | //body | Signals |
 
 | *Comment* | Test case: Miki As 'main' user, see old signals |  |
@@ -104,7 +104,7 @@
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | type_ok | st-search-text | %%othershortuser%% |
-| wait_for_element_visible_ok | st-search-submit | 5000 |
+| wait_for_element_visible_ok | st-search-submit | 15000 |
 | click_and_wait | st-search-submit |  |
 
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |

@@ -4,7 +4,7 @@
 
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=Delete%20Spreadsheet%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
-| pause | 5000 |  |
+| pause | 15000 |  |
 | st-page-save |  |  |
 
 | *Comment* | Calc Tools: Delete Page: Test functions |  |
@@ -21,7 +21,7 @@
 
 | open_ok | /%%workspace%%/Delete Spreadsheet %%start_time%% |  |
 | click_ok | link=Delete Page |  |
-| wait_for_element_visible_ok | st-delete-deletelink | 5000 |
+| wait_for_element_visible_ok | st-delete-deletelink | 15000 |
 | click_and_wait | st-delete-deletelink |  |
 
 | open_ok | /%%workspace%%/Delete Spreadsheet %%start_time%% |  |

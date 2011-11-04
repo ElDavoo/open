@@ -92,7 +92,7 @@
 | post-signal | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |  |
 | pause | 3000 |  |
 | post-signal | LessRelevant %%start_time%% |  |
-| pause | 5000 |  |
+| pause | 15000 |  |
 
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
 | st_process_jobs | SignalIndex |  |

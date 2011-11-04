@@ -30,7 +30,7 @@
 | wait_for_element_visible_ok | //a[@class='insert btn'] | 30000 |
 | wait_for_element_visible_ok | //a[@class='cancel btn'] | 30000 |
 | click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%tag_suffix%%')] |  |
-| wait_for_element_not_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
+| wait_for_element_not_visible_ok | //input[@class='lookahead-prompt'] | 15000 |
 
 | *Comment* | Test Case: Signals Tag setSpeed zero |  |
 | set_Speed | 0 |  |

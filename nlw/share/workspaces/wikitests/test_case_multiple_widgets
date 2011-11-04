@@ -17,13 +17,13 @@
 | type_ok | title | Chairman |
 | wait_for_element_visible_ok | st-savebutton-%%image_widget%% | 30000 |
 | click_ok | st-savebutton-%%image_widget%% |  |
-| wait_for_element_not_visible_ok | title | 5000 |
+| wait_for_element_not_visible_ok | title | 15000 |
 
 | *Comment* | Test Case: Multiple Widgets Add Wiki Page Widget |  |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Wiki Page | 30000 |
-| click_and_pause | gallery-widget-Wiki Page | 5000 |
+| click_and_pause | gallery-widget-Wiki Page | 15000 |
 | open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Multiple Widgets Image is now 2nd widget, right? |  |
@@ -34,7 +34,7 @@
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Workspaces')] | 30000 |
-| click_and_pause | //a[contains(@id,'gallery-widget-Workspaces')] | 5000 |
+| click_and_pause | //a[contains(@id,'gallery-widget-Workspaces')] | 15000 |
 | open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Multiple Widgets Wiki Page is now 2nd Widget, Images are 3rd, right? |  |
@@ -51,15 +51,15 @@
 | wait_for_element_not_visible_ok | //input[contains(@name,'page_title')] | 30000 |
 
 | st-select-widget-frame | wiki_page |  |
-| wait_for_element_present_ok | link=Edit | 5000 |
-| wait_for_element_present_ok | link=View | 5000 |
-| wait_for_text_present_ok | Beware the Jabberwock, my son! | 5000 |
+| wait_for_element_present_ok | link=Edit | 15000 |
+| wait_for_element_present_ok | link=View | 15000 |
+| wait_for_text_present_ok | Beware the Jabberwock, my son! | 15000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Multiple Widgets Add Workspace Tags, everything shifts by 1 |  |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-Workspace Tags | 30000 |
-| click_and_pause | gallery-widget-Workspace Tags | 5000 |
+| click_and_pause | gallery-widget-Workspace Tags | 15000 |
 | open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Multiple Widgets Image widget again |  |
@@ -69,9 +69,9 @@
 | *Comment* | Test Case: Multiple Widgets wiki page widget again |  |
 | st-name_widget | 3 | wiki_page |
 | st-select-widget-frame | wiki_page |  |
-| wait_for_element_present_ok | link=Edit | 5000 |
-| wait_for_element_present_ok | link=View | 5000 |
-| wait_for_text_present_ok | Beware the Jabberwock, my son! | 5000 |
+| wait_for_element_present_ok | link=Edit | 15000 |
+| wait_for_element_present_ok | link=View | 15000 |
+| wait_for_text_present_ok | Beware the Jabberwock, my son! | 15000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Multiple Widgets workspaces widget again |  |
@@ -98,7 +98,7 @@
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
 | wait_for_element_visible_ok | gallery-widget-RSS Viewer | 30000 |
-| click_and_pause | gallery-widget-RSS Viewer | 5000 |
+| click_and_pause | gallery-widget-RSS Viewer | 15000 |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Test Case: Multiple Widgets TEARDOWN |  |

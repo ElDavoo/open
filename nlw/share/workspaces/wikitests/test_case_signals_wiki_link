@@ -28,14 +28,14 @@
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Wiki Link. Click Insert Wiki Link |  |
-| wait_for_element_visible_ok | //a[contains(@class,'insertLink')] | 5000 |
+| wait_for_element_visible_ok | //a[contains(@class,'insertLink')] | 15000 |
 | click_ok | //a[contains(@class,'insertLink')] |  |
 
 | *Comment* | Test Case: Signals Wiki Link. Verify visible elements |  |
 | wait_for_element_visible_ok | add-a-link-form | 30000 |
-| wait_for_element_visible_ok | wiki-link-label | 5000 |
-| wait_for_element_visible_ok | wiki-link-workspace | 5000 |
-| wait_for_element_visible_ok | activities-add-link-ok | 5000 |
+| wait_for_element_visible_ok | wiki-link-label | 15000 |
+| wait_for_element_visible_ok | wiki-link-workspace | 15000 |
+| wait_for_element_visible_ok | activities-add-link-ok | 15000 |
 | text_like | Required fields are indicated by an * |  |
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed 3000 to allow for type-in |  |
@@ -48,10 +48,10 @@
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed zero, click OK |  |
 | click_ok | activities-add-link-ok |  |
-| pause_ok | 5000 |  |
+| pause_ok | 15000 |  |
 
 | *Comment* | Test Case: Signals Wiki Link post signal the hard way |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | pause | 3000 |  |
 | click_ok | //a[@role='button'] |  |
 | wait_for_element_visible_ok | link=%%link_text%% | 30000 |

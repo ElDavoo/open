@@ -14,66 +14,66 @@
 
 | *Comment* | Test Case: Widgets in Pages test widget icon, lightbox |  |
 | wait_for_element_present_ok | //a[contains(@class,"cke_button_st_widget")] | 30000 |
-| click_ok | //a[contains(@class,"cke_button_st_widget")] | 5000 |
-| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 5000 |
-| wait_for_text-present_ok | Socialtext widgets | 5000 |
-| wait_for_text-present_ok | Third Party widgets | 5000 |
+| click_ok | //a[contains(@class,"cke_button_st_widget")] | 15000 |
+| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| wait_for_text-present_ok | Socialtext widgets | 15000 |
+| wait_for_text-present_ok | Third Party widgets | 15000 |
 | text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
 | click_ok | //span[@class='ui-icon ui-icon-closethick'] |  |
-| wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 5000 |
+| wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 15000 |
 
 | *Comment* | Test Case: Widgets in Pages test widget link in Insert menu, lightbox |  |
 | select_frame_ok | //iframe |  |
 | click_ok | //body |  |
 | select_frame_ok | relative=parent |  |
 
-| wait_for_element_present_ok | link=Widget... | 5000 |
+| wait_for_element_present_ok | link=Widget... | 15000 |
 | click_ok | link=Widget... |  |
-| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 5000 |
-| wait_for_text-present_ok | Socialtext widgets | 5000 |
-| wait_for_text-present_ok | Third Party widgets | 5000 |
+| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| wait_for_text-present_ok | Socialtext widgets | 15000 |
+| wait_for_text-present_ok | Third Party widgets | 15000 |
 
 | *Comment* | Test Case: Widgets in Pages add Active Content Widget |  |
 | text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
 | text_like | qr/Active Content/ |  |
-| pause | 5000 | wait for JS to load |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Content'] | 5000 |
+| pause | 15000 | wait for JS to load |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Content'] | 15000 |
 | click_ok | //a[@id='gallery-widget-Active Content'] |  |
-| wait_for_text_present_ok | Edit Widget | 5000 |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 5000 |
-| wait_for_element_visible_ok | //input[@value='Preview'] | 5000 |
+| wait_for_text_present_ok | Edit Widget | 15000 |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 15000 |
+| wait_for_element_visible_ok | //input[@value='Preview'] | 15000 |
 | click_ok | //input[@value='Preview'] |  |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 5000 |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 5000 |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 15000 |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 15000 |
 | click_ok | st-widget-opensocial-setup-save |  |
 | wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 30000 |
-| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 5000 |
-| click_and_pause | //a[contains(@class,"cke_button_wikitext")] | 5000 |
+| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 15000 |
+| click_and_pause | //a[contains(@class,"cke_button_wikitext")] | 15000 |
 | verifyValue | //textarea[@class="cke_source cke_enable_context_menu"] | `{widget: top_content __title__=Active%20Content __width__=600` |
 
 | *Comment* | Test Case: Widgets in Pages add 2nd widget, see sequential number |  |
-| click_and_pause | //a[contains(@class,"cke_button_wysiwyg")] | 5000 |
+| click_and_pause | //a[contains(@class,"cke_button_wysiwyg")] | 15000 |
 | select_frame_ok | //iframe |  |
 | click_ok | //body |  |
 | select_frame_ok | relative=parent |  |
 
 | click_ok | link=Widget... |  |
-| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 5000 |
-| wait_for_text-present_ok | Socialtext widgets | 5000 |
-| wait_for_text-present_ok | Third Party widgets | 5000 |
-| pause | 5000 | wait for JS to load |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Content'] | 5000 |
+| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| wait_for_text-present_ok | Socialtext widgets | 15000 |
+| wait_for_text-present_ok | Third Party widgets | 15000 |
+| pause | 15000 | wait for JS to load |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Content'] | 15000 |
 | click_ok | //a[@id='gallery-widget-Active Content'] |  |
-| wait_for_text_present_ok | Edit Widget | 5000 |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 5000 |
-| wait_for_element_visible_ok | //input[@value='Preview'] | 5000 |
+| wait_for_text_present_ok | Edit Widget | 15000 |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 15000 |
+| wait_for_element_visible_ok | //input[@value='Preview'] | 15000 |
 | click_ok | //input[@value='Preview'] |  |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 5000 |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 5000 |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 15000 |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 15000 |
 | click_ok | st-widget-opensocial-setup-save |  |
 | wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 30000 |
-| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 5000 |
-| click_and_pause | //a[contains(@class,"cke_button_wikitext")] | 5000 |
+| wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 15000 |
+| click_and_pause | //a[contains(@class,"cke_button_wikitext")] | 15000 |
 
 TUXTODO: restore this test when adding multiple widgets is fixed in CKEditor
 

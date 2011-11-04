@@ -18,16 +18,16 @@
 | *Comment* | Test Case: Widget Editor Dashboard navigate to editor for new widget |  |
 | wait_for_element_visible_ok | st-gallery-add-widget | 10000 |
 | click_ok | st-gallery-add-widget |  |
-| wait_for_element_visible_ok | method-editor | 5000 |
+| wait_for_element_visible_ok | method-editor | 15000 |
 | click_ok | method-editor |  |
 | click_ok | st-add-widget |  |
 
 | *Comment* | Test Case: Widget Editor Dashboard check elements |  |
-| wait_for_text_present_ok | Hello World! | 5000 |
+| wait_for_text_present_ok | Hello World! | 15000 |
 | st-name-widget | 2 | preview |
 | st-widget-title | preview | Hello World! |
 | st-select-widget-frame | preview |  |
-| wait_for_text_present_ok | Hello, world! | 5000 |
+| wait_for_text_present_ok | Hello, world! | 15000 |
 | select-frame | relative=parent |  |
 
 | include | [Test Case: Widget Editor Edit] |  |

@@ -4,7 +4,7 @@
 
 | *Comment* | Test Case: Weblog Archive and Navigation |
 
-| wait_for_element_visible_ok | st-jump-to | 5000 |
+| wait_for_element_visible_ok | st-jump-to | 15000 |
 | select_and_wait | st-jump-to | label=Blogs |
 | wait_for_element_visible_ok | page-control-category-selector | 30000 |
 | select_ok | page-control-category-selector | label=Recent Changes |

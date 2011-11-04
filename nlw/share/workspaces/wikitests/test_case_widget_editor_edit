@@ -9,7 +9,7 @@ IE can't select the iframe and type into it
 | select-frame | `xpath=(//iframe)[1]` |  |
 | click_ok | //body |  |
 | type_ok | //body | `mal\nadicta` |
-| pause | 5000 | for buttons to activate |
+| pause | 15000 | for buttons to activate |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Widget Editor Edit click preview |  |

@@ -29,7 +29,7 @@
 | verifyValue | //input[@name='video_title'] | qr/%%vimeo_title%%/ |
 | click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | click_ok | //a[@role='button'] |  |
 | wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%vimeo_title%% | 30000 |
@@ -45,7 +45,7 @@
 | verifyValue | //input[@name='video_title'] | qr/%%youtube_title%%/ |
 | click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | click_ok | //a[@role='button'] |  |
 | wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%youtube_title%% | 30000 |
@@ -61,7 +61,7 @@
 | verifyValue | //input[@name='video_title'] | qr/%%slide_title%%/ |
 | click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | click_ok | //a[@role='button'] |  |
 | wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%slide_title%% | 30000 |
@@ -77,7 +77,7 @@
 | verifyValue | //input[@name='video_title'] | qr/%%google_title%%/ |
 | click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | click_ok | //a[@role='button'] |  |
 | wait_for_text_present_ok | By you | 30000 |
 | wait_for_text_present_ok | %%google_title%% | 30000 |
@@ -134,7 +134,7 @@
 | wait_for_element_visible_ok | activities-add-video-ok | 30000 |
 | click_ok | activities-add-video-ok |  |
 | pause | 3000 |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 5000 |
+| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
 | click_ok | //a[@role='button'] |  |
 | wait_for_text_present_ok | By you | 30000 |
 | open_ok | /st/signals |  |

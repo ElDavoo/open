@@ -34,7 +34,7 @@
 | select_and_wait | st-jump-to | label=What's New |
 | wait_for_element_visible_ok | link=%%fname%% %%mname%% %%lname%% | 10000 |
 | MouseOver | link=%%fname%% %%mname%% %%lname%% |  |
-| wait_for_text_present_ok | 555-work-%%short_e_user%% | 5000 |
+| wait_for_text_present_ok | 555-work-%%short_e_user%% | 15000 |
 | text_like | qr/%%fname%%.+%%lname%%.+%%es_user%%.+Work.+555-work-%%short_e_user%%.+AIM.+%%short_e_user%%.+Sametime/ism |  |
 
 | *Comment* | Test Case: Verify Avatar Popup. Follow from pop up |  |

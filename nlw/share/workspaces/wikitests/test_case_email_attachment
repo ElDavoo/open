@@ -30,23 +30,23 @@
 | *Comment* | Test Case: Email attachment test recipient lookahead, add receipients |  |  |
 | wait_for_element_visible_ok | email_recipient | 30000 |  |
 | type_ok | email_recipient | %%workspace%%@%%wikiemail%% |  |
-| wait_for_element_visible_ok | email_add | 5000 |  |
+| wait_for_element_visible_ok | email_add | 15000 |  |
 | click_ok | email_add |  |  |
 | text_like | email_page_user_choices | %%workspace%%@%%wikiemail%% |  |
 
 | *Comment* | Test Case: Email attachment Email Note, Attachments, and Subject |  |
 | text_like | email_page_add_note | Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at: |
 | text_like | email_page_add_note | /%%workspace%%/%%emid%% |
-| wait_for_element_visible_ok | email_page_add_note | 5000 |
+| wait_for_element_visible_ok | email_page_add_note | 15000 |
 | type_ok | email_page_add_note | Added Note %%start_time%% from Test Case: Email Attachment |
-| wait_for_element_visible_ok | //input[@name='email_page_subject'] | 5000 |
+| wait_for_element_visible_ok | //input[@name='email_page_subject'] | 15000 |
 | type_ok | //input[@name='email_page_subject'] | emailed page %%start_time%% |
-| wait_for_element_visible_ok | email_page_keep_attachments | 5000 |
+| wait_for_element_visible_ok | email_page_keep_attachments | 15000 |
 | check_ok | email_page_keep_attachments |  |
 | is_checked_ok | email_page_keep_attachments |  |
 
 | *Comment* | Test Case: Email attachment email sending page to %%workspace%%@%%wikiemail%% |  |
-| wait_for_element_visible_ok | email_send | 5000 |
+| wait_for_element_visible_ok | email_send | 15000 |
 | click_ok | email_send |  |
 
 | *Comment* | Pausing 10 seconds for email delivery, then index page |  |
@@ -57,8 +57,8 @@
 | open_ok | /%%workspace%%/emailed page %%start_time%% |  |
 | text_like | st-page-titletext | emailed page %%start_time%% |
 | text_like | content | Added Note %%start_time%% from Test Case: Email Attachment |
-| wait_for_element_visible_ok | link=%%zip%% | 5000 |
-| wait_for_element_visible_ok | link=%%doc%% | 5000 |
+| wait_for_element_visible_ok | link=%%zip%% | 15000 |
+| wait_for_element_visible_ok | link=%%doc%% | 15000 |
 | type_ok | st-search-term | "Added Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |
 | text_like | content | qr/emailed\s*page\s*%%start_time%%\s*in\s*%%title%%/ |
@@ -76,8 +76,8 @@
 | *Comment* | Test Case: Email attachment Process jobs |  |
 | st-process-jobs |  |  |
 
-| wait_for_element_visible_ok | st-search-term | 5000 |
-| wait_for_element_visible_ok | st-search-submit | 5000 |
+| wait_for_element_visible_ok | st-search-term | 15000 |
+| wait_for_element_visible_ok | st-search-submit | 15000 |
 | type_ok | st-search-term | %%zip%% |
 | click_and_wait | st-search-submit |  |
 | wait_for_text_present_ok | Pages matching '%%zip%%' | 30000 |

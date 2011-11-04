@@ -50,7 +50,7 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | wait_for_element_visible_ok | cke_118_uiElement | 30000 |
 | check_ok | cke_118_uiElement |  |
 | is_checked_ok | cke_118_uiElement |  |
-| wait_for_element_visible_ok | cke_154_uiElement | 5000 |
+| wait_for_element_visible_ok | cke_154_uiElement | 15000 |
 | st_pause_click | 3000 | cke_154_uiElement |
 | wait_for_element_not_present_ok | //div[@class='cke_dialog_body'] | 30000 |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
@@ -80,7 +80,7 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | wait_for_element_visible_ok | sort | 30000 |
 | uncheck_ok | sort |  |
 | st_unchecked_ok | sort |  |
-| wait_for_element_visible_ok | table-info-save | 5000 |
+| wait_for_element_visible_ok | table-info-save | 15000 |
 | st_pause_click | 3000 | table-info-save |
 | wait_for_element_not_visible_ok | st-table-settings | 30000 |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
@@ -108,7 +108,7 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | wait_for_element_visible_ok | border | 30000 |
 | check_ok | border |  |
 | is_checked_ok | border |  |
-| wait_for_element_visible_ok | table-info-save | 5000 |
+| wait_for_element_visible_ok | table-info-save | 15000 |
 | st_pause_click | 3000 | table-info-save |
 | wait_for_element_not_visible_ok | st-table-settings | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -136,7 +136,7 @@ Don't even THINK about removing the extra wait_for and text_present "Additional 
 | wait_for_element_visible_ok | border | 30000 |
 | check_ok | border |  |
 | is_checked_ok | border |  |
-| wait_for_element_visible_ok | table-info-save | 5000 |
+| wait_for_element_visible_ok | table-info-save | 15000 |
 | st_pause_click | 3000 | table-info-save |
 | wait_for_element_not_visible_ok | st-table-settings | 30000 |
 | click_ok | link=Wiki Text |  |
