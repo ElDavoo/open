@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-09-15 13:08+0800\n"
+"PO-Revision-Date: 2011-11-04 23:35+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3624,7 +3624,7 @@ msgid "theme.header_color"
 msgstr "页眉颜色"
 
 msgid "theme.header_font"
-msgstr "页眉字体"
+msgstr "标题字体"
 
 msgid "theme.header_image"
 msgstr "页眉图像"

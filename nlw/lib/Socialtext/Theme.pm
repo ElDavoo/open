@@ -23,12 +23,23 @@ Enum Shade => qw( light dark );
 Enum Tiling => qw( repeat no-repeat repeat-x repeat-y );
 Enum Position => map { ("$_ top", "$_ center", "$_ bottom") } qw( left center right );
 
-my @COLUMNS = qw( theme_id name header_color header_image_id
-    header_image_tiling header_image_position header_link_color
-    background_color background_image_id background_image_tiling
-    background_image_position background_link_color primary_color
-    secondary_color tertiary_color header_font body_font is_default
-    foreground_shade logo_image_id favicon_image_id
+my @COLUMNS = qw(
+    theme_id name is_default
+
+    logo_image_id
+
+    header_color header_link_color
+    header_image_id header_image_tiling header_image_position
+
+    foreground_shade
+    primary_color secondary_color tertiary_color
+
+    header_font body_font
+
+    background_color background_link_color
+    background_image_id background_image_tiling background_image_position
+
+    favicon_image_id
 );
 
 sub COLUMNS { @COLUMNS }
