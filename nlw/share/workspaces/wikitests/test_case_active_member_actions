@@ -15,6 +15,7 @@
 | type_ok | comment | this is a comment, which is a contribution |
 | wait_for_element_visible_ok | link=Save | 15000 |
 | st_click_pause | link=Save | 15000 |
+| wait_for_text_present_ok | contributed by | 30000 |
 
 | open_ok | /%%am_ws_1%%/index.cgi?%%createme_page1%% |  |
 | wait_for_element_visible_ok | link=Comment | 15000 |
@@ -23,6 +24,7 @@
 | type_ok | comment | this is a comment, which is a contribution |
 | wait_for_element_visible_ok | link=Save | 15000 |
 | st_click_pause | link=Save | 15000 |
+| wait_for_text_present_ok | contributed by | 30000 |
 
 | *Comment* | Test Case: Active Members Actions - A couple Edits in workspace 2 for %%logged_in_user%% |  |
 | open_ok | /%%am_ws_2%%/ |  |
@@ -32,14 +34,16 @@
 | type_ok | comment | this is a comment, which is a contribution |
 | wait_for_element_visible_ok | link=Save | 15000 |
 | st_click_pause | link=Save | 15000 |
+| wait_for_text_present_ok | contributed by | 30000 |
 
-| open_ok | /%%am_ws_2%%/index.cgi?%%createme_page1%% |  |
+| open_ok | /%%am_ws_2%%/index.cgi?%%createme_page2%% |  |
 | wait_for_element_visible_ok | link=Comment | 15000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | //textarea[@name="comment"] | 15000 |
 | type_ok | comment | this is a comment, which is a contribution |
 | wait_for_element_visible_ok | link=Save | 15000 |
 | st_click_pause | link=Save | 15000 |
+| wait_for_text_present_ok | contributed by | 30000 |
 
 | *Comment* | Test Case: Active Members Actions - Page View for %%logged_in_user%% |  |
 | open_ok | /%%am_ws_1%%/ |  |

@@ -32,19 +32,15 @@
 | set | empty_acct | %%am_acct_one%% |
 | set | empty_user | %%view_edit_email%% |
 
-| *Comment* | Test Case: Active Members - %%view_edit_email%% Creates a page in %%am_ws_1%% |  |
-| st-logoutin | %%view_edit_email%% | %%password%% |
+| *Comment* | Test Case: Active Members - %%view_edit_email%% Creates a page in %%am_ws_1%% |  |  |  |
+| st-logoutin | %%view_edit_email%% | %%password%% |  |  |
 
+| call | st-edit-new-page | ws=%%am_ws_1%% | title=%%createme_page1%% | content=%%createme_page1%% Content |
 
+| *Comment* | Test Case: Active Members - %%view_edit_email%% creates a page in %%am_ws_2%% |  |  |  |
+| open_ok | /%%am_ws_2%%/ |  |  |  |
 
-| call | st-edit-new-page | ws=%%am_ws_1%% | title=%%createme_page1%% Content | content=%%createme_page1%% |
-
-
-| *Comment* | Test Case: Active Members - %%view_edit_email%% creates a page in %%am_ws_2%% |  |
-| open_ok | /%%am_ws_2%%/ |  |
-
-| call | st-edit-new-page | ws=%%am_ws_2%% | title=%%createme_page2%% Content | content=%%createme_page2%% |
-
+| call | st-edit-new-page | ws=%%am_ws_2%% | title=%%createme_page2%% | content=%%createme_page2%% Content |
 
 | *Comment* | Test Case: Active Members - Other users view profiles, view/edit pages, and send signals |  |
 | st-logoutin | %%members_email_1%% | %%password%% |

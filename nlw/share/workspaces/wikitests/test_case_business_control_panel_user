@@ -1,5 +1,4 @@
-
-*Not converting to TUX until confirmation messages are restored or confirmed deliberately deleted*
+*On tuxhold until "Password is reset to *" message is restored. Otherwise, there's no way to know what the new password is*
 
 | *Comment* | Test case: Business Control Panel USER |  |
 | set | new_acct | acct-usertest-%%start_time%% |
@@ -8,13 +7,9 @@
 | set | cli_user_escaped | cliusertest%%start_time%%\@ken.socialtext.net |
 | set | short_cli_user | cliusertest%%start_time%% |
 
-
-
-
 | st-admin | create-account --name '%%new_acct%%' | was created |
 | st-admin | create-workspace --empty --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' | was created |
 | st-admin | give-accounts-admin --u %%username%% | now has |
-
 
 | *Comment* | Test case: Business Control Panel create a user, add as admin, verify admin |  |
 | open_ok | /nlw/control/user |  |
@@ -52,7 +47,7 @@
 | click_and_wait | //input[contains(@id,'add_user')] |  |
 | wait_for_text_present_ok | firstname lastname <foo%%start_time%%@bar.com> | 30000 |
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
-| click_and_wait | link=%%new_acct%% |
+| click_and_wait | link=%%new_acct%% |  |
 | wait_for_element_visible_ok | link=firstname lastname <foo%%start_time%%@bar.com> |  |
 
 | *Comment* | Test case: Business Control Panel User reassign accounts for users and workspaces |  |
@@ -81,18 +76,12 @@
 | text_like | qr/Appliance Business Administrator\?\s*no/ism |  |
 | text_like | qr/Appliance Technical Administrator\?\s*no/ism |  |
 | click_and_Wait | //input[@value='Assign Appliance Business Administrator Role'] |  |
-| text_like | Assigned the Appliance Business Administrator role to %%cli_user%% |  |
 | text_like | qr/Appliance Business Administrator\?\s*yes/ism |  |
 | click_and_wait | //input[@value='Remove Appliance Business Administrator Role'] |  |
-| text_like | Removed the Appliance Business Administrator role from %%cli_user%% |  |
 | text_like | qr/Appliance Business Administrator\?\s*no/ism |  |
 | click_and_wait | //input[@value='Assign Appliance Technical Administrator Role'] |  |
-| text_like | Assigned the Appliance Technical Administrator role to
-
-%%cli_user%% |  |
 | text_like | qr/Appliance Technical Administrator\?\s*yes/ism |  |
 | click_and_wait | //input[@value='Remove Appliance Technical Administrator Role'] |  |
-| text_like | Removed the Appliance Technical Administrator role from %%cli_user%% |  |
 | text_like | qr/Appliance Technical Administrator\?\s*no/ism |  |
 
 | *Comment* | Test case: Business Control Panel User Search |  |
@@ -109,9 +98,8 @@
 | click_and_wait | //input[@value='Reset password'] |  |
 | text_like | //body | qr/The password for user %%cli_user_escaped%% has been changed to \'.*'/ |
 | st_match_text | has been changed to \'(.*)\' | new_password |
-| open_ok | /st/dashboard |
+| open_ok | /st/dashboard |  |
 | st-logoutin | %%cli_user%% | %%new_password%% |
-
 
 TODO: remove user from Workspace and remove user from Account
 
