@@ -2,9 +2,9 @@
 <div class="metadata">
     [% IF event.event_class == 'signal' && event.action == 'signal' %]
         [% IF this.viewer_id == event.actor.id %]
-            <span class="source">[% loc('By you') %]</span>
+            <span class="source">[% loc('activities.by-you') %]</span>
         [% ELSE %]
-            [% loc('By [_1]', actor) %]
+            [% loc('activities.by=user', actor) %]
         [% END %]
     [% ELSE %]
         [% IF this.viewer_id == event.actor.id %]

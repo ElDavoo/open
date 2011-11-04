@@ -2,15 +2,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-11-04 21:30+0800\n"
+"PO-Revision-Date: 2011-11-04 21:40+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-msgid "activities.add-to-conversation"
-msgstr "添加留言"
 
 #: share/template/data/event:10
 msgid "ago.1day"
@@ -155,9 +152,6 @@ msgstr "Socialtext 酷炫桌面"
 
 msgid "desktop.thank-you"
 msgstr "感谢！ :-)"
-
-msgid "do.insert-link"
-msgstr "插入链接"
 
 #. (inviting_user, group_name)
 #: share/template/email/st/group-invitation.txt:22
@@ -817,15 +811,6 @@ msgstr "你好"
 msgid "example.help"
 msgstr "帮助"
 
-msgid "filter.activity-type"
-msgstr "活动类型"
-
-msgid "filter.contributor"
-msgstr "贡献者"
-
-msgid "filter.group"
-msgstr "群组"
-
 msgid "heading.category"
 msgstr "类别"
 
@@ -850,17 +835,11 @@ msgstr "如果您尝试搜索一个不存在的字段（<tt>link:你好</tt>）�
 msgid "info.invite-users"
 msgstr "使用下面的字段搜索想要添加到该工作区的用户。然后点击“保存”进行添加。每个用户将会收到电子邮件通知。"
 
-msgid "info.private-signal-to-self"
-msgstr "您正在传送私人讯息给自己"
-
 msgid "info.reset-password-and-relogin"
 msgstr "新密码必须至少 6 个字符。設定之後，請使用您的电子邮件地址和新密码重新登录。"
 
 msgid "info.search-field-syntax"
 msgstr "您可以通过在查询中使用冒号分隔字段名称来搜索一个字段，像这样："
-
-msgid "info.signal-to-self"
-msgstr "您正在传送讯息给自己"
 
 msgid "info.skipped-import-files"
 msgstr "仅可从 ZIP/TGZ 文件中的 javascript/、css/ 和 images/ 路径导入文件。其他路径下的文件将不被导入。"
@@ -1150,9 +1129,6 @@ msgstr "您已成功登出 Socialtext。"
 msgid "nav.enterprise-social-software"
 msgstr "企业社会化软件"
 
-msgid "nav.go"
-msgstr "发送"
-
 msgid "nav.jump-to=menu"
 msgstr "转到：%1"
 
@@ -1216,9 +1192,6 @@ msgstr "RSS"
 
 msgid "settings.user-settings"
 msgstr "用户设定"
-
-msgid "signals.private"
-msgstr "私人讯息"
 
 msgid "time.at"
 msgstr "于"

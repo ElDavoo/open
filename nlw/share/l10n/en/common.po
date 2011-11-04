@@ -19,9 +19,55 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: share/javascript/template/activities/event.tt2:57
+msgid "activities.add-to-conversation"
+msgstr "Add to conversation"
+
+msgid "activities.by-you"
+msgstr "By you"
+
+msgid "activities.by=user"
+msgstr "By %1"
+
+#: share/javascript/template/activities/message_notice.tt2:28
+msgid "activities.new=count"
+msgstr "%*(%1,new activity,new activities)"
+
+#: share/javascript/template/activities/elements/toolbar.tt2:10
+msgid "do.insert-link"
+msgstr "Insert Link"
+
+#: share/javascript/template/activities/elements/filters.tt2:9
+msgid "filter.activity-type"
+msgstr "Activity Type"
+
+#: share/javascript/template/activities/elements/filters.tt2:15
+msgid "filter.contributor"
+msgstr "Contributor"
+
+#: share/javascript/template/activities/elements/filters.tt2:21
+msgid "filter.group"
+msgstr "Group"
+
+#: share/javascript/template/activities/message_notice.tt2:10
+msgid "info.private-signal-to-self"
+msgstr "You are composing a private message to yourself"
+
 #: share/javascript/activities/event_list.js:805
 msgid "activities.attachment"
 msgstr "Attachment"
+
+#: share/javascript/template/activities/message_notice.tt2:12
+msgid "info.signal-to-self"
+msgstr "You are composing a message to yourself"
+
+#: share/javascript/template/activities/blocks.tt2:99 share/javascript/template/activities/elements/signals.tt2:25 share/javascript/template/activities/event.tt2:66
+msgid "nav.go"
+msgstr "Go"
+
+#: share/javascript/template/activities/elements/toolbar.tt2:3
+msgid "signals.private"
+msgstr "Private"
 
 #: share/javascript/activities/appdata.js:488
 msgid "activities.showing=action,feed,group"

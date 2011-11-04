@@ -2,15 +2,48 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-29 16:43+0800\n"
+"PO-Revision-Date: 2011-11-04 21:43+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "activities.add-to-conversation"
+msgstr "添加留言"
+
+msgid "activities.by-you"
+msgstr "您"
+
+msgid "activities.by=user"
+msgstr "%1"
+
 msgid "activities.attachment"
 msgstr "附件"
+
+msgid "do.insert-link"
+msgstr "插入链接"
+
+msgid "nav.go"
+msgstr "发送"
+
+msgid "signals.private"
+msgstr "私人讯息"
+
+msgid "info.private-signal-to-self"
+msgstr "您正在传送私人讯息给自己"
+
+msgid "info.signal-to-self"
+msgstr "您正在传送讯息给自己"
+
+msgid "filter.activity-type"
+msgstr "活动类型"
+
+msgid "filter.contributor"
+msgstr "贡献者"
+
+msgid "filter.group"
+msgstr "群组"
 
 msgid "activities.showing=action,feed,group"
 msgstr "显示 %1 来自 %2 群组为 %3"
