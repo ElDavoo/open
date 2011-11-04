@@ -9,6 +9,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "activities.attachment"
+msgstr "附件"
+
+msgid "activities.showing=action,feed,group"
+msgstr "显示 %1 来自 %2 群组为 %3"
+
 msgid "api.about-wiki-name"
 msgstr "工作区名称必须包含 3-10 个小写字母、数字、下划线或破折号。"
 
@@ -78,5 +84,38 @@ msgstr "工作区名称不能以破折号开头"
 msgid "api.wiki-title-cannot-begin-with-dash"
 msgstr "工作区标题不能以破折号开头"
 
+msgid "do.add-attachment"
+msgstr "添加附件"
+
+msgid "do.add-video"
+msgstr "添加视频"
+
+msgid "error.file-too-large-50mb-max"
+msgstr "文件尺寸过大。最大允许50MB。"
+
+msgid "error.invalid-web-link"
+msgstr "无效的链接"
+
+msgid "error.parsing-result"
+msgstr "分析结果时出错"
+
+msgid "groups.leave-this?"
+msgstr "您确定想要退出该群组吗？"
+
+msgid "groups.pick-driver"
+msgstr "选择一个驱动器..."
+
+msgid "groups.saving"
+msgstr "正在保存"
+
+msgid "groups.saving-group"
+msgstr "正在保存群组..."
+
+msgid "nav.non-wiki-groups"
+msgstr "非工作区群组"
+
 msgid "nav.result"
 msgstr "结果"
+
+msgid "nav.wiki-groups"
+msgstr "工作区群组"
