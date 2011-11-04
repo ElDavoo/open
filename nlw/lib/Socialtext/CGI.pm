@@ -119,7 +119,8 @@ sub action {
         return 'display' if $last_match eq '/:ws/:pname';
     }
 
-    return $action || 'display';
+    return $action if $action;
+    return $self->hub->current_user->is_guest ? 'display' : 'homepage';
 }
 
 sub page_name {

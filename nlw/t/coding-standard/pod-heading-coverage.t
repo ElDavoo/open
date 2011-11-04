@@ -131,6 +131,7 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::Pluggable::Plugin::Groups
     Socialtext::Pluggable::Plugin::Test
     Socialtext::Pluggable::Plugin::Widgets
+    Socialtext::Pluggable::Plugin::Homepage
     Socialtext::Pluggable::WaflPhrase
     Socialtext::Pluggable::WaflPhraseDiv
     Socialtext::Plugin
