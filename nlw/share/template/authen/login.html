@@ -35,7 +35,7 @@
         <span class="description">
           <label for="remember">[% loc('login.remember-me') %]</label>
         </span>
-        <a id="remember-lightbox" href="#" onclick="$.showLightbox('Checking this box will keep you logged in for up to [% remember_duration %], or until you sign out.  Un-checking this box will cause you to be automatically logged out when you close your browser.')">[?]</a>
+        <a id="remember-lightbox" href="#" onclick="st.dialog.showResult({title: '[% loc('login.remember-me') %]', message: '[% loc('Checking this box will keep you logged in for up to [_1], or until you sign out. Un-checking this box will cause you to be automatically logged out when you close your browser.', remember_duration) %]'})">[?]</a>
       [% END %]
     </div>
 
