@@ -77,3 +77,6 @@ msgstr "工作区名称不能以破折号开头"
 
 msgid "api.wiki-title-cannot-begin-with-dash"
 msgstr "工作区标题不能以破折号开头"
+
+msgid "nav.result"
+msgstr "结果"

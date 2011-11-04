@@ -351,6 +351,9 @@ msgstr "给某人添加这个标签"
 msgid "people.add-tag-to-user=name:"
 msgstr "为用户添加标签\"%1\"："
 
+msgid "people.add=tag"
+msgstr "添加标签“%1”"
+
 #: share/plugin/people/share/people.js:31
 msgid "people.cancel-add-tag"
 msgstr "取消"
@@ -438,6 +441,9 @@ msgstr "停止关注"
 
 msgid "people.tag-name"
 msgstr "标签名称"
+
+msgid "people.to-person:"
+msgstr "給用戶："
 
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"

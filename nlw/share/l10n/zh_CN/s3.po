@@ -2362,6 +2362,12 @@ msgstr "公开的工作区"
 msgid "wiki.public:"
 msgstr "您可以自由查看或编辑这些公开工作区："
 
+msgid "wiki.search"
+msgstr "此工作区"
+
+msgid "wiki.search-all"
+msgstr "我的工作区"
+
 #: share/skin/s3/template/element/search_form:23
 msgid "wiki.search-all:"
 msgstr "搜索我的工作区："
