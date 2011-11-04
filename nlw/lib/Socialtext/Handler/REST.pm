@@ -477,9 +477,10 @@ sub makeHandlerFromClass {
     return sub { $class->new(@_)->$method(@_) };
 }
 
-# FIXME: This needs to come out before release, or at least be disabled by
-# default.
 sub defaultResourceHandler {
+    return "No File or Method found for your request."
+        unless $ENV{NLW_DEV_MODE};
+
     no warnings 'once';
     local $YAML::SortKeys = 0;
     local $YAML::UseCode = 1;
