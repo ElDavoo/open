@@ -26,6 +26,8 @@ AttachmentUpload.prototype = {
 
     addNewAttachment: function (file) {
         this._uploaded.push(file.name);
+        st.attachments.add_new_attachment(file);
+
         var doEmbed = Number($("#st-attachments-attach-embed").val());
         if (doEmbed && window.wikiwyg && wikiwyg.is_editing && wikiwyg.current_mode) {
             var type = file["content-type"].match(/image/) ? 'image' : 'file';
@@ -116,7 +118,7 @@ AttachmentUpload.prototype = {
                 // Replace Handler
                 $('.chooser .replace', $menu).unbind('click').click(function() {
                     if (Socialtext.new_page) {
-                        $(self.getNewAttachments()).each(function() {
+                        $(st.attachments.get_new_attachments()).each(function() {
                             if (this.name.toLowerCase() == filename.toLowerCase()) {
                                 this.deleted = true;
                             }

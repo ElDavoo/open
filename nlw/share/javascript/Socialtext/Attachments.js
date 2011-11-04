@@ -12,6 +12,9 @@ Socialtext.prototype.attachments = (function($) {
         get_new_attachments: function() {
             return _newAttachmentList;
         },
+        add_new_attachment: function(file) {
+            _newAttachmentList.push(file);
+        },
 
         renderAttachments: function() {
             var self = this;
