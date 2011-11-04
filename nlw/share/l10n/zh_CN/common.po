@@ -12,6 +12,9 @@ msgstr ""
 msgid "activities.add-to-conversation"
 msgstr "添加留言"
 
+msgid "activities.attachment"
+msgstr "附件"
+
 msgid "activities.by-you"
 msgstr "您"
 
@@ -20,33 +23,6 @@ msgstr "%1"
 
 msgid "activities.new=count"
 msgstr "%1 项新的活动"
-
-msgid "activities.attachment"
-msgstr "附件"
-
-msgid "do.insert-link"
-msgstr "插入链接"
-
-msgid "nav.go"
-msgstr "发送"
-
-msgid "signals.private"
-msgstr "私人讯息"
-
-msgid "info.private-signal-to-self"
-msgstr "您正在传送私人讯息给自己"
-
-msgid "info.signal-to-self"
-msgstr "您正在传送讯息给自己"
-
-msgid "filter.activity-type"
-msgstr "活动类型"
-
-msgid "filter.contributor"
-msgstr "贡献者"
-
-msgid "filter.group"
-msgstr "群组"
 
 msgid "activities.showing=action,feed,group"
 msgstr "显示 %1 来自 %2 群组为 %3"
@@ -126,6 +102,9 @@ msgstr "添加附件"
 msgid "do.add-video"
 msgstr "添加视频"
 
+msgid "do.insert-link"
+msgstr "插入链接"
+
 msgid "error.file-too-large-50mb-max"
 msgstr "文件尺寸过大。最大允许50MB。"
 
@@ -134,6 +113,18 @@ msgstr "无效的链接"
 
 msgid "error.parsing-result"
 msgstr "分析结果时出错"
+
+msgid "error.two-revisions-required-for-compare"
+msgstr "请选取两个版本以进行比较"
+
+msgid "filter.activity-type"
+msgstr "活动类型"
+
+msgid "filter.contributor"
+msgstr "贡献者"
+
+msgid "filter.group"
+msgstr "群组"
 
 msgid "groups.leave-this?"
 msgstr "您确定想要退出该群组吗？"
@@ -147,6 +138,18 @@ msgstr "正在保存"
 msgid "groups.saving-group"
 msgstr "正在保存群组..."
 
+msgid "info.private-signal-to-self"
+msgstr "您正在传送私人讯息给自己"
+
+msgid "info.signal-to-self"
+msgstr "您正在传送讯息给自己"
+
+msgid "lookahead.show-all-results"
+msgstr "显示所有结果"
+
+msgid "nav.go"
+msgstr "发送"
+
 msgid "nav.non-wiki-groups"
 msgstr "非工作区群组"
 
@@ -155,3 +158,6 @@ msgstr "结果"
 
 msgid "nav.wiki-groups"
 msgstr "工作区群组"
+
+msgid "signals.private"
+msgstr "私人讯息"

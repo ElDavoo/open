@@ -38,7 +38,7 @@ my %Sections = (
     ],
     reports => ['../socialtext-reports/template', '../socialtext-reports/lib'],
     common => [
-        'share/javascript/Socialtext.js',
+        glob('share/javascript/*.js'),
         'share/javascript/Socialtext',
         'share/javascript/dialogs',
         'share/javascript/activities',

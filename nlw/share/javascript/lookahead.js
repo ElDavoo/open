@@ -123,8 +123,8 @@
                             if (results.length >= opts.count) {
                                 if (opts.showAll) {
                                     results.push({
-                                        title: loc("Show All Results"),
-                                        label: loc('Show All Results'),
+                                        title: loc("lookahead.show-all-results"),
+                                        label: loc('lookahead.show-all-results'),
                                         noThumbnail: true,
                                         onAccept: function() {
                                             opts.showAll(request.term)

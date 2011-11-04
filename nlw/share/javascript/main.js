@@ -126,12 +126,12 @@ function check_revisions(form) {
     }
 
     if ((! r1) || (! r2)) {
-        alert(loc('You must select two revisions to compare.'));
+        alert(loc('error.two-revisions-required-for-compare'));
         return false;
     }
 
     if (r1 == r2) {
-        alert(loc('You cannot compare a revision to itself.'));
+        alert(loc('error.same-revision'));
         return false;
     }
 

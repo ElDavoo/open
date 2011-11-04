@@ -1,5 +1,5 @@
 <div class="wikilinkPopup" style="display:none;">
- <p>[% loc("First, start typing a Workspace name, then choose a Workspace from the list that appears. Next, start typing a Page name, then choose a Page from the list that appears. Optionally, add Link text and a Page Section.") %]</p>
+ <p>[% loc("activities.info-using-wikilink-popup") %]</p>
  <p class="input">
    <span>[% loc('activities.link-text:') %]</span>
    <input name="label" class="label" type="text" />
