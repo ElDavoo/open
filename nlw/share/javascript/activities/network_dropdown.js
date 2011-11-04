@@ -72,9 +72,9 @@ $.extend(Activities.NetworkDropdown.prototype, {
         var self = this;
 
         var sections = [
-            { title: loc('Workspace Groups'), networks: [] },
+            { title: loc('nav.wiki-groups'), networks: [] },
             {
-                title: loc('Non-Workspace Groups'),
+                title: loc('nav.non-wiki-groups'),
                 networks: []
             }
         ];

@@ -57,7 +57,7 @@
                 <span class="label">[% loc('control.ldap-driver:') %]</class>
                 <select class="ldap_option"
                         name="ldap_driver" disabled="disabled">
-                        <option value="">[% loc('Pick a Driver...') %]</option>
+                        <option value="">[% loc('groups.pick-driver') %]</option>
                     [% FOR driver = ldap_drivers %]
                         <option value="[% driver.driver_key %]">
                             [% driver.driver_key %]

@@ -33,10 +33,17 @@ my %Sections = (
     appliance => ['../appliance/libsocialtext-appliance-perl/template', '../appliance/libsocialtext-appliance-perl/sbin'],
 #   s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
 #   s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
-    template => 'share/template',
+    template => [
+        'share/template',
+        'share/javascript/template',
+    ],
     reports => ['../socialtext-reports/template', '../socialtext-reports/lib'],
-    # TODO: share/javascript/dialogs etc?
-    common => [ 'share/javascript/Socialtext.js', 'share/javascript/Socialtext' ],
+    common => [
+        'share/javascript/Socialtext.js',
+        'share/javascript/Socialtext',
+        'share/javascript/dialogs',
+        'share/javascript/activities',
+    ],
     map {
         $_ => [grep { -d and (join(',', glob("$_/*")) ne "$_/images") } glob("share/plugin/$_/{share,template}")]
     } @plugins

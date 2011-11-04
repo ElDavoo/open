@@ -1,3 +1,32 @@
+# @COPYRIGHT@
+#, fuzzy
+msgid ""
+msgstr ""
+"#-#-#-#-#  common.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-11-04 17:41+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  common.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-11-04 16:06+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: share/javascript/activities/event_list.js:805
+msgid "activities.attachment"
+msgstr "Attachment"
+
+#: share/javascript/activities/appdata.js:488
+msgid "activities.showing=action,feed,group"
+msgstr "Showing %1 from %2 within %3"
+
 #: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:224
 msgid "api.about-wiki-name"
 msgstr "Workspace names must consist of 3-30 lowercase letters, numbers, underscores or dashes."
@@ -92,6 +121,50 @@ msgstr "Workspace names cannot begin with a dash"
 msgid "api.wiki-title-cannot-begin-with-dash"
 msgstr "Workspace titles cannot begin with a dash"
 
+#: share/javascript/dialogs/activities-add-attachment.js:6
+msgid "do.add-attachment"
+msgstr "Add Attachment"
+
+#: share/javascript/dialogs/activities-add-video.js:6
+msgid "do.add-video"
+msgstr "Add Video"
+
+#: share/javascript/dialogs/activities-add-attachment.js:48
+msgid "error.file-too-large-50mb-max"
+msgstr "File size is too large. 50MB maximum, please."
+
+#: share/javascript/activities/editor.js:1021
+msgid "error.invalid-web-link"
+msgstr "Invalid web link"
+
+#: share/javascript/dialogs/activities-add-attachment.js:49
+msgid "error.parsing-result"
+msgstr "Error parsing result"
+
+#: share/javascript/dialogs/groups-leave.tt2:3
+msgid "groups.leave-this?"
+msgstr "Are you sure you'd like to leave this group?"
+
+#: share/javascript/dialogs/control-create-group.tt2:60
+msgid "groups.pick-driver"
+msgstr "Pick a Driver..."
+
+#: share/javascript/dialogs/groups-save.js:6
+msgid "groups.saving"
+msgstr "Saving"
+
+#: share/javascript/dialogs/groups-save.tt2:1
+msgid "groups.saving-group"
+msgstr "Saving Group..."
+
+#: share/javascript/activities/network_dropdown.js:77
+msgid "nav.non-wiki-groups"
+msgstr "Non-Workspace Groups"
+
 #: share/javascript/Socialtext/Dialog.js:125
 msgid "nav.result"
 msgstr "Result"
+
+#: share/javascript/activities/network_dropdown.js:75
+msgid "nav.wiki-groups"
+msgstr "Workspace Groups"

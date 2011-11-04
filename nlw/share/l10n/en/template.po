@@ -1,6 +1,16 @@
 # @COPYRIGHT@
+#, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-11-04 17:45+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-10-06 13:15+0800\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -8,6 +18,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: share/javascript/template/activities/event.tt2:57
+msgid "activities.add-to-conversation"
+msgstr "Add to conversation"
+
+#: share/javascript/template/activities/message_notice.tt2:28
+msgid "activities.new=count"
+msgstr "%*(%1,new activity,new activities)"
 
 #: share/template/data/event:10
 msgid "ago.1day"
@@ -166,6 +184,10 @@ msgstr "Socialtext Desktop Flair"
 #: share/template/desktop/badge.tt2:39
 msgid "desktop.thank-you"
 msgstr "Thank you! :-)"
+
+#: share/javascript/template/activities/elements/toolbar.tt2:10
+msgid "do.insert-link"
+msgstr "Insert Link"
 
 #. (inviting_user, group_name)
 #: share/template/email/st/group-invitation.txt:22
@@ -847,6 +869,18 @@ msgstr "hello"
 msgid "example.help"
 msgstr "help"
 
+#: share/javascript/template/activities/elements/filters.tt2:9
+msgid "filter.activity-type"
+msgstr "Activity Type"
+
+#: share/javascript/template/activities/elements/filters.tt2:15
+msgid "filter.contributor"
+msgstr "Contributor"
+
+#: share/javascript/template/activities/elements/filters.tt2:21
+msgid "filter.group"
+msgstr "Group"
+
 #: share/template/search_help_field.html:8
 msgid "heading.category"
 msgstr "category"
@@ -880,6 +914,10 @@ msgstr "If you try to search on a field that does not exist (<tt>link:hello</tt>
 msgid "info.invite-users"
 msgstr "Use the field below to search for users to add to this workspace. Then, click Save to add them. Each user will be notified via email."
 
+#: share/javascript/template/activities/message_notice.tt2:10
+msgid "info.private-signal-to-self"
+msgstr "You are composing a private message to yourself"
+
 #: share/template/element/settings/global:27
 msgid "info.reset-password-and-relogin"
 msgstr "New passwords must be at least 6 characters long. Use your email address and new password to log in again."
@@ -887,6 +925,10 @@ msgstr "New passwords must be at least 6 characters long. Use your email address
 #: share/template/search_help_field.html:12
 msgid "info.search-field-syntax"
 msgstr "You may search on a field by separating the field name from the query with a colon, like this:"
+
+#: share/javascript/template/activities/message_notice.tt2:12
+msgid "info.signal-to-self"
+msgstr "You are composing a message to yourself"
 
 #: share/template/element/settings/list_skipped_files:3
 msgid "info.skipped-import-files"
@@ -1186,6 +1228,10 @@ msgstr "You have logged out of Socialtext."
 msgid "nav.enterprise-social-software"
 msgstr "Enterprise Social Software"
 
+#: share/javascript/template/activities/blocks.tt2:99 share/javascript/template/activities/elements/signals.tt2:25 share/javascript/template/activities/event.tt2:66
+msgid "nav.go"
+msgstr "Go"
+
 #. (jump_menu)
 #: share/template/element/page/navigation:39
 msgid "nav.jump-to=menu"
@@ -1271,6 +1317,10 @@ msgstr "RSS"
 #: share/template/view/settings:1
 msgid "settings.user-settings"
 msgstr "User Settings"
+
+#: share/javascript/template/activities/elements/toolbar.tt2:3
+msgid "signals.private"
+msgstr "Private"
 
 #: share/template/view/workspace_membership:57
 msgid "time.at"

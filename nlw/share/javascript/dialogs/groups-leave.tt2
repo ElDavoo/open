@@ -1,6 +1,6 @@
 <div id="leave-group-dialog">
     [% IF selfJoin %]
-        <div>[% loc("Are you sure you'd like to leave this group?") %]</div>
+        <div>[% loc("groups.leave-this?") %]</div>
     [% ELSE %]
         <div>[% loc('groups.confirm-leave?') %]</div>
     [% END %]

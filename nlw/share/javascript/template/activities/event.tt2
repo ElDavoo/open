@@ -54,7 +54,7 @@
             <div class="wikiwygWrapper">
                 <div class="wikiwyg" id="[% id("reply-$event.signal_id") %]">
                     <div class="clearHandler">
-                        [% loc('Add to conversation »') %]
+                        [% loc('activities.add-to-conversation') %] »
                     </div>
                 </div>
                 [% INCLUDE lookahead %]
@@ -63,7 +63,7 @@
                     [% INCLUDE activities/elements/toolbar.tt2 showDirect=0 %]
                 </div>
                 <div class="post hidden">
-                    <a href="#" class="button" id="[% id('post') %]">[% loc('Go') %]</a>
+                    <a href="#" class="button" id="[% id('post') %]">[% loc('nav.go') %]</a>
                     <div class="count" id="[% id('count') %]"></div>
                 </div>
             </div>

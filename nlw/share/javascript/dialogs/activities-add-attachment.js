@@ -3,7 +3,7 @@
 socialtext.dialog.register('activities-add-attachment', function(opts) {
     dialog = socialtext.dialog.createDialog({
         html: socialtext.dialog.process('activities-add-attachment.tt2', opts),
-        title: loc('Add Attachment'),
+        title: loc('do.add-attachment'),
         params: opts.params,
         height: 200,
         buttons: [
@@ -45,8 +45,8 @@ socialtext.dialog.register('activities-add-attachment', function(opts) {
             else if (!result) {
                 var body = this.contentWindow.document.body
                 var msg = body.match(/entity too large/i)
-                    ? loc('File size is too large. 50MB maximum, please.')
-                    : loc('Error parsing result');
+                    ? loc('error.file-too-large-50mb-max')
+                    : loc('error.parsing-result');
                 dialog.find('.error').text(msg).show();
                 dialog.enable();
             }

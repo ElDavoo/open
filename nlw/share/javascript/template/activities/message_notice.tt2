@@ -7,9 +7,9 @@
     <span>
         [% IF user_id == viewer_id %]
             [% IF isPrivate %]
-                [% loc('You are composing a private message to yourself') %]
+                [% loc('info.private-signal-to-self') %]
             [% ELSE %]
-                [% loc('You are composing a message to yourself') %]
+                [% loc('info.signal-to-self') %]
             [% END %]
         [% ELSE %]
             [% IF isPrivate %]
@@ -25,5 +25,5 @@
 [% ELSIF className == 'restrictiveFilters' %]
     <span>[% loc('activities.signal-sent-click-to-adjust-filters') %]</span>
 [% ELSIF className == 'newMessages' %]
-    <span>[% loc('<a href="#" class="update">[quant,_1,new activity,new activities]</a>', new_count) %]</span>
+    <span><a href="#" class="update">[% loc('activities.new=count', new_count) %]</a></span>
 [% END %]

@@ -802,7 +802,7 @@ $.extend(Activities.EventList.prototype, {
         var url = $a.attr('href');
         var $video = $a.find('img.video');
         socialtext.dialog.show('activities-show-video', {
-            title: $video.attr('title') || loc('Attachment'),
+            title: $video.attr('title') || loc('activities.attachment'),
             params: {
                 url: $a.attr('href'),
                 video: $video.size(),

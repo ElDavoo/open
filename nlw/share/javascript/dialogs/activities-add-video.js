@@ -3,7 +3,7 @@
 socialtext.dialog.register('activities-add-video', function(opts) {
     var dialog = socialtext.dialog.createDialog({
         html: socialtext.dialog.process('activities-add-video.tt2', opts),
-        title: loc('Add Video'),
+        title: loc('do.add-video'),
         params: opts.params,
         buttons: [
             {

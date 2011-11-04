@@ -1018,7 +1018,7 @@ $.extend(Activities.Editor.prototype, {
                 }
                 else {
                     if (!wikiwyg.valid_web_link(args.destination)) {
-                        dialog.showError(loc('Invalid web link'));
+                        dialog.showError(loc('error.invalid-web-link'));
                         return false;
                     }
 
