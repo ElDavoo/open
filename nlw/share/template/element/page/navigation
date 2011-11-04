@@ -56,7 +56,7 @@
     [% INCLUDE workspace_selector %]
 
     <span class="arrow">&gt;</span>
-    <span>[% loc('nav.jump-to=menu', jump_menu) %]</a>
+    <span class="jump_to">[% loc('nav.jump-to=menu', jump_menu) %]</a>
 
   </div>
   <div class="grid_6 right">
