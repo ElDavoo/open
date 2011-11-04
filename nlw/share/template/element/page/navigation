@@ -12,10 +12,11 @@
 </select>
 <script>
   $('#st-workspace-list')
-    .dropdown()
-    .change(function() {
-      document.location = $(this).val();
-    })
+    .dropdown({
+      select: function(ui, option) {
+        document.location = option.value;
+      }
+    });
 </script>
 [% END %]
 
