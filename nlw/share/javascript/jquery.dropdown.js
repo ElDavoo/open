@@ -2,16 +2,24 @@
 
 $.fn.extend({
     dropdown: function(options) {
-        if (window.st && window.st.UA_is_Selenium) { return this; }
+        var self = this;
+        if (window.st && window.st.UA_is_Selenium) {
+            if (options && options.select) {
+                self.change(function() {
+                    options.select(self, self.find('option:selected').get(0));
+                });
+            }
+            return self;
+        }
 
-        this.selectmenu($.extend({
+        self.selectmenu($.extend({
             wrapperElement: '<span />',
             style: 'dropdown',
             width: 'auto'
         }, options));
 
         // Get the menu
-        var $menu = this.next()
+        var $menu = self.next()
 
         // Change the arrow icon to be a triangle rather than an image
         $menu.find('.ui-selectmenu-icon').html('&nbsp;&#9662;');
@@ -20,7 +28,7 @@ $.fn.extend({
         // not allow that
         $menu.focus(function() { $(this).blur(); return false });
 
-        return this;
+        return self;
     },
     dropdownSelectValue: function(value) {
         this.find('option').removeAttr('selected');
