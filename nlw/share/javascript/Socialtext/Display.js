@@ -1,5 +1,23 @@
 (function($) {
 
+function hideSideboxes() {
+    var $container = $('#st-display-mode-container')
+    $container.removeClass($container.data('expanded'));
+    $container.addClass($container.data('collapsed'));
+    $('#st-display-mode-widgets').hide();
+    $('#st-page-boxes-show-link').show();
+    $('#st-page-boxes-hide-link').hide();
+}
+
+function showSideboxes() {
+    var $container = $('#st-display-mode-container')
+    $container.removeClass($container.data('collapsed'));
+    $container.addClass($container.data('expanded'));
+    $('#st-page-boxes-show-link').hide();
+    $('#st-page-boxes-hide-link').show();
+    $('#st-display-mode-widgets').show();
+}
+
 Socialtext.prototype.setupPageHandlers = function() {
     /**
      * Tools Menu
@@ -22,19 +40,13 @@ Socialtext.prototype.setupPageHandlers = function() {
     // Show/Hide
     var $container = $('#st-display-mode-container')
     $('#st-page-boxes-hide-link').click(function() {
-        $container.removeClass($container.data('expanded'));
-        $container.addClass($container.data('collapsed'));
-        $('#st-display-mode-widgets').hide();
-        $('#st-page-boxes-show-link').show();
-        $('#st-page-boxes-hide-link').hide();
+        hideSideboxes();
+        Cookie.set('sideboxes', 'hide');
         return false;
     });
     $('#st-page-boxes-show-link').click(function() {
-        $container.removeClass($container.data('collapsed'));
-        $container.addClass($container.data('expanded'));
-        $('#st-page-boxes-show-link').hide();
-        $('#st-page-boxes-hide-link').show();
-        $('#st-display-mode-widgets').show();
+        showSideboxes();
+        Cookie.set('sideboxes', 'show');
         return false;
     });
 
@@ -264,6 +276,12 @@ $(function() {
     if (location.hash.toLowerCase() == '#new_page') {
         $('#st-create-content-link').click();
     }
+
+    var sideboxToggle = Cookie.get('sideboxes');
+    if (sideboxToggle == 'hide')
+        hideSideboxes();
+    else
+        showSideboxes();
 });
 
 
