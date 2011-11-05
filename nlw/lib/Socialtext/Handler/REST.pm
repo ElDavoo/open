@@ -478,18 +478,22 @@ sub makeHandlerFromClass {
 }
 
 sub defaultResourceHandler {
-    return "No File or Method found for your request."
-        unless $ENV{NLW_DEV_MODE};
+    unless ($ENV{NLW_DEV_MODE}) {
+        $_[0]->header( -status => HTTP_404_Not_Found,
+                       -type   => 'text/plain' );
+        return "No File or Method found for your request.";
+    }
 
+    $_[0]->header( -status => HTTP_404_Not_Found,
+                   -type   => 'text/html; charset=UTF-8' );
     no warnings 'once';
     local $YAML::SortKeys = 0;
     local $YAML::UseCode = 1;
-
-    $_[0]->header( -status => HTTP_404_Not_Found,
-                   -type   => 'text/html' );
     # Delete Socialtext objects.  Usually noise anyway.
     delete $_[0]->{$_} for qw(_user);
-    return "No File or Method found for your request.  <!-- State is dumped below.\n\n" . Dump(@_) . '-->';
+    my $dump = eval { Dump(@_) };
+    $dump =~ s/-->/--\x{200d}>/g;
+    return "No File or Method found for your request.  <!-- State is dumped below.\n\n$dump-->";
 }
 
 # XXX: The framework should use another layer of indirection over
