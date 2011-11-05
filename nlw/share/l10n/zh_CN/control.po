@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-11-04 23:39+0800\n"
+"PO-Revision-Date: 2011-11-05 14:07+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -329,7 +329,7 @@ msgstr "设备管理"
 
 #: share/plugin/control/template/control/index.html:11
 msgid "control.console-link"
-msgstr "设备技术管理员可以使用 <a href='/console'>设备管理</a> 对设备的各技术方面进行管理，例如网络与对设置进行备份。"
+msgstr "设备技术管理员可以使用 <a href='/console'>设备管理</a> 对设备的各技术方面进行管理，例如网络与对设置进行备份。请访问 <a href='/help-adminguide'>管理员手册</a> 来取得详细说明。"
 
 #: share/plugin/control/template/control/wrapper:125
 msgid "control.contact-support"

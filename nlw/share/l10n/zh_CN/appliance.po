@@ -328,6 +328,9 @@ msgstr "（天）后无效"
 msgid "console.leave-blank-to-use-built-in-smtp-server"
 msgstr "（此处留白以使用设备的内置 SMTP 服务器）"
 
+msgid "console.link-to-admin-guide"
+msgstr "请访问 <a href='/help-adminguide'>管理员手册</a> 来进一步了解如何管理系统。"
+
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:8
 msgid "console.link-to-control-panel"
 msgstr "查看与管理系统的工作区、帐户、群组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具。"
