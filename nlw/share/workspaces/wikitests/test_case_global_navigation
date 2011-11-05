@@ -1,21 +1,33 @@
 | *Comment* | Test Case: Global Navigation |  |
-| *Comment* | requires People and Dashboard |  |
+| *Comment* | requires Signals, Groups, and Dashboard |  |
 
 | st-admin | enable-plugin --account "%%defaultaccount%%" --p dashboard |  |
-| st-admin | enable-plugin --account "%%defaultaccount%%" --p people |  |
+| st-admin | enable-plugin --account "%%defaultaccount%%" --p signals |  |
+| st-admin | enable-plugin --account "%%defaultaccount%%" --p groups |  |
 
-| *Comment* | Test Case: Global Navigation Home People Workspaces |  |
+| *Comment* | Test Case: Global Navigation |  |
 | text_like | globalNav | Dashboard |
 | text_like | globalNav | People |
+| text_like | globalNav | Groups |
+| text_like | globalNav | Signals |
 | text_like | globalNav | Workspaces |
 
 | wait_for_element_visible_ok | link=People | 10000 |
 | click_and_wait | link=People |  |
 | wait_for_text_present_ok | All People | 30000 |
 
+| wait_for_element_visible_ok | link=Groups | 10000 |
+| click_and_wait | link=Groups |  |
+| wait_for_text_present_ok | Group Directory | 30000 |
+
+| wait_for_element_visible_ok | link=Signals | 10000 |
+| click_and_wait | link=Signals |  |
+| wait_for_text_present_ok | Activities | 30000 |
+| wait_for_text_present_ok | Colleagues | 30000 |
+
 | wait_for_element_visible_ok | link=Workspaces | 10000 |
 | click_and_wait | link=Workspaces |  |
-| text_like | content | My Workspaces |
+| text_like | content | All My Workspaces |
 
 | *Comment* | Test Case: Global Navigation top links |  |
 | open_ok | /%%workspace%%/ |  |
@@ -23,7 +35,7 @@
 | text_like | st-wikinav-profile | %%short_username%% |
 | text_like | st-wikinav-setting | Settings |
 | text_like | st-wikinav-help | Help |
-| wait_for_element_visible_ok | logout_btn role= | 30000 |
+| wait_for_element_visible_ok | logout_btn | 30000 |
 
 | *Comment* | Test Case: Global Navigation Profile |  |
 | wait_for_element_visible_ok | link=%%short_username%% | 30000 |
@@ -52,8 +64,8 @@
 | wait_for_element_present_ok | //a[contains(@href,'/help/')] | 30000 |
 
 | *Comment* | Test Case: Global Navigation Log out |  |
-| wait_for_element_visible_ok | logout_btn role= | 30000 |
-| click_and_wait | logout_btn role= |  |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+| click_and_wait | logout_btn |  |
 | text_like | Remember me on this computer |  |
 | st-login |  |  |
 
@@ -64,18 +76,16 @@ TODO: find a way to check the best full name
 
 | *Comment* | Test Case: Global Navigation Search |  |
 
-TUXTODO: Find a way to hit enter or get the search button reimplemented
-
- wait_for_element_visible_ok | st-search-term | 30000 |
-type_ok | st-search-term | wiki |
-keyPress | st-search-term | \015 |
-wait_for_text_present_ok | Pages matching 'wiki' | 30000 |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| type_ok | st-search-term | wiki |
+| click_and_wait | st-search-submit |  |
+| wait_for_text_present_ok | Pages matching 'wiki' | 30000 |
 
 | *Comment* | Test Case: Global Navigation Footer |  |
 | open_ok | /%%workspace%%/ |  |
 | wait_for_element_visible_ok | //img[@alt='Socialtext Logo'] | 30000 |
 | text_like | //div[@class='grid_17 tagline'] | Enterprise Social Software |
-| wait_for_element_visible_ok | `//a[@href='http://www.socialtext.net/exchange']` | 30000 |
+| wait_for_element_visible_ok | `//a[contains(@href,"www.socialtext.net/exchange")]` | 30000 |
 
 | *Comment* | Test Case: Global Navigation Footer right |  |
 | wait_for_element_visible_ok | st-footer-link-mobile | 30000 |

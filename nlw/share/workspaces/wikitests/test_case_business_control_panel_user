@@ -1,4 +1,4 @@
-*On tuxhold until "Password is reset to *" message is restored. Otherwise, there's no way to know what the new password is*
+TUXTODO: removed confirmation messages - may never get restored
 
 | *Comment* | Test case: Business Control Panel USER |  |
 | set | new_acct | acct-usertest-%%start_time%% |
@@ -76,12 +76,24 @@
 | text_like | qr/Appliance Business Administrator\?\s*no/ism |  |
 | text_like | qr/Appliance Technical Administrator\?\s*no/ism |  |
 | click_and_Wait | //input[@value='Assign Appliance Business Administrator Role'] |  |
+
+text_like | Assigned the Appliance Business Administrator role to %%cli_user%% | |
+
 | text_like | qr/Appliance Business Administrator\?\s*yes/ism |  |
 | click_and_wait | //input[@value='Remove Appliance Business Administrator Role'] |  |
+
+text_like | Removed the Appliance Business Administrator role from %%cli_user%% | |
+
 | text_like | qr/Appliance Business Administrator\?\s*no/ism |  |
 | click_and_wait | //input[@value='Assign Appliance Technical Administrator Role'] |  |
+| text_like | Assigned the Appliance Technical Administrator role to
+
+%%cli_user%% |  |
 | text_like | qr/Appliance Technical Administrator\?\s*yes/ism |  |
 | click_and_wait | //input[@value='Remove Appliance Technical Administrator Role'] |  |
+
+text_like | Removed the Appliance Technical Administrator role from %%cli_user%% | |
+
 | text_like | qr/Appliance Technical Administrator\?\s*no/ism |  |
 
 | *Comment* | Test case: Business Control Panel User Search |  |
@@ -96,17 +108,13 @@
 | *Comment* | Test case: Business Control Panel Reset Password - FAILS UNDER LDAP BY DESIGN |  |
 | wait_for_element_visible_ok | //input[@value='Reset password'] | 30000 |
 | click_and_wait | //input[@value='Reset password'] |  |
-| text_like | //body | qr/The password for user %%cli_user_escaped%% has been changed to \'.*'/ |
-| st_match_text | has been changed to \'(.*)\' | new_password |
-| open_ok | /st/dashboard |  |
-| st-logoutin | %%cli_user%% | %%new_password%% |
 
-TODO: remove user from Workspace and remove user from Account
+text_like | //body | qr/The password for user %%cli_user_escaped%% has been changed to \'.*'/ |
 
 | *Comment* | Test case: Business Control Panel User TEARDOWN |  |
 
 | st-process-jobs |  |  |
-| st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
+| delete-workspace | %%new_workspace%% |  |
 | delete-account | %%new_acct%% |  |
 
 | *Comment* | Test case: Business Control Panel User COMPLETED |  |

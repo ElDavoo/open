@@ -1,3 +1,5 @@
+TUXTODO: removed confirmation messages - may never get restored
+
 | *Comment* | Test case: Business Control Panel Account |  |
 
 | st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
@@ -48,6 +50,9 @@
 | wait_for_element_visible_ok | st-new-account-name | 30000 |
 | type_ok | st-new-account-name | %%new_acct%% |
 | click_and_wait | st-submit-new-account-submit |  |
+
+text_like | The %%new_acct%% account has been created. | |
+
 | st-admin | disable-plugin --p dashboard --acc "%%new_acct%%" |  |
 | st-admin | disable-plugin --p people --acc "%%new_acct%%" |  |
 | st-admin | disable-plugin --p signals --acc "%%new_acct%%" |  |
@@ -64,14 +69,12 @@
 | text_like | qr/Socialtext Signals\s+\(click to enable\)/ism |  |
 | text_like | qr/Socialtext Dashboard\s+\(click to enable\)/ism |  |
 
-| *Comment* | Test case: Business Control Panel Account Add a user |  |  |
-| *Comment* | Test case: Business Control Panel Account don't use a hyphenated user so that BFN matches email |  |  |
-| wait_for_text_present_ok | Add Existing User: | 30000 |  |
-| wait_for_text_present_ok | Users (0) | 30000 |  |
-| wait_for_element_visible_ok | addUserLookahead | 30000 |  |
-
-| select-autocompleted-option-ok | addUserLookahead | %%short_new%% | %%short_new%% |
-
+| *Comment* | Test case: Business Control Panel Account Add a user |  |
+| *Comment* | Test case: Business Control Panel Account don't use a hyphenated user so that BFN matches email |  |
+| wait_for_text_present_ok | Add Existing User: | 30000 |
+| wait_for_text_present_ok | Users (0) | 30000 |
+| wait_for_element_visible_ok | addUserLookahead | 30000 |
+| select-autocompleted-option-ok | addUserLookahead | %%short_new%% |
 | wait_for_text_present_ok | Users (1) | 15000 |
 | wait_for_element_visible_ok | link=%%new_acct_2%% | 15000 |
 

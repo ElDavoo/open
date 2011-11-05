@@ -1,4 +1,3 @@
-
 | *Comment* | Test Case: Business Control Panel User External Id Setup |  |
 | set | user_fname | Davey |
 | set | user_lname | Jones |
@@ -43,7 +42,6 @@
 | st-logoutin | %%user_email%% | %%user_password%% |
 | wait_for_text_present_ok | Log in | 30000 |
 | text-like | You need to have an External ID set |  |
-| text-like | Guest User |
 
 | *Comment* | Test Case: Business Control Panel User External ID restore ID, can login |  |
 | st-login | %%username%% | %%password%% |

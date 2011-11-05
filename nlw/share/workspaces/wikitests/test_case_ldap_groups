@@ -1,6 +1,7 @@
-*On hold until we figure out why Create LDAP Group fails if the test has been run once before*
-
 | *Comment* | Test Case: LDAP Groups |  |
+| *Comment* | XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX |  |
+| *Comment* | ONLY WORKS IN A PRISTINE LDAP ENVIRONMENT WHERE THE GROUPS HAVE NEVER BEEN CREATED |  |
+| *Comment* | XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX |  |
 
 * Fixture: SocialWidgets
 

@@ -36,10 +36,10 @@
 | open_ok | /%%ldapy_ws%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | wait_for_element_present_ok | link=Motorhead | 30000 |
-| click_and_wait | link=Motorhead |  |
+| click_and_pause | link=Motorhead | 10000 |
 
 | *Comment* | Test Case: Exercise LDAP see the workspace, see the members on the group home page |  |
-| wait_for_text_present_ok | Motorhead | 30000 |
+| wait_for_text_present_ok | Information | 30000 |
 | text_like | content | Motorhead |
 | st-name-widget | 1 | information_widget |
 | st-widget-title | information_widget | Information |
