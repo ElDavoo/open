@@ -32,8 +32,8 @@
   <div class="grid_6">
     [% SET locked = page_locked_for_user %]
     [% INCLUDE 'element/page/display/edit-button' %]
-    <a id="st-page-boxes-hide-link" href="#"><span class="arrow">&#9658;</span>[% loc('nav.hide') %]</a>
-    <a id="st-page-boxes-show-link" href="#"><span class="arrow">&#9660;</span>[% loc('nav.show') %]</a>
+    <a id="st-page-boxes-hide-link" href="#"><span class="arrow">&#9660;</span>[% loc('nav.hide') %]</a>
+    <a id="st-page-boxes-show-link" href="#"><span class="arrow">&#9658;</span>[% loc('nav.show') %]</a>
   </div>
   <div class="clear"></div>
 </div>
