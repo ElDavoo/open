@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-08-23 14:33+0800\n"
+"PO-Revision-Date: 2011-11-05 23:49+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -162,6 +162,10 @@ msgstr "Cell Comment"
 msgid "sc.center"
 msgstr "Center"
 
+#: share/plugin/socialcalc/share/javascript/jemplate/save_progress:4
+msgid "sc.checking-for-edit-contention"
+msgstr "Checking for Edit Contention"
+
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:68 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:59
 msgid "sc.color"
 msgstr "Color"
@@ -275,6 +279,10 @@ msgstr "Formats above will <b>apply</b> as the <b>default</b> for all cells."
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:170
 msgid "sc.formats-will-apply-to"
 msgstr "Formats above will <b>apply</b> to the"
+
+#: share/plugin/socialcalc/share/javascript/jemplate/save_progress:5
+msgid "sc.generating-sheet-content"
+msgstr "Generating Spreadsheet Content"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:119
 msgid "sc.hidden"
@@ -505,9 +513,16 @@ msgstr "Save with a new name:"
 msgid "sc.save-with-suggested-name"
 msgstr "Save the page with the name \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
 
+#: share/plugin/socialcalc/share/javascript/jemplate/save_progress:6
+msgid "sc.saving-sheet-content-kb"
+msgstr "Saving Spreadsheet Content (<span id=\"st-spreadsheet-save-progress-size\">?</span> kB)"
+
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:451
 msgid "sc.sheet-already-exists"
 msgstr "Page Already Exists"
+
+msgid "sc.sheet-save-progress"
+msgstr "Spreadsheet Save Progress"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1029 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:214
 msgid "sc.sheet-settings"
