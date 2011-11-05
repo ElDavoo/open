@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-10-24 16:35-0700\n"
+"PO-Revision-Date: 2011-11-05 15:43-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1830,7 +1830,7 @@ msgstr "%1 has opened this page for editing %2."
 
 #: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13
 msgid "page.orphaned"
-msgstr "Orphaned Pages"
+msgstr "Orphan Pages"
 
 #: share/skin/s3/template/view/page/display:77
 msgid "page.print"
