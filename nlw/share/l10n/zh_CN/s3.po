@@ -1038,7 +1038,7 @@ msgstr "或通过邮件发布"
 #. (support_address)
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:11
 msgid "info.public-wiki"
-msgstr "如果您想要无需登陆即可让用户查看的公共工作区，请联系<a href=\"%1\">Socialtext客服支持</a>."
+msgstr "如果您想要无需登录即可让用户查看的公共工作区，请联系<a href=\"%1\">Socialtext客服支持</a>."
 
 #: share/skin/s3/template/element/settings/users_settings_section:43
 msgid "info.relogin"

@@ -1020,7 +1020,7 @@ msgstr "重置为默认桌面标志。桌面用户需要注销并重新登录才
 
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
-msgstr "设置已保存。桌面用户需要重新登陆才能启用新的主题。"
+msgstr "设置已保存。桌面用户需要重新登录才能启用新的主题。"
 
 msgid "desktop.text-color"
 msgstr "文本颜色"
@@ -1050,12 +1050,12 @@ msgstr "请在此输入文字。"
 #. ($app_name)
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:87
 msgid "email.confirmation-subject=app"
-msgstr "已登陆到应用 %1"
+msgstr "已登录到应用 %1"
 
 #. ($ws->title()
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:84
 msgid "email.confirmation-subject=wiki"
-msgstr "已登陆到工作区 %1"
+msgstr "已登录到工作区 %1"
 
 #: lib/Socialtext/EmailReceiver/Base.pm:671
 msgid "email.date:"
@@ -2935,12 +2935,12 @@ msgstr "显示语言"
 #. ($address)
 #: lib/Socialtext/Handler/Authen.pm:531
 msgid "login.confirmed=email"
-msgstr "邮箱 %1 已确认，请登陆。"
+msgstr "邮箱 %1 已确认，请登录。"
 
 #. ($address, $targetws->title)
 #: lib/Socialtext/Handler/Authen.pm:528
 msgid "login.confirmed=email,wiki"
-msgstr "邮箱 %1 已确认，并且已加入工作区 %2，请登陆。"
+msgstr "邮箱 %1 已确认，并且已加入工作区 %2，请登录。"
 
 #: lib/Socialtext/Lite.pm:134
 msgid "login.disabled"
