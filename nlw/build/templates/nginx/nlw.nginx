@@ -76,6 +76,7 @@
     location /nlw/theme {
         internal;
         alias [% config.cache_dir %]/theme/;
+        add_header Cache-Control "public, must-revalidate, max-age=0, post-check=0, pre-check=0";
     }
 
     rewrite ^/js/[\d\.]+/(.+)$ /js/$1;
@@ -145,8 +146,7 @@
     location /nlw/attachments-uncached/ {
         internal;
         alias [% config.data_root_dir %]/attachments/;
-        add_header Cache-Control "public, must-revalidate, max-age=0, post-check=0, pre-check=30";
-        add_header X-Cache "HIT from attachments-uncached";
+        add_header Cache-Control "public, must-revalidate, max-age=0, post-check=0, pre-check=0";
     }
 
     # DON'T cache RPC relay
