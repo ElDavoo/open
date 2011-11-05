@@ -96,7 +96,7 @@ Socialtext::editor =
           callback: ->
             $("#bootstrap-loader").hide()
             bootstrap = false
-            $("#lightbox").bind "dialogclose", ->
+            $("#lightbox").one "dialogclose", ->
               unless $("#st-edit-check .continue").val()
                 $('#st-display-mode-widgets').show()
                 cleanup_callback?()
