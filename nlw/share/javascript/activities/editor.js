@@ -963,16 +963,16 @@ $.extend(Activities.Editor.prototype, {
             if (!$alist.find('.attachment').size()) $alist.hide();
             return false;
         });
-        $alist.show();
+        $alist.show().css('width', '100%');
     },
 
     showUploadAttachmentUI: function() {
         var self = this;
-        socialtext.dialog.show('activities-add-attachment', {
+        socialtext.dialog.show('activities-add-attachment', $.extend({
             callback: function(filename, result) {
                 self.addAttachment(filename, result.id);
             }
-        });
+        }, self));
     },
 
     showUserLookahead: function(opts) {
