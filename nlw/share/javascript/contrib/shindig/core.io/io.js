@@ -46,8 +46,11 @@ gadgets.io = function() {
    */
   function makeXhr() {
     if (window.XMLHttpRequest) {
-      return new window.XMLHttpRequest();
-    } else if (window.ActiveXObject) {
+      try {
+          return new window.XMLHttpRequest();
+      } catch (e) {};
+    }
+    if (window.ActiveXObject) {
       var x = new ActiveXObject("Msxml2.XMLHTTP");
       if (!x) {
         x = new ActiveXObject("Microsoft.XMLHTTP");
