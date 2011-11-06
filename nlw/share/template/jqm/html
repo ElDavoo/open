@@ -15,6 +15,8 @@ if (window.parent && window.parent.$) {
 }
 </script>
 <style><!--
+@import url('/static/[% app_version %]/javascript/contrib/colorpicker/css/colorpicker.css');
+@import url('/data/accounts/__ENV_primary_account_id__/theme/bubble.css');
 #setup {
     visibility: hidden;
 }
