@@ -91,6 +91,9 @@ $.extend(Activities.NetworkDropdown.prototype, {
                 if (/^account-/.test(net.value)) {
                     if ((data.is_all_users_workspace) && (net.value == ('account-' + data.account_id))) {
                         // No warning signs for All-user workspace on the primary account
+                        sections[0].networks.push(net);
+                    }
+                    else {
                         net['class'] = 'warning';
                         sections[1].networks.push(net);
                     }
