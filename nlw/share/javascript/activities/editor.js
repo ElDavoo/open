@@ -872,6 +872,7 @@ $.extend(Activities.Editor.prototype, {
         $('.cancel', $dialog).click(function() {
             $input.blur();
             self.focus();
+            self.hideLookahead($dialog);
             return false;
         });
 
