@@ -148,7 +148,11 @@ gadgets.util.registerOnLoadHandler ->
 
   if $.browser.msie and Number($.browser.version) <= 8
     jQuery.ajaxSetup
-      xhr: -> new window.ActiveXObject "Microsoft.XMLHTTP"
+      xhr: -> (
+        new window.ActiveXObject "Msxml2.XMLHTTP"
+      ) or (
+        new window.ActiveXObject "Microsoft.XMLHTTP"
+      )
 
   return doDisplayView() if $.browser.msie and Number($.browser.version) <= 6
 
