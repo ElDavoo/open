@@ -39,8 +39,6 @@
 | open_ok | /%%auth_w%%/ |  |
 | text_like | content | Test Case Intranet |
 | text_like | content | qr/Socialtext Workspaces contain pages/i |
-| click_and_wait | link=Settings |  |
-| location_like | /nlw/login.html |  |
 
 | *Comment* | Test Case: Intranet TEARDOWN |  |
 | st-process-jobs |  |  |

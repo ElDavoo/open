@@ -49,8 +49,8 @@
 | wait_for_element_visible_ok | email_send | 15000 |
 | click_ok | email_send |  |
 
-| *Comment* | Pausing 10 seconds for email delivery, then index page |  |
-| pause | 10000 |  |
+| *Comment* | Pausing 90 seconds for email delivery, then index page |  |
+| pause | 90000 |  |
 | st-admin | index-page --workspace %%workspace%% --page emailed_page_%%start_time%% |  |
 
 | *Comment* | Test Case: Email attachment email Check Reception with HTML attachment and two other attachments |  |

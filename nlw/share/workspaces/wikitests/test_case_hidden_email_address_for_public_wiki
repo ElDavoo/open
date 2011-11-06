@@ -8,22 +8,13 @@
 | *Comment* | Test Case: Hidden Email Address for Public wiki. The username will appear to be in Title Case due to CSS styling, but the page actually contains lower case names. |  |
 | set | he_name | hidden email %%start_time%% |
 
-| create-workspace | %%he_ws%% |  |
-| st-admin | create-user --e %%he_mail%% --p %%password%% |  |
-| st-admin | add-workspace-admin --w %%he_ws%% --e %%he_mail%% | now has the role of 'admin' in the |
-
-| st_process_jobs | PersonIndex |  |
-
-| open-ok | /%%he_ws%% |  |  |  |
-| type_ok | username | %%he_mail%% |  |  |
-| type_ok | password | %%password%% |  |  |
-| click_and_wait | login_btn |  |  |  |
-
-| *Comment* | Test Case: Hidden Email Address for Public wiki. Removed file upload test so IE and Safari will succeed. |  |  |  |
+| create-workspace | %%he_ws%% |  |  |  |
+| st-admin | create-user --e %%he_mail%% --p %%password%% |  |  |  |
+| st-admin | add-workspace-admin --w %%he_ws%% --e %%he_mail%% | now has the role of 'admin' in the |  |  |
+| st-logoutin | %%he_mail%% | %%password%% |  |  |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify user WAFL |  |  |  |
-
-| call | st-edit-new-page | ws=%%he_ws%% | title=Hidden Email %%start_time%% | content=`{user: %%he_mail%%}` |
+| call | [st-edit-new-page] | ws=%%he_ws%% | title=Hidden Email %%start_time%% | content={user: %%he_mail%%} |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create comment |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
@@ -31,7 +22,7 @@
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Hidden Email Comment %%start_time%% |
 | wait_for_element_visible_ok | link=Save | 30000 |
-| st_click_pause | link=Save | 15000 |
+| st_click_pause | link=Save | 10000 |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create weblog |  |
 | open_ok | /st/settings/%%workspace_id%%/prefs/blog |  |

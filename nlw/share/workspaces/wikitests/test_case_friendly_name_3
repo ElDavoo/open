@@ -53,8 +53,8 @@
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name 3 use console to change friendly name |  |
-| st-admin | set-user-profile | The command you called (set-user-profile) requires a user to be specified. |
 | st-admin | set-user-profile --email %%fname_user%% preferred_name %%fname2%% | Profile field 'preferred_name' set to '%%fname2%%' for User '%%fname_user%%' |
+| st-process-jobs | PersonIndex |  |
 
 | *Comment* | Test Case: Friendly Name 3 check for new name |  |
 | open_ok | /%%fname_wiki%%/%%fname_page%% |  |

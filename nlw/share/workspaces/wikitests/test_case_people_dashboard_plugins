@@ -1,4 +1,4 @@
-*On hold until Activities widget can handle disabling certain plugins*
+TUXTODO: On hold until Activities widget can handle disabling plugins and still display data
 
 * Fixture: SocialWidgets
 
@@ -25,6 +25,7 @@
 | *Comment* | Test Case: People Dashboard Plugins Create an pages and signals, tag |  |
 | st-logoutin | %%user%% | %%password%% |
 | st-create-wikipage | %%ws%% | %%page1%% |
+| pause_ok | 5000 | avoid consecutive create wikipage calls |
 | st-create-wikipage | %%ws%% | %%page2%% |
 | tag_profile_via_gui | %%tagtoadd%% |  |
 | http-user-pass | %%user%% | %%password%% |

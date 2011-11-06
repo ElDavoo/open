@@ -43,8 +43,6 @@
 | open_ok | /%%pub_w%%/ |  |
 | text_like | content | Test Case Public %%start_time%% |
 | text_like | content | qr/Socialtext Workspaces contain pages/i |
-| click_and_wait | link=Settings |  |
-| location_like | /nlw/login.html |  |
 
 | *Comment* | Test Case: Public TEARDOWN |  |
 | st-process-jobs |  |  |

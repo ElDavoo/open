@@ -36,7 +36,6 @@ Word but not Link: Signal, What are you working on, People I follow, Previous pa
 | wait_for_element_visible_ok | mobile-logout | 3000 |
 
 | *Comment* | Test Case: Mobile Links. Word but not Link |  |
-| wait_for_text_present_ok | What are you working on | 3000 |
 | wait_for_text_present_ok | Post | 3000 |
 | wait_for_text_present_ok | people I follow | 3000 |
 

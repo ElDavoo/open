@@ -1,11 +1,15 @@
+TUXTODO: this test fails because saving the page with the link to orphan 0002 does not replace the original content.
+Try creating an entirely new page instead.
+
+
 | *Comment* | START Test Case: Orphans List |  |
 
-| set | ws | orphans-ws-%%start_time%% |  |  |  |  |  |
-| create-workspace | %%ws%% |  |  |  |  |  |  |
-| add-member | %%username%% | %%ws%% |  |  |  |  |  |
-| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0001" page has been created. |  |  |  |  |  |
-| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been created. |  |  |  |  |  |
-| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0003" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0003" page has been created. |  |  |  |  |  |
+| set | ws | orphans-ws-%%start_time%% |
+| create-workspace | %%ws%% |  |
+| add-member | %%username%% | %%ws%% |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0001" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0001" page has been created. |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0002" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0002" page has been created. |
+| st-admin | update-page --email %%email%% --workspace %%ws%% --page "orphan %%start_time%% 0003" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0003" page has been created. |
 
 Create a page by a different user
 
@@ -15,7 +19,6 @@ Create a page by a different user
 | st-admin | update-page --email %%orphan_email%% --workspace %%ws%% --page "orphan %%start_time%% 0004" < %%wikitest_client_files%%wikitest.txt | The "orphan %%start_time%% 0004" page has been created. |
 
 | open_ok | /%%ws%% |  |
-
 
 | *Comment* | Test Case: Orphans List. Orphan page list |  |
 | select_and_wait | st-jump-to | label=Orphan Pages |
@@ -27,11 +30,9 @@ Create a page by a different user
 
 edit a page to include a link to an orphan page | link appears in page
 
-| *Comment* | Test Case: Orphans List. Create a link to the second orphan page |  |
-| click_and_wait | link=orphan %%start_time%% 0004 |  |
-| click_ok | st-edit-button-link |  |
-
-| call | st-save-page | content=`[orphan %%start_time%% 0002]` |
+| *Comment* | Test Case: Orphans List. Create a link to the second orphan page |  |  |  |
+| call | [st-edit-this-page] | workspace=%%ws%% | thispage=orphan %%start_time%% 0004 | content=This is a link to parent an orphan [orphan %%start_time%% 0002] |
+| st-process-jobs |  |  |  |  |
 
 | *Comment* | Test Case: Orphans List. second page should no longer be orphan |  |
 | select-and-wait | st-jump-to | label=Orphan Pages |

@@ -1,5 +1,3 @@
-*On hold until stickiness of hide/show across pages is addressed*
-
 | *Comment* | STARTING Test Case : Hide sidebar |  |  |  |
 
 | call | st-edit-new-page | ws=%%workspace%% | title=TC Hide Sidebar 1 %%start_time%% | content=TC Hide Sidebar 1 %%start_time%% Content |
@@ -39,52 +37,52 @@
 | open_ok | /%%workspace%%/?TC Hide Sidebar 1 %%start_time%% |  |
 
 | *Comment* | Test Case : Hide sidebar sidebar should still be closed |  |
-| wait_for_element_visible_ok | st-page-boxes-toggle-link | 30000 |
+| wait_for_element_visible_ok | st-page-boxes-show-link | 30000 |
 | wait_for_element_not_visible_ok | st-tags-listing | 30000 |
 | wait_for_element_not_visible_ok | st-attachment-listing | 30000 |
-| text_like | st-page-boxes-toggle-link | show |
+| text_like | st-page-boxes-show-link | show |
 
 | *Comment* | Test Case : Hide sidebar open the sidebar on Hide Sidebar 1 page |  |
-| click_ok | st-page-boxes-toggle-link |  |
+| click_ok | st-page-boxes-show-link |  |
 
 | *Comment* | Test Case : Hide sidebar sidebar should be open |  |
-| wait_for_element_visible_ok | st-page-boxes-toggle-link | 30000 |
+| wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
-| text_like | st-page-boxes-toggle-link | hide |
+| text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case : Hide sidebar navigate to Hide Sidebar 2 page |  |
 | open_ok | /%%workspace%%/?TC Hide Sidebar 2 %%start_time%% |  |
 
 | *Comment* | Test Case : Hide sidebar sidebar should still be open |  |
-| wait_for_element_visible_ok | st-page-boxes-toggle-link | 30000 |
+| wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
-| text_like | st-page-boxes-toggle-link | hide |
+| text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case : Hide sidebar. Test public sidebar in help-en |  |
 | st-logout |  |  |
 | open_ok | /help-en |  |
 
 | *Comment* | Test Case : Hide sidebar public sidebar should be open |  |
-| wait_for_element_visible_ok | st-page-boxes-toggle-link | 30000 |
+| wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
-| text_like | st-page-boxes-toggle-link | hide |
-| click_ok | st-page-boxes-toggle-link |  |
+| text_like | st-page-boxes-hide-link | hide |
+| click_ok | st-page-boxes-hide-link |  |
 
 | *Comment* | Test Case : Hide sidebar public sidebar should be closed |  |
-| wait_for_element_visible_ok | st-page-boxes-toggle-link | 30000 |
+| wait_for_element_visible_ok | st-page-boxes-show-link | 30000 |
 | wait_for_element_not_visible_ok | st-tags-listing | 30000 |
 | wait_for_element_not_visible_ok | st-attachment-listing | 30000 |
-| text_like | st-page-boxes-toggle-link | show |
-| click_ok | st-page-boxes-toggle-link |  |
+| text_like | st-page-boxes-show-link | show |
+| click_ok | st-page-boxes-show-link |  |
 
 | *Comment* | Test Case : Hide sidebar public sidebar should re-open |  |
-| wait_for_element_visible_ok | st-page-boxes-toggle-link | 30000 |
+| wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
-| text_like | st-page-boxes-toggle-link | hide |
+| text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case : Hide sidebar Teardown |  |
 

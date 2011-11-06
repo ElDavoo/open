@@ -28,7 +28,7 @@
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send a signal |  |
-| st_prepare_signal_within_activities_widget | Siggy %%start_time%% First Sig |  |
+| st_type_signal | Siggy %%start_time%% First Sig |  |
 | st_pause_click | 3000 | %%miki_signal_submit%% |
 
 | *Comment* | Test Case: Mobile Signals. Verify a signal |  |

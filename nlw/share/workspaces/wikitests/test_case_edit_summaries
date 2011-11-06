@@ -41,15 +41,7 @@
 | text_like | st-listview-form | Edit summary: A second summary for a wikitest %%start_time%% |
 | text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
 
-| *Comment* | Test Case: Edit Summaries. Check List Views |  |
-| *Comment* | Test Case: Edit Summaries - Search defaults to summaries, the rest default to titles |  |
-| select_and_wait | st-jump-to | label=What's New |
-| wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
-| click_and_wait | link=Summaries |  |
-| wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
-| text_like | st-listview-form | Edit summary: A second summary for a wikitest %%start_time%% |
-| text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
-
+| *Comment* | Test Case: Edit Summaries. Check List Views. Recently Viewed first so selector works |  |
 | *Comment* | Test Case: Edit Summaries - Recently Viewed |  |
 | select_and_wait | st-jump-to | label=Recently Viewed |
 | wait_for_element_visible_ok | link=Summaries | 30000 |
@@ -89,7 +81,16 @@
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |  |
 | st-watch-page | 0 |  |  |
 
-| *Comment* | Test Case: Edit Summaries teardown |  |  |
+| *Comment* | Test Case: Edit Summaries - Search defaults to summaries, the rest default to titles |  |
+| select_and_wait | st-jump-to | label=What's New |
+| wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
+| click_and_wait | link=Summaries |  |
+| wait_for_element_visible_ok | link=Edit Summaries %%start_time%% | 30000 |
+| text_like | st-listview-form | Edit summary: A second summary for a wikitest %%start_time%% |
+| text_unlike | st-listview-form | Quick Summary for my friends %%start_time%% |
+
+| *Comment* | Test Case: Edit Summaries TEARDOWN |  |  |
+| st-process-jobs |  |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page edit_summaries_%%start_time%% | was purged |  |
 
 | *Comment* | Test case: Edit Summaries COMPLETED |  |  |
