@@ -26,7 +26,7 @@ $.fn.extend({
         var $menu = self.next()
 
         // Change the arrow icon to be a triangle rather than an image
-        $menu.find('.ui-selectmenu-icon').html('&nbsp;&#9662;');
+        $menu.find('.ui-selectmenu-icon').html('&nbsp;&#9660;');
         
         // Focusing the link puts a weird border around it, so let's
         // not allow that
