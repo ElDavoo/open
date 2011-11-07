@@ -401,8 +401,8 @@ sub st_send_page_signal {
    my ($self, $signaltosend) = @_;
 
    $self->st_type_signal($signaltosend);
-   $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
-   $self->handle_command('click_ok', '//a[@class="btn post"]');
+   $self->handle_command('wait_for_element_visible_ok','st-signalthispost', 5000);
+   $self->handle_command('click_ok', 'st-signalthispost');
    $self->handle_command('pause_ok',3000);
    $self->handle_command('set_Speed',0);
 
@@ -643,6 +643,9 @@ sub st_find_user {
         $self->handle_command('type_ok', 'st-search-term', $user_id);
         $self->handle_command('pause_ok', '500');
         $self->handle_command('click_and_wait', 'st-search-submit');
+        if ($self->{selenium}->is_element_present("//select[\@class='account-select']")) {
+          $self->handle_command('select_ok', "//select[\@class='account-select']", "label=All Groups");
+        }
         $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
         $self->handle_command('click_and_wait',"link=$user_id");
         $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
