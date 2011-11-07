@@ -18,7 +18,6 @@
 | st_single_widget_in_dashboard | gallery-widget-Activities |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-widget-title | ignore | Activities |
-| pause_ok | 5000 | js must load |
 | st_verify_text_in_activities_widget | What would you do %%start_time%% |  |
 
 | *Comment* | Test Case: Activities Widget with REAL Popout At Dashboard pop it out |  |

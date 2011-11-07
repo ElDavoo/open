@@ -1,4 +1,3 @@
-*On hold until st-send-page-signal is fixed*
 
 | *Comment* | Test Case: Signal Page To Group |
 
@@ -46,8 +45,6 @@
 
 | *Comment* | Test Case: Signal Page To Group - see signal on signals page for %%acct%% |  |
 | open_ok | /st/signals/ |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 30000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a |  |
 | wait_for_text_present_ok | Check out this page, it's great: %%start_time%% | 30000 |
 | wait_for_text_present_ok | %%signalpage%% | 30000 |
 | wait_for_element_visible_ok | link=%%signalpage%% | 30000 |
@@ -72,7 +69,7 @@
 | deactivate-user | %%nonwsuser%% |  |
 | delete-group | %%group2_id%% |  |
 | delete-group | %%group1_id%% |  |
-| st-admin | delete-workspace --no-export --w %%ws%% | been deleted |
+| delete-workspace |  %%ws%% |  |
 | delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Signal Page To Group COMPLETED |  |
