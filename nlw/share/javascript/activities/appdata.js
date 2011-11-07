@@ -485,7 +485,7 @@ $.extend(Activities.AppData.prototype, {
             'activities.showing=action,feed,group',
             ('<span class="filter">' + this.get('action').title + '</span>'),
             ('<span class="filter">' + this.get('feed').title + '</span>'),
-            ('<span class="filter">' + this.get('network').title + (
+            ('<span class="filter last">' + this.get('network').title + (
             this.findId('filters').is(':visible')
                 ? '<span class="ui-icon ui-icon-circle-triangle-s"></span>'
                 : '<span class="ui-icon ui-icon-circle-triangle-e"></span>'
