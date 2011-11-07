@@ -1,4 +1,4 @@
-*On hold until switching languages stops not working intermittently*
+*TUXTODO: On hold until switching languages stops not working intermittently*
 
 Note: Does not work in IE8. If done manually in IE8 it works fine, but when Sel is automating, the select_ok of locale does not trigger a page reload as it should.
 

@@ -2,7 +2,7 @@
 
 * Fixture: SocialWidgets
 
-| set | rss_header_text | RSS Viewer |
+| set | rss_header_text | Enterprise Social Software Blog |
 | set | cancel_button | `//div[@id='save-lightbox']/div[2]/a[2]` |
 
 | *Comment* | Test Case: Administer Dashboards create a fresh account |  |
@@ -122,10 +122,9 @@
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | wait_for_text_present_ok | %%rss_header_text%% | 15000 |
 
-
 | *Comment* | Test Case: Administer Dashboards TEARDOWN |  |
 | st-process-jobs |  |  |
 | delete-account | %%acct%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%mwgmail%% | been deactivated |
 
-| *Comment* | Test Case: Administer Dashboards COMPLETED |
+| *Comment* | Test Case: Administer Dashboards COMPLETED |  |

@@ -1,15 +1,24 @@
-tuxhold until show/hide stickiness is restored
-
 | *Comment* | STARTING Test Case: Calc Explore Spreadsheet Sidebar |  |
 
-| open_ok | %%workspace%%/?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet1%20%%start_time%%#edit |  |
+| set | acct | tccx-%%start_time%% |
+| set | ws | tccx-%%start_time%% |
+| set | tcxx | `tccx-%%start_time%%@ken.socialtext.net` |
+
+| *Comment* | STARTING Test Case: Calc Explore Spreadsheet Sidebar needs a solo acct/user/ws |  |
+| create-account | %%acct%% |  |
+| st-admin | create-user --e %%tcxx%% --p %%password%% --account %%acct%% | created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% --empty | created |
+| st-admin | add-member --e %%tcxx%% --w %%ws%% | has the role |
+| st-logoutin | %%tcxx%% | %%password%% |
+
+| open_ok | /%%ws%%/?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet1%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause_ok | 15000 |  |
+| pause_ok | 4000 |  |
 | st-page-save |  |  |
 
-| open_ok | %%workspace%%/?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet2%20%%start_time%%#edit |  |
+| open_ok | /%%ws%%/?action=display;page_type=spreadsheet;page_name=TC%20Hide%20Sidebar%20Spreadsheet2%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| pause_ok | 15000 |  |
+| pause_ok | 4000 |  |
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should be open |  |
@@ -41,7 +50,7 @@ tuxhold until show/hide stickiness is restored
 
 | *Comment* | Test Case : Hide sidebar close the sidebar navigate away |  |
 | click_ok | st-page-boxes-hide-link |  |
-| open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet1 %%start_time%% |  |
+| open_ok | /%%ws%%/?TC Hide Sidebar Spreadsheet1 %%start_time%% |  |
 
 | *Comment* | Test Case : Hide sidebar sidebar should still be closed |  |
 | wait_for_element_visible_ok | st-page-boxes-show-link | 30000 |
@@ -59,7 +68,7 @@ tuxhold until show/hide stickiness is restored
 | text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar open the sidebar on the second page |  |
-| open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
+| open_ok | /%%ws%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should be open |  |
 | wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
@@ -68,13 +77,13 @@ tuxhold until show/hide stickiness is restored
 | text_like | st-page-boxes-hide-link | hide |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar navigate to original page |  |
-| open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet1 %%start_time%% |  |
+| open_ok | /%%ws%%/?TC Hide Sidebar Spreadsheet1 %%start_time%% |  |
 
-| *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should still be open |  |
-| wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |
-| wait_for_element_visible_ok | st-tags-listing | 15000 |
-| wait_for_element_visible_ok | st-attachment-listing | 15000 |
-| text_like | st-page-boxes-hide-link | hide |
+| *Comment* | Test Case: Explore Spreadsheet Sidebar sidebar should still be open |  |  |
+| wait_for_element_visible_ok | st-page-boxes-hide-link | 30000 |  |
+| wait_for_element_visible_ok | st-tags-listing | 15000 |  |
+| wait_for_element_visible_ok | st-attachment-listing | 15000 |  |
+| text_like | st-page-boxes-hide-link | hide |  |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - what's new |  |  |
 
@@ -86,9 +95,9 @@ tuxhold until show/hide stickiness is restored
 | click_ok | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |
 
-| open_ok | /%%workspace%%/index.cgi?tc_hide_sidebar_spreadsheet2_%%start_time%% |  |
-| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |
-| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 15000 |
+| open_ok | /%%ws%%/index.cgi?tc_hide_sidebar_spreadsheet2_%%start_time%% |  |  |
+| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |  |
+| wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 15000 |  |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - uncheck what's new |  |  |
 
@@ -98,10 +107,10 @@ tuxhold until show/hide stickiness is restored
 | click_ok | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |
 
-| *Comment* | sidebar element should be completely gone, not present |  |
-| open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
-| text_unlike | st-display-mode-widgets | What's New |
-| text_like | st-display-mode-widgets | Incoming Links |
+| *Comment* | sidebar element should be completely gone, not present |  |  |
+| open_ok | /%%ws%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |  |
+| text_unlike | st-display-mode-widgets | What's New |  |
+| text_like | st-display-mode-widgets | Incoming Links |  |
 
 | *Comment* | Test Case: Calc Explore Spreadsheet Sidebar - check recently viewed |  |  |
 
@@ -111,7 +120,7 @@ tuxhold until show/hide stickiness is restored
 | click_ok | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |
 
-| open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |  |
+| open_ok | /%%ws%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |  |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |  |
 | wait_for_element_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 15000 |  |
 
@@ -121,14 +130,14 @@ tuxhold until show/hide stickiness is restored
 | click_ok | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |
 
-| open_ok | /%%workspace%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
+| open_ok | /%%ws%%/?TC Hide Sidebar Spreadsheet2 %%start_time%% |  |
 | wait_for_element_not_present_ok | link=TC Hide Sidebar Spreadsheet1 %%start_time%% | 30000 |
 | wait_for_element_not_present_ok | link=TC Hide Sidebar Spreadsheet2 %%start_time%% | 15000 |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar TEARDOWN |  |
-
 | st-process-jobs |  |  |
-| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_spreadsheet1_%%start_time%% | was purged |
-| st-admin | purge-page --w %%workspace%% --page tc_hide_sidebar_spreadsheet2_%%start_time%% | was purged |
+| delete-workspace | %%ws%% |  |
+| deactivate-user | %%tcxx%% |  |
+| delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Explore Spreadsheet Sidebar COMPLETED |  |

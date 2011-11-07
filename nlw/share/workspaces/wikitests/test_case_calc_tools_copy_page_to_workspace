@@ -1,6 +1,4 @@
-tuxhold until false transit to new WS is fixed
-tuxhold because clicking copy button crashes Se
-
+TUXTODO: break this up into three tests like TC: Tools: Delete Workspace, then remove skip.all
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace |
 
@@ -34,28 +32,15 @@ tuxhold because clicking copy button crashes Se
 | wait_for_element_visible_ok | st-copy-savelink | 30000 |
 | select_ok | st-copy-workspace | label=%%newtitle%% |
 | type_ok | st-copy-newname | New Copy Page Spreadsheet %%start_time%% |
-
-| Comment | ABOUT TO COPY |  |
 | click_ok | st-copy-savelink |  |
-| Comment | COPIED |  |
 
-| pause | 10000 |  |
-
-| *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Should return to the same WS,
-NOT the target WS |  |
-
-TUXTODO: restore test when false transit to target workspace is fixed
-location_like | /%%workspace%%/copy_page_spreadsheet_%%start_time%% | |
-
-| wait_for_element_visible_ok | link=Copy Spreadsheet Tag %%start_time%% | 30000 |
-
-| *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Verify copy. |  |
-| open_ok | /%%newspace%%/?New Copy Page Spreadsheet %%start_time%% |  |
+| *Comment* | Test Case: Calc Tools: Copy Page to Workspace. transits to copy location |  |
+| location_like | /%%newspace%%/New Copy Page Spreadsheet %%start_time%% |  |
 | wait_for_element_visible_ok | link=Copy Spreadsheet Tag %%start_time%% | 30000 |
 | st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Create new content. |  |
-| open_ok | /%%workspace%%/?Copy Page Spreadsheet %%start_time%% |  |
+| open_ok | /%%workspace%%/Copy Page Spreadsheet %%start_time%% |  |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Add 2nd Tag |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |

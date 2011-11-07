@@ -1,4 +1,5 @@
-| set | pause_time | 15000 |
+| set | pause_time | 6000 |
+| set_default | widgetTitle | %%widget%% |
 
 | *Comment* | st-add-widget: %%widget%% |  |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
@@ -9,4 +10,4 @@
 
 | click_ok | //a[@id='gallery-widget-%%widget%%'] |  |
 | pause_ok | %%pause_time%% |  |
-| text_like | content | %%widget%% |
+| text_like | content | %%widgetTitle%% |

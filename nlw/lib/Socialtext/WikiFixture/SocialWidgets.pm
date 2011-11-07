@@ -248,7 +248,7 @@ This assumes that the currently selected frame is the "parent" container frame.
 
 sub st_widget_title {
     my ($self, $logical, $title) = @_;
-    my $cmdx = "//div[\@class='widgetTitle']/h1[text()='" . $title . "']";
+    my $cmdx = "//div[\@class='widgetTitle']/h1[contains(text(),'" . $title . "')]";
     eval {
         $self->handle_command('wait_for_element_present_ok',$cmdx,'5000');
     };
@@ -419,10 +419,12 @@ sub st_send_reply {
     #TODO: click on something else in IE
     my $firstReplyLink = '//a[@class="replyLink"]';
     my $subsequentReplyLink = '//div[@class="wikiwyg"]';
-    my $firstReply = $self->{selenium}->is_element_present($firstReplyLink);
-    my $replyLink = $firstReply ? $firstReplyLink : $subsequentReplyLink; 
-    $self->handle_command('wait_for_element_visible_ok', $replyLink, 15000);
-    $self->handle_command('click_ok', $replyLink);
+    $self->handle_command('wait_for_element_visible_ok','//div[@class="activitiesWidget"]', 15000);
+    $self->handle_command('wait_for_element_present_ok','//div[@class="more"]', 15000);
+    #my $firstReply = $self->{selenium}->is_element_present($firstReplyLink);
+    #my $replyLink = $firstReply ? $firstReplyLink : $subsequentReplyLink; 
+    $self->handle_command('wait_for_element_visible_ok', $firstReplyLink, 15000);
+    $self->handle_command('click_ok', $firstReplyLink);
 
     $self->handle_command('set_Speed',2000);
     if ($self->_is_wikiwyg() ) { #wikiwyg
@@ -450,7 +452,6 @@ sub st_send_reply {
     $self->handle_command('wait_for_element_visible_ok',$goLink, 5000);
     $self->handle_command('click_ok', $goLink);
     $self->handle_command('wait_for_element_visible_ok',$reply, 15000);
-    $self->handle_command('wait_for_text_present_ok' ,$signaltosend, 15000);
     $self->handle_command('set_Speed',0);
 }
 

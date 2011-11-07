@@ -1,5 +1,4 @@
-
-*On hold until st-edit-new-page can pass content correctly*
+TUXTODO: On hold until st-edit-new-page can pass %%dev%% correctly
 
 | *Comment* | Test Case: Page Creator Widget |  |
 
@@ -52,7 +51,7 @@
 | call | [st-tag-page] | tag_to_apply=story |  |  |
 | call | [st-tag-page] | tag_to_apply=template |  |  |
 
-| *Comment* | Test Case: Page Creator Widget make a new page, insert the widget |  |
+| *Comment* | Test Case: Page Creator Widget make a new page, insert the widget |  |  |  |
 
 | call | [st-edit-fill-page] | ws=%%pcw_wiki%% | title=%%pcw_form_page%% |  |
 
@@ -119,7 +118,6 @@
 | wait_for_element_visible_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[3] | 30000 |
 | type_ok | xpath=(//input[@class='field-choices ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c'])[3] | Tech Story |
 | click_ok | xpath=(//input[@title='Make this choice pre-selected.'])[2] |  |
-
 
 | *Comment* | Test Case: Page Creator Widget create and fill out a "dev" field |  |
 | click_ok | field-row-new |  |

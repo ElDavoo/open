@@ -4,10 +4,9 @@
 
 | *Comment* | Test Case: Wiki Page Widget |  |
 
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| open_ok | /%%workspace%%/?action=new_page |  |  |
 
 | call | [st-edit-save-page] | title=Wiki Page %%start_time%% | content=I have created a page called Wiki Page %%start_time%%. w00t. |
-
 
 | *Comment* | Test Case: Wiki Page Widget. Create the widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Wiki Page |  |
@@ -33,6 +32,7 @@
 | wait_for_text_present_ok | I have created a page called Wiki Page %%start_time%%. w00t. | 30000 |
 
 | *Comment* | Test Case: Wiki Page TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page wiki_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Wiki Page Widget COMPLETED |  |

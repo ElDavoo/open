@@ -1,6 +1,6 @@
 * HighPermissions
 
-| *Comment* | STARTING Test Case: Upload Update Gallery Widgets |
+| *Comment* | STARTING Test Case: Upload Update Gallery Widgets |  |
 
 * Fixture: SocialWidgets
 
@@ -9,16 +9,16 @@
 | *Comment* | Test Case: Upload Update Gallery Widgets create a fresh account |  |
 | set | acct | MWG %%start_time%% |
 | set | mwgmail | mwg-%%start_time%%@ken.socialtext.net |
+
 | create-account | %%acct%% |  |
 | st-admin | enable-plugin --account "%%acct%%" --plugin dashboard |  |
 | st-admin | create-user --e %%mwgmail%% --p %%password%% --account "%%acct%%" | created |
 | st-admin | give-accounts-admin --e %%mwgmail%% --account "%%acct%%" | now has accounts admin access |
 
-| *Comment* | Test Case: Upload Update Gallery Widgets - login and open the dashboard to create a gallery |  |
+| *Comment* | Test Case: Upload Update Gallery Widgets - login to create a dashboard and a gallery |  |
 | st-logoutin | %%mwgmail%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | //span[contains(text(),'Filter Activities Stream')] | 8000 |
-
+| wait_for_element_visible_ok | //div[@class='activitiesWidget'] | 30000 |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets - Navigate to Control Panel |  |
 | open_ok | /nlw/control/account/%%account_id%% |  |
@@ -35,12 +35,12 @@
 | wait_for_element_visible_ok | st-gallery-add-widget | 30000 |
 | click_ok | st-gallery-add-widget |  |
 
-| *Comment* | Test Case: Upload Update Gallery Widgets - Add Cheeky Quote via URL |  |
-| wait_for_element_visible_ok | widget-url | 30000 |
-| wait_for_element_visible_ok | st-add-widget | 30000 |
-| click_ok | method-url |  |
-| click_ok | widget-url |  |
-| type_ok | widget-url | `http://hosting.gmodules.com/ig/gadgets/file/112764733758979090903/CheekyQuote.xml` |
+| *Comment* | Test Case: Upload Update Gallery Widgets - Add Cheeky Quote via URL |  |  |
+| wait_for_element_visible_ok | widget-url | 30000 |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |  |
+| click_ok | method-url |  |  |
+| click_ok | widget-url |  |  |
+| type_ok | widget-url | `http://hosting.gmodules.com/ig/gadgets/file/112764733758979090903/CheekyQuote.xml` |  |
 
 | st_click_pause | st-add-widget | 8000 | ANDWAIT |
 
@@ -73,41 +73,39 @@
 | wait_for_element_visible_ok | //span[@class='ui-icon ui-icon-closethick'] | 30000 |
 | click_ok | //span[@class='ui-icon ui-icon-closethick'] |  |
 
-| *Comment* | Test Case: Upload Update Gallery Widgets add bosspy.xml file |  |
-| open_ok | /nlw/control/account/%%account_id%% | 60000 |
-| wait_for_element_visible_ok | st-gallery-add-widget | 30000 |
-| click_ok | st-gallery-add-widget |  |
-| wait_for_element_visible_ok | widget-file | 30000 |
-| wait_for_element_visible_ok | st-add-widget | 30000 |
-| click_ok | widget-file | seems to be needed |
-| type_ok | widget-file | %%wikitest_files%%bosspy.xml |
+| *Comment* | Test Case: Upload Update Gallery Widgets add bosspy.xml file |  |  |
+| open_ok | /nlw/control/account/%%account_id%% | 60000 |  |
+| wait_for_element_visible_ok | st-gallery-add-widget | 30000 |  |
+| click_ok | st-gallery-add-widget |  |  |
+| wait_for_element_visible_ok | widget-file | 30000 |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |  |
+| click_ok | widget-file | seems to be needed |  |
+| type_ok | widget-file | %%wikitest_files%%bosspy.xml |  |
 
 | st_click_pause | st-add-widget | 8000 | ANDWAIT |
 
-| *Comment* | Test Case: Upload Update Gallery Widgets add a Cheeky Quote to the dashboard |  |
-| open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | st-add-widget | 30000 |
-| click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Cheeky')] | 30000 |
-| click_and_pause | //a[contains(@id,'gallery-widget-Cheeky')] | 15000 |
-| wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
-| open_ok | /st/dashboard |  |
-| st-name-widget | 5 | cheeky_quote | Cheeky Quotes |
-| st-widget-title | cheeky_quote | Cheeky Quotes |
+| *Comment* | Test Case: Upload Update Gallery Widgets add a Cheeky Quote to the dashboard |  |  |
+| open_ok | /st/dashboard |  |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |  |
+| click_ok | st-add-widget |  |  |
+| wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Cheeky')] | 30000 |  |
+| click_and_pause | //a[contains(@id,'gallery-widget-Cheeky')] | 5000 |  |
 
-| *Comment* | Test Case: Upload Update Gallery Widgets add a Boss Spy to the dashboard |  |
-| wait_for_element_visible_ok | st-add-widget | 30000 |
-| click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | //a[@id='gallery-widget-Boss Spy'] | 30000 |
-| click_and_pause | //a[@id='gallery-widget-Boss Spy'] | 15000 |
-| wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
-| open_ok | /st/dashboard |  |
-| st-name-widget | 5 | cheeky_quote | boss_spy |
-| st-widget-title | boss_spy | Boss Spy |
+| open_ok | /st/dashboard |  |  |
+| st-widget-title | ignore | Cheeky Quotes |  |
+
+| *Comment* | Test Case: Upload Update Gallery Widgets add a Boss Spy to the dashboard |  |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |  |
+| click_ok | st-add-widget |  |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Boss Spy'] | 30000 |  |
+| click_and_pause | //a[@id='gallery-widget-Boss Spy'] | 5000 |  |
+
+| open_ok | /st/dashboard |  |  |
+| st-widget-title | ignore | Boss Spy |  |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | deactivate-user --email %%mwgmail%% | has been |
 | delete-account | %%acct%% | Recklessly deleting |
 
-| *Comment* | Test Case: Upload Update Gallery Widgets COMPLETED |
+| *Comment* | Test Case: Upload Update Gallery Widgets COMPLETED |  |

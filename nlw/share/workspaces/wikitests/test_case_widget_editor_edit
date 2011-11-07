@@ -15,14 +15,11 @@ IE can't select the iframe and type into it
 | *Comment* | Test Case: Widget Editor Edit click preview |  |
 | wait_for_element_visible_ok | widget-preview | 30000 |
 | click_ok | widget-preview |  |
-
- wait_for_text_present_ok | The file you provided does not appear to be valid | 30000 |
-
-TUXTODO: check for error message when Preview button is repaired.
+| wait_for_text_present_ok | The file you provided does not appear to be valid | 30000 |
 
 | *Comment* | Test Case: Widget Editor Edit click cancel |  |
 
- click_ok | widget-cancel | |
+click_ok | widget-cancel | |
 
 TUXTODO: check for cancellation when the function is repaired. Give 405 now.
 

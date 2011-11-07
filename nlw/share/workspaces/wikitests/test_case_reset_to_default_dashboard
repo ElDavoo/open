@@ -1,6 +1,6 @@
 | *Comment* | STARTING Test Case: Reset to Default Dashboard |
 
-| set | rss_header_text | RSS Viewer |
+| set | rss_header_text | Enterprise Social Software Blog |
 | set | cancel_button | `//div[@id='save-lightbox']/div[2]/a[2]` |
 
 * Fixture: SocialWidgets
@@ -122,4 +122,4 @@
 | st-admin | deactivate-user --email %%mwgmail%% | has been |
 | delete-account | %%acct%% | Recklessly deleting |
 
-| *Comment* | Test Case: Reset to Default Dashboard COMPLETED |
+| *Comment* | Test Case: Reset to Default Dashboard COMPLETED |  |

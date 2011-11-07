@@ -52,8 +52,10 @@
 | click_ok | //a[@class='replyLink'] |  |
 | wait_for_element_visible_ok | //body[@class='wiki signals'] | 30000 |
 | type_ok | //body[@class='wiki signals'] | %%private_reply%% |
-| wait_for_element_visible_ok | xpath=(//a[@role='button'])[3] | 10000 |
-| click_ok | xpath=(//a[@role='button'])[3] |  |
+
+| *Comment* | Test Case: Private Signal find and click the reply Go button |  |
+| wait_for_element_visible_ok | xpath=(//div[@class="post hidden"])[1] | 10000 |
+| click_ok | xpath=(//div[@class="post hidden"])[1] |  |
 | wait_for_text_present_ok | By you | 30000 |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends pubmsg to %%psshort_two%% |  |
@@ -73,8 +75,8 @@
 | open_ok | /st/signals |  |
 | st-verify-text-in-activities-widget | %%signal%% |  |
 | st-verify-text-in-activities-widget | %%public%% |  |
-| text_unlike | content | %%private%% |
-| text_unlike | content | %%private_reply%% |
+| text-unlike | //div[@class='activitiesWidget'] | %%private%% |
+| text-unlike | //div[@class='activitiesWidget'] | %%private_reply%% |
 
 | *Comment* | Test Case: Private Signal. Start privmsg, cancel, send public msg |  |
 | set | cancel | Public Hello after Cancel to %%psshort%% from %%psshort_three%% |

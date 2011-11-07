@@ -87,8 +87,8 @@
 | wait_for_element_visible_ok | gallery-table-column-6 | 30000 |
 | click_ok | gallery-table-column-6 | 30000 |
 | wait_for_text_present_ok | Are you sure you want to permanently remove the "Cheeky Quotes" widget? | 30000 |
-| wait_for_element_visible_ok | confirm-yes | 30000 |
-| click_ok | confirm-yes |  |
+| wait_for_element_visible_ok | st-confirm-yes | 30000 |
+| click_ok | st-confirm-yes |  |
 | wait_for_text_not_present_ok | Cheeky Quotes | 30000 |
 
 | *Comment* | Test Case: Add Remove Gallery Widgets deleted an uploaded widget |  |
@@ -103,4 +103,4 @@
 | deactivate-user | %%mwgmail%% |  |
 | delete-account | %%acct%% |  |
 
-| *Comment* | Test Case: Add Remove Gallery Widgets COMPLETED |
+| *Comment* | Test Case: Add Remove Gallery Widgets COMPLETED |  |

@@ -1,4 +1,4 @@
-| *Comment* | Test Case: Miki Dropdowns WikiWyg |
+| *Comment* | Test Case: Miki Dropdowns WikiWyg |  |
 
 * Fixture: SocialWidgets
 
@@ -14,12 +14,16 @@
 | wait_for_text_present_ok | Siggy %%start_time%% First Sig | 10000 |
 
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. Create two new accounts. |  |
-| set | msacct | mobile-signals-%%start_time%% |
+| set | msacct | mws-%%start_time%% |
+
 | set | common_user | ms%%start_time%%@ken.socialtext.net |
 | create-account | %%msacct%%-A |  |
 | set | a_id | %%account_id%% |
+| *Comment* | Test Case: Miki Dropdowns WikiWyg. a_id is %%a_id%% |  |
+
 | create-account | %%msacct%%-B |  |
 | set | b_id | %%account_id%% |
+| *Comment* | Test Case: Miki Dropdowns WikiWyg. b_id is %%b_id%% |  |
 
 | st-admin | enable-plugin --plugin signals --account %%msacct%%-A |  |
 | st-admin | enable-plugin --plugin signals --account %%msacct%%-B |  |
@@ -33,25 +37,26 @@
 | open_ok | /st/m/signals |  |
 | wait_for_text_present_ok | %%miki_signal_text%% | 10000 |
 
-| *Comment* | Test Case: Miki Dropdowns WikiWyg. See both signals under "all my groups" |  |
+| *Comment* | Test Case: Miki Dropdowns WikiWyg. Enable seeing all signals in "all my groups" |  |
 | wait_for_element_visible_ok | //a[@class='expander'] | 15000 |
 | click_ok | //a[@class='expander'] |  |
 | wait_for_element_visible_ok | network-all | 15000 |
 | click_ok | network-all |  |
 
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. Signal to one of the accounts %%msacct%%-A |  |
-| st_mobile_account_select_ok | %%msacct%%-A (primary, 1 user) |  |
+| *Comment* | use the hidden selector |  |
+| select_ok | mobile_signal_network | value=account-%%a_id%% |
 
-| st_prepare_signal_within_activities_widget | Signal to %%msacct%%-A |  |
+| st_type_signal | Signal to %%msacct%%-A |  |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 3000 |
 | click_ok | %%miki_signal_submit%% |  |
 | wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |
 
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. Signal to the other account: %%msacct%%-B |  |
 | open_ok | /st/m/signals |  |
-| st_mobile_account_select_ok | %%msacct%%-B (1 user) |  |
+| select_ok | mobile_signal_network | value=account-%%b_id%% |
 
-| st_prepare_signal_within_activities_widget | Signal to %%msacct%%-B |  |
+| st_type_signal | Signal to %%msacct%%-B |  |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 20000 |
 | click_ok | %%miki_signal_submit%% |  |
 | wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |

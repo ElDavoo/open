@@ -53,7 +53,7 @@
 | *Comment* | Test Case: All Files user_2 uploads wikitestzip.zip |  |  |  |
 | st-logoutin | %%all_files_user_2%% | %%password%% |  |  |
 | set | new_title_2 | All Files %%start_time%% 2 |  |  |
-| st-admin | update-page --e %%all_files_user_2%% --w %%new_ws%% --p "new_title_2" < %%wikitest_client_files%%wikitest.txt | has been created |  |  |
+| st-admin | update-page --e %%all_files_user_2%% --w %%new_ws%% --p "%%new_title_2%%" < %%wikitest_client_files%%wikitest.txt | has been created |  |  |
 
 | call | [st-attach-file] | ws=%%new_ws%% | title=%%new_title_2%% | file=wikitestzip.zip |
 

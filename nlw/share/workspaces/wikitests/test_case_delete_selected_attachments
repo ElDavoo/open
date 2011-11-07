@@ -1,5 +1,3 @@
-{image: Callas.jpg}
-
 * HighPermissions
 
 | *Comment* | Test Case: Delete Selected Attachments |  |
@@ -48,7 +46,7 @@
 
 | *Comment* | Open All Files |  |
 | open_ok | /%%workspace%%/index.cgi?action=attachments_listall |  |
-| wait_for_element_visible_ok | //input[@value='Delete Selected Attachments'] | 60000 |
+| wait_for_element_visible_ok | st-attachments-delete | 10000 |
 
 | *Comment* | Test Case: Delete Selected Attachments delete wikitest.doc |  |
 | *Comment* | Sort by Date Uploaded to get wikitest.doc to the top |  |
@@ -58,7 +56,7 @@
 | wait_for_element_visible_ok | selected | 30000 |
 | check_ok | selected |  |
 | is_checked_ok | selected |  |
-| click_and_wait | //input[@value='Delete Selected Attachments'] |  |
+| click_and_wait | st-attachments-delete |  |
 
 | *Comment* | Test Case: Delete Selected Attachments. See if wikitest.doc got deleted |  |
 | open_ok | /%%workspace%%/?Delete Attachments %%start_time%% |  |
@@ -76,8 +74,8 @@
 | click_and_wait | st-search-submit |  |
 | text_unlike | content | Delete Attachments %%start_time%% |
 
-| *Comment* | Test Case: Delete Selected Attachments teardown |  |
-
+| *Comment* | Test Case: Delete Selected Attachments TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page delete_attachments_%%start_time%% | was purged |
 | deactivate-user | %%user%% |  |
 
