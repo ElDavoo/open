@@ -1,13 +1,6 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
 [% WRAPPER layout/html id="loginPage" title=loc("login.login") %]
-<form id="st-login-form" name="login" method="post" action="/nlw/submit/login">
-  <input type="hidden" name="redirect_to" value="[% redirect_to | html %]" />
-  <input type="hidden" name="lite" value="[% lite | html %]" />
-  [% IF target_workspace %]
-    <input type="hidden" name="workspace_name" value="[% target_workspace.name%]" />
-  [% END %]
-
   [% IF login_message %]
     <div id="st-system-status">
       <div class="grid_24">[% login_message %]</div>
@@ -16,6 +9,14 @@
   [% END %]
 
   <div class="grid_8">
+
+  <form id="st-login-form" name="login" method="post" action="/nlw/submit/login">
+    <input type="hidden" name="redirect_to" value="[% redirect_to | html %]" />
+    <input type="hidden" name="lite" value="[% lite | html %]" />
+    [% IF target_workspace %]
+      <input type="hidden" name="workspace_name" value="[% target_workspace.name%]" />
+    [% END %]
+
     <div class="first_field login_field">
       <h2><label for="username">[% username_label %]</label></h2>
       <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus="autofocus" />
@@ -46,9 +47,13 @@
         <input type="submit" class="hidden"/>
         <a style="float:left" id="login_btn" href="#">[% loc('login.log-in') %]</a>
         <div class="clear"></div>
-        [% INCLUDE errors_and_messages %]
       [% END %]
     </div>
+    </form>
+
+    [% INCLUDE errors_and_messages %]
+    <div class="clear"></div>
+
     <div class="login_field">
       [% INCLUDE 'authen/element/forgot_password_link' %]
     </div>
@@ -58,7 +63,6 @@
     [% INCLUDE 'element/workspace_list/public_workspaces' %]
   </div>
   <div class="clear vpad10"></div>
-</form>
 <script>
 $('#login_btn').button().click(function() {
   $(this).parents('form').submit();
