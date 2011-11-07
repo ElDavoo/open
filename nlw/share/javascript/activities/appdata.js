@@ -593,7 +593,10 @@ $.extend(Activities.AppData.prototype, {
     checkFilter: function(key, id) {
         var $inputs = this.findId('filters').find('.' + key);
         if ($inputs.filter(':checked').attr('id') != id) {
-            $inputs.filter('#'+id).click();
+            $inputs.removeAttr('checked');
+            this.set(key, id);
+            this.checkDisabledOptions();
+            $inputs.filter('#'+id).attr('checked', 'checked').change();
         }
     },
 
