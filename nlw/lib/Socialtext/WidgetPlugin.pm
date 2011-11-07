@@ -29,7 +29,6 @@ sub gadget_vars {
     # Setup overrides and override preferences
     my %overrides = (
         instance_id => ((2 ** 30) + int(rand(2 ** 30))),
-        UP_workspace_name => $self->cgi->workspace_name || $self->hub->current_workspace->name,
     );
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
@@ -49,6 +48,11 @@ sub gadget_vars {
 
         # Backwards compat
         $overrides{"UP_$name"} = $overrides{$name} if defined $overrides{$name};
+
+        if ($pref->{datatype} eq 'workspace') {
+            $overrides{"UP_$name"} = $self->cgi->workspace_name
+                || $self->hub->current_workspace->name;
+        }
 
         my $overridden = $overrides{"UP_$name"} // next;
         $pref->{value} = $overridden; # This affects $gadget->requires_preferences
