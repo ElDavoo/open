@@ -199,7 +199,12 @@ var proto = CreateContentDialog.prototype = {
             })
 
         // Set the defaults
-        self.type_radio('xhtml').click();
+        if (self.type_radio('xhtml').length) {
+            self.type_radio('xhtml').click();
+        }
+        else {
+            self.update_templates();
+        }
         self.from_blank_radio().click();
         self.create_page_lookahead();
 
