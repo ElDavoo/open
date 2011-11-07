@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-11-05 14:07+0800\n"
+"PO-Revision-Date: 2011-11-07 18:19+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1423,7 +1423,7 @@ msgid "info.header_image_tiling"
 msgstr "页眉背景图像的重复方式。"
 
 msgid "info.header_link_color"
-msgstr "页脚链接颜色。"
+msgstr "页眉链接颜色。"
 
 msgid "info.logo_image"
 msgstr "标识图片（自动缩放至最大201x34像素。）"
