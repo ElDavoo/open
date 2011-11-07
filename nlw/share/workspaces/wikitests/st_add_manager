@@ -2,6 +2,6 @@
 | wait_for_element_visible_ok | field_supervisor | 10000 |
 | select-autocompleted-option-ok | xpath=//div[@id='field_supervisor']/input[contains(@class, 'relationship')] | %%manager_short%% |
 | wait_for_element_visible_ok | update_profile | 15000 |
-| pause | 15000 | settling time |
+| pause | 3000 | settling time |
 | click_and_wait | update_profile |  |
 | wait_for_element_visible_ok | link=%%manager_short%% | 30000 |

@@ -97,17 +97,14 @@
 | pause | 8000 | I hate pause |
 | text_unlike | st-display-mode-widgets | wikitest.txt |
 
-TUXTODO: Is in-page extraction restored?
-
 | *Comment* | Test Case: Manage Files Extracting zip |  |
-
-click_ok | //a[contains(@class,'extract_attachment')] | |
-pause | 15000 | |
-text_like | st-display-mode-widgets | wikitestzip.zip |
-text_like | st-display-mode-widgets | O Star.txt |
-text_like | st-display-mode-widgets | Poem By Robert Frost.pdf |
-text_like | st-display-mode-widgets | st-logo-symbol.jpg |
-text_like | st-display-mode-widgets | publictests-2-2.xls |
+| click_ok | //a[contains(@class,'extract_attachment')] |  |
+| pause | 15000 |  |
+| text_like | st-display-mode-widgets | wikitestzip.zip |
+| text_like | st-display-mode-widgets | O Star.txt |
+| text_like | st-display-mode-widgets | Poem By Robert Frost.pdf |
+| text_like | st-display-mode-widgets | st-logo-symbol.jpg |
+| text_like | st-display-mode-widgets | publictests-2-2.xls |
 
 | *Comment* | Test Case: Manage Files test extracted txt file (Temporarily disabled) |  |
 
