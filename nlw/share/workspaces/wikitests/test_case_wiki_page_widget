@@ -2,11 +2,9 @@
 
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Wiki Page Widget |  |
+| *Comment* | Test Case: Wiki Page Widget |  |  |
 
-| open_ok | /%%workspace%%/?action=new_page |  |  |
-
-| call | [st-edit-save-page] | title=Wiki Page %%start_time%% | content=I have created a page called Wiki Page %%start_time%%. w00t. |
+| st-create-page | %%workspace%% | Wiki Page %%start_time%% | I have created a page called Wiki Page %%start_time%%. w00t. |
 
 | *Comment* | Test Case: Wiki Page Widget. Create the widget |  |
 | st-single-widget-in-dashboard | gallery-widget-Wiki Page |  |

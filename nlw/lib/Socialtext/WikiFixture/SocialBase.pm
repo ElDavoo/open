@@ -519,15 +519,15 @@ sub st_massive_tags {
 }
 
 sub st_create_page {
-    my ($self, $workspace, $title) = @_;
+    my ($self, $workspace, $title, $usercontent) = @_;
     my $user = Socialtext::User->new(username => $self->{'username'});
     my $hub = new_hub($workspace);
-    my $content = "Content for title test";
+    my $content = $usercontent || "Content for title test";
     Socialtext::Page->new(hub => $hub)->create(
                                   title => $title,
                                   content => $content,
                                   creator => $user);
-    ok 1, "Created $title in $workspace";
+    ok 1, "Created $title in $workspace as $self->{'username'}";
 }
 
 sub stub_page {

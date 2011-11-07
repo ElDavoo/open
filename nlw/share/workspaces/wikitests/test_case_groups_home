@@ -26,10 +26,14 @@
 
 | st-logoutin | %%permuser%% | %%password%% |
 
-| *Comment* | Test Case: Groups Home. Make A New Page. On galena, this often raises a basic auth popup as if the login had not worked. Try to open the ws and see if you are there. |  |  |
-| open_ok | /%%wsname%%/?action=new_page |  |  |
+| *Comment* | Test Case: Groups Home. Make A New Page. |  |  |
+| st-create-page | %%wsname%% | New Page %%start_time%% | New Page %%start_time%% Content |
+| open_ok | /%%wsname%%/New Page %%start_time%% |  |  |
 
-| call | st-edit-save-page | title=New Page %%start_time%% | content=New Page %%start_time%% Content |
+| *Comment* | Test Case: Groups Home. Make an edit to create an event |  |  |
+| click_ok | st-edit-button-link |  |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |  |
+| click_and_wait | st-save-button-link |  |  |
 
 | *Comment* | Test Case: Groups Home. Tag A Page |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
