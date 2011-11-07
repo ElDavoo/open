@@ -104,6 +104,8 @@ Socialtext::editor =
     wikiwyg_launcher?()
 
   showLightbox: (opts) ->
+    $("#st-xhtml-edit").ckeditorGet?()?.getSelection?()?.lock()
+
     if $('#lightbox').length
       try $("#lightbox").dialog('destroy')
       $('#lightbox').remove()
@@ -148,6 +150,7 @@ Socialtext::editor =
     try $('#lightbox').dialog('destroy')
     $('div.lookaheadContainer').hide()
     $("#lightbox").remove()
+    $("#st-xhtml-edit").ckeditorGet?()?.getSelection?()?.unlock true
 
   addNewTag: (tag) ->
     rand = ("" + Math.random()).replace(/\./, "")
