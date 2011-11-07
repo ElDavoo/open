@@ -208,10 +208,7 @@ Socialtext.prototype.setupPageHandlers = function() {
         && !location.href.toString().match(/action=display;/)
         && !/^#draft-\d+$/.test(location.hash)
     ) {
-        // Incipient pages are now created with "Edit" button too
-        setTimeout(function() {
-            $("#st-edit-button-link").click();
-        }, 500);
+        st.dialog.show('create-content', { incipient_title: st.page.title });
     }
     else if (st.page.is_new || st.start_in_edit_mode
             || location.hash.toLowerCase() == '#edit') {

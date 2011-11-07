@@ -268,6 +268,9 @@ var proto = CreateContentDialog.prototype = {
 
 st.dialog.register('create-content', function(opts) {
     var cc = new CreateContentDialog();
+    if (opts.incipient_title) {
+        cc.set_incipient_title(opts.incipient_title);
+    }
     cc.show();
 });
 
