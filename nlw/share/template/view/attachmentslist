@@ -87,7 +87,7 @@ $('#st-listview-selectall').click(function () {
           [% IF loop.count % 2 %]<tr class="oddRow">[% ELSE %]<tr>[% END %]
             <td width="30">
               [% IF row.page_is_locked AND ! row.user_can_modify %]
-                <img src="/static/skin/s3/images/lock-locked.png" />
+                <img src="[% static_path %]/images/icons/locked-black-15.png" />
               [% ELSE %]
                 <input name="selected" value="[% row.page_uri %],[% row.id %]" type="checkbox" />
               [% END %]
