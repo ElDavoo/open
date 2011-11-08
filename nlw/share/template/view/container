@@ -28,7 +28,7 @@
 [% END %]
 <div class="clear"></div>
 
-<script>
+<script>$(function(){
     [%# Render the container with widgets %]
     [% SET gadgets = container.gadgets; container.gadgets = [] %]
     gadgets.container.setup(
@@ -40,6 +40,6 @@
             [% json.replace('</script>', '</scr" + "ipt>') %]
         );
     [% END %]
-</script>
+});</script>
 
 [% END %]
