@@ -427,15 +427,18 @@ $.extend(Activities.AppData.prototype, {
                 title: loc('activities.my-conversations'),
                 value: "/conversations/" + self.viewer,
                 id: "feed-conversations"
-            },
-            {
+            }
+        ];
+
+        if (self.owner) {
+            feeds.push({
                 hidden: true,
                 title: (self.viewer == self.owner) ? loc('activities.me') : (self.owner_name || 'Unknown User'),
                 value: '/activities/' + self.owner_id,
                 signals: true,
                 id: 'feed-user'
-            }
-        ];
+            });
+        }
 
         // Check for a fixed value
         if (self.fixed_feed) {
