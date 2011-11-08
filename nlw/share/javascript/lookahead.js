@@ -174,8 +174,12 @@
                 case $.ui.keyCode.NUMPAD_ENTER:
                     // Accept the typed value
                     if ($input.val() && opts.onAccept) {
-                        opts.onAccept($input.val());
+                        event.preventDefault();
+                        var currentVal = $input.val();
+                        opts.onAccept(currentVal);
+                        $input.val('');
                         $input.autocomplete('close');
+                        return false;
                     }
                     return;
                 default:
