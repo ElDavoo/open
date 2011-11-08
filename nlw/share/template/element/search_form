@@ -8,7 +8,7 @@
 DEFAULT
     sid = 'search'
 -%]
-<form style="position:relative" id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
+<form style="position:relative; visibility: hidden" id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
 
   <select id="st-[%sid%]-action" name="action" class="searchSelect">
     [% IF workspace_present %]
@@ -38,15 +38,13 @@ DEFAULT
      END
    %]
 </form>
-  <script>
+<script>$(function(){
     Socialtext.stickySearch({
       scope: "[% search_scope %]",
 
       // Search pages should not be sticky
       sticky: [% search_scope && !search ? 'true' : 'false' %]
     });
-
-    $('#st-[% sid %]-action').dropdown();
     $('#st-[%sid%]-submit')
         .button({
             text: false,
@@ -58,4 +56,6 @@ DEFAULT
             $(this).parents('form').submit();
         });
 
-  </script>
+    $('#st-[% sid %]-action').dropdown();
+    $('#st-[%sid%]-form').css('visibility', 'visible');
+});</script>
