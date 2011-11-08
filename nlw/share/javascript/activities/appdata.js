@@ -636,9 +636,10 @@ $.extend(Activities.AppData.prototype, {
         this._signalToNetwork = network_id;
         this.findId('signal_network').val(network_id);
         if ($.inArray('signals', network.plugins_enabled) == -1) {
-            this.disableSignals();
+            this.findId('signals').hide(); 
         }
         else {
+            this.findId('signals').show(); 
             this.findId('signal_network').val(network_id);
             this._signalToNetwork = network_id;
             this.onSelectSignalToNetwork(network);
