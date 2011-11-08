@@ -227,14 +227,12 @@
 
 /* Filters */
 .filter_bar
-  padding: 0 20px
   background-color: $primary_color
   color: $primary_contrast
   a
     color: $primary_contrast
   .expander
-    display: block
-    padding-right: 0
+    padding: 5px 20px
     .filterText
       line-height: 20px
     .arrow
@@ -256,9 +254,15 @@
     width: 73%
   .filters
     display: none
-    max-height: 200px
-    overflow-x: hidden
-    overflow-y: auto
+    .scrolling
+      max-height: 200px
+      overflow-x: hidden
+      overflow-y: auto
+      border-top: 1px solid $primary_contrast
+    .close
+      padding: 5px 0
+      text-align: center
+      border-top: 1px solid $primary_contrast
     .filterHeading
       padding-left: 5px
       font-style: italic

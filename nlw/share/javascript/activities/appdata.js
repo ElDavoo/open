@@ -554,6 +554,11 @@ $.extend(Activities.AppData.prototype, {
             }
         );
 
+        self.findId('close').click(function() {
+            self.findId('expander').click();
+            return false;
+        });
+
         self.checkDisabledOptions();
     },
 
