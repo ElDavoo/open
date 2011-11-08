@@ -822,6 +822,7 @@ $.extend(Activities.Editor.prototype, {
     hideLookahead: function($dialog,cb) {
         var self = this;
         $dialog.fadeOut(function() {
+            $('.ui-autocomplete-error').hide();
             if ($.isFunction(cb)) cb();
         });
     },
@@ -913,8 +914,8 @@ $.extend(Activities.Editor.prototype, {
                 opts.callback(item, id);
             },
             onBlur: function() {
+                $input.val('');
                 self.hideLookahead($dialog, function (){
-                    $input.val('');
                     self.focus();
                 });
             },
@@ -1204,6 +1205,8 @@ $.extend(Activities.Editor.prototype, {
             },
             callback: function (item, tag) {
                 self.insertTag(tag, el);
+                self.holdSubmit();
+                self.hideLookahead(self.find('.lookahead'));
             }
         });
     },

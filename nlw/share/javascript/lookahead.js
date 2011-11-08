@@ -88,6 +88,7 @@
             };
         }
 
+        var $input = this;
         this.autocomplete($.extend(options, {
             source: function(request, response) {
                 var url = $.isFunction(opts.url) ? opts.url() : opts.url;
@@ -157,6 +158,7 @@
                     var item = withRealValue(ui.item);
                     opts.onAccept(item.value, item);
                 }
+                $input.val('');
             },
             change: function(event, ui) {
                 if ($.isFunction(opts.onChange)) opts.onChange(event, ui);
@@ -166,7 +168,6 @@
             }
         }));
 
-        var $input = this;
         $input.keydown(function(event) {
             if (opts.requireMatch) return;
             switch (event.keyCode) {
@@ -174,12 +175,12 @@
                 case $.ui.keyCode.NUMPAD_ENTER:
                     // Accept the typed value
                     if ($input.val() && opts.onAccept) {
-                        event.preventDefault();
                         var currentVal = $input.val();
-                        opts.onAccept(currentVal);
                         $input.val('');
+                        opts.onAccept(currentVal);
                         $input.autocomplete('close');
-                        return false;
+                        event.preventDefault();
+                        event.stopPropagation();
                     }
                     return;
                 default:
