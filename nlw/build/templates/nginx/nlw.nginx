@@ -172,11 +172,16 @@
         root [% config.data_root_dir %]/docroot;
     }
 
-    # Force IE8 to emulate IE7 to prevent it from crashing.
     set $x_ua_compatible "";
-    if ($http_user_agent ~ "MSIE 8") {
-      set $x_ua_compatible "IE=EmulateIE7";
+    # For IE6/7/8, if user has ChromeFrame installed, use it.
+    if ($http_user_agent ~ "MSIE [67]") {
+      set $x_ua_compatible "chrome=IE8"
     }
+    # Force IE8 to emulate IE7 to prevent it from crashing.
+    if ($http_user_agent ~ "MSIE 8") {
+      set $x_ua_compatible "IE=EmulateIE7,chrome=IE8";
+    }
+    # IE9 and later don't need X-UA-Compatible at all.
     add_header X-UA-Compatible $x_ua_compatible;
 
     location ~ "^/static/.+\.js$" {
