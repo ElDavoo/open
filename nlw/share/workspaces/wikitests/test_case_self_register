@@ -24,8 +24,8 @@
 
 | *Comment* | Test Case: Self Register Resend confirmation and login |  |
 | click_and_wait | //input[@value='Resend confirmation'] |  |
-| st-message | You need to confirm your email address to activate this account. |  |
-| st-message | You should have received an email with a confirmation link. |  |
+| st-message | The confirmation email has been resent. |  |
+| st-message | Please follow the link in this email to activate your account. |  |
 
 | type_ok | username | %%reg_email%% |
 | type_ok | password | %%password%% |

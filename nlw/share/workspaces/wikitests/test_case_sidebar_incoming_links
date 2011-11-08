@@ -7,7 +7,7 @@ Navigate to a page known to have zero incoming links | system displays "There ar
 
 | *Comment* | Test Case: Sidebar: Incoming Links. create TC Incoming Links %%start_time%% |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%workspace%% | title=TC Incoming Links %%start_time%% | content=[TC Incoming Links New Page %%start_time%%] [House Payment] |
+| call | [st-edit-new-page] | ws=%%workspace%% | title=TC Incoming Links %%start_time%% | `content=[TC Incoming Links New Page %%start_time%%] [House Payment]` |
 
 | *Comment* | Test Case: Sidebar: Incoming Links. no incoming links |  |
 | wait_for_text_present_ok | TC Incoming Links %%start_time%% | 30000 |
@@ -19,11 +19,11 @@ edit and save new page | existing page appears in new page incoming links
 
 | *Comment* | Test Case: Sidebar: Incoming Links. create a backlink |  |  |  |
 | click_ok | link=TC Incoming Links New Page %%start_time%% |  |  |  |
-
+| wait_for_element_visible_ok | st-create-content-savelink | 30000 |  |  |
+| click_and_wait | st-create-content-savelink |  |  |  |
 | wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 30000 |  |  |
 
-| call | [st-fill-editor] | title=TC Incoming Links New Page %%start_time%% | content=TC Incoming Links New Page %%start_time%% content |  |
-| st-page-save |  |  |  |  |
+| call | [st-save-page] | content=TC Incoming Links New Page %%start_time%% content |  |  |
 
 | *Comment* | Test Case: Sidebar: Incoming Links. verify backlinks |  |
 | wait_for_element_visible_ok | link=TC Incoming Links %%start_time%% | 10000 |

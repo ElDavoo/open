@@ -48,9 +48,10 @@ TUXTODO: restore Workspace admin messages after "unknown error" bug is fixed.
 | select_ok | groupTable-dropdown-2-3 | label=Member |
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | select_ok | groupTable-dropdown-2-1 | label=Member |
-| pause | 15000 |  |
+| pause_ok | 15000 |  |
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | select_ok | groupTable-dropdown-2-0 | label=Member |
+| pause_ok | 15000 |  |
 
 wait_for_text_present_ok | Workspaces need to include at least one admin | 30000 |
 

@@ -6,6 +6,7 @@
 | create-workspace | %%ws%% |  |
 | st-admin | add-member --e %%username%% --workspace %%ws%% | now has the role of |
 | st-admin | add-workspace-admin --e %%username%% --workspace %%ws%% | now has the role of |
+| st-admin | update-page --w %%ws%% --e %%email%% --p "%%ws%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "Page 1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "Page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "Page 3 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |

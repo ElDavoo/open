@@ -194,6 +194,8 @@ Incipient include works in browser and MIKI
 
 | *Comment* | Test Case: Include Page. Open the incipient included page for editing using the Edit button |  |
 | click_ok | //a[@class="smallEditButton"] |  |
+| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
+| click_and_wait | st-create-content-savelink |  |
 | wait_for_element_visible_ok | //a[contains(@class,"cke_button_wikitext")] | 30000 |
 | click_ok | //a[contains(@class,"cke_button_wikitext")] |  |
 | wait_for_element_visible_ok | //textarea[contains(@class,"cke_source")] | 30000 |
