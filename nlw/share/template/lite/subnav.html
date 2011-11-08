@@ -36,7 +36,7 @@
         <span class="menu-padding"><hr></span>
         <div data-role="header" data-position="inline" data-theme="d">
             <h4>[% page.title |html %]</h4>
-        [% IF page.page_type == 'wiki' OR page.page_type == 'xhtml' %]
+        [% IF page.page_type == 'wiki' %]
             [% IF cancel_edit %]
                 <a data-role="button" class="ui-btn-right" data-icon="back" href="/m/page/[% ws.name %]/[% cancel_edit %]">[% loc('do.cancel') %]</a>
             [% ELSIF user_can_edit_page %]
@@ -44,6 +44,8 @@
             [% ELSIF user_can_join_to_edit_page %]
                 <a data-role="button" class="ui-btn-right" data-icon="plus" href="/m/page/[% ws.name %]/[% page.uri %]?action=join_to_edit">[% loc('page.join-to-edit') %]</a>
             [% END %]
+        [%# ELSIF page.page_type == 'xhtml' %]
+            [%# Do something sensible here... Maybe a reduced CKEditor for iPhones? %]
         [% END %]
     [% END %]
         </div>
