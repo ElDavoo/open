@@ -395,7 +395,10 @@ sub get_space_html {
         auw_for => $space->is_all_users_workspace
             ? $space->account->name
             : undef,
-        users => [ $space->user_roles(direct => 1)->all() ],
+        users => [
+            sort { lc $a->[0]->best_full_name cmp lc $b->[0]->best_full_name }
+                $space->user_roles(direct => 1)->all()
+        ],
         groups => [ $space->group_roles(direct => 1)->all() ],
         domain_restriction => $space->account->restrict_to_domain,
         invitation_filter => $space->invitation_filter,
