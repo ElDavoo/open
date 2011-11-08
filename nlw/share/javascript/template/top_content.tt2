@@ -28,20 +28,21 @@
 [% IF !rows.size %]
     <em>[% tabs.$action.none_message || 'None' %]</em>
 [% END %]
+<table style="width: 100%; border: 0">
 [% FOR row = rows %]
     [% IF row.count %]
-    <div class="vpad3">
-        <div class="grid_sub_5 sub_alpha assetIcon">
+<tr style="vertical-align: top"><td width="5%" style="padding: 3px 0">
+        <div class="assetIcon">
             [% IF row.is_spreadsheet %]
-                <img src="/static/skin/s3/images/sheetIcon.png" style="height:12px"/>
+                <img src="/static/images/icons/sheet-black-15.png" style="height: 15px" />
             [% ELSIF row.is_person %]
-                <img src="/data/people/[% row.user_id %]/small_photo" style="height:27px"/>
+                <img src="/data/people/[% row.user_id %]/small_photo" style="height: 27px" />
             [% ELSE %]
-                <img src="/static/skin/s3/images/docIcon.png" style="height:15px"/>
+                <img src="/static/images/icons/document-black-15.png" style="height: 15px" />
             [% END %]
         </div>
-
-        <div class="grid_sub_5 sub_middle asset">
+</td><td width="35%" style="padding: 3px 0">
+        <div class="asset">
             [% IF row.uri %]
                 <a href="[% row.uri %]">
                     [% row.title %]
@@ -55,17 +56,14 @@
                 </div>
             [% END %]
         </div>
-
-        <div class="grid_sub_14 sub_omega">
+</td><td width="60%" style="padding: 3px 0">
             <div class="progressbar" style="margin-right: 10px">
                 <div class="value"
                      style="width:[% (row.count / maxCount) * 100 %]%"></div>
                 <span class="text">[% row.count %]
             </div>
-        </div>
-
-        <div class="clear"></div>
-    </div>
+</td></tr>
     [% END %]
 [% END %]
+</table>
 </div>
