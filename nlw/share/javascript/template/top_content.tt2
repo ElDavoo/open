@@ -41,7 +41,7 @@
                 <img src="/static/images/icons/document-black-15.png" style="height: 15px" />
             [% END %]
         </div>
-</td><td width="35%" style="padding: 3px 0">
+</td><td width="75%" style="padding: 3px 0">
         <div class="asset">
             [% IF row.uri %]
                 <a href="[% row.uri %]">
@@ -56,7 +56,7 @@
                 </div>
             [% END %]
         </div>
-</td><td width="60%" style="padding: 3px 0">
+</td><td width="20%" style="padding: 3px 0">
             <div class="progressbar" style="margin-right: 10px">
                 <div class="value"
                      style="width:[% (row.count / maxCount) * 100 %]%"></div>
