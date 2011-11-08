@@ -1,20 +1,40 @@
 Starfish:
-  logo_image: socialtext-logo-20111-00648.png
-  favicon_image: socialtext-favicon-0416-56879.ico
-  header_color: #cacaca
-  header_image: starfish-header-31190-25451.png
-  header_image_tiling: no-repeat
-  header_image_position: left top
-  header_link_color: #6e7c22
   background_color: #27430c
   background_image: starfish-background-5323-12008.png
-  background_image_tiling: repeat
   background_image_position: left top
+  background_image_tiling: repeat
   background_link_color: #6e7c22
+  body_font: Helvetica,Arial,sans-serif
+  favicon_image: socialtext-favicon-0416-56879.ico
+  foreground_shade: light
+  header_color: #cacaca
+  header_font: Georgia,Times,serif
+  header_image: starfish-header-31190-25451.png
+  header_image_position: left top
+  header_image_tiling: no-repeat
+  header_link_color: #6e7c22
+  is_default: 0
+  logo_image: socialtext-logo-20111-00648.png
   primary_color: #6e7c22
   secondary_color: #c5b939
   tertiary_color: #dfebed
-  header_font: Georgia,Times,serif
+Socialtext:
+  background_color: '#606060'
+  background_image: default-background-image.png
+  background_image_position: left top
+  background_image_tiling: repeat
+  background_link_color: '#72b4fd'
   body_font: Helvetica,Arial,sans-serif
-  is_default: 1
+  favicon_image: socialtext-favicon-0416-56879.ico
   foreground_shade: light
+  header_color: '#50627e'
+  header_font: Georgia,Times,serif
+  header_image: default-header-image.png
+  header_image_position: left top
+  header_image_tiling: repeat-x
+  header_link_color: '#72b4fd'
+  is_default: 1
+  logo_image: default-logo.png
+  primary_color: '#0577C7'
+  secondary_color: '#B77B2C'
+  tertiary_color: '#f0f0f0'
