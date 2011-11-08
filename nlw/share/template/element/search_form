@@ -37,6 +37,7 @@ DEFAULT
      ELSIF action == 'workspaces_listall'; search_scope = 'workspaces';
      END
    %]
+</form>
   <script>
     Socialtext.stickySearch({
       scope: "[% search_scope %]",
@@ -58,4 +59,3 @@ DEFAULT
         });
 
   </script>
-</form>
