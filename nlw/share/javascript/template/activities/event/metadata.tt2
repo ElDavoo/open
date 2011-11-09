@@ -28,9 +28,9 @@
 
 [% BLOCK network_meta %]
     [% SET targets = this.signalTargets(event) %]
-    [% IF targets.size || event.person %]
+    [% IF targets.size || (event.signal_id AND event.person) %]
         [%- UNLESS event.context.in_reply_to -%]
-            [%- IF event.person %]
+            [%- IF event.signal_id AND event.person %]
                 <span class="destination">
                     [%- IF event.person.id == viewer_id -%]
                         [%- loc('activities.private-to-you') -%]
