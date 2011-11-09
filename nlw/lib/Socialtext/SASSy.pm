@@ -95,12 +95,34 @@ method needs_update {
     return 0;
 }
 
+method MapFontToCSS {
+    my $font = shift;
+
+    my $map = {
+        'Arial' => 'Arial,Helvetica,sans-serif',
+        'Georgia' => 'Georgia,Times,serif',
+        'Helvetica' => 'Helvetica,Arial,sans-serif',
+        'Lucida' => 'Lucida,Helvetica,sans-serif',
+        'Times' => 'Times,Georgia,serif',
+        'Trebuchet' => 'Trebuchet,Helvetica,sans-serif',
+        'serif' => 'serif',
+        'sans-serif' => 'sans-serif',
+    };
+
+    return $map->{$font};
+};
+
 method render {
     # Variable Expansion
     my @lines;
     for my $key (keys %{$self->params}) {
-        push @lines, "\$$key: " . $self->params->{$key} . "\n"
-            if defined $self->params->{$key};
+        my $value = $self->params->{$key};
+        next unless $value;
+
+        $value = $self->MapFontToCSS($value)
+            if $key =~ /_font$/;
+
+        push @lines, "\$$key: " . $value . "\n";
     }
     push @lines, "\@import " . $self->filename . ".sass\n";
 

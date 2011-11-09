@@ -45,8 +45,7 @@ valid_settings: {
     ok $class->ValidSettings(body_font=>'Helvetica'), 'font 1';
     ok !$class->ValidSettings(body_font=>'Comic Sans'), 'font 2';
     ok !$class->ValidSettings(body_font=>''), 'font 3';
-    ok $class->ValidSettings(body_font=>'Helvetica, Lucida, sans-serif'), 'font 4';
-    ok $class->ValidSettings(body_font=>'Helvetica,Lucida,sans-serif'), 'font 5';
+    ok !$class->ValidSettings(body_font=>'Helvetica, Lucida, sans-serif'), 'font 4';
 
     # exercise _valid_attachment_id
     ok $class->ValidSettings(header_image_id=>$att_id), 'attachment 1';

@@ -4,11 +4,11 @@ Starfish:
   background_image_position: left top
   background_image_tiling: repeat
   background_link_color: #6e7c22
-  body_font: Helvetica,Arial,sans-serif
+  body_font: Helvetica
   favicon_image: socialtext-favicon-0416-56879.ico
   foreground_shade: light
   header_color: #cacaca
-  header_font: Georgia,Times,serif
+  header_font: Georgia
   header_image: starfish-header-31190-25451.png
   header_image_position: left top
   header_image_tiling: no-repeat
@@ -24,11 +24,11 @@ Socialtext:
   background_image_position: left top
   background_image_tiling: repeat
   background_link_color: '#72b4fd'
-  body_font: Helvetica,Arial,sans-serif
+  body_font: Helvetica
   favicon_image: socialtext-favicon-0416-56879.ico
   foreground_shade: light
   header_color: '#50627e'
-  header_font: Georgia,Times,serif
+  header_font: Georgia
   header_image: default-header-image.png
   header_image_position: left top
   header_image_tiling: repeat-x
