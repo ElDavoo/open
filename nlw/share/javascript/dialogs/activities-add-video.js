@@ -25,6 +25,8 @@ socialtext.dialog.register('activities-add-video', function(opts) {
 
     var intervalId = startCheckingVideoURL();
 
+    $('#activities-add-video-ok').button('disable');
+
     dialog.find('form').submit(function() {
         if (dialog.find('.submit').is(':hidden')) return;
         var url = dialog.find('.video_url').val() || '';
@@ -46,7 +48,7 @@ socialtext.dialog.register('activities-add-video', function(opts) {
 
     function startCheckingVideoURL(url) {
         var $url = dialog.find('.video_url');
-        var $done = dialog.find('.submit');
+        var $done = $('#activities-add-video-ok');
         var $title = dialog.find('.video_title');
 
         var previousURL = $url.val() || null;
@@ -58,7 +60,7 @@ socialtext.dialog.register('activities-add-video', function(opts) {
             if (!/^[-+.\w]+:\/\/[^\/]+\//.test(url)) {
                 $title.val('');
                 url = null;
-                $done.hide();
+                $done.button('disable');
             }
             if (url == previousURL) return;
             previousURL = url;
@@ -70,7 +72,7 @@ socialtext.dialog.register('activities-add-video', function(opts) {
                 .val(loc('activities.loading-video'))
                 .attr('disabled', true);
 
-            $done.hide();
+            $done.button('disable');
 
             jQuery.ajax({
                 type: 'get',
@@ -89,7 +91,7 @@ socialtext.dialog.register('activities-add-video', function(opts) {
                             .val(data.title)
                             .attr('disabled', false)
                             .attr('title', '');
-                        $done.show();
+                        $done.button('enable');
                     }
                     else if (data.error) {
                         $title.val(data.error)

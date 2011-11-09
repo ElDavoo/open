@@ -857,7 +857,7 @@ $.extend(Activities.EventList.prototype, {
                 position: 'relative',
                 width: size + 'px',
                 height: size + 'px',
-                top: Math.ceil((size - $img.height()) / 2),
+                top: Math.max(1, Math.ceil((size - $img.height()) / 2)),
                 left: Math.ceil(($img.width() - size) / 2),
                 marginRight: (-size) + "px",
                 display: 'none'
