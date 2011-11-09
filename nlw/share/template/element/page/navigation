@@ -40,7 +40,6 @@
 <script>
   $('#st-jump-to')
     .dropdown({
-      width: '150px',
       select: function(ui, option) {
         if (option.value.length) location = option.value;
       }
@@ -49,7 +48,7 @@
 [% END %]
 
 <div class="workspaceNav">
-  <div class="grid_18">
+  <div class="grid_18 breadcrumb">
     <a href="/?action=workspaces_listall" class="spaces">[% loc('nav.wikis') %]</a>
     <span class="arrow">&gt;</span>
 
