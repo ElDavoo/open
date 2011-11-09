@@ -51,6 +51,7 @@
     [% INCLUDE blog_archives %]
   </div>
   <div class="clear"></div>
+  <script>st.setupBlogHandlers()</script>
 [% END %]
 
 [% BLOCK blog_tools %]
@@ -66,9 +67,6 @@
     </div>
   </ul>
 </div>
-[% END %]
-
-[% BLOCK blog_mailto %]
 [% END %]
 
 [% BLOCK blog_entries %]

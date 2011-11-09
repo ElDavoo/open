@@ -39,7 +39,7 @@ GuiEdit.prototype.show = function () {
 
     this.container.append(Jemplate.process('guiedit.tt2', st));
 
-    jQuery('.commentWrapper', this.container).bind('dblclick', function () {
+    this.container.find('.commentWrapper').bind('dblclick', function () {
         return false;
     });
 
@@ -61,9 +61,8 @@ GuiEdit.prototype.show = function () {
         })
         .click(function () { self['do_'+this.name].call(self) })
 
-    $('#st-comment-interface .buttons').buttonset();
-
-    jQuery('.saveButton', this.container).click(function () {
+    this.container.find('.buttons').buttonset();
+    this.container.find('.saveButton').click(function () {
         var $saveButton = $(this);
         if ($saveButton.parent().is('.disabled')) { return; }
         $saveButton.parent().addClass('disabled').addClass('loading');
@@ -75,7 +74,7 @@ GuiEdit.prototype.show = function () {
             data: {
                 action: 'submit_comment',
                 page_name: self.page_id,
-                comment: jQuery('textarea', self.container).val(),
+                comment: self.container.find('textarea').val(),
                 signal_comment_to_network: doSignal ? $('#st-comment-st-edit-summary-signal-to').val() : ''
             },
             success: function () {
@@ -92,13 +91,13 @@ GuiEdit.prototype.show = function () {
         return false;
     });
 
-    jQuery('.cancelButton', this.container).click(function () {
+    this.container.find('.cancelButton').click(function () {
         self.close();
         return false;
     });
 
-    jQuery('textarea', this.container).val('');
-    this.area = jQuery('textarea', this.container).get(0);
+    this.container.find('textarea').val('');
+    this.area = this.container.find('textarea').get(0);
 
     if (this.area.addBehavior) {
         this.area.addBehavior(st.nlw_make_js_path('Selection.htc'));
@@ -116,10 +115,10 @@ GuiEdit.prototype.show = function () {
     }
 
     this.scrollTo(function () {
-        jQuery('.comment', self.container).fadeIn(
+        self.container.find('.comment').fadeIn(
             'normal',
             function() {
-                jQuery('textarea', self.container).focus();
+                self.container.find('textarea').focus();
             }
         );
     });
@@ -127,8 +126,8 @@ GuiEdit.prototype.show = function () {
 
 GuiEdit.prototype.close = function () {
     var self = this;
-    jQuery('.comment', this.container).fadeOut(function () {
-        jQuery('.commentWrapper', self.container).remove();
+    this.container.find('.comment').fadeOut(function () {
+        self.container.find('.commentWrapper').remove();
 
         if (self.onclose) {
             self.onclose.call(self);
@@ -139,7 +138,7 @@ GuiEdit.prototype.close = function () {
 GuiEdit.prototype.scrollTo = function (callback) {
     // Scroll the window so that the middle of .commentWrapper is in the
     // middle of the screen
-    var wrapper = jQuery('.commentWrapper', this.container);
+    var wrapper = this.container.find('.commentWrapper');
     var offset = wrapper.offset().top;
 
     // Workaround jQuery+IE bug in {bz: 5265}; may revisit later with jQuery 1.6

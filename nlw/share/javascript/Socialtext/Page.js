@@ -96,7 +96,7 @@ Socialtext.Page.prototype = {
 
     pageUrl: function () {
         var args = $.makeArray(arguments);
-        var page_name = args.pop() || st.page.id;
+        var page_name = args.pop() || this.id;
         var wiki_id = args.pop() || st.workspace.name;
 
         return this.workspaceUrl(wiki_id) + '/pages/' + page_name;
@@ -121,12 +121,10 @@ Socialtext.Page.prototype = {
         } catch (e) {};
     },
 
-    refreshPageContent: function (force_update) {
+    getPageContent: function(cb) {
         var self = this;
-        if (self.page_type == 'spreadsheet') return false;
-
         $.ajax({
-            url: this.uri(),
+            url: self.uri(),
             data: {
                 link_dictionary: 's2',
                 verbose: 1,
@@ -137,48 +135,57 @@ Socialtext.Page.prototype = {
             dataType: 'json',
             success: function (data) {
                 self.html = data.html;
-                var newRev = data.revision_id;
-                var oldRev = st.page.revision_id;
-                if ((oldRev < newRev) || force_update) {
-                    st.page.revision_id = newRev;
-                    st.setupLegacy();
+                cb(data);
+            }
+        });
+    },
 
-                    // By this time, the "edit_wikiwyg" Jemplate had already
-                    // finished rendering, so we need to reach into the
-                    // bootstrapped input form and update the revision ID
-                    // there, otherwise we'll get a bogus editing contention.
-                    $('#st-page-editing-revisionid').val(newRev);
-                    $('#st-rewind-revision-count').html(newRev);
+    refreshPageContent: function (force_update) {
+        var self = this;
+        if (self.page_type == 'spreadsheet') return false;
 
-                    rev_string = loc('page.revisions=count', data.revision_count);
-                    $('#controls-right-revisions').html(rev_string);
-                    $('#bottom-buttons-revisions').html(rev_string);
-                    $('#update-attribution .st-username').empty().append(
-                        jQuery(".nlw_phrase", jQuery(data.last_editor_html))
-                    );
-   
-                    $('#update-attribution .st-updatedate').empty().append(
-                        jQuery(".nlw_phrase", jQuery(data.last_edit_time_html))
-                    );
+        self.getPageContent(function(data) {
+            var newRev = data.revision_id;
+            var oldRev = st.page.revision_id;
+            if ((oldRev < newRev) || force_update) {
+                st.page.revision_id = newRev;
+                st.setupLegacy();
 
-                    self.setPageContent(data.html);
+                // By this time, the "edit_wikiwyg" Jemplate had already
+                // finished rendering, so we need to reach into the
+                // bootstrapped input form and update the revision ID
+                // there, otherwise we'll get a bogus editing contention.
+                $('#st-page-editing-revisionid').val(newRev);
+                $('#st-rewind-revision-count').html(newRev);
 
-                    $('table.sort, table[data-sort]')
-                        .each(function() { Socialtext.Page.make_table_sortable(this) });
+                rev_string = loc('page.revisions=count', data.revision_count);
+                $('#controls-right-revisions').html(rev_string);
+                $('#bottom-buttons-revisions').html(rev_string);
+                $('#update-attribution .st-username').empty().append(
+                    jQuery(".nlw_phrase", jQuery(data.last_editor_html))
+                );
 
-                    // After upload, refresh the wikitext contents.
-                    if ($('#wikiwyg_wikitext_textarea').size()) {
-                        $.ajax({
-                            url: self.uri(),
-                            data: { accept: 'text/x.socialtext-wiki' },
-                            cache: false,
-                            success: function (text) {
-                                $('#wikiwyg_wikitext_textarea').val(text);
-                            }
-                        });
-                    }
+                $('#update-attribution .st-updatedate').empty().append(
+                    jQuery(".nlw_phrase", jQuery(data.last_edit_time_html))
+                );
+
+                self.setPageContent(data.html);
+
+                $('table.sort, table[data-sort]')
+                    .each(function() { Socialtext.Page.make_table_sortable(this) });
+
+                // After upload, refresh the wikitext contents.
+                if ($('#wikiwyg_wikitext_textarea').size()) {
+                    $.ajax({
+                        url: self.uri(),
+                        data: { accept: 'text/x.socialtext-wiki' },
+                        cache: false,
+                        success: function (text) {
+                            $('#wikiwyg_wikitext_textarea').val(text);
+                        }
+                    });
                 }
-            } 
+            }
         });
     },
 

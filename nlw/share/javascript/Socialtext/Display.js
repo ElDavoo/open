@@ -255,6 +255,38 @@ Socialtext.prototype.setupPageHandlers = function() {
     });
 };
 
+Socialtext.prototype.setupBlogHandlers = function() {
+    $(".weblog_comment").click(function () {
+        var page = new Socialtext.Page({
+            id: this.id.replace(/^comment_/,'')
+        });
+
+        $.ajaxSettings.cache = true;
+        $.ajax({
+            url: st.nlw_make_js_path('socialtext-comments.jgz'),
+            dataType: 'script',
+            success: function() {
+                var ge = new GuiEdit({
+                    page_id: page.id,
+                    id: 'content_' + page.id,
+                    oncomplete: function () {
+                        page.getPageContent(function(data) {
+                            $('#content_'+page.id).html(data.html);
+                        });
+                    }
+                });
+                ge.show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                throw errorThrown;
+            }
+        });
+        $.ajaxSettings.cache = false;
+
+        return false;
+    });
+};
+
 /**
  * Do some things always
  */
