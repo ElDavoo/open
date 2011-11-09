@@ -59,6 +59,17 @@ input
   font-size: 110%
   border-radius: 2px
   border: 1px solid $light
+  &[type="submit"], &[type="button"]
+    border-radius: 2px
+    -moz-border-radius: 2px
+    -webkit-border-radius: 2px
+    color: $lightest
+    background-color: $primary_color
+    font-family: $body_font
+    padding: 4px 11px
+    line-height: 1.4
+    cursor: pointer
+    text-align: center
   &[type="radio"], &[type="checkbox"]
     border: none
   &.disabled
