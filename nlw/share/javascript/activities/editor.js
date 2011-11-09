@@ -868,9 +868,23 @@ $.extend(Activities.Editor.prototype, {
         $dialog.show();
 
         // Make OK and Cancel buttons
-        $('.buttons', $dialog).buttonset();
+        if (opts.requireMatch) {
+            $('.insert', $dialog).hide();
+            $('.buttons', $dialog).buttonset();
+        }
+        else {
+            $('.insert', $dialog).show();
+            $('.buttons', $dialog).buttonset();
+            $('.insert', $dialog).unbind('click').click(function() {
+                opts.callback(null, $input.val());
+                $input.blur();
+                self.focus();
+                self.hideLookahead($dialog);
+                return false;
+            });
+        }
 
-        $('.cancel', $dialog).click(function() {
+        $('.cancel', $dialog).unbind('click').click(function() {
             $input.blur();
             self.focus();
             self.hideLookahead($dialog);
