@@ -5,8 +5,7 @@
 [% MACRO go_to BLOCK %]
   <span class="arrow">&gt;</span>
 
-  <span class="jump_to">
-    [% loc('blog.go:') %]&nbsp;
+  <span>
     <select id="page-control-category-selector">
       [% FOREACH blog = blogs %]
         [% display_string = blog.display | html %]
