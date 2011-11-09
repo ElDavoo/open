@@ -3,7 +3,7 @@
   <h1>[% loc('page.incoming-links') %]</h1>
   <div class="content">
     [% IF page.incoming.size %]
-      <ul>
+      <ul class="incominglinks">
         [% FOR in = page.incoming %]
           <li><a href="[% in.page_id %]">[% in.page_title |html %]</a></li>
         [% END %]
