@@ -32,7 +32,7 @@
 | st-create-wikipage | %%followws%% | pageone |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
-| st-send-signal-in-activities-widget | You should see this %%start_time%% |
+| st-send-signal-in-activities-widget | You should see this %%start_time%% |  |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%notfollowinguser%%, create a page and send a signal |  |
 | st-logoutin | %%notfollowinguser%% | %%password%% |
@@ -40,7 +40,7 @@
 | st-create-wikipage | %%followws%% | donotseethispage |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | activities_widget |
-| st-send-signal-in-activities-widget | Signal from not a follower %%start_time%% |
+| st-send-signal-in-activities-widget | Signal from not a follower %%start_time%% |  |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, add widget, set length to 25 |  |
 | st-logoutin | %%loggedinuser%% | %%password%% |
@@ -70,34 +70,34 @@
 | open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, see all activities |  |
-| st-verify-text-in-activities-widget | qr/%%r1%%/ism |
-| st-verify-text-in-activities-widget | qr/%%r2%%/ism |
-| st-verify-text-in-activities-widget | qr/%%r3%%/ism |
-| st-verify-text-in-activities-widget | qr/%%r4%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r1%%/ism |  |
+| st-verify-text-in-activities-widget | qr/%%r2%%/ism |  |
+| st-verify-text-in-activities-widget | qr/%%r3%%/ism |  |
+| st-verify-text-in-activities-widget | qr/%%r4%%/ism |  |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to people I follow, see only %%shortfollow%%'s activity |  |
-| wait_for_element_present_ok | //a[@class='expander'] | 15000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_present_ok | //a[contains(@id,"expander")] | 15000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | feed-followed | 30000 |
 | click_ok | feed-followed |  |
 | pause_ok | 2000 |  |
 | open_ok | /st/dashboard |  |
-| st-verify-text-in-activities-widget | qr/%%r3%%/ism |
-| st-verify-text-in-activities-widget | qr/%%r4%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r3%%/ism |  |
+| st-verify-text-in-activities-widget | qr/%%r4%%/ism |  |
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%r1%%/ism |
 | st_text_unlike_in_activities_widget | activities_widget | qr/%%r2%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers %%loggedinuser%%, change to everyone, see all activities |  |
-| wait_for_element_present_ok | //a[@class='expander'] | 15000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_present_ok | //a[contains(@id,"expander")] | 15000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_present_ok | feed-everyone | 15000 |
 | click_ok | feed-everyone |  |
 | pause_ok | 2000 |  |
 | open_ok | /st/dashboard |  |
-| st-verify-text-in-activities-widget | qr/%%r1%%/ism |
-| st-verify-text-in-activities-widget | qr/%%r2%%/ism |
-| st-verify-text-in-activities-widget | qr/%%r3%%/ism |
-| st-verify-text-in-activities-widget | qr/%%r4%%/ism |
+| st-verify-text-in-activities-widget | qr/%%r1%%/ism |  |
+| st-verify-text-in-activities-widget | qr/%%r2%%/ism |  |
+| st-verify-text-in-activities-widget | qr/%%r3%%/ism |  |
+| st-verify-text-in-activities-widget | qr/%%r4%%/ism |  |
 
 | *Comment* | Test Case: Activities Widget Followers TEARDOWN |  |
 | st-process-jobs |  |  |
@@ -107,4 +107,4 @@
 | st-admin | deactivate-user --email %%loggedinuser%% |  |
 | delete-account | %%followacct%% |  |
 
-| *Comment* | Test Case: Activities Widget Followers COMPLETED |
+| *Comment* | Test Case: Activities Widget Followers COMPLETED |  |

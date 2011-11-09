@@ -57,7 +57,7 @@
 | text_like | %%miki_signal_text%% |  |
 
 | *Comment* | Test case: Miki Send Signals |  |
-| st_prepare_signal_within_activities_widget | %%signal1%% |  |
+| st_type_signal | %%signal1%% |  |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 15000 |
 | click_and_pause | %%miki_signal_submit%% | 10000 |
 | wait_for_text_present_ok | less than a minute ago | 15000 |
@@ -65,17 +65,17 @@
 | text_like | //body | qr/%%signal1%%.+By.+minute.+to.+%%mikiacct%%/ism |
 
 | *Comment* | Test case: Miki MULTI Signals |  |
-| st_mobile_account_select_ok | %%mikiacct%% (primary, 2 users) |  |
-| st_mobile_account_select_ok | %%othermikiacct%% (2 users) |  |
+| select_ok | mobile_signal_network | %%mikiacct%% (primary, 2 users) |
+| select_ok | mobile_signal_network | %%othermikiacct%% (2 users) |
 
 | *Comment* | Test case: Miki Send one Signal |  |  |
-| st_prepare_signal_within_activities_widget | %%multisignal%% |  |  |
+| st_type_signal | %%multisignal%% |  |  |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 15000 |  |
 | click_and_pause | %%miki_signal_submit%% | 10000 |  |
 
 | *Comment* | Test Case: Miki See signal under "all my groups" |  |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 15000 |  |
-| click_ok | //a[@class='expander'] |  |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 15000 |  |
+| click_ok | //a[contains(@id,"expander")] |  |  |
 | wait_for_element_visible_ok | network-all | 15000 |  |
 | click_ok | network-all |  |  |
 | wait_for_text_present_ok | less than a minute ago | 15000 |  |

@@ -38,8 +38,8 @@
 | wait_for_text_present_ok | %%miki_signal_text%% | 10000 |
 
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. Enable seeing all signals in "all my groups" |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 15000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 15000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | network-all | 15000 |
 | click_ok | network-all |  |
 
@@ -74,8 +74,8 @@
 | wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |
 
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. See both signals |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 15000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 15000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | network-all | 15000 |
 | click_ok | network-all |  |
 | wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |

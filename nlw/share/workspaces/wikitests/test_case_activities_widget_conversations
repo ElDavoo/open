@@ -117,7 +117,7 @@
 | st-verify-text-in-activities-widget | %%mentioncode%% |  |
 
 | *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, PRESENT - mention /is/ present |  |
-| click_ok | //a[@class='expander'] |  |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | feed-conversations | 30000 |
 | click_and_pause | feed-conversations | 2000 |
 

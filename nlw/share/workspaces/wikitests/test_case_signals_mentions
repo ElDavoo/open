@@ -99,8 +99,8 @@
 | st-verify-text-in-activities-widget | %%shouldnotappear_four%% |  |
 
 | *Comment* | Test Case: Signals Mentions - Conversations Change to convos only, verify mentions /are/ present, straight signals, not so much |  |
-| wait_for_element_present_ok | //a[@class='expander'] | 15000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_present_ok | //a[contains(@id,"expander")] | 15000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | feed-conversations | 15000 |
 | click_ok | feed-conversations |  |
 | pause_ok | 2000 |  |

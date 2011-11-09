@@ -29,8 +29,8 @@
 | wait_for_text_present_ok | Colleagues | 30000 |
 
 | *Comment* | Test Case: Groups UI Signal from group home. Select in %%group_name%% |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | group-%%group_id%% | 15000 |
 | click_ok | group-%%group_id%% |  |
 | pause_ok | 2000 |  |
@@ -66,8 +66,8 @@
 | wait_for_text_present_ok | Colleagues | 30000 |
 
 | *Comment* | Test Case: Groups UI Signal from group home. Select in All my groups |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | network-all | 15000 |
 | click_ok | network-all |  |
 | pause_ok | 2000 |  |
@@ -89,8 +89,8 @@
 | wait_for_text_present_ok | Colleagues | 30000 |
 
 | *Comment* | Test Case: Groups UI Signal from group home. Select in All my groups after Added |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | network-all | 15000 |
 | click_ok | network-all |  |
 | pause_ok | 2000 |  |

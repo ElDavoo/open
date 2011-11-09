@@ -42,7 +42,7 @@
 | create-user | %%euserfive%% | %%password%% | %%diffacct%% |
 | add-member | %%euserfive%% | %%diffws%% |  |
 
-| *Comment* | Test Case: People Search Edit and search FIVE Profiles |  |
+| *Comment* | Test Case: People Search Edit and search FIVE Profiles |  |  |
 
 | st-logoutin | %%euserfour%% | %%password%% |
 | set | current_user | %%euserfour%% |
@@ -50,7 +50,7 @@
 | set | default_field | default-four |
 | set | first | Markus |
 | set | middle | Z. |
-| set | last | Gäèrtner |
+| set | last | Gaertner |
 | include | [Test Case: People Search Edit A Profile] |  |
 | include | [Test Case: People Search Field Search] |  |
 
@@ -105,4 +105,4 @@
 | delete-account | %%acct%% |  |
 | delete-account | %%diffacct%% |  |
 
-| *Comment* | Test Case: People Search COMPLETED |
+| *Comment* | Test Case: People Search COMPLETED |  |

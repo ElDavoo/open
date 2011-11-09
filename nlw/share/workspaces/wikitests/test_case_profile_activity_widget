@@ -38,16 +38,20 @@
 
 | *Comment* | Test Case: Profile Activity Widget. Send and check private signal |  |  |
 | st-send-signal-in-activities-widget | Private signal to %%tuser%% at %%start_time%% HURRAY | private |  |
-| wait_for_text_present_ok | automatically adjust your filters to show the new signal. | 30000 |  |
-| wait_for_element_visible_ok | link=here | 30000 |  |
-| click_and_pause | link=here | 3000 |  |
 
-| *Comment* | Test Case: Profile Activity Widget. Check without /qr first to invoke wait_for |  |
-| st-verify-text-in-activities-widget | Private signal to %%tuser%% at %%start_time%% HURRAY |  |
+TUXTODO: Does the here link work yet?
+
+wait_for_text_present_ok | automatically adjust your filters to show the new signal. | 30000 | |
+wait_for_element_visible_ok | link=here | 30000 | |
+click_and_pause | link=here | 3000 | |
+
+*Comment* | Test Case: Profile Activity Widget. Check without /qr first to invoke wait_for | |
+st-verify-text-in-activities-widget | Private signal to %%tuser%% at %%start_time%% HURRAY | |
 
 | *Comment* | Test Case: Profile Activity Widget. Check after waiting for Private signal |  |
 | st-verify-text-in-activities-widget | qr/%%tuser%%.+Public signal to %%tuser%% at %%start_time%% WHOOPEE/ism |  |
-| st-verify-text-in-activities-widget | qr/You.+private to.+%%tuser%%/ism |  |
+
+st-verify-text-in-activities-widget | qr/You.+private to.+%%tuser%%/ism | |
 
 | *Comment* | Test Case: Profile Activity Widget. Clean start: navigate to the %%tuser%% Profile page |  |
 | st_process_jobs | PersonIndex |  |
@@ -94,7 +98,7 @@
 | text_like | qr/Showing\s*all\s*events.+from.+%%tuser%%\s*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... and cannot be changed |  |
-| click_ok | //a[@class='expander'] |  |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_not_present_ok | feed-everyone | 30000 |
 | wait_for_element_not_present_ok | feed-followed | 30000 |
 | wait_for_element_not_present_ok | feed-conversations | 30000 |
@@ -103,7 +107,6 @@
 | wait_for_element_visible_ok | network-all | 30000 |
 | wait_for_element_visible_ok | account-%%account_id%% | 30000 |
 | wait_for_element_visible_ok | group-%%group_id%% | 30000 |
-
 
 | *Comment* | Test Case: Profile Activity Widget. list values for "Showing <event-type>" filter are all the standard choices |  |
 | wait_for_element_visible_ok | action-all-events | 30000 |

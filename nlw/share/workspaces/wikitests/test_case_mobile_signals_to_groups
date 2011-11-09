@@ -23,19 +23,15 @@
 | *Comment* | Test Case: Mobile Signals to Group check order of groups in Post to: menu |  |
 | st-logoutin | %%msg_user%% | %%password%% |
 | open_ok | /st/m/signals |  |
-| wait_for_element_visible_ok | link=%%acct1%% (primary, 1 user) | 30000 |
-| mouseOver | link=%%acct1%% (primary, 1 user) |  |
-| wait_for_element_visible_ok | //a[contains(text(),%%group11%%)] | 15000 |
-| wait_for_element_visible_ok | //a[contains(text(),%%group12%%)] | 15000 |
-| wait_for_element_visible_ok | //a[contains(text(),%%acct2%%)] | 15000 |
-| wait_for_element_visible_ok | //a[contains(text(),%%group21%%)] | 15000 |
-| text_like | qr/%%acct1%%.+\.\.\..+%%group11%%.+\.\.\..+%%group12%%.+%%acct2%%.+\.\.\..+%%group21%%/ |  |
+| wait_for_element_visible_ok | mobile_signal_network | 30000 |
+| wait_for_element_visible_ok | //option[contains(text(),%%group11%%)] | 15000 |
+| wait_for_element_visible_ok | //option[contains(text(),%%group12%%)] | 15000 |
+| wait_for_element_visible_ok | //option[contains(text(),%%acct2%%)] | 15000 |
+| wait_for_element_visible_ok | //option[contains(text(),%%group21%%)] | 15000 |
 
 | *Comment* | Test Case: Mobile Signals to Group send signal to one group |  |
-| wait_for_element_present_ok | //a[@value='group-%%group11_id%%'] | 15000 |
-| click_ok | //a[@value='group-%%group11_id%%'] |  |
-| wait_for_element_visible_ok | link=%%group11%% (1 user) | 15000 |
-| st_prepare_signal_within_activities_widget | New signal to %%group11%% |  |
+| select_ok | mobile_signal_network | label=%%group11%% (1 user) |
+| st_type_signal | New signal to %%group11%% |  |
 | click_ok | mobile_post |  |
 
 | *Comment* | Test Case: Mobile Signals to Group check for signal in mobile UI |  |

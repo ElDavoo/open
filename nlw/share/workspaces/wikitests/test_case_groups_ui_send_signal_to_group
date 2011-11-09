@@ -34,12 +34,12 @@
 | st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. values for ".. within <group>" filter shows account and group |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | network-all | 15000 |
 | wait_for_element_visible_ok | account-%%account_id%% | 15000 |
 | wait_for_element_visible_ok | group-%%group_id%% | 15000 |
-| click_ok | //a[@class='expander'] | close it |
+| click_ok | //a[contains(@id,"expander")] | close it |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. "Post to" list - select account |  |
 | select_ok | //select[@class="signal_network select"] | value=account-%%account_id%% |
@@ -52,11 +52,11 @@
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Choose within %%group_name%% |  |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | group-%%group_id%% | 15000 |
 | click_ok | group-%%group_id%% |  |
-| click_ok | //a[@class='expander'] | close it |
+| click_ok | //a[contains(@id,"expander")] | close it |
 
 | select_ok | //select[@class="signal_network select"] | value=group-%%group_id%% |
 | is_selected_ok | //select[@class="signal_network select"] | value=group-%%group_id%% |
@@ -74,11 +74,11 @@
 | st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within %%group_name%% |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | group-%%group_id%% | 15000 |
 | click_ok | group-%%group_id%% |  |
-| click_ok | //a[@class='expander'] | close it |
+| click_ok | //a[contains(@id,"expander")] | close it |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Navigate away and back; check sticky settings |  |
 | open_ok | /?action=workspaces_listall |  |
@@ -91,12 +91,12 @@
 | st_text_unlike_in_activities_widget | ignore | %%account_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within All my groups |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | network-all | 15000 |
 | click_ok | network-all |  |
 | wait_for_text_present_ok | %%account_signal%% | 30000 |
-| click_ok | //a[@class='expander'] | close it |
+| click_ok | //a[contains(@id,"expander")] | close it |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Verify %%ssg_user%% sees both signals |  |
 | st-verify-text-in-activities-widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |  |
@@ -105,11 +105,11 @@
 | st-verify-text-in-activities-widget | %%account_signal%% |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within %%group_acct%% |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |
-| click_ok | //a[@class='expander'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
 | wait_for_element_visible_ok | account-%%account_id%% | 15000 |
 | click_ok | account-%%account_id%% |  |
-| click_ok | //a[@class='expander'] | close it |
+| click_ok | //a[contains(@id,"expander")] | close it |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Verify %%ssg_user%% sees only account signal |  |
 | st-verify-text-in-activities-widget | %%account_signal%% |  |

@@ -3,6 +3,7 @@
 | set | bcp_user | bcp.user.%%start_time%%@david.socialtext.net |
 | set | bcp_user_prefix | bcp |
 | set | bcp_user_suffix | %%start_time%% |
+| set | bcp_user_short | bcp user %%start_time%% |
 
 | set | acct | acct-for-account-%%start_time%% |
 | set | wstitle | WS For Account %%start_time%% |
@@ -43,14 +44,14 @@
 | st-pause-click | 2000 | //input[@type='submit' and @value="Create Workspace"] |
 | wait_for_text_present_ok | You must add at least one workspace administrator. | 30000 |
 
-| *Comment* | Test Case: Business Control Panel Create Workspace from Account - a workspace admin |  |
-| wait_for_element_visible_ok | addUserLookahead | 30000 |
-| select-autocompleted-option-ok | addUserLookahead | %%bcp_user_prefix%% |
-| wait_for_element_visible_ok | link=%%bcp_user%% | 20000 |
-| wait_for_text_present_ok | Showing 1 - 1 of 1 | 30000 |
-| wait_for_element_present_ok | userTable-dropdown-2-0 | 30000 |
-| select_ok | userTable-dropdown-2-0 | label=Admin |
-| st-pause-click | 5000 | //input[@type='submit' and @value="Create Workspace"] |
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account - a workspace admin |  |  |
+| wait_for_element_visible_ok | addUserLookahead | 30000 |  |
+| select-autocompleted-option-ok | addUserLookahead | %%bcp_user_prefix%% | %%bcp_user_short%% |
+| wait_for_element_visible_ok | link=%%bcp_user%% | 20000 |  |
+| wait_for_text_present_ok | Showing 1 - 1 of 1 | 30000 |  |
+| wait_for_element_present_ok | userTable-dropdown-2-0 | 30000 |  |
+| select_ok | userTable-dropdown-2-0 | label=Admin |  |
+| st-pause-click | 5000 | //input[@type='submit' and @value="Create Workspace"] |  |
 
 | *Comment* | Test Case: Business Control Panel from Create Workspace from Account. verify workspace created |  |
 | wait_for_text_present_ok | %%wsname%% workspace | 30000 |
@@ -78,7 +79,7 @@
 | pause_ok | 10000 |  |
 
 | wait_for_element_visible_ok | addUserLookahead | 30000 |  |
-| select-autocompleted-option-ok | addUserLookahead | %%bcp_user%% |  |
+| select-autocompleted-option-ok | addUserLookahead | %%bcp_user_prefix%% | %%bcp_user_short%% |
 
 | wait_for_element_visible_ok | link=%%bcp_user%% | 20000 |
 | wait_for_text_present_ok | Showing 1 - 1 of 1 | 30000 |

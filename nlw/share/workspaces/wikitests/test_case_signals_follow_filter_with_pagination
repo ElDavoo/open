@@ -52,8 +52,8 @@
 | st-verify-text-in-activities-widget | nfsig-%%start_time%% 46 |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination follower checks signals, filter to only People I Follow |  |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |  |
-| click_ok | //a[@class='expander'] |  |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |  |
+| click_ok | //a[contains(@id,"expander")] |  |  |
 | wait_for_element_visible_ok | feed-followed | 30000 |  |
 | click_ok | feed-followed |  |  |
 | pause_ok | 2000 |  |  |
@@ -79,8 +79,8 @@
 | wait_for_text_present_ok | ssig-%%start_time%% 19 | 30000 |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination follower unfilters signals |  |  |
-| wait_for_element_visible_ok | //a[@class='expander'] | 30000 |  |
-| click_ok | //a[@class='expander'] |  |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |  |
+| click_ok | //a[contains(@id,"expander")] |  |  |
 | wait_for_element_visible_ok | feed-everyone | 30000 |  |
 | click_ok | feed-everyone |  |  |
 | pause_ok | 2000 |  |  |
