@@ -36,7 +36,7 @@
             [% IF row.is_spreadsheet %]
                 <img src="/static/images/icons/sheet-black-15.png" style="height: 15px" />
             [% ELSIF row.is_person %]
-                <img src="/data/people/[% row.user_id %]/small_photo" style="height: 27px" />
+                <img src="/data/people/[% row.user_id %]/small_photo" style="height: 27px; margin-right: 3px" />
             [% ELSE %]
                 <img src="/static/images/icons/document-black-15.png" style="height: 15px" />
             [% END %]
