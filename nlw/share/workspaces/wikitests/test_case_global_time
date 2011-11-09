@@ -11,6 +11,7 @@
 | create-workspace | %%wiki%% | %%acct%% |  |
 | create-user | %%user%% | %%password%% | %%acct%% |
 | st-admin | add-member --email %%user%% --workspace %%wiki%% | now has the role |  |
+| st-logoutin | %%user%% | %%password%% |  |
 
 | *Comment* | Test Case: Global Time | initialize, don't assume fresh installation |
 | include | [Default Global Timezone Values] |  |

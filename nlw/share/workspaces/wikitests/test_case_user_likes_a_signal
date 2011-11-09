@@ -56,7 +56,7 @@
 | st_click_pause | //a[contains(@class,'like-indicator ')] | 2000 |
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[contains(@class,'like-indicator me')] | 30000 |
-| text_like | //div[@class='like-signal right'] | 1 |
+| text_like | //div[@class='like-signal'] | 1 |
 
 | *Comment* | Test Case: User Likes a Signal first user sees self in Like Bubble |  |
 | mouse_over_ok | //a[contains(@class,'like-indicator me')] |  |
@@ -71,11 +71,11 @@
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@class,'like-indicator others')] | 30000 |
-| text_like | //div[@class='like-signal right'] | 1 |
+| text_like | //div[@class='like-signal'] | 1 |
 | st_click_pause | //a[contains(@class,'like-indicator others')] | 2000 |
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[contains(@class,'like-indicator me others')] | 30000 |
-| text_like | //div[@class='like-signal right'] | 2 |
+| text_like | //div[@class='like-signal'] | 2 |
 
 | *Comment* | Test Case: User Likes a Signal follow user 1, then check mouseover bubble for colleague list |  |
 | open_ok | /st/profile/%%user1_id%% |  |
@@ -193,7 +193,7 @@
 | wait_for_text_present_ok | ULS Signal %%start_time%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@class,'like-indicator me others')] | 30000 |
 | st_click_pause | //a[contains(@class,'like-indicator me others')] | 2000 |
-| text_like | `xpath=(//div[@class='like-signal right'])[2]` | 10 |
+| text_like | `xpath=(//div[@class='like-signal'])[2]` | 10 |
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[contains(@class,'like-indicator others')] | 30000 |
 | mouse_over_ok | //a[contains(@class,'like-indicator others')] |  |

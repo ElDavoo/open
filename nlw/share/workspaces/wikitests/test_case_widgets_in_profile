@@ -126,32 +126,15 @@
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
 
-| *Comment* | Test Case: Widgets in Profile TEARDOWN |  |
-| st-admin | deactivate-user --email %%wip_user%% |  |
-
-| *Comment* | Test Case: Widgets in Profile COMPLETED |  |
-
-^ END
-TUXTODO: restore these tests when Revert To Default is restored
-
-| *Comment* | Test Case: Widgets in Profile start to revert to default, click no |  |
+| *Comment* | Test Case: Widgets in Profile start to revert to default, click cancel |  |
 | open_ok | /st/profile |  |
 | wait_for_element_visible_ok | st-edit-profile | 15000 |
 | wait_for_element_visible_ok | st-edit-layout | 15000 |
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 | click_ok | st-revert-layout |  |
-| wait_for_text_present_ok | Are you sure you want to revert to the Socialtext defaults? | 30000 |
-| wait_for_element_visible_ok | dashboard-revert-yes | 15000 |
-| wait_for_element_visible_ok | dashboard-revert-no | 15000 |
-| pause | 2000 |  |
-| click_ok | dashboard-revert-no |  |
-| wait_for_element_not_visible_ok | dashboard-revert-yes | 15000 |
-| wait_for_element_not_visible_ok | dashboard-revert-no | 15000 |
-| wait_for_text_present_ok | Wikipedia | 15000 |
-| click_ok | st-save-layout |  |
-| wait_for_element_present_ok | save-layout-save | 10000 |
-| click_ok | save-layout-save |  |
+| wait_for_text_not_present_ok | Wikipedia | 15000 |
+| click_ok | st-cancel-layout |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | st-widget-title | none | Wikipedia |
 | st-widget-title | none | Colleagues |
@@ -165,20 +148,16 @@ TUXTODO: restore these tests when Revert To Default is restored
 | click_ok | st-edit-layout |  |
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 | click_ok | st-revert-layout |  |
-| wait_for_text_present_ok | Are you sure you want to revert to the Socialtext defaults? | 30000 |
-| wait_for_element_visible_ok | dashboard-revert-yes | 15000 |
-| wait_for_element_visible_ok | dashboard-revert-no | 15000 |
-| pause | 2000 |  |
-| click_ok | dashboard-revert-yes |  |
-| wait_for_element_not_visible_ok | dashboard-revert-yes | 15000 |
-| wait_for_element_not_visible_ok | dashboard-revert-no | 15000 |
 | wait_for_text_not_present_ok | Wikipedia | 15000 |
 | click_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
-| wait_for_element_present_ok | save-layout-save | 10000 |
-| click_ok | save-layout-save |  |
-| wait_for_text_not_present_ok | Wikipedia | 15000 |
 | wait_for_text_present_ok | Tags | 15000 |
 | wait_for_text_present_ok | Activities | 15000 |
+| wait_for_text_not_present_ok | Wikipedia | 15000 |
 | st-widget-title | none | Tags |
 | st-widget-title | none | Colleagues |
+
+| *Comment* | Test Case: Widgets in Profile TEARDOWN |  |
+| st-admin | deactivate-user --email %%wip_user%% |  |
+
+| *Comment* | Test Case: Widgets in Profile COMPLETED |  |
