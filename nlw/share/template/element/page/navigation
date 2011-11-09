@@ -1,7 +1,7 @@
 [%# vim: set et sts=2 sw=2: %]
 
 [% MACRO jump_option(option_action, text, suffix) BLOCK %]
-  <option [% IF action == option_action %]selected="selected"[% END %] value="/[% wiki.name %]?action=[% option_action %][% suffix %]">[% text %]</option>
+  <option [% IF action == option_action %]selected="selected"[% END %] value="/[% wiki.name %][% option_action ? "?action=$option_action" : "" %][% suffix %]">[% text %]</option>
 [% END %]
 
 [% BLOCK workspace_selector %]
@@ -25,6 +25,7 @@
   [% IF action == 'display' %]
     <option selected="selected" value="">[% loc('nav.select-prompt') %]</option>
   [% END %]
+  [% jump_option("", loc('[_1] Home Page', wiki.title)) %]
   [% jump_option("recent_changes", loc('nav.news')) %]
   [% jump_option("display_watchlist", loc('nav.watchlist')) %]
   [% jump_option("breadcrumbs_list", loc('nav.recently-viewed')) %]
