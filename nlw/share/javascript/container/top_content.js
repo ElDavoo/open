@@ -29,13 +29,14 @@ TopContent.prototype = {
 
     display: function() {
         var self   = this;
-        var prefs  = this.prefs;
-        this.fetchData();
-        if (prefs.getBool('rotate')) {
-            this.startTimer();
+        var prefs  = self.prefs;
+        self.rotating = prefs.getBool('rotate');
+        self.fetchData();
+        if (self.rotating) {
+            self.startTimer();
         }
         else {
-            this.stopTimer();
+            self.stopTimer();
         }
     },
 
