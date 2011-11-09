@@ -1,130 +1,142 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
-[% WRAPPER $frame_name id="blog" %]
-[% INCLUDE element/page/navigation %]
-<div id="controls">
-  <div class="grid_20">
-    <h1 title="[% loc('blog.blog') %]: [% display_title | html %]">[% loc('blog.blog') %]: [% display_title | html %]</h1>
-  </div>
-  <div class="grid_4 right">
-    [% IF checker.check_permission('edit') %]
-      <a id="st-weblog-newpost-button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" href="[% script_name %]?action=new_page;add_tag=[% tag_escaped %];caller_action=blog_display" title="[% loc('info.post') %]"><span class="ui-button-text">[% loc('post.new') %]</span></a>
-    [% END %]
-  </div>
-  <div class="clear"></div>
-  <div class="grid_20">
-    <ul class="horizontal_actions" id="quickLinks">
-      <li class="separator first"><a href="[% feeds.rss.page.url %]"><img src="[% static_path %]/images/icons/rss.png" />[% loc('blog.subscribe') %]</a></li>
-      <li class="separator"><a href="JavaScript:window.print()"><img src="[% static_path %]/images/icons/print-black-15.png" />[% loc('do.print') %]</a></li>
-      <li>  
-        <form action="[% script_name %]">
-          <input type="hidden" name="action" value="blog_display" />
-          <span>[% loc('blog.go:') %]&nbsp;
-            <select name="category" onchange="this.form.submit()" id="page-control-category-selector">
-              [% FOREACH blog = blogs %]
-                [% display_string = blog.display | html %]
-                <option[% IF blog.display == tag %] selected="true"[% END %] value="[% blog.escape_html %]">[% IF display_string == 'Recent Changes' %] [% loc('nav.recent-changes') %] [% ELSE %] [% display_string %] [% END %]</option>
-              [% END %]
-            </select>
-          </span>
-        </form>
-      </li>
-    </ul>
-  </div>
-  <div class="grid_4 right">
-    [% IF is_real_category AND checker.check_permission('edit') %]
-      <a href="mailto:[% email_category_address %]">[% loc('info.post-by-email') %]</a>
-    [% END %]
-  </div>
-  <div class="clear"></div>
-</div>
-<div id="contentContainer">
-  <div class="grid_20">
-    [% PROCESS entry_nav %]
-    [% USE section_iterator = iterator(sections) %]
-    [% FOREACH section IN section_iterator %]
-      [% FOREACH entry = section.entries %]
-        <div class="blogentry">
-          <h3 class="blogheader">
-            <a href="[%entry.page_uri%]">[% entry.title | html %]</a>
-          </h3>
-          <p class="weblog_info">
-            [% IF entry.is_updated %]
-              [% loc('post.by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %]
-            [% ELSE %]
-              [% loc('post.by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %]
-            [% END %]
-          </p>
-          <div id="content_[% entry.page_uri %]">
-            [% entry.post %]
-          </div>
-          <hr size="1"/>
-          <p class="weblog_info">
-            [% IF entry.is_updated %]
-                  [% loc('nav.created-by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %].
-                  [% loc('blog.updated-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
-            [% ELSE %]
-                  [% loc('nav.created-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
-            [% END %]
 
-            [% IF !entry.page_locked_for_user %]
-              [% IF checker.check_permission('comment') %]
-                <a href="#" id="comment_[% entry.page_uri %]" class="weblog_comment">
-                  [% loc('page.comment') %]
-                </a>
-                -
-              [% END %]
-              [% IF checker.check_permission('edit') %]
-                <a href="?action=display;page_name=[% entry.page_uri %];caller_action=[% caller_action %];tag=[% tag | uri %];js=show_edit_div#edit">[% loc('blog.edit') %]</a>
-                -
-              [% END %]
-            [% END %]
-            <a href="?[%entry.page_uri%]">[% loc('blog.permalink') %]</a>
-          </p>
-        </div>
+[% MACRO go_to BLOCK %]
+  <span class="arrow">&gt;</span>
+
+  <span class="jump_to">
+    [% loc('blog.go:') %]&nbsp;
+    <select id="page-control-category-selector">
+      [% FOREACH blog = blogs %]
+        [% display_string = blog.display | html %]
+        <option[% IF blog.display == tag %] selected="true"[% END %] value="/[% wiki.name %]?action=blog_display&category=[% blog.escape_html %]">
+          [% display_string == 'Recent Changes'
+              ? loc('nav.recent-changes')
+              : display_string %]
+        </option>
       [% END %]
-    [% END %]
-    [% PROCESS entry_nav %]
+    </select>
+  </span>
+  <script>
+    $('#page-control-category-selector').dropdown({
+      select: function(ui, option) {
+        if (option.value.length) location = option.value;
+      }
+    });
+  </script>
+[% END %]
+
+[% MACRO create_button BLOCK %]
+  [% IF checker.check_permission('edit') %]
+    <a id="st-weblog-newpost-button" href="[% script_name %]?action=new_page;add_tag=[% tag_escaped %];caller_action=blog_display" title="[% loc('info.post') %]">+ [% loc('post.new') %]</a>
+    <script>$('#st-weblog-newpost-button').button()</script>
+  [% END %]
+[% END %]
+
+[% WRAPPER $frame_name id="blog" %]
+  [% INCLUDE element/page/navigation
+      extra=go_to()
+      create_button=create_button() %]
+  <div class="grid_20">
+    <div class="widget">
+      <h1 title="[% loc('blog.blog') %]: [% display_title | html %]">[% loc('blog.blog') %]: [% display_title | html %]</h1>
+      <div class="content">
+        [% INCLUDE blog_entries %]
+      </div>
+    </div>
   </div>
   <div class="grid_4">
-    <div class="widget">
-      <div class="widgetHeader">
-        <h4>[% loc('blog.navigation') %]</h4>
-      </div><!-- widgetHeader END -->
-      <div class="widgetContent">
-        [% box_content_filled %]
-        [% IF hub.checker.check_permission('edit') %]
-          <a class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" href="[% hub.weblog.page_edit_path %]#edit"><span class="ui-button-text">[% loc('page.edit') %]</span></a>
-        [% END %]
-        <div class="clear"></div>
-      </div><!-- widgetContent -->
-      <div class="widgetBottom"><div class="widgetBottomRight"></div></div>
-    </div>
-    <div class="widget">
-      <div class="widgetHeader">
-        <h4>[% loc('blog.archives') %]</h4>
-      </div><!-- widgetHeader END -->
-      <div class="widgetContent">
-        <ul class="vertical_actions">
-        [% FOREACH year = archive.keys.nsort.reverse %]
-          [% FOREACH month = archive.$year.keys.nsort.reverse %]
-            [% NEXT IF !archive.$year.$month %]
-            <li>
-              <a href="?action=blog_display;tag=[% tag | uri %];start=[% archive.$year.$month.start %];limit=[% archive.$year.$month.limit %]">
-                [% hub.helpers.format_date(year,month) %]
-              </a>
-            </li>
-          [% END %]
-        [% END %]
-        </ul>
-        <div class="clear"></div>
-      </div>
-      <div class="widgetBottom"><div class="widgetBottomRight"></div></div>
-    </div>
+    [% INCLUDE blog_tools %]
+    <br/>
+    [% INCLUDE blog_archives %]
   </div>
   <div class="clear"></div>
+[% END %]
+
+[% BLOCK blog_tools %]
+<div class="widget">
+  <h1>[% loc('Tools') %]</h1>
+  <div class="content">
+    <ul class="tools" id="quickLinks">
+      <li class="item" id="st-blog-rss"><a href="[% feeds.rss.page.url %]">[% loc('blog.subscribe') %]</a></li>
+      <li class="item" id="st-pagetools-print"><a href="JavaScript:window.print()">[% loc('do.print') %]</a></li>
+      [% IF is_real_category AND checker.check_permission('edit') %]
+        <li class="item" id="st-email-menu"><a href="mailto:[% email_category_address %]">[% loc('Post by email') %]</a></li>
+      [% END %]
+    </div>
+  </ul>
 </div>
+[% END %]
+
+[% BLOCK blog_mailto %]
+[% END %]
+
+[% BLOCK blog_entries %]
+  [% PROCESS entry_nav %]
+  [% USE section_iterator = iterator(sections) %]
+  [% FOREACH section IN section_iterator %]
+    [% FOREACH entry = section.entries %]
+      <div class="blogentry">
+        <h3 class="blogheader">
+          <a href="[%entry.page_uri%]">[% entry.title | html %]</a>
+        </h3>
+        <p class="weblog_info">
+          [% IF entry.is_updated %]
+            [% loc('post.by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %]
+          [% ELSE %]
+            [% loc('post.by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %]
+          [% END %]
+        </p>
+        <div id="content_[% entry.page_uri %]">
+          [% entry.post %]
+        </div>
+        <p class="weblog_info_bottom">
+          [% IF entry.is_updated %]
+                [% loc('nav.created-by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %].
+                [% loc('blog.updated-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
+          [% ELSE %]
+                [% loc('nav.created-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
+          [% END %]
+
+          [% IF !entry.page_locked_for_user %]
+            [% IF checker.check_permission('comment') %]
+              <a href="#" id="comment_[% entry.page_uri %]" class="weblog_comment">
+                [% loc('page.comment') %]
+              </a>
+              -
+            [% END %]
+            [% IF checker.check_permission('edit') %]
+              <a href="?action=display;page_name=[% entry.page_uri %];caller_action=[% caller_action %];tag=[% tag | uri %];js=show_edit_div#edit">[% loc('blog.edit') %]</a>
+              -
+            [% END %]
+          [% END %]
+          <a href="?[%entry.page_uri%]">[% loc('blog.permalink') %]</a>
+        </p>
+      </div>
+    [% END %]
+  [% END %]
+  [% PROCESS entry_nav %]
+[% END %]
+
+[% BLOCK blog_archives %]
+  <div class="widget">
+    <h1>[% loc('blog.archives') %]</h1>
+    <div class="content">
+      <ul class="tools">
+      [% FOREACH year = archive.keys.nsort.reverse %]
+        [% FOREACH month = archive.$year.keys.nsort.reverse %]
+          [% NEXT IF !archive.$year.$month %]
+          <li>
+            <a href="?action=blog_display;tag=[% tag | uri %];start=[% archive.$year.$month.start %];limit=[% archive.$year.$month.limit %]">
+              [% hub.helpers.format_date(year,month) %]
+            </a>
+          </li>
+        [% END %]
+      [% END %]
+      </ul>
+    </div>
+  </div>
 [% END %]
 
 [% BLOCK entry_nav %]

@@ -57,9 +57,15 @@
     <span class="arrow">&gt;</span>
     <span class="jump_to">[% loc('nav.jump-to=menu', jump_menu) %]</a>
 
+    [% extra %]
+
   </div>
   <div class="grid_6 right">
-    <a id="st-create-content-link">+ [% loc('page.new') %]</a>
+    [% IF create_button %]
+      [% create_button %]
+    [% ELSE %]
+      <a id="st-create-content-link">+ [% loc('page.new') %]</a>
+    [% END %]
   </div>
 </div>
 
