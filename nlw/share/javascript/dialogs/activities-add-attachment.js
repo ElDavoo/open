@@ -8,20 +8,17 @@ socialtext.dialog.register('activities-add-attachment', function(opts) {
         height: 200,
         buttons: [
             {
-                id: 'activities-add-attachment-upload',
-                text: loc('do.upload'),
-                click: function() {
-                    dialog.find('form').submit();
-                }
-            },
-            {
                 id: 'activities-add-attachment-cancel',
-                text: loc('do.cancel'),
+                text: loc('do.done'),
                 click: function() {
                     dialog.close();
                 }
             }
         ]
+    });
+
+    dialog.find('form .file').change(function(){
+        dialog.find('form').submit();
     });
 
     dialog.find('form').submit(function() {
@@ -54,7 +51,8 @@ socialtext.dialog.register('activities-add-attachment', function(opts) {
                 var filename = dialog.find('.file').val()
                 filename = filename.replace(/^.*\\|\/:/, '');
                 opts.callback(filename, result);
-                dialog.close();
+                dialog.find('.file').val('');
+                dialog.enable();
             }
         });
     });
