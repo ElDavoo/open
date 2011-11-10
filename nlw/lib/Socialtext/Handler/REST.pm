@@ -17,6 +17,7 @@ use File::Basename;
 use File::Spec;
 use Readonly;
 use Scalar::Util qw(blessed);
+use List::MoreUtils qw(uniq);
 use YAML;
 use Socialtext::Log qw(st_timed_log);
 use Socialtext::Timer;
@@ -523,7 +524,12 @@ sub getContentPrefs {
     if (my $type = $self->query->param('accept')) {
         return ($type, '*/*');
     }
-    return $self->SUPER::getContentPrefs(@_);
+    my @types = uniq($self->SUPER::getContentPrefs(@_));
+    if ("@types" eq '*/*') {
+        # Assume HTML when there's no specific Accept header (for IE7/8).
+        unshift @types, 'text/html';
+    }
+    return @types;
 }
 
 sub getContent {
