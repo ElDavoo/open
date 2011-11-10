@@ -38,7 +38,7 @@ $.extend(Activities.Widget.prototype, {
         // replies.
         var signal_view = this.signal_id ? 1 : 0;
 
-        return has_show_pref && !signal_view;
+        return has_show_pref && !signal_view && (this.fixed_feed != 'feed-user');
     },
 
     show: function(cb) {
