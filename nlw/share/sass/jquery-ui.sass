@@ -220,6 +220,10 @@
 .ui-state-default .ui-icon, .ui-state-hover .ui-icon, .ui-state-focus .ui-icon, .ui-state-active .ui-icon
   background-image: url(#{$static}/images/jqueryui/ui-icons_dfebed_256x240.png)
 
+@if lightness($primary_color) > 50%
+  .ui-button.ui-state-default .ui-icon, .ui-button.ui-state-hover .ui-icon, .ui-button.ui-state-focus .ui-icon, .ui-button.ui-state-active .ui-icon
+    background-image: url(#{$static}/images/jqueryui/ui-icons_222222_256x240.png)
+
 .ui-state-highlight .ui-icon
   background-image: url(#{$static}/images/jqueryui/ui-icons_2e83ff_256x240.png)
 
