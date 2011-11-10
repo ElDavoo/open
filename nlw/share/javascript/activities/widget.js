@@ -32,7 +32,6 @@ $.extend(Activities.Widget.prototype, {
     }; },
 
     showDirect: function() {
-        if (this.mention_user_id) return false;
         var has_show_pref = Number(this.show_direct) && this.direct != 'none';
 
         // if we're viewing a single signal, we don't want to show direct
@@ -214,6 +213,7 @@ $.extend(Activities.Widget.prototype, {
                 viewer_id: self.viewer_id,
                 owner_id: self.owner_id,
                 display_limit: self.display_limit,
+                mention_user_id: self.mention_user_id,
                 static_path: self.static_path,
                 share: self.share,
                 onPost: function(signal) {
@@ -322,7 +322,7 @@ $.extend(Activities.Widget.prototype, {
             if (!signal.in_reply_to) return false;
             return signal.in_reply_to.signal_id == this.signal_id;
         }
-
+        
         // Make sure signal is targeting the selected network
         var network = this.appdata.get('network');
         if (signal.recipient) {

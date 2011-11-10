@@ -6,7 +6,7 @@ Activities.EventList = function(opts) {
     this.extend(opts);
     this.requires([
         'appdata', 'signals_enabled', 'viewer_id', 'base_uri', 'owner_id',
-        'display_limit', 'static_path', 'share', 'onPost'
+        'display_limit', 'static_path', 'share', 'onPost', 'mention_user_id'
     ]);
 }
 
@@ -481,6 +481,21 @@ $.extend(Activities.EventList.prototype, {
         // TODO Filter by target network
 
         // TODO Filter by feed
+
+        /**
+         * Prevent private signals from showing up when you look at your own
+         * profile page 
+         */
+        if (self.mention_user_id) {
+            events = $.grep(events, function(e) {
+                if (!e.person) return true; // not a direct message
+                var from_me = e.actor.id == self.viewer_id;
+                var from_you = e.actor.id == self.mention_user_id;
+                var to_you = e.person.id == self.mention_user_id;
+                var to_me = e.person.id == self.viewer_id;
+                return (from_me && to_you) || (from_you && to_me);
+            })
+        }
 
         var feed = this.appdata.get('feed');
         if (feed && feed.id == 'feed-conversations') {
