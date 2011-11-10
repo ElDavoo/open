@@ -60,9 +60,6 @@ input
   border-radius: 2px
   border: 1px solid $light
   &[type="submit"], &[type="button"]
-    border-radius: 2px
-    -moz-border-radius: 2px
-    -webkit-border-radius: 2px
     border: 1px solid $tertiary_color
     color: $primary_contrast
     background-color: $primary_color
@@ -71,6 +68,10 @@ input
     line-height: 1.4
     cursor: pointer
     text-align: center
+    &:not(.ui-button)
+      border-radius: 4px
+      -moz-border-radius: 4px
+      -webkit-border-radius: 4px
     &:hover
       @include opacity(70)
   &[type="radio"], &[type="checkbox"]
