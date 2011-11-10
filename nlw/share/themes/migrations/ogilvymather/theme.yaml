@@ -10,11 +10,11 @@ favicon_image: ~
 foreground_shade: dark
 header_color: '#ffffff'
 header_font: Arial
-header_image: ~
-header_image_position: left top
-header_image_tiling: repeat
+header_image: Screen shot 2011-11-03 at 5.04.10 PM.png
+header_image_position: left center
+header_image_tiling: no-repeat
 header_link_color: '#333333'
-logo_image: ogilvymatherlogo.gif
+logo_image: ~
 primary_color: '#cc0000'
 secondary_color: '#cc0000'
 tertiary_color: '#e8e8e8'

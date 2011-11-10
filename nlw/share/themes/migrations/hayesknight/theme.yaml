@@ -1,20 +1,20 @@
 ---
-background_color: '#0d5b9a'
-background_image: bg.png
+background_color: '#fcfcfc'
+background_image: ~
 background_image_position: left top
-background_image_tiling: repeat-x
-background_link_color: '#ffffff'
+background_image_tiling: no-repeat
+background_link_color: '#c797c7'
 base_theme: Starfish
-body_font: Arial
+body_font: Helvetica
 favicon_image: ~
-foreground_shade: light
-header_color: '#0d5b9a'
+foreground_shade: dark
+header_color: '#ffffff'
 header_font: Arial
 header_image: ~
 header_image_position: left top
-header_image_tiling: repeat
-header_link_color: '#aaaaaa'
+header_image_tiling: no-repeat
+header_link_color: '#42403b'
 logo_image: logo.png
-primary_color: '#0c5a9a'
-secondary_color: '#0c5a9a'
+primary_color: '#3944bf'
+secondary_color: '#6c84ab'
 tertiary_color: '#e8e8e8'

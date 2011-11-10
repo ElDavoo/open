@@ -1,20 +1,20 @@
 ---
-background_color: '#0d5b9a'
-background_image: bg.png
+background_color: '#dddddd'
+background_image: ~
 background_image_position: left top
-background_image_tiling: repeat-x
-background_link_color: '#ffffff'
+background_image_tiling: repeat
+background_link_color: '#6e7c22'
 base_theme: Starfish
 body_font: Arial
-favicon_image: favicon.ico
+favicon_image: socialtext-favicon-0416-56879.ico
 foreground_shade: light
-header_color: '#0d5b9a'
+header_color: '#cacaca'
 header_font: Arial
-header_image: ~
+header_image: starfish-header-31190-25451.png
 header_image_position: left top
-header_image_tiling: repeat
-header_link_color: '#333333'
-logo_image: JingleLogo.png
-primary_color: '#0c5a9a'
-secondary_color: '#0c5a9a'
-tertiary_color: '#e8e8e8'
+header_image_tiling: no-repeat
+header_link_color: '#6e7c22'
+logo_image: socialtext-logo-20111-00648.png
+primary_color: '#6e7c22'
+secondary_color: '#c5b939'
+tertiary_color: '#dfebed'

@@ -1,7 +1,7 @@
 ---
 background_color: '#0052d2'
-background_image: body_bg.gif
-background_image_position: left top
+background_image: ~
+background_image_position: center top
 background_image_tiling: no-repeat
 background_link_color: '#ffffff'
 base_theme: Starfish

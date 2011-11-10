@@ -1,5 +1,5 @@
 ---
-background_color: '#f9f9f9'
+background_color: '#a4c0eb'
 background_image: bodyTile.gif
 background_image_position: left top
 background_image_tiling: repeat-x
@@ -9,12 +9,12 @@ body_font: Helvetica
 favicon_image: favicon.ico
 foreground_shade: dark
 header_color: '#f9f9f9'
-header_font: Helvetica
+header_font: Trebuchet
 header_image: ~
 header_image_position: left top
 header_image_tiling: repeat
-header_link_color: '#333333'
+header_link_color: '#004e70'
 logo_image: cegekaLogo.png
 primary_color: '#0c5a9a'
-secondary_color: '#0c5a9a'
-tertiary_color: '#e8e8e8'
+secondary_color: '#418cc9'
+tertiary_color: '#ededed'

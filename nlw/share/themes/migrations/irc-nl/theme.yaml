@@ -1,20 +1,20 @@
 ---
-background_color: '#0d5b9a'
-background_image: bg.png
+background_color: '#9edbb2'
+background_image: ~
 background_image_position: left top
-background_image_tiling: repeat-x
-background_link_color: '#ffffff'
+background_image_tiling: no-repeat
+background_link_color: '#707d7d'
 base_theme: Starfish
-body_font: Arial
-favicon_image: ~
-foreground_shade: light
-header_color: '#0d5b9a'
-header_font: Arial
+body_font: Helvetica
+favicon_image: irc_logo_sml.png
+foreground_shade: dark
+header_color: '#9edbb2'
+header_font: Georgia
 header_image: ~
 header_image_position: left top
-header_image_tiling: repeat
-header_link_color: '#333333'
-logo_image: irc_logo.gif
-primary_color: '#0c5a9a'
-secondary_color: '#0c5a9a'
-tertiary_color: '#e8e8e8'
+header_image_tiling: no-repeat
+header_link_color: '#121010'
+logo_image: irc_name_sml.png
+primary_color: '#9eaab0'
+secondary_color: '#707d7d'
+tertiary_color: '#D8E1D0'

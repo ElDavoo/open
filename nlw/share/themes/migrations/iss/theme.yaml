@@ -1,20 +1,20 @@
 ---
-background_color: '#0d5b9a'
-background_image: bg.png
+background_color: '#003259'
+background_image: ~
 background_image_position: left top
-background_image_tiling: repeat-x
-background_link_color: '#ffffff'
+background_image_tiling: repeat
+background_link_color: '#eff0eb'
 base_theme: Starfish
 body_font: Arial
 favicon_image: ~
 foreground_shade: light
-header_color: '#0d5b9a'
+header_color: '#8cb3d8'
 header_font: Arial
 header_image: ~
-header_image_position: left top
-header_image_tiling: repeat
-header_link_color: '#333333'
-logo_image: iss_logo.gif
-primary_color: '#002c54'
-secondary_color: '#002c54'
-tertiary_color: '#e8e8e8'
+header_image_position: left center
+header_image_tiling: no-repeat
+header_link_color: '#003459'
+logo_image: logo leyenda color fondo blanco.png
+primary_color: '#8db4d8'
+secondary_color: '#003459'
+tertiary_color: '#edf0f2'
