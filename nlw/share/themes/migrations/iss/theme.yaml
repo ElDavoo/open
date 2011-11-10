@@ -14,7 +14,7 @@ header_image: ~
 header_image_position: left center
 header_image_tiling: no-repeat
 header_link_color: '#003459'
-logo_image: logo leyenda color fondo blanco.png
+logo_image: logo_blanco.png
 primary_color: '#8db4d8'
 secondary_color: '#003459'
 tertiary_color: '#edf0f2'

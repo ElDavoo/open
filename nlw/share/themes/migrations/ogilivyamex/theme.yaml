@@ -1,6 +1,6 @@
 ---
 background_color: '#ffffff'
-background_image: Screen shot 2011-11-04 at 10.40.42 AM.png
+background_image: Screenshot-10.40.42.png
 background_image_position: left top
 background_image_tiling: repeat
 background_link_color: '#ffffff'
@@ -10,7 +10,7 @@ favicon_image: socialtext-favicon-0416-56879.ico
 foreground_shade: dark
 header_color: '#ffffff'
 header_font: Helvetica
-header_image: Screen shot 2011-11-04 at 11.42.07 AM.png
+header_image: Screenshot-11.42.07.png
 header_image_position: left center
 header_image_tiling: no-repeat
 header_link_color: '#0c5a9a'
