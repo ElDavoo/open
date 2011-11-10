@@ -30,20 +30,20 @@
 | set_Speed | 3000 |  |
 | text_like | //body | select an image or file to upload |
 | attach_file_ok | //form[@name='attachForm']//input | %%jpg_file%% |
-| wait_for_element_visible_ok | activities-add-attachment-upload | 30000 |
-| click_ok | activities-add-attachment-upload |  |
+| wait_for_element_visible_ok | activities-add-attachment-cancel | 30000 |
+| click_ok | activities-add-attachment-cancel |  |
 | wait_for_text_present_ok | %%jpg%% [x]; | 10000 |
 | click_ok | //a[contains(@class,'insertFile')] |  |
 | wait_for_element_visible_ok | //form[@name='attachForm']//input | 10000 |
 | attach_file_ok | //form[@name='attachForm']//input | %%txt_file%% |
-| wait_for_element_visible_ok | activities-add-attachment-upload | 30000 |
-| click_ok | activities-add-attachment-upload |  |
+| wait_for_element_visible_ok | activities-add-attachment-cancel | 30000 |
+| click_ok | activities-add-attachment-cancel |  |
 | wait_for_text_present_ok | %%jpg%% [x]; %%txt%% [x]; | 10000 |
 | click_ok | //a[contains(@class,'insertFile')] |  |
 | wait_for_element_visible_ok | //form[@name='attachForm']//input | 10000 |
 | attach_file_ok | //form[@name='attachForm']//input | %%zip_file%% |
-| wait_for_element_visible_ok | activities-add-attachment-upload | 30000 |
-| click_ok | activities-add-attachment-upload |  |
+| wait_for_element_visible_ok | activities-add-attachment-cancel | 30000 |
+| click_ok | activities-add-attachment-cancel |  |
 | wait_for_text_present_ok | %%jpg%% [x]; %%txt%% [x]; %%zip%% [x]; | 10000 |
 | set_Speed | 0 |  |
 
@@ -52,8 +52,8 @@
 | select_frame | signalFrame |  |
 | type_ok | //body | %%signal%% |
 | select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
-| click_ok | //a[@role='button'] |  |
+| wait_for_element_visible_ok | //a[contains(@id,"widget") and contains(@id,"post")] | 15000 |
+| click_ok | //a[contains(@id,"widget") and contains(@id,"post")] |  |
 
 | *Comment* | Test Case: Signals Attachment. see signal and uploaded files |  |
 | wait_for_text_present_ok | %%signal%% | 30000 |

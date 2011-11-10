@@ -51,9 +51,9 @@
 | pause_ok | 15000 |  |
 
 | *Comment* | Test Case: Signals Wiki Link post signal the hard way |  |
-| wait_for_element_visible_ok | //a[@role='button'] | 15000 |
+| wait_for_element_visible_ok | //a[contains(@id,"widget") and contains(@id,"post")] | 15000 |
 | pause | 3000 |  |
-| click_ok | //a[@role='button'] |  |
+| click_ok | //a[contains(@id,"widget") and contains(@id,"post")] |  |
 | wait_for_element_visible_ok | link=%%link_text%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'#%%section%%')] | 30000 |
 

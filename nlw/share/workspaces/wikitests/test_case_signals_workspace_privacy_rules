@@ -54,13 +54,12 @@
 | click_ok | //a[@title='Insert Link'] |  |
 | wait_for_element_visible_ok | wiki-link-workspace | 30000 |
 | type_ok | wiki-link-workspace | no_such_%%start_time%% |
-| click_ok | //button[@class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'] |  |
+| click_ok | activities-add-link-ok |  |
 | wait_for_text_present_ok | You must specify a page. | 30000 |
 
+| *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal Reply missing (TODO) |  |
 
-| *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal Reply missing (TODO) |
-
-| *Comment* | Test Case: Signals Workspace Privacy Rules Basic (Reply button needs id) |
+| *Comment* | Test Case: Signals Workspace Privacy Rules Basic (Reply button needs id) |  |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules TEARDOWN |  |
 | st-process-jobs |  |  |
@@ -69,4 +68,4 @@
 | st-admin | deactivate-user --e %%default_user%% | has been removed |
 | delete-account | %%acct%% | Recklessly deleted |
 
-| *Comment* | Test Case: Signals Workspace Privacy Rules COMPLETED |
+| *Comment* | Test Case: Signals Workspace Privacy Rules COMPLETED |  |
