@@ -229,8 +229,19 @@
 #st-edit-mode-container.ckeditor-container .cke_button
   .cke_button_source .cke_label
     display: none
-  .cke_button_st_upload .cke_label
-    display: inline
+  .cke_button_st_upload
+    .cke_label
+      display: inline
+      vertical-align: bottom
+      line-height: 20px
+  a.cke_button_st_upload
+    .cke_label
+      *display: block
+      *float: left
+      *line-height: 16px
+    .cke_icon
+      *display: block
+      *float: left
   .cke_button_st_insert
     .cke_label
       display: inline
@@ -312,11 +323,14 @@
     @include border-radius(none !important)
 
 @-moz-document url-prefix()
-  .ckeditor-container
+  #st-edit-mode-container.ckeditor-container
     #st-editing-insert-menu > li > ul
       margin-top: 20px
     #st-editing-insert-menu li ul li ul
       margin-top: -6px
+    .cke_button .cke_button_st_upload
+      span.cke_label
+        line-height: 18px
 
 .ckeditor-save a.ui-dialog-titlebar-close
   display: none
