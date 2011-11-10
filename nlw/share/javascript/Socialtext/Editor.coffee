@@ -127,7 +127,8 @@ Socialtext::editor =
     )
     title = opts.title || $('#lightbox span.title, #lightbox div.title').text()
     $('#lightbox span.title, #lightbox div.title').remove()
-    opts.extraHeight += 70
+    opts.extraHeight += 80
+    opts.extraHeight += 25 if $.browser.msie
     $('#lightbox').dialog
       modal: true
       zIndex: 2002
