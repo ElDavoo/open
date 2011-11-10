@@ -600,12 +600,16 @@ $.extend(Activities.AppData.prototype, {
 
     checkFilter: function(key, id) {
         var $inputs = this.findId('filters').find('.' + key);
-        if ($inputs.filter(':checked').attr('id') != id) {
-            $inputs.removeAttr('checked');
-            this.set(key, id);
-            this.checkDisabledOptions();
-            $inputs.filter('#'+id).attr('checked', 'checked').change();
-        }
+        var $option = $inputs.filter('#'+id);
+
+        // Don't change anything if $option doesn't exist or is already
+        // checked
+        if (!$option.size() || $option.is(':checked')) return;
+
+        $inputs.removeAttr('checked');
+        this.set(key, id);
+        this.checkDisabledOptions();
+        $option.attr('checked', 'checked').change();
     },
 
     selectNetwork: function(network_id) {
