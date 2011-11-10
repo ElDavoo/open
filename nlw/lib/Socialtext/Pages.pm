@@ -789,8 +789,8 @@ sub TaggedCount {
         SELECT count(*) 
           FROM page
           JOIN page_tag USING (page_id, workspace_id)
-         WHERE NOT deleted AND workspace_id = ? AND tag = ?
-    }, $p{workspace_id}, $p{tag});
+         WHERE NOT deleted AND workspace_id = ? AND LOWER(tag) = ?
+    }, $p{workspace_id}, lc($p{tag}));
 }
 
 ################################################################################
