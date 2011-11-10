@@ -6,16 +6,23 @@ var gallery = {
     show: function (args) {
         var self = this;
         $.extend(self, args);
+
+        self.dialog = st.dialog.createDialog({
+            title: loc('widget.insert'),
+            width: 640,
+            minWidth: 550,
+            height: 400,
+            html: '<div id="st-widget-opensocial-gallery-loading"><img src="/static/images/ajax-loader.gif" style="padding-top: 150px; padding-left: 300px" /></div>',
+            close: function() {
+                $('#st-widget-opensocial-gallery-loading').remove();
+            }
+        });
         self.loadAccountGallery(function(gadgets) {
-            self.dialog = socialtext.dialog.createDialog({
-                title: loc('widget.insert'),
-                width: 640,
-                minWidth: 550,
-                height: 400,
-                html: socialtext.dialog.process('opensocial-gallery.tt2', {
+            $('#st-widget-opensocial-gallery-loading').html(
+                st.dialog.process('opensocial-gallery.tt2', {
                     gadgets: gadgets
                 })
-            });
+            );
             self.bindHandlers();
         });
     },
