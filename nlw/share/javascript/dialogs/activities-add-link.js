@@ -57,6 +57,7 @@ socialtext.dialog.register('activities-add-link', function(opts) {
             return [ i.title + ' (' + i.name + ')', i.name ]; 
         },
         onAccept: function(id, item) {
+            dialog.find('.wiki-link-workspace').val(id);
             dialog.find('.wiki-option').change();
         }
     });
