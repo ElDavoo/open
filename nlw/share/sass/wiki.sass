@@ -171,6 +171,10 @@
     float: left
     margin-right: 10px
 
+@-moz-document url-prefix()
+  .workspaceNav div.breadcrumb a
+    padding-bottom: 0px
+
 .workspaceNav
   height: 28px
   margin-bottom: 5px
@@ -184,9 +188,7 @@
       margin-top: 0
       margin-bottom: 0
     a
-      padding-bottom: 0px
-      @media screen and (-webkit-min-device-pixel-ratio:0)
-        padding-bottom: 2px
+      padding-bottom: 2px
     .spaces
       padding-left: 18px
       background: transparent url(#{$static}/images/icons/spaces-black-15.png) no-repeat center left
