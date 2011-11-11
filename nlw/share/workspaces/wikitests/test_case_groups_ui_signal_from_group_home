@@ -35,8 +35,8 @@
 | click_ok | group-%%group_id%% |  |
 | pause_ok | 2000 |  |
 
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | I'm new | 30000 |
+| open_ok | /?action=workspaces_listall |  |
+| wait_for_text_present_ok | All | 30000 |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 
@@ -70,8 +70,8 @@
 | click_ok | network-all |  |
 | pause_ok | 2000 |  |
 
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | I'm new | 30000 |
+| open_ok | /?action=workspaces_listall |  |
+| wait_for_text_present_ok | All | 30000 |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 
@@ -93,8 +93,8 @@
 | click_ok | network-all |  |
 | pause_ok | 2000 |  |
 
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | I'm new | 30000 |
+| open_ok | /?action=workspaces_listall |  |
+| wait_for_text_present_ok | All | 30000 |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Colleagues | 30000 |
 

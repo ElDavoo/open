@@ -41,11 +41,12 @@ edit a page to include a link to an orphan sheet | link appears in page
 
 | *Comment* | Test Case: Calc Orphans List. Create a link to the second orphan sheet |  |  |  |
 
-| call | st-edit-new-page | ws=%%workspace%% | title=orphan page 1 %%start_time%% | content=`[orphan sheet 2 %%start_time%%]` |
+| call | [st-edit-new-page] | ws=%%workspace%% | title=orphan page 1 %%start_time%% | content=`[orphan sheet 2 %%start_time%%]` |
 
 "What's New -> Orphaned Pages"<http://.../> | linked sheet no longer in orphans list
 
 | *Comment* | Test Case: Calc Orphans List. second sheet should no longer be orphan |  |
+| st-process-jobs |  |  |
 | select_and_wait | st-jump-to | label=Orphan Pages |
 | text_unlike | content | orphan sheet 2 %%start_time%% |
 | text_like | content | orphan sheet 1 %%start_time%% |
