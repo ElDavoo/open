@@ -5,7 +5,7 @@
 [% END %]
 
 [% BLOCK workspace_selector %]
-<select id="st-workspace-list">
+<select id="st-workspace-list" style="visibility: hidden">
   [% FOR ws = workspaceslist %]
     <option value="/[% ws.name %]" [% IF ws.name == wiki.name %]selected="selected"[% END %]>[% ws.label %]</option>
   [% END %]
@@ -18,12 +18,13 @@ $(function(){
         document.location = option.value;
       }
     });
+  $('#st-workspace-list').css('visibility', 'visible');
 });
 </script>
 [% END %]
 
 [% MACRO jump_menu BLOCK %]
-<select id="st-jump-to">
+<select id="st-jump-to" style="visibility: hidden">
   [% IF action == 'display' %]
     <option selected="selected" value="">[% loc('nav.select-prompt') %]</option>
   [% END %]
@@ -48,6 +49,7 @@ $(function(){
         if (option.value.length) location = option.value;
       }
     });
+  $('#st-jump-to').css('visibility', 'visible');
 });
 </script>
 [% END %]
