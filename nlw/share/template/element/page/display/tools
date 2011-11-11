@@ -34,7 +34,7 @@
         %]
       [% END %]
 
-      [% IF !locked && checker.check_permission('comment') %]
+      [% IF !locked && !page.is_spreadsheet && checker.check_permission('comment') %]
         [% INCLUDE tools_item
             id="st-comment-button"
             href="#"
