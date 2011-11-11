@@ -337,7 +337,7 @@ sub _make_row {
         my $att_id = $hit->attachment_id;
         my $att;
         eval {
-            my $att = $hit_hub->attachments->load(
+            $att = $hit_hub->attachments->load(
                 id      => $att_id,
                 page_id => $page_uri,
             );
