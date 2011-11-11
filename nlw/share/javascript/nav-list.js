@@ -55,13 +55,13 @@ $.fn.navList = function(entries) {
                 .mouseover(function() {
                     hovering = true;
                     $navList
+                        .show()
                         .position({
                             of: $node,
                             my: 'left top',
                             at: 'left bottom',
                             offset: '0 -4px'
-                        })
-                        .show();
+                        });
                 })
                 .mouseout(function() {
                     hovering = false;
