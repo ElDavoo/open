@@ -9,7 +9,7 @@
 | set | group_suffix | `-ucg-group` |
 | set | groupuser | ucg_user_%%start_time%% |
 | set | short_groupuser | ucg user %%start_time%% |
-| set | groupemail | %%groupuser%%@ken.socialtext.net |
+| set | groupemail | `%%groupuser%%@ken.socialtext.net` |
 
 | *Comment* | Test Case: User Creates Group these groups will be used later to test pagination of a list |  |
 | set | group_1 | %%start_time%%-ucg-group-1 |
@@ -128,9 +128,12 @@
 | wait_for_element_visible_ok | //input[@id='private-radio'] | 10000 |  |
 | wait_for_element_visible_ok | st-create-group-next | 10000 |  |
 | wait_for_element_visible_ok | st-create-group-cancel | 10000 |  |
-| pause | 3000 | wait for JS anyway |  |
-| select-autocompleted-option-ok | //div[@class='lookahead']/input | %%group_prefix%% | Show All Results |
-| wait_for_text_present_ok | Group names and descriptions matching '%%group_prefix%% OR %%group_prefix%%*' | 30000 |  |
+
+| *Comment* | Test Case: User Creates Group lookahead. Clicking Show All Groups crashes Selenium, so do the search manually |  |  |
+| autocompleted-option-exists | //input[@value='type your search here...'] | %%group_prefix%% | Show All Results |
+| open_ok | /?action=search_groups&search_term=%%group_prefix%% |  |  |
+| wait_for_text_present_ok | Group names and descriptions matching '%%group_prefix%%' | 30000 |  |
+| wait_for_text_present_ok | Showing 1 - 11 of 11 total | 5000 |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | open_ok | /st/dashboard |  |

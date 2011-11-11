@@ -31,6 +31,8 @@
 | wait_for_element_visible_ok | link=%%pageA%% | 30000 |
 | text_like | //body | qr/%%pageA%%.+%%pageL%%.+%%pageM%%.+%%pageN%%.+%%pageX%%/ |
 
+| pause_ok | 4000 |  |
+
 | *Comment* | Test Case: Sorting for Canadien Francais (Pages) - Test Sorting for Page in Watched List |  |
 | open_ok | /%%ws%%/%%pageA%% |  |
 | st-watch-page | 1 |  |

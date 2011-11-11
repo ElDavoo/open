@@ -20,7 +20,25 @@
 | st-admin | give-accounts-admin --email %%user%% | now has accounts |  |
 | st-logoutin | %%user%% | %%password%% |  |
 
+| *Comment* | Build Testcases check Signals page and send a signal and reply |  |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | There are no new signals in the last 30 days. | 30000 |
+| st-send-signal-in-activities-widget | signal 1 %%start_time%% |  |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | By you less than a minute ago to %%acct%% | 30000 |
+| wait_for_text_present_ok | signal 1 %%start_time%% | 30000 |
+| st-send-reply | reply 1 %%start_time%% |  |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | reply 1 %%start_time%% | 30000 |
+| text_like | //body | qr/reply 1 %%start_time%%.+By you less than a minute ago/ism |
+
+| *Comment* | Build Testcases check Mobile Signals |  |
+| click_and_wait | st-footer-link-mobile |  |
+| wait_for_text_present_ok | By you | 30000 |
+| text_like | mobile_event_list | qr/signal 1 %%start_time%%.+By you.+reply 1 %%start_time%%.+By you/ism |
+
 | *Comment* | Build Testcases check the control panel |  |
+| open_ok | /st/signals |  |
 | wait_for_element_visible_ok | link=Control Panel | 15000 |
 | click_and_wait | link=Control Panel |  |
 | wait_for_text_present_ok | Welcome to the Socialtext Control Panel. | 30000 |
@@ -54,7 +72,7 @@
 | wait_for_element_visible_ok | st-create-content-savelink | 10000 |  |
 | click_and_wait | st-create-content-savelink |  |  |
 
-| call | st-edit-save-page | title=%%page_title%% | content=%%page_content%% |
+| call | [st-edit-save-page] | title=%%page_title%% | content=%%page_content%% |
 
 | wait_for_text_present_ok | Created by | 15000 |
 | text_like | create-attribution | qr/Created by.+%%user_with_spaces%%/ |
@@ -132,23 +150,6 @@
 | click_ok | link=%%page_title%% |  |
 | wait_for_text_present_ok | %%page_content%% | 30000 |
 | text_like | //body | qr/%%page_title%%.+%%page_comment%%.+contributed by.+%%user_with_spaces%%/ |
-
-TUXTODO: restore when mobile signals works
-click_and_wait | mobile-signals | |
-wait_for_text_present_ok | By you | 30000 |
-text_like | mobile_event_list | qr/signal 1 %%start_time%%.+By you.+reply 1 %%start_time%%.+By you/ism |
-
-| *Comment* | Build Testcases check Signals page and send a signal and reply |  |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | There are no new signals in the last 30 days. | 30000 |
-| st-send-signal-in-activities-widget | signal 1 %%start_time%% |  |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | By you less than a minute ago to %%acct%% | 30000 |
-| wait_for_text_present_ok | signal 1 %%start_time%% | 30000 |
-| st-send-reply | reply 1 %%start_time%% |  |
-| open_ok | /st/signals |  |
-| wait_for_text_present_ok | reply 1 %%start_time%% | 30000 |
-| text_like | //body | qr/reply 1 %%start_time%%.+By you less than a minute ago/ism |
 
 | *Comment* | Build Testcases TEARDOWN |  |
 | st-process-jobs |  |  |

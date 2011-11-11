@@ -19,6 +19,12 @@ $primary_complement: $darkest
 @else
   $primary_complement: lighten($primary_color, 10)
 
+$background_complement: $darkest
+@if (lightness($background_color) > 50%)
+  $background_complement: darken($background_color, 6)
+@else
+  $background_complement: lighten($background_color, 10)
+
 $primary_contrast_disabled: $light
 @if (lightness($primary_color) > 50%)
   $primary_contrast_disabled: $darker

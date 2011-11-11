@@ -71,11 +71,14 @@ Search result. Single Page. What's New. Watchlist. All Pages. Blogs.
 | location_like | /feed/workspace/%%workspace%% |  |
 
 | *Comment* | Test Case: RSS Icons Blogs |  |
-| open_ok | /%%workspace%%/ |  |
-| select_and_wait | st-jump-to | label=Blogs |
-| wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000 |
-| click_and_wait | //img[contains(@src,'rss.png')] |  |
-| location_like | /feed/workspace/%%workspace%% |  |
+
+TUXTODO: Was the removal of the standard RSS icon deliberate?
+
+open_ok | /%%workspace%%/ | |
+select_and_wait | st-jump-to | label=Blogs |
+wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000 |
+click_and_wait | //img[contains(@src,'rss.png')] | |
+location_like | /feed/workspace/%%workspace%% | |
 
 | open_ok | /%%workspace%%/ |  |
 | select_and_wait | st-jump-to | label=Blogs |

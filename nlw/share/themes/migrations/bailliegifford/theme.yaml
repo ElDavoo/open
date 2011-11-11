@@ -1,5 +1,5 @@
 ---
-background_color: '#ffffff'
+background_color: '#f4f5df'
 background_image: ~
 background_image_position: left top
 background_image_tiling: repeat
@@ -8,13 +8,13 @@ base_theme: Starfish
 body_font: Arial
 favicon_image: favicon.ico
 foreground_shade: dark
-header_color: '#ffffff'
+header_color: '#f4f5df'
 header_font: Arial
 header_image: ~
 header_image_position: left top
 header_image_tiling: repeat
 header_link_color: '#333333'
-logo_image: logo.gif
-primary_color: '#00aaff'
-secondary_color: '#00aaff'
-tertiary_color: '#e8e8e8'
+logo_image: Logo_Black.png
+primary_color: '#7c109a'
+secondary_color: '#c49dd4'
+tertiary_color: '#e0c7e0'

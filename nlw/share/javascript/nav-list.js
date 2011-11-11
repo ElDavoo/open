@@ -40,21 +40,36 @@ $.fn.navList = function(entries) {
         $nodes.each(function(_, node) {
             var $node = $(node);
             $node.find('ul').remove();
-            $node.append(Jemplate.process('nav-list.tt2', {
+            
+            var $navList = $(Jemplate.process('nav-list.tt2', {
                 loc: loc,
                 entries: entries
             }));
 
-            $node.find('ul.navList li:last').addClass('last');
+            $navList
+                .appendTo('#globalNav')
+                .find('li:last').addClass('last');
 
-            if ($.browser.msie && $.browser.version <= 8) {
-                $node.mouseover(function() {
-                    $node.addClass('hover');
+            var hovering = false;
+            $node.add($navList)
+                .mouseover(function() {
+                    hovering = true;
+                    $navList
+                        .show()
+                        .position({
+                            of: $node,
+                            my: 'left top',
+                            at: 'left bottom',
+                            offset: '0 -4px'
+                        });
                 })
-                $node.mouseout(function() {
-                    $node.removeClass('hover');
-                });
-            }
+                .mouseout(function() {
+                    hovering = false;
+                    setTimeout(function() {
+                        if (hovering) return;
+                        $navList.hide();
+                    }, 50);
+                })
         });
     });
 };

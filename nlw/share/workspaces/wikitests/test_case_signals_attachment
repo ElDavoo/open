@@ -45,7 +45,6 @@
 | wait_for_element_visible_ok | activities-add-attachment-cancel | 30000 |
 | click_ok | activities-add-attachment-cancel |  |
 | wait_for_text_present_ok | %%jpg%% [x]; %%txt%% [x]; %%zip%% [x]; | 10000 |
-| set_Speed | 0 |  |
 
 | *Comment* | Test Case: Signals Attachment. post %%signal%%. Only works in Firefox |  |
 | wait_for_element_visible_ok | signalFrame | 15000 |
@@ -56,6 +55,7 @@
 | click_ok | //a[contains(@id,"widget") and contains(@id,"post")] |  |
 
 | *Comment* | Test Case: Signals Attachment. see signal and uploaded files |  |
+| set_Speed | 0 |  |
 | wait_for_text_present_ok | %%signal%% | 30000 |
 | wait_for_element_visible_ok | link=%%jpg%% | 30000 |
 | wait_for_element_visible_ok | link=%%txt%% | 30000 |

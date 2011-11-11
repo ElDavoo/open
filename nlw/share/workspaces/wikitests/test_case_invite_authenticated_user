@@ -1,3 +1,5 @@
+*On hold until the Authentication Required popup stops happening*
+
 | *Comment* | Test Case: Invite Authenticated User Invite new users |  |
 
 | set | invite | `//input[contains(@class,'lookahead-prompt')]` |

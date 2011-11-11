@@ -12,8 +12,8 @@
 | wait_for_element_visible_ok | link=Save | 3000 |
 | click_and_wait | link=Save |  |
 | pause | 10000 |  |
-| wait_for_element_visible_ok | controls | 30000 |
-| text_like | controls | claus´ blog %%start_time%% |
+| wait_for_element_visible_ok | content | 30000 |
+| text_like | content | claus´ blog %%start_time%% |
 
 | *Comment* | Test Case: Weblog naming: Make a blog with a Latin-1 char in its name |  |
 | open_ok | /%%lb_wiki%% |  |

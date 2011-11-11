@@ -32,7 +32,7 @@
 
 | *Comment* | Test Case: Workspace Navigation Blogs |  |
 | select_and_wait | st-jump-to | label=Blogs |
-| text_like | controls | Blog: |
+| text_like | content | Blog: |
 
 | *Comment* | Test Case: Workspace Navigation All Files/Tags/Pages |  |
 | select_and_wait | st-jump-to | label=All Files |
