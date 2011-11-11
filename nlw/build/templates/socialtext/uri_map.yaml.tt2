@@ -702,26 +702,21 @@
         '*':                    [Socialtext::Rest, redirect_workspaces]
 -
     '/st/settings':
-        'GET':
-            'text/html': [Socialtext::Handler::Settings, GET]
-            '*/*':       [Socialtext::Handler::Settings, bad_type]
+        'GET':           [Socialtext::Handler::Settings, GET]
         'POST':
             'application/x-www-form-urlencoded': [Socialtext::Handler::Settings, POST]
             '*/*':       [Socialtext::Handler::Settings, bad_type]
         '*':             [Socialtext::Handler::Settings, bad_method]
 -
     '/st/settings/:workspace_id/prefs/:pref':
-        'GET':
-            'text/html': [Socialtext::Handler::Settings, GET_space]
-            '*/*':       [Socialtext::Handler::Settings, bad_type]
+        'GET':           [Socialtext::Handler::Settings, GET_space]
         'POST':
             'application/x-www-form-urlencoded': [Socialtext::Handler::Settings, POST_space]
             '*/*':       [Socialtext::Handler::Settings, bad_type]
         '*':             [Socialtext::Handler::Settings, bad_method]
 -
     '/st/grids/:cols/:width':
-        'GET':
-            '*/*': [Socialtext::Handler::Grids, GET_css]
+        'GET':     [Socialtext::Handler::Grids, GET_css]
         '*':       [Socialtext::Handler::Grids, bad_method]
 -
     '/settings/default_workspace':
@@ -740,8 +735,7 @@
         '*':                    [Socialtext::Rest::SettingsTheme, bad_method]
 -
     '/data/settings/theme/images/:filename':
-        'GET':
-            '*/*': [Socialtext::Rest::SettingsTheme, GET_image]
+        'GET':     [Socialtext::Rest::SettingsTheme, GET_image]
         '*':       [Socialtext::Rest::SettingsTheme, bad_method]
 -
     '/data/themes':
@@ -755,9 +749,8 @@
         '*':                    [Socialtext::Rest::Themes, bad_method]
 -
     '/data/themes/:theme/images/:filename':
-        'GET':
-            '*/*': [Socialtext::Rest::Themes, GET_image]
-        '*':       [Socialtext::Rest::Themes, bad_method]
+        'GET':                  [Socialtext::Rest::Themes, GET_image]
+        '*':                    [Socialtext::Rest::Themes, bad_method]
 -
     '/m':
         'GET':                  [Socialtext::Rest::Lite, homepage]
