@@ -318,3 +318,12 @@
         - contrib/jquery.mobile-1.0b2.min.js
         - loc.js
         - Socialtext.js
+
+# javascript needed for /console
+'socialtext-console.js':
+    compress: 1
+    parts:
+        - jquery-1.6.2.js
+        - loc.js
+        - Socialtext.js
+        - Socialtext/Email.js
