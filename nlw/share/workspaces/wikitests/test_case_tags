@@ -1,6 +1,6 @@
 | *Comment* | Test Case: Tags |
 
- observe tag list | Welcome tag is definitely present; all other tags are present
+observe tag list | Welcome tag is definitely present; all other tags are present
 
 | Comment | Test Case: Tags All Tags |  |
 | open_ok | /%%workspace%%/?action=category_list |  |
@@ -13,12 +13,12 @@ use or create a workspace with several tags and tagged pages
 | call | [st-edit-new-page] | ws=%%workspace%% | title=Tag 1 Content Title %%start_time%% | content=Tag 1 Content Page %%start_time%% |
 | call | [st-tag-page] | tag_to_apply=Tag 1 %%start_time%% |  |  |
 
-| *Comment* | Test Case: Tags Create tag 12 |  |
+| *Comment* | Test Case: Tags Create tag 12 |  |  |  |
 
 | call | [st-edit-new-page] | ws=%%workspace%% | title=Tag 12 Content Title %%start_time%% | content=Tag 12 Content Page %%start_time%% |
 | call | [st-tag-page] | tag_to_apply=Tag 1 %%start_time%% |  |  |
 
-| *Comment* | Test Case: Tags Create tag2 page tagged tag2 |  |
+| *Comment* | Test Case: Tags Create tag2 page tagged tag2 |  |  |  |
 
 | call | [st-edit-new-page] | ws=%%workspace%% | title=Tag 2 Content Title %%start_time%% | content=Tag 2 Content Page %%start_time%% |
 | call | [st-tag-page] | tag_to_apply=Tag 2 %%start_time%% |  |  |
@@ -26,7 +26,7 @@ use or create a workspace with several tags and tagged pages
 | *Comment* | Test Case: Tags Process page index jobs |  |
 | st_process_jobs | PageIndex |  |
 
- click on several tag links | Category (Tag) page with table containing links to tagged pages appears
+click on several tag links | Category (Tag) page with table containing links to tagged pages appears
 click on several page links | Pages appear; each page has its that tag displayed in Tags sidebar.
 
 | *Comment* | Test Case: Tags Checking tag2 links and pages |  |
@@ -45,22 +45,22 @@ click on several page links | Pages appear; each page has its that tag displayed
 | click_and_wait | link=Tag 1 Content Title %%start_time%% |  |
 | text_like | link=Tag 1 %%start_time%% | Tag 1 %%start_time%% |
 
- click: View {link: Category as a blog} | All pages with that tag appear in weblog form
+click: View {link: Category as a blog} | All pages with that tag appear in weblog form
 
 | *Comment* | Test Case: Tags Checking weblog view |  |
 | open_ok | /%%workspace%%/?Tag 2 Content Title %%start_time%% |  |
 | click_and_wait | link=Tag 2 %%start_time%% |  |
 | click_and_wait | link=Tag 2 %%start_time%% as a blog |  |
-| text_like | controls | Blog: Tag 2 %%start_time%% |
+| text_like | content | Blog: Tag 2 %%start_time%% |
 
-| *Comment* | Test Case: Tags post to category by email not implemented |
+| *Comment* | Test Case: Tags post to category by email not implemented |  |
 
- return to Category (Tag) page | sortable table of tagged pages appears
+return to Category (Tag) page | sortable table of tagged pages appears
 Toggle sort link at top of each column | tables sort and reverse sort correctly
 
 TOO: restore the following test when tag listview sorting is implemented
 
- *Comment* | Test Case: Tags Checking tag sorting | |
+*Comment* | Test Case: Tags Checking tag sorting | |
 open_ok | /%%workspace%%/index.cgi?action=category_list | |
 text_like | qr/Tag 1 %%start_time%%.+Tag 2 %%start_time%%/ | |
 click_ok | link=Add Tag | |
@@ -113,4 +113,4 @@ Go to All Tags | The tag from the deleted page should not appear in list.
 | st-admin | purge-page --w %%workspace%% --page tag_12_content_title_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page tag_2_content_title_%%start_time%% | was purged |
 
-| *Comment* | Test Case: Tags COMPLETED |
+| *Comment* | Test Case: Tags COMPLETED |  |
