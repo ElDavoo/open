@@ -1685,7 +1685,17 @@ sub remove_workspace_admin {
         }
     );
     my $type = $self->_type_of_entity_collection_operation(keys %jump);
-    return $jump{$type}->();
+    my $rv = eval { $jump{$type}->() };
+
+    if ( my $e = Exception::Class->caught('Socialtext::Exception::User') ) {
+        if ($e->error eq 'ADMIN_REQUIRED') {
+            my $user = $self->_require_user();
+            return $self->_error(loc('error.removing-last-wiki-admin=user', $user->username));
+        };
+        return $self->_error($e);
+    }
+
+    return $rv;
 }
 
 sub add_account_admin {
