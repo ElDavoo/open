@@ -47,7 +47,7 @@
 | open_ok | /st/signals |  |
 | st-send-signal-in-activities-widget | %%replycode%% |  |
 | open_ok | /st/signals |  |
-| st-send-reply | {user: %%actor%%} %%replytext%% |  |
+| st-send-reply | {user: %%actor%%} %%replytext%% | 0 |
 
 | *Comment* | Test Case: Signals Mentions - third non-mention signal by someone else |  |
 | open_ok | /st/signals |  |

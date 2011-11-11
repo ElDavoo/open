@@ -415,16 +415,14 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 =cut
 
 sub st_send_reply {
-    my ($self, $signaltosend, $is_mobile) = @_;
+    my ($self, $signaltosend, $add_to_conversation, $is_mobile) = @_;
     #TODO: click on something else in IE
     my $firstReplyLink = '//a[@class="replyLink"]';
-    my $subsequentReplyLink = '//div[@class="wikiwyg"]';
+    my $addToConversationLink = '//div[@class="wikiwyg"]';
     $self->handle_command('wait_for_element_visible_ok','//div[@class="activitiesWidget"]', 15000);
-    $self->handle_command('wait_for_element_present_ok','//div[@class="more"]', 15000);
-    #my $firstReply = $self->{selenium}->is_element_present($firstReplyLink);
-    #my $replyLink = $firstReply ? $firstReplyLink : $subsequentReplyLink; 
-    $self->handle_command('wait_for_element_visible_ok', $firstReplyLink, 15000);
-    $self->handle_command('click_ok', $firstReplyLink);
+    my $replyLink = ($add_to_conversation == 1) ? $addToConversationLink : $firstReplyLink; 
+    $self->handle_command('wait_for_element_visible_ok', $replyLink, 15000);
+    $self->handle_command('click_ok', $replyLink);
 
     $self->handle_command('set_Speed',2000);
     if ($self->_is_wikiwyg() ) { #wikiwyg
@@ -448,10 +446,8 @@ sub st_send_reply {
     }
     
     my $goLink = '//div[@class="post hidden"]//a[@role="button" and contains(@id,"post")]';
-    my $reply = '//div[contains(@class,"reply signal")]';
     $self->handle_command('wait_for_element_visible_ok',$goLink, 5000);
     $self->handle_command('click_ok', $goLink);
-    $self->handle_command('wait_for_element_visible_ok',$reply, 15000);
     $self->handle_command('set_Speed',0);
 }
 
