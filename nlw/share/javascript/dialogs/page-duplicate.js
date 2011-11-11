@@ -25,8 +25,8 @@ st.dialog.register('page-duplicate', function(opts) {
     dialog.find('form').submit(function () {
         dialog.submitPageForm(function() {
             var title = dialog.find('input[name=new_title]').val();
-            document.location = '/' + st.workspace.name + '/' + title;
-            self.close();
+            window.location = '/' + st.workspace.name + '/' + title;
+            dialog.close();
         });
         return false;
     });
