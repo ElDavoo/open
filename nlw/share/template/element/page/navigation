@@ -11,12 +11,14 @@
   [% END %]
 </select>
 <script>
+$(function(){
   $('#st-workspace-list')
     .dropdown({
       select: function(ui, option) {
         document.location = option.value;
       }
     });
+});
 </script>
 [% END %]
 
@@ -39,12 +41,14 @@
   [% jump_option("workspace_membership", loc('wiki.membership')) %]
 </select>
 <script>
+$(function(){
   $('#st-jump-to')
     .dropdown({
       select: function(ui, option) {
         if (option.value.length) location = option.value;
       }
     });
+});
 </script>
 [% END %]
 
