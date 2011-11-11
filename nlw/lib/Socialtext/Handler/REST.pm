@@ -525,7 +525,8 @@ sub getContentPrefs {
         return ($type, '*/*');
     }
     my @types = uniq($self->SUPER::getContentPrefs(@_));
-    if ("@types" eq '*/*') {
+    my @reduced_types = grep { not m{^(?:image/|application/(?!json|(?:.+\+)?xml))} } @types;
+    if ("@reduced_types" eq '*/*') {
         # Assume HTML when there's no specific Accept header (for IE7/8).
         unshift @types, 'text/html';
     }
