@@ -22,8 +22,8 @@ st.dialog.register('page-copy', function(opts) {
         dialog.submitPageForm(function() {
             var title = dialog.find('input[name=new_title]').val();
             var ws = dialog.find('select option:selected').data('name');
-            document.location = '/' + ws + '/' + title;
-            self.close();
+            window.location = '/' + ws + '/' + title;
+            dialog.close();
         });
         return false;
     });

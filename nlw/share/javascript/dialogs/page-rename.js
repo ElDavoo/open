@@ -22,7 +22,7 @@ st.dialog.register('page-rename', function(opts) {
     dialog.find('form').submit(function () {
         dialog.submitPageForm(function() {
             var title = dialog.find('input[name=new_title]').val();
-            document.location = '/' + st.workspace.name + '/' + title;
+            window.location = '/' + st.workspace.name + '/' + title;
             dialog.close();
         });
         return false;
