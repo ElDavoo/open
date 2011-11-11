@@ -64,7 +64,7 @@
   <div class="grid_6 right">
     [% IF create_button %]
       [% create_button %]
-    [% ELSE %]
+    [% ELSIF checker.check_permission('edit') %]
       <a id="st-create-content-link">+ [% loc('page.new') %]</a>
     [% END %]
   </div>

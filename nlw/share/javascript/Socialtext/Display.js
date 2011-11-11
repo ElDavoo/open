@@ -297,8 +297,9 @@ $(function() {
     $('#st-create-content-link').button().click(function() {
         st.dialog.show('create-content');
     });
-    // Make Invite! link a button
-    $('#st-wiki-subnav-link-invite').button();
+
+    // Make various links into buttons
+    $('#st-wiki-subnav-link-invite, #st-login-to-edit-button-link, #st-wikinav-register').button();
 
     if (location.hash.toLowerCase() == '#new_page' || location.search.toLowerCase() == '?_p=new_page') {
         $('#st-create-content-link').click();
