@@ -77,38 +77,41 @@ a
     display: none
 
 // Drop downs
-.navGrid
-  ul
-    list-style: none
+ul.navList
+  position: absolute
+  display: none
+  list-style: none
+  padding: 0 
+  margin: 0
+  background-color: $background_color
+  color: $foreground_color
+  z-index: 1000
+  -webkit-overflow-scrolling: touch
+  border: 2px solid $secondary_color
+  li
     margin: 0
     padding: 0
-    li
-      margin: 0
-      padding: 3px 10px 3px 0
-      border-bottom: 1px solid fade-out($secondary_color, 0.8)
-      white-space: nowrap
-      &.last
-        border-bottom: none
-      &.entries
-        *width: 100% // IE ONLY
-        padding-right: 0
-        max-height: 300px
-        overflow-y: auto
-        border-bottom: none
-    &.navList
-      position: absolute
-      top: 42px
-      left: 0
-      padding: 3px
-      color: $foreground_color
-      display: none
-      z-index: 1000
-      -webkit-overflow-scrolling: touch
-      margin: 0
-      border-left: 2px solid $darkest
-      border-right: 2px solid $darkest
-      border-bottom: 2px solid $darkest
-      background: $background_color
-  &:hover, &.hover
-    .navList
+    a:hover
+      text-decoration: none 
+    &.last
+      border-bottom: none
+    &.entries
+      max-height: 300px
+      overflow-y: auto
+      overflow-x: hidden
+      border-bottom: none
+      img
+        margin-right: 5px
+      ul
+        padding: 0
+        margin: 0
+    a, &.emptynotice
       display: block
+      padding: 3px 20px 3px 5px
+      border-bottom: 1px solid $background_complement
+      white-space: nowrap
+      background-color: $background_color
+    &.emptynotice
+      white-space: normal
+    a:hover
+      background-color: $background_complement

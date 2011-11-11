@@ -5,14 +5,7 @@
                 <li class="entries">
                     <ul>
                     [%- FOR item = entry.data -%]
-                        [%- IF entry.exists('icon') -%]
-                            <li>
-                                <img src="[% entry.icon(item) %]"/>
-                                [% INCLUDE navListLink %]
-                            </li>
-                        [%- ELSE -%]
-                            <li>[% INCLUDE navListLink %]</li>
-                        [%- END -%]
+                        <li>[% INCLUDE navListLink %]</li>
                     [%- END -%]
                     </ul>
                 </li>
@@ -35,6 +28,7 @@
 
 [% BLOCK navListLink %]
     <a [% IF entry.defaultId AND item.default %] id="[% entry.defaultId %]"[% END %]href="[% entry.href(item) %]">
+    [%- IF entry.exists('icon') %]<img src="[% entry.icon(item) %]"/>[% END -%]
         [%- entry.title(item) | label_ellipsis(25) | html_encode %][% IF item.default %] ([% loc("nav.default") %])[% END -%]
     </a>
 [% END %]
