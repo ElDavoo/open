@@ -1,6 +1,6 @@
 [%- USE JSON -%]
 <html><head>
-    <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" />
+    <link rel="stylesheet" type="text/css" href="/data/accounts/[% user.primary_account_id %]/theme/style.css?[% app_version %]" />
     [% INCLUDE 'element/js-adapt-fullscreen' %]
     [% javascript = javascript || [] %] 
     [% javascript.unshift("l10n-${loc_lang}.jgz") %]

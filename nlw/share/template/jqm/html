@@ -16,7 +16,7 @@ if (window.parent && window.parent.$) {
 </script>
 <style><!--
 @import url('/static/[% app_version %]/javascript/contrib/colorpicker/css/colorpicker.css');
-@import url('/data/accounts/__ENV_primary_account_id__/theme/bubble.css');
+@import url('/data/accounts/__ENV_primary_account_id__/theme/bubble.css?[% app_version %]');
 #setup {
     visibility: hidden;
 }
@@ -26,7 +26,7 @@ if (window.parent && window.parent.$) {
 --></style>
 <script type="text/javascript" src="/js/[% app_version %]/socialtext-jqm.js"></script>
 <link rel="stylesheet" href="/static/[% app_version %]/javascript/contrib/colorpicker/css/colorpicker.css" type="text/css" />
-<link rel="stylesheet" href="/data/accounts/__ENV_primary_account_id__/theme/bubble.css" type="text/css" />
+<link rel="stylesheet" href="/data/accounts/__ENV_primary_account_id__/theme/bubble.css?[% app_version %]" type="text/css" />
 
 [% content %]
 

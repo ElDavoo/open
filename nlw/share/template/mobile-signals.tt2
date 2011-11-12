@@ -8,8 +8,8 @@
         [% END %]
         <link rel="apple-touch-icon" href="/static/[% app_version %]/images/apple-touch-icon.png"/>
         <meta name = "viewport" content = "width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/style.css" />
-        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/mobile.css" />
+        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/style.css?[% app_version %]" />
+        <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/mobile.css?[% app_version %]" />
 
         [% INCLUDE 'element/js-adapt-fullscreen' %]
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-starfish.jgz"></script>

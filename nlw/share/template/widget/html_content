@@ -1,6 +1,6 @@
 [% USE minify %]
 [% USE coffee %]
-<link rel="stylesheet" type="text/css" href="/data/accounts/__ENV_primary_account_id__/theme/widget.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/data/accounts/__ENV_primary_account_id__/theme/widget.css?[% app_version %]" media="screen" />
 
 [% FOR js IN ['socialtext-gadget.jgz', 'l10n-__MSG_LANG__.jgz'] %]
     <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/[% js %]"></script>
