@@ -18,11 +18,13 @@
     </select>
   </span>
   <script>
+  $(function(){
     $('#page-control-category-selector').dropdown({
       select: function(ui, option) {
         if (option.value.length) location = option.value;
       }
     });
+  });
   </script>
 [% END %]
 
@@ -51,7 +53,9 @@
     [% INCLUDE blog_archives %]
   </div>
   <div class="clear"></div>
-  <script>st.setupBlogHandlers()</script>
+  <script><!--
+  $(function(){st.setupBlogHandlers()});
+  --></script>
 [% END %]
 
 [% BLOCK blog_tools %]

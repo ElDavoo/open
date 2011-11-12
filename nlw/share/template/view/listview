@@ -55,7 +55,9 @@
   [% END %]
   <div class="clear vpad5"></div>
 
-  <script>st.setupListview([% query_start.json %])</script>
+  <script><!--
+  $(function(){st.setupListview([% query_start.json %])});
+  --></script>
 [% END %]
 
 [% BLOCK header %]
