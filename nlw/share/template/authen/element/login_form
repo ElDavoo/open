@@ -36,17 +36,7 @@
   </fieldset><fieldset>
   <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
   [% ELSE %]
-  <div class="hidesubmit"><input type="submit"/></div>
-  <div class="loginButtons">
-    <ul class="formButtons" style="float: left">
-      <li class="flexButtonBlue">
-        <a id="login_btn" class="genericBlueButton" href="#" onclick="document.forms['login'].submit(); return false">
-          [% loc('login.log-in') %]
-        </a>
-      </li>
-    </ul>
-    <div class="clear"></div>
-  </div>
+    <input id="login_btn" type="submit" href="#" onclick="document.forms['login'].submit(); return false" value="[% loc('login.log-in') %]" />
   [% END %]
 
     </fieldset>

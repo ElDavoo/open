@@ -40,8 +40,10 @@
   
 </form>
 <script>
+$(function(){
 $('#register_btn').button().click(function() {
   $(this).parents('form').submit();
   return false;
+});
 });
 </script>
