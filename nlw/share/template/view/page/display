@@ -80,5 +80,7 @@
 
 <div class="clear"></div>
 
-<script>st.setupPageHandlers()</script>
 [% END %]
+<script><!--
+$(function(){st.setupPageHandlers()});
+--></script>
