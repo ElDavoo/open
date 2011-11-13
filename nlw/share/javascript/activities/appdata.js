@@ -544,25 +544,23 @@ $.extend(Activities.AppData.prototype, {
             self.selectSignalToNetwork(signal_network.value);
         }
 
-        if (typeof TouchScroll != 'undefined') { try {
-            $('body').data('scroller', new TouchScroll(
-                $('body').get(0)
-            ));
-        } catch (e) {} }
-
         self.findId('expander').toggle(
             function() {
                 self.findId('filters').show();
                 if (typeof TouchScroll != 'undefined') { try {
-                    self.findId('filters').data('scroller', new TouchScroll(
+                    self.findId('filters').data('scroller', new(TouchScroll())(
                         self.findId('filters').find('.scrolling').get(0)
                     ));
+                    window.scrollTo(0, self.findId('filters').parent("div.filter_bar").offset().top);
                 } catch (e) {} }
                 self.updateFilterText();
                 return false;
             },
             function() {
                 self.findId('filters').hide();
+                if (window.TouchScrollStop) {
+                    window.TouchScrollStop();
+                }
                 self.updateFilterText();
                 return false;
             }
