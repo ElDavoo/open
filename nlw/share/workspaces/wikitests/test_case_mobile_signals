@@ -25,10 +25,10 @@
 
 | *Comment* | Test Case: Mobile Signals. Open signals |  |
 | click_and_wait | //a[@id="mobile-signals"] | 10000 |
-| wait_for_element_visible_ok | %%miki_signal_submit%% | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send a signal |  |
 | st_type_signal | Siggy %%start_time%% First Sig |  |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 3000 |
 | st_pause_click | 3000 | %%miki_signal_submit%% |
 
 | *Comment* | Test Case: Mobile Signals. Verify a signal |  |

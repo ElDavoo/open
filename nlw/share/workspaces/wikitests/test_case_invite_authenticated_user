@@ -1,5 +1,3 @@
-*On hold until the Authentication Required popup stops happening*
-
 | *Comment* | Test Case: Invite Authenticated User Invite new users |  |
 
 | set | invite | `//input[contains(@class,'lookahead-prompt')]` |
@@ -42,21 +40,19 @@
 | text_like | qr/%%usertwoX%%/ism |  |
 
 | *Comment* | Test Case: Invite Authenticated User remove two users added |  |
-| *Comment* | Remove before adding because table sort order is unpredictable |  |
 | st-admin | deactivate-user --e %%useroneE%% |  |
 | st-admin | deactivate-user --e %%usertwoE%% |  |
-| st-process-jobs |  |  |
-
-| *Comment* | Test Case: Invite Authenticated User re-open Manage UI to add reset user |  |
-| open_ok | /st/settings/%%ui_wiki_id%%/prefs/manage |  |
 
 | set | reset_user | admin_reset_%%start_time%%@ken.socialtext.net |
 | set | reset_bfn | admin reset %%start_time%% |
-| set | last_reset | xpath=(//input[@name='workspace.do.reset_password'])[2] |
+| set | last_reset | //table/tbody/tr/td[contains(text(),"%%reset_user%%")]/../td[4]/input[@type='checkbox' and @name="workspace.do.reset_password"] |
 
 | *Comment* | Test Case: Invite Authenticated User create and add %%reset_user%% |  |
 | st-admin | create-user --account %%new_account%% --email %%reset_user%% --password %%password%% |  |
 | st-admin | add-member --email %%reset_user%% --workspace %%new_ws%% |  |
+| st-process-jobs |  |  |
+
+| *Comment* | Test Case: Invite Authenticated User re-open Manage UI to added %%reset_user%% |  |
 | open_ok | /st/settings/%%ui_wiki_id%%/prefs/manage |  |
 
 | *Comment* | Test Case: Invite Authenticated User check the last Reset Password checkbox |  |

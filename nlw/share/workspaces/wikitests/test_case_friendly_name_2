@@ -69,12 +69,10 @@
 | click_and_wait | user-sort-account |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 
-| *Comment* | %%fname%% needs to be checked for in two places within the same table, should occur exactly 4 times, no more or less |  |
-| wait_for_element_visible_ok | `xpath=(//a[contains(text(),%%fname%%)])[1]` | 30000 |
-| wait_for_element_visible_ok | `xpath=(//a[contains(text(),%%fname%%)])[2]` | 30000 |
-| wait_for_element_visible_ok | `xpath=(//a[contains(text(),%%fname%%)])[3]` | 30000 |
-| wait_for_element_visible_ok | `xpath=(//a[contains(text(),%%fname%%)])[4]` | 30000 |
-| wait_for_element_not_present_ok | `xpath=(//a[contains(text(),%%fname%%)])[5]` | 30000 |
+| *Comment* | %%fname%% needs to be checked for in two places within the same table, should occur exactly 2 times, no more or less |  |
+| wait_for_element_visible_ok | xpath=(//a[contains(text(),"%%fname%%")])[1] | 5000 |
+| wait_for_element_visible_ok | xpath=(//a[contains(text(),"%%fname%%")])[2] | 5000 |
+| wait_for_element_not_present_ok | xpath=(//a[contains(text(),"%%fname%%")])[3] | 5000 |
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel User |  |
 | wait_for_element_visible_ok | `//a[contains(text(),'%%fname_checker%%')]` | 30000 |
