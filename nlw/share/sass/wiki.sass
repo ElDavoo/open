@@ -173,7 +173,11 @@
 
 @-moz-document url-prefix()
   .workspaceNav div.breadcrumb a
-    padding-bottom: 0px
+    padding-bottom: 2px
+
+@media screen and (-webkit-min-device-pixel-ratio:0) 
+  .workspaceNav div.breadcrumb a
+    padding-bottom: 3px
 
 .workspaceNav
   height: 28px
@@ -182,13 +186,13 @@
   .breadcrumb
     padding: 5px 0
     *
-      line-height: 17px
+      line-height: 20px
       padding-top: 0
       padding-bottom: 0
       margin-top: 0
       margin-bottom: 0
     a
-      padding-bottom: 2px
+      *padding-bottom: 1px
     .spaces
       padding-left: 18px
       background: transparent url(#{$static}/images/icons/spaces-black-15.png) no-repeat center left
