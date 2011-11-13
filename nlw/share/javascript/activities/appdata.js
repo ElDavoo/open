@@ -544,6 +544,12 @@ $.extend(Activities.AppData.prototype, {
             self.selectSignalToNetwork(signal_network.value);
         }
 
+        if (typeof TouchScroll != 'undefined') { try {
+            $('body').data('scroller', new TouchScroll(
+                $('body').get(0)
+            ));
+        } catch (e) {} }
+
         self.findId('expander').toggle(
             function() {
                 self.findId('filters').show();
