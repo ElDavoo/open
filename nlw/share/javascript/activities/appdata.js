@@ -547,6 +547,11 @@ $.extend(Activities.AppData.prototype, {
         self.findId('expander').toggle(
             function() {
                 self.findId('filters').show();
+                if (typeof TouchScroll != 'undefined') { try {
+                    self.findId('filters').data('scroller', new TouchScroll(
+                        self.findId('filters').find('.scrolling').get(0)
+                    ));
+                } catch (e) {} }
                 self.updateFilterText();
                 return false;
             },

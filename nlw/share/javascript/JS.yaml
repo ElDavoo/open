@@ -45,6 +45,7 @@
         - contrib/jquery.tablesorter.js
         - contrib/modernizr.js
         - contrib/utf8.js
+        - contrib/touchscroll.min.js
         - {jemplate_runtime: jquery}
         - JemplatePlugin/*.js
         - Socialtext.js
