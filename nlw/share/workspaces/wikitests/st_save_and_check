@@ -1,4 +1,4 @@
-| *Comment* | st-save-and-check content=%%content%% |  |
+| *Comment* | st-save-and-check NO LONGER CHECKS content |  |
 | wait_for_element_visible_ok | st-save-button-link | 15000 |
 | click_ok | st-save-button-link |  |
 | pause_ok | 15000 | really let the page save |
