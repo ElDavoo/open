@@ -963,11 +963,11 @@ $.extend(Activities.EventList.prototype, {
         var $actions = evt.$node.find('.actions:first');
         if (!$actions) { return false };
 
-        evt.$node.find('.hideLink:first').click(function (e) {
+        evt.$node.find('> .indented:not(.replies) .hideLink:first').click(function (e) {
             self.hideEvent(evt);
             return false;
         });
-        evt.$node.find('.expungeLink:first').click(function (e) {
+        evt.$node.find('> .indented:not(.replies) .expungeLink:first').click(function (e) {
             self.expungeEvent(evt);
             return false;
         });
