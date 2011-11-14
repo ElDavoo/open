@@ -52,8 +52,15 @@ $.extend(Activities.EventList.prototype, {
             if (!self._oldest || self._oldest > evt.at)
                 self._oldest = evt.at;
 
-            if (evt.event_class == 'signal' && evt.action != 'signal') {
-                delete evt.signal_id;
+            switch(evt.event_class + ':' + evt.action) {
+                case 'page:edit_save':
+                    if (evt.signal_id) {
+                        evt.event_class = 'signal';
+                        evt.action = 'signal';
+                    }
+                    break;
+                case 'signal:signal':
+                    delete evt.signal_id;
             }
 
             // Only thread signals
