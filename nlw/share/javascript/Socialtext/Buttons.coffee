@@ -6,6 +6,7 @@ button_handler =
   
   "st-edit-layout": ->
     $("#st-wiki-subnav-link-invite").hide()
+    $('#globalNav .buttons').addClass('editLayout')
     gadgets.container.enterEditMode()
   
   "st-save-layout": ->
@@ -14,15 +15,18 @@ button_handler =
     else
       gadgets.container.saveAdminLayout success: ->
         $("#st-wiki-subnav-link-invite").show()
+        $('#globalNav .buttons').removeClass('editLayout')
         gadgets.container.leaveEditMode()
   
   "st-cancel-layout": ->
     gadgets.container.loadLayout gadgets.container.base_url, ->
       $("#st-wiki-subnav-link-invite").show()
+      $('#globalNav .buttons').removeClass('editLayout')
       gadgets.container.leaveEditMode()
   
   "st-revert-layout": ->
     $("#st-wiki-subnav-link-invite").show()
+    $('#globalNav .buttons').removeClass('editLayout')
     gadgets.container.loadDefaults()
   
   "st-account-theme": ->
