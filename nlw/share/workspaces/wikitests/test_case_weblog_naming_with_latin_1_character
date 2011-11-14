@@ -29,7 +29,7 @@
 | st-admin | update-page --w %%lb_wiki%% --e %%email%% --p "Make Me a Malted %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 
 | *Comment* | Test Case: Weblog naming: Is Recent Changes blog working? |  |
-| select_and_wait | page-control-category-selector | value=recent changes |
+| select_and_wait | page-control-category-selector | label=Recent Changes |
 | text_like | Make Me a Malted %%start_time%% |  |
 
 | *Comment* | Test Case: Weblog naming with Latin-1 character TEARDOWN |  |

@@ -75,6 +75,9 @@
 
 | *Comment* | Test Case: Signal From Profile. VERIFY after private signal that private checkbox is unchecked |  |
 | st-unchecked-ok | //input[@class='toggle-private'] |  |
+| wait_for_element_visible_ok | link=here | 10000 |
+| click_ok | link=here |  |
+| wait_for_text_present_ok | %%private%% | 10000 |
 
 | *Comment* | Test Case: Signal From Profile. Immediately send a public mention in the same widget |  |
 | open_ok | /st/dashboard |  |
