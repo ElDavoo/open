@@ -26,7 +26,7 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-if (typeof WebKitCSSMatrix != 'undefined' && /mobile/.test(navigator.userAgent.toLowerCase()) && (typeof $) != 'undefined' && $.browser && $.browser.webkit) {
+if (typeof WebKitCSSMatrix != 'undefined' && /mobile/.test(navigator.userAgent.toLowerCase()) && (!/ipad/.test(navigator.userAgent.toLowerCase())) && (typeof $) != 'undefined' && $.browser && $.browser.webkit) {
 var TouchScroll = (function(){
 	//
 	//	SCROLLER CONFIGURATION
