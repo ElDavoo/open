@@ -208,9 +208,6 @@ sub _valid {
     return sub {
         my $value = shift;
 
-        # Normalize Font Capitalization
-        $value =~ s{(\w)(\w*)}{\U$1\E\L$2\E}g if $key eq 'Font';
-
         return $checker->check($value);
     };
 }
