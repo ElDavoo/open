@@ -557,10 +557,12 @@ $.extend(Activities.AppData.prototype, {
                 return false;
             },
             function() {
-                self.findId('filters').hide();
                 if (window.TouchScrollStop) {
                     window.TouchScrollStop();
+                    var scroller = self.findId('filters').data('scroller');
+                    scroller.scrollTo(0, 0);
                 }
+                self.findId('filters').hide();
                 self.updateFilterText();
                 return false;
             }
