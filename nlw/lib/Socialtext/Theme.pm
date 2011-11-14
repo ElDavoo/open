@@ -44,7 +44,7 @@ my @COLUMNS = qw(
 
 sub COLUMNS { @COLUMNS }
 
-my @UPLOADS = qw(header_image background_image logo_image favicon_image);
+our @UPLOADS = qw(header_image background_image logo_image favicon_image);
 
 has $_ => (is=>'ro', isa=>'Str', required=>1) for @COLUMNS;
 has $_ => (is=>'ro', isa=>'Socialtext::Upload', lazy_build=>1) for @UPLOADS;
