@@ -172,12 +172,18 @@
     margin-right: 10px
 
 @-moz-document url-prefix()
-  .workspaceNav div.breadcrumb a
-    padding-bottom: 2px
+  .workspaceNav div.breadcrumb
+    a
+      padding-bottom: 2px
+    span a
+      padding-bottom: 1px
 
 @media screen and (-webkit-min-device-pixel-ratio:0) 
-  .workspaceNav div.breadcrumb a
-    padding-bottom: 3px
+  .workspaceNav div.breadcrumb
+    a
+      padding-bottom: 3px
+    span a
+      padding-bottom: 2px
 
 .workspaceNav
   height: 28px
