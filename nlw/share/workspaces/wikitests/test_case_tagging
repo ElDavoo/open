@@ -4,7 +4,9 @@
 | st-admin | create-workspace --empty --name %%t_ws%% --title %%t_ws%% | was created |  |  |
 | add-member | %%username%% | %%t_ws%% |  |  |
 
-| call | [st-edit-new-page] | ws=%%t_ws%% | title=tag page %%start_time%% | content=tag page %%start_time%% content |
+| st-create-page | %%t_ws%% | tag page %%start_time%% | tag page %%start_time%% content |
+| st-process-jobs |  |  |  |
+| open_ok | /%%t_ws%%/tag_page_%%start_time%% |  |  |
 
 | *Comment* | Test Case: Tagging. fog tag added |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
@@ -171,7 +173,9 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | *Comment* | Test Case: Tagging test for tags in lookahead |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%t_ws%% | content=tag page 4 %%start_time%% content | title=tag page 4 %%start_time%% |
+| st-create-page | %%t_ws%% | tag page 4 %%start_time%% | tag page 4 %%start_time%% content |
+| st-process-jobs |  |  |  |
+| open_ok | /%%t_ws%%/tag_page_4_%%start_time%% |  |  |
 
 | *Comment* | Test Case: Tagging verify suggestions foo bar, fog, and Foster City |  |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |  |

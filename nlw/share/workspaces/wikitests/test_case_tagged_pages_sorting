@@ -140,7 +140,7 @@ SEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSEARCHSE
 
 | *Comment* | Test Case: Tagged Page Sorting. Make a more relevant page |  |  |  |
 
-| call | st-edit-new-page | ws=%%sorting_workspace%% | title=Search Sort 5 | content=simple simple more simple most simple |
+| st-create-page | %%sorting_workspace%% | Search Sort 5 | simple simple more simple most simple |  |
 
 | pause_ok | 8000 |  |  |  |
 | st-process-jobs |  |  |  |  |

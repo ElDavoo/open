@@ -2,11 +2,13 @@
 
 | *Comment* | Test Case: Tools: Delete Page: Create test page |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%workspace%% | content=Delete Page Content %%start_time%% | title=Delete Page %%start_time%% |
+| st-create-page | %%workspace%% | Delete Page %%start_time%% | Delete Page Content %%start_time%% |  |
 
 | *Comment* | Test Case: Tools: Delete Page: Create backlinking page |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%workspace%% | content=`[Delete Page %%start_time%%]` | title=Backlink Page %%start_time%% |
+| st-create-page | %%workspace%% | Backlink Page %%start_time%% | `[Delete Page %%start_time%%]` |  |
+
+| st-process-jobs |  |  |  |  |
 
 | *Comment* | Test Case: Tools: Delete Page: delete the page |  |
 | open_ok | /%%workspace%%/?Delete Page %%start_time%% |  |

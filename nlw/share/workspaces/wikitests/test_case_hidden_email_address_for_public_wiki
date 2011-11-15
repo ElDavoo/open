@@ -14,7 +14,9 @@
 | st-logoutin | %%he_mail%% | %%password%% |  |  |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify user WAFL |  |  |  |
-| call | [st-edit-new-page] | ws=%%he_ws%% | title=Hidden Email %%start_time%% | content={user: %%he_mail%%} |
+| st-create-page | %%he_ws%% | Hidden Email %%start_time%% | {user: %%he_mail%%} |  |
+| st-process-jobs |  |  |  |  |
+| open_ok | /%%he_ws%%/hidden_email_%%start_time%% |  |  |  |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create comment |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |

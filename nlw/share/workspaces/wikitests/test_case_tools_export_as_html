@@ -2,7 +2,9 @@
 
 | *Comment* | Test Case: Tools: Export as HTML Create test page |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%workspace%% | title=HTML %%start_time%% | content=HTML %%start_time%% content |
+| st-create-page | %%workspace%% | HTML %%start_time%% | HTML %%start_time%% content |
+| st-process-jobs |  |  |  |
+| open_ok | /%%workspace%%/HTML_%%start_time%% |  |  |
 
 | *Comment* | Test Case: Tools: Export as HTML Test Export |  |  |  |
 | wait_for_element_present_ok | link=Export as HTML | 30000 |  |  |

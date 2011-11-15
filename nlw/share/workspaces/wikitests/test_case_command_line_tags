@@ -7,14 +7,18 @@
 
 | *Comment* | Test Case: Command Line TAGS Create Page 1 |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%cmd_tag_workspace%% | title=Command Line Tag 1 %%start_time%% | content=Tag 1 Content Page %%start_time%% |
+| st-create-page | %%cmd_tag_workspace%% | Command Line Tag 1 %%start_time%% | Tag 1 Content Page %%start_time%% |  |
+| st-process-jobs |  |  |  |  |
+| open_ok | /%%cmd_tag_workspace%%/Command_Line_Tag_1_%%start_time%% |  |  |  |
 | call | [st-tag-page] | tag_to_apply=Tag 1 %%start_time%% |  |  |
 | call | [st-tag-page] | tag_to_apply=Super Tag %%start_time%% |  |  |
 | call | [st-tag-page] | tag_to_apply=TagYoYoYo %%start_time%% |  |  |
 
 | *Comment* | Test Case: Command Line: TAGS Create Page 2 |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%cmd_tag_workspace%% | title=Command Line Tag 2 %%start_time%% | content=Tag 2 Content Page %%start_time%% |
+| st-create-page | %%cmd_tag_workspace%% | Command Line Tag 2 %%start_time%% | Tag 2 Content Page %%start_time%% |  |
+| st-process-jobs |  |  |  |  |
+| open_ok | /%%cmd_tag_workspace%%/command_line_tag_2_%%start_time%% |  |  |  |
 | call | [st-tag-page] | tag_to_apply=Tag 2 %%start_time%% |  |  |
 | call | [st-tag-page] | tag_to_apply=indeed %%start_time%% |  |  |
 | call | [st-tag-page] | tag_to_apply=tambourine %%start_time%% |  |  |

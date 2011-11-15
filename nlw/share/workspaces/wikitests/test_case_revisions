@@ -2,7 +2,9 @@
 
 | *Comment* | Test Case: Revisions: Create a page with five revisions |  |  |  |
 
-| call | [st-edit-new-page] | ws=%%workspace%% | title=test case revisions %%start_time%% | content=original revision number one %%start_time%% |
+| st-create-page | %%workspace%% | test case revisions %%start_time%% | original revision number one %%start_time%% |  |
+| st-process-jobs |  |  |  |  |
+| open_ok | /%%workspace%%/test case revisions %%start_time%% |  |  |  |
 
 | text_like | original revision number one %%start_time%% |  |  |  |
 
