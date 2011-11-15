@@ -531,14 +531,16 @@ sub st_comment_on_page {
     my ($self, $url, $comment) = @_;
     my $commentbutton = '//li[@id=\'st-comment-button\']';
     my $commentlink = $commentbutton . '/a';
+    my $commentarea = '//textarea[@name="comment"]';
+    my $commentsave = '//div[@class="comment"]/a[contains(@class,"saveButton")]';
     $self->handle_command('set_Speed',2000);
     $self->handle_command('open_ok', $url);  
     $self->handle_command('wait_for_element_visible_ok',$commentbutton, 5000);
     $self->handle_command('click_ok',$commentlink);
-    $self->handle_command('wait_for_element_visible_ok','comment',10000);
-    $self->handle_command('type_ok', 'comment', $comment);
-    $self->handle_command('wait_for_element_visible_ok','link=Save',5000);
-    $self->handle_command('click_ok','link=Save');
+    $self->handle_command('wait_for_element_visible_ok',$commentarea,10000);
+    $self->handle_command('type_ok', $commentarea,$comment);
+    $self->handle_command('wait_for_element_present_ok',$commentsave,5000);
+    $self->handle_command('click_ok',$commentsave);
     $self->handle_command('set_Speed',0);
 }   
 
