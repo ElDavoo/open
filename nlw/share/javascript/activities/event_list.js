@@ -54,6 +54,7 @@ $.extend(Activities.EventList.prototype, {
 
             switch(evt.event_class + ':' + evt.action) {
                 case 'page:edit_save':
+                case 'page:comment':
                     if (evt.signal_id) {
                         evt.event_class = 'signal';
                         evt.action = 'signal';
