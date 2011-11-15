@@ -60,8 +60,10 @@ $.extend(Activities.EventList.prototype, {
                         evt.action = 'signal';
                     }
                     break;
-                case 'signal:signal':
+                case 'signal:like':
+                case 'signal:unlike':
                     delete evt.signal_id;
+                    break;
             }
 
             // Only thread signals
