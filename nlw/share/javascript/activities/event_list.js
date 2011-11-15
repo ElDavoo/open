@@ -876,6 +876,7 @@ $.extend(Activities.EventList.prototype, {
             }, function(){
                 $overlay.css('opacity', 0.5);
             }).css({
+                zIndex: 1,
                 opacity: 0.5,
                 position: 'relative',
                 width: size + 'px',
