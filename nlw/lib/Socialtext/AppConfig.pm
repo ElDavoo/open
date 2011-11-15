@@ -1493,6 +1493,14 @@ Default: 262144
 
 =for code type => POSITIVE_INT_TYPE
 
+=head2 appliance_type
+
+The type of appliance. Appliance types are: primary, secondary
+
+Default: primary
+
+=for code type => SCALAR_TYPE
+
 =head1 OTHER METHODS
 
 In addition to the methods available for each configuration variable,
