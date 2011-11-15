@@ -7,18 +7,15 @@
 | st-single-widget-in-dashboard | gallery-widget-Workspace Tags |  |
 
 | *Comment* | Test Case: Tag Cloud Widget. See the tags for workspace help-en |  |
-
-TUXTODO: restore these tests when widgets get correct title
-
- wait_for_text_present_ok | Tags for help-en workspace | 30000 |
+| wait_for_text_present_ok | Tags for help-en workspace | 30000 |
 | st-name-widget | 1 | tag_cloud |
-st-widget-title | tag_cloud | Tags for help-en workspace |
+| st-widget-title | tag_cloud | Tags for help-en workspace |
 
 | *Comment* | Test Case: Tag Cloud Widget. Verify some help-en tags |  |
 | st-select-widget-frame | tag_cloud |  |
 | wait_for_element_visible_ok | link=Socialtext weblog | 30000 |
 | wait_for_element_visible_ok | link=Top Page | 30000 |
-| wait_for_element_visible_ok | link=Project Dakota | 30000 |
+| wait_for_element_visible_ok | link=Project Example | 30000 |
 | wait_for_element_visible_ok | link=Help | 30000 |
 
 | *Comment* | Test Case: Tag Cloud Widget. Set the widget for workspace test-data |  |
@@ -40,4 +37,4 @@ st-widget-title | tag_cloud | Tags for help-en workspace |
 | wait_for_element_visible_ok | link=my next thirty years | 50 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Tag Cloud Widget COMPLETED |
+| *Comment* | Test Case: Tag Cloud Widget COMPLETED |  |

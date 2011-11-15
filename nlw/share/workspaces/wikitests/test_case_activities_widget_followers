@@ -27,20 +27,20 @@
 | *Comment* | Test Case: Activities Widget Followers Login as %%followinguser%% |  |
 | st-logoutin | %%followinguser%% | %%password%% |
 
-| *Comment* | Test Case: Activities Widget Followers%%followinguser%%, create a page and send a signal |  |
-| open_ok | /%%followws%%/ |  |
-| st-create-wikipage | %%followws%% | pageone |
-| st-single-widget-in-dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-send-signal-in-activities-widget | You should see this %%start_time%% |  |
+| *Comment* | Test Case: Activities Widget Followers%%followinguser%%, create a page and send a signal |  |  |  |
+| open_ok | /%%followws%%/ |  |  |  |
+| call | [st-edit-new-page] | ws=%%followws%% | title=pageone | content=content |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |  |  |
+| st-name-widget | 1 | activities_widget |  |  |
+| st-send-signal-in-activities-widget | You should see this %%start_time%% |  |  |  |
 
-| *Comment* | Test Case: Activities Widget Followers Login as %%notfollowinguser%%, create a page and send a signal |  |
-| st-logoutin | %%notfollowinguser%% | %%password%% |
-| open_ok | /%%followws%%/ |  |
-| st-create-wikipage | %%followws%% | donotseethispage |
-| st-single-widget-in-dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-send-signal-in-activities-widget | Signal from not a follower %%start_time%% |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%notfollowinguser%%, create a page and send a signal |  |  |  |
+| st-logoutin | %%notfollowinguser%% | %%password%% |  |  |
+| open_ok | /%%followws%%/ |  |  |  |
+| call | [st-edit-new-page] | ws=%%followws%% | title=donotseethispage | content=content |
+| st-single-widget-in-dashboard | gallery-widget-Activities |  |  |  |
+| st-name-widget | 1 | activities_widget |  |  |
+| st-send-signal-in-activities-widget | Signal from not a follower %%start_time%% |  |  |  |
 
 | *Comment* | Test Case: Activities Widget Followers Login as %%loggedinuser%%, add widget, set length to 25 |  |
 | st-logoutin | %%loggedinuser%% | %%password%% |

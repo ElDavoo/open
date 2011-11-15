@@ -20,8 +20,9 @@
 | wait_for_element_visible_ok | link=Workspace Widget %%start_time%% | 30000 |
 
 | *Comment* | Test Case: Workspace Widget. link to wikis is hidden in Workspaces dropdown |  |
-| is_element_present_ok | content | link=Workspace Widget %%start_time%% |
-| is_element_present_ok | content | link=Other Wiki %%start_time%% |
+| pause_ok | 5000 |  |
+| is_element_present_ok | //div[@class='inlineWidget'] | link=Workspace Widget %%start_time%% |
+| is_element_present_ok | //div[@class='inlineWidget'] | link=Other Wiki %%start_time%% |
 
 | *Comment* | Test Case: Workspace Widget. Remove member, see if workspace is gone |  |
 | st-admin | remove-member --username %%ww_user%% --workspace workspacewidget-%%start_time%% | no longer has the role of 'member' |

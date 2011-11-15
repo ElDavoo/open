@@ -87,15 +87,6 @@
 | st-verify-text-in-activities-widget | %%private%% |  |
 | st-verify-text-in-activities-widget | %%public%% |  |
 
-| *Comment* | Test Case: Signal From Profile. private mention appears in %%spuser%% profile activities widget |  |
-| wait_for_element_visible_ok | link=%%spshort%% | 30000 |
-| click_and_wait | link=%%spshort%% |  |
-| wait_for_text_present_ok | Activities | 30000 |
-| st-name-widget | 3 | spactivities |
-| st-widget-title | spactivities | Activities |
-| st-verify-text-in-activities-widget | %%private%% |  |
-| st-verify-text-in-activities-widget | %%public%% |  |
-
 | *Comment* | Test Case: Signal From Profile. Private mention appears in %%spuser%% signal activities widget |  |
 | click_and_wait | link=Signals |  |
 | wait_for_text_present_ok | Signals | 30000 |

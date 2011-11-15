@@ -85,7 +85,7 @@
 | st-name-widget | 1 | workspace-tags |
 | st-widget-title | workspace-tags | Tags for help-en |
 | st-select-widget-frame | workspace-tags |  |
-| wait_for_element_visible_ok | link=Glossary | 30000 |
+| wait_for_element_visible_ok | link=Project Example | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Add RSS Viewer everything shifts by 1 |  |
