@@ -23,7 +23,7 @@ text_like | //div[@class='signal_body'][1] | %%fname%% |
 | open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 | text_like | //div[@class='metadata'] | %%fname%% |
-| text_like | //div[@class='signal_body'] | %%fname%% |
+| text_like | //div[@class='signal_body'] | qr/%%fname%%.+to %%fname_acct%%/ |
 
 | *Comment* | Test Case: Friendly Name 1 Check activities widget |  |
 | open_ok | /st/dashboard |  |

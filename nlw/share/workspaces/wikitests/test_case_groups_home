@@ -57,7 +57,7 @@
 | open_ok | /?group/%%group_id%% |  |
 | wait_for_text_present_ok | Activities | 30000 |
 | st-send-signal-in-activities-widget | signal-%%start_time%% |  |
-| wait_for_text_present_ok | signal-%%start_time%% | 15000 |
+| wait_for_text_present_ok | to %%groupname%% | 15000 |
 
 | *Comment* | Test Case: Groups Home. Check Lack of Permissions |  |
 | st-logoutin | %%nopermuser%% | %%password%% |
