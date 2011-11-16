@@ -20,7 +20,7 @@
 | st-send-signal-in-activities-widget | %%mysignal_2%% |  |
 
 | st-verify-text-in-activities-widget | %%mysignal_1%% |  |
-| st-verify-text-in-activities-widget | `qr/%%group_name%%.+By you.*minute.*ago\s*to/ism` |  |
+| st-verify-text-in-activities-widget | `qr/%%group_name%%.+By you.*minute.*ago/ism` |  |
 | st-verify-text-in-activities-widget | %%mysignal_2%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home Verify Signal in Signal Page |  |
@@ -41,7 +41,7 @@
 | wait_for_text_present_ok | Colleagues | 30000 |
 
 | st-verify-text-in-activities-widget | %%mysignal_1%% |
-| st-verify-text-in-activities-widget | `qr/%%group_name%%.+By you.*minute.*ago\s*to/ism` |
+| st-verify-text-in-activities-widget | `qr/%%group_name%%.+By you.*minute.*ago/ism` |
 | st-verify-text-in-activities-widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Disable signals, do not see signal option |  |
@@ -77,7 +77,7 @@
 
 | st-name-widget | 1 | signals_widget |
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_1%% |
-| st_text_unlike_in_activities_widget | signals_widget | `qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/` |
+| st_text_unlike_in_activities_widget | signals_widget | `qr/%%group_user_short%%.*minute.*ago/` |
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Add member, see signal |  |
@@ -102,7 +102,7 @@
 
 | st-verify-text-in-activities-widget | `qr/Showing.+signals.+from/` |
 | st-verify-text-in-activities-widget | %%mysignal_1%% |
-| st-verify-text-in-activities-widget | `qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/` |
+| st-verify-text-in-activities-widget | `qr/%%group_user_short%%.*minute.*ago/` |
 | st-verify-text-in-activities-widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home TEARDOWN |  |

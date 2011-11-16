@@ -38,7 +38,7 @@
 | wait_for_element_present_ok | group-%%group11_id%% | 15000 |
 | click_ok | group-%%group11_id%% |  |
 | wait_for_text_present_ok | By you | 10000 |
-| text_like | qr/New signal to %%group11%%.+By you.+minute ago.+to.+%%group11%%/ism |  |
+| text_like | qr/New signal to %%group11%%.+By you.+minute ago/ism |  |
 
 | *Comment* | Test Case: Mobile Signals to Group check for signal in other UI |  |
 | open_ok | /st/signals |  |

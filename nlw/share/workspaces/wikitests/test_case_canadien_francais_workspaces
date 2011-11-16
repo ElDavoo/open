@@ -43,7 +43,7 @@
 | wait_for_element_visible_ok | global-workspace-list | 30000 |
 | mouseOver | global-workspace-list |  |
 | wait_for_text_present_ok | %%wsAA%% | 30000 |
-| text_like | global-workspace-list | qr/All My Workspaces.+%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
+| text_like | globalNav | qr/All My Workspaces.+%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Sorting in workspace_listall |  |
 | open_ok | /?action=workspaces_listall |  |

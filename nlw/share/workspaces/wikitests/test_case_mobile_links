@@ -16,7 +16,6 @@ Word but not Link: Signal, What are you working on, People I follow, Previous pa
 | wait_for_element_visible_ok | mobile_expander | 3000 |
 | click_ok | mobile_expander |  |
 | wait_for_element_visible_ok | feed-followed | 10000 |
-| click_ok | feed-followed |  |
 | wait_for_element_visible_ok | feed-user | 10000 |
 | click_and_wait | mobile-workspace_list | 3000 |
 | wait_for_element_visible_ok | mobile-signals | 3000 |

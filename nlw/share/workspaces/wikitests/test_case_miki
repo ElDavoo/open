@@ -62,7 +62,7 @@
 | click_and_pause | %%miki_signal_submit%% | 10000 |
 | wait_for_text_present_ok | less than a minute ago | 15000 |
 | wait_for_text_present_ok | %%signal1%% | 15000 |
-| text_like | //body | qr/%%signal1%%.+By.+minute.+to.+%%mikiacct%%/ism |
+| text_like | //body | qr/%%signal1%%.+By.+minute/ism |
 
 | *Comment* | Test case: Miki MULTI Signals |  |
 | select_ok | mobile_signal_network | %%mikiacct%% (primary, 2 users) |
@@ -80,7 +80,7 @@
 | click_ok | network-all |  |  |
 | wait_for_text_present_ok | less than a minute ago | 15000 |  |
 | wait_for_text_present_ok | %%multisignal%% | 15000 |  |
-| text_like | //body | qr/%%multisignal%%.+By.+minute.+to.+%%othermikiacct%%/ism |  |
+| text_like | //body | qr/%%multisignal%%.+By.+minute/ism |  |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
 | wait_for_element_visible_ok | link=Log out | 15000 |
