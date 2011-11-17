@@ -7,10 +7,12 @@
 | *Comment* | Test Case: Friendly Name 1 check rich mobile interface |  |
 | open_ok | /nlw/submit/logout |  |
 | st-login | %%fname_checker%% | %%password%% |
+
 | open_ok | /st/m/signals |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | text_like | //div[@class='metadata'][1] | %%fname%% |
 | text_like | //div[@class='signal_body'][1] | %%fname%% |
+
 | open_ok | /m/people?letter=%%fname_first_letter%% |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | open_ok | /m/page/%%fname_wiki%%/%%fname_page%% |  |
@@ -19,8 +21,8 @@
 | *Comment* | Test Case: Friendly Name 1 Check signal and user wafl |  |
 | open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
-| text_like | //div[@class='signal_event'] | %%fname%% |
 | text_like | //div[@class='metadata'] | qr/%%fname%%.+to %%fname_acct%%/ |
+| text_like | //div[@class='signal_body'] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name 1 Check activities widget |  |
 | open_ok | /st/dashboard |  |
@@ -30,10 +32,6 @@
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
 | wait_for_text_present_ok | comment text | 30000 |
 | text_like | st-page-content | qr/user wafl.+%%fname%%.+comment text.+contributed by.+%%fname%%/ |
-
-TUXTODO: Does st-create-page attribute correctly yet?
-text_like | create-attribution | qr/Created by.+%%fname%%/ |
-
 | text_like | update-attribution | qr/Updated by.+%%fname%%/ |
 
 | *Comment* | Test Case: Friendly Name 1 check Hcard popup |  |
@@ -43,8 +41,8 @@ text_like | create-attribution | qr/Created by.+%%fname%%/ |
 | text_like | //div[@class='vcard'] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name 1 check revisions list |  |
-| wait_for_element_visible_ok | link=3 Revisions | 30000 |
-| click_and_wait | link=3 Revisions |  |
+| wait_for_element_visible_ok | link=2 Revisions | 30000 |
+| click_and_wait | link=2 Revisions |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name 1 check people directory |  |

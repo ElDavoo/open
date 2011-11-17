@@ -31,9 +31,15 @@
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 3000 |
 | st_pause_click | 3000 | %%miki_signal_submit%% |
 
+| *Comment* | Test Case: Mobile Signals. Select everyone |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
+| wait_for_element_visible_ok | feed-everyone | 30000 |
+| click_ok | feed-everyone |  |
+
 | *Comment* | Test Case: Mobile Signals. Verify a signal |  |
-| wait_for_text_present_ok | less than a minute ago | 3000 |
-| wait_for_text_present_ok | Siggy %%start_time%% First Sig | 3000 |
+| wait_for_text_present_ok | less than a minute ago | 10000 |
+| wait_for_text_present_ok | Siggy %%start_time%% First Sig | 5000 |
 
 | *Comment* | Test Case: Mobile Signals. Send 20 more signals to fill up the display |  |
 | http-user-pass | %%username%% | %%password%% |

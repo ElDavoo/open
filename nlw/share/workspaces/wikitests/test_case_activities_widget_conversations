@@ -56,14 +56,25 @@
 | st-name-widget | 1 | signals_widget |
 | st-send-signal-in-activities-widget | {user: %%actor%%} %%mentioncode%% |  |
 
-| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% edits, comments, makes a conversation (plus two pages that are not conversations) |  |  |  |
-| call | [st-edit-new-page] | ws=%%wrkspc%% | title=%%notconvpage%% | content=content |
-| st-edit-page | /%%wrkspc%%/?%%mypagename%% | this is an edit by %%convuser%% |  |  |
-| st-edit-page | /%%wrkspc%%/?%%mycommentedpagename%% | this is another comment by %%convuser%% |  |  |
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% edits, comments, makes a conversation (plus two pages that are not conversations) |  |
 
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% creates %%notconvpage%% |  |  |  |
+| call | [st-edit-new-page] | ws=%%wrkspc%% | title=%%notconvpage%% | content=content |
+
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% edits %%mypagename%% |  |  |  |
+| st-edit-page | /%%wrkspc%%/%%mypagename%% | this is an edit by %%convuser%% |  |  |
+
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% edits %%mycommentedpagename%% |  |  |  |
+| st-edit-page | /%%wrkspc%%/%%mycommentedpagename%% | this is another comment by %%convuser%% |  |  |
+
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% comments on %%watchedpagename%% |  |  |  |
 | call | [st-comment-on-page] | ws=%%wrkspc%% | page=%%watchedpagename%% | comment=Comment on watched page by %%convuser%% |
 
-| st-create-wikipage | %%wrkspc%% | %%notconvpagetwo%% |  |  |
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% creates %%notconvpagetwo%% |  |
+| st-create-wikipage | %%wrkspc%% | %%notconvpagetwo%% |
+
+| *Comment* | Test Case: Activities Widget Conversations - pause before logout |  |
+| pause_ok | 8000 | pause before logout to avoid navigate away dialog |
 
 | *Comment* | Test Case: Activities Widget Conversations - %%actor%% logs in |  |
 | st-logoutin | %%actor%% | %%password%% |
