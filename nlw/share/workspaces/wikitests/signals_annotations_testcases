@@ -6,10 +6,7 @@
 
 | *Comment* | Signals Annotations Test Cases. Tag, Attachment, Wiki Link, Web Link, Video |  |
 
-TUXTODO: Has Add Tag button come back?
-
-include | [Test Case: Signals Tag] | |
-
+| include | [Test Case: Signals Tag] |  |
 | include | [Test Case: Signals Attachment] |  |
 | include | [Test Case: Signals Wiki Link] |  |
 | include | [Test Case: Signals Wiki Link Teardown] |  |

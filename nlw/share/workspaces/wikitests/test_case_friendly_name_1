@@ -7,13 +7,10 @@
 | *Comment* | Test Case: Friendly Name 1 check rich mobile interface |  |
 | open_ok | /nlw/submit/logout |  |
 | st-login | %%fname_checker%% | %%password%% |
-
-TUXTODO: Does Mobile Signals work yet?
-open_ok | /st/m/signals | |
-wait_for_element_visible_ok | link=%%fname%% | 30000 |
-text_like | //div[@class='metadata'][1] | %%fname%% |
-text_like | //div[@class='signal_body'][1] | %%fname%% |
-
+| open_ok | /st/m/signals |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
+| text_like | //div[@class='metadata'][1] | %%fname%% |
+| text_like | //div[@class='signal_body'][1] | %%fname%% |
 | open_ok | /m/people?letter=%%fname_first_letter%% |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | open_ok | /m/page/%%fname_wiki%%/%%fname_page%% |  |
@@ -22,8 +19,8 @@ text_like | //div[@class='signal_body'][1] | %%fname%% |
 | *Comment* | Test Case: Friendly Name 1 Check signal and user wafl |  |
 | open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
-| text_like | //div[@class='metadata'] | %%fname%% |
-| text_like | //div[@class='signal_body'] | qr/%%fname%%.+to %%fname_acct%%/ |
+| text_like | //div[@class='signal_event'] | %%fname%% |
+| text_like | //div[@class='metadata'] | qr/%%fname%%.+to %%fname_acct%%/ |
 
 | *Comment* | Test Case: Friendly Name 1 Check activities widget |  |
 | open_ok | /st/dashboard |  |

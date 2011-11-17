@@ -36,11 +36,7 @@ TUXTODO: restore Workspace admin messages after "unknown error" bug is fixed.
 | click_and_wait | //input[@value='Add to Workspace'] |  |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group Verify the add |  |
-
-wait_for_text_present_ok | Group '%%group%%' now has the role of member in the %%ws%% | 30000 |
-
-TUXTODO: Is this confirmation back?
-
+| wait_for_text_present_ok | Group '%%group%%' now has the role of member in the %%ws%% | 30000 |
 | wait_for_text_present_ok | Groups (1) | 30000 |
 | wait_for_text_present_ok | Users (0) | 30000 |
 | wait_for_element_visible_ok | //a[@href='/nlw/control/group/%%group_id%%'] | 30000 |

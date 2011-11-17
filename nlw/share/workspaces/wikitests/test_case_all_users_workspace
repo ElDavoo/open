@@ -62,10 +62,7 @@
 | is_checked_ok | //input[@name='value'] |  |
 | wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
 | click_and_wait | xpath=(//input[@value='Update'])[3] |  |
-
-TUXTODO: Is this message back yet?
-wait_for_text_present_ok | Account settings updated. | 15000 |
-
+| wait_for_text_present_ok | Account settings updated. | 15000 |
 | is_checked_ok | //input[@name='value'] |  |
 
 | *Comment* | Test Case: All Users Workspace check that the user got added to the wiki |  |
@@ -99,10 +96,7 @@ wait_for_text_present_ok | Account settings updated. | 15000 |
 | st_unchecked_ok | //input[@name='value'] |  |
 | wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
 | click_and_wait | xpath=(//input[@value='Update'])[3] |  |
-
-TUXTODO: Is this message back yet?
-wait_for_text_present_ok | Account settings updated. | 15000 |
-
+| wait_for_text_present_ok | Account settings updated. | 15000 |
 | st_unchecked_ok | //input[@name='value'] |  |
 
 | *Comment* | Test Case: All Users Workspace check that user got removed from the wiki |  |
@@ -123,10 +117,7 @@ wait_for_text_present_ok | Account settings updated. | 15000 |
 | is_checked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 | wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
 | click_and_wait | xpath=(//input[@value='Update'])[3] |  |
-
-TUXTODO: Is this message back yet?
-wait_for_text_present_ok | Account settings updated. | 15000 |
-
+| wait_for_text_present_ok | Account settings updated. | 15000 |
 | is_checked_ok | //table[@id='workspaces']/tbody/tr[1]/td[1]/input[@name='value'] |  |
 | is_checked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 
@@ -150,10 +141,7 @@ wait_for_text_present_ok | Account settings updated. | 15000 |
 | st_unchecked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 | wait_for_element_visible_ok | xpath=(//input[@value='Update'])[3] | 30000 |
 | click_and_wait | xpath=(//input[@value='Update'])[3] |  |
-
-TUXTODO: Is this message back yet?
-wait_for_text_present_ok | Account settings updated. | 15000 |
-
+| wait_for_text_present_ok | Account settings updated. | 15000 |
 | st_unchecked_ok | //table[@id='workspaces']/tbody/tr[1]/td[1]/input[@name='value'] |  |
 | st_unchecked_ok | //table[@id='workspaces']/tbody/tr[2]/td[1]/input[@name='value'] |  |
 
