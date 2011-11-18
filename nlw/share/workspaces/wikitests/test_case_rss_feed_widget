@@ -19,7 +19,7 @@
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | heusserm's Journal | 30000 |
 | st-name-widget | 1 | rss_feed |
-| st-widget-title | rss_feed | heusserm's Journal |
+| is_element_present_ok | //div[@class='widgetTitle']/h1[contains(text(),"heusserm's Journal")] |  |
 | st-select-widget-frame | rss_feed |  |
 | wait_for_element_visible_ok | link=Agile Project Management | 30000 |
 | wait_for_element_visible_ok | link=Emerson | 15000 |
