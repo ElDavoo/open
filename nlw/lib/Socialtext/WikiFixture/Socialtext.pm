@@ -458,10 +458,13 @@ sub st_create_wikipage {
     my ($self, $workspace, $pagename)  = @_;
     my $url = '/' . $workspace . '/?action=new_page';
     $self->{selenium}->open_ok($url);
+    $self->handle_command('set_Speed',3000);
     $self->handle_command('wait_for_element_visible_ok','st-newpage-pagename-edit',30000);
     $self->handle_command('type_ok','st-newpage-pagename-edit',$pagename);
     $self->handle_command('wait_for_element_visible_ok','st-save-button-link',5000);
-    $self->handle_command('click_and_wait','st-save-button-link');
+    $self->handle_command('set_Speed',0);
+    st_pause_click($self, 8000,'st-save-button-link','andWait');
+    $self->handle_command('pause_ok',8000);
 }
 
 =head2 st_update_wikipage ( $workspace, $page, $content) 
@@ -532,7 +535,7 @@ sub st_comment_on_page {
     my $commentbutton = '//li[@id=\'st-comment-button\']';
     my $commentlink = $commentbutton . '/a';
     my $commentarea = '//textarea[@name="comment"]';
-    my $commentsave = '//div[@class="comment"]/a[contains(@class,"saveButton")]';
+    my $commentsave = '//div[@class="comment"]//a[contains(@class,"saveButton")]';
     $self->handle_command('set_Speed',2000);
     $self->handle_command('open_ok', $url);  
     $self->handle_command('wait_for_element_visible_ok',$commentbutton, 5000);

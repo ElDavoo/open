@@ -29,7 +29,7 @@
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name 1 check wiki page and user wafl |  |
-| open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
+| open_ok | /%%fname_wiki%%/%%fname_page%% |  |
 | wait_for_text_present_ok | comment text | 30000 |
 | text_like | st-page-content | qr/user wafl.+%%fname%%.+comment text.+contributed by.+%%fname%%/ |
 | text_like | update-attribution | qr/Updated by.+%%fname%%/ |
@@ -41,8 +41,8 @@
 | text_like | //div[@class='vcard'] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name 1 check revisions list |  |
-| wait_for_element_visible_ok | link=2 Revisions | 30000 |
-| click_and_wait | link=2 Revisions |  |
+| open_ok | /%%fname_wiki%%/%%fname_page%%?action=revision_list |  |
+| wait_for_text_present_ok | Compare Revisions | 30000 |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name 1 check people directory |  |

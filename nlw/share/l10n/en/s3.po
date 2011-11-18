@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-11-05 15:43-0700\n"
+"PO-Revision-Date: 2011-11-17 19:04-0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -254,7 +254,7 @@ msgstr "Highlight"
 
 #: share/skin/s3/template/view/page/revision:34
 msgid "diff.html-view"
-msgstr "HTML View"
+msgstr "Source View"
 
 #: share/skin/s3/template/view/page/revision_compare:46
 msgid "diff.view"
