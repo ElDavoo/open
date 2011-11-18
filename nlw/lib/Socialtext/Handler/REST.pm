@@ -259,7 +259,7 @@ sub loadResource {
     for my $template (keys %{ $self->resourceHooks() }) {
         my $regex = join "\\/+",
                     map {
-                        /^:__/
+                        /^:__|^:pname$/
                             ? '(.+)'
                             : /^:ws$/
                                 ? '(?!(?:nlw|challenge|data|feed|js|m|settings|st)/)([^\/]+)'
