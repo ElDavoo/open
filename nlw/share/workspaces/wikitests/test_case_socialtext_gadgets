@@ -3,18 +3,18 @@
 | *Comment* | Test Case: Socialtext Gadgets uses [st-add-widget] |  |
 | st_empty_container |  |  |
 
-| call | st-add-widget | widget=All People Tags |  |
-| call | st-add-widget | widget=Activities |  |
-| call | st-add-widget | widget=Active Content |  |
-| call | st-add-widget | widget=Active People |  |
-| call | st-add-widget | widget=Workspaces |  |
-| call | st-add-widget | widget=Wiki Page |  |
-| call | st-add-widget | widget=Image |  |
-| call | st-add-widget | widget=RSS Viewer | title=Enterprise Social Software Blog |
-| call | st-add-widget | widget=Web Page |  |
-| call | st-add-widget | widget=Spreadsheet Page |  |
-| call | st-add-widget | widget=Workspace Tags |  |
-| call | st-add-widget | widget=Page Creator |  |
-| call | st-add-widget | widget=Page Tracker |  |
+| call | st-add-widget | widget=All People Tags | widget_Title=All People Tags |
+| call | st-add-widget | widget=Activities | widget_Title=Activities |
+| call | st-add-widget | widget=Active Content | widget_Title=Active Content |
+| call | st-add-widget | widget=Active People | widget_Title=Active People |
+| call | st-add-widget | widget=Workspaces | widget_Title=Workspaces |
+| call | st-add-widget | widget=Wiki Page | widget_Title=Wiki Page |
+| call | st-add-widget | widget=Image | widget_Title=Image |
+| call | st-add-widget | widget=RSS Viewer | widget_Title=Enterprise Social Software Blog |
+| call | st-add-widget | widget=Web Page | widget_Title=Web Page |
+| call | st-add-widget | widget=Spreadsheet Page | widget_Title=Spreadsheet Page |
+| call | st-add-widget | widget=Workspace Tags | widget_Title=Tags for help-en workspace |
+| call | st-add-widget | widget=Page Creator | widget_Title=Page Creator |
+| call | st-add-widget | widget=Page Tracker | widget_Title=Page Tracker |
 
-| *Comment* | Test Case: Socialtext Gadgets COMPLETED |  |
+| *Comment* | Test Case: Socialtext Gadgets COMPLETED |  |  |

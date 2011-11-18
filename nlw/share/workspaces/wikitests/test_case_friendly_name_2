@@ -75,9 +75,11 @@
 | wait_for_element_not_present_ok | xpath=(//a[contains(text(),"%%fname%%")])[3] | 5000 |
 
 | *Comment* | Test Case: Friendly Name 2 check Control Panel User |  |
+| wait_for_element_visible_ok | username | 30000 |
+| type_ok | username | %%fname_checker%% |
+| click_and_wait | st-username-search-submit |  |
 | wait_for_element_visible_ok | `//a[contains(text(),'%%fname_checker%%')]` | 30000 |
-| click_and_wait | //a[contains(text(),'%%fname_checker%%')] |  |
-
+| click_and_wait | `//a[contains(text(),'%%fname_checker%%')]` |  |
 | wait_for_text_present_ok | Invited by: "%%fname%%" | 10000 |
 | wait_for_element_present_ok | //div[@id='workspaceTable']/table/tbody/tr[2]/td[6] | 10000 |
 | text_like | //div[@id='workspaceTable']/table/tbody/tr[2]/td[6] | %%fname_user%% |

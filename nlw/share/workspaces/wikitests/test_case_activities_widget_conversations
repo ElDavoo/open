@@ -70,8 +70,8 @@
 | *Comment* | Test Case: Activities Widget Conversations - %%convuser%% comments on %%watchedpagename%% |  |  |  |
 | call | [st-comment-on-page] | ws=%%wrkspc%% | page=%%watchedpagename%% | comment=Comment on watched page by %%convuser%% |
 
-| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% creates %%notconvpagetwo%% |  |
-| st-create-wikipage | %%wrkspc%% | %%notconvpagetwo%% |
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% creates %%notconvpagetwo%% |  |  |  |
+| call | [st-edit-new-page] | ws=%%wrkspc%% | title=%%notconvpagetwo%% | content=content |
 
 | *Comment* | Test Case: Activities Widget Conversations - pause before logout |  |
 | pause_ok | 8000 | pause before logout to avoid navigate away dialog |
