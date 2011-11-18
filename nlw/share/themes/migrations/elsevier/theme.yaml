@@ -1,20 +1,20 @@
 ---
-background_color: '#ffffff'
+background_color: '#5e585e'
 background_image: ~
 background_image_position: left top
 background_image_tiling: repeat
-background_link_color: '#757c82'
-base_theme: Starfish
-body_font: Arial
-favicon_image: ~
-foreground_shade: dark
+background_link_color: '#093361'
+base_theme: Socialtext
+body_font: Helvetica
+favicon_image: Elsevierlogo85.gif
+foreground_shade: light
 header_color: '#ffffff'
-header_font: Arial
+header_font: Georgia
 header_image: ~
 header_image_position: left top
-header_image_tiling: repeat
-header_link_color: '#d98611'
-logo_image: elsevier_logo.gif
-primary_color: '#676c70'
-secondary_color: '#3d5e87'
-tertiary_color: '#d98611'
+header_image_tiling: repeat-x
+header_link_color: '#093361'
+logo_image: elsevier_word.gif
+primary_color: '#0577C7'
+secondary_color: '#B77B2C'
+tertiary_color: '#f0f0f0'
