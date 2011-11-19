@@ -216,8 +216,8 @@ from Compare Revisions, click the link above the older version | older version a
 | *Comment* | Test Case: Revisions: Restoring revision |  |
 | wait_for_element_visible_ok | link=Revision 2 | 15000 |
 | click_and_wait | link=Revision 2 |  |
-| text_like | link=HTML View | HTML View |
-| click_and_wait | link=HTML View |  |
+| text_like | link=Source View | Source View |
+| click_and_wait | link=Source View |  |
 | text_like | link=Normal View | Normal View |
 | click_and_wait | st-revision-restorebutton |  |
 

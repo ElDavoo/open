@@ -1,14 +1,14 @@
 | *Comment* | Test Case: Widgets In Pages |  |
 
-| set | wip_ws | widgets_wiki_%%start_time%% |
-| set | wip_page | widgets_page_%%start_time%% |
-| set | wip_user | `wip_user_%%start_time%%@david.socialtext.net` |
-| create_workspace | %%wip_ws%% |  |
-| create_user | %%wip_user%% | %%password%% |
-| st-admin | add-member --workspace %%wip_ws%% --email %%username%% | now has the role |
-| st-admin | add-member --workspace %%wip_ws%% --email %%wip_user%% | now has the role |
+| set | wip_ws | widgets_wiki_%%start_time%% |  |
+| set | wip_page | widgets_page_%%start_time%% |  |
+| set | wip_user | `wip_user_%%start_time%%@david.socialtext.net` |  |
+| create_workspace | %%wip_ws%% |  |  |
+| create_user | %%wip_user%% | %%password%% |  |
+| st-admin | add-member --workspace %%wip_ws%% --email %%username%% | now has the role |  |
+| st-admin | add-member --workspace %%wip_ws%% --email %%wip_user%% | now has the role |  |
 
-| *Comment* | Test Case: Widgets In Pages make a new WYSIWYG page |  |
+| *Comment* | Test Case: Widgets In Pages make a new WYSIWYG page |  |  |
 
 | call | [st-new-page-wysiwyg] | ws=%%workspace%% | title=%%wip_page%% |
 
@@ -74,10 +74,7 @@
 | wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_present_ok | //a[contains(@class,"cke_button_wikitext")] | 15000 |
 | click_and_pause | //a[contains(@class,"cke_button_wikitext")] | 15000 |
-
-TUXTODO: restore this test when adding multiple widgets is fixed in CKEditor
-
- verifyValue | //textarea[@class="cke_source cke_enable_context_menu"] | `{widget: top_content#2 __title__=Active%20Content __width__=600` |
+| verifyValue | //textarea[@class="cke_source cke_enable_context_menu"] | `{widget: top_content#2 __title__=Active%20Content __width__=600` |
 
 | *Comment* | Test Case: Widgets in Pages save page, check widgets |  |
 | click_and_wait | st-save-button-link |  |

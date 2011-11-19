@@ -28,10 +28,9 @@
 | select_ok | primary_name | %%to_acct%% |
 | click_and_wait | st-submit-transform |  |
 
-TUXTODO: restore tests if messages come back
-*Comment* | Test Case: Groups UI Acct 2 Group Web UI Verify Correctness | |
-wait_for_text_present_ok | Transform Account %%group_acct%% to group succeeded | 30000 |
-wait_for_text_present_ok | Transform Account %%group_acct_two%% to group succeeded | 30000 |
+| *Comment* | Test Case: Groups UI Acct 2 Group Web UI Verify Correctness |  |
+| wait_for_text_present_ok | Transform Account %%group_acct%% to group succeeded | 30000 |
+| wait_for_text_present_ok | Transform Account %%group_acct_two%% to group succeeded | 30000 |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI at Groups page. Click ID to get latest groups |  |
 | wait_for_element_visible_ok | link=ID | 10000 |
@@ -59,8 +58,7 @@ wait_for_text_present_ok | Transform Account %%group_acct_two%% to group succeed
 | click_ok | %%to_acct%% |  |
 | select_ok | primary_name | %%to_acct%% |
 | click_and_wait | st-submit-transform |  |
-
- wait_for_text_present_ok | Transform Account %%to_acct%% to group failed: Account %%to_acct%% cannot be the same as into account | 10000 |
+| wait_for_text_present_ok | Transform Account %%to_acct%% to group failed: Account %%to_acct%% cannot be the same as into account | 10000 |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI - without accts admin, see error |  |
 | st-logoutin | %%group_user%% | %%password%% |
@@ -78,4 +76,4 @@ wait_for_text_present_ok | Transform Account %%group_acct_two%% to group succeed
 | delete-workspace | %%group_ws%% |  |
 | delete-account | %%to_acct%% |  |
 
-| *Comment* | Test Case: Groups UI Send Signal to Group COMPLETED |
+| *Comment* | Test Case: Groups UI Acct 2 Group Web UI COMPLETED |  |

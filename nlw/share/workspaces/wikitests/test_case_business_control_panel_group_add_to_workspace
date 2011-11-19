@@ -1,4 +1,4 @@
-| *Comment* | Test Case: Business Control Panel Group Add to Workspace Verifies Group Add to Workspace PLUS add-as-admin |
+| *Comment* | Test Case: Business Control Panel Group Add to Workspace Verifies Group Add to Workspace PLUS add-as-admin |  |  |
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Create a WS, a group, two users |  |  |
 
 | set | ws | wsgiw-%%start_time%% |  |
@@ -50,10 +50,7 @@
 | wait_for_text_present_ok | %%group%% Group | 10000 |
 | wait_for_text_present_ok | Workspaces (1) | 10000 |
 | wait_for_text_present_ok | Users (2) | 10000 |
-
- text_like | //body | qr/Group '%%group%%' now has the role of member in the %%ws%% Workspace/ism |
-
-TUXTODO: Is that confirmation message coming back?
+| text_like | //body | qr/Group '%%group%%' now has the role of member in the %%ws%% Workspace/ism |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Verify that the added WS does not appear in the WS select list |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
@@ -91,10 +88,7 @@ TUXTODO: Is that confirmation message coming back?
 | wait_for_text_present_ok | %%group%% Group | 10000 |
 | wait_for_text_present_ok | Workspaces (2) | 10000 |
 | wait_for_text_present_ok | Users (2) | 10000 |
-
- text_like | //body | qr/Group '%%group%%' now has the role of admin in the %%workspaceforadmin%% Workspace/ism |
-
-TUXTODO: Is that confirmation message coming back?
+| text_like | //body | qr/Group '%%group%%' now has the role of admin in the %%workspaceforadmin%% Workspace/ism |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Verify membership via command line tools |  |
 | st-admin | show-members -w %%ws%% | member |
@@ -110,4 +104,4 @@ TUXTODO: Is that confirmation message coming back?
 | delete-group | %%group_id%% |  |
 | delete-account | %%account%% |  |
 
-| *Comment* | Test Case: Business Control Panel Group Add to Workspace COMPLETED |
+| *Comment* | Test Case: Business Control Panel Group Add to Workspace COMPLETED |  |
