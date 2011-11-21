@@ -49,7 +49,10 @@ around 'save' => sub {
             }, $self->account->account_id);
         }
 
-        for my $id (_get_image_ids($updates->{theme})) {
+        # make sure ID's are unique
+        my %ids = map { $_ => 1 } _get_image_ids($updates->{theme});
+
+        for my $id (keys %ids) {
             sql_execute(qq{
                 INSERT INTO account_theme_attachment (account_id, attachment_id)
                 VALUES (?,?)
