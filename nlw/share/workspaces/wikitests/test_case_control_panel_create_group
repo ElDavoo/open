@@ -89,11 +89,7 @@
 | wait_for_element_visible_ok | link=%%short_email2%% <%%email2%%> | 30000 |
 | wait_for_element_visible_ok | link=%%short_email3%% <%%email3%%> | 30000 |
 | wait_for_element_visible_ok | link=%%short_email4%% <%%email4%%> | 30000 |
-
- text_like | //body | You successfully added 4 users to 1 group. |
-
-TUXTODO: Is this confirmation back?
-
+| text_like | //body | You successfully added 4 users to 1 group. |
 | text_like | //body | Users (5) |
 | text_like | //body | %%groupname%% |
 | text_like | //body | Created By: %%short_username%% |
@@ -137,11 +133,7 @@ TUXTODO: Is this confirmation back?
 | check_ok | %%group_id%% |  |
 | wait_for_element_visible_ok | invite-button | 30000 |
 | click_and_wait | invite-button |  |
-
- wait_for_text_present_ok | You successfully added 3 users to 1 group | 30000 |
-
-TUXTODO: Is this confirmation back?
-
+| wait_for_text_present_ok | You successfully added 3 users to 1 group | 30000 |
 | *Comment* | Test Case: Control Panel Groups Confirm Add |  |
 | open_ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | link=%%short_email1%% <%%email1%%> | 30000 |
@@ -164,7 +156,7 @@ TUXTODO: Is this confirmation back?
 | wait_for_text_present_ok | The group needs to include at least one admin | 30000 |
 
 | *Comment* | Test Case: Control Panel Groups Remove from group - success |  |
-| st-admin | add-group-admin --e %%email2%% --g %%group_id%% |
+| st-admin | add-group-admin --e %%email2%% --g %%group_id%% |  |
 | open_ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | userTable-select-0 | 30000 |
 | wait_for_element_visible_ok | userTable-select-2 | 30000 |
@@ -195,10 +187,7 @@ TUXTODO: Is this confirmation back?
 | check_ok | toggle_all_users |  |
 | is_checked_ok | toggle_all_users |  |
 | click_and_wait | link=Add Users |  |
-
- wait_for_text_present_ok | You successfully added | 30000 |
-
-users to add to the group
+| wait_for_text_present_ok | You successfully added | 30000 |
 
 | *Comment* | Test Case: Control Panel Create Group TEARDOWN |  |
 | st-process-jobs |  |  |

@@ -58,11 +58,7 @@
 | *Comment* | Test Case: Business Control Panel Invite To Workspace - Invite three users |  |
 | wait_for_element_visible_ok | invite-button | 30000 |
 | click_and_wait | invite-button |  |
-
- wait_for_text_present_ok | Congratulations! You successfully created a new workspace with 3 users. They will receive an invitation message with a link to %%new_ws_title%%. | 30000 |
-
-TUXTODO: Is this confirmation message coming back?
-
+| wait_for_text_present_ok | Congratulations! You successfully created a new workspace with 3 users. They will receive an invitation message with a link to %%new_ws_title%%. | 30000 |
 | wait_for_text_present_ok | %%new_ws_title%% workspace | 30000 |
 | wait_for_element_visible_ok | link=Usage Reports | 30000 |
 | wait_for_element_visible_ok | link=Growth Reports | 30000 |
