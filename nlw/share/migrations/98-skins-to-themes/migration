@@ -9,7 +9,7 @@ use Socialtext::SQL qw(sql_execute);
 use Socialtext::Theme;
 use YAML qw(LoadFile);
 
-ensure_socialtext_schema(153);
+ensure_socialtext_schema(154);
 
 do_for_custom_accounts(sub {
     my ($theme,$name) = @_;
