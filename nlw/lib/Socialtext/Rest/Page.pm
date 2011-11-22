@@ -7,6 +7,7 @@ use warnings;
 # REVIEW: Can this be made into a Socialtext::Entity?
 use base 'Socialtext::Rest';
 use HTML::WikiConverter;
+use Socialtext::l10n 'loc_lang';
 use Socialtext::JSON;
 use Readonly;
 use Socialtext::HTTP ':codes';
@@ -87,11 +88,37 @@ sub make_GETter {
                     if ($content_type eq 'text/html' and $content_to_return =~ /container\.renderGadget/) {
                         # TODO: Refactor this to properly reuse [% FILTER decorate "head" %].
                         my $app_version = Socialtext->product_version;
+                        my $loc_lang = loc_lang() || 'en';
                         $content_to_return = << ".";
-<script type="text/javascript" charset="utf-8" src="/js/$app_version/socialtext-rest-container.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/$app_version/socialtext-rest-container.jgz"></script>
+<script type="text/javascript" charset="utf-8" src="/js/$app_version/l10n-$loc_lang.jgz"></script>
 <script>
 var st = new Socialtext({});
 Socialtext.prototype.static_path = "/static/$app_version";
+if (gadgets && gadgets.config) {
+    gadgets.config.init({
+        "core.io" : {
+            "jsonProxyUrl" : "/nlw/$app_version/json-proxy"
+        },
+        "rpc" : {
+            "parentRelayUrl" : "/nlw/plugin/widgets/rpc_relay.html",
+            "useLegacyProtocol" : false
+        },
+        "opensocial-0.8": {
+            // Path to fetch opensocial data from
+            // Must be on the same domain as the gadget rendering server
+            "path" : "/nlw",
+
+            // Path to issue invalidate calls
+            "invalidatePath" : "/what_is_this",
+            "domain" : "shindig",
+            "enableCaja" : false,
+            "supportedFields" : {
+               "person" : []
+            }
+        }
+    }, true);
+}
 </script>
 <link rel="stylesheet" type="text/css" href="/nlw/plugin/$app_version/widgets/css/inline.css" media="screen" />
 $content_to_return
