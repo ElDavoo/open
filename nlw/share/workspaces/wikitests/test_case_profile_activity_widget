@@ -38,20 +38,16 @@
 
 | *Comment* | Test Case: Profile Activity Widget. Send and check private signal |  |  |
 | st-send-signal-in-activities-widget | Private signal to %%tuser%% at %%start_time%% HURRAY | private |  |
+| wait_for_text_present_ok | automatically adjust your filters to show the new signal. | 30000 |  |
+| wait_for_element_visible_ok | link=here | 30000 |  |
+| click_and_pause | link=here | 3000 |  |
 
-TUXTODO: Does the here link work yet?
-
-wait_for_text_present_ok | automatically adjust your filters to show the new signal. | 30000 | |
-wait_for_element_visible_ok | link=here | 30000 | |
-click_and_pause | link=here | 3000 | |
-
-*Comment* | Test Case: Profile Activity Widget. Check without /qr first to invoke wait_for | |
-st-verify-text-in-activities-widget | Private signal to %%tuser%% at %%start_time%% HURRAY | |
+| *Comment* | Test Case: Profile Activity Widget. Check without /qr first to invoke wait_for |  |
+| st-verify-text-in-activities-widget | Private signal to %%tuser%% at %%start_time%% HURRAY |  |
 
 | *Comment* | Test Case: Profile Activity Widget. Check after waiting for Private signal |  |
 | st-verify-text-in-activities-widget | qr/%%tuser%%.+Public signal to %%tuser%% at %%start_time%% WHOOPEE/ism |  |
-
-st-verify-text-in-activities-widget | qr/You.+private to.+%%tuser%%/ism | |
+| st-verify-text-in-activities-widget | qr/You.+private to.+%%tuser%%/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. Clean start: navigate to the %%tuser%% Profile page |  |
 | st_process_jobs | PersonIndex |  |

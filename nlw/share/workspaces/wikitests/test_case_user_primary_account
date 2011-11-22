@@ -39,7 +39,8 @@
 | select-autocompleted-option-ok | user | %%invite_prefix%% | %%invite_user_3_short%% |
 
 | wait_for_text_present_ok | %%invite_user_3_short%% |  |
-| text_like | qr/%%invite_user_3_escaped%%.+remove/i |  |
+| text_like | %%invite_user_3_short%%x |  |
+
 | click_and_wait | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |
 | text_like | content | %%invite_user_3%% |
@@ -48,6 +49,7 @@
 | wait_for_text_present_ok | %%invite_user_3_short%% | 30000 |
 | click_and_wait | link=%%invite_user_3_short%% <%%invite_user_3%%> |  |
 | wait_for_text_present_ok | Accounts ( | 30000 |
+| wait_for_element_visible_ok | accountsCount | 30000 |
 | text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
@@ -62,6 +64,7 @@
 | wait_for_text_present_ok | %%invite_user_1_short%% |  |
 | click_and_wait | link=%%invite_user_1_short%% <%%invite_user_1%%> |  |
 | wait_for_text_present_ok | Accounts ( | 30000 |
+| wait_for_element_visible_ok | accountsCount | 30000 |
 | text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
@@ -70,14 +73,12 @@
 | wait_for_element_visible_ok | email_address | 30000 |
 | type_ok | email_address | %%invite_user_2%% |
 | click_and_wait | add_user |  |
-
-TUXTODO: restore this test if messages are restored
-wait_for_text_present_ok | Added user %%invite_user_2%% | 30000 |
-
+| wait_for_text_present_ok | Added user %%invite_user_2%% | 30000 |
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_2%% | 30000 |
 | click_and_wait | link=%%invite_user_2_short%% <%%invite_user_2%%> |  |
 | wait_for_text_present_ok | Accounts ( | 30000 |
+| wait_for_element_visible_ok | accountsCount | 30000 |
 | text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
@@ -98,6 +99,7 @@ wait_for_text_present_ok | Added user %%invite_user_2%% | 30000 |
 | wait_for_text_present_ok | %%invite_user_4_short%% |  |
 | click_and_wait | link=%%invite_user_4_short%% <%%invite_user_4%%> |  |
 | wait_for_text_present_ok | Accounts ( | 30000 |
+| wait_for_element_visible_ok | accountsCount | 30000 |
 | text_like | accountsCount | 1 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
