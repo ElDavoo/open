@@ -1,0 +1,44 @@
+| *Comment* | Test Case: Admin Themes |  |
+
+| set | at_acct | at-account-%%start_time%% |
+| set | at_user | at.user.%%start_time%%@david.socialtext.net |
+
+| create-account | %%at_acct%% |  |  |
+| create-user | %%at_user%% | %%password%% | %%at_acct%% |
+| st-admin | add-account-admin --email %%at_user%% --account %%at_acct%% | now has the role |  |
+| st-process-jobs |  |  |  |
+
+| *Comment* | Test Case: Admin Themes business admins can access theme UI from account CP |  |
+| open_ok | /nlw/control/account/%%account_id%% |  |
+| wait_for_element_visible_ok | link=Theme | 30000 |
+| text_like | qr/Profile Fields.+Theme.+Reports/ |  |
+| click_and_wait | link=Theme |  |
+| wait_for_text_present_ok | Customize Theme Settings | 30000 |
+| wait_for_element_visible_ok | originLink | 30000 |
+| click_and_wait | originLink |  |
+| location_like | /nlw/control/account/%%account_id%% |  |
+
+| *Comment* | Test Case: Admin Themes account admins can access account CP, but no other CP |  |
+| st-logoutin | %%at_user%% | %%password%% |
+| open_ok | /nlw/control/account/%%account_id%% |  |
+
+st-logoutin | %%at_user%% | %%password%% |
+
+| *Comment* | Test Case: Admin Themes account admins can access theme UI through Administer Dashboards |  |
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | st-admin-dashboard |  |
+| click_and_wait | st-admin-dashboard |  |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_element_visible_ok | st-account-theme | 30000 |
+| click_and_wait | st-account-theme |  |
+| location_like | /nlw/control/account/%%account_id%%/theme?origin=/st/account/%%account_id%%/dashboard |  |
+| wait_for_element_visible_ok | originLink | 30000 |
+| click_and_wait | originLink |  |
+| location_like | /st/account/%%account_id%%/dashboard |  |
+| open_ok | /nlw/control/account/%%account_id%%/theme?origin=/st/account/%%account_id%%/dashboard |  |
+
+| *Comment* | Test Case: Admin Themes TEARDOWN |  |
+| st-process-jobs |  |  |
+| deactivate-user | %%at_user%% |  |
+| delete-account | %%at_acct%% |  |
