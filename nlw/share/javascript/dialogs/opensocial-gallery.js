@@ -12,7 +12,7 @@ var gallery = {
             width: 640,
             minWidth: 550,
             height: 400,
-            html: '<div id="st-widget-opensocial-gallery-loading"><img src="/static/images/ajax-loader.gif" style="padding-top: 150px; padding-left: 300px" /></div>',
+            html: '<div id="st-widget-opensocial-gallery-loading" style="width: 100%; height: 100%; overflow: auto"><img src="/static/images/ajax-loader.gif" style="padding-top: 150px; padding-left: 300px" /></div>',
             close: function() {
                 $('#st-widget-opensocial-gallery-loading').remove();
             }

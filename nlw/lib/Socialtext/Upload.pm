@@ -32,6 +32,7 @@ use constant TABLE_REFS => qw(
     page_attachment
     signal_attachment
     signal_asset
+    theme_attachment
 );
 
 # NOTE: if this gets changed to anything other than /tmp, make sure tmpreaper is

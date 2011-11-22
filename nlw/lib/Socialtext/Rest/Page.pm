@@ -7,6 +7,7 @@ use warnings;
 # REVIEW: Can this be made into a Socialtext::Entity?
 use base 'Socialtext::Rest';
 use HTML::WikiConverter;
+use Socialtext::l10n 'loc_lang';
 use Socialtext::JSON;
 use Readonly;
 use Socialtext::HTTP ':codes';
@@ -87,27 +88,13 @@ sub make_GETter {
                     if ($content_type eq 'text/html' and $content_to_return =~ /container\.renderGadget/) {
                         # TODO: Refactor this to properly reuse [% FILTER decorate "head" %].
                         my $app_version = Socialtext->product_version;
+                        my $loc_lang = loc_lang() || 'en';
                         $content_to_return = << ".";
+<script type="text/javascript" charset="utf-8" src="/js/$app_version/socialtext-rest-container.jgz"></script>
+<script type="text/javascript" charset="utf-8" src="/js/$app_version/l10n-$loc_lang.jgz"></script>
 <script>
-function nlw_make_s2_path(rest) {
-      return "/static/$app_version/skin/s2" + rest;
-}
-function nlw_make_skin_path(rest) {
-      return "/static/$app_version/skin/s3" + rest;
-}
-function nlw_make_static_path(rest) {
-      return "/static/$app_version" + rest;
-}
-function nlw_make_s3_path(rest) {
-      return "/static/$app_version/skin/s3" + rest;
-}
-function nlw_make_plugin_path(rest) {
-      return "/static/$app_version".replace(/static/, 'nlw/plugin') + rest;
-}
-</script>
-<script type="text/javascript" charset="utf-8" src="/static/$app_version/skin/s3/javascript/socialtext-s3.js.gz"></script>
-<script src="/nlw/plugin/$app_version/widgets/javascript/socialtext-container.js.gz"></script>
-<script>
+var st = new Socialtext({});
+Socialtext.prototype.static_path = "/static/$app_version";
 if (gadgets && gadgets.config) {
     gadgets.config.init({
         "core.io" : {

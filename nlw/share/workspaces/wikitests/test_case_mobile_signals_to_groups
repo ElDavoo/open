@@ -20,7 +20,7 @@
 | create-group | %%group21%% | %%acct2%% | %%msg_user%% |
 | set | group21_id | %%group_id%% |  |
 
-| *Comment* | Test Case: Mobile Signals to Group check order of groups in Post to: menu |  |
+| *Comment* | Test Case: Mobile Signals to Groups check order of groups in Post to: menu |  |
 | st-logoutin | %%msg_user%% | %%password%% |
 | open_ok | /st/m/signals |  |
 | wait_for_element_visible_ok | mobile_signal_network | 30000 |
@@ -29,23 +29,29 @@
 | wait_for_element_visible_ok | //option[contains(text(),%%acct2%%)] | 15000 |
 | wait_for_element_visible_ok | //option[contains(text(),%%group21%%)] | 15000 |
 
-| *Comment* | Test Case: Mobile Signals to Group send signal to one group |  |
+| *Comment* | Test Case: Mobile Signals to Groups send signal to one group |  |
 | select_ok | mobile_signal_network | label=%%group11%% (1 user) |
 | st_type_signal | New signal to %%group11%% |  |
 | click_ok | mobile_post |  |
 
-| *Comment* | Test Case: Mobile Signals to Group check for signal in mobile UI |  |
+| *Comment* | Test Case: Mobile Signals to Groups. Select everyone |  |
+| wait_for_element_visible_ok | //a[contains(@id,"expander")] | 30000 |
+| click_ok | //a[contains(@id,"expander")] |  |
+| wait_for_element_visible_ok | feed-everyone | 30000 |
+| click_ok | feed-everyone |  |
+
+| *Comment* | Test Case: Mobile Signals to Groups check for signal in mobile UI |  |
 | wait_for_element_present_ok | group-%%group11_id%% | 15000 |
 | click_ok | group-%%group11_id%% |  |
 | wait_for_text_present_ok | By you | 10000 |
 | text_like | qr/New signal to %%group11%%.+By you.+minute ago.+to.+%%group11%%/ism |  |
 
-| *Comment* | Test Case: Mobile Signals to Group check for signal in other UI |  |
+| *Comment* | Test Case: Mobile Signals to Groups check for signal in other UI |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Signals |  |
 | text_like | qr/New signal to %%group11%%.+By you/ism |  |
 
-| *Comment* | Test Case: Mobile Signals to Group TEARDOWN |  |
+| *Comment* | Test Case: Mobile Signals to Groups TEARDOWN |  |
 | st-process-jobs |  |  |
 | deactivate-user | %%msg_user%% |  |
 | delete-group | %%group11_id%% |  |
@@ -54,4 +60,4 @@
 | delete-account | %%acct1%% |  |
 | delete-account | %%acct2%% |  |
 
-| *Comment* | Test Case: Mobile Signals to Group COMPLETED |  |
+| *Comment* | Test Case: Mobile Signals to Groups COMPLETED |  |

@@ -14,8 +14,6 @@ sub do_work {
     my $self = shift;
 
     my @references = map {
-#         "EXISTS (SELECT 1 FROM $_ 
-#                  WHERE $_.attachment_id = attachment.attachment_id)";
           "attachment_id IN (SELECT attachment_id FROM $_)"
     } Socialtext::Upload::TABLE_REFS;
 

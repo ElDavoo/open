@@ -91,6 +91,9 @@ foo
   ["user.%%start_time%%@david.socialtext.net", """
     <p><a href="mailto:user.%25%25start_time%25%25@david.socialtext.net">user.%%start_time%%@david.socialtext.net</a></p>\n
   """]
+  ["http://example.com/naïve", "<p><a href=\"http://example.com/na%C3%AFve\">http://example.com/naïve</a></p>\n"]
+  ["http://example.com/Hi%20There", "<p><a href=\"http://example.com/Hi%20There\">http://example.com/Hi%20There</a></p>\n"]
+  ["\"Hi There\"<http://example.com/Hi%20There>", "<p><a href=\"http://example.com/Hi%20There\">Hi There</a></p>\n"]
 ]
 
 for [wiki, html] in tests

@@ -61,9 +61,9 @@
 | wait_for_element_not_visible_ok | limit | 30000 |
 | wait_for_element_not_visible_ok | st-savebutton-%%activities_widget%% | 30000 |
 
-| set | r1 | Signal.+from.+not.+a.+follower.+%%start_time%%.+%%shortnot%%.+ago\s*to.+%%followacct%% |
+| set | r1 | Signal.+from.+not.+a.+follower.+%%start_time%%.+%%shortnot%%.+ago.+to.+%%followacct%% |
 | set | r2 | %%shortnot%%.+ago.+edited.+donotseethispage.+in.+%%followws%% |
-| set | r3 | You.+should.+see.+this.+%%start_time%%.+ %%shortfollow%%.+ago\s*to.+%%followacct%% |
+| set | r3 | You.+should.+see.+this.+%%start_time%%.+ %%shortfollow%%.+ago.+to.+%%followacct%% |
 | set | r4 | %%shortfollow%%.+ago.+edited.+pageone.+in.+%%followws%% |
 
 | *Comment* | Test Case: Activities Widget Followers reopen dashboard |  |

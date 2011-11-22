@@ -76,8 +76,8 @@
     [% FOR row IN diff_rows %]
       <div class="grid_12 alpha">[% row.before %]</div>
       <div class="grid_12 omega">[% row.after %]</div>
+      <div class="clear"></div>
     [% END %]
-    <div class="clear"></div>
   </div>
 </div>
 <div class="clear"></div>

@@ -865,6 +865,11 @@ CREATE TABLE account_logo (
     logo bytea NOT NULL
 );
 
+CREATE TABLE account_theme_attachment (
+    account_id bigint NOT NULL,
+    attachment_id integer NOT NULL
+);
+
 CREATE SEQUENCE user_set_path_id_seq
     INCREMENT BY 1
     NO MINVALUE
@@ -1680,6 +1685,10 @@ ALTER TABLE ONLY "Workspace"
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_pkey
             PRIMARY KEY (account_id);
+
+ALTER TABLE ONLY account_theme_attachment
+    ADD CONSTRAINT account_theme_attachment_pkey
+            PRIMARY KEY (account_id, attachment_id);
 
 ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_pkey
@@ -2895,6 +2904,16 @@ ALTER TABLE ONLY tag_people__person_tags
             FOREIGN KEY (tag_id)
             REFERENCES person_tag(id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY account_theme_attachment
+    ADD CONSTRAINT theme_attachment_account_id_fk
+            FOREIGN KEY (account_id)
+            REFERENCES "Account"(account_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY account_theme_attachment
+    ADD CONSTRAINT theme_attachment_attachment_id_fk
+            FOREIGN KEY (attachment_id)
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
+
 ALTER TABLE ONLY theme
     ADD CONSTRAINT theme_background_image_fk
             FOREIGN KEY (background_image_id)
@@ -3071,4 +3090,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '153');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '154');

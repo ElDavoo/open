@@ -100,9 +100,7 @@
 | click_and_wait | link=Save |  |
 | open_ok | /%%new_ws%% |  |
 | text_like | Remember me on this computer |  |
-
-TUXTODO: Does this work yet?
-text_like | You are not authorized to view this workspace. | |
+| text_like | You are not authorized to view this workspace. |  |
 
 | include | [Test Case: Preferences UI User Teardown] |  |
 

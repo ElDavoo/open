@@ -52,15 +52,17 @@ $(function () {
         }
     }
 
-    $("#col0:not('.stuck')").sortable($.extend({
-        connectWith: ["#col1:not('.stuck')", "#col2:not('.stuck')"]
-    }, options)); 
-    $("#col1:not('.stuck')").sortable($.extend({
-        connectWith: ["#col0:not('.stuck')", "#col2:not('.stuck')" ]
-    }, options));
-    $("#col2:not('.stuck')").sortable($.extend({
-        connectWith: ["#col0:not('.stuck')", "#col1:not('.stuck')" ]
-    }, options));
+    if ($.fn.sortable) {
+        $("#col0:not('.stuck')").sortable($.extend({
+            connectWith: ["#col1:not('.stuck')", "#col2:not('.stuck')"]
+        }, options)); 
+        $("#col1:not('.stuck')").sortable($.extend({
+            connectWith: ["#col0:not('.stuck')", "#col2:not('.stuck')" ]
+        }, options));
+        $("#col2:not('.stuck')").sortable($.extend({
+            connectWith: ["#col0:not('.stuck')", "#col1:not('.stuck')" ]
+        }, options));
+    }
 
     if ($.fn.addTouch) {
         $('.draggable:not(.fixed) .widgetHeader').addTouch();

@@ -21,7 +21,7 @@
 | text_like | //body | qr/%%account%%.+%%addl_account%%/ |
 
 | *Comment* | Test Case: Business Control Panel Group Add To Account Make sure the change 'took' by a refresh |  |
-| refresh |  |  |
+| open-ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | accountTable | 30000 |
 | wait_for_element_visible_ok | link=%%addl_account%% | 30000 |
 | wait_for_text_present_ok | Accounts (2) | 30000 |
@@ -49,4 +49,4 @@
 | delete-account | %%account%% | has been deleted |
 | delete-account | %%addl_account%% | has been deleted |
 
-| *Comment* | Test Case: Business Control Panel Group Add To Account COMPLETED |
+| *Comment* | Test Case: Business Control Panel Group Add To Account COMPLETED |  |

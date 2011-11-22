@@ -60,7 +60,6 @@
 | open_ok | /%%fname_wiki%%/%%fname_page%% |  |
 | wait_for_text_present_ok | comment text | 30000 |
 | text_like | st-page-content | qr/user wafl.+%%fname2%%.+contributed by.+%%fname2%%/ |
-| text_like | create-attribution | qr/Created by.+%%fname2%%/ |
 | text_like | update-attribution | qr/Updated by.+%%fname2%%/ |
 
 | include | [Test Case: Friendly Name Teardown] |  |

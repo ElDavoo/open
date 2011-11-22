@@ -27,6 +27,8 @@ Visit any page. Open the sidebar | Sidebar contains recently viewed section
 Observe values in sidebar | Sidebar contains list of most recently viewed pages in most recently viewed order
 
 | *Comment* | Test Case: Sidebar: Recently Viewed. Sidebar |  |
+| wait_for_element_visible_ok | link=TC Sidebar RV 2 %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=TC Sidebar RV 3 %%start_time%% | 30000 |
 | text_like | link=TC Sidebar RV 2 %%start_time%% | TC Sidebar RV 2 %%start_time%% |
 | text_like | link=TC Sidebar RV 3 %%start_time%% | TC Sidebar RV 3 %%start_time%% |
 
@@ -34,7 +36,7 @@ Observe values in sidebar | Sidebar contains list of most recently viewed pages 
 | text_like | qr/TC Sidebar RV 2 %%start_time%%.+TC Sidebar RV 3 %%start_time%%/ |  |
 
 visit several pages | Recently Viewed list changes in sidebar to track viewed pages
-"What's New,"<http://www2.socialtext.net/s3wt/%2525253Chttp:%2525253E/http></http/> then Recently Viewed tab | same list appears in same order
+"What's New,"<http://www2.socialtext.net/s3wt/%25252525253Chttp:%25252525253E/http></http/> then Recently Viewed tab | same list appears in same order
 
 | *Comment* | Test Case: Sidebar: Recently Viewed. Visit several pages |  |
 | open_ok | /%%workspace%%/?Announcements and Links |  |
@@ -56,10 +58,10 @@ Visit any page. Open the sidebar | Sidebar *DOES NOT* contain recently viewed se
 | wait_for_text_present_ok | Saved | 10000 |
 
 | open_ok | /%%workspace%%/?TC Sidebar RV 3 %%start_time%% |  |
+| wait_for_text_present_ok | Incoming Links | 30000 |
 | text_unlike | content | Announcements and Links |
 | text_unlike | content | TC Sidebar RV 2 %%start_time%% |
 | text_unlike | content | TC Sidebar RV 1 %%start_time%% |
-| text_like | content | Incoming Links |
 
 | *Comment* | Test Case: Sidebar: Recently Viewed. TEARDOWN |  |
 | st-process-jobs |  |  |

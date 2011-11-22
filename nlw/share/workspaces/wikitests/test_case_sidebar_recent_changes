@@ -2,23 +2,30 @@
 | *Comment* | Test Case: SRC: create 8 new pages |  |
 | *Comment* | needs %%wikitest_client_files%%wikitest.txt |  |
 
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-1 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-1" page has been created |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-2 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-2" page has been created |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-3 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-3" page has been created |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-4 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-4" page has been created |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-5 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-5" page has been created |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-6 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-6" page has been created |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-7 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-7" page has been created |
-| st-admin | update-page --email %%email%% --workspace %%workspace%% --page side-%%start_time%%-8 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-8" page has been created |
+| set | src_user | src.user.%%start_time%%@david.socialtext.net |
+| set | src_wiki | src_workspace_%%start_time%% |
+| create-workspace | %%src_wiki%% |  |
+| create-user | %%src_user%% | %%password%% |
+| st-admin | add-member --workspace %%src_wiki%% --email %%src_user%% | now has the role |
+
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-1 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-1" page has been created |  |
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-2 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-2" page has been created |  |
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-3 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-3" page has been created |  |
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-4 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-4" page has been created |  |
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-5 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-5" page has been created |  |
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-6 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-6" page has been created |  |
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-7 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-7" page has been created |  |
+| st-admin | update-page --email %%src_user%% --workspace %%src_wiki%% --page side-%%start_time%%-8 < %%wikitest_client_files%%wikitest.txt | The "side-%%start_time%%-8" page has been created |  |
 
 | st-process-jobs |  |  |  |
+| st-logoutin | %%src_user%% | %%password%% |  |
 
 "Settings -> What's New"<http://> | What's New UI appears
 Choose a time interval, check the sidebar display box, choose number of items to display. Save | Settings take effect
 
 | *Comment* | Test Case: SRC: 2 entries within 24 hours |  |  |
 
-| call | [st-spaces-accordion] | index=1 | section=Preferences |
+| open_ok | /st/settings/%%workspace_id%%/prefs/preferences |  |  |
 
 | select_ok | //select[@name="prefs.recent_changes.changes_depth"] | label=Last 24 hours |
 | check_ok | //input[@type="checkbox" and @name="prefs.recent_changes.include_in_pages"] |  |
@@ -27,7 +34,7 @@ Choose a time interval, check the sidebar display box, choose number of items to
 | wait_for_text_present_ok | Saved | 10000 |
 
 | *Comment* | Test Case: SRC: What's New list view eight new |  |
-| open_ok | /%%workspace%%/?action=recent_changes |  |
+| open_ok | /%%src_wiki%%/?action=recent_changes |  |
 | text_like | link=side-%%start_time%%-8 | side-%%start_time%%-8 |
 | text_like | link=side-%%start_time%%-7 | side-%%start_time%%-7 |
 | text_like | link=side-%%start_time%%-2 | side-%%start_time%%-2 |
@@ -49,7 +56,7 @@ Select and save a different time interval and a different number of sidebox entr
 
 | *Comment* | Test Case: SRC: 4 entries within Last Month |  |  |
 
-| call | [st-spaces-accordion] | index=1 | section=Preferences |
+| open_ok | /st/settings/%%workspace_id%%/prefs/preferences |  |  |
 
 | select_ok | //select[@name="prefs.recent_changes.changes_depth"] | label=Last Month |
 | check_ok | //input[@type="checkbox" and @name="prefs.recent_changes.include_in_pages"] |  |
@@ -58,7 +65,7 @@ Select and save a different time interval and a different number of sidebox entr
 | wait_for_text_present_ok | Saved | 10000 |
 
 | *Comment* | Test Case: SRC: What's New list view all eight |  |
-| open_ok | /%%workspace%%/?action=recent_changes |  |
+| open_ok | /%%src_wiki%%/?action=recent_changes |  |
 | text_like | link=side-%%start_time%%-8 | side-%%start_time%%-8 |
 | text_like | link=side-%%start_time%%-7 | side-%%start_time%%-7 |
 | text_like | link=side-%%start_time%%-6 | side-%%start_time%%-6 |
@@ -83,12 +90,12 @@ Verify content of What's New section | Correct number of Recent Changes displaye
 
 | *Comment* | Test Case: SRC: What's New uncheck sidebar |  |  |
 
-| call | [st-spaces-accordion] | index=1 | section=Preferences |
+| open_ok | /st/settings/%%workspace_id%%/prefs/preferences |  |  |
 
 | uncheck_ok | //input[@type="checkbox" and @name="prefs.recent_changes.include_in_pages"] |  |
 | click_ok | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |
-| open_ok | /%%workspace%%/side-%%start_time%%-8 |  |
+| open_ok | /%%src_wiki%%/side-%%start_time%%-8 |  |
 
 | *Comment* | sidebar element should be completely gone, not present |  |
 | text_unlike | st-display-mode-widgets | What's New |
@@ -96,13 +103,7 @@ Verify content of What's New section | Correct number of Recent Changes displaye
 
 | *Comment* | Test Case: SRC: Teardown |  |
 | st-process-jobs |  |  |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_1 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_2 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_3 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_4 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_5 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_6 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_7 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page side_%%start_time%%_8 | was purged |
+| deactivate-user | %%src_user%% |  |
+| delete-workspace | %%src_wiki%% |  |
 
 | *Comment* | START Test Case: Sidebar: Recent Changes COMPLETED |  |

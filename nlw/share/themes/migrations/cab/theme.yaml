@@ -7,8 +7,8 @@ background_link_color: '#ffffff'
 base_theme: Starfish
 body_font: Arial
 favicon_image: ~
-foreground_shade: light
-header_color: '#0d5b9a'
+foreground_shade: dark
+header_color: '#f5c400'
 header_font: Arial
 header_image: ~
 header_image_position: left top
@@ -17,4 +17,4 @@ header_link_color: '#333333'
 logo_image: CAB_logo.gif
 primary_color: '#0c5a9a'
 secondary_color: '#0c5a9a'
-tertiary_color: '#e8e8e8'
+tertiary_color: '#faf2fa'

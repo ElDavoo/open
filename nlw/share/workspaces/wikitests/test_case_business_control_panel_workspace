@@ -2,7 +2,7 @@
 
 | set | new_acct | acct-wstest-%%start_time%% |
 | set | new_workspace | wksp-test%%start_time%% |
-| set | cli_user | bcpw_test%%start_time%%@ken.socialtext.net |
+| set | cli_user | `bcpw_test%%start_time%%@ken.socialtext.net` |
 | set | cli_user_prefix | bcpw |
 | set | cli_user_suffix | test%%start_time%% |
 | set | cli_user_short | bcpw test%%start_time%% |
@@ -67,11 +67,7 @@
 | select_ok | account_id | Socialtext |
 | wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
 | click_and_wait | st-assign-to-account-submit |  |
-
-text_like | The %%new_workspace%% workspace is now part of the Socialtext account. | |
-
-TUXTODO: Is this confirmation back?
-
+| text_like | The %%new_workspace%% workspace is now part of the Socialtext account. |  |
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |

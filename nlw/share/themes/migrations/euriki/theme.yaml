@@ -11,10 +11,10 @@ foreground_shade: dark
 header_color: '#ffffff'
 header_font: Arial
 header_image: eurikiTop.gif
-header_image_position: left top
+header_image_position: center center
 header_image_tiling: no-repeat
 header_link_color: '#333333'
-logo_image: eurikiLogo.gif
+logo_image: EurogroupLogo.jpg
 primary_color: '#a7052d'
 secondary_color: '#a7052d'
 tertiary_color: '#e8e8e8'

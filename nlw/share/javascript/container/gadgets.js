@@ -211,6 +211,8 @@ container.setPreferences = function(instance_id, prefHash, callback) {
 };
 
 container.setupPreferenceLookaheads = function($node) {
+    if (!$.fn.autocomplete) { return }
+
     /* Add handlers and stuff to settings sections */
     $node.find('.page_setting').each(function() {
         var form = this.form;
