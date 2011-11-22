@@ -1,5 +1,5 @@
 <script>
-if (gadgets && gadgets.config) {
+if (typeof gadgets != 'undefined' && gadgets && gadgets.config) {
     gadgets.config.init({
         "core.io" : {
             "jsonProxyUrl" : "/nlw/[% app_version %]/json-proxy"
