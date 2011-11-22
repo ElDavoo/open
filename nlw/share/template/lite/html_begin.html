@@ -11,14 +11,17 @@
             [% DEFAULT page_html = '' %]
             [% IF page_html.search("container\.renderGadget") %]
             <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-mobile-container.jgz"></script>
+                [% INCLUDE widget/syndicator %]
             [% ELSE %]
             <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-mobile.jgz"></script>
             [% END %]
+            [% INCLUDE 'element/wiki/js-bootstrap' %]
         [% END %]
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang || 'en' %].jgz"></script>
-        [% INCLUDE widget/syndicator %]
-        [% INCLUDE 'element/wiki/js-bootstrap' %]
         <script type="text/javascript"><!--
+            if (typeof Socialtext == 'undefined') {
+                Socialtext = {};
+            }
             Socialtext.mobile = true;
             Socialtext.prototype.static_path = "/static/[% app_version %]";
         --></script>
