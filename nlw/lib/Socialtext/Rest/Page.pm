@@ -88,50 +88,10 @@ sub make_GETter {
                         # TODO: Refactor this to properly reuse [% FILTER decorate "head" %].
                         my $app_version = Socialtext->product_version;
                         $content_to_return = << ".";
+<script type="text/javascript" charset="utf-8" src="/js/$app_version/socialtext-rest-container.js"></script>
 <script>
-function nlw_make_s2_path(rest) {
-      return "/static/$app_version/skin/s2" + rest;
-}
-function nlw_make_skin_path(rest) {
-      return "/static/$app_version/skin/s3" + rest;
-}
-function nlw_make_static_path(rest) {
-      return "/static/$app_version" + rest;
-}
-function nlw_make_s3_path(rest) {
-      return "/static/$app_version/skin/s3" + rest;
-}
-function nlw_make_plugin_path(rest) {
-      return "/static/$app_version".replace(/static/, 'nlw/plugin') + rest;
-}
-</script>
-<script type="text/javascript" charset="utf-8" src="/static/$app_version/skin/s3/javascript/socialtext-s3.js.gz"></script>
-<script src="/nlw/plugin/$app_version/widgets/javascript/socialtext-container.js.gz"></script>
-<script>
-if (gadgets && gadgets.config) {
-    gadgets.config.init({
-        "core.io" : {
-            "jsonProxyUrl" : "/nlw/$app_version/json-proxy"
-        },
-        "rpc" : {
-            "parentRelayUrl" : "/nlw/plugin/widgets/rpc_relay.html",
-            "useLegacyProtocol" : false
-        },
-        "opensocial-0.8": {
-            // Path to fetch opensocial data from
-            // Must be on the same domain as the gadget rendering server
-            "path" : "/nlw",
-
-            // Path to issue invalidate calls
-            "invalidatePath" : "/what_is_this",
-            "domain" : "shindig",
-            "enableCaja" : false,
-            "supportedFields" : {
-               "person" : []
-            }
-        }
-    }, true);
-}
+var st = new Socialtext({});
+Socialtext.prototype.static_path = "/static/$app_version";
 </script>
 <link rel="stylesheet" type="text/css" href="/nlw/plugin/$app_version/widgets/css/inline.css" media="screen" />
 $content_to_return

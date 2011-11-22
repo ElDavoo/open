@@ -8,12 +8,18 @@
         <link rel="apple-touch-icon" href="/static/[% app_version %]/images/apple-touch-icon.png"/>
         <link rel="stylesheet" href="/data/accounts/[% user.primary_account_id %]/theme/miki.css?[% app_version %]" />
         [% IF enable_jquery_mobile %]
-        <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-mobile.jgz"></script>
+            [% DEFAULT page_html = '' %]
+            [% IF page_html.search("container\.renderGadget") %]
+            <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-mobile-container.jgz"></script>
+            [% ELSE %]
+            <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/socialtext-mobile.jgz"></script>
+            [% END %]
         [% END %]
         <script type="text/javascript" charset="utf-8" src="/js/[% app_version %]/l10n-[% loc_lang || 'en' %].jgz"></script>
         [% INCLUDE 'element/wiki/js-bootstrap' %]
         <script type="text/javascript"><!--
             Socialtext.mobile = true;
+            Socialtext.prototype.static_path = "/static/[% app_version %]";
         --></script>
         <meta name = "viewport" content = "width=device-width, initial-scale=1">
     </head>

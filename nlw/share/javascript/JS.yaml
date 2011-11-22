@@ -321,6 +321,24 @@
         - loc.js
         - Socialtext.js
 
+# jQuery Mobile (with gadgets)
+'socialtext-mobile-container.js':
+   compress: 1
+   parts:
+        - socialtext-mobile.js
+        - {jemplate_runtime: jquery}
+        - socialtext-container.js
+
+# Stand-alone container (for REST HTML)
+'socialtext-rest-container.js':
+   compress: 1
+   parts:
+        - jquery-1.6.2.min.js
+        - loc.js
+        - Socialtext.js
+        - {jemplate_runtime: jquery}
+        - socialtext-container.js
+
 # javascript needed for /console
 'socialtext-console.js':
     compress: 1
