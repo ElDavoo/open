@@ -18,13 +18,8 @@
 | click_and_wait | originLink |  |
 | location_like | /nlw/control/account/%%account_id%% |  |
 
-| *Comment* | Test Case: Admin Themes account admins can access account CP, but no other CP |  |
-| st-logoutin | %%at_user%% | %%password%% |
-| open_ok | /nlw/control/account/%%account_id%% |  |
-
-st-logoutin | %%at_user%% | %%password%% |
-
 | *Comment* | Test Case: Admin Themes account admins can access theme UI through Administer Dashboards |  |
+| st-logoutin | %%at_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_element_visible_ok | st-admin-dashboard |  |
 | click_and_wait | st-admin-dashboard |  |
@@ -37,6 +32,8 @@ st-logoutin | %%at_user%% | %%password%% |
 | click_and_wait | originLink |  |
 | location_like | /st/account/%%account_id%%/dashboard |  |
 | open_ok | /nlw/control/account/%%account_id%%/theme?origin=/st/account/%%account_id%%/dashboard |  |
+
+| *Comment* | Test Case: Admin Themes |  |
 
 | *Comment* | Test Case: Admin Themes TEARDOWN |  |
 | st-process-jobs |  |  |
