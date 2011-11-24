@@ -38,19 +38,20 @@
 | wait_for_element_visible_ok | user | 30000 |  |
 | select-autocompleted-option-ok | user | %%invite_prefix%% | %%invite_user_3_short%% |
 
-| wait_for_text_present_ok | %%invite_user_3_short%% |  |
-| text_like | %%invite_user_3_short%%x |  |
+| wait_for_text_present_ok | %%invite_user_3_short%% | 10000 |  |
 
 | click_and_wait | link=Save |  |
 | wait_for_text_present_ok | Saved | 10000 |
+| wait_for_text_present_ok | %%invite_user_3%% | 10000 |
 | text_like | content | %%invite_user_3%% |
 
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_3_short%% | 30000 |
 | click_and_wait | link=%%invite_user_3_short%% <%%invite_user_3%%> |  |
-| wait_for_text_present_ok | Accounts ( | 30000 |
 | wait_for_element_visible_ok | accountsCount | 30000 |
-| text_like | accountsCount | 1 |
+| wait_for_text_present_ok | Accounts (1 | 10000 |
+| wait_for_text_present_ok | %%join_acct%% | 10000 |
+| wait_for_text_present_ok | Primary Account | 10000 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account invite user to account through Invite! UI, check their account |  |
@@ -63,9 +64,10 @@
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_1_short%% |  |
 | click_and_wait | link=%%invite_user_1_short%% <%%invite_user_1%%> |  |
-| wait_for_text_present_ok | Accounts ( | 30000 |
 | wait_for_element_visible_ok | accountsCount | 30000 |
-| text_like | accountsCount | 1 |
+| wait_for_text_present_ok | Accounts (1 | 10000 |
+| wait_for_text_present_ok | %%join_acct%% | 10000 |
+| wait_for_text_present_ok | Primary Account | 10000 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account add single user to account via Control Panel, check |  |
@@ -77,9 +79,10 @@
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_2%% | 30000 |
 | click_and_wait | link=%%invite_user_2_short%% <%%invite_user_2%%> |  |
-| wait_for_text_present_ok | Accounts ( | 30000 |
 | wait_for_element_visible_ok | accountsCount | 30000 |
-| text_like | accountsCount | 1 |
+| wait_for_text_present_ok | Accounts (1 | 10000 |
+| wait_for_text_present_ok | %%join_acct%% | 10000 |
+| wait_for_text_present_ok | Primary Account | 10000 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account add multiple users to account via Control Panel, check |  |
@@ -98,9 +101,10 @@
 | open_ok | /nlw/control/account/%%join_acct_id%% |  |
 | wait_for_text_present_ok | %%invite_user_4_short%% |  |
 | click_and_wait | link=%%invite_user_4_short%% <%%invite_user_4%%> |  |
-| wait_for_text_present_ok | Accounts ( | 30000 |
 | wait_for_element_visible_ok | accountsCount | 30000 |
-| text_like | accountsCount | 1 |
+| wait_for_text_present_ok | Accounts (1 | 10000 |
+| wait_for_text_present_ok | %%join_acct%% | 10000 |
+| wait_for_text_present_ok | Primary Account | 10000 |
 | text_like | accountTable | qr/%%join_acct%%.+Primary Account/ |
 
 | *Comment* | Test Case: User: Primary Account TEARDOWN |  |

@@ -1,8 +1,8 @@
 | *Comment* | Test Case: Business Control Panel Settings |
 
-| set | new_user | `new-user-%%start_time%%@matt.socialtext.net` |
+| set | new_user | new-user-%%start_time%%@matt.socialtext.net |
 | set | new_acct | new-acct-%%start_time%% |
-| set | admin_user | `acct_admin-%%start_time%%@matt.socialtext.net` |
+| set | admin_user | acct_admin-%%start_time%%@matt.socialtext.net |
 
 | set | self_join_button | //input[@type="radio" and @name="self_join" and @value="1"] |
 | set | private_button | //input[@type="radio" and @name="self_join" and @value="0"] |
@@ -24,7 +24,7 @@
 | *Comment* | Test Case: Business Control Panel Settings - Check the page as accounts-admin verify text FTW |  |
 | st-admin | give-accounts-admin --u %%admin_user%% | now has accounts admin access |
 | *Comment* | Navigate away, come back |  |
-| open_ok | /?action=workspace_list |  |
+| open_ok | / |  |
 | open_ok | /nlw/control/settings |  |
 | wait_for_element_visible_ok | self_join_update | 10000 |
 | text_like | //body | Accounts on this system are "self-join". Any user who can access the Socialtext application can join the default account, create a profile, and participate in the account's Signals channels. Users can invite other users into their account. |
@@ -58,16 +58,13 @@
 | st-admin | remove-account-admin --e %%admin_user%% --account %%new_acct%% |  |
 
 | st-logoutin | %%admin_user%% | %%password%% |
-| open_ok | /?action=workspace_list |  |
-| wait_for_element_visible_ok | link=Groups | 30000 |
-| text_like | You have free access |  |
-| wait_for_element_not_present_ok | link=Invite! | 15000 |
+| wait_for_element_not_present_ok | st-wiki-subnav-link-invite | 15000 |
 | text_unlike | //body | Invite! |
 
 | *Comment* | Test Case: Business Control Panel Settings - verify Invite! present for account admin |  |
 | st-admin | add-account-admin --e %%admin_user%% --account %%new_acct%% |  |
-| open_ok | /?action=workspace_list |  |
-| wait_for_element_present_ok | link=Invite! | 30000 |
+| open_ok | /st/groups |  |
+| wait_for_element_present_ok | st-wiki-subnav-link-invite | 30000 |
 | text_like | //body | Invite! |
 
 | *Comment* | Test Case: Business Control Panel Settings - Set accounts on the server to public |  |
@@ -116,14 +113,12 @@
 | st-admin | remove-accounts-admin --u %%admin_user%% | no longer has |
 | st-admin | remove-account-admin --e %%admin_user%% --account %%new_acct%% |  |
 | st-logoutin | %%admin_user%% | %%password%% |
-| open_ok | /?action=workspace_list |  |
+| open_ok | /st/signals |  |
 | wait_for_element_not_present_ok | link=Create Group... | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Settings - Add Account Admin, can create group |  |
 | st-admin | add-account-admin --e %%admin_user%% --account %%new_acct%% | now has the role of 'admin' |
-| open_ok | /?action=workspace_list |  |
-| wait_for_element_visible_ok | link=Groups | 30000 |
-| text_like | You have free access |  |
+| open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=Create Group... | 15000 |
 
 | *Comment* | Test Case: Business Control Panel Settings - Set Group Create to anybody |  |
@@ -139,12 +134,12 @@
 | *Comment* | Test Case: Business Control Panel Settings - Remove Account Admin BUT anyone can create group |  |
 | st-admin | remove-account-admin --e %%admin_user%% --account %%new_acct%% | no longer has the role of 'admin' |
 | st-logoutin | %%admin_user%% | %%password%% |
-| open_ok | /?action=workspace_list |  |
+| open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=Create Group... | 10000 |
 
 | *Comment* | Test Case: Business Control Panel Settings - Add Account Admin still can create group |  |
 | st-admin | add-account-admin --e %%admin_user%% --account %%new_acct%% | now has the role of 'admin' |
-| open_ok | /?action=workspace_list |  |
+| open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=Create Group... | 10000 |
 
-| *Comment* | Test Case: Business Control Panel Settings COMPLETED |
+| *Comment* | Test Case: Business Control Panel Settings COMPLETED |  |
