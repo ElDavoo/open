@@ -372,7 +372,11 @@ sub st_single_widget_in_dashboard {
         $self->handle_command('wait_for_element_present_ok', $str, 30000);
         $self->handle_command('click_ok' ,$str); 
         $self->handle_command('pause_ok',8000);
-        #$self->handle_command('refresh_ok');
+        # The following refresh, though expensive, is needed to force an update
+        # to the widgetList for subsequent use by callers
+        $self->handle_command('refresh_ok');
+        # aaand ....... you have to wait ........
+        $self->{selenium}->wait_for_page_to_load(30000);
     };
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
