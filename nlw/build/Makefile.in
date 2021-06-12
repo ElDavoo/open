@@ -213,13 +213,13 @@ config: install-ok \
         ssl-config
 
 osr-apache: install-ok config
-	$(GENCONFIG) --sitewide --hostname=@HOSTNAME@
+	ST_CURRENT=../ $(GENCONFIG) --sitewide --hostname=@HOSTNAME@
 
 st-apache: install-ok config apache-config
 
 TARG=$(subst -config,,$@)
 $(CONF_TARGETS): install-ok
-	$(GENCONFIG) --sitewide --target=$(TARG)
+	ST_CURRENT=../ $(GENCONFIG) --sitewide --target=$(TARG)
 
 install-schema-files: install-ok
 	$(INSTALL_ROOT) -m 644 etc/socialtext/db/* $(SCHEMA_DIR)
