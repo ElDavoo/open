@@ -95,7 +95,7 @@ for $src (@files) {
 
 # Symlink the files that should exist in the generated dictionary
 # directory from the source, just like the default system install.
-for $src qw(dicrc left-id.def right-id.def rewrite.def) {
+for $src (qw(dicrc left-id.def right-id.def rewrite.def)) {
     $dst = catfile($our_juman_dict{generated}, $src);
     next if -l "$dst" || -f _;
     symlink("dicsrc/$src", $dst)
