@@ -109,6 +109,8 @@ sub EnsureRequiredDataIsPresent {
     if ($class->Default->name eq 'Unknown') {
         # Explicit requires here to avoid extra run-time dependencies
         require Socialtext::Hostname;
+        my $ddd = Socialtext::Hostname::fqdn();
+        print "hostname: $ddd\n";
         my $acct = $class->create(
             name => Socialtext::Hostname::fqdn(),
             # This is not a system account, it is intended to be used.
@@ -1197,7 +1199,7 @@ sub _validate_and_clean_data {
     if (defined $p->{name}) {
         $p->{name} = Socialtext::String::scrub( $p->{name} );
     }
-
+    print $p->{name};
     my @errors;
     if ( ( exists $p->{name} or $is_create )
          and not
