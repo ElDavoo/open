@@ -7,7 +7,6 @@ use Class::Field qw(const);
 use Socialtext::HTTP ':codes';
 use Socialtext::Events::Recorder;
 use Socialtext::Events::Reporter;
-use Socialtext::Signal::Render;
 use Socialtext::Timer qw/time_scope/;
 use List::MoreUtils qw/all/;
 use Carp qw/croak/;
@@ -76,9 +75,9 @@ sub Record {
 
     my $signal = $ev->{signal};
     if ($signal && ref $signal) {
-        $ev->{context}{body} = Socialtext::Signal::Render->new(
-            user => $signal->user
-        )->render_signal($signal)->{body};
+        #$ev->{context}{body} = Socialtext::Signal::Render->new(
+        #    user => $signal->user
+        #)->render_signal($signal)->{body};
         $ev->{context}{account_ids} = $signal->account_ids;
         $ev->{context}{group_ids} = $signal->group_ids;
         $ev->{context}{uri} = $signal->uri;

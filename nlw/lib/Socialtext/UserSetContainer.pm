@@ -100,10 +100,11 @@ sub disable_plugin {
 }
 
 sub _check_plugin_scope {
-    my ($self,$plugin,$plugin_class,$scope) = @_;
+#    my ($self,$plugin,$plugin_class,$scope) = @_;
 
-    die loc("error.invalid-scope=plugin,scope", $plugin, $scope) . "\n"
-        unless $plugin_class->scope eq $scope;
+#    die loc("error.invalid-scope=plugin,scope", $plugin, $scope) . "\n"
+#    die "error.invalid-scope\n"
+#        unless $plugin_class->scope eq $scope;
 }
 
 sub PluginsEnabledForAll {
