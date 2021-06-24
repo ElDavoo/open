@@ -33,7 +33,7 @@ my $supported_format = {
 };
 
 method _get_date_format {
-    my $locale = $->hub->best_locale;
+    my $locale = $self->hub->best_locale;
     my $locale_format = $supported_format->{$locale};
     if (!defined $locale_format) {
         $locale = 'en';
@@ -58,7 +58,7 @@ method format_date ($year, $month) {
         second => 0
     );
 
-    my $format = $->_get_date_format;
+    my $format = $self->_get_date_format;
     my $date_str = $format->format_datetime($datetime);
     Encode::_utf8_on($date_str);
     return $date_str;
@@ -68,7 +68,7 @@ method format_date ($year, $month) {
 # XXX most of this should become Socialtext::Links or something
 
 method full_script_path {
-    '/' . $->hub->current_workspace->name . '/index.cgi'
+    '/' . $self->hub->current_workspace->name . '/index.cgi'
 }
 
 method query_string_from_hash {
@@ -80,33 +80,33 @@ method query_string_from_hash {
 
 # XXX need to refactor the other stuff in this file to use this
 method script_link($label, %query) {
-    my $url = $->script_path . '?' . $->query_string_from_hash(%query);
+    my $url = $self->script_path . '?' . $self->query_string_from_hash(%query);
     return qq(<a href="$url">$label</a>);
 }
 
 method page_display_link($name) {
-    my $page = $->hub->pages->new_from_name($name);
-    return $->page_display_link_from_page($page);
+    my $page = $self->hub->pages->new_from_name($name);
+    return $self->page_display_link_from_page($page);
 }
 
 method page_display_link_from_page($page) {
-    my $path = $->script_path . '?' . $page->uri;
-    my $title = $->html_escape($page->name);
+    my $path = $self->script_path . '?' . $page->uri;
+    my $title = $self->html_escape($page->name);
     return qq(<a href="$path">$title</a>);
 }
 
 method page_display_path($page_name) {
-    return $->script_path() . "?$page_name";
+    return $self->script_path() . "?$page_name";
 }
 
 method page_edit_path($page_name) {
-    return $->script_path() . '?' . $->page_edit_params($page_name)
+    return $self->script_path() . '?' . $self->page_edit_params($page_name)
 }
 
 # ...aaand we need this one, too.
 method page_edit_params($page_name) {
     return 'action=display;page_name='
-        . $->uri_escape($page_name)
+        . $self->uri_escape($page_name)
         . ';js=show_edit_div'
 }
 
@@ -117,7 +117,7 @@ method _build_default_workspace {
     require Socialtext::Workspace;
     my $ws = Socialtext::Workspace->Default;
 
-    return ( defined $ws && $ws->has_user( $->hub->current_user ) )
+    return ( defined $ws && $ws->has_user( $self->hub->current_user ) )
         ? { label => $ws->title, link => "/" . $ws->name }
         : undef;
 }
@@ -136,12 +136,12 @@ method appliance_conf_val($key) {
 
 has 'signals_only' => (is => 'ro', isa => 'Bool', lazy_build => 1);
 method _build_signals_only {
-    $->appliance_conf_val('signals_only');
+    $self->appliance_conf_val('signals_only');
 }
 
 has 'desktop_update_enabled' => (is => 'ro', isa => 'Bool', lazy_build => 1);
 method _build_desktop_update_enabled {
-    $->appliance_conf_val('desktop_update_enabled');
+    $self->appliance_conf_val('desktop_update_enabled');
 }
 
 has 'plugins_enabled' => (is => 'ro', isa => 'ArrayRef', lazy_build => 1);
@@ -149,8 +149,8 @@ method _build_plugins_enabled {
     return [
         map { $_->name }
         grep {
-            $->hub->current_workspace->is_plugin_enabled($_->name) ||
-            $->hub->current_user->can_use_plugin($_->name)
+            $self->hub->current_workspace->is_plugin_enabled($_->name) ||
+            $self->hub->current_user->can_use_plugin($_->name)
         } Socialtext::Pluggable::Adapter->plugins
     ];
 }
@@ -162,7 +162,7 @@ method _build_plugins_enabled_for_ws_account {
     return [
         map { $_->name }
         grep {
-            $->hub->current_workspace->account->is_plugin_enabled($_->name)
+            $self->hub->current_workspace->account->is_plugin_enabled($_->name)
         } Socialtext::Pluggable::Adapter->plugins
     ]
 }
@@ -176,9 +176,9 @@ method _build_ui_is_expanded {
 }
 
 method global_template_vars {
-    my $hub = $->hub;
-    my $cur_ws = $->hub->current_workspace;
-    my $cur_user = $->hub->current_user;
+    my $hub = $self->hub;
+    my $cur_ws = $self->hub->current_workspace;
+    my $cur_user = $self->hub->current_user;
 
     Socialtext::Timer->Continue('global_tt2_vars');
 
@@ -194,9 +194,9 @@ method global_template_vars {
     my $locale = $hub->best_locale;
 
     my $use_frame_cache
-        = $ENABLE_FRAME_CACHE && $->hub->skin->skin_name ne 's2';
+        = $ENABLE_FRAME_CACHE && $self->hub->skin->skin_name ne 's2';
     my $frame_name
-        = $use_frame_cache ? $->_render_user_frame : 'layout/html';
+        = $use_frame_cache ? $self->_render_user_frame : 'layout/html';
     my %result = (
         frame_name        => $frame_name,
         firebug           => $hub->rest->query->param('firebug') || 0,
@@ -219,18 +219,18 @@ method global_template_vars {
 
         $thunker->(css       => sub { $hub->skin->css_info }),
         $thunker->(skin_info => sub { $hub->skin->skin_info }),
-        $thunker->(user      => sub { $->legacy_user_info }),
-        $thunker->(wiki      => sub { $->workspace_info }),
+        $thunker->(user      => sub { $self->legacy_user_info }),
+        $thunker->(wiki      => sub { $self->workspace_info }),
         $thunker->(customjs  => sub { $hub->skin->customjs }),
         $thunker->(skin_name => sub { $hub->skin->skin_name }),
 
         # System stuff
-        static_path   => $->static_path,
-        system_status => $->hub->main ?
-            $->hub->main->status_message() : undef,
+        static_path   => $self->static_path,
+        system_status => $self->hub->main ?
+            $self->hub->main->status_message() : undef,
 
         # Themes
-        theme => $->theme_info,
+        theme => $self->theme_info,
 
         # possibly this is only used for s2 skin stuff?
         $thunker->('search_box_snippet', sub { 
@@ -244,20 +244,20 @@ method global_template_vars {
             );
         }),
 
-        $thunker->(miki_url => sub { $->miki_path }),
+        $thunker->(miki_url => sub { $self->miki_path }),
         $thunker->(desktop_url => sub {
-            return '' unless $->desktop_update_enabled;
+            return '' unless $self->desktop_update_enabled;
             return '/st/desktop/badge';
         }),
         $thunker->(stax_info => sub { $hub->stax->hacks_info }),
         $thunker->(workspaceslist => sub {
-                $->user_info->{workspaces}
+                $self->user_info->{workspaces}
         }),
-        $thunker->(default_workspace => sub { $->default_workspace }),
-        $thunker->(ui_is_expanded => sub { $->ui_is_expanded }),
-        $thunker->('plugins_enabled' => sub { $->plugins_enabled }),
+        $thunker->(default_workspace => sub { $self->default_workspace }),
+        $thunker->(ui_is_expanded => sub { $self->ui_is_expanded }),
+        $thunker->('plugins_enabled' => sub { $self->plugins_enabled }),
         $thunker->('plugins_enabled_for_current_workspace_account' => sub {
-            return $->plugins_enabled_for_ws_account
+            return $self->plugins_enabled_for_ws_account
         }),
         $thunker->(self_registration => sub {
                 return Socialtext::AppConfig->self_registration
@@ -273,14 +273,14 @@ method global_template_vars {
         }),
         $thunker->(role_for_user => sub { 
                 $cur_ws->role_for_user($cur_user) || undef }),
-        $thunker->(signals_only => sub { $->signals_only }),
+        $thunker->(signals_only => sub { $self->signals_only }),
         $thunker->(is_workspace_admin => sub {
                 $hub->checker->check_permission('admin_workspace') ? 1 : 0 }),
-        $thunker->(js_bootstrap => sub { $->js_bootstrap }),
+        $thunker->(js_bootstrap => sub { $self->js_bootstrap }),
         $thunker->(can_create_groups => sub {
-            !$->user_info->{is_guest} &&
+            !$self->user_info->{is_guest} &&
                 Socialtext::Group->User_can_create_group(
-                    $->hub->current_user
+                    $self->hub->current_user
                 ) ? 1 : 0
         }),
 
@@ -298,15 +298,15 @@ method _build_js_bootstrap {
         # Socialtext.new_page = [% IF is_new %]true;[% ELSE %]false;[% END %]
         # Socialtext.accept_encoding = [% accept_encoding.json || '""' %];
         loc_lang => $self->hub->best_locale,
-        viewer => $->user_info,
-        workspace => $->workspace_info,
+        viewer => $self->user_info,
+        workspace => $self->workspace_info,
         dev_mode => $ENV{NLW_DEV_MODE},
-        static_path => $->static_path,
-        miki_url => $->miki_path,
+        static_path => $self->static_path,
+        miki_url => $self->miki_path,
 
-        invite_url => $->invite_url,
+        invite_url => $self->invite_url,
 
-        content_types => $->hub->pluggable->content_types,
+        content_types => $self->hub->pluggable->content_types,
 
         # wikiwyg
         ui_is_expanded => $self->ui_is_expanded,
@@ -315,9 +315,9 @@ method _build_js_bootstrap {
             ? ( UA_is_Selenium => 1 ) : (),
 
         perms => {
-            edit => $->hub->checker->check_permission('edit')
+            edit => $self->hub->checker->check_permission('edit')
         },
-        action => $->hub->cgi->action,
+        action => $self->hub->cgi->action,
 
         plugins_enabled => $self->plugins_enabled,
         plugins_enabled_for_current_workspace_account =>
@@ -326,7 +326,7 @@ method _build_js_bootstrap {
 }
 
 method add_js_bootstrap ($vars) {
-    $->js_bootstrap({ %{$->js_bootstrap}, %$vars });
+    $self->js_bootstrap({ %{$self->js_bootstrap}, %$vars });
 }
 
 sub clean_user_frame_cache {
@@ -340,24 +340,24 @@ sub user_frame_path {
 }
 
 has 'invite_url' => (is => 'ro', isa => 'Maybe[Str]', lazy_build => 1);
-method _build_invite_url { $->hub->pluggable->hook('template_var.invite_url') }
+method _build_invite_url { $self->hub->pluggable->hook('template_var.invite_url') }
 
 method _render_user_frame {
     local $ENABLE_FRAME_CACHE = 0;
 
-    my $frame_path = $->user_frame_path;
-    my $user_id = $->hub->current_user->user_id;
+    my $frame_path = $self->user_frame_path;
+    my $user_id = $self->hub->current_user->user_id;
     $user_id =~ m/^(\d\d?)/;
     my $user_prefix = $1;
 
-    my $loc_lang = $->hub->best_locale;
-    my $is_guest = $->hub->current_user->is_guest ? 1 : 0;
+    my $loc_lang = $self->hub->best_locale;
+    my $is_guest = $self->hub->current_user->is_guest ? 1 : 0;
 
     my $can_invite = $self->invite_url ? 1 : 0;
 
     my $can_create_group = (
         (!$is_guest
-            && Socialtext::Group->User_can_create_group($->hub->current_user)
+            && Socialtext::Group->User_can_create_group($self->hub->current_user)
         ) ? 1 : 0
     );
 
@@ -372,9 +372,9 @@ method _render_user_frame {
     my $renderer = Socialtext::TT2::Renderer->instance();
     my $frame_content = $renderer->render(
         template => 'layout/user_frame',
-        paths    => $->hub->skin->template_paths,
+        paths    => $self->hub->skin->template_paths,
         vars     => {
-            $->hub->helpers->global_template_vars,
+            $self->hub->helpers->global_template_vars,
             generate_user_frame => 1,
         }
     );
@@ -389,7 +389,7 @@ method _render_user_frame {
 }
 
 method theme_info {
-    my $account = $->hub->current_user->primary_account;
+    my $account = $self->hub->current_user->primary_account;
     my $theme = $account->prefs->all_prefs()->{theme};
 
     return +{
@@ -407,8 +407,8 @@ method miki_path($link) {
     require Socialtext::Formatter::LiteLinkDictionary;
 
     my $miki_path      = '/m';
-    my $page_name      = $->hub->pages->current->name;
-    my $workspace_name = $->hub->current_workspace->name;
+    my $page_name      = $self->hub->pages->current->name;
+    my $workspace_name = $self->hub->current_workspace->name;
 
     if ($workspace_name) {
         $miki_path = Socialtext::Formatter::LiteLinkDictionary->new->format_link(
@@ -422,14 +422,14 @@ method miki_path($link) {
 
 has legacy_user_info => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 method _build_legacy_user_info {
-    my $info = $->user_info;
+    my $info = $self->user_info;
     return {
-        %{$->user_info},
+        %{$self->user_info},
         username => $info->{guess_real_name},
         userid => $info->{username},
         id => $info->{user_id},
         can_use_plugin     => sub {
-            $->hub->current_user->can_use_plugin(@_);
+            $self->hub->current_user->can_use_plugin(@_);
         },
     }
 }
@@ -437,7 +437,7 @@ method _build_legacy_user_info {
 has user_info => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 method _build_user_info {
     require Socialtext::Workspace;
-    my $user = $->hub->current_user;
+    my $user = $self->hub->current_user;
     my $ws = Socialtext::Workspace->Default;
     return {
         guess_real_name    => $user->guess_real_name,
@@ -465,7 +465,7 @@ method _build_user_info {
                 account => $_->account->name,
                 id => $_->workspace_id,
                 ($ws and $ws->name eq $_->name) ? (default => 1) : (),
-            }} $->hub->current_user->workspaces->all
+            }} $self->hub->current_user->workspaces->all
         ],
     };
 }
@@ -479,8 +479,8 @@ sub skin_uri {
 
 has 'workspace_info' => ( is => 'ro', isa => 'HashRef', lazy_build => 1 );
 method _build_workspace_info {
-    my $ws = $->hub->current_workspace;
-    my $skin = $->hub->skin->skin_name;
+    my $ws = $self->hub->current_workspace;
+    my $skin = $self->hub->skin->skin_name;
 
     return {
         title         => $ws->title,
