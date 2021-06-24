@@ -1022,11 +1022,11 @@ sub log_page_and_user {
 sub _ensure_page_assets {
     my $self = shift;
     return unless $self->exists;
-    require Socialtext::Signal::Topic;
-    Socialtext::Signal::Topic::Page->EnsureAssetsFor(
-        page_id => $self->page_id,
-        workspace_id => $self->workspace_id,
-    );
+    #require Socialtext::Signal::Topic;
+    #Socialtext::Signal::Topic::Page->EnsureAssetsFor(
+    #    page_id => $self->page_id,
+    #    workspace_id => $self->workspace_id,
+    #);
 }
 
 sub is_system_page {

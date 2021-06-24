@@ -46,32 +46,32 @@ sub do_work {
 }
 
 sub _rebuild_signal_topics {
-    my $self   = shift;
-    my $signal = shift;
+    #my $self   = shift;
+    #my $signal = shift;
 
-    require Socialtext::Signal::Topic;
+    #require Socialtext::Signal::Topic;
     # also clears the signal_asset table for this signal:
-    Socialtext::Signal::Topic->Delete_all_for_signal(
-        signal => $signal,
-        'Yes, I really, really mean it.' => 1,
-    );
+    #Socialtext::Signal::Topic->Delete_all_for_signal(
+    #    signal => $signal,
+    #    'Yes, I really, really mean it.' => 1,
+    #);
 
     # ignore any errors generating topics.
-    my (undef,undef,$topics) = eval {
+    #my (undef,undef,$topics) = eval {
         # XXX: this is duplicated work from the indexer? it uses
         # render_signal_body which needs to parse it out.
-        $signal->ParseSignalBody($signal->body, $signal->user);
-    };
+    #    $signal->ParseSignalBody($signal->body, $signal->user);
+    #};
 
     # _insert will also do an insert to the signal_asset table if that topic
     # is also an asset.
-    for my $topic (@{$topics||[]}) {
-        $topic->signal($signal);
-        $topic->_insert();
-    }
+    #for my $topic (@{$topics||[]}) {
+    #    $topic->signal($signal);
+    #    $topic->_insert();
+    #}
 
     # attachments are assets too!
-    $_->_insert_asset() for @{$signal->attachments};
+    #$_->_insert_asset() for @{$signal->attachments};
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);

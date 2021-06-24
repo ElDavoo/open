@@ -11,7 +11,7 @@ use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::HTML;
 use Socialtext::Formatter::LinkDictionary;
 use Socialtext::UserSet qw/:const/;
-use Socialtext::Signal::Topic;
+#use Socialtext::Signal::Topic;
 use Socialtext::Permission qw/ST_READ_PERM/;
 use Socialtext::Role ();
 use Guard;
@@ -254,30 +254,30 @@ sub _extract_signal {
     my $row = shift;
     return unless $row->{event_class} eq 'signal';
 
-    my @topics_to_check;
+    #my @topics_to_check;
 
-    if (my $topics = $row->{context}{topics}) {
-        push @topics_to_check, map {
-            $_->{page_id} ? Socialtext::Signal::Topic::Page->new(%$_)
-                          : ()
-        } @$topics;
-    }
+    #if (my $topics = $row->{context}{topics}) {
+    #    push @topics_to_check, map {
+    #        $_->{page_id} ? Socialtext::Signal::Topic::Page->new(%$_)
+    #                      : ()
+    #    } @$topics;
+    #}
 
-    if ($row->{context}{in_reply_to}) {
-        push @topics_to_check, @{
-            Socialtext::Signal::Topic->Get_all_for_signal(
-                signal_id => $row->{context}{in_reply_to}{signal_id}
-            )
-        };
-    }
+    #if ($row->{context}{in_reply_to}) {
+    #    push @topics_to_check, @{
+    #        Socialtext::Signal::Topic->Get_all_for_signal(
+    #            signal_id => $row->{context}{in_reply_to}{signal_id}
+    #        )
+    #    };
+    #}
 
-    for my $topic (@topics_to_check) {
-        my $is_visible = 0;
-        eval { $is_visible = $topic->is_visible_to($self->viewer) };
-        next if $is_visible;
-        no warnings 'exiting';
-        next EVENT;
-    }
+    #for my $topic (@topics_to_check) {
+    #    my $is_visible = 0;
+    #    eval { $is_visible = $topic->is_visible_to($self->viewer) };
+    #    next if $is_visible;
+    #    no warnings 'exiting';
+    #    next EVENT;
+    #}
 
     my $hash = delete $row->{signal_hash};
 
