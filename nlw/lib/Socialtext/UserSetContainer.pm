@@ -67,9 +67,9 @@ sub enable_plugin {
     Socialtext::Cache->clear('authz_plugin');
     Socialtext::Cache->clear('user_accts');
 
-    for my $dep ($plugin_class->dependencies, $plugin_class->enables) {
-        $self->enable_plugin($dep);
-    }
+    #for my $dep ($plugin_class->dependencies, $plugin_class->enables) {
+    #    $self->enable_plugin($dep);
+    #}
 }
 
 sub disable_plugin {

@@ -101,11 +101,11 @@ sub PUT_prefs {
         }
 
         $self->_log_gadget_metadata;
-        my $renderer = Socialtext::Gadget::Renderer->new(
-            gadget => $self->gadget->spec,
-            overrides => $self->gadget->hangman_dict,
-        );
-        return $renderer->href;
+        #my $renderer = Socialtext::Gadget::Renderer->new(
+        #    gadget => $self->gadget->spec,
+        #    overrides => $self->gadget->hangman_dict,
+        #);
+        #return $renderer->href;
     });
 }
 

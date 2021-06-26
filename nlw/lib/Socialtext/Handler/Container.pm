@@ -5,8 +5,8 @@ use Socialtext::Workspace;
 use Socialtext::JSON qw(encode_json decode_json);
 use Exception::Class;
 use Socialtext::AppConfig;
-use Socialtext::Gadgets::Container;
-use Socialtext::Gadgets::Util qw(share_path);
+#use Socialtext::Gadgets::Container;
+#use Socialtext::Gadgets::Util qw(share_path);
 use namespace::clean -except => 'meta';
 
 our $prod_ver = Socialtext->product_version;
@@ -171,21 +171,21 @@ sub GET_default_gadgets {
         $cols[$gadget_info->{col}] ||= 0;
         my $row = $cols[$gadget_info->{col}]++;
 
-        my $instance = Socialtext::Gadgets::GadgetInstance->new(
-            spec => Socialtext::Gadgets::Gadget->Fetch(%$gadget_info),
-            container_id => $self->container->container_id,
-            container => $self->container,
-            gadget_instance_id => $instance_id++,
-            row => $row,
-            %$gadget_info,
-        );
+        #my $instance = Socialtext::Gadgets::GadgetInstance->new(
+        #    spec => Socialtext::Gadgets::Gadget->Fetch(%$gadget_info),
+        #    container_id => $self->container->container_id,
+        #    container => $self->container,
+        #    gadget_instance_id => $instance_id++,
+        #    row => $row,
+        #    %$gadget_info,
+        #);
 
         # Override preferences in the temporary gadget
-        my $prefs = $gadget_info->{prefs} || [];
-        my %overridden = map { $_->[0] => $_->[1] } @$prefs;
-        $instance->override_preferences(\%overridden);
+        #my $prefs = $gadget_info->{prefs} || [];
+        #my %overridden = map { $_->[0] => $_->[1] } @$prefs;
+        #$instance->override_preferences(\%overridden);
 
-        push @gadgets, $self->container->gadget_vars($instance);
+        #push @gadgets, $self->container->gadget_vars($instance);
     }
     $self->rest->header(-type => 'application/json; charset=utf-8');
     return encode_json(\@gadgets);

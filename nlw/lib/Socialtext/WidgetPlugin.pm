@@ -41,22 +41,22 @@ sub gadget_vars {
         $overrides{$key} = $val;
     }
 
-    my $gadget = Socialtext::Gadgets::Gadget->Fetch(src => $src);
-    my $preferences = $gadget->preferences;
-    for my $pref (@$preferences) {
-        my $name = $pref->{name};
+    #my $gadget = Socialtext::Gadgets::Gadget->Fetch(src => $src);
+    #my $preferences = $gadget->preferences;
+    #for my $pref (@$preferences) {
+    #    my $name = $pref->{name};
 
         # Backwards compat
-        $overrides{"UP_$name"} = $overrides{$name} if defined $overrides{$name};
+   #     $overrides{"UP_$name"} = $overrides{$name} if defined $overrides{$name};
 
-        if ($pref->{datatype} eq 'workspace') {
-            $overrides{"UP_$name"} = $self->cgi->workspace_name
-                || $self->hub->current_workspace->name;
-        }
+    #    if ($pref->{datatype} eq 'workspace') {
+    #        $overrides{"UP_$name"} = $self->cgi->workspace_name
+    #            || $self->hub->current_workspace->name;
+    #    }
 
-        my $overridden = $overrides{"UP_$name"} // next;
-        $pref->{value} = $overridden; # This affects $gadget->requires_preferences
-    }
+       # my $overridden = $overrides{"UP_$name"} // next;
+       # $pref->{value} = $overridden; # This affects $gadget->requires_preferences
+    #}
 
     my $workspace = Socialtext::Workspace->new(
         name => $self->cgi->workspace_name || $self->hub->current_workspace->name,
@@ -65,28 +65,28 @@ sub gadget_vars {
     $overrides{"ENV_primary_account"} = $account->name;
     $overrides{"ENV_primary_account_id"} = $account->account_id;
 
-    my $renderer = Socialtext::Gadget::Renderer->new(
-        gadget => $gadget,
-        view => 'page',
-        overrides => \%overrides,
-    );
+    #my $renderer = Socialtext::Gadget::Renderer->new(
+    #    gadget => $gadget,
+    #    view => 'page',
+    #    overrides => \%overrides,
+    #);
 
-    my $width = $overrides{__width__} // 600;
-    $width .= "px" if $width =~ /^\d+$/;
+    #my $width = $overrides{__width__} // 600;
+    #$width .= "px" if $width =~ /^\d+$/;
 
-    my $content_type = $renderer->content_type || 'html';
+#    my $content_type = $renderer->content_type || 'html';
 
-    return {
+   # return {
         # Render the preferences so __('') in options localizes correctly.
-        %{ $renderer->render($gadget->template_vars) || {} },
-        instance_id => $overrides{instance_id},
-        content_type => $content_type,
-        title => $overrides{__title__} || $renderer->render($gadget->title),
-        width => $width,
-        $content_type eq 'inline'
-            ? (content => $renderer->content)
-            : (href => $renderer->href),
-    };
+     #   %{ $renderer->render($gadget->template_vars) || {} },
+     #   instance_id => $overrides{instance_id},
+     #   content_type => $content_type,
+     #   title => $overrides{__title__} || $renderer->render($gadget->title),
+     #   width => $width,
+     #   $content_type eq 'inline'
+     #       ? (content => $renderer->content)
+     #       : (href => $renderer->href),
+    #};
 }
 
 sub widget_setup_screen {
@@ -138,8 +138,8 @@ use base 'Socialtext::Formatter::WaflPhraseDiv';
 use Class::Field qw( const );
 use Socialtext::l10n 'loc';
 use Socialtext::Formatter::Phrase ();
-use Socialtext::Gadget::Renderer;
-use Socialtext::Gadgets::Gadget;
+#use Socialtext::Gadget::Renderer;
+#use Socialtext::Gadgets::Gadget;
 
 const wafl_id => 'widget';
 const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*$/;
