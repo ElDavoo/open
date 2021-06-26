@@ -71,9 +71,8 @@ sub PurgeCache {
     my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
     my $tmp_dir = '';
     if (-d $cache_dir) {
-        $tmp_dir = mkdtemp("$cache_dir.purge.XXXXXX");
-        print "cache dir: " . $cache_dir . "\n";
-        print "tmp dir: " . $tmp_dir . "\n";
+        #funny: below line is executed as postgres user
+        #$tmp_dir = mkdtemp("$cache_dir.purge.XXXXXX");
         #cache_dir = /var/cache/socialtext
         #tmp_dir = /var/cache/socialtext/$tmp_dir
         #how does the line below make sense?
