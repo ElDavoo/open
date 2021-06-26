@@ -10,7 +10,7 @@ use Socialtext::System qw(shell_run);
 use Socialtext::File;
 use File::Find qw(find);
 
-our $cache_dir = Socialtext::Paths::storage_directory('json_cache');
+our $cache_dir = Socialtext::Paths::cache_directory();
 
 sub ClearMemoryCache {
     my $class = shift;
@@ -35,7 +35,7 @@ sub ClearForUsers {
     $class->ClearMemoryCache;
 
     # Purge each user's file-based cache
-    my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
+    my $cache_dir = Socialtext::Paths::cache_directory();
     if (-d $cache_dir) {
         find({
             wanted => sub {
@@ -68,7 +68,7 @@ sub PurgeCache {
     my $class = shift;
     $class->ClearMemoryCache;
 
-    my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
+    my $cache_dir = Socialtext::Paths::cache_directory();
     my $tmp_dir = '';
     if (-d $cache_dir) {
         $tmp_dir = mkdtemp("$cache_dir.purge.XXXXXX");
