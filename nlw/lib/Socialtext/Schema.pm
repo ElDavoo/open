@@ -535,6 +535,7 @@ sub _db_shell_run {
     my $command = shift;
     my $log_file = _log_file();
     local $Socialtext::System::SILENT_RUN = !$self->{verbose};
+    print $command . "\n";
     shell_run($command . " >> $log_file 2>&1");
 }
 
