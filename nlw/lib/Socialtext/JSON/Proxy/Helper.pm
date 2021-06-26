@@ -10,7 +10,7 @@ use Socialtext::System qw(shell_run);
 use Socialtext::File;
 use File::Find qw(find);
 
-our $cache_dir = Socialtext::Paths::cache_directory();
+our $cache_dir = Socialtext::Paths::storage_directory('json_cache');
 
 sub ClearMemoryCache {
     my $class = shift;
@@ -35,7 +35,7 @@ sub ClearForUsers {
     $class->ClearMemoryCache;
 
     # Purge each user's file-based cache
-    my $cache_dir = Socialtext::Paths::cache_directory();
+    my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
     if (-d $cache_dir) {
         find({
             wanted => sub {
@@ -68,12 +68,17 @@ sub PurgeCache {
     my $class = shift;
     $class->ClearMemoryCache;
 
-    my $cache_dir = Socialtext::Paths::cache_directory();
+    my $cache_dir = Socialtext::Paths::storage_directory('json_cache');
     my $tmp_dir = '';
     if (-d $cache_dir) {
         $tmp_dir = mkdtemp("$cache_dir.purge.XXXXXX");
-        rename $cache_dir => $tmp_dir
-            or die "can't rename cache dir to $tmp_dir: $!";
+        print "cache dir: " . $cache_dir . "\n";
+        print "tmp dir: " . $tmp_dir . "\n";
+        #cache_dir = /var/cache/socialtext
+        #tmp_dir = /var/cache/socialtext/$tmp_dir
+        #how does the line below make sense?
+        #rename $cache_dir => $tmp_dir
+        #    or die "can't rename cache dir to $tmp_dir: $!";
     }
     mkdir $cache_dir;
     rmdir $tmp_dir if -d $tmp_dir;
