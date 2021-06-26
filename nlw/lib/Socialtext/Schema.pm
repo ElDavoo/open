@@ -486,14 +486,14 @@ sub _createlang {
     eval {
         # grep returning 1 (== no match) will cause shell_run to die
         local $Socialtext::System::SILENT_RUN = 1;
-        print $c{user} . $c{db_name};
+        print "eval:" . $c{user} . $c{db_name} . "\n";
         shell_run("createlang -e -U $c{user} -l $c{db_name} | grep plpgsql");
     };
     if ($@) {
         # If we're running as root, we need to run createlang as postgres
         # If we're not root, then we're likely in a dev-env.
         my $sudo = _sudo('postgres');
-        print $c{db_name};
+        print $c{db_name} . "\n" ;
         $self->_db_shell_run("$sudo createlang -e plpgsql $c{db_name}");
 
         # TODO: now that we're escalating privs before, we should be able to
