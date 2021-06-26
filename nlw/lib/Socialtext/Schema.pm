@@ -448,7 +448,6 @@ sub createdb {
     if (my $e = $@) {
         die $e;
     }
-    $self->_createlang;
 }
 
 sub reset_db_locale {
@@ -474,30 +473,6 @@ sub reset_db_locale {
     };
     if (my $e = $@) {
         die $e;
-    }
-    $self->_createlang;
-}
-
-# sets up plpgsql for the database schema
-sub _createlang {
-    my $self = shift;
-    my %c = $self->connect_params();
-
-    eval {
-        # grep returning 1 (== no match) will cause shell_run to die
-        local $Socialtext::System::SILENT_RUN = 1;
-        shell_run("createlang -U $c{user} -l $c{db_name} | grep plpgsql"
-                  . " > /dev/null");
-    };
-    if ($@) {
-        # If we're running as root, we need to run createlang as postgres
-        # If we're not root, then we're likely in a dev-env.
-        my $sudo = _sudo('postgres');
-        $self->_db_shell_run("$sudo createlang plpgsql $c{db_name}");
-
-        # TODO: now that we're escalating privs before, we should be able to
-        # run createlang as the usual db user, removing the need to sudo
-        # above.
     }
 }
 
