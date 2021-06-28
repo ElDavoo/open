@@ -294,7 +294,7 @@ sub EnsureRequiredDataIsPresent {
 
 sub _valid_hex_color {
     my $color = shift;
-
+    return 1 unless defined $color;
     return lc($color) =~ /^#[0-9a-f]{6}$/;
 }
 
