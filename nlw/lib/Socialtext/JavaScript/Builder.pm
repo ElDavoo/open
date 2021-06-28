@@ -286,18 +286,19 @@ method part_to_text ($part) {
 }
 
 method _shindig_feature_to_text ($part) {
-    require Socialtext::Gadgets::Feature;
-    my $feature = Socialtext::Gadgets::Feature->new(
-        type => $part->{type},
-        name => $part->{shindig_feature},
-    );
-    my $text = $feature->js || return;
-    if ($self->minify_js and $text) {
-        warn "Minifying feature $part->{shindig_feature}...\n";
-        $text = minify($text);
-    }
-    return $part->{nocomment} ?
-        "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
+    #require Socialtext::Gadgets::Feature;
+    #my $feature = Socialtext::Gadgets::Feature->new(
+    #    type => $part->{type},
+    #    name => $part->{shindig_feature},
+    #);
+    #my $text = $feature->js || return;
+    #if ($self->minify_js and $text) {
+    #    warn "Minifying feature $part->{shindig_feature}...\n";
+    #    $text = minify($text);
+    #}
+    return $part;
+#    return $part->{nocomment} ?
+    #    "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
 }
 
 method _coffee_to_text ($part) {
