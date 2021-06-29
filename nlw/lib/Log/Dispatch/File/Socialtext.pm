@@ -13,6 +13,7 @@ sub log_message {
     {
       	$self->_open_file;
 	$fh = $self->{fh};
+        print $self->{filename};
       	syswrite($fh, $p{message})
             or die "Cannot syswrite to '$self->{filename}': $!";
 
@@ -22,8 +23,8 @@ sub log_message {
     else
     {
         $fh = $self->{fh};
-        syswrite($fh, $p{message})
-            or die "Cannot syswrite to '$self->{filename}': $!";
+#        syswrite($fh, $p{message})
+#            or die "Cannot syswrite to '$self->{fh}': $!";
     }
 }
 
