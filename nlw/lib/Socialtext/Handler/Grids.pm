@@ -8,8 +8,8 @@ use namespace::clean -except => 'meta';
 extends 'Socialtext::Rest::Entity';
 
 method GET_css ($rest) {
-    my $width = $->width;
-    my $cols = $->cols;
+    my $width = $self->width;
+    my $cols = $self->cols;
     my $output = "grids.$cols.$width";
 
     my $params = {
