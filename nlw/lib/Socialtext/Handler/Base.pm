@@ -4,7 +4,6 @@ package Socialtext::Handler::Base;
 use Moose::Role;
 use Socialtext::HTTP ':codes';
 use Socialtext::HTTP::Cookie;
-use Socialtext::Gadgets::Util qw(share_path plugin_dir);
 use Socialtext::Session;
 use Socialtext::l10n qw/loc_lang loc/;
 use Socialtext::JSON qw(encode_json decode_json);
@@ -100,7 +99,6 @@ has 'template_paths' => (
 sub _build_template_paths {
     my $self = shift;
     return [
-        @{Socialtext::Gadgets::Util::template_paths()},
         @{$self->hub->skin->template_paths},
     ];
 }
