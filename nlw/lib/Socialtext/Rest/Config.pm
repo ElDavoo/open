@@ -12,7 +12,6 @@ use Socialtext::URI;
 use Socialtext::JSON;
 use Socialtext;
 use Socialtext::AppConfig;
-use Socialtext::Appliance::Config;
 use Readonly;
 
 Readonly my @PUBLIC_CONFIG_KEYS => qw(
@@ -33,16 +32,12 @@ sub make_getter {
             return $self->not_authorized();
         }
 
-        my $appliance = Socialtext::Appliance::Config->new;
-
         $rest->header(-type => "$type; charset=UTF-8");
 
         my $config = {
             server_version => $Socialtext::VERSION,
             api_version => $Socialtext::Rest::Version::API_VERSION,
-            desktop_update_url => $appliance->value('desktop_update_enabled')
-                                    ? Socialtext::URI::uri( path => "/st/desktop/update" )
-                                    : '',
+            desktop_update_url => '',
             ( map { $_ => Socialtext::AppConfig->$_() } @PUBLIC_CONFIG_KEYS ),
         };
 
