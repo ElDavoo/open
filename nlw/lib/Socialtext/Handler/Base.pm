@@ -38,7 +38,7 @@ sub template_vars {
     my %global_vars = $self->hub->helpers->global_template_vars;
     return {
         params => { $self->rest->query->Vars },
-        share => share_path,
+        share => '',
         workspaces => [$self->hub->current_user->workspaces->all],
         as_json => sub {
             my $json = encode_json(@_);
